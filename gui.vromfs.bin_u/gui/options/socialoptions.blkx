@@ -6,18 +6,12 @@
     "height": "@bigOptionsHeight",
     "flow": "vertical",
     "overflow-y": "auto",
-    "tdiv": [
-      {
-        "id": "facebook_frame"
-      },
-      {
-        "width": "pw"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "tdiv": {
+    "tdiv": {
+      "id": "facebook_frame",
+      "width": "pw",
+      "flow": "vertical",
+      "tdiv": [
+        {
           "pos": "50%pw-50%w, 0",
           "position": "relative",
           "margin-bottom": "0.01@sf",
@@ -47,53 +41,43 @@
             "btnName": "start",
             "position": "relative",
             "pos": "0.01@sf, 0",
-            "ButtonImg": [],
+            "ButtonImg": {},
             "activeText": {
               "text": "#options/facebookLogin",
               "pos": "0, 50%ph-50%h",
               "position": "relative",
-              "underline": []
+              "underline": {}
             }
           }
-        }
-      },
-      {
-        "tdiv": [
-          {
-            "pos": "50%pw-50%w, 0"
-          },
-          {
-            "position": "relative"
-          },
-          {
-            "margin-bottom": "0.03@sf"
-          },
-          {
-            "Button_text": {
+        },
+        {
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "margin-bottom": "0.03@sf",
+          "Button_text": [
+            {
               "id": "facebook_like_btn",
               "tooltip": "#guiHints/facebookLike",
               "text": "#options/facebookLike",
               "_on_click": "onFacebookLike",
               "btnName": "RB",
               "visualStyle": "secondary",
-              "buttonWink": [],
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "buttonWink": {},
+              "ButtonImg": {}
+            },
+            {
               "id": "facebook_friends_btn",
               "padding-left": "0.01@sf",
               "text": "#mainmenu/btnFacebookFriendsAdd",
               "_on_click": "onFacebookLoginAndAddFriends",
               "btnName": "Y",
               "visualStyle": "secondary",
-              "buttonWink": [],
-              "ButtonImg": []
+              "buttonWink": {},
+              "ButtonImg": {}
             }
-          }
-        ]
-      }
-    ]
+          ]
+        }
+      ]
+    }
   }
 }

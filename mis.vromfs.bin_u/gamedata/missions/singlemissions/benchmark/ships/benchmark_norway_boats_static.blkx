@@ -20,9 +20,9 @@
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 15
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -35,55 +35,31 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
+      "conditions": {},
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "teamA_avia_squad"
-            },
-            {
-              "object": "teamB_avia_squad"
-            },
-            {
-              "targetableByAi": false
-            },
-            {
-              "stealthRadius": 0.0
-            },
-            {
-              "attack_type": "hold_fire"
-            },
-            {
-              "ignoresEnemy": true
-            },
-            {
-              "aiEnabled": false
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "teamA_avia_squad",
+              "teamB_avia_squad"
+            ],
+            "targetableByAi": false,
+            "stealthRadius": 0.0,
+            "attack_type": "hold_fire",
+            "ignoresEnemy": true,
+            "aiEnabled": false
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -92,56 +68,46 @@
             "targetableByAi": false,
             "stealthRadius": 0.0,
             "attack_type": "hold_fire"
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "teamB_ship_05",
-            "controls": [
-              {
-                "weaponTriggers": {
+            "controls": {
+              "weaponTriggers": [
+                {
                   "trigger": "gunner1",
                   "set": true
-                }
-              },
-              {
-                "weaponTriggers": {
+                },
+                {
                   "trigger": "gunner2",
                   "set": true
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "teamB_ship_05",
-            "controls": [
-              {
-                "weaponTriggers": {
+            "controls": {
+              "weaponTriggers": [
+                {
                   "trigger": "gunner1",
                   "set": false
-                }
-              },
-              {
-                "weaponTriggers": {
+                },
+                {
                   "trigger": "gunner2",
                   "set": false
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -153,43 +119,25 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "shooting_group02"
-            },
-            {
-              "object": "teamB_ship_05"
-            },
-            {
-              "object": "shooting_group04"
-            },
-            {
-              "controls": {
-                "weaponTriggers": {
-                  "trigger": "gunner0",
-                  "set": true
-                }
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "shooting_group02",
+              "teamB_ship_05",
+              "shooting_group04"
+            ],
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
               }
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -201,10 +149,8 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -216,10 +162,8 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -231,10 +175,8 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -246,62 +188,50 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "teamB_avia03",
-            "plane": [
-              {
-                "weaponTriggers": {
+            "plane": {
+              "weaponTriggers": [
+                {
                   "trigger": "cannon",
                   "set": true
-                }
-              },
-              {
-                "weaponTriggers": {
+                },
+                {
                   "trigger": "machine gun",
                   "set": true
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "teamA_ship_01",
-            "controls": [
-              {
-                "weaponTriggers": {
+            "controls": {
+              "weaponTriggers": [
+                {
                   "trigger": "gunner4",
                   "set": true
-                }
-              },
-              {
-                "weaponTriggers": {
+                },
+                {
                   "trigger": "gunner0",
                   "set": false
-                }
-              },
-              {
-                "weaponTriggers": {
+                },
+                {
                   "trigger": "gunner1",
                   "set": false
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -313,78 +243,46 @@
                 "set": false
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "shooting_group03"
-            },
-            {
-              "object": "shooting_group01"
-            },
-            {
-              "controls": [
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "shooting_group03",
+              "shooting_group01"
+            ],
+            "controls": {
+              "weaponTriggers": [
                 {
-                  "weaponTriggers": {
-                    "trigger": "gunner0",
-                    "set": true
-                  }
+                  "trigger": "gunner0",
+                  "set": true
                 },
                 {
-                  "weaponTriggers": {
-                    "trigger": "gunner1",
-                    "set": true
-                  }
+                  "trigger": "gunner1",
+                  "set": true
                 }
               ]
             }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "teamB_avia02"
-            },
-            {
-              "object": "teamB_avia01"
-            },
-            {
-              "plane": {
-                "weaponTriggers": {
-                  "trigger": "cannon",
-                  "set": true
-                }
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "teamB_avia02",
+              "teamB_avia01"
+            ],
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
               }
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -396,33 +294,27 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "teamA_avia03",
-            "plane": [
-              {
-                "weaponTriggers": {
+            "plane": {
+              "weaponTriggers": [
+                {
                   "trigger": "cannon",
                   "set": true
-                }
-              },
-              {
-                "weaponTriggers": {
+                },
+                {
                   "trigger": "machine gun",
                   "set": true
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -434,43 +326,25 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "teamB_avia02"
-            },
-            {
-              "object": "teamB_avia01"
-            },
-            {
-              "object": "teamA_avia01"
-            },
-            {
-              "plane": {
-                "weaponTriggers": {
-                  "trigger": "cannon",
-                  "set": false
-                }
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "teamB_avia02",
+              "teamB_avia01",
+              "teamA_avia01"
+            ],
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": false
               }
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -482,10 +356,8 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -497,40 +369,24 @@
                 "set": false
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "teamB_avia02"
-            },
-            {
-              "object": "teamB_avia01"
-            },
-            {
-              "plane": {
-                "weaponTriggers": {
-                  "trigger": "cannon",
-                  "set": true
-                }
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "teamB_avia02",
+              "teamB_avia01"
+            ],
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
               }
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -543,486 +399,354 @@
               }
             }
           }
-        },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "ship_smoke_big"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "smoke02"
-            },
-            {
-              "target": "smoke04"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
-            }
-          ]
-        },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "land_crash_smoke"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "smoke06"
-            },
-            {
-              "target": "smoke09"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
-            }
-          ]
-        },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "land_crash_smoke",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "attach": false,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "smoke07",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitPlayEffect": {
+        ],
+        "unitPlayEffect": [
+          {
             "effect_type": "specify",
             "effect": "ship_smoke_big",
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": [
+              "smoke02",
+              "smoke04"
+            ],
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "effect_type": "specify",
+            "effect": "land_crash_smoke",
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": [
+              "smoke06",
+              "smoke09"
+            ],
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "effect_type": "specify",
+            "effect": "land_crash_smoke",
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": "smoke07",
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "effect_type": "specify",
+            "effect": "ship_smoke_big",
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "smoke03",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "ship_smoke_big"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "smoke01"
-            },
-            {
-              "target": "smoke05"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
-            }
-          ]
-        },
-        {
-          "unitPlayEffect": {
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "effect_type": "specify",
+            "effect": "ship_smoke_big",
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": [
+              "smoke01",
+              "smoke05"
+            ],
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
             "effect_type": "specify",
             "effect": "land_crash_fire",
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "smoke08",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitPlayEffect": {
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
             "effect_type": "specify",
             "effect": "ship_model_fire",
-            "offset": [-3.0,0.5,0.0],
+            "offset": [
+              -3.0,
+              0.5,
+              0.0
+            ],
             "show": true,
             "attach": true,
             "scale": 0.5,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "teamA_ship_02",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitPlayEffect": {
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
             "effect_type": "specify",
             "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "teamB_ship_11",
-            "radiusOffset": [0.0,0.0]
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
           }
-        },
-        {
-          "missionForceUpdate": {
+        ],
+        "missionForceUpdate": [
+          {
             "target_type": "isAlive",
             "dt": 0.05,
             "timeToUpdate": 7.0,
             "target": "teamA_avia04"
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 8.0,
+            "target": [
+              "teamA_units",
+              "teamB_units",
+              "teamA_avia04"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 4.0,
+            "target": [
+              "teamA_units",
+              "teamB_units",
+              "teamA_avia04"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 0.1,
+            "target": [
+              "teamA_units",
+              "teamB_units"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 1.0,
+            "target": [
+              "teamA_units",
+              "teamB_units"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 0.5,
+            "target": [
+              "teamA_units",
+              "teamB_units"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 0.5,
+            "target": [
+              "teamA_units",
+              "teamB_units",
+              "teamA_avia01"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 0.4,
+            "target": [
+              "teamA_units",
+              "teamB_units",
+              "teamB_avia01",
+              "teamB_avia02",
+              "teamB_avia03",
+              "teamA_avia01"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 1.0,
+            "target": [
+              "teamA_units",
+              "teamB_units",
+              "avia_group02"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 0.1,
+            "target": [
+              "teamB_avia01",
+              "teamB_avia02",
+              "avia_group02",
+              "teamB_ship_08"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 0.4,
+            "target": [
+              "teamB_avia01",
+              "teamB_avia02",
+              "avia_group02",
+              "teamB_ship_08"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 0.2,
+            "target": [
+              "teamA_units",
+              "teamB_units",
+              "teamB_avia01",
+              "teamB_avia02",
+              "avia_group02"
+            ]
           }
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 8.0
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            },
-            {
-              "target": "teamA_avia04"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 4.0
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            },
-            {
-              "target": "teamA_avia04"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.1
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 1.0
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.5
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.5
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            },
-            {
-              "target": "teamA_avia01"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.4
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            },
-            {
-              "target": "teamB_avia01"
-            },
-            {
-              "target": "teamB_avia02"
-            },
-            {
-              "target": "teamB_avia03"
-            },
-            {
-              "target": "teamA_avia01"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 1.0
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            },
-            {
-              "target": "avia_group02"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.1
-            },
-            {
-              "target": "teamB_avia01"
-            },
-            {
-              "target": "teamB_avia02"
-            },
-            {
-              "target": "avia_group02"
-            },
-            {
-              "target": "teamB_ship_08"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.4
-            },
-            {
-              "target": "teamB_avia01"
-            },
-            {
-              "target": "teamB_avia02"
-            },
-            {
-              "target": "avia_group02"
-            },
-            {
-              "target": "teamB_ship_08"
-            }
-          ]
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.2
-            },
-            {
-              "target": "teamA_units"
-            },
-            {
-              "target": "teamB_units"
-            },
-            {
-              "target": "teamB_avia01"
-            },
-            {
-              "target": "teamB_avia02"
-            },
-            {
-              "target": "avia_group02"
-            }
-          ]
-        },
-        {
-          "unitDropAmmo": {
+        ],
+        "unitDropAmmo": [
+          {
             "object": "teamA_avia04"
-          }
-        },
-        {
-          "unitDropAmmo": {
+          },
+          {
             "object": "teamB_ship_05",
             "triggerGroup": "special"
-          }
-        },
-        {
-          "unitDropAmmo": {
+          },
+          {
             "object": "teamB_ship_08",
             "triggerGroup": "torpedoes"
           }
+        ],
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            0.0,
+            0.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "target": "teamB_ship_11",
+          "doExplosion": true
         },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [0.0,0.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "target": "teamB_ship_11",
-            "doExplosion": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "cutscenes01"
-          }
+        "triggerEnable": {
+          "target": "cutscenes01"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "cutscenes01": {
       "is_enabled": false,
@@ -1037,20 +761,32 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionStartCutscene": {
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": [
+          {
             "target": "cutscene_point01",
             "second_target": "cutscene_point01",
             "duration": 10.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.01,
             "frequency": 1.0,
-            "linear_at_vel": [-25.0,0.0,48.5],
-            "linear_eye_vel": [-25.0,-6.0,48.5],
+            "linear_at_vel": [
+              -25.0,
+              0.0,
+              48.5
+            ],
+            "linear_eye_vel": [
+              -25.0,
+              -6.0,
+              48.5
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -1067,23 +803,44 @@
             "shake_accel": 0.0,
             "fov_accel": 0.0,
             "mustHaveGui": false,
-            "linear_at": [-180.0,-80.0,350.0],
-            "linear_eye": [0.0,0.0,0.0],
-            "endFade": [2.0,1.0]
-          }
-        },
-        {
-          "missionStartCutscene": {
+            "linear_at": [
+              -180.0,
+              -80.0,
+              350.0
+            ],
+            "linear_eye": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "endFade": [
+              2.0,
+              1.0
+            ]
+          },
+          {
             "target": "cutscene_point02",
             "second_target": "cutscene_point02",
             "duration": 10.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.01,
             "frequency": 1.0,
-            "linear_at_vel": [0.0,0.0,0.0],
-            "linear_eye_vel": [-82.0,0.0,1.6],
+            "linear_at_vel": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "linear_eye_vel": [
+              -82.0,
+              0.0,
+              1.6
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -1100,23 +857,44 @@
             "shake_accel": 0.0,
             "fov_accel": 0.0,
             "mustHaveGui": false,
-            "linear_at": [-820.0,0.0,15.8],
-            "linear_eye": [0.0,0.0,0.0],
-            "endFade": [2.0,1.0]
-          }
-        },
-        {
-          "missionStartCutscene": {
+            "linear_at": [
+              -820.0,
+              0.0,
+              15.8
+            ],
+            "linear_eye": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "endFade": [
+              2.0,
+              1.0
+            ]
+          },
+          {
             "target": "cutscene_point05",
             "second_target": "cutscene_point05",
             "duration": 10.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.01,
             "frequency": 1.0,
-            "linear_at_vel": [0.0,0.0,0.0],
-            "linear_eye_vel": [-30.0,0.0,55.0],
+            "linear_at_vel": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "linear_eye_vel": [
+              -30.0,
+              0.0,
+              55.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -1133,33 +911,38 @@
             "shake_accel": 0.0,
             "fov_accel": 0.0,
             "mustHaveGui": false,
-            "linear_at": [265.0,0.0,288.0],
-            "linear_eye": [0.0,0.0,0.0],
-            "endFade": [1.0,0.0]
+            "linear_at": [
+              265.0,
+              0.0,
+              288.0
+            ],
+            "linear_eye": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "endFade": [
+              1.0,
+              0.0
+            ]
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
+            "time": 10.0
+          },
+          {
+            "time": 10.0
+          },
+          {
             "time": 10.0
           }
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "cutscenes02"
-          }
+        ],
+        "triggerEnable": {
+          "target": "cutscenes02"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "cutscenes02": {
       "is_enabled": false,
@@ -1174,20 +957,32 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionStartCutscene": {
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": [
+          {
             "target": "cutscene_point03",
             "second_target": "cutscene_point03",
             "duration": 12.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.1,
             "frequency": 1.0,
-            "linear_at_vel": [44.0,0.8,20.0],
-            "linear_eye_vel": [44.0,0.8,20.0],
+            "linear_at_vel": [
+              44.0,
+              0.8,
+              20.0
+            ],
+            "linear_eye_vel": [
+              44.0,
+              0.8,
+              20.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -1204,23 +999,44 @@
             "shake_accel": 0.0,
             "fov_accel": 0.0,
             "mustHaveGui": false,
-            "linear_at": [164.0,0.0,73.0],
-            "linear_eye": [0.0,0.0,0.0],
-            "endFade": [1.0,0.0]
-          }
-        },
-        {
-          "missionStartCutscene": {
+            "linear_at": [
+              164.0,
+              0.0,
+              73.0
+            ],
+            "linear_eye": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "endFade": [
+              1.0,
+              0.0
+            ]
+          },
+          {
             "target": "cutscene_point04",
             "second_target": "area_02",
             "duration": 12.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.01,
             "frequency": 1.0,
-            "linear_at_vel": [0.0,0.0,0.0],
-            "linear_eye_vel": [50.0,0.0,6.0],
+            "linear_at_vel": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "linear_eye_vel": [
+              50.0,
+              0.0,
+              6.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -1237,23 +1053,44 @@
             "shake_accel": 0.0,
             "fov_accel": 0.0,
             "mustHaveGui": false,
-            "linear_at": [443.0,-80.0,-278.0],
-            "linear_eye": [0.0,0.0,0.0],
-            "endFade": [2.0,1.0]
-          }
-        },
-        {
-          "missionStartCutscene": {
+            "linear_at": [
+              443.0,
+              -80.0,
+              -278.0
+            ],
+            "linear_eye": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "endFade": [
+              2.0,
+              1.0
+            ]
+          },
+          {
             "target": "cutscene_point06",
             "second_target": "cutscene_point06",
             "duration": 12.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.01,
             "frequency": 1.0,
-            "linear_at_vel": [15.0,10.0,0.0],
-            "linear_eye_vel": [0.0,10.0,0.0],
+            "linear_at_vel": [
+              15.0,
+              10.0,
+              0.0
+            ],
+            "linear_eye_vel": [
+              0.0,
+              10.0,
+              0.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -1270,50 +1107,71 @@
             "shake_accel": 0.0,
             "fov_accel": 0.0,
             "mustHaveGui": false,
-            "linear_at": [-350.0,-100.0,-250.0],
-            "linear_eye": [0.0,0.0,0.0],
-            "endFade": [2.0,1.0]
+            "linear_at": [
+              -350.0,
+              -100.0,
+              -250.0
+            ],
+            "linear_eye": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "endFade": [
+              2.0,
+              1.0
+            ]
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 12.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 12.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 11.0
           }
-        },
-        {
-          "missionDebriefing": []
-        }
-      ],
-      "else_actions": []
+        ],
+        "missionDebriefing": {}
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "ships": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
         "name": "teamA_ship_01",
         "tm": [
-          [0.995978,0.0,0.0896053],
-          [0.0,1.0,0.0],
-          [-0.0896053,0.0,0.995978],
-          [2054.6,0.0,2156.02]
+          [
+            0.995978,
+            0.0,
+            0.0896053
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0896053,
+            0.0,
+            0.995978
+          ],
+          [
+            2054.6,
+            0.0,
+            2156.02
+          ]
         ],
         "unit_class": "uk_fairmile_d_601_616",
         "objLayer": 1,
@@ -1335,8 +1193,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1344,10 +1208,26 @@
           "teamA_ship_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2080.53,0.0,2161.32]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2080.53,
+                0.0,
+                2161.32
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1360,10 +1240,26 @@
           "teamA_ship_01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2089.5,0.0,2194.93]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2089.5,
+                0.0,
+                2194.93
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1376,10 +1272,26 @@
           "teamA_ship_01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2048.89,4.57764e-05,2220.74]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2048.89,
+                4.57764E-05,
+                2220.74
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1392,10 +1304,26 @@
           "teamA_ship_01_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2009.95,-6.10352e-05,2186.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2009.95,
+                -6.10352E-05,
+                2186.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1406,16 +1334,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_02",
         "tm": [
-          [0.00123441,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,0.00123441],
-          [1785.12,6.10352e-05,1926.07]
+          [
+            0.00123441,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.00123441
+          ],
+          [
+            1785.12,
+            6.10352E-05,
+            1926.07
+          ]
         ],
         "unit_class": "uk_dark_class_mtb",
         "objLayer": 1,
@@ -1437,8 +1379,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1446,10 +1394,26 @@
           "teamA_ship_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1809.16,0.0,1990.07]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1809.16,
+                0.0,
+                1990.07
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1462,10 +1426,26 @@
           "teamA_ship_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1969.24,0.0,2151.63]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1969.24,
+                0.0,
+                2151.63
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1476,16 +1456,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_03",
         "tm": [
-          [0.852738,0.0,0.522339],
-          [0.0,1.0,0.0],
-          [-0.522339,0.0,0.852738],
-          [2187.12,-0.00012207,1308.32]
+          [
+            0.852738,
+            0.0,
+            0.522339
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.522339,
+            0.0,
+            0.852738
+          ],
+          [
+            2187.12,
+            -0.00012207,
+            1308.32
+          ]
         ],
         "unit_class": "uk_fairmile_d_601_616",
         "objLayer": 1,
@@ -1507,8 +1501,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1516,10 +1516,26 @@
           "teamA_ship_03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2470.46,0.0,1486.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2470.46,
+                0.0,
+                1486.05
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1532,10 +1548,26 @@
           "teamA_ship_03_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2728.13,3.05176e-05,1721.62]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2728.13,
+                3.05176E-05,
+                1721.62
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1546,16 +1578,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_04",
         "tm": [
-          [0.938399,0.0,0.345554],
-          [0.0,1.0,0.0],
-          [-0.345554,0.0,0.938399],
-          [2190.04,0.0,1411.64]
+          [
+            0.938399,
+            0.0,
+            0.345554
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.345554,
+            0.0,
+            0.938399
+          ],
+          [
+            2190.04,
+            0.0,
+            1411.64
+          ]
         ],
         "unit_class": "uk_fairmile_d_617_632",
         "objLayer": 1,
@@ -1577,8 +1623,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1586,10 +1638,26 @@
           "teamA_ship_04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2367.96,0.0,1517.99]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2367.96,
+                0.0,
+                1517.99
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1602,10 +1670,26 @@
           "teamA_ship_04_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2660.78,0.0,1768.52]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2660.78,
+                0.0,
+                1768.52
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1616,16 +1700,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_05",
         "tm": [
-          [0.889428,0.0,0.457077],
-          [0.0,1.0,0.0],
-          [-0.457077,0.0,0.889428],
-          [2251.6,-0.000244141,1389.95]
+          [
+            0.889428,
+            0.0,
+            0.457077
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.457077,
+            0.0,
+            0.889428
+          ],
+          [
+            2251.6,
+            -0.000244141,
+            1389.95
+          ]
         ],
         "unit_class": "uk_fairmile_d_601_616",
         "objLayer": 1,
@@ -1647,8 +1745,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1656,10 +1760,26 @@
           "teamA_ship_05_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2441.74,0.0,1526.81]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2441.74,
+                0.0,
+                1526.81
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1672,10 +1792,26 @@
           "teamA_ship_05_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2686.85,-3.05176e-05,1774.39]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2686.85,
+                -3.05176E-05,
+                1774.39
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1686,16 +1822,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_06",
         "tm": [
-          [0.856767,0.0,-0.515703],
-          [0.0,1.0,0.0],
-          [0.515703,0.0,0.856767],
-          [1474.93,1.52588e-05,2244.3]
+          [
+            0.856767,
+            0.0,
+            -0.515703
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.515703,
+            0.0,
+            0.856767
+          ],
+          [
+            1474.93,
+            1.52588E-05,
+            2244.3
+          ]
         ],
         "unit_class": "uk_fairmile_d_617_632",
         "objLayer": 1,
@@ -1717,8 +1867,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1726,10 +1882,26 @@
           "teamA_ship_06_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1521.33,0.0,2268.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1521.33,
+                0.0,
+                2268.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1742,10 +1914,26 @@
           "teamA_ship_06_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1614.0,0.0,2222.78]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1614.0,
+                0.0,
+                2222.78
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1756,16 +1944,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_07",
         "tm": [
-          [0.995532,0.0,0.0944244],
-          [0.0,1.0,0.0],
-          [-0.0944244,0.0,0.995532],
-          [1804.24,-3.05176e-05,2682.5]
+          [
+            0.995532,
+            0.0,
+            0.0944244
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0944244,
+            0.0,
+            0.995532
+          ],
+          [
+            1804.24,
+            -3.05176E-05,
+            2682.5
+          ]
         ],
         "unit_class": "uk_fairmile_d_601_616",
         "objLayer": 1,
@@ -1787,8 +1989,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1796,10 +2004,26 @@
           "teamA_ship_07_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1943.05,0.0,2706.51]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1943.05,
+                0.0,
+                2706.51
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1812,10 +2036,26 @@
           "teamA_ship_07_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2376.76,-0.000244141,2588.61]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2376.76,
+                -0.000244141,
+                2588.61
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1826,16 +2066,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_08",
         "tm": [
-          [0.975437,0.0,0.22028],
-          [0.0,1.0,0.0],
-          [-0.22028,0.0,0.975437],
-          [2216.66,0.0,1497.23]
+          [
+            0.975437,
+            0.0,
+            0.22028
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.22028,
+            0.0,
+            0.975437
+          ],
+          [
+            2216.66,
+            0.0,
+            1497.23
+          ]
         ],
         "unit_class": "uk_fairmile_d_601_616",
         "objLayer": 1,
@@ -1857,8 +2111,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1866,10 +2126,26 @@
           "teamA_ship_08_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2325.23,3.05176e-05,1527.32]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2325.23,
+                3.05176E-05,
+                1527.32
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1882,10 +2158,26 @@
           "teamA_ship_08_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2590.67,3.05176e-05,1849.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2590.67,
+                3.05176E-05,
+                1849.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1896,16 +2188,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_02",
         "tm": [
-          [-0.335384,0.0,0.942082],
-          [0.0,1.0,0.0],
-          [-0.942082,0.0,-0.335384],
-          [2437.6,-0.000488281,2481.5]
+          [
+            -0.335384,
+            0.0,
+            0.942082
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.942082,
+            0.0,
+            -0.335384
+          ],
+          [
+            2437.6,
+            -0.000488281,
+            2481.5
+          ]
         ],
         "unit_class": "germ_s_100_class",
         "objLayer": 1,
@@ -1927,8 +2233,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1936,10 +2248,26 @@
           "teamB_ship_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2398.92,0.0,2571.04]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2398.92,
+                0.0,
+                2571.04
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1952,10 +2280,26 @@
           "teamB_ship_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2174.89,6.10352e-05,2584.47]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2174.89,
+                6.10352E-05,
+                2584.47
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1966,16 +2310,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_03",
         "tm": [
-          [-0.827555,0.0,-0.561384],
-          [0.0,1.0,0.0],
-          [0.561384,0.0,-0.827555],
-          [2858.7,0.000305176,1783.79]
+          [
+            -0.827555,
+            0.0,
+            -0.561384
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.561384,
+            0.0,
+            -0.827555
+          ],
+          [
+            2858.7,
+            0.000305176,
+            1783.79
+          ]
         ],
         "unit_class": "germ_s_100_class",
         "objLayer": 1,
@@ -1997,8 +2355,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2006,10 +2370,26 @@
           "teamB_ship_03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2418.73,0.0,1467.76]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2418.73,
+                0.0,
+                1467.76
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2020,16 +2400,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_04",
         "tm": [
-          [-0.961685,0.0,-0.274157],
-          [0.0,1.0,0.0],
-          [0.274157,0.0,-0.961685],
-          [2841.73,0.0,1631.5]
+          [
+            -0.961685,
+            0.0,
+            -0.274157
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.274157,
+            0.0,
+            -0.961685
+          ],
+          [
+            2841.73,
+            0.0,
+            1631.5
+          ]
         ],
         "unit_class": "germ_s_100_s_174_class",
         "objLayer": 1,
@@ -2051,8 +2445,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2060,10 +2460,26 @@
           "teamB_ship_04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2514.04,0.0,1498.18]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2514.04,
+                0.0,
+                1498.18
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2074,16 +2490,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_05",
         "tm": [
-          [-0.765697,0.0,-0.643201],
-          [0.0,1.0,0.0],
-          [0.643201,0.0,-0.765697],
-          [2240.95,-0.000976563,2750.2]
+          [
+            -0.765697,
+            0.0,
+            -0.643201
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.643201,
+            0.0,
+            -0.765697
+          ],
+          [
+            2240.95,
+            -0.000976563,
+            2750.2
+          ]
         ],
         "unit_class": "germ_ls4_class",
         "objLayer": 1,
@@ -2105,8 +2535,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2114,10 +2550,26 @@
           "teamB_ship_05_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2112.01,0.0,2645.36]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2112.01,
+                0.0,
+                2645.36
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2130,10 +2582,26 @@
           "teamB_ship_05_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2180.76,6.10352e-05,2607.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2180.76,
+                6.10352E-05,
+                2607.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2146,10 +2614,26 @@
           "teamB_ship_05_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2322.72,0.0,2656.16]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2322.72,
+                0.0,
+                2656.16
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2160,16 +2644,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_06",
         "tm": [
-          [-0.976252,0.0,0.216634],
-          [0.0,1.0,0.0],
-          [-0.216634,0.0,-0.976252],
-          [2542.26,0.000267029,2098.88]
+          [
+            -0.976252,
+            0.0,
+            0.216634
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.216634,
+            0.0,
+            -0.976252
+          ],
+          [
+            2542.26,
+            0.000267029,
+            2098.88
+          ]
         ],
         "unit_class": "germ_s_100_class",
         "objLayer": 1,
@@ -2191,8 +2689,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2200,10 +2704,26 @@
           "teamB_ship_06_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2284.33,0.000305176,2087.58]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2284.33,
+                0.000305176,
+                2087.58
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2216,10 +2736,26 @@
           "teamB_ship_06_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2211.71,0.000305176,2110.32]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2211.71,
+                0.000305176,
+                2110.32
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2230,16 +2766,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_07",
         "tm": [
-          [-0.949384,0.0,-0.314116],
-          [0.0,1.0,0.0],
-          [0.314116,0.0,-0.949384],
-          [2588.37,0.000244141,2028.31]
+          [
+            -0.949384,
+            0.0,
+            -0.314116
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.314116,
+            0.0,
+            -0.949384
+          ],
+          [
+            2588.37,
+            0.000244141,
+            2028.31
+          ]
         ],
         "unit_class": "germ_type140_jaguar",
         "objLayer": 1,
@@ -2261,8 +2811,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2270,10 +2826,26 @@
           "teamB_ship_07_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2489.51,0.000366211,1935.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2489.51,
+                0.000366211,
+                1935.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2286,10 +2858,26 @@
           "teamB_ship_07_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2397.71,0.000366211,1487.42]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2397.71,
+                0.000366211,
+                1487.42
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2300,16 +2888,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_08",
         "tm": [
-          [-0.999202,0.0,-0.0399218],
-          [0.0,1.0,0.0],
-          [0.0399218,0.0,-0.999202],
-          [2428.99,6.10352e-05,2154.9]
+          [
+            -0.999202,
+            0.0,
+            -0.0399218
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0399218,
+            0.0,
+            -0.999202
+          ],
+          [
+            2428.99,
+            6.10352E-05,
+            2154.9
+          ]
         ],
         "unit_class": "germ_type140_jaguar",
         "objLayer": 1,
@@ -2331,8 +2933,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2340,10 +2948,26 @@
           "teamB_ship_08_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2288.13,0.000183105,2173.76]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2288.13,
+                0.000183105,
+                2173.76
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2356,10 +2980,26 @@
           "teamB_ship_08_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1762.11,0.000183105,2176.92]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1762.11,
+                0.000183105,
+                2176.92
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2370,16 +3010,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_01",
         "tm": [
-          [-0.965128,0.0,0.261779],
-          [0.0,1.0,0.0],
-          [-0.261779,0.0,-0.965128],
-          [2169.29,-1.52588e-05,2195.0]
+          [
+            -0.965128,
+            0.0,
+            0.261779
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.261779,
+            0.0,
+            -0.965128
+          ],
+          [
+            2169.29,
+            -1.52588E-05,
+            2195.0
+          ]
         ],
         "unit_class": "germ_s_100_class",
         "objLayer": 1,
@@ -2401,8 +3055,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2410,10 +3070,26 @@
           "teamB_ship_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2133.54,-3.05176e-05,2207.01]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2133.54,
+                -3.05176E-05,
+                2207.01
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2426,10 +3102,26 @@
           "teamB_ship_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2043.0,-3.05176e-05,2210.14]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2043.0,
+                -3.05176E-05,
+                2210.14
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2442,10 +3134,26 @@
           "teamB_ship_01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2029.45,-3.05176e-05,2155.79]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2029.45,
+                -3.05176E-05,
+                2155.79
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2458,10 +3166,26 @@
           "teamB_ship_01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2083.94,-3.05176e-05,2115.48]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2083.94,
+                -3.05176E-05,
+                2115.48
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2472,16 +3196,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_destroyer01",
         "tm": [
-          [0.835976,0.0,-0.548766],
-          [0.0,1.0,0.0],
-          [0.548766,0.0,0.835976],
-          [1464.04,0.000244141,2345.01]
+          [
+            0.835976,
+            0.0,
+            -0.548766
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.548766,
+            0.0,
+            0.835976
+          ],
+          [
+            1464.04,
+            0.000244141,
+            2345.01
+          ]
         ],
         "unit_class": "uk_destroyer_tribal",
         "objLayer": 1,
@@ -2503,8 +3241,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2512,10 +3256,26 @@
           "teamA_destroyer01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1577.93,0.0,2271.58]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1577.93,
+                0.0,
+                2271.58
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2528,10 +3288,26 @@
           "teamA_destroyer01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1680.27,-3.7835e-10,2226.89]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1680.27,
+                -3.7835E-10,
+                2226.89
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2544,10 +3320,26 @@
           "teamA_destroyer01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1876.78,-3.7835e-10,2180.14]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1876.78,
+                -3.7835E-10,
+                2180.14
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2558,16 +3350,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "player_ship",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [656.838,0.0,1276.96]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            656.838,
+            0.0,
+            1276.96
+          ]
         ],
         "unit_class": "buoy_a",
         "objLayer": 1,
@@ -2589,22 +3395,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "teamB_destroyer01",
         "tm": [
-          [-0.562458,0.0,-0.826827],
-          [0.0,1.0,0.0],
-          [0.826827,0.0,-0.562458],
-          [2822.14,0.000549316,2021.44]
+          [
+            -0.562458,
+            0.0,
+            -0.826827
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.826827,
+            0.0,
+            -0.562458
+          ],
+          [
+            2822.14,
+            0.000549316,
+            2021.44
+          ]
         ],
         "unit_class": "germ_destroyer_class1936_z20_karlgalster",
         "objLayer": 1,
@@ -2626,8 +3452,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2635,10 +3467,26 @@
           "teamB_destroyer01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2700.52,0.0,1853.86]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2700.52,
+                0.0,
+                1853.86
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2651,10 +3499,26 @@
           "teamB_destroyer01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2532.43,0.0,1687.07]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2532.43,
+                0.0,
+                1687.07
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2665,16 +3529,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_destroyer02",
         "tm": [
-          [-0.442743,0.0,0.896649],
-          [0.0,1.0,0.0],
-          [-0.896649,0.0,-0.442743],
-          [2478.64,6.10352e-05,2636.37]
+          [
+            -0.442743,
+            0.0,
+            0.896649
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.896649,
+            0.0,
+            -0.442743
+          ],
+          [
+            2478.64,
+            6.10352E-05,
+            2636.37
+          ]
         ],
         "unit_class": "germ_destroyer_class1924_leopard1932",
         "objLayer": 1,
@@ -2696,8 +3574,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2705,10 +3589,26 @@
           "teamB_destroyer02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2366.82,9.15527e-05,2798.02]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2366.82,
+                9.15527E-05,
+                2798.02
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2721,10 +3621,26 @@
           "teamB_destroyer02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2221.28,0.0,2927.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2221.28,
+                0.0,
+                2927.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2735,16 +3651,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_09",
         "tm": [
-          [0.963885,0.0,0.26632],
-          [0.0,1.0,0.0],
-          [-0.26632,0.0,0.963885],
-          [1844.71,6.10352e-05,2569.66]
+          [
+            0.963885,
+            0.0,
+            0.26632
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.26632,
+            0.0,
+            0.963885
+          ],
+          [
+            1844.71,
+            6.10352E-05,
+            2569.66
+          ]
         ],
         "unit_class": "uk_fairmile_d_617_632",
         "objLayer": 1,
@@ -2766,8 +3696,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2775,10 +3711,26 @@
           "teamA_ship_09_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2135.11,-3.05176e-05,2659.88]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2135.11,
+                -3.05176E-05,
+                2659.88
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2791,10 +3743,26 @@
           "teamA_ship_09_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2533.64,-0.000236512,2599.74]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2533.64,
+                -0.000236512,
+                2599.74
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2805,16 +3773,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_10",
         "tm": [
-          [0.994998,0.0,0.0998985],
-          [0.0,1.0,0.0],
-          [-0.0998985,0.0,0.994998],
-          [1919.21,9.15527e-05,2681.28]
+          [
+            0.994998,
+            0.0,
+            0.0998985
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0998985,
+            0.0,
+            0.994998
+          ],
+          [
+            1919.21,
+            9.15527E-05,
+            2681.28
+          ]
         ],
         "unit_class": "uk_fairmile_c",
         "objLayer": 1,
@@ -2836,8 +3818,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2845,10 +3833,26 @@
           "teamA_ship_10_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2119.62,3.05176e-05,2735.12]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2119.62,
+                3.05176E-05,
+                2735.12
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2861,10 +3865,26 @@
           "teamA_ship_10_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2233.83,0.0,2714.94]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2233.83,
+                0.0,
+                2714.94
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2875,16 +3895,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_11",
         "tm": [
-          [0.992677,0.0,0.120803],
-          [0.0,1.0,0.0],
-          [-0.120803,0.0,0.992677],
-          [2003.96,0.00012207,2733.93]
+          [
+            0.992677,
+            0.0,
+            0.120803
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.120803,
+            0.0,
+            0.992677
+          ],
+          [
+            2003.96,
+            0.00012207,
+            2733.93
+          ]
         ],
         "unit_class": "uk_fairmile_c",
         "objLayer": 1,
@@ -2906,8 +3940,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2915,10 +3955,26 @@
           "teamA_ship_11_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2219.28,3.05179e-05,2748.34]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2219.28,
+                3.05179E-05,
+                2748.34
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2931,10 +3987,26 @@
           "teamA_ship_11_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2319.45,3.20142e-10,2743.37]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2319.45,
+                3.20142E-10,
+                2743.37
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2945,16 +4017,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamA_ship_12",
         "tm": [
-          [0.963885,0.0,0.26632],
-          [0.0,1.0,0.0],
-          [-0.26632,0.0,0.963885],
-          [2025.44,0.00012207,2607.66]
+          [
+            0.963885,
+            0.0,
+            0.26632
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.26632,
+            0.0,
+            0.963885
+          ],
+          [
+            2025.44,
+            0.00012207,
+            2607.66
+          ]
         ],
         "unit_class": "uk_fairmile_d_601_616",
         "objLayer": 1,
@@ -2976,8 +4062,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2985,10 +4077,26 @@
           "teamA_ship_12_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2200.81,0.0,2684.87]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2200.81,
+                0.0,
+                2684.87
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3001,10 +4109,26 @@
           "teamA_ship_12_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2244.34,0.0,2695.52]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2244.34,
+                0.0,
+                2695.52
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3017,10 +4141,26 @@
           "teamA_ship_12_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2275.5,0.0,2787.87]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2275.5,
+                0.0,
+                2787.87
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3033,10 +4173,26 @@
           "teamA_ship_12_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2195.93,0.0,2799.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2195.93,
+                0.0,
+                2799.45
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3047,16 +4203,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_09",
         "tm": [
-          [-0.798748,0.0,-0.601665],
-          [0.0,1.0,0.0],
-          [0.601665,0.0,-0.798748],
-          [2270.95,-0.000976563,2838.09]
+          [
+            -0.798748,
+            0.0,
+            -0.601665
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.601665,
+            0.0,
+            -0.798748
+          ],
+          [
+            2270.95,
+            -0.000976563,
+            2838.09
+          ]
         ],
         "unit_class": "germ_s38",
         "objLayer": 1,
@@ -3078,8 +4248,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3087,10 +4263,26 @@
           "teamB_ship_09_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2132.53,0.000366211,2714.84]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2132.53,
+                0.000366211,
+                2714.84
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3103,10 +4295,26 @@
           "teamB_ship_09_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1926.58,4.65661e-10,2633.71]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1926.58,
+                4.65661E-10,
+                2633.71
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3117,16 +4325,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_10",
         "tm": [
-          [-0.999989,0.0,0.00477523],
-          [0.0,1.0,0.0],
-          [-0.00477523,0.0,-0.999989],
-          [2382.36,-0.000488281,2569.42]
+          [
+            -0.999989,
+            0.0,
+            0.00477523
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.00477523,
+            0.0,
+            -0.999989
+          ],
+          [
+            2382.36,
+            -0.000488281,
+            2569.42
+          ]
         ],
         "unit_class": "germ_type140_jaguar",
         "objLayer": 1,
@@ -3148,8 +4370,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3157,10 +4385,26 @@
           "teamB_ship_10_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2144.6,0.0,2618.39]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2144.6,
+                0.0,
+                2618.39
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3171,16 +4415,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "teamB_ship_11",
         "tm": [
-          [-0.905983,0.0,-0.423314],
-          [0.0,1.0,0.0],
-          [0.423314,0.0,-0.905983],
-          [2350.39,-0.000976563,2739.13]
+          [
+            -0.905983,
+            0.0,
+            -0.423314
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.423314,
+            0.0,
+            -0.905983
+          ],
+          [
+            2350.39,
+            -0.000976563,
+            2739.13
+          ]
         ],
         "unit_class": "germ_s_100_s_174_class",
         "objLayer": 1,
@@ -3202,8 +4460,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3211,10 +4475,26 @@
           "teamB_ship_11_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2182.43,0.000366211,2670.94]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2182.43,
+                0.000366211,
+                2670.94
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3227,10 +4507,26 @@
           "teamB_ship_11_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2003.63,0.0,2607.02]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2003.63,
+                0.0,
+                2607.02
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3242,371 +4538,423 @@
           }
         }
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "teamA_units",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1110.39,0.0,744.16]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1110.39,
+            0.0,
+            744.16
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_ship_01"
-          },
-          {
-            "squad_members": "teamA_ship_02"
-          },
-          {
-            "squad_members": "teamA_ship_03"
-          },
-          {
-            "squad_members": "teamA_ship_04"
-          },
-          {
-            "squad_members": "teamA_ship_05"
-          },
-          {
-            "squad_members": "teamA_ship_06"
-          },
-          {
-            "squad_members": "teamA_ship_07"
-          },
-          {
-            "squad_members": "teamA_ship_08"
-          },
-          {
-            "squad_members": "teamA_destroyer01"
-          },
-          {
-            "squad_members": "teamA_ship_09"
-          },
-          {
-            "squad_members": "teamA_ship_10"
-          },
-          {
-            "squad_members": "teamA_ship_11"
-          },
-          {
-            "squad_members": "teamA_ship_12"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamA_ship_01",
+            "teamA_ship_02",
+            "teamA_ship_03",
+            "teamA_ship_04",
+            "teamA_ship_05",
+            "teamA_ship_06",
+            "teamA_ship_07",
+            "teamA_ship_08",
+            "teamA_destroyer01",
+            "teamA_ship_09",
+            "teamA_ship_10",
+            "teamA_ship_11",
+            "teamA_ship_12"
+          ]
+        }
+      },
+      {
         "name": "teamB_units",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1360.02,0.000366211,710.908]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1360.02,
+            0.000366211,
+            710.908
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_ship_02"
-          },
-          {
-            "squad_members": "teamB_ship_03"
-          },
-          {
-            "squad_members": "teamB_ship_04"
-          },
-          {
-            "squad_members": "teamB_ship_05"
-          },
-          {
-            "squad_members": "teamB_ship_06"
-          },
-          {
-            "squad_members": "teamB_ship_07"
-          },
-          {
-            "squad_members": "teamB_ship_08"
-          },
-          {
-            "squad_members": "teamB_ship_01"
-          },
-          {
-            "squad_members": "teamB_ship_10"
-          },
-          {
-            "squad_members": "teamB_ship_09"
-          },
-          {
-            "squad_members": "teamB_ship_11"
-          },
-          {
-            "squad_members": "teamB_destroyer01"
-          },
-          {
-            "squad_members": "teamB_destroyer02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamB_ship_02",
+            "teamB_ship_03",
+            "teamB_ship_04",
+            "teamB_ship_05",
+            "teamB_ship_06",
+            "teamB_ship_07",
+            "teamB_ship_08",
+            "teamB_ship_01",
+            "teamB_ship_10",
+            "teamB_ship_09",
+            "teamB_ship_11",
+            "teamB_destroyer01",
+            "teamB_destroyer02"
+          ]
+        }
+      },
+      {
         "name": "all_units_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2582.03,0.0,822.36]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2582.03,
+            0.0,
+            822.36
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_units"
-          },
-          {
-            "squad_members": "teamB_units"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamA_units",
+            "teamB_units"
+          ]
+        }
+      },
+      {
         "name": "shooting_group01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2159.11,0.0,2887.61]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2159.11,
+            0.0,
+            2887.61
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_ship_11"
-          },
-          {
-            "squad_members": "teamA_ship_12"
-          },
-          {
-            "squad_members": "teamB_ship_10"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamA_ship_11",
+            "teamA_ship_12",
+            "teamB_ship_10"
+          ]
+        }
+      },
+      {
         "name": "shooting_group02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2117.6,-0.000427246,2882.98]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2117.6,
+            -0.000427246,
+            2882.98
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_ship_09"
-          },
-          {
-            "squad_members": "teamA_ship_10"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamB_ship_09",
+            "teamA_ship_10"
+          ]
+        }
+      },
+      {
         "name": "shooting_group03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2075.46,-0.000183105,2860.03]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2075.46,
+            -0.000183105,
+            2860.03
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_ship_09"
-          },
-          {
-            "squad_members": "teamB_ship_02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamA_ship_09",
+            "teamB_ship_02"
+          ]
+        }
+      },
+      {
         "name": "teamA_avia_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1579.42,0.0,2786.23]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1579.42,
+            0.0,
+            2786.23
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_avia01"
-          },
-          {
-            "squad_members": "teamA_avia02"
-          },
-          {
-            "squad_members": "teamA_avia03"
-          },
-          {
-            "squad_members": "teamA_avia04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamA_avia01",
+            "teamA_avia02",
+            "teamA_avia03",
+            "teamA_avia04"
+          ]
+        }
+      },
+      {
         "name": "teamB_avia_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1630.88,0.0,2754.57]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1630.88,
+            0.0,
+            2754.57
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_avia01"
-          },
-          {
-            "squad_members": "teamB_avia02"
-          },
-          {
-            "squad_members": "teamB_avia03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamB_avia01",
+            "teamB_avia02",
+            "teamB_avia03"
+          ]
+        }
+      },
+      {
         "name": "shooting_group04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2004.71,0.0,2221.66]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2004.71,
+            0.0,
+            2221.66
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_ship_01"
-          },
-          {
-            "squad_members": "teamB_ship_07"
-          },
-          {
-            "squad_members": "teamA_destroyer01"
-          },
-          {
-            "squad_members": "teamA_ship_01"
-          },
-          {
-            "squad_members": "teamA_ship_08"
-          },
-          {
-            "squad_members": "teamA_ship_03"
-          },
-          {
-            "squad_members": "teamB_ship_04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamB_ship_01",
+            "teamB_ship_07",
+            "teamA_destroyer01",
+            "teamA_ship_01",
+            "teamA_ship_08",
+            "teamA_ship_03",
+            "teamB_ship_04"
+          ]
+        }
+      },
+      {
         "name": "shooting_group05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1959.0,0.0,2209.78]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1959.0,
+            0.0,
+            2209.78
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_ship_08"
-          },
-          {
-            "squad_members": "teamB_ship_06"
-          },
-          {
-            "squad_members": "teamA_ship_06"
-          },
-          {
-            "squad_members": "teamA_ship_02"
-          },
-          {
-            "squad_members": "teamA_ship_04"
-          },
-          {
-            "squad_members": "teamA_ship_05"
-          },
-          {
-            "squad_members": "teamB_ship_03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamB_ship_08",
+            "teamB_ship_06",
+            "teamA_ship_06",
+            "teamA_ship_02",
+            "teamA_ship_04",
+            "teamA_ship_05",
+            "teamB_ship_03"
+          ]
+        }
+      },
+      {
         "name": "avia_group02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1860.87,0.0,1945.54]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1860.87,
+            0.0,
+            1945.54
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_avia01"
-          },
-          {
-            "squad_members": "teamA_avia03"
-          },
-          {
-            "squad_members": "teamB_avia03"
-          },
-          {
-            "squad_members": "teamA_avia04"
-          }
-        ]
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "teamA_avia01",
+            "teamA_avia03",
+            "teamB_avia03",
+            "teamA_avia04"
+          ]
+        }
       }
-    },
-    {
-      "armada": {
+    ],
+    "armada": [
+      {
         "name": "teamA_avia01",
         "tm": [
-          [0.843222,-0.440602,0.30797],
-          [0.401108,0.897109,0.185225],
-          [-0.357894,-0.0326564,0.933191],
-          [1683.15,181.382,2067.35]
+          [
+            0.843222,
+            -0.440602,
+            0.30797
+          ],
+          [
+            0.401108,
+            0.897109,
+            0.185225
+          ],
+          [
+            -0.357894,
+            -0.0326564,
+            0.933191
+          ],
+          [
+            1683.15,
+            181.382,
+            2067.35
+          ]
         ],
         "unit_class": "spitfire_f22",
         "objLayer": 1,
@@ -3644,17 +4992,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "teamA_avia02",
         "tm": [
-          [0.961118,-0.210771,0.178403],
-          [0.187541,0.97244,0.138522],
-          [-0.202684,-0.0996782,0.974158],
-          [1699.23,49.1534,2162.67]
+          [
+            0.961118,
+            -0.210771,
+            0.178403
+          ],
+          [
+            0.187541,
+            0.97244,
+            0.138522
+          ],
+          [
+            -0.202684,
+            -0.0996782,
+            0.974158
+          ],
+          [
+            1699.23,
+            49.1534,
+            2162.67
+          ]
         ],
         "unit_class": "spitfire_f22",
         "objLayer": 1,
@@ -3692,17 +5054,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "teamA_avia03",
         "tm": [
-          [0.77338,-0.388103,0.501257],
-          [0.285205,0.919169,0.271637],
-          [-0.566163,-0.0671176,0.821556],
-          [1450.1,268.293,1916.23]
+          [
+            0.77338,
+            -0.388103,
+            0.501257
+          ],
+          [
+            0.285205,
+            0.919169,
+            0.271637
+          ],
+          [
+            -0.566163,
+            -0.0671176,
+            0.821556
+          ],
+          [
+            1450.1,
+            268.293,
+            1916.23
+          ]
         ],
         "unit_class": "hellcat_fmk1",
         "objLayer": 1,
@@ -3740,17 +5116,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "teamA_avia04",
         "tm": [
-          [0.386153,0.0,-0.922434],
-          [-0.000164747,1.0,-6.85469e-05],
-          [0.922434,0.000178323,0.386153],
-          [1779.5,248.048,4576.45]
+          [
+            0.386153,
+            0.0,
+            -0.922434
+          ],
+          [
+            -0.000164747,
+            1.0,
+            -6.85469E-05
+          ],
+          [
+            0.922434,
+            0.000178323,
+            0.386153
+          ],
+          [
+            1779.5,
+            248.048,
+            4576.45
+          ]
         ],
         "unit_class": "blenheim_mkiv",
         "objLayer": 1,
@@ -3788,17 +5178,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "teamB_avia01",
         "tm": [
-          [-0.796026,-0.421813,-0.434068],
-          [-0.3611,0.906516,-0.218711],
-          [0.485747,-0.0173576,-0.873927],
-          [2192.13,140.554,2733.99]
+          [
+            -0.796026,
+            -0.421813,
+            -0.434068
+          ],
+          [
+            -0.3611,
+            0.906516,
+            -0.218711
+          ],
+          [
+            0.485747,
+            -0.0173576,
+            -0.873927
+          ],
+          [
+            2192.13,
+            140.554,
+            2733.99
+          ]
         ],
         "unit_class": "ju-87g_1",
         "objLayer": 1,
@@ -3836,17 +5240,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "teamB_avia02",
         "tm": [
-          [-0.834322,-0.540251,-0.109704],
-          [-0.542503,0.839985,-0.01076],
-          [0.0979641,0.0505378,-0.993906],
-          [2191.0,200.428,2722.86]
+          [
+            -0.834322,
+            -0.540251,
+            -0.109704
+          ],
+          [
+            -0.542503,
+            0.839985,
+            -0.01076
+          ],
+          [
+            0.0979641,
+            0.0505378,
+            -0.993906
+          ],
+          [
+            2191.0,
+            200.428,
+            2722.86
+          ]
         ],
         "unit_class": "ju-87g_1",
         "objLayer": 1,
@@ -3884,17 +5302,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "teamB_avia03",
         "tm": [
-          [0.927957,-0.290545,0.233409],
-          [0.28866,0.956466,0.0429802],
-          [-0.235737,0.0274921,0.971428],
-          [1550.84,179.429,2055.49]
+          [
+            0.927957,
+            -0.290545,
+            0.233409
+          ],
+          [
+            0.28866,
+            0.956466,
+            0.0429802
+          ],
+          [
+            -0.235737,
+            0.0274921,
+            0.971428
+          ],
+          [
+            1550.84,
+            179.429,
+            2055.49
+          ]
         ],
         "unit_class": "bf-109k-4",
         "objLayer": 1,
@@ -3932,231 +5364,513 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "cutscene_point01": {
       "type": "Point",
       "tm": [
-        [0.710998,0.0,0.703194],
-        [0.0,1.0,0.0],
-        [-0.703194,0.0,0.710998],
-        [2939.35,103.5,814.301]
+        [
+          0.710998,
+          0.0,
+          0.703194
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.703194,
+          0.0,
+          0.710998
+        ],
+        [
+          2939.35,
+          103.5,
+          814.301
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "cutscene_point02": {
       "type": "Point",
       "tm": [
-        [0.710998,0.0,0.703194],
-        [0.0,1.0,0.0],
-        [-0.703194,0.0,0.710998],
-        [2669.95,19.8793,2158.22]
+        [
+          0.710998,
+          0.0,
+          0.703194
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.703194,
+          0.0,
+          0.710998
+        ],
+        [
+          2669.95,
+          19.8793,
+          2158.22
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "cutscene_point00": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1752.9,45.237,2833.07]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1752.9,
+          45.237,
+          2833.07
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "cutscene_point03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1527.98,5.00006,2427.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1527.98,
+          5.00006,
+          2427.8
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2170.35,6.57562,2649.82]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2170.35,
+          6.57562,
+          2649.82
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "cutscene_point04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1694.81,90.2922,2966.41]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1694.81,
+          90.2922,
+          2966.41
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2191.37,4.7433,2458.63]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2191.37,
+          4.7433,
+          2458.63
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1859.24,27.4856,2418.89]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1859.24,
+          27.4856,
+          2418.89
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2108.94,57.5523,1786.09]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2108.94,
+          57.5523,
+          1786.09
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2222.11,55.7111,1882.82]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2222.11,
+          55.7111,
+          1882.82
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke05": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1100.68,25.1691,2104.54]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1100.68,
+          25.1691,
+          2104.54
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1556.59,6.57559,2142.7]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1556.59,
+          6.57559,
+          2142.7
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke06": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2286.32,13.2881,1726.03]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2286.32,
+          13.2881,
+          1726.03
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke07": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2065.37,29.9011,2427.16]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2065.37,
+          29.9011,
+          2427.16
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke08": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2340.9,11.0583,2295.03]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2340.9,
+          11.0583,
+          2295.03
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "cutscene_point05": {
       "type": "Point",
       "tm": [
-        [0.710998,0.0,0.703194],
-        [0.0,1.0,0.0],
-        [-0.703194,0.0,0.710998],
-        [1754.25,10.5,1873.27]
+        [
+          0.710998,
+          0.0,
+          0.703194
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.703194,
+          0.0,
+          0.710998
+        ],
+        [
+          1754.25,
+          10.5,
+          1873.27
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "cutscene_point06": {
       "type": "Point",
       "tm": [
-        [0.710998,0.0,0.703194],
-        [0.0,1.0,0.0],
-        [-0.703194,0.0,0.710998],
-        [2532.88,90.0,2890.77]
+        [
+          0.710998,
+          0.0,
+          0.703194
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.703194,
+          0.0,
+          0.710998
+        ],
+        [
+          2532.88,
+          90.0,
+          2890.77
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "smoke09": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1921.3,36.8232,1742.95]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1921.3,
+          36.8232,
+          1742.95
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

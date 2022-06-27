@@ -1,232 +1,128 @@
-[
-  {
-    "item": [
-      {
-        "item": "fuse"
-      },
-      {
-        "dm": "fuse_dm"
-      },
-      {
-        "dm": "fuse1_dm"
-      },
-      {
-        "dm": "fuse2_dm"
-      },
-      {
-        "dm": "fuse3_dm"
-      },
-      {
-        "dm": "fuse4_dm"
-      },
-      {
-        "type": "average"
-      }
-    ]
-  },
-  {
-    "item": {
+{
+  "item": [
+    {
+      "item": "fuse",
+      "dm": [
+        "fuse_dm",
+        "fuse1_dm",
+        "fuse2_dm",
+        "fuse3_dm",
+        "fuse4_dm"
+      ],
+      "type": "average"
+    },
+    {
       "item": "tail",
       "dm": "tail_dm"
-    }
-  },
-  {
-    "item": [
-      {
-        "item": "wingl"
-      },
-      {
-        "dm": "wing_l_dm"
-      },
-      {
-        "dm": "wing1_l_dm"
-      },
-      {
-        "dm": "wing2_l_dm"
-      },
-      {
-        "type": "average"
-      }
-    ]
-  },
-  {
-    "item": [
-      {
-        "item": "wingr"
-      },
-      {
-        "dm": "wing_r_dm"
-      },
-      {
-        "dm": "wing1_r_dm"
-      },
-      {
-        "dm": "wing2_r_dm"
-      },
-      {
-        "type": "average"
-      }
-    ]
-  },
-  {
-    "item": [
-      {
-        "item": "aileron_l"
-      },
-      {
-        "dm": "aileron_l"
-      },
-      {
-        "dm": "aileron1_l"
-      },
-      {
-        "type": "average"
-      }
-    ]
-  },
-  {
-    "item": [
-      {
-        "item": "aileron_r"
-      },
-      {
-        "dm": "aileron_r"
-      },
-      {
-        "dm": "aileron1_r"
-      },
-      {
-        "type": "average"
-      }
-    ]
-  },
-  {
-    "item": [
-      {
-        "item": "elevator"
-      },
-      {
-        "type": "mult"
-      },
-      {
-        "dependency": {
+    },
+    {
+      "item": "wingl",
+      "dm": [
+        "wing_l_dm",
+        "wing1_l_dm",
+        "wing2_l_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "item": "wingr",
+      "dm": [
+        "wing_r_dm",
+        "wing1_r_dm",
+        "wing2_r_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "item": "aileron_l",
+      "dm": [
+        "aileron_l",
+        "aileron1_l"
+      ],
+      "type": "average"
+    },
+    {
+      "item": "aileron_r",
+      "dm": [
+        "aileron_r",
+        "aileron1_r"
+      ],
+      "type": "average"
+    },
+    {
+      "item": "elevator",
+      "type": "mult",
+      "dependency": [
+        {
           "dm": "elevator_dm"
+        },
+        {
+          "dm": [
+            "elevator0_dm",
+            "elevator1_dm"
+          ],
+          "type": "average"
         }
-      },
-      {
-        "dependency": [
-          {
-            "dm": "elevator0_dm"
-          },
-          {
-            "dm": "elevator1_dm"
-          },
-          {
-            "type": "average"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "item": [
-      {
-        "item": "rudder"
-      },
-      {
-        "type": "mult"
-      },
-      {
-        "dependency": {
+      ]
+    },
+    {
+      "item": "rudder",
+      "type": "mult",
+      "dependency": [
+        {
           "dm": "rudder_dm"
+        },
+        {
+          "dm": [
+            "rudder0_dm",
+            "rudder1_dm"
+          ],
+          "type": "average"
         }
-      },
-      {
-        "dependency": [
-          {
-            "dm": "rudder0_dm"
-          },
-          {
-            "dm": "rudder1_dm"
-          },
-          {
-            "type": "average"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "item": {
+      ]
+    },
+    {
       "item": "gunner1",
       "dm": "gunner1_dm"
-    }
-  },
-  {
-    "item": {
+    },
+    {
       "item": "gunner2",
       "dm": "gunner3_dm"
-    }
-  },
-  {
-    "item": {
+    },
+    {
       "item": "gunner3",
       "dm": "gunner3_dm"
-    }
-  },
-  {
-    "item": {
+    },
+    {
       "item": "gunner4",
       "dm": "gunner4_dm"
-    }
-  },
-  {
-    "item": {
+    },
+    {
       "item": "gunner5",
       "dm": "gunner5_dm"
-    }
-  },
-  {
-    "item": {
+    },
+    {
       "item": "gunner6",
       "dm": "gunner6_dm"
-    }
-  },
-  {
-    "item": {
+    },
+    {
       "item": "gunner7",
       "dm": "gunner7_dm"
-    }
-  },
-  {
-    "item": {
+    },
+    {
       "item": "gunner8",
       "dm": "gunner8_dm"
     }
-  },
-  {
-    "fm": [
-      {
-        "fm": "gear"
-      },
-      {
-        "dm": "gear_l_dm"
-      },
-      {
-        "dm": "gear_r_dm"
-      },
-      {
-        "dm": "gear_c_dm"
-      },
-      {
-        "dm": "gear_2c_dm"
-      },
-      {
-        "dm": "gear_3c_dm"
-      },
-      {
-        "type": "average"
-      }
-    ]
+  ],
+  "fm": {
+    "fm": "gear",
+    "dm": [
+      "gear_l_dm",
+      "gear_r_dm",
+      "gear_c_dm",
+      "gear_2c_dm",
+      "gear_3c_dm"
+    ],
+    "type": "average"
   }
-]
+}

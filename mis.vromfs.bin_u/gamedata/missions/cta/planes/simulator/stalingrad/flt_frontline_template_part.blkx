@@ -18,11 +18,11 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/templates/enduring_confrontation/ad_air_dom_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -34,11 +34,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData\\missions\\templates\\enduring_confrontation\\flt_frontline_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -50,11 +48,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/planes/simulator/stalingrad/frontline/flt_frontline_part.blk",
         "importAreas": true,
         "importUnits": true,
@@ -66,10 +62,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -82,212 +78,164 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "nastrojki frontlajna"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kolichestvo col i row"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vyschityvaem obshchee kolichestvo zon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "indeks zon, yavlyayushchihsya liniej fronta"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pomechaem zony komand (v cikle po algoritmu)"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "risuem liniyu fronta"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 10,
             "var": "flt_big_aaa_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 10,
             "var": "flt_small_aaa_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 20,
             "var": "flt_art_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 50,
             "var": "flt_tank_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 7,
             "var": "flt_zones_in_row"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 7,
             "var": "flt_zones_in_col"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "flt_total_zones"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 0.0,
             "var": "flt_total_zones",
             "use_variable": true,
             "var_value": "flt_zones_in_row"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": 3.0,
             "var": "flt_total_zones",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
           }
-        },
-        {
-          "varSetRandomInt": {
+        ],
+        "varSetRandomInt": [
+          {
             "var": "flt_frontline_zone_idx_01",
             "from": 3,
             "to_not_including": 5
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "flt_frontline_zone_idx_02",
             "from": 10,
             "to_not_including": 12
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "flt_frontline_zone_idx_03",
             "from": 17,
             "to_not_including": 19
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "flt_frontline_zone_idx_04",
             "from": 25,
             "to_not_including": 27
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "flt_frontline_zone_idx_05",
             "from": 32,
             "to_not_including": 34
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "flt_frontline_zone_idx_06",
             "from": 39,
             "to_not_including": 41
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "flt_frontline_zone_idx_07",
             "from": 47,
             "to_not_including": 49
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "flt_army_state_start"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "flt_draw_frontline"
           }
-        },
-        {
-          "missionBattleArea": {
-            "air": true,
-            "ground": false,
-            "mapArea": false,
-            "airMapArea": true,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": true,
-            "area": "flt_battle_area",
-            "newGridHorizontalCellCount": 7
-          }
+        ],
+        "missionBattleArea": {
+          "air": true,
+          "ground": false,
+          "mapArea": false,
+          "airMapArea": true,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "flt_battle_area",
+          "newGridHorizontalCellCount": 7
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

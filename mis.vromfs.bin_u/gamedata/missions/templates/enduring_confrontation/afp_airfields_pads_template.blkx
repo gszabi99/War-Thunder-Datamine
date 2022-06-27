@@ -15,7 +15,7 @@
       "weather": "hazy"
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -31,51 +31,41 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "obnulyaem tekushchij indeks filda"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim chto vse dummy bessmertny"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskame rotaciyu generacii aerodroma"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "afp_generation_cur_airfield_num"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_generation_cur_airfield_num"
-            }
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "afp_all_dummies_squad",
+            "targetableByAi": false,
+            "isImmortal": true,
+            "stealthRadius": 0.0,
+            "calmDetection": true
           },
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "afp_all_dummies_squad",
-              "targetableByAi": false,
-              "isImmortal": true,
-              "stealthRadius": 0.0,
-              "calmDetection": true
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_pre_generation_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_pre_generation_rotator"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "afp_generation_restart": {
         "is_enabled": false,
@@ -90,13 +80,13 @@
             "time": 60.0
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "triggerEnable": {
             "target": "afp_generation_rotator"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "afp_generation_rotator": {
         "is_enabled": false,
@@ -119,90 +109,66 @@
             "var_value_other": "afp_field_max_count"
           }
         },
-        "actions": [
-          {
-            "__systemLog": {
-              "value": "afp_generation_rotator",
-              "logtype": "screen"
-            }
+        "actions": {
+          "__systemLog": {
+            "value": "afp_generation_rotator",
+            "logtype": "screen"
           },
-          {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            }
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "kolichestvo aktivnyh aerodromov men'she chem kolichestvo maksimal'nyh"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "vybiraem sluchajnyj indeks aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapominaem vypavshee znach6enie, chtoby v sleduyushchij cikl ono ne povtorilos'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem indeks"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "afp_generation_cur_airfield_num"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "afp_generation_cur_airfield_num"
-            }
+          "__varSetRandomInt": {
+            "var": "afp_generation_cur_airfield_num",
+            "from": 1,
+            "to_not_including": 10,
+            "var_to_not_including": "afp_field_max_count",
+            "check_prev_value": "afp_generation_prev_random_value"
           },
-          {
-            "__varSetRandomInt": {
-              "var": "afp_generation_cur_airfield_num",
-              "from": 1,
-              "to_not_including": 10,
-              "var_to_not_including": "afp_field_max_count",
-              "check_prev_value": "afp_generation_prev_random_value"
-            }
+          "__varSetInt": {
+            "value": 0,
+            "var": "afp_generation_prev_random_value",
+            "input_var": "afp_generation_cur_airfield_num"
           },
-          {
-            "__varSetInt": {
-              "value": 0,
-              "var": "afp_generation_prev_random_value",
-              "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_generation_index_check"
-            }
+          "triggerEnable": {
+            "target": "afp_generation_index_check"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "aerodromy sgenerirovalis'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "perehodim v rezhim pauzy"
             }
+          ],
+          "__triggerEnable": {
+            "target": "afp_generation_restart"
           },
-          {
-            "__triggerEnable": {
-              "target": "afp_generation_restart"
-            }
-          },
-          {
-            "triggerDisable": {
-              "target": "afp_generation_rotator"
-            }
+          "triggerDisable": {
+            "target": "afp_generation_rotator"
           }
-        ]
+        }
       },
       "afp_generation_index_check": {
         "is_enabled": false,
@@ -217,76 +183,60 @@
             "time": 0.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "zapolnyaem imya aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya dummy"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya zony"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem sushchestvuyut li takie ob'ekty"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "afp_base_",
               "var": "afp_generation_field_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_dummy_",
               "var": "afp_generation_dummy_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_zone_",
               "var": "afp_generation_zone_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 2,
               "var": "afp_generation_field_name",
               "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 2,
               "var": "afp_generation_dummy_name",
               "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 2,
               "var": "afp_generation_zone_name",
               "input_var": "afp_generation_cur_airfield_num"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_generation_exist_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "afp_generation_exist_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "indeks aerodroma vyshel za predely. perezapuskaem generaciyu"
@@ -317,148 +267,112 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@afp_generation_field_name",
               "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_generation_dummy_name",
               "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_generation_zone_name",
               "type": "area"
             }
-          }
-        ],
-        "actions": [
-          {
-            "__systemLog": {
-              "value": "afp_generation_exist_check",
-              "logtype": "screen"
-            }
+          ]
+        },
+        "actions": {
+          "__systemLog": {
+            "value": "afp_generation_exist_check",
+            "logtype": "screen"
           },
-          {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            }
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "vse sushchnosti sushchestvuyut, mozhno sozdavat' aerodrom"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem imya zony (zashchita ot durakov)"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, gde hranitsya armiya zony"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem indeks armii zony"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, gde hranitsya armiya aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya peremennoj, hranyashchej v sebe aktivnost' aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem sostoyanie"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem znachenie armii aerodroma"
             }
+          ],
+          "getOwnArea": {
+            "name": "@afp_generation_dummy_name",
+            "template": "flt_area_",
+            "out_var": "afp_generation_own_zone_name"
           },
-          {
-            "getOwnArea": {
-              "name": "@afp_generation_dummy_name",
-              "template": "flt_area_",
-              "out_var": "afp_generation_own_zone_name"
-            }
-          },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "",
               "var": "afp_generation_own_zone_army_var_name",
               "input_var": "afp_generation_own_zone_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_field_army_",
               "var": "afp_generation_field_army_var_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_field_state_",
               "var": "afp_generation_state_var_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "_state",
               "digits": 0,
               "var": "afp_generation_own_zone_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 2,
               "var": "afp_generation_field_army_var_name",
               "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 2,
               "var": "afp_generation_state_var_name",
               "input_var": "afp_generation_cur_airfield_num"
             }
-          },
-          {
-            "varSetInt": {
+          ],
+          "varSetInt": [
+            {
               "value": 0,
               "var": "afp_generation_own_zone_army_value",
               "input_var": "@afp_generation_own_zone_army_var_name"
-            }
-          },
-          {
-            "varSetInt": {
+            },
+            {
               "value": 0,
               "var": "afp_generation_state_value",
               "input_var": "@afp_generation_state_var_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_generation_check_army"
-            }
+          ],
+          "triggerEnable": {
+            "target": "afp_generation_check_army"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "kakoj-libo iz sushchnostej ne sushchestvuet. restartim generaciyu"
@@ -497,53 +411,39 @@
             "var_value_other": "afp_generation_own_zone_army_value"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "armies are equal OR base state is force active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya peremennoj, hranyashchej v sebe tip aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem tip"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem sostoyanie aerodroma"
             }
+          ],
+          "varSetString": {
+            "value": "afp_field_type_",
+            "var": "afp_generation_type_var_name"
           },
-          {
-            "varSetString": {
-              "value": "afp_field_type_",
-              "var": "afp_generation_type_var_name"
-            }
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "afp_generation_type_var_name",
+            "input_var": "afp_generation_cur_airfield_num"
           },
-          {
-            "varAddString": {
-              "value": "",
-              "digits": 2,
-              "var": "afp_generation_type_var_name",
-              "input_var": "afp_generation_cur_airfield_num"
-            }
+          "varGetStringValue": {
+            "from_var_name": "@afp_generation_type_var_name",
+            "var": "afp_generation_type_value"
           },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@afp_generation_type_var_name",
-              "var": "afp_generation_type_value"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_generation_active_check"
-            }
+          "triggerEnable": {
+            "target": "afp_generation_active_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "armii ne sovpadayut. restartim generaciyu"
@@ -581,85 +481,65 @@
             "comparasion_func": "less"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "sostoyanie aerodroma men'she nulya - on ne aktiven"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya peremennoj, hranyashchej v sebe armiyu aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem armiyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya peremennoj, hranyashchej v sebe tip aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem tip aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem s kakoj armiej my rabotaem"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "afp_field_army_",
               "var": "afp_generation_army_var_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_field_position_",
               "var": "afp_generation_position_var_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "",
               "var": "afp_generation_position_value",
               "input_var": "@afp_generation_position_var_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 2,
               "var": "afp_generation_army_var_name",
               "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 2,
               "var": "afp_generation_position_var_name",
               "input_var": "afp_generation_cur_airfield_num"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "afp_generation_army_value",
+            "input_var": "@afp_generation_army_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_generation_army_value",
-              "input_var": "@afp_generation_army_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_generation_army_check"
-            }
+          "triggerEnable": {
+            "target": "afp_generation_army_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "aerodrom uzhe aktiven"
@@ -732,52 +612,40 @@
               "var_value_other": "afp_generation_army_value"
             }
           },
-          "actions": [
-            {
-              "comment": {
+          "actions": {
+            "comment": [
+              {
                 "value": "army for base and zone is 1"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "proveryaem  mozhno-li postavit' blizhnij aerodrom"
               }
-            },
-            {
-              "triggerEnable": {
-                "target": "afp_generation_t1_pad_spawn_set"
-              }
+            ],
+            "triggerEnable": {
+              "target": "afp_generation_t1_pad_spawn_set"
             }
-          ],
-          "else_actions": [
-            {
-              "comment": {
+          },
+          "else_actions": {
+            "comment": [
+              {
                 "value": "armiya ravna 1 no zona ne ravna 1"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "pokaa perezapuskaem rotaciyu, potmo dobavit' logiku"
               }
+            ],
+            "__systemLog": {
+              "value": "to afp_generation_rotator from else afp_generation_t1_zone_army_check",
+              "logtype": "screen"
             },
-            {
-              "__systemLog": {
-                "value": "to afp_generation_rotator from else afp_generation_t1_zone_army_check",
-                "logtype": "screen"
-              }
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
             },
-            {
-              "__missionSetTimeSpeed": {
-                "speed": 0.0,
-                "realtimeTriggers": false
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "afp_generation_rotator"
-              }
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
             }
-          ]
+          }
         },
         "afp_generation_t1_pad_spawn_set": {
           "is_enabled": false,
@@ -792,119 +660,95 @@
               "time": 0.0
             }
           },
-          "conditions": [
-            {
-              "objectExists": {
+          "conditions": {
+            "objectExists": [
+              {
                 "target": "@afp_generation_field_name",
                 "type": "objectGroup"
-              }
-            },
-            {
-              "objectExists": {
+              },
+              {
                 "target": "@afp_generation_field_name",
                 "type": "area"
               }
-            }
-          ],
-          "actions": [
-            {
-              "__systemLog": {
+            ]
+          },
+          "actions": {
+            "__systemLog": [
+              {
                 "value": "afp_generation_t1_pad_spawn_set",
                 "logtype": "screen"
-              }
-            },
-            {
-              "__systemLog": {
+              },
+              {
                 "value": "to afp_generation_rotator from afp_generation_t1_pad_spawn_set",
                 "logtype": "screen"
               }
-            },
-            {
-              "__missionSetTimeSpeed": {
+            ],
+            "__missionSetTimeSpeed": [
+              {
+                "speed": 0.0,
+                "realtimeTriggers": false
+              },
+              {
                 "speed": 0.0,
                 "realtimeTriggers": false
               }
-            },
-            {
-              "__missionSetTimeSpeed": {
-                "speed": 0.0,
-                "realtimeTriggers": false
-              }
-            },
-            {
-              "comment": {
+            ],
+            "comment": [
+              {
                 "value": "creating spawn names"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": ""
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "creating EMPTY spawn for t2"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "creating spawn for t1"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "setting airfield visibility for teams"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "idem dal'she po ciklu"
               }
-            },
-            {
-              "varSetString": {
+            ],
+            "varSetString": [
+              {
                 "value": "missions/",
                 "var": "afp_generation_field_name_for_t1"
-              }
-            },
-            {
-              "varSetString": {
+              },
+              {
                 "value": "missions/",
                 "var": "afp_generation_field_name_for_t2"
               }
-            },
-            {
-              "varAddString": {
+            ],
+            "varAddString": [
+              {
                 "value": "",
                 "digits": 0,
                 "var": "afp_generation_field_name_for_t1",
                 "input_var": "afp_generation_field_name"
-              }
-            },
-            {
-              "varAddString": {
+              },
+              {
                 "value": "_for_t1",
                 "digits": 0,
                 "var": "afp_generation_field_name_for_t1"
-              }
-            },
-            {
-              "varAddString": {
+              },
+              {
                 "value": "",
                 "digits": 0,
                 "var": "afp_generation_field_name_for_t2",
                 "input_var": "afp_generation_field_name"
-              }
-            },
-            {
-              "varAddString": {
+              },
+              {
                 "value": "_for_t2",
                 "digits": 0,
                 "var": "afp_generation_field_name_for_t2"
               }
-            },
-            {
-              "missionMarkAsRespawnPoint": {
+            ],
+            "missionMarkAsRespawnPoint": [
+              {
                 "loc_name": "@afp_generation_field_name_for_t2",
                 "spawnEffect": false,
                 "isStrictSpawn": false,
@@ -935,10 +779,8 @@
                   "artillery": false,
                   "aaa": false
                 }
-              }
-            },
-            {
-              "missionMarkAsRespawnPoint": {
+              },
+              {
                 "loc_name": "@afp_generation_field_name_for_t1",
                 "spawnEffect": false,
                 "isStrictSpawn": false,
@@ -970,19 +812,15 @@
                   "aaa": false
                 }
               }
+            ],
+            "airfieldSetVisibility": {
+              "target": "@afp_generation_field_name",
+              "team": "A"
             },
-            {
-              "airfieldSetVisibility": {
-                "target": "@afp_generation_field_name",
-                "team": "A"
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "afp_generation_rotator"
-              }
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
             }
-          ],
+          },
           "else_actions": {
             "__systemLog": {
               "value": "to afp_generation_rotator from else afp_generation_t1_pad_spawn_set",
@@ -1022,52 +860,40 @@
               "var_value_other": "afp_generation_army_value"
             }
           },
-          "actions": [
-            {
-              "comment": {
+          "actions": {
+            "comment": [
+              {
                 "value": "army for base and zone is 2"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "proveryaem  mozhno-li postavit' blizhnij aerodrom"
               }
-            },
-            {
-              "triggerEnable": {
-                "target": "afp_generation_t2_pad_spawn_set"
-              }
+            ],
+            "triggerEnable": {
+              "target": "afp_generation_t2_pad_spawn_set"
             }
-          ],
-          "else_actions": [
-            {
-              "comment": {
+          },
+          "else_actions": {
+            "comment": [
+              {
                 "value": "armiya ravna 2 no zona ne ravna 2"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "pokaa perezapuskaem rotaciyu, potmo dobavit' logiku"
               }
+            ],
+            "__systemLog": {
+              "value": "to afp_generation_rotator from else afp_generation_t2_zone_army_check",
+              "logtype": "screen"
             },
-            {
-              "__systemLog": {
-                "value": "to afp_generation_rotator from else afp_generation_t2_zone_army_check",
-                "logtype": "screen"
-              }
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
             },
-            {
-              "__missionSetTimeSpeed": {
-                "speed": 0.0,
-                "realtimeTriggers": false
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "afp_generation_rotator"
-              }
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
             }
-          ]
+          }
         },
         "afp_generation_t2_pad_spawn_set": {
           "is_enabled": false,
@@ -1082,95 +908,79 @@
               "time": 0.0
             }
           },
-          "conditions": [
-            {
-              "objectExists": {
+          "conditions": {
+            "objectExists": [
+              {
                 "target": "@afp_generation_field_name",
                 "type": "objectGroup"
-              }
-            },
-            {
-              "objectExists": {
+              },
+              {
                 "target": "@afp_generation_field_name",
                 "type": "area"
               }
-            }
-          ],
-          "actions": [
-            {
-              "__systemLog": {
+            ]
+          },
+          "actions": {
+            "__systemLog": [
+              {
                 "value": "afp_generation_t2_pad_spawn_set",
                 "logtype": "screen"
-              }
-            },
-            {
-              "__systemLog": {
+              },
+              {
                 "value": "to afp_generation_rotator from afp_generation_t2_pad_spawn_set",
                 "logtype": "screen"
               }
-            },
-            {
-              "__missionSetTimeSpeed": {
+            ],
+            "__missionSetTimeSpeed": [
+              {
+                "speed": 0.0,
+                "realtimeTriggers": false
+              },
+              {
                 "speed": 0.0,
                 "realtimeTriggers": false
               }
-            },
-            {
-              "__missionSetTimeSpeed": {
-                "speed": 0.0,
-                "realtimeTriggers": false
-              }
-            },
-            {
-              "comment": {
+            ],
+            "comment": [
+              {
                 "value": "creating spawn names"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "creating EMPTY spawn for t1"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "creating spawn for t2"
-              }
-            },
-            {
-              "comment": {
+              },
+              {
                 "value": "idem dal'she po ciklu"
               }
-            },
-            {
-              "varSetString": {
+            ],
+            "varSetString": [
+              {
                 "value": "",
                 "var": "afp_generation_field_name_for_t1",
                 "input_var": "afp_generation_field_name"
-              }
-            },
-            {
-              "varSetString": {
+              },
+              {
                 "value": "",
                 "var": "afp_generation_field_name_for_t2",
                 "input_var": "afp_generation_field_name"
               }
-            },
-            {
-              "varAddString": {
+            ],
+            "varAddString": [
+              {
                 "value": "_for_t1",
                 "digits": 0,
                 "var": "afp_generation_field_name_for_t1"
-              }
-            },
-            {
-              "varAddString": {
+              },
+              {
                 "value": "_for_t2",
                 "digits": 0,
                 "var": "afp_generation_field_name_for_t2"
               }
-            },
-            {
-              "missionMarkAsRespawnPoint": {
+            ],
+            "missionMarkAsRespawnPoint": [
+              {
                 "loc_name": "@afp_generation_field_name_for_t1",
                 "spawnEffect": false,
                 "isStrictSpawn": false,
@@ -1201,10 +1011,8 @@
                   "artillery": false,
                   "aaa": false
                 }
-              }
-            },
-            {
-              "missionMarkAsRespawnPoint": {
+              },
+              {
                 "loc_name": "@afp_generation_field_name_for_t2",
                 "spawnEffect": false,
                 "isStrictSpawn": false,
@@ -1236,19 +1044,15 @@
                   "aaa": false
                 }
               }
+            ],
+            "airfieldSetVisibility": {
+              "target": "@afp_generation_field_name",
+              "team": "B"
             },
-            {
-              "airfieldSetVisibility": {
-                "target": "@afp_generation_field_name",
-                "team": "B"
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "afp_generation_rotator"
-              }
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
             }
-          ],
+          },
           "else_actions": {
             "__systemLog": {
               "value": "to afp_generation_rotator from else afp_generation_t2_pad_spawn_set",
@@ -1284,86 +1088,62 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "aerodromy nado obnaruzhivat'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "vystavlyaem sostoyanie v 0"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_generation_field_name",
+            "team": "None"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_generation_field_name",
-              "team": "None"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "@afp_generation_state_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "@afp_generation_state_var_name"
-            }
+          "__systemLog": {
+            "value": "to afp_generation_rotator from afp_generation_scout_enabled_check",
+            "logtype": "screen"
           },
-          {
-            "__systemLog": {
-              "value": "to afp_generation_rotator from afp_generation_scout_enabled_check",
-              "logtype": "screen"
-            }
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           },
-          {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_generation_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "aerodromy ne nado obnaruzhivat'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "vystavlyaem aerodromu sostoyanie 1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem tip, chtoby korrektno naznachit' spavn"
             }
+          ],
+          "__airfieldSetVisibility": {
+            "target": "@afp_generation_field_name",
+            "team": "Both"
           },
-          {
-            "__airfieldSetVisibility": {
-              "target": "@afp_generation_field_name",
-              "team": "Both"
-            }
+          "varSetInt": {
+            "value": 1,
+            "var": "@afp_generation_state_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "@afp_generation_state_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_generation_type_check"
-            }
+          "triggerEnable": {
+            "target": "afp_generation_type_check"
           }
-        ]
+        }
       },
       "afp_generation_type_check": {
         "is_enabled": false,
@@ -1453,31 +1233,25 @@
             "time": 90.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "obnulyaem tekushchij indeks filda"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskame rotaciyu generacii aerodroma"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "afp_capture_cur_airfield_idx"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_capture_cur_airfield_idx"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "afp_capture_restart": {
         "is_enabled": false,
@@ -1492,31 +1266,25 @@
             "time": 3.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "obnulyaem tekushchij indeks filda"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskame rotaciyu generacii aerodroma"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "afp_capture_cur_airfield_idx"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_capture_cur_airfield_idx"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "afp_capture_rotator": {
         "is_enabled": false,
@@ -1539,89 +1307,67 @@
             "var_value_other": "afp_field_max_count"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "indeks men'she chem kolichestvo maksimal'nyh"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "uvelichivaem indeks"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya dummy"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya zony"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem sushchestvuyut li takie ob'ekty"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "afp_capture_cur_airfield_idx"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "afp_capture_cur_airfield_idx"
-            }
-          },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "afp_base_",
               "var": "afp_capture_field_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_dummy_",
               "var": "afp_capture_dummy_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_zone_",
               "var": "afp_capture_zone_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
               "var": "afp_capture_field_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
               "var": "afp_capture_dummy_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
               "var": "afp_capture_zone_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_exist_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "afp_capture_exist_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "novyj cikl"
@@ -1644,151 +1390,111 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@afp_capture_field_name",
               "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_capture_dummy_name",
               "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_capture_zone_name",
               "type": "area"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "vse sushchnosti sushchestvuyut, mozhno sozdavat' aerodrom"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem zonu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, gde hranitsya armiya zony"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem indeks armii zony"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, gde hranitsya armiya aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, gde hranitsya tip aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem tip"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "creating variable name with state of airfield"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem znachenie armii aerodroma"
             }
+          ],
+          "getOwnArea": {
+            "name": "@afp_capture_dummy_name",
+            "template": "flt_area_",
+            "out_var": "afp_capture_own_zone_name"
           },
-          {
-            "getOwnArea": {
-              "name": "@afp_capture_dummy_name",
-              "template": "flt_area_",
-              "out_var": "afp_capture_own_zone_name"
-            }
-          },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "",
               "var": "afp_capture_own_zone_army_var_name",
               "input_var": "afp_capture_own_zone_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_field_army_",
               "var": "afp_capture_field_army_var_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_field_type_",
               "var": "afp_capture_type_var_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_field_state_",
               "var": "afp_capture_field_state_var_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "_state",
               "digits": 0,
               "var": "afp_capture_own_zone_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
               "var": "afp_capture_field_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
               "var": "afp_capture_type_var_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
               "var": "afp_capture_field_state_var_name"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "afp_capture_own_zone_army_value",
+            "input_var": "@afp_capture_own_zone_army_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_capture_own_zone_army_value",
-              "input_var": "@afp_capture_own_zone_army_var_name"
-            }
+          "varGetStringValue": {
+            "from_var_name": "@afp_capture_type_var_name",
+            "var": "afp_capture_type_value"
           },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@afp_capture_type_var_name",
-              "var": "afp_capture_type_value"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_check_army"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_check_army"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "kakoj-libo iz sushchnostej ne sushchestvuet. restartim generaciyu"
@@ -1856,56 +1562,42 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "naznachaem armiyu 1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "menyaem armiyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "mozhno sozdavat' fildy armii 1"
             }
+          ],
+          "varSetInt": {
+            "value": 1,
+            "var": "@afp_capture_field_army_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "@afp_capture_field_army_var_name"
-            }
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "None"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "None"
-            }
+          "objectGroupSetAirfield": {
+            "army": 1,
+            "target": "@afp_capture_field_name"
           },
-          {
-            "objectGroupSetAirfield": {
-              "army": 1,
-              "target": "@afp_capture_field_name"
-            }
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@afp_capture_dummy_name",
+            "army": 1
           },
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@afp_capture_dummy_name",
-              "army": 1
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_fields_num_t1_wakeup"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_fields_num_t1_wakeup"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "proverim armiyu 2"
@@ -1928,51 +1620,39 @@
             "time": 0.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "probuzhdaem aerodrom"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "mozhno sozdavat' fildy armii 1"
             }
+          ],
+          "unitWakeUp": {
+            "target": "@afp_capture_field_name"
           },
-          {
-            "unitWakeUp": {
-              "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_t1_scout_enabled_check"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_t1_scout_enabled_check"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "pryachem aerodrom"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proverim armiyu 2"
             }
+          ],
+          "unitPutToSleep": {
+            "target": "@afp_capture_field_name"
           },
-          {
-            "unitPutToSleep": {
-              "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_fields_num_t2_check"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_fields_num_t2_check"
           }
-        ]
+        }
       },
       "afp_capture_fields_num_t2_check": {
         "is_enabled": false,
@@ -1994,56 +1674,42 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "naznachaem armiyu 2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "menyaem armiyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "mozhno sozdavat' fildy armii 2"
             }
+          ],
+          "varSetInt": {
+            "value": 2,
+            "var": "@afp_capture_field_army_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 2,
-              "var": "@afp_capture_field_army_var_name"
-            }
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "None"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "None"
-            }
+          "objectGroupSetAirfield": {
+            "army": 2,
+            "target": "@afp_capture_field_name"
           },
-          {
-            "objectGroupSetAirfield": {
-              "army": 2,
-              "target": "@afp_capture_field_name"
-            }
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@afp_capture_dummy_name",
+            "army": 2
           },
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@afp_capture_dummy_name",
-              "army": 2
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_fields_num_t2_wakeup"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_fields_num_t2_wakeup"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "nel'zya sozdavat' fildov. idem dal'she po ciklu"
@@ -2066,51 +1732,39 @@
             "time": 0.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "probuzhdaem aerodrom"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "mozhno sozdavat' fildy armii 2"
             }
+          ],
+          "unitWakeUp": {
+            "target": "@afp_capture_field_name"
           },
-          {
-            "unitWakeUp": {
-              "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_t2_scout_enabled_check"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_t2_scout_enabled_check"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "pryachem aerodrom"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "nel'zya sozdavat' fildov. idem dal'she po ciklu"
             }
+          ],
+          "unitPutToSleep": {
+            "target": "@afp_capture_field_name"
           },
-          {
-            "unitPutToSleep": {
-              "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
           }
-        ]
+        }
       },
       "afp_capture_t1_scout_enabled_check": {
         "is_enabled": false,
@@ -2125,108 +1779,80 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "afp_enable_scout",
               "value": true,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "afp_t1_hidden",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "aerodromy nado obnaruzhivat'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj s sostoyaniem aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "vystavlyaem sostoyanie v 0"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "A"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "A"
-            }
+          "varSetString": {
+            "value": "afp_field_state_",
+            "var": "afp_capture_field_state_var_name"
           },
-          {
-            "varSetString": {
-              "value": "afp_field_state_",
-              "var": "afp_capture_field_state_var_name"
-            }
+          "varAddString": {
+            "value": "@afp_capture_cur_airfield_idx",
+            "digits": 2,
+            "var": "afp_capture_field_state_var_name"
           },
-          {
-            "varAddString": {
-              "value": "@afp_capture_cur_airfield_idx",
-              "digits": 2,
-              "var": "afp_capture_field_state_var_name"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "@afp_capture_field_state_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "@afp_capture_field_state_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "aerodromy ne nado obnaruzhivat'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "vystavlyaem aerodromu sostoyanie 1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem tip, chtoby korrektno naznachit' spavn"
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "Both"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "Both"
-            }
+          "varSetInt": {
+            "value": 1,
+            "var": "@afp_capture_field_state_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "@afp_capture_field_state_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_type_check"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_type_check"
           }
-        ]
+        }
       },
       "afp_capture_t2_scout_enabled_check": {
         "is_enabled": false,
@@ -2241,108 +1867,80 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "afp_enable_scout",
               "value": true,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "afp_t2_hidden",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "aerodromy nado obnaruzhivat'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj s sostoyaniem aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "vystavlyaem sostoyanie v 0"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "B"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "B"
-            }
+          "varSetString": {
+            "value": "afp_field_state_",
+            "var": "afp_capture_field_state_var_name"
           },
-          {
-            "varSetString": {
-              "value": "afp_field_state_",
-              "var": "afp_capture_field_state_var_name"
-            }
+          "varAddString": {
+            "value": "@afp_capture_cur_airfield_idx",
+            "digits": 2,
+            "var": "afp_capture_field_state_var_name"
           },
-          {
-            "varAddString": {
-              "value": "@afp_capture_cur_airfield_idx",
-              "digits": 2,
-              "var": "afp_capture_field_state_var_name"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "@afp_capture_field_state_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "@afp_capture_field_state_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "aerodromy ne nado obnaruzhivat'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "vystavlyaem aerodromu sostoyanie 1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem tip, chtoby korrektno naznachit' spavn"
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "Both"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "Both"
-            }
+          "varSetInt": {
+            "value": 1,
+            "var": "@afp_capture_field_state_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "@afp_capture_field_state_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_type_check"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_type_check"
           }
-        ]
+        }
       },
       "afp_capture_type_check": {
         "is_enabled": false,
@@ -2428,72 +2026,58 @@
             "time": 0.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "creating spawn names"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "naznachaem spavn  komandy 1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "missions/",
               "var": "afp_capture_field_name_for_t1"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "missions/",
               "var": "afp_capture_field_name_for_t2"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 0,
               "var": "afp_capture_field_name_for_t1",
               "input_var": "afp_capture_field_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_for_t1",
               "digits": 0,
               "var": "afp_capture_field_name_for_t1"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 0,
               "var": "afp_capture_field_name_for_t2",
               "input_var": "afp_capture_field_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_for_t2",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t2"
             }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+          ],
+          "missionMarkAsRespawnPoint": [
+            {
               "loc_name": "@afp_capture_field_name_for_t2",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -2524,10 +2108,8 @@
                 "artillery": false,
                 "aaa": false
               }
-            }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+            },
+            {
               "loc_name": "@afp_capture_field_name_for_t1",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -2559,19 +2141,15 @@
                 "aaa": false
               }
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "A"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "A"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
           }
-        ],
+        },
         "else_actions": {
           "triggerEnable": {
             "target": "afp_capture_rotator"
@@ -2591,53 +2169,45 @@
             "time": 0.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "creating spawn names"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "naznachaem spavn  komandy 2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "",
               "var": "afp_capture_field_name_for_t1",
               "input_var": "afp_capture_field_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "",
               "var": "afp_capture_field_name_for_t2",
               "input_var": "afp_capture_field_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "_for_t1",
               "digits": 0,
               "var": "afp_capture_field_name_for_t1"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_for_t2",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t2"
             }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+          ],
+          "missionMarkAsRespawnPoint": [
+            {
               "loc_name": "@afp_capture_field_name_for_t1",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -2668,10 +2238,8 @@
                 "artillery": false,
                 "aaa": false
               }
-            }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+            },
+            {
               "loc_name": "@afp_capture_field_name_for_t2",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -2703,19 +2271,15 @@
                 "aaa": false
               }
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_capture_field_name",
+            "team": "B"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_capture_field_name",
-              "team": "B"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_capture_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": ""
@@ -2750,87 +2314,67 @@
             "var_value_other": "afp_field_max_count"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "indeks tekushchego aerodrmoa men'she maksimal'nogo kolichestva aerodromov"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya dummy"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya zony"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem sushchestvuyut li takie ob'ekty"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "afp_pre_generation_cur_airfield_num"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "afp_pre_generation_cur_airfield_num"
-            }
-          },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "afp_base_",
               "var": "afp_pre_generation_field_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_dummy_",
               "var": "afp_pre_generation_dummy_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_zone_",
               "var": "afp_pre_generation_zone_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 2,
               "var": "afp_pre_generation_field_name",
               "input_var": "afp_pre_generation_cur_airfield_num"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 2,
               "var": "afp_pre_generation_dummy_name",
               "input_var": "afp_pre_generation_cur_airfield_num"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 2,
               "var": "afp_pre_generation_zone_name",
               "input_var": "afp_pre_generation_cur_airfield_num"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_pre_generation_exist_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "afp_pre_generation_exist_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "generating common airfields"
@@ -2865,91 +2409,71 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@afp_pre_generation_field_name",
               "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_pre_generation_dummy_name",
               "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_pre_generation_zone_name",
               "type": "area"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "vse sushchnosti sushchestvuyut, mozhno sozdavat' aerodrom"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, gde hranitsya armiya aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya peremennoj, hranyashchej v sebe aktivnost' aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem sostoyanie"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem znachenie armii aerodroma"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "afp_field_army_",
               "var": "afp_pre_generation_field_army_var_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "afp_field_state_",
               "var": "afp_pre_generation_state_var_name"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "@afp_pre_generation_cur_airfield_num",
               "digits": 2,
               "var": "afp_pre_generation_field_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@afp_pre_generation_cur_airfield_num",
               "digits": 2,
               "var": "afp_pre_generation_state_var_name"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "afp_pre_generation_state_value",
+            "input_var": "@afp_pre_generation_state_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_pre_generation_state_value",
-              "input_var": "@afp_pre_generation_state_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_pre_generation_active_check"
-            }
+          "triggerEnable": {
+            "target": "afp_pre_generation_active_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "kakoj-libo iz sushchnostej ne sushchestvuet. restartim generaciyu"
@@ -2979,54 +2503,40 @@
             "comparasion_func": "more"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "state is force active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapolnyaem imya peremennoj, hranyashchej v sebe armiyu aerodroma"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem armiyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem s kakoj armiej my rabotaem"
             }
+          ],
+          "varSetString": {
+            "value": "afp_field_army_",
+            "var": "afp_pre_generation_army_var_name"
           },
-          {
-            "varSetString": {
-              "value": "afp_field_army_",
-              "var": "afp_pre_generation_army_var_name"
-            }
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "afp_pre_generation_army_var_name",
+            "input_var": "afp_pre_generation_cur_airfield_num"
           },
-          {
-            "varAddString": {
-              "value": "",
-              "digits": 2,
-              "var": "afp_pre_generation_army_var_name",
-              "input_var": "afp_pre_generation_cur_airfield_num"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "afp_pre_generation_army_value",
+            "input_var": "@afp_pre_generation_army_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_pre_generation_army_value",
-              "input_var": "@afp_pre_generation_army_var_name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_pre_generation_check_army"
-            }
+          "triggerEnable": {
+            "target": "afp_pre_generation_check_army"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "aerodrom uzhe aktiven"
@@ -3086,118 +2596,92 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@afp_pre_generation_field_name",
               "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_pre_generation_field_name",
               "type": "area"
             }
-          }
-        ],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "afp_field_t1_cur_far_count"
-            }
+          ]
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "afp_field_t1_cur_far_count"
           },
-          {
-            "unitWakeUp": {
-              "target": "@afp_pre_generation_field_name"
-            }
+          "unitWakeUp": {
+            "target": "@afp_pre_generation_field_name"
           },
-          {
-            "objectGroupSetAirfield": {
-              "army": 1,
-              "target": "@afp_pre_generation_field_name"
-            }
+          "objectGroupSetAirfield": {
+            "army": 1,
+            "target": "@afp_pre_generation_field_name"
           },
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@afp_pre_generation_dummy_name",
-              "army": 1
-            }
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@afp_pre_generation_dummy_name",
+            "army": 1
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "creating spawn names"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "creating EMPTY spawn for t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "creating spawn for t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "continue circle"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "missions/",
               "var": "afp_pre_generation_field_name_for_t1"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "missions/",
               "var": "afp_pre_generation_field_name_for_t2"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t1",
               "input_var": "afp_pre_generation_field_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_for_t1",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t1"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t2",
               "input_var": "afp_pre_generation_field_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_for_t2",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t2"
             }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+          ],
+          "missionMarkAsRespawnPoint": [
+            {
               "loc_name": "@afp_pre_generation_field_name_for_t2",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -3228,10 +2712,8 @@
                 "artillery": false,
                 "aaa": false
               }
-            }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+            },
+            {
               "loc_name": "@afp_pre_generation_field_name_for_t1",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -3263,19 +2745,15 @@
                 "aaa": false
               }
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_pre_generation_field_name",
+            "team": "A"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_pre_generation_field_name",
-              "team": "A"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_pre_generation_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_pre_generation_rotator"
           }
-        ],
+        },
         "else_actions": {
           "triggerEnable": {
             "target": "afp_pre_generation_rotator"
@@ -3295,123 +2773,95 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@afp_pre_generation_field_name",
               "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@afp_pre_generation_field_name",
               "type": "area"
             }
-          }
-        ],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "afp_field_t2_cur_far_count"
-            }
+          ]
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "afp_field_t2_cur_far_count"
           },
-          {
-            "unitWakeUp": {
-              "target": "@afp_pre_generation_field_name"
-            }
+          "unitWakeUp": {
+            "target": "@afp_pre_generation_field_name"
           },
-          {
-            "objectGroupSetAirfield": {
-              "army": 2,
-              "target": "@afp_pre_generation_field_name"
-            }
+          "objectGroupSetAirfield": {
+            "army": 2,
+            "target": "@afp_pre_generation_field_name"
           },
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@afp_pre_generation_dummy_name",
-              "army": 2
-            }
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@afp_pre_generation_dummy_name",
+            "army": 2
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "creating spawn names"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "setting spawn point"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "creating EMPTY spawn for t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "creating spawn for t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "continue circle"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "missions/",
               "var": "afp_pre_generation_field_name_for_t1"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "missions/",
               "var": "afp_pre_generation_field_name_for_t2"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t1",
               "input_var": "afp_pre_generation_field_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_for_t1",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t1"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t2",
               "input_var": "afp_pre_generation_field_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_for_t2",
               "digits": 0,
               "var": "afp_pre_generation_field_name_for_t2"
             }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+          ],
+          "missionMarkAsRespawnPoint": [
+            {
               "loc_name": "@afp_pre_generation_field_name_for_t1",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -3442,10 +2892,8 @@
                 "artillery": false,
                 "aaa": false
               }
-            }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
+            },
+            {
               "loc_name": "@afp_pre_generation_field_name_for_t2",
               "spawnEffect": false,
               "isStrictSpawn": false,
@@ -3477,19 +2925,15 @@
                 "aaa": false
               }
             }
+          ],
+          "airfieldSetVisibility": {
+            "target": "@afp_pre_generation_field_name",
+            "team": "B"
           },
-          {
-            "airfieldSetVisibility": {
-              "target": "@afp_pre_generation_field_name",
-              "team": "B"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "afp_pre_generation_rotator"
-            }
+          "triggerEnable": {
+            "target": "afp_pre_generation_rotator"
           }
-        ],
+        },
         "else_actions": {
           "triggerEnable": {
             "target": "afp_pre_generation_rotator"
@@ -3645,32 +3089,26 @@
     "afp_t1_hidden": false,
     "afp_t2_hidden": false
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": false
       }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

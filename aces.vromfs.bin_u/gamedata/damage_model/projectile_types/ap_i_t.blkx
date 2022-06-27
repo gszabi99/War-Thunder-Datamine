@@ -9,18 +9,24 @@
   "bulletType": "ap_i_t",
   "slopeEffectPreset": "ap",
   "shellAnimation": "video/shells_animations/ap.ivf",
-  "stabilityRicochetModifier": [
-    {
-      "mod1": [0.0,0.05]
-    },
-    {
-      "mod2": [20.0,0.1]
-    },
-    {
-      "mod3": [30.0,0.2]
-    },
-    {
-      "mod3": [45.0,0.3]
-    }
-  ]
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.05
+    ],
+    "mod2": [
+      20.0,
+      0.1
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.2
+      ],
+      [
+        45.0,
+        0.3
+      ]
+    ]
+  }
 }

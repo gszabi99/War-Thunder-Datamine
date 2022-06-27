@@ -23,9 +23,9 @@
       "timeLimit": 25,
       "deathPenaltyMul": 0.0
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -38,36 +38,30 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetBool": {
+      "conditions": {},
+      "actions": {
+        "varSetBool": [
+          {
             "value": false,
             "var": "enableRearmZonesTeamA",
             "fromDescriptor": "enableRearmZonesTeamA"
-          }
-        },
-        {
-          "varSetBool": {
+          },
+          {
             "value": false,
             "var": "enableRearmZonesTeamB",
             "fromDescriptor": "enableRearmZonesTeamB"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "rearm_zones_enable_check_t1"
-            },
-            {
-              "target": "rearm_zones_enable_check_t2"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "rearm_zones_enable_check_t1",
+            "rearm_zones_enable_check_t2"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "rearm_zones_enable_check_t1": {
       "is_enabled": false,
@@ -94,7 +88,7 @@
           "target": "rearm_zone_exist_check_t1"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "rearm_zones_enable_check_t2": {
       "is_enabled": false,
@@ -121,7 +115,7 @@
           "target": "rearm_zone_exist_check_t2"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "rearm_zone_exist_check_t1": {
       "is_enabled": false,
@@ -136,20 +130,18 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t1_rearmZoneName",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t1_rearmZoneName",
             "type": "squad"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "missionMarkAsRearmZone": {
           "army": 1,
@@ -162,7 +154,7 @@
           }
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "rearm_zone_exist_check_t2": {
       "is_enabled": false,
@@ -177,20 +169,18 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t2_rearmZoneName",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t2_rearmZoneName",
             "type": "squad"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "missionMarkAsRearmZone": {
           "army": 2,
@@ -203,7 +193,7 @@
           }
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -216,32 +206,26 @@
     "t1_rearmZoneName": "t1_rearm_zone",
     "t2_rearmZoneName": "t2_rearm_zone"
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

@@ -1,895 +1,758 @@
-[
-  {
-    "expClass": "exp_cv_ship"
+{
+  "expClass": "exp_cv_ship",
+  "timeToFire": 30.0,
+  "timeToSmoke": 120.0,
+  "hasExpl": false,
+  "collisionMaterialName": "ships",
+  "killAllParts": false,
+  "damageableByGun": false,
+  "model": "us_zeppelin_104",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "isBaloon": true,
+  "dynCollisionGeom": true,
+  "createAirfield": true,
+  "alwaysAnimDistance": 2000.0,
+  "drawHpProgressBarByMetaparts": true,
+  "moveType": "baloon",
+  "maxFwdSpeed": 55.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 1.0,
+  "maxAccel": 0.5,
+  "maxDecel": 0.5,
+  "maxAngAccel": 0.7,
+  "maxAngAccel0": 1E-05,
+  "maxAngAccelV": 0.01,
+  "groundNormSmoothViscosity": 4.5,
+  "customUpdateDiv": 5,
+  "drownGFactor": 1E-05,
+  "drownRollSpeed": 0.01,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 0.0,
+  "explodeSpeed": [
+    100.0,
+    190.0
+  ],
+  "useOldExplosion": false,
+  "airfield": {
+    "catapultAccel": 5.0,
+    "catapultLength": 1.0,
+    "runwayWidth": 22.0
   },
-  {
-    "timeToFire": 30.0
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
   },
-  {
-    "timeToSmoke": 120.0
+  "class_tags": {
+    "pacific": true,
+    "country_japan": true,
+    "carrier": true,
+    "year1940": true,
+    "year1941": true,
+    "year1942": true,
+    "year1943": true,
+    "year1944": true,
+    "year1945": true,
+    "max_ratio": 0.5
   },
-  {
-    "hasExpl": false
-  },
-  {
-    "collisionMaterialName": "ships"
-  },
-  {
-    "killAllParts": false
-  },
-  {
-    "damageableByGun": false
-  },
-  {
-    "model": "us_zeppelin_104"
-  },
-  {
-    "subclass": "warShip"
-  },
-  {
-    "dustFx": "water_units_dust"
-  },
-  {
-    "isBaloon": true
-  },
-  {
-    "dynCollisionGeom": true
-  },
-  {
-    "createAirfield": true
-  },
-  {
-    "alwaysAnimDistance": 2000.0
-  },
-  {
-    "drawHpProgressBarByMetaparts": true
-  },
-  {
-    "moveType": "baloon"
-  },
-  {
-    "maxFwdSpeed": 55.0
-  },
-  {
-    "maxRevSpeed": 5.0
-  },
-  {
-    "maxAngSpeed": 1.0
-  },
-  {
-    "maxAccel": 0.5
-  },
-  {
-    "maxDecel": 0.5
-  },
-  {
-    "maxAngAccel": 0.7
-  },
-  {
-    "maxAngAccel0": 0.0
-  },
-  {
-    "maxAngAccelV": 0.01
-  },
-  {
-    "groundNormSmoothViscosity": 4.5
-  },
-  {
-    "customUpdateDiv": 5
-  },
-  {
-    "drownGFactor": 0.0
-  },
-  {
-    "drownRollSpeed": 0.01
-  },
-  {
-    "SoundMove": "models.Ship"
-  },
-  {
-    "tailStartOffset": 0.0
-  },
-  {
-    "explodeSpeed": [100.0,190.0]
-  },
-  {
-    "useOldExplosion": false
-  },
-  {
-    "airfield": {
-      "catapultAccel": 5.0,
-      "catapultLength": 1.0,
-      "runwayWidth": 22.0
-    }
-  },
-  {
-    "sound": {
-      "path": "sounds/engines",
-      "pathStudio": "aircraft/engines",
-      "engine": "boat"
-    }
-  },
-  {
-    "class_tags": {
-      "pacific": true,
-      "country_japan": true,
-      "carrier": true,
-      "year1940": true,
-      "year1941": true,
-      "year1942": true,
-      "year1943": true,
-      "year1944": true,
-      "year1945": true,
-      "max_ratio": 0.5
-    }
-  },
-  {
-    "DamageParts": [
+  "DamageParts": {
+    "steel": [
       {
-        "steel": {
-          "turret_01_side_dm": {
-            "hp": 100.0
-          },
-          "turret_02_side_dm": {
-            "hp": 100.0
-          },
-          "turret_03_side_dm": {
-            "hp": 100.0
-          },
-          "turret_04_side_dm": {
-            "hp": 100.0
-          },
-          "turret_05_side_dm": {
-            "hp": 100.0
-          },
-          "turret_06_side_dm": {
-            "hp": 100.0
-          },
-          "steering_gear_01_dm": {
-            "hp": 100.0
-          },
-          "steering_gear_02_dm": {
-            "hp": 100.0
-          },
-          "steering_gear_03_dm": {
-            "hp": 100.0
-          },
-          "steering_gear_04_dm": {
-            "hp": 100.0
-          },
-          "rudder_01_dm": {
-            "hp": 100.0
-          },
-          "rudder_02_dm": {
-            "hp": 100.0
-          },
-          "rudder_03_dm": {
-            "hp": 100.0
-          },
-          "rudder_04_dm": {
-            "hp": 100.0
-          },
-          "mast_01_dm": {
-            "hp": 100.0
-          },
-          "mast_02_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_01_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_02_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_01_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_02_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_03_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_04_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_05_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_06_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_07_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_08_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_09_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_10_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_l_11_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_01_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_02_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_03_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_04_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_05_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_06_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_07_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_08_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_09_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_10_dm": {
-            "hp": 100.0
-          },
-          "ex_decor_r_11_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_01_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_02_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_03_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_04_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_l_01_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_l_02_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_l_03_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_r_01_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_r_02_dm": {
-            "hp": 100.0
-          },
-          "ex_armor_r_03_dm": {
-            "hp": 100.0
-          },
-          "aa_gun_01_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_02_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_03_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_04_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_05_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_06_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_07_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_08_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_09_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_10_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_11_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_12_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_13_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_14_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_15_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_16_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_17_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_18_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_19_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_20_dm": {
-            "hp": 8.0
-          },
-          "aa_gun_21_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_01_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_02_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_03_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_04_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_05_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_06_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_07_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_08_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_09_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_10_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_11_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_12_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_13_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_gun_14_dm": {
-            "hp": 8.0
-          },
-          "main_caliber_gun_01_dm": {
-            "hp": 8.0
-          },
-          "main_caliber_gun_02_dm": {
-            "hp": 8.0
-          },
-          "main_caliber_gun_03_dm": {
-            "hp": 8.0
-          }
+        "turret_01_side_dm": {
+          "hp": 100.0
+        },
+        "turret_02_side_dm": {
+          "hp": 100.0
+        },
+        "turret_03_side_dm": {
+          "hp": 100.0
+        },
+        "turret_04_side_dm": {
+          "hp": 100.0
+        },
+        "turret_05_side_dm": {
+          "hp": 100.0
+        },
+        "turret_06_side_dm": {
+          "hp": 100.0
+        },
+        "steering_gear_01_dm": {
+          "hp": 100.0
+        },
+        "steering_gear_02_dm": {
+          "hp": 100.0
+        },
+        "steering_gear_03_dm": {
+          "hp": 100.0
+        },
+        "steering_gear_04_dm": {
+          "hp": 100.0
+        },
+        "rudder_01_dm": {
+          "hp": 100.0
+        },
+        "rudder_02_dm": {
+          "hp": 100.0
+        },
+        "rudder_03_dm": {
+          "hp": 100.0
+        },
+        "rudder_04_dm": {
+          "hp": 100.0
+        },
+        "mast_01_dm": {
+          "hp": 100.0
+        },
+        "mast_02_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_01_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_02_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_01_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_02_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_03_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_04_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_05_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_06_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_07_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_08_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_09_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_10_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_l_11_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_01_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_02_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_03_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_04_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_05_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_06_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_07_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_08_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_09_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_10_dm": {
+          "hp": 100.0
+        },
+        "ex_decor_r_11_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_01_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_02_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_03_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_04_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_l_01_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_l_02_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_l_03_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_r_01_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_r_02_dm": {
+          "hp": 100.0
+        },
+        "ex_armor_r_03_dm": {
+          "hp": 100.0
+        },
+        "aa_gun_01_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_02_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_03_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_04_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_05_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_06_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_07_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_08_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_09_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_10_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_11_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_12_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_13_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_14_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_15_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_16_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_17_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_18_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_19_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_20_dm": {
+          "hp": 8.0
+        },
+        "aa_gun_21_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_01_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_02_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_03_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_04_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_05_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_06_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_07_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_08_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_09_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_10_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_11_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_12_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_13_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_gun_14_dm": {
+          "hp": 8.0
+        },
+        "main_caliber_gun_01_dm": {
+          "hp": 8.0
+        },
+        "main_caliber_gun_02_dm": {
+          "hp": 8.0
+        },
+        "main_caliber_gun_03_dm": {
+          "hp": 8.0
         }
       },
       {
-        "steel": {
-          "aa_turret_01_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_02_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_03_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_04_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_05_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_06_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_07_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_08_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_09_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_10_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_11_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_12_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_13_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_14_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_15_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_16_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_17_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_18_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_19_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_20_dm": {
-            "hp": 8.0
-          },
-          "aa_turret_21_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_01_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_02_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_03_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_04_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_05_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_06_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_07_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_08_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_09_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_10_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_11_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_12_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_13_dm": {
-            "hp": 8.0
-          },
-          "auxiliary_caliber_turret_14_dm": {
-            "hp": 8.0
-          },
-          "main_caliber_turret_01_dm": {
-            "hp": 8.0
-          },
-          "main_caliber_turret_02_dm": {
-            "hp": 8.0
-          },
-          "main_caliber_turret_03_dm": {
-            "hp": 8.0
-          }
+        "aa_turret_01_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_02_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_03_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_04_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_05_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_06_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_07_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_08_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_09_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_10_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_11_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_12_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_13_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_14_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_15_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_16_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_17_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_18_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_19_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_20_dm": {
+          "hp": 8.0
+        },
+        "aa_turret_21_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_01_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_02_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_03_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_04_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_05_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_06_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_07_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_08_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_09_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_10_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_11_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_12_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_13_dm": {
+          "hp": 8.0
+        },
+        "auxiliary_caliber_turret_14_dm": {
+          "hp": 8.0
+        },
+        "main_caliber_turret_01_dm": {
+          "hp": 8.0
+        },
+        "main_caliber_turret_02_dm": {
+          "hp": 8.0
+        },
+        "main_caliber_turret_03_dm": {
+          "hp": 8.0
         }
       },
       {
-        "steel": {
-          "body_dm": {
-            "hp": 15000.0
-          }
+        "body_dm": {
+          "hp": 15000.0
         }
       }
     ]
   },
-  {
-    "MetaParts": {
-      "body": {
-        "hp": 15000.0,
-        "part": "body_dm"
-      }
+  "MetaParts": {
+    "body": {
+      "hp": 15000.0,
+      "part": "body_dm"
     }
   },
-  {
-    "explosion": [
+  "explosion": {
+    "expl": [
       {
-        "expl": {
-          "node": "body",
-          "partNo": 1,
-          "timeToExplode": 0.7,
-          "postEffectName": "ship_fire_large",
-          "explosionEffectName": "airship_explosion",
-          "timeForPostEffect": 30.0,
-          "explScale": 1.6,
-          "postScale": 4.0
+        "node": "body",
+        "partNo": 1,
+        "timeToExplode": 0.7,
+        "postEffectName": "ship_fire_large",
+        "explosionEffectName": "airship_explosion",
+        "timeForPostEffect": 30.0,
+        "explScale": 1.6,
+        "postScale": 4.0
+      },
+      {
+        "node": "emtr_fire_small_dmg_03",
+        "partNo": 2,
+        "timeToExplode": 0.0,
+        "postEffectName": "ship_fire_large",
+        "explosionEffectName": "airship_explosion",
+        "timeForPostEffect": 30.0,
+        "explScale": 1.0,
+        "postScale": 3.5
+      },
+      {
+        "node": "emtr_fire_small_dmg_08",
+        "partNo": 3,
+        "timeToExplode": 0.33,
+        "postEffectName": "ship_fire_large",
+        "explosionEffectName": "airship_explosion",
+        "timeForPostEffect": 30.0,
+        "explScale": 1.0,
+        "postScale": 3.1
+      },
+      {
+        "node": "emtr_smoke_dmg_01",
+        "partNo": 4,
+        "timeToExplode": 0.33,
+        "postEffectName": "ship_fire_large",
+        "timeForPostEffect": 30.0,
+        "postScale": 3.1
+      },
+      {
+        "node": "top_hatch_02",
+        "partNo": 5,
+        "timeToExplode": 0.33,
+        "postEffectName": "ship_fire_large",
+        "timeForPostEffect": 30.0,
+        "postScale": 3.1
+      },
+      {
+        "node": "taxi_orient_00",
+        "partNo": 6,
+        "timeToExplode": 0.33,
+        "postEffectName": "ship_fire_large",
+        "timeForPostEffect": 30.0,
+        "postScale": 3.1
+      }
+    ]
+  },
+  "DamageEffects": {
+    "part": [
+      {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
         }
       },
       {
-        "expl": {
-          "node": "emtr_fire_small_dmg_03",
-          "partNo": 2,
-          "timeToExplode": 0.0,
-          "postEffectName": "ship_fire_large",
-          "explosionEffectName": "airship_explosion",
-          "timeForPostEffect": 30.0,
-          "explScale": 1.0,
-          "postScale": 3.5
+        "name": "aa_gun_01_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
         }
       },
       {
-        "expl": {
-          "node": "emtr_fire_small_dmg_08",
-          "partNo": 3,
-          "timeToExplode": 0.33,
-          "postEffectName": "ship_fire_large",
-          "explosionEffectName": "airship_explosion",
-          "timeForPostEffect": 30.0,
-          "explScale": 1.0,
-          "postScale": 3.1
+        "name": "aa_gun_02_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
         }
       },
       {
-        "expl": {
-          "node": "emtr_smoke_dmg_01",
-          "partNo": 4,
-          "timeToExplode": 0.33,
-          "postEffectName": "ship_fire_large",
-          "timeForPostEffect": 30.0,
-          "postScale": 3.1
+        "name": "aa_gun_03_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
         }
       },
       {
-        "expl": {
-          "node": "top_hatch_02",
-          "partNo": 5,
-          "timeToExplode": 0.33,
-          "postEffectName": "ship_fire_large",
-          "timeForPostEffect": 30.0,
-          "postScale": 3.1
+        "name": "aa_gun_04_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
         }
       },
       {
-        "expl": {
-          "node": "taxi_orient_00",
-          "partNo": 6,
-          "timeToExplode": 0.33,
-          "postEffectName": "ship_fire_large",
-          "timeForPostEffect": 30.0,
-          "postScale": 3.1
+        "name": "aa_gun_05_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_06_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_07_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_08_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_09_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_10_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_11_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_12_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_13_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_14_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_15_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_16_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_17_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_18_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_19_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_20_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      },
+      {
+        "name": "aa_gun_21_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "smoke": 1.0
         }
       }
     ]
   },
-  {
-    "DamageEffects": [
+  "attachedEffects": {
+    "effect": [
       {
-        "part": {
-          "name": "body_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
+        "node": "emtr_exhaust_01",
+        "fxName": "ship_exhaust_large"
       },
       {
-        "part": {
-          "name": "aa_gun_01_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
+        "node": "emtr_steam_01",
+        "fxName": "ship_steam"
       },
       {
-        "part": {
-          "name": "aa_gun_02_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_03_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_04_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_05_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_06_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_07_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_08_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_09_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_10_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_11_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_12_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_13_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_14_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_15_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_16_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_17_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_18_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_19_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_20_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "aa_gun_21_dm",
-          "onHit": {
-            "smoke": 0.0,
-            "fire": 0.0
-          },
-          "onKill": {
-            "smoke": 1.0
-          }
-        }
+        "node": "emtr_steam_02",
+        "fxName": "ship_steam"
       }
     ]
   },
-  {
-    "attachedEffects": [
-      {
-        "effect": {
-          "node": "emtr_exhaust_01",
-          "fxName": "ship_exhaust_large"
-        }
-      },
-      {
-        "effect": {
-          "node": "emtr_steam_01",
-          "fxName": "ship_steam"
-        }
-      },
-      {
-        "effect": {
-          "node": "emtr_steam_02",
-          "fxName": "ship_steam"
-        }
-      }
-    ]
-  },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner0",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aux.blk",
@@ -929,8 +792,14 @@
         "gunnerDm": "main_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [0.0,120.0],
-        "pitch": [-85.0,10.0]
+        "yaw": [
+          0.0,
+          120.0
+        ],
+        "pitch": [
+          -85.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -940,19 +809,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner0",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aux.blk",
@@ -992,8 +863,14 @@
         "gunnerDm": "main_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [0.0,120.0],
-        "pitch": [-85.0,10.0]
+        "yaw": [
+          0.0,
+          120.0
+        ],
+        "pitch": [
+          -85.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1003,19 +880,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner1",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aux.blk",
@@ -1055,8 +934,14 @@
         "gunnerDm": "main_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-120.0,0.0],
-        "pitch": [-85.0,10.0]
+        "yaw": [
+          -120.0,
+          0.0
+        ],
+        "pitch": [
+          -85.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1066,19 +951,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner1",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aux.blk",
@@ -1118,8 +1005,14 @@
         "gunnerDm": "main_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-120.0,0.0],
-        "pitch": [-85.0,10.0]
+        "yaw": [
+          -120.0,
+          0.0
+        ],
+        "pitch": [
+          -85.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1129,19 +1022,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner2",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aux.blk",
@@ -1181,8 +1076,14 @@
         "gunnerDm": "main_caliber_turret_03_dm"
       },
       "limits": {
-        "yaw": [-100.0,100.0],
-        "pitch": [-85.0,10.0]
+        "yaw": [
+          -100.0,
+          100.0
+        ],
+        "pitch": [
+          -85.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1192,19 +1093,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner2",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aux.blk",
@@ -1244,8 +1147,14 @@
         "gunnerDm": "main_caliber_turret_03_dm"
       },
       "limits": {
-        "yaw": [-100.0,100.0],
-        "pitch": [-85.0,10.0]
+        "yaw": [
+          -100.0,
+          100.0
+        ],
+        "pitch": [
+          -85.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1255,19 +1164,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1307,8 +1218,14 @@
         "gunnerDm": "auxiliary_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [-100.0,80.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -100.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1318,19 +1235,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1370,8 +1289,14 @@
         "gunnerDm": "auxiliary_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [-100.0,80.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -100.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1381,19 +1306,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner4",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1433,8 +1360,14 @@
         "gunnerDm": "auxiliary_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-80.0,100.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -80.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1444,19 +1377,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner4",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1496,8 +1431,14 @@
         "gunnerDm": "auxiliary_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-80.0,100.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -80.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1507,19 +1448,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1559,8 +1502,14 @@
         "gunnerDm": "auxiliary_caliber_turret_03_dm"
       },
       "limits": {
-        "yaw": [-120.0,80.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -120.0,
+          80.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1570,19 +1519,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1622,8 +1573,14 @@
         "gunnerDm": "auxiliary_caliber_turret_03_dm"
       },
       "limits": {
-        "yaw": [-120.0,80.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -120.0,
+          80.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1633,19 +1590,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1685,8 +1644,14 @@
         "gunnerDm": "auxiliary_caliber_turret_04_dm"
       },
       "limits": {
-        "yaw": [-80.0,120.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -80.0,
+          120.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1696,19 +1661,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1748,8 +1715,14 @@
         "gunnerDm": "auxiliary_caliber_turret_04_dm"
       },
       "limits": {
-        "yaw": [-80.0,120.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -80.0,
+          120.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1759,19 +1732,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner7",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1811,8 +1786,14 @@
         "gunnerDm": "auxiliary_caliber_turret_05_dm"
       },
       "limits": {
-        "yaw": [-50.0,80.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -50.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1822,19 +1803,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner7",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1874,8 +1857,14 @@
         "gunnerDm": "auxiliary_caliber_turret_05_dm"
       },
       "limits": {
-        "yaw": [-50.0,80.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -50.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1885,19 +1874,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner8",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -1937,8 +1928,14 @@
         "gunnerDm": "auxiliary_caliber_turret_06_dm"
       },
       "limits": {
-        "yaw": [-80.0,60.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -80.0,
+          60.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -1948,19 +1945,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner8",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2000,8 +1999,14 @@
         "gunnerDm": "auxiliary_caliber_turret_06_dm"
       },
       "limits": {
-        "yaw": [-80.0,60.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -80.0,
+          60.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2011,19 +2016,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner9",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2063,8 +2070,14 @@
         "gunnerDm": "auxiliary_caliber_turret_07_dm"
       },
       "limits": {
-        "yaw": [-70.0,65.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -70.0,
+          65.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2074,19 +2087,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner9",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2126,8 +2141,14 @@
         "gunnerDm": "auxiliary_caliber_turret_07_dm"
       },
       "limits": {
-        "yaw": [-70.0,65.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -70.0,
+          65.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2137,19 +2158,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner10",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2189,8 +2212,14 @@
         "gunnerDm": "auxiliary_caliber_turret_08_dm"
       },
       "limits": {
-        "yaw": [-140.0,80.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -140.0,
+          80.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2200,19 +2229,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner10",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2252,8 +2283,14 @@
         "gunnerDm": "auxiliary_caliber_turret_08_dm"
       },
       "limits": {
-        "yaw": [-140.0,80.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -140.0,
+          80.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2263,19 +2300,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner11",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2315,8 +2354,14 @@
         "gunnerDm": "auxiliary_caliber_turret_09_dm"
       },
       "limits": {
-        "yaw": [-80.0,140.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -80.0,
+          140.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2326,19 +2371,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner11",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2378,8 +2425,14 @@
         "gunnerDm": "auxiliary_caliber_turret_09_dm"
       },
       "limits": {
-        "yaw": [-80.0,140.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -80.0,
+          140.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2389,19 +2442,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner12",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2441,8 +2496,14 @@
         "gunnerDm": "auxiliary_caliber_turret_10_dm"
       },
       "limits": {
-        "yaw": [-65.0,70.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -65.0,
+          70.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2452,19 +2513,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner12",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2504,8 +2567,14 @@
         "gunnerDm": "auxiliary_caliber_turret_10_dm"
       },
       "limits": {
-        "yaw": [-65.0,70.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -65.0,
+          70.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2515,19 +2584,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner13",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2567,8 +2638,14 @@
         "gunnerDm": "auxiliary_caliber_turret_11_dm"
       },
       "limits": {
-        "yaw": [-60.0,80.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -60.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2578,19 +2655,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner13",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2630,8 +2709,14 @@
         "gunnerDm": "auxiliary_caliber_turret_11_dm"
       },
       "limits": {
-        "yaw": [-60.0,80.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -60.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2641,19 +2726,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner14",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2693,8 +2780,14 @@
         "gunnerDm": "auxiliary_caliber_turret_12_dm"
       },
       "limits": {
-        "yaw": [-80.0,50.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -80.0,
+          50.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2704,19 +2797,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner14",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2756,8 +2851,14 @@
         "gunnerDm": "auxiliary_caliber_turret_12_dm"
       },
       "limits": {
-        "yaw": [-80.0,50.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -80.0,
+          50.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2767,19 +2868,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner15",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2819,8 +2922,14 @@
         "gunnerDm": "auxiliary_caliber_turret_13_dm"
       },
       "limits": {
-        "yaw": [-145.0,70.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -145.0,
+          70.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2830,19 +2939,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner15",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2882,8 +2993,14 @@
         "gunnerDm": "auxiliary_caliber_turret_13_dm"
       },
       "limits": {
-        "yaw": [-145.0,70.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -145.0,
+          70.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2893,19 +3010,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner16",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -2945,8 +3064,14 @@
         "gunnerDm": "auxiliary_caliber_turret_14_dm"
       },
       "limits": {
-        "yaw": [-70.0,145.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -70.0,
+          145.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -2956,19 +3081,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner16",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_maincaliber.blk",
@@ -3008,8 +3135,14 @@
         "gunnerDm": "auxiliary_caliber_turret_14_dm"
       },
       "limits": {
-        "yaw": [-70.0,145.0],
-        "pitch": [-70.0,5.0]
+        "yaw": [
+          -70.0,
+          145.0
+        ],
+        "pitch": [
+          -70.0,
+          5.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3019,19 +3152,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner17",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3068,8 +3203,14 @@
         "gunnerDm": "aa_turret_01_dm"
       },
       "limits": {
-        "yaw": [-100.0,30.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          30.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3079,19 +3220,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner17",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3128,8 +3271,14 @@
         "gunnerDm": "aa_turret_01_dm"
       },
       "limits": {
-        "yaw": [-100.0,30.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          30.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3139,19 +3288,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner17",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3188,8 +3339,14 @@
         "gunnerDm": "aa_turret_01_dm"
       },
       "limits": {
-        "yaw": [-100.0,30.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          30.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3199,19 +3356,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner17",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3248,8 +3407,14 @@
         "gunnerDm": "aa_turret_01_dm"
       },
       "limits": {
-        "yaw": [-100.0,30.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          30.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3259,19 +3424,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner18",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3308,8 +3475,14 @@
         "gunnerDm": "aa_turret_02_dm"
       },
       "limits": {
-        "yaw": [-30.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -30.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3319,19 +3492,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner18",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3368,8 +3543,14 @@
         "gunnerDm": "aa_turret_02_dm"
       },
       "limits": {
-        "yaw": [-30.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -30.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3379,19 +3560,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner18",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3428,8 +3611,14 @@
         "gunnerDm": "aa_turret_02_dm"
       },
       "limits": {
-        "yaw": [-30.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -30.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3439,19 +3628,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner18",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3488,8 +3679,14 @@
         "gunnerDm": "aa_turret_02_dm"
       },
       "limits": {
-        "yaw": [-30.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -30.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3499,19 +3696,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner19",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3548,13 +3747,34 @@
         "gunnerDm": "aa_turret_03_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3564,19 +3784,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner19",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3613,13 +3835,34 @@
         "gunnerDm": "aa_turret_03_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3629,19 +3872,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner19",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3678,13 +3923,34 @@
         "gunnerDm": "aa_turret_03_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3694,19 +3960,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner19",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3743,13 +4011,34 @@
         "gunnerDm": "aa_turret_03_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3759,19 +4048,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner20",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3808,13 +4099,34 @@
         "gunnerDm": "aa_turret_04_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3824,19 +4136,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner20",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3873,13 +4187,34 @@
         "gunnerDm": "aa_turret_04_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3889,19 +4224,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner20",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -3938,13 +4275,34 @@
         "gunnerDm": "aa_turret_04_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -3954,19 +4312,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner20",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4003,13 +4363,34 @@
         "gunnerDm": "aa_turret_04_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4019,19 +4400,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner21",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4068,13 +4451,34 @@
         "gunnerDm": "aa_turret_05_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4084,19 +4488,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner21",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4133,13 +4539,34 @@
         "gunnerDm": "aa_turret_05_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4149,19 +4576,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner21",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4198,13 +4627,34 @@
         "gunnerDm": "aa_turret_05_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4214,19 +4664,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner21",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4263,13 +4715,34 @@
         "gunnerDm": "aa_turret_05_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4279,19 +4752,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner22",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4328,13 +4803,34 @@
         "gunnerDm": "aa_turret_06_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4344,19 +4840,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner22",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4393,13 +4891,34 @@
         "gunnerDm": "aa_turret_06_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4409,19 +4928,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner22",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4458,13 +4979,34 @@
         "gunnerDm": "aa_turret_06_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4474,19 +5016,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner22",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4523,13 +5067,34 @@
         "gunnerDm": "aa_turret_06_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,20.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,20.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          20.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          20.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4539,19 +5104,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner23",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4588,13 +5155,34 @@
         "gunnerDm": "aa_turret_07_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4604,19 +5192,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner23",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4653,13 +5243,34 @@
         "gunnerDm": "aa_turret_07_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4669,19 +5280,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner23",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4718,13 +5331,34 @@
         "gunnerDm": "aa_turret_07_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4734,19 +5368,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner23",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4783,13 +5419,34 @@
         "gunnerDm": "aa_turret_07_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4799,19 +5456,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner24",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4848,13 +5507,34 @@
         "gunnerDm": "aa_turret_08_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4864,19 +5544,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner24",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4913,13 +5595,34 @@
         "gunnerDm": "aa_turret_08_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4929,19 +5632,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner24",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -4978,13 +5683,34 @@
         "gunnerDm": "aa_turret_08_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -4994,19 +5720,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner24",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5043,13 +5771,34 @@
         "gunnerDm": "aa_turret_08_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5059,19 +5808,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner25",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5108,13 +5859,34 @@
         "gunnerDm": "aa_turret_09_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5124,19 +5896,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner25",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5173,13 +5947,34 @@
         "gunnerDm": "aa_turret_09_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5189,19 +5984,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner25",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5238,13 +6035,34 @@
         "gunnerDm": "aa_turret_09_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5254,19 +6072,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner25",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5303,13 +6123,34 @@
         "gunnerDm": "aa_turret_09_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5319,19 +6160,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner26",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5368,13 +6211,34 @@
         "gunnerDm": "aa_turret_10_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5384,19 +6248,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner26",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5433,13 +6299,34 @@
         "gunnerDm": "aa_turret_10_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5449,19 +6336,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner26",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5498,13 +6387,34 @@
         "gunnerDm": "aa_turret_10_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5514,19 +6424,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner26",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5563,13 +6475,34 @@
         "gunnerDm": "aa_turret_10_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5579,19 +6512,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner27",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5628,13 +6563,34 @@
         "gunnerDm": "aa_turret_11_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5644,19 +6600,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner27",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5693,13 +6651,34 @@
         "gunnerDm": "aa_turret_11_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5709,19 +6688,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner27",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5758,13 +6739,34 @@
         "gunnerDm": "aa_turret_11_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5774,19 +6776,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner27",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5823,13 +6827,34 @@
         "gunnerDm": "aa_turret_11_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5839,19 +6864,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner28",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5888,13 +6915,34 @@
         "gunnerDm": "aa_turret_12_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5904,19 +6952,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner28",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -5953,13 +7003,34 @@
         "gunnerDm": "aa_turret_12_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -5969,19 +7040,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner28",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6018,13 +7091,34 @@
         "gunnerDm": "aa_turret_12_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6034,19 +7128,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner28",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6083,13 +7179,34 @@
         "gunnerDm": "aa_turret_12_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6099,19 +7216,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner29",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6148,13 +7267,34 @@
         "gunnerDm": "aa_turret_13_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6164,19 +7304,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner29",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6213,13 +7355,34 @@
         "gunnerDm": "aa_turret_13_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6229,19 +7392,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner29",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6278,13 +7443,34 @@
         "gunnerDm": "aa_turret_13_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6294,19 +7480,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner29",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6343,13 +7531,34 @@
         "gunnerDm": "aa_turret_13_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6359,19 +7568,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner30",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6408,13 +7619,34 @@
         "gunnerDm": "aa_turret_14_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6424,19 +7656,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner30",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6473,13 +7707,34 @@
         "gunnerDm": "aa_turret_14_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6489,19 +7744,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner30",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6538,13 +7795,34 @@
         "gunnerDm": "aa_turret_14_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6554,19 +7832,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner30",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6603,13 +7883,34 @@
         "gunnerDm": "aa_turret_14_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6619,19 +7920,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner31",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6668,13 +7971,34 @@
         "gunnerDm": "aa_turret_15_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-115.0,50.0,80.0],
-        "lim2": [-115.0,115.0,-1.0,80.0],
-        "lim3": [115.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -115.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -115.0,
+          115.0,
+          -1.0,
+          80.0
+        ],
+        "lim3": [
+          115.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6684,19 +8008,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner31",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6733,13 +8059,34 @@
         "gunnerDm": "aa_turret_15_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-115.0,50.0,80.0],
-        "lim2": [-115.0,115.0,-1.0,80.0],
-        "lim3": [115.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -115.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -115.0,
+          115.0,
+          -1.0,
+          80.0
+        ],
+        "lim3": [
+          115.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6749,19 +8096,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner31",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6798,13 +8147,34 @@
         "gunnerDm": "aa_turret_15_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-115.0,50.0,80.0],
-        "lim2": [-115.0,115.0,-1.0,80.0],
-        "lim3": [115.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -115.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -115.0,
+          115.0,
+          -1.0,
+          80.0
+        ],
+        "lim3": [
+          115.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6814,19 +8184,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner31",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6863,13 +8235,34 @@
         "gunnerDm": "aa_turret_15_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-115.0,50.0,80.0],
-        "lim2": [-115.0,115.0,-1.0,80.0],
-        "lim3": [115.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -115.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -115.0,
+          115.0,
+          -1.0,
+          80.0
+        ],
+        "lim3": [
+          115.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6879,19 +8272,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner32",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6928,13 +8323,34 @@
         "gunnerDm": "aa_turret_16_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -6944,19 +8360,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner32",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -6993,13 +8411,34 @@
         "gunnerDm": "aa_turret_16_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7009,19 +8448,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner32",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7058,13 +8499,34 @@
         "gunnerDm": "aa_turret_16_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7074,19 +8536,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner32",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7123,13 +8587,34 @@
         "gunnerDm": "aa_turret_16_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7139,19 +8624,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner33",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7188,13 +8675,34 @@
         "gunnerDm": "aa_turret_17_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7204,19 +8712,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner33",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7253,13 +8763,34 @@
         "gunnerDm": "aa_turret_17_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7269,19 +8800,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner33",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7318,13 +8851,34 @@
         "gunnerDm": "aa_turret_17_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7334,19 +8888,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner33",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7383,13 +8939,34 @@
         "gunnerDm": "aa_turret_17_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7399,19 +8976,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner34",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7448,13 +9027,34 @@
         "gunnerDm": "aa_turret_18_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7464,19 +9064,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner34",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7513,13 +9115,34 @@
         "gunnerDm": "aa_turret_18_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7529,19 +9152,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner34",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7578,13 +9203,34 @@
         "gunnerDm": "aa_turret_18_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7594,19 +9240,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner34",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7643,13 +9291,34 @@
         "gunnerDm": "aa_turret_18_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7659,19 +9328,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner35",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7708,13 +9379,34 @@
         "gunnerDm": "aa_turret_19_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7724,19 +9416,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner35",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7773,13 +9467,34 @@
         "gunnerDm": "aa_turret_19_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7789,19 +9504,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner35",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7838,13 +9555,34 @@
         "gunnerDm": "aa_turret_19_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7854,19 +9592,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner35",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7903,13 +9643,34 @@
         "gunnerDm": "aa_turret_19_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-90.0,50.0,80.0],
-        "lim2": [-90.0,90.0,-5.0,80.0],
-        "lim3": [90.0,180.0,50.0,80.0]
+        "lim1": [
+          -180.0,
+          -90.0,
+          50.0,
+          80.0
+        ],
+        "lim2": [
+          -90.0,
+          90.0,
+          -5.0,
+          80.0
+        ],
+        "lim3": [
+          90.0,
+          180.0,
+          50.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7919,19 +9680,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner36",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -7968,8 +9731,14 @@
         "gunnerDm": "aa_turret_20_dm"
       },
       "limits": {
-        "yaw": [-80.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -80.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -7979,19 +9748,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner36",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -8028,8 +9799,14 @@
         "gunnerDm": "aa_turret_20_dm"
       },
       "limits": {
-        "yaw": [-80.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -80.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -8039,19 +9816,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner36",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -8088,8 +9867,14 @@
         "gunnerDm": "aa_turret_20_dm"
       },
       "limits": {
-        "yaw": [-80.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -80.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -8099,19 +9884,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner36",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -8148,8 +9935,14 @@
         "gunnerDm": "aa_turret_20_dm"
       },
       "limits": {
-        "yaw": [-80.0,100.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -80.0,
+          100.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -8159,19 +9952,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner37",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -8208,8 +10003,14 @@
         "gunnerDm": "aa_turret_21_dm"
       },
       "limits": {
-        "yaw": [-100.0,80.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -8219,19 +10020,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner37",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -8268,8 +10071,14 @@
         "gunnerDm": "aa_turret_21_dm"
       },
       "limits": {
-        "yaw": [-100.0,80.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -8279,19 +10088,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner37",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -8328,8 +10139,14 @@
         "gunnerDm": "aa_turret_21_dm"
       },
       "limits": {
-        "yaw": [-100.0,80.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -8339,19 +10156,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner37",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/toon_cannon_aa.blk",
@@ -8388,8 +10207,14 @@
         "gunnerDm": "aa_turret_21_dm"
       },
       "limits": {
-        "yaw": [-100.0,80.0],
-        "pitch": [-5.0,80.0]
+        "yaw": [
+          -100.0,
+          80.0
+        ],
+        "pitch": [
+          -5.0,
+          80.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -8399,24 +10224,26 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
     }
-  },
-  {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_zeppelin_104_body_b_tex_d*",
-        "to": "us_zeppelin_104_body_a_tex_d*"
-      }
+  ],
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "us_zeppelin_104_body_b_tex_d*",
+      "to": "us_zeppelin_104_body_a_tex_d*"
     }
   }
-]
+}

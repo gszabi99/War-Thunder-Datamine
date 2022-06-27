@@ -1,660 +1,560 @@
-[
-  {
-    "enableApex": true
+{
+  "enableApex": true,
+  "mandatoryLandquality": 1,
+  "z_far": 70000.0,
+  "hmapLodCount": 6,
+  "hmapDistanceMul": 6.0,
+  "mapCoord0": [
+    [
+      -65536.0,
+      -65536.0
+    ],
+    [
+      -65536.0,
+      -65536.0
+    ]
+  ],
+  "mapCoord1": [
+    65536.0,
+    65536.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "aiMapCoord0": [
+    -65536.0,
+    -65536.0
+  ],
+  "aiMapCoord1": [
+    65536.0,
+    65536.0
+  ],
+  "gridSteps": [
+    4096.0,
+    4096.0
+  ],
+  "aiTanksMapCoord0": [
+    0.0,
+    0.0
+  ],
+  "aiTanksMapCoord1": [
+    4096.0,
+    4096.0
+  ],
+  "tankMapCoord0": [
+    0.0,
+    0.0
+  ],
+  "tankMapCoord1": [
+    4096.0,
+    4096.0
+  ],
+  "tankGridSteps": [
+    410.0,
+    410.0
+  ],
+  "tankGridSize": [
+    4096.0,
+    4096.0
+  ],
+  "numBorderCellsXPos": 8,
+  "numBorderCellsXNeg": 12,
+  "numBorderCellsZPos": 8,
+  "numBorderCellsZNeg": 8,
+  "mirrorShrinkXPos": 256.0,
+  "mirrorShrinkXNeg": 256.0,
+  "mirrorShrinkZPos": 256.0,
+  "mirrorShrinkZNeg": 256.0,
+  "water_level": 0.0,
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "addWhiteTemp": -1000.0,
+  "lastClip": true,
+  "lastclip_horizon": true,
+  "land_translucency": "no",
+  "vsmAngleThreshold": 5.0,
+  "soundAmbientPath": "sounds/ambient",
+  "soundAmbientPathStudio": "aircraft/ambient",
+  "soundAmbientEvent": "global_amb_desert",
+  "max_wind_strength": 3.5,
+  "puddlesPowerScale": 0.0,
+  "puddlesSpread": 1.0,
+  "layeredFogThicknessScale100": 790.0,
+  "layeredFogHeightOffset": 50.0,
+  "layeredFogDensityMul": 0.5,
+  "layeredFogAmbientColorTintBrightness": 1.0,
+  "layeredFogAmbientColorTint": [
+    1.0,
+    0.9,
+    0.7
+  ],
+  "terraform": {
+    "diffuseTex": "underground_sand_a_tex_d",
+    "diffuseAboveTex": "",
+    "detailRTex": "underground_sand_a_tex_r",
+    "normalsTex": "underground_sand_a_tex_n",
+    "aboveGroundColor": [
+      0.49,
+      0.41,
+      0.21,
+      0.5
+    ],
+    "underGroundColor": [
+      0.35,
+      0.28,
+      0.12,
+      0.5
+    ],
+    "textureBlend": 0.7,
+    "digGroundAlpha": 3.1,
+    "digRoughness": 0.37
   },
-  {
-    "mandatoryLandquality": 1
+  "stars": {
+    "latitude": 30.0,
+    "longitude": 39.0,
+    "year": 1973,
+    "month": 6,
+    "day": 21
   },
-  {
-    "z_far": 70000.0
+  "shader_vars": {
+    "parallax_shadow_strength": 1.0,
+    "parallax_shadow_length": 2.0,
+    "detail_bump_scale": 0.02,
+    "land_bump_scale": 1.5,
+    "specular_detect_land_color": [
+      0.25,
+      0.25,
+      0.6,
+      0.1
+    ],
+    "dust_color": [
+      0.19,
+      0.13,
+      0.06,
+      0.8
+    ],
+    "dust_params": [
+      0.5,
+      1.5,
+      0.1,
+      0.3
+    ],
+    "dust_params2": [
+      3.0,
+      0.75,
+      0.8,
+      1.2
+    ],
+    "mud_color": [
+      0.1,
+      0.05,
+      0.01,
+      0.7
+    ],
+    "water_color_noise_size": 1300.0,
+    "min_land_height": 0.3
   },
-  {
-    "hmapLodCount": 6
+  "waterStub": {
+    "enable": true,
+    "minZ": -32768.0
   },
-  {
-    "hmapDistanceMul": 6.0
-  },
-  {
-    "mapCoord0": [-65536.0,-65536.0]
-  },
-  {
-    "mapCoord0": [-65536.0,-65536.0]
-  },
-  {
-    "mapCoord1": [65536.0,65536.0]
-  },
-  {
-    "minAreaSize": [12000.0,12000.0]
-  },
-  {
-    "aiMapCoord0": [-65536.0,-65536.0]
-  },
-  {
-    "aiMapCoord1": [65536.0,65536.0]
-  },
-  {
-    "gridSteps": [4096.0,4096.0]
-  },
-  {
-    "aiTanksMapCoord0": [0.0,0.0]
-  },
-  {
-    "aiTanksMapCoord1": [4096.0,4096.0]
-  },
-  {
-    "tankMapCoord0": [0.0,0.0]
-  },
-  {
-    "tankMapCoord1": [4096.0,4096.0]
-  },
-  {
-    "tankGridSteps": [410.0,410.0]
-  },
-  {
-    "tankGridSize": [4096.0,4096.0]
-  },
-  {
-    "numBorderCellsXPos": 8
-  },
-  {
-    "numBorderCellsXNeg": 12
-  },
-  {
-    "numBorderCellsZPos": 8
-  },
-  {
-    "numBorderCellsZNeg": 8
-  },
-  {
-    "mirrorShrinkXPos": 256.0
-  },
-  {
-    "mirrorShrinkXNeg": 256.0
-  },
-  {
-    "mirrorShrinkZPos": 256.0
-  },
-  {
-    "mirrorShrinkZNeg": 256.0
-  },
-  {
-    "water_level": 0.0
-  },
-  {
-    "weatherPreset": "gameData/environments/weather_preset_1.blk"
-  },
-  {
-    "weatherTypes": "gameData/environments/weather_types.blk"
-  },
-  {
-    "addWhiteTemp": -1000.0
-  },
-  {
-    "lastClip": true
-  },
-  {
-    "lastclip_horizon": true
-  },
-  {
-    "land_translucency": "no"
-  },
-  {
-    "vsmAngleThreshold": 5.0
-  },
-  {
-    "soundAmbientPath": "sounds/ambient"
-  },
-  {
-    "soundAmbientPathStudio": "aircraft/ambient"
-  },
-  {
-    "soundAmbientEvent": "global_amb_desert"
-  },
-  {
-    "max_wind_strength": 3.5
-  },
-  {
-    "puddlesPowerScale": 0.0
-  },
-  {
-    "puddlesSpread": 1.0
-  },
-  {
-    "layeredFogThicknessScale100": 790.0
-  },
-  {
-    "layeredFogHeightOffset": 50.0
-  },
-  {
-    "layeredFogDensityMul": 0.5
-  },
-  {
-    "layeredFogAmbientColorTintBrightness": 1.0
-  },
-  {
-    "layeredFogAmbientColorTint": [1.0,0.9,0.7]
-  },
-  {
-    "terraform": {
-      "diffuseTex": "underground_sand_a_tex_d",
-      "diffuseAboveTex": "",
-      "detailRTex": "underground_sand_a_tex_r",
-      "normalsTex": "underground_sand_a_tex_n",
-      "aboveGroundColor": [0.49,0.41,0.21,0.5],
-      "underGroundColor": [0.35,0.28,0.12,0.5],
-      "textureBlend": 0.7,
-      "digGroundAlpha": 3.1,
-      "digRoughness": 0.37
-    }
-  },
-  {
-    "stars": {
-      "latitude": 30.0,
-      "longitude": 39.0,
-      "year": 1973,
-      "month": 6,
-      "day": 21
-    }
-  },
-  {
-    "shader_vars": {
-      "parallax_shadow_strength": 1.0,
-      "parallax_shadow_length": 2.0,
-      "detail_bump_scale": 0.02,
-      "land_bump_scale": 1.5,
-      "specular_detect_land_color": [0.25,0.25,0.6,0.1],
-      "dust_color": [0.19,0.13,0.06,0.8],
-      "dust_params": [0.5,1.5,0.1,0.3],
-      "dust_params2": [3.0,0.75,0.8,1.2],
-      "mud_color": [0.1,0.05,0.01,0.7],
-      "water_color_noise_size": 1300.0,
-      "min_land_height": 0.3
-    }
-  },
-  {
-    "waterStub": {
-      "enable": true,
-      "minZ": -32768.0
-    }
-  },
-  {
-    "randomGrass": [
+  "randomGrass": {
+    "density": 4.0,
+    "maxRadius": 300.0,
+    "sowPerlinFreq": 0.1,
+    "fadeDelta": 100.0,
+    "lodFadeDelta": 30.0,
+    "minLodDensity": 0.2,
+    "blendToLandDelta": 100.0,
+    "texSize": 1024,
+    "noise_first_rnd": 23.140692,
+    "noise_first_val_mul": 1.0,
+    "noise_first_val_add": 0.0,
+    "noise_second_rnd": 0.05,
+    "noise_second_val_mul": 1.0,
+    "noise_second_val_add": 0.0,
+    "directWindMul": 1.0,
+    "noiseWindMul": 1.0,
+    "windPerlinFreq": 50000.0,
+    "directWindFreq": 1.0,
+    "directWindModulationFreq": 1.0,
+    "windWaveLength": 100.0,
+    "windToColor": 0.2,
+    "helicopterHorMul": 2.0,
+    "helicopterVerMul": 1.0,
+    "helicopterToDirectWindMul": 2.0,
+    "helicopterFalloff": 0.001,
+    "egypt_sand_dunes_colormap_tex_d": "tunisia_detailed_sand_b_tex_m",
+    "avg_egypt_sinai_fields_a": "tunisia_detailed_sand_b_tex_m",
+    "layer": [
       {
-        "density": 4.0
+        "maskChannel": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_wheat_a",
+        "density": 1.2,
+        "horScale": 1.8,
+        "horMinScale": 0.9,
+        "verScale": 1.2,
+        "verMinScale": 0.8,
+        "windMul": 0.05,
+        "radiusMul": 0.3,
+        "color_mask_r_from": "9/PIfw==",
+        "color_mask_r_to": "6emrfw==",
+        "color_mask_b_from": "59utfw==",
+        "color_mask_b_to": "7eCvfw==",
+        "color_mask_g_from": "TEVC/w==",
+        "color_mask_g_to": "mpqa/w=="
       },
       {
-        "maxRadius": 300.0
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_tavolga_a",
+        "density": 1.0,
+        "horScale": 1.2,
+        "horMinScale": 0.5,
+        "verScale": 1.2,
+        "verMinScale": 0.9,
+        "windMul": 0.05,
+        "radiusMul": 0.3,
+        "color_mask_r_from": "9/PIfw==",
+        "color_mask_r_to": "6emrfw==",
+        "color_mask_b_from": "59utfw==",
+        "color_mask_b_to": "7eCvfw==",
+        "color_mask_g_from": "TEVC/w==",
+        "color_mask_g_to": "mpqa/w=="
       },
       {
-        "sowPerlinFreq": 0.1
+        "maskChannel": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_heather_a",
+        "density": 1.0,
+        "horScale": 1.5,
+        "horMinScale": 1.0,
+        "verScale": 2.5,
+        "verMinScale": 1.5,
+        "windMul": 0.05,
+        "color_mask_r_from": "9/PIfw==",
+        "color_mask_r_to": "6emrfw==",
+        "color_mask_b_from": "59utfw==",
+        "color_mask_b_to": "7eCvfw==",
+        "color_mask_g_from": "TEVC/w==",
+        "color_mask_g_to": "ycnO/w=="
       },
       {
-        "fadeDelta": 100.0
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_simple_a",
+        "density": 3.5,
+        "horScale": 1.2,
+        "horMinScale": 0.9,
+        "verScale": 1.0,
+        "verMinScale": 0.9,
+        "windMul": 0.05,
+        "radiusMul": 0.5,
+        "color_mask_r_from": "9/PIfw==",
+        "color_mask_r_to": "6emrfw==",
+        "color_mask_b_from": "59utfw==",
+        "color_mask_b_to": "7eCvfw==",
+        "color_mask_g_from": "TEVC/w==",
+        "color_mask_g_to": "ycnO/w=="
       },
       {
-        "lodFadeDelta": 30.0
+        "maskChannel": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_fill_a",
+        "density": 3.0,
+        "horScale": 1.2,
+        "horMinScale": 0.5,
+        "verScale": 1.2,
+        "verMinScale": 0.9,
+        "windMul": 0.05,
+        "color_mask_r_from": "9/PIfw==",
+        "color_mask_r_to": "6emrfw==",
+        "color_mask_b_from": "59utfw==",
+        "color_mask_b_to": "7eCvfw==",
+        "color_mask_g_from": "TEVC/w==",
+        "color_mask_g_to": "ycnO/w=="
       },
       {
-        "minLodDensity": 0.2
-      },
-      {
-        "blendToLandDelta": 100.0
-      },
-      {
-        "texSize": 1024
-      },
-      {
-        "noise_first_rnd": 23.1407
-      },
-      {
-        "noise_first_val_mul": 1.0
-      },
-      {
-        "noise_first_val_add": 0.0
-      },
-      {
-        "noise_second_rnd": 0.05
-      },
-      {
-        "noise_second_val_mul": 1.0
-      },
-      {
-        "noise_second_val_add": 0.0
-      },
-      {
-        "directWindMul": 1.0
-      },
-      {
-        "noiseWindMul": 1.0
-      },
-      {
-        "windPerlinFreq": 50000.0
-      },
-      {
-        "directWindFreq": 1.0
-      },
-      {
-        "directWindModulationFreq": 1.0
-      },
-      {
-        "windWaveLength": 100.0
-      },
-      {
-        "windToColor": 0.2
-      },
-      {
-        "helicopterHorMul": 2.0
-      },
-      {
-        "helicopterVerMul": 1.0
-      },
-      {
-        "helicopterToDirectWindMul": 2.0
-      },
-      {
-        "helicopterFalloff": 0.001
-      },
-      {
-        "egypt_sand_dunes_colormap_tex_d": "tunisia_detailed_sand_b_tex_m"
-      },
-      {
-        "avg_egypt_sinai_fields_a": "tunisia_detailed_sand_b_tex_m"
-      },
-      {
-        "layer": {
-          "maskChannel": [1.0,0.0,0.0,0.0],
-          "res": "grass_wheat_a",
-          "density": 1.2,
-          "horScale": 1.8,
-          "horMinScale": 0.9,
-          "verScale": 1.2,
-          "verMinScale": 0.8,
-          "windMul": 0.05,
-          "radiusMul": 0.3,
-          "color_mask_r_from": "#f7f3c87f",
-          "color_mask_r_to": "#e9e9ab7f",
-          "color_mask_b_from": "#e7dbad7f",
-          "color_mask_b_to": "#ede0af7f",
-          "color_mask_g_from": "#4c4542ff",
-          "color_mask_g_to": "#9a9a9aff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,1.0,0.0,0.0],
-          "res": "grass_tavolga_a",
-          "density": 1.0,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 1.2,
-          "verMinScale": 0.9,
-          "windMul": 0.05,
-          "radiusMul": 0.3,
-          "color_mask_r_from": "#f7f3c87f",
-          "color_mask_r_to": "#e9e9ab7f",
-          "color_mask_b_from": "#e7dbad7f",
-          "color_mask_b_to": "#ede0af7f",
-          "color_mask_g_from": "#4c4542ff",
-          "color_mask_g_to": "#9a9a9aff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [1.0,1.0,0.0,0.0],
-          "res": "grass_heather_a",
-          "density": 1.0,
-          "horScale": 1.5,
-          "horMinScale": 1.0,
-          "verScale": 2.5,
-          "verMinScale": 1.5,
-          "windMul": 0.05,
-          "color_mask_r_from": "#f7f3c87f",
-          "color_mask_r_to": "#e9e9ab7f",
-          "color_mask_b_from": "#e7dbad7f",
-          "color_mask_b_to": "#ede0af7f",
-          "color_mask_g_from": "#4c4542ff",
-          "color_mask_g_to": "#c9c9ceff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,1.0,0.0,0.0],
-          "res": "grass_simple_a",
-          "density": 3.5,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 1.0,
-          "verMinScale": 0.9,
-          "windMul": 0.05,
-          "radiusMul": 0.5,
-          "color_mask_r_from": "#f7f3c87f",
-          "color_mask_r_to": "#e9e9ab7f",
-          "color_mask_b_from": "#e7dbad7f",
-          "color_mask_b_to": "#ede0af7f",
-          "color_mask_g_from": "#4c4542ff",
-          "color_mask_g_to": "#c9c9ceff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [1.0,1.0,0.0,0.0],
-          "res": "grass_fill_a",
-          "density": 3.0,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 1.2,
-          "verMinScale": 0.9,
-          "windMul": 0.05,
-          "color_mask_r_from": "#f7f3c87f",
-          "color_mask_r_to": "#e9e9ab7f",
-          "color_mask_b_from": "#e7dbad7f",
-          "color_mask_b_to": "#ede0af7f",
-          "color_mask_g_from": "#4c4542ff",
-          "color_mask_g_to": "#c9c9ceff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [1.0,1.0,0.0,0.0],
-          "res": "grass_fill_a",
-          "density": 3.0,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 1.7,
-          "verMinScale": 0.9,
-          "windMul": 0.05,
-          "color_mask_r_from": "#f7f3c87f",
-          "color_mask_r_to": "#e9e9ab7f",
-          "color_mask_b_from": "#e7dbad7f",
-          "color_mask_b_to": "#ede0af7f",
-          "color_mask_g_from": "#4c4542ff",
-          "color_mask_g_to": "#c9c9ceff"
-        }
+        "maskChannel": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_fill_a",
+        "density": 3.0,
+        "horScale": 1.2,
+        "horMinScale": 0.5,
+        "verScale": 1.7,
+        "verMinScale": 0.9,
+        "windMul": 0.05,
+        "color_mask_r_from": "9/PIfw==",
+        "color_mask_r_to": "6emrfw==",
+        "color_mask_b_from": "59utfw==",
+        "color_mask_b_to": "7eCvfw==",
+        "color_mask_g_from": "TEVC/w==",
+        "color_mask_g_to": "ycnO/w=="
       }
     ]
   },
-  {
-    "micro_details": [
-      {
-        "micro_detail": "microdetail_stone_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_soil_b_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_sand_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_soil_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_sand_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_grass_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_forest_floor_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_fabric_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_wood_b_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_metal_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_snow_a_tex_n*"
-      },
-      {
-        "micro_detail": "microdetail_generic_granules_a_tex_n*"
-      },
-      {
-        "land_micro_details_uv_scale": 0.62
-      },
-      {
-        "microdetail_generic_granules_a_tex_n*": {
-          "coloring": 0.1
-        }
-      },
-      {
-        "microdetail_stone_a_tex_n*": {
-          "coloring": 0.2
-        }
-      }
-    ]
-  },
-  {
-    "technicsSkins": [
-      {
-        "groundSkin": "desert"
-      },
-      {
-        "groundSkin": "default"
-      }
-    ]
-  },
-  {
-    "overrideRiLodRange": {
-      "africa_sinai_smaller_rock_a": {
-        "lod0": 250.0,
-        "lod1": 450.0
-      },
-      "africa_sinai_smaller_rock_b": {
-        "lod0": 250.0,
-        "lod1": 450.0
-      },
-      "haloxylon_dead_big_bush_a": {
-        "lod0": 50.0,
-        "lod1": 1500.0
-      },
-      "haloxylon_dead_big_bush_b": {
-        "lod0": 50.0,
-        "lod1": 1500.0
-      },
-      "tunis_Rare_House_01": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_02": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_04": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_05": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_07": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_08": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_09": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_10": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Rare_House_11": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_01": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_02": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_03": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_04": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_05": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_07": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_08": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_09": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_10": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_11": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_12": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_13": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_14": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_15": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_village_house_17": {
-        "lod0": 100.0,
-        "lod1": 1200.0
-      },
-      "tunis_Seaside_house_00": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_02": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_04": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_06": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_08": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_10": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_12": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_14": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_village_house_06": {
-        "lod0": 150.0,
-        "lod1": 2000.0
-      },
-      "tunis_Seaside_house_01": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_Seaside_house_03": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_Seaside_house_05": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_Seaside_house_07": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_Seaside_house_09": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_Seaside_house_11": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_Seaside_house_13": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_village_house_00": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_village_house_16": {
-        "lod0": 150.0,
-        "lod1": 2500.0
-      },
-      "tunis_Church_01": {
-        "lod0": 200.0,
-        "lod1": 3000.0
-      },
-      "tunis_Church_02": {
-        "lod0": 200.0,
-        "lod1": 3000.0
-      },
-      "tunis_Church_03": {
-        "lod0": 200.0,
-        "lod1": 3000.0
-      }
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_soil_b_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_grass_a_tex_n*",
+      "microdetail_forest_floor_a_tex_n*",
+      "microdetail_fabric_a_tex_n*",
+      "microdetail_wood_b_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 0.62,
+    "microdetail_generic_granules_a_tex_n*": {
+      "coloring": 0.1
+    },
+    "microdetail_stone_a_tex_n*": {
+      "coloring": 0.2
     }
   },
-  {
-    "forceTexMQ": [
-      {
-        "tex": "detail_jungle_grass_fields_tex_d*"
-      },
-      {
-        "tex": "detail_tropic_deadgrass_tex_d*"
-      },
-      {
-        "tex": "pontoon_bridge_german_tex_n*"
-      },
-      {
-        "tex": "singboards_tex_n*"
-      }
+  "technicsSkins": {
+    "groundSkin": [
+      "desert",
+      "default"
     ]
   },
-  {
-    "forceTexLQ": {
-      "tex": "flak_36_set_tex_d*"
+  "overrideRiLodRange": {
+    "africa_sinai_smaller_rock_a": {
+      "lod0": 250.0,
+      "lod1": 450.0
+    },
+    "africa_sinai_smaller_rock_b": {
+      "lod0": 250.0,
+      "lod1": 450.0
+    },
+    "haloxylon_dead_big_bush_a": {
+      "lod0": 50.0,
+      "lod1": 1500.0
+    },
+    "haloxylon_dead_big_bush_b": {
+      "lod0": 50.0,
+      "lod1": 1500.0
+    },
+    "tunis_Rare_House_01": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_02": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_04": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_05": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_07": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_08": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_09": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_10": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Rare_House_11": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_01": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_02": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_03": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_04": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_05": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_07": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_08": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_09": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_10": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_11": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_12": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_13": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_14": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_15": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_village_house_17": {
+      "lod0": 100.0,
+      "lod1": 1200.0
+    },
+    "tunis_Seaside_house_00": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_02": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_04": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_06": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_08": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_10": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_12": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_14": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_village_house_06": {
+      "lod0": 150.0,
+      "lod1": 2000.0
+    },
+    "tunis_Seaside_house_01": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_Seaside_house_03": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_Seaside_house_05": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_Seaside_house_07": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_Seaside_house_09": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_Seaside_house_11": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_Seaside_house_13": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_village_house_00": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_village_house_16": {
+      "lod0": 150.0,
+      "lod1": 2500.0
+    },
+    "tunis_Church_01": {
+      "lod0": 200.0,
+      "lod1": 3000.0
+    },
+    "tunis_Church_02": {
+      "lod0": 200.0,
+      "lod1": 3000.0
+    },
+    "tunis_Church_03": {
+      "lod0": 200.0,
+      "lod1": 3000.0
     }
+  },
+  "forceTexMQ": {
+    "tex": [
+      "detail_jungle_grass_fields_tex_d*",
+      "detail_tropic_deadgrass_tex_d*",
+      "pontoon_bridge_german_tex_n*",
+      "singboards_tex_n*"
+    ]
+  },
+  "forceTexLQ": {
+    "tex": "flak_36_set_tex_d*"
   }
-]
+}

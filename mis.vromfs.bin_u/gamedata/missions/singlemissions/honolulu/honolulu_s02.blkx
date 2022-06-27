@@ -20,7 +20,11 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "gt_cooperative": true
     },
     "briefing": {
@@ -31,60 +35,42 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "player"
-              },
-              {
-                "point": "player"
-              },
-              {
-                "point": "waypoint"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player",
+              "waypoint"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "bomber",
               "side": "player",
               "target": "player",
               "lookAt": "waypoint"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "enemy",
               "target": "zeros01",
               "lookAt": "player"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "airfield",
               "side": "ally",
               "target": "waypoint"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -97,33 +83,29 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object": "player_himself",
             "targetableByAi": true
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "zero_squad",
             "effShootingRate": 0.05
           }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint"
-          }
+        ],
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "scale": 1.0,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "target": "waypoint"
         }
-      ]
+      }
     },
     "count_zero": {
       "is_enabled": true,
@@ -138,7 +120,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -227,7 +209,7 @@
           "time": 5.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitAttackTarget": {
           "playerAttracted": true,
@@ -251,23 +233,39 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player",
         "tm": [
-          [-0.937075,0.0,-0.349129],
-          [0.0,1.0,0.0],
-          [0.349129,0.0,-0.937075],
-          [18853.4,2594.93,-2057.14]
+          [
+            -0.937075,
+            0.0,
+            -0.349129
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.349129,
+            0.0,
+            -0.937075
+          ],
+          [
+            18853.4,
+            2594.93,
+            -2057.14
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "b-17e",
@@ -294,17 +292,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "zeros01",
         "tm": [
-          [-0.972581,0.0,-0.232564],
-          [0.0,1.0,0.0],
-          [0.232564,0.0,-0.972581],
-          [19515.8,2948.37,-1906.45]
+          [
+            -0.972581,
+            0.0,
+            -0.232564
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.232564,
+            0.0,
+            -0.972581
+          ],
+          [
+            19515.8,
+            2948.37,
+            -1906.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -330,17 +342,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "zeros02",
         "tm": [
-          [-0.469895,0.0,-0.882722],
-          [0.0,1.0,0.0],
-          [0.882722,0.0,-0.469895],
-          [19300.7,2948.37,-1627.99]
+          [
+            -0.469895,
+            0.0,
+            -0.882722
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.882722,
+            0.0,
+            -0.469895
+          ],
+          [
+            19300.7,
+            2948.37,
+            -1627.99
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -366,17 +392,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "zeros03",
         "tm": [
-          [-0.875821,0.0,-0.482636],
-          [0.0,1.0,0.0],
-          [0.482636,0.0,-0.875821],
-          [19642.2,2948.37,-1629.88]
+          [
+            -0.875821,
+            0.0,
+            -0.482636
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.482636,
+            0.0,
+            -0.875821
+          ],
+          [
+            19642.2,
+            2948.37,
+            -1629.88
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -402,17 +442,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "player_himself",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18897.5,316.636,-2443.96]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18897.5,
+            316.636,
+            -2443.96
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
@@ -421,46 +477,72 @@
           "squad_members": "player",
           "object_type": "isPlayer"
         },
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "way": {}
+      },
+      {
         "name": "zero_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20351.3,316.635,-2006.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20351.3,
+            316.635,
+            -2006.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "zeros01"
-          },
-          {
-            "squad_members": "zeros02"
-          },
-          {
-            "squad_members": "zeros03"
-          }
-        ],
-        "way": []
+        "props": {
+          "squad_members": [
+            "zeros01",
+            "zeros02",
+            "zeros03"
+          ]
+        },
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "waypoint": {
       "type": "Sphere",
       "tm": [
-        [2000.0,0.0,0.0],
-        [0.0,2000.0,0.0],
-        [0.0,0.0,2000.0],
-        [474.417,2119.2,-12250.3]
+        [
+          2000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2000.0
+        ],
+        [
+          474.417,
+          2119.2,
+          -12250.3
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

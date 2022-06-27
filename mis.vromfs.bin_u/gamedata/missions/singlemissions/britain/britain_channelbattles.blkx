@@ -25,7 +25,10 @@
       "gt_cooperative": true,
       "gt_reload_explosives": true,
       "customWeather": {
-        "windDir": [0.6,0.8],
+        "windDir": [
+          0.6,
+          0.8
+        ],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
@@ -61,7 +64,7 @@
         }
       }
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -70,60 +73,42 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "luftwaffe"
-              },
-              {
-                "point": "ships_start_area"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 1,
+            "side": "ally",
+            "point": [
+              "luftwaffe",
+              "ships_start_area"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "bomber",
               "side": "player",
               "target": "player",
               "lookAt": "ships_start_area"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "bomber",
               "side": "ally",
               "target": "luftwaffe",
               "lookAt": "ships_start_area"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "transport",
               "side": "enemy",
               "target": "convoy_ships_cargo00"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -136,140 +121,105 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "leader_of_formation"
-          }
+      "conditions": {},
+      "actions": {
+        "unitSetIndication": {
+          "set": true,
+          "target": "leader_of_formation"
         },
-        {
-          "unitMoveTo": {
-            "target": "ships_start_area",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "luftwaffe"
-          }
+        "unitMoveTo": {
+          "target": "ships_start_area",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "luftwaffe"
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 0.01
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
           }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "luftwaffe"
-            },
-            {
-              "object": "raf_fighters00"
-            },
-            {
-              "object": "raf_fighters01"
-            },
-            {
-              "plane": [
+        ],
+        "unitSetProperties": [
+          {
+            "object": [
+              "luftwaffe",
+              "raf_fighters00",
+              "raf_fighters01"
+            ],
+            "plane": {
+              "targetDeviation": [
                 {
-                  "targetDeviation": {
-                    "trigger": "machine gun",
-                    "defaultVal": 3.0,
-                    "limits": [1.0,4.0]
-                  }
+                  "trigger": "machine gun",
+                  "defaultVal": 3.0,
+                  "limits": [
+                    1.0,
+                    4.0
+                  ]
                 },
                 {
-                  "targetDeviation": {
-                    "trigger": "gunner",
-                    "defaultVal": 1.0,
-                    "limits": [0.5,2.0]
-                  }
+                  "trigger": "gunner",
+                  "defaultVal": 1.0,
+                  "limits": [
+                    0.5,
+                    2.0
+                  ]
                 },
                 {
-                  "targetDeviation": {
-                    "trigger": "cannon",
-                    "defaultVal": 0.9,
-                    "limits": [2.0,4.0]
-                  }
+                  "trigger": "cannon",
+                  "defaultVal": 0.9,
+                  "limits": [
+                    2.0,
+                    4.0
+                  ]
                 }
               ]
             }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "hms_squad"
-            },
-            {
-              "object": "raf_fighters00"
-            },
-            {
-              "object": "raf_fighters01"
-            },
-            {
-              "effShootingRate": 0.5
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "raf_fighters00"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "target": "luftwaffe"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 2
-            },
-            {
-              "playerAttractedEffRate": 0.5
-            }
-          ]
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "single_britain_channelBattles_att00"
+          },
+          {
+            "object": [
+              "hms_squad",
+              "raf_fighters00",
+              "raf_fighters01"
+            ],
+            "effShootingRate": 0.5
           }
+        ],
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "raf_fighters00",
+          "target": [
+            "player",
+            "luftwaffe"
+          ],
+          "fireRandom": true,
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 0.5
         },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
+            "target": "single_britain_channelBattles_att00"
+          },
+          {
             "target": "single_britain_channelBattles_fly00"
           }
-        },
-        {
-          "unitMark": {
-            "target_marking": 1,
-            "target": "convoy_ships_cargo"
-          }
+        ],
+        "unitMark": {
+          "target_marking": 1,
+          "target": "convoy_ships_cargo"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "if_offline": {
       "is_enabled": true,
@@ -284,20 +234,30 @@
           "time": 0.2
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitDamage": {
           "part": 0,
           "power": 0.8,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "convoy_ships_cargo"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "if_offline_properties": {
       "is_enabled": true,
@@ -312,27 +272,23 @@
           "time": 10.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object": "player",
             "targetableByAi": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "player_himself",
             "targetableByAi": true
           }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
+        ],
+        "wait": {
+          "time": 0.5
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "near_ships": {
       "is_enabled": true,
@@ -348,161 +304,111 @@
         }
       },
       "conditions": {
-        "unitWhenInArea": [
-          {
-            "math": "3D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "object": "luftwaffe"
-          },
-          {
-            "object": "player"
-          },
-          {
-            "target": "ships_start_area"
-          }
-        ]
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": [
+            "luftwaffe",
+            "player"
+          ],
+          "target": "ships_start_area"
+        }
       },
-      "actions": [
-        {
-          "unitMoveTo": {
-            "target": "ships_target_area",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "hms_squad",
-            "move_type": "zigzag_move",
-            "zzPeriod": 8.0,
-            "zzAmp": 2500.0,
-            "speed": 60.0
-          }
+      "actions": {
+        "unitMoveTo": {
+          "target": "ships_target_area",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "hms_squad",
+          "move_type": "zigzag_move",
+          "zzPeriod": 8.0,
+          "zzAmp": 2500.0,
+          "speed": 60.0
         },
-        {
-          "unitSetIndication": {
+        "unitSetIndication": [
+          {
             "set": false,
             "target": "leader_of_formation"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": true,
             "target": "convoy_ships_cargo"
           }
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "luftwaffe",
             "target": "hms_squad"
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "hms_squad",
             "target": "luftwaffe",
             "fireRandom": true
+          },
+          {
+            "playerAttracted": true,
+            "object": "raf_fighters01",
+            "target": [
+              "player",
+              "luftwaffe"
+            ],
+            "fireRandom": true,
+            "playerAttractedCount": 2,
+            "playerAttractedEffRate": 0.5
           }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "raf_fighters01"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "target": "luftwaffe"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 2
-            },
-            {
-              "playerAttractedEffRate": 0.5
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "mission_failed"
-            },
-            {
-              "target": "players_count_trigger"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "ships_counter_trigger"
-            },
-            {
-              "target": "dead_ships_counter"
-            },
-            {
-              "target": "ships_done"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "secondary_objective_failed"
-            },
-            {
-              "target": "secondary_objective_completed"
-            }
-          ]
-        },
-        {
-          "triggerDisable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "mission_failed",
+              "players_count_trigger"
+            ]
+          },
+          {
+            "target": [
+              "ships_counter_trigger",
+              "dead_ships_counter",
+              "ships_done"
+            ]
+          }
+        ],
+        "triggerDisable": [
+          {
+            "target": [
+              "secondary_objective_failed",
+              "secondary_objective_completed"
+            ]
+          },
+          {
             "target": "players_count_trigger"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 20.0
           }
+        ],
+        "unitWakeUp": {
+          "target": "raf_fighters01"
         },
-        {
-          "unitWakeUp": {
-            "target": "raf_fighters01"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object": "hms_squad",
-            "attack_type": "fire_at_will",
-            "effShootingRate": 0.1
-          }
+        "unitSetProperties": {
+          "object": "hms_squad",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.1
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "players_count_trigger": {
       "is_enabled": false,
@@ -534,7 +440,7 @@
           "var": "players_count_var"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "ships_counter_trigger": {
       "is_enabled": false,
@@ -549,7 +455,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -562,7 +468,7 @@
           "var": "players_count_var"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dead_ships_counter": {
       "is_enabled": false,
@@ -587,23 +493,21 @@
           "var": "dead_ships_var"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "dead_ships_var"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 1.0,
             "var": "players_count_var"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "ships_done": {
       "is_enabled": false,
@@ -626,14 +530,12 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "mission_failed"
-          },
-          {
-            "target": "ships_counter_trigger"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "mission_failed",
+            "ships_counter_trigger"
+          ]
+        },
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
           "target_marking": 0,
@@ -670,7 +572,7 @@
           "target": "mission_completed"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_completed": {
       "is_enabled": false,
@@ -716,7 +618,7 @@
           "debriefingTimer": 3
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_failed": {
       "is_enabled": false,
@@ -761,7 +663,7 @@
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "secondary_objective_failed": {
       "is_enabled": true,
@@ -799,7 +701,7 @@
           "status": 3
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "secondary_objective_completed": {
       "is_enabled": true,
@@ -827,29 +729,17 @@
           "object": "player_himself",
           "target": "luftwaffe"
         },
-        "unitWhenInArea": [
-          {
-            "math": "3D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "object": "luftwaffe"
-          },
-          {
-            "object": "player"
-          },
-          {
-            "target": "ships_start_area"
-          }
-        ]
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": [
+            "luftwaffe",
+            "player"
+          ],
+          "target": "ships_start_area"
+        }
       },
       "actions": {
         "triggerDisable": {
@@ -860,7 +750,7 @@
           "status": 2
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "luftwaffe_turning_back": {
       "is_enabled": true,
@@ -897,7 +787,7 @@
           "object": "luftwaffe"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -913,8 +803,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_britain_channelBattles_fly00": {
       "is_enabled": false,
@@ -926,8 +816,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_britain_channelBattles_fly01": {
       "is_enabled": false,
@@ -939,26 +829,42 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "players_count_var": 1,
     "dead_ships_var": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player",
         "tm": [
-          [-0.573577,0.0,0.819152],
-          [0.0,1.0,0.0],
-          [-0.819152,0.0,-0.573577],
-          [40208.3,3000.0,-17858.9]
+          [
+            -0.573577,
+            0.0,
+            0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.819152,
+            0.0,
+            -0.573577
+          ],
+          [
+            40208.3,
+            3000.0,
+            -17858.9
+          ]
         ],
         "unit_class": "ju-87b-2",
         "closed_waypoints": false,
@@ -992,17 +898,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "luftwaffe",
         "tm": [
-          [-0.608761,0.0,0.793353],
-          [0.0,1.0,0.0],
-          [-0.793353,0.0,-0.608761],
-          [39885.7,3000.0,-17418.9]
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            39885.7,
+            3000.0,
+            -17418.9
+          ]
         ],
         "unit_class": "ju-87b-2",
         "closed_waypoints": false,
@@ -1036,17 +956,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "raf_fighters00",
         "tm": [
-          [-0.34202,0.0,-0.939693],
-          [0.0,1.0,0.0],
-          [0.939693,0.0,-0.34202],
-          [42239.0,3000.0,-10559.3]
+          [
+            -0.34202,
+            0.0,
+            -0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            42239.0,
+            3000.0,
+            -10559.3
+          ]
         ],
         "unit_class": "hurricane_mk1",
         "closed_waypoints": false,
@@ -1080,17 +1014,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "raf_fighters01",
         "tm": [
-          [-0.34202,0.0,-0.939693],
-          [0.0,1.0,0.0],
-          [0.939693,0.0,-0.34202],
-          [28412.6,3000.0,3230.0]
+          [
+            -0.34202,
+            0.0,
+            -0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            28412.6,
+            3000.0,
+            3230.0
+          ]
         ],
         "unit_class": "spitfire_mk1",
         "closed_waypoints": false,
@@ -1125,109 +1073,163 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "player_himself",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [40313.8,-1.0,-16638.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            40313.8,
+            -1.0,
+            -16638.1
+          ]
         ],
         "props": {
           "squad_members": "player",
           "object_type": "isPlayer"
         }
-      }
-    },
-    {
-      "squad": {
+      },
+      {
         "name": "leader_of_formation",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [40174.2,-1.0,-17080.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            40174.2,
+            -1.0,
+            -17080.2
+          ]
         ],
         "props": {
           "squad_members": "luftwaffe",
           "object_type": "isFormationLeader"
         }
-      }
-    },
-    {
-      "squad": {
+      },
+      {
         "name": "hms_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20034.1,-1.0,-25254.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20034.1,
+            -1.0,
+            -25254.8
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "convoy_ships_cargo00"
-          },
-          {
-            "squad_members": "convoy_ships_cruiser00"
-          },
-          {
-            "squad_members": "convoy_ships_cruiser01"
-          },
-          {
-            "squad_members": "convoy_ships_destroyer00"
-          },
-          {
-            "squad_members": "convoy_ships_cargo01"
-          },
-          {
-            "squad_members": "convoy_ships_cargo02"
-          },
-          {
-            "squad_members": "convoy_ships_destroyer01"
-          },
-          {
-            "squad_members": "convoy_ships_cargo03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "convoy_ships_cargo00",
+            "convoy_ships_cruiser00",
+            "convoy_ships_cruiser01",
+            "convoy_ships_destroyer00",
+            "convoy_ships_cargo01",
+            "convoy_ships_cargo02",
+            "convoy_ships_destroyer01",
+            "convoy_ships_cargo03"
+          ]
+        }
+      },
+      {
         "name": "convoy_ships_cargo",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [28950.1,-1.0,-4896.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            28950.1,
+            -1.0,
+            -4896.3
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "convoy_ships_cargo00"
-          },
-          {
-            "squad_members": "convoy_ships_cargo01"
-          },
-          {
-            "squad_members": "convoy_ships_cargo02"
-          },
-          {
-            "squad_members": "convoy_ships_cargo03"
-          }
-        ]
+        "props": {
+          "squad_members": [
+            "convoy_ships_cargo00",
+            "convoy_ships_cargo01",
+            "convoy_ships_cargo02",
+            "convoy_ships_cargo03"
+          ]
+        }
       }
-    },
-    {
-      "ships": {
+    ],
+    "ships": [
+      {
         "name": "convoy_ships_cargo00",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [29140.8,-1.0,-3778.55]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            29140.8,
+            -1.0,
+            -3778.55
+          ]
         ],
         "unit_class": "hms_cargo_ship",
         "closed_waypoints": false,
@@ -1245,22 +1247,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [15.0,6.0],
-          "formation_noise": [-0.3,-0.2],
+          "formation_step": [
+            15.0,
+            6.0
+          ],
+          "formation_noise": [
+            -0.3,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "convoy_ships_cruiser00",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [29362.8,-1.0,-4249.39]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            29362.8,
+            -1.0,
+            -4249.39
+          ]
         ],
         "unit_class": "hms_leander",
         "closed_waypoints": false,
@@ -1278,22 +1300,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [15.0,5.0],
-          "formation_noise": [-0.3,-0.2],
+          "formation_step": [
+            15.0,
+            5.0
+          ],
+          "formation_noise": [
+            -0.3,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "convoy_ships_cruiser01",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [30065.3,-1.0,-3311.2]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            30065.3,
+            -1.0,
+            -3311.2
+          ]
         ],
         "unit_class": "hms_leander",
         "closed_waypoints": false,
@@ -1311,22 +1353,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [15.0,5.0],
-          "formation_noise": [0.2,-0.2],
+          "formation_step": [
+            15.0,
+            5.0
+          ],
+          "formation_noise": [
+            0.2,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "convoy_ships_destroyer00",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [28775.5,-1.0,-4136.05]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            28775.5,
+            -1.0,
+            -4136.05
+          ]
         ],
         "unit_class": "uss_dd_georgetown",
         "closed_waypoints": false,
@@ -1344,22 +1406,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [15.0,5.0],
-          "formation_noise": [-0.3,-0.2],
+          "formation_step": [
+            15.0,
+            5.0
+          ],
+          "formation_noise": [
+            -0.3,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "convoy_ships_cargo01",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [29847.2,-1.0,-3903.2]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            29847.2,
+            -1.0,
+            -3903.2
+          ]
         ],
         "unit_class": "hms_cargo_ship",
         "closed_waypoints": false,
@@ -1377,22 +1459,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [15.0,6.0],
-          "formation_noise": [-0.3,-0.2],
+          "formation_step": [
+            15.0,
+            6.0
+          ],
+          "formation_noise": [
+            -0.3,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "convoy_ships_cargo02",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [30207.5,-1.0,-3820.5]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            30207.5,
+            -1.0,
+            -3820.5
+          ]
         ],
         "unit_class": "hms_cargo_ship",
         "closed_waypoints": false,
@@ -1410,22 +1512,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [15.0,6.0],
-          "formation_noise": [-0.3,-0.2],
+          "formation_step": [
+            15.0,
+            6.0
+          ],
+          "formation_noise": [
+            -0.3,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "convoy_ships_destroyer01",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [28414.6,-1.0,-4593.6]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            28414.6,
+            -1.0,
+            -4593.6
+          ]
         ],
         "unit_class": "uss_dd_georgetown",
         "closed_waypoints": false,
@@ -1443,22 +1565,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [15.0,5.0],
-          "formation_noise": [-0.3,-0.2],
+          "formation_step": [
+            15.0,
+            5.0
+          ],
+          "formation_noise": [
+            -0.3,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "convoy_ships_cargo03",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [29308.6,-1.0,-3249.75]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            29308.6,
+            -1.0,
+            -3249.75
+          ]
         ],
         "unit_class": "hms_cargo_ship",
         "closed_waypoints": false,
@@ -1476,68 +1618,116 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "ships_start_area": {
       "type": "Sphere",
       "tm": [
-        [4884.6,0.0,0.0],
-        [0.0,4884.6,0.0],
-        [0.0,0.0,4884.6],
-        [29121.6,3000.0,-4106.35]
+        [
+          4884.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4884.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4884.6
+        ],
+        [
+          29121.6,
+          3000.0,
+          -4106.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "ships_target_area": {
       "type": "Sphere",
       "tm": [
-        [4173.7,0.0,0.0],
-        [0.0,4173.7,0.0],
-        [0.0,0.0,4173.7],
-        [9861.2,-1.0,-31346.5]
+        [
+          4173.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4173.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4173.7
+        ],
+        [
+          9861.2,
+          -1.0,
+          -31346.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "final_area": {
       "type": "Sphere",
       "tm": [
-        [4070.5,0.0,0.0],
-        [0.0,4070.5,0.0],
-        [0.0,0.0,4070.5],
-        [40210.5,1919.95,-20971.6]
+        [
+          4070.5,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4070.5,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4070.5
+        ],
+        [
+          40210.5,
+          1919.95,
+          -20971.6
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

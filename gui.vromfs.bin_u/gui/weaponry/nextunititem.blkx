@@ -4,36 +4,28 @@
   "total-input-transparent": "yes",
   "css-hier-invalidate": "yes",
   "inactive": "yes",
-  "tdiv": [
-    {
-      "flow": "vertical"
-    },
-    {
-      "width": "@slot_width"
-    },
-    {
-      "textarea": {
+  "tdiv": {
+    "flow": "vertical",
+    "width": "@slot_width",
+    "textarea": [
+      {
         "id": "nextResearch_title",
         "removeParagraphIndent": "yes",
         "overlayTextColor": "active",
         "padding-left": "1@slot_interval"
-      }
-    },
-    {
-      "textarea": {
+      },
+      {
         "id": "available_free_exp_text",
         "position": "relative",
         "pos": "0, -1@shopItemPad",
         "removeParagraphIndent": "yes",
         "padding-left": "1@slot_interval"
       }
-    },
-    {
-      "rankUpList": {
-        "id": "next_unit",
-        "size": "@slot_width, @slot_height + 2@slot_vert_pad",
-        "holdTooltipChildren": "yes"
-      }
+    ],
+    "rankUpList": {
+      "id": "next_unit",
+      "size": "@slot_width, @slot_height + 2@slot_vert_pad",
+      "holdTooltipChildren": "yes"
     }
-  ]
+  }
 }

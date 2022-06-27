@@ -4,7 +4,7 @@
   "transivers": {
     "search": {
       "pulsePower": 450.0,
-      "pulseWidth": 0.0,
+      "pulseWidth": 1E-06,
       "prf": 2700.0,
       "band": 1,
       "range": 4000.0,
@@ -17,15 +17,24 @@
   },
   "scanPatterns": {
     "search": {
-      "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-30.0,30.0],
+      "azimuthLimits": [
+        -30.0,
+        30.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        30.0
+      ],
       "type": "no"
     }
   },
   "signals": {
     "search": {
       "groundClutter": true,
-      "dynamicRange": [30.0,3.0],
+      "dynamicRange": [
+        30.0,
+        3.0
+      ],
       "distance": {
         "presents": true,
         "minValue": 200.0,
@@ -49,8 +58,14 @@
             "transiver": "search"
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-30.0,30.0],
-            "distanceRange": [0.0,4000.0]
+            "azimuthRange": [
+              -30.0,
+              30.0
+            ],
+            "distanceRange": [
+              0.0,
+              4000.0
+            ]
           }
         },
         "setStandbyMode": {
@@ -66,7 +81,7 @@
           "setScanPattern": {
             "scanPattern": "search"
           },
-          "clearTargets": []
+          "clearTargets": {}
         },
         "setSearchMode": {
           "setModeName": {
@@ -87,8 +102,8 @@
           "event": "init",
           "stateTo": "standby",
           "actions": {
-            "init": [],
-            "setStandbyMode": []
+            "init": {},
+            "setStandbyMode": {}
           }
         },
         "switchOn": {
@@ -97,7 +112,7 @@
           "event": "enable",
           "stateTo": "search",
           "actions": {
-            "setSearchMode": []
+            "setSearchMode": {}
           }
         },
         "switchOff": {
@@ -106,13 +121,13 @@
           "event": "disable",
           "stateTo": "standby",
           "actions": {
-            "setStandbyMode": []
+            "setStandbyMode": {}
           }
         },
         "switchScopeRange": {
           "command": "rangeSwitch",
           "actions": {
-            "setNextScopeRange": []
+            "setNextScopeRange": {}
           }
         }
       }
@@ -123,7 +138,7 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": []
+            "scan": {}
           }
         },
         "detect": {
@@ -137,13 +152,13 @@
               "source": "continuousScale",
               "width": 0.0
             },
-            "detectTarget": []
+            "detectTarget": {}
           }
         },
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": []
+            "addTarget": {}
           }
         }
       }

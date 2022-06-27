@@ -1,95 +1,63 @@
-[
-  {
-    "tdiv": [
-      {
-        "position": "absolute"
-      },
-      {
-        "pos": "pw/2-w/2, 0"
-      },
-      {
-        "width": "@shHud"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "multiplayerScore": {
-          "id": "hud_multiplayer_score",
-          "behaviour": "bhvUpdateByWatched",
-          "left": "50%pw-50%w",
-          "top": "0.065@scrn_tgt",
-          "position": "relative",
-          "height": "1@multiplayerScoreHeight",
-          "tdiv": {
-            "id": "hud_multiplayer_score_progress_bar",
-            "size": "11ph, ph",
-            "position": "absolute",
-            "pos": "50%pw-50%w, 0"
-          }
+{
+  "tdiv": [
+    {
+      "position": "absolute",
+      "pos": "pw/2-w/2, 0",
+      "width": "@shHud",
+      "flow": "vertical",
+      "multiplayerScore": {
+        "id": "hud_multiplayer_score",
+        "behaviour": "bhvUpdateByWatched",
+        "left": "50%pw-50%w",
+        "top": "0.065@scrn_tgt",
+        "position": "relative",
+        "height": "1@multiplayerScoreHeight",
+        "tdiv": {
+          "id": "hud_multiplayer_score_progress_bar",
+          "size": "11ph, ph",
+          "position": "absolute",
+          "pos": "50%pw-50%w, 0"
         }
       },
-      {
-        "hudMessages": [
-          {
-            "id": "hud_messages_race_messages"
+      "hudMessages": [
+        {
+          "id": "hud_messages_race_messages",
+          "message_style": "race_notification",
+          "position": "absolute",
+          "pos": "pw/2 - w/2, 0.05@shHud",
+          "width": "pw",
+          "flow": "vertical",
+          "text": {
+            "id": "race_status",
+            "pos": "50%pw - 50%w, 0",
+            "position": "relative",
+            "overlayTextColor": "active",
+            "text": "",
+            "hideEmptyText": "yes",
+            "text-align": "center",
+            "hudFont": "small"
           },
-          {
-            "message_style": "race_notification"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "pos": "pw/2 - w/2, 0.05@shHud"
-          },
-          {
-            "width": "pw"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "text": {
-              "id": "race_status",
-              "pos": "50%pw - 50%w, 0",
-              "position": "relative",
-              "overlayTextColor": "active",
-              "text": "",
-              "hideEmptyText": "yes",
-              "text-align": "center",
-              "hudFont": "small"
-            }
-          },
-          {
-            "tdiv": {
+          "tdiv": [
+            {
               "id": "leader",
               "pos": "50%pw - 50%w, 0",
               "position": "relative",
               "isPlayer": "no",
               "isLeader": "yes",
-              "tdiv": [
-                {
-                  "pos": "50%pw-75%w, 0"
-                },
-                {
-                  "position": "relative"
-                },
-                {
-                  "width": "0.1@shHud + 0.05@shHud"
-                },
-                {
-                  "text": {
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
                     "id": "time",
                     "width": "0.1@shHud",
                     "text": "",
                     "hideEmptyText": "yes",
                     "text-align": "right",
                     "hudFont": "small"
-                  }
-                },
-                {
-                  "text": {
+                  },
+                  {
                     "id": "place",
                     "width": "0.05@shHud",
                     "text": "",
@@ -97,8 +65,8 @@
                     "text-align": "center",
                     "hudFont": "small"
                   }
-                }
-              ],
+                ]
+              },
               "text": {
                 "id": "name",
                 "text": "",
@@ -106,36 +74,26 @@
                 "position": "relative",
                 "hudFont": "small"
               }
-            }
-          },
-          {
-            "tdiv": {
+            },
+            {
               "id": "beforePlayer",
               "pos": "50%pw - 50%w, 0",
               "position": "relative",
               "isPlayer": "no",
-              "tdiv": [
-                {
-                  "pos": "50%pw-75%w, 0"
-                },
-                {
-                  "position": "relative"
-                },
-                {
-                  "width": "0.1@shHud + 0.05@shHud"
-                },
-                {
-                  "text": {
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
                     "id": "time",
                     "width": "0.1@shHud",
                     "text": "",
                     "hideEmptyText": "yes",
                     "text-align": "right",
                     "hudFont": "small"
-                  }
-                },
-                {
-                  "text": {
+                  },
+                  {
                     "id": "place",
                     "width": "0.05@shHud",
                     "text": "",
@@ -143,8 +101,8 @@
                     "text-align": "center",
                     "hudFont": "small"
                   }
-                }
-              ],
+                ]
+              },
               "text": {
                 "id": "name",
                 "text": "",
@@ -152,37 +110,27 @@
                 "position": "relative",
                 "hudFont": "small"
               }
-            }
-          },
-          {
-            "tdiv": {
+            },
+            {
               "id": "player",
               "pos": "50%pw - 50%w, 0",
               "position": "relative",
               "isPlayer": "no",
               "isLeader": "yes",
-              "tdiv": [
-                {
-                  "pos": "50%pw-75%w, 0"
-                },
-                {
-                  "position": "relative"
-                },
-                {
-                  "width": "0.1@shHud + 0.05@shHud"
-                },
-                {
-                  "text": {
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
                     "id": "time",
                     "width": "0.1@shHud",
                     "text": "",
                     "hideEmptyText": "yes",
                     "text-align": "right",
                     "hudFont": "small"
-                  }
-                },
-                {
-                  "text": {
+                  },
+                  {
                     "id": "place",
                     "width": "0.05@shHud",
                     "text": "",
@@ -190,8 +138,8 @@
                     "text-align": "center",
                     "hudFont": "small"
                   }
-                }
-              ],
+                ]
+              },
               "text": {
                 "id": "name",
                 "text": "",
@@ -205,36 +153,26 @@
                 "margin-left": "0.02@shHud",
                 "flow": "vertical"
               }
-            }
-          },
-          {
-            "tdiv": {
+            },
+            {
               "id": "afterPlayer",
               "pos": "50%pw - 50%w, 0",
               "position": "relative",
               "isPlayer": "no",
-              "tdiv": [
-                {
-                  "pos": "50%pw-75%w, 0"
-                },
-                {
-                  "position": "relative"
-                },
-                {
-                  "width": "0.1@shHud + 0.05@shHud"
-                },
-                {
-                  "text": {
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
                     "id": "time",
                     "width": "0.1@shHud",
                     "text": "",
                     "hideEmptyText": "yes",
                     "text-align": "right",
                     "hudFont": "small"
-                  }
-                },
-                {
-                  "text": {
+                  },
+                  {
                     "id": "place",
                     "width": "0.05@shHud",
                     "text": "",
@@ -242,8 +180,8 @@
                     "text-align": "center",
                     "hudFont": "small"
                   }
-                }
-              ],
+                ]
+              },
               "text": {
                 "id": "name",
                 "text": "",
@@ -252,132 +190,92 @@
                 "hudFont": "small"
               }
             }
-          }
-        ]
-      },
-      {
-        "hudMessages": {
+          ]
+        },
+        {
           "id": "hud_message_center_mission_result",
           "pos": "50%pw-50%w, 0.4@shHud",
           "position": "absolute",
           "message_style": "mission_result_notification"
         }
-      },
-      {
-        "tdiv": [
-          {
-            "pos": "pw/2 - w/2, 1@topCenterMessagesTopPos"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "tdiv": {
-              "min-height": "1@topCenterMainMessagesMinHeight",
+      ],
+      "tdiv": [
+        {
+          "pos": "pw/2 - w/2, 1@topCenterMessagesTopPos",
+          "position": "absolute",
+          "flow": "vertical",
+          "tdiv": {
+            "min-height": "1@topCenterMainMessagesMinHeight",
+            "position": "relative",
+            "pos": "pw/2 - w/2, 0",
+            "flow": "vertical",
+            "animSizeObj": {
+              "id": "hud_streaks",
               "position": "relative",
               "pos": "pw/2 - w/2, 0",
-              "flow": "vertical",
-              "animSizeObj": {
-                "id": "hud_streaks",
-                "position": "relative",
-                "pos": "pw/2 - w/2, 0",
-                "width": "45%@rwHud",
-                "animation": "hide",
-                "height-base": "1",
-                "height-end": "100",
-                "height": "1",
-                "_size-timer": "0",
-                "tdiv": [
+              "width": "45%@rwHud",
+              "animation": "hide",
+              "height-base": "1",
+              "height-end": "100",
+              "height": "1",
+              "_size-timer": "0",
+              "tdiv": {
+                "id": "streak_content",
+                "width": "pw",
+                "flow": "vertical",
+                "display": "hide",
+                "enable": "no",
+                "behaviour": "massTransparency",
+                "transp-base": "255",
+                "transp-end": "0",
+                "transp-func": "cube",
+                "transp-time": "2000",
+                "_transp-timer": "1",
+                "_blink": "no",
+                "img": {
+                  "id": "streak_icon",
+                  "size": "0.06@shHud, 0.06@shHud",
+                  "pos": "pw/2-w/2, 0",
+                  "position": "relative"
+                },
+                "textareaNoTab": [
                   {
-                    "id": "streak_content"
+                    "id": "streak_header",
+                    "width": "pw",
+                    "style": "color:@streakTextColor; font:@fontHudMedium; text-align:center;",
+                    "text": "",
+                    "shadeStyle": "HudHeader3D",
+                    "pos": "0, -0.004*@shHud",
+                    "position": "relative"
                   },
                   {
-                    "width": "pw"
-                  },
-                  {
-                    "flow": "vertical"
-                  },
-                  {
-                    "display": "hide"
-                  },
-                  {
-                    "enable": "no"
-                  },
-                  {
-                    "behaviour": "massTransparency"
-                  },
-                  {
-                    "transp-base": "255"
-                  },
-                  {
-                    "transp-end": "0"
-                  },
-                  {
-                    "transp-func": "cube"
-                  },
-                  {
-                    "transp-time": "2000"
-                  },
-                  {
-                    "_transp-timer": "1"
-                  },
-                  {
-                    "_blink": "no"
-                  },
-                  {
-                    "img": {
-                      "id": "streak_icon",
-                      "size": "0.06@shHud, 0.06@shHud",
-                      "pos": "pw/2-w/2, 0",
-                      "position": "relative"
-                    }
-                  },
-                  {
-                    "textareaNoTab": {
-                      "id": "streak_header",
-                      "width": "pw",
-                      "style": "color:@streakTextColor; font:@fontHudMedium; text-align:center;",
-                      "text": "",
-                      "shadeStyle": "HudHeader3D",
-                      "pos": "0, -0.004*@shHud",
-                      "position": "relative"
-                    }
-                  },
-                  {
-                    "textareaNoTab": {
-                      "id": "streak_score",
-                      "width": "pw",
-                      "style": "color:@white; font:@fontHudSmall; text-align:center;",
-                      "shadeStyle": "HudTinyLight",
-                      "text": ""
-                    }
+                    "id": "streak_score",
+                    "width": "pw",
+                    "style": "color:@white; font:@fontHudSmall; text-align:center;",
+                    "shadeStyle": "HudTinyLight",
+                    "text": ""
                   }
                 ]
-              },
-              "hudMessages": {
-                "id": "hud_message_center_main_notification",
-                "pos": "pw/2 - w/2, 0",
-                "position": "relative",
-                "message_style": "center_main_notification",
-                "display": "hide"
               }
+            },
+            "hudMessages": {
+              "id": "hud_message_center_main_notification",
+              "pos": "pw/2 - w/2, 0",
+              "position": "relative",
+              "message_style": "center_main_notification",
+              "display": "hide"
             }
           },
-          {
-            "hudMessages": {
+          "hudMessages": [
+            {
               "id": "hud_messages_death_reason_notification",
               "width": "@shHud",
               "pos": "pw/2 - w/2, 0",
               "position": "relative",
               "flow": "vertical",
               "message_style": "death_reason_notification"
-            }
-          },
-          {
-            "hudMessages": {
+            },
+            {
               "id": "hud_messages_reward_messages",
               "width": "@shHud",
               "position": "relative",
@@ -419,79 +317,51 @@
                 }
               }
             }
-          }
-        ]
-      },
-      {
-        "tdiv": {
+          ]
+        },
+        {
           "id": "mission_result_box_start",
           "height": "0.3@sf",
           "width": "10h",
           "position": "absolute",
           "pos": "50%pw-50%w, 0.3@shHud - 50%h"
         }
-      }
-    ]
-  },
-  {
-    "tdiv": {
+      ]
+    },
+    {
       "id": "tutorial_elements_nest",
       "size": "@rwHud, @rhHud",
       "pos": "pw/2-w/2, ph/2-h/2",
       "position": "absolute",
       "display": "hide",
       "total-input-transparent": "yes"
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "pos": "0.5pw-0.5w, @hintAboveActionBarPos -h",
       "position": "absolute",
-      "tdiv": [
-        {
-          "id": "hud_hints_nest"
-        },
-        {
-          "width": "2/3@rwHud"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "css-hier-invalidate": "yes"
-        },
-        {
-          "behavior": "Timer"
-        },
-        {
-          "tdiv": [
-            {
-              "width": "pw"
-            },
-            {
-              "position": "absolute"
-            },
-            {
-              "pos": "pw/2 - w/2, -h"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "tdiv": {
+      "tdiv": {
+        "id": "hud_hints_nest",
+        "width": "2/3@rwHud",
+        "flow": "vertical",
+        "css-hier-invalidate": "yes",
+        "behavior": "Timer",
+        "tdiv": [
+          {
+            "width": "pw",
+            "position": "absolute",
+            "pos": "pw/2 - w/2, -h",
+            "flow": "vertical",
+            "tdiv": [
+              {
                 "id": "common_priority_hints",
                 "width": "pw",
                 "flow": "vertical"
-              }
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "id": "ship_obstacle_rf",
                 "size": "pw, 0.04@shHud"
-              }
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "width": "pw",
                 "min-height": "0.1@shHud",
                 "tdiv": {
@@ -502,36 +372,24 @@
                   "flow": "vertical"
                 }
               }
-            }
-          ]
-        },
-        {
-          "tdiv": [
-            {
-              "height": "0.08@shHud"
-            },
-            {
-              "position": "relative"
-            },
-            {
-              "left": "pw/2 - w/2"
-            },
-            {
-              "div": {
+            ]
+          },
+          {
+            "height": "0.08@shHud",
+            "position": "relative",
+            "left": "pw/2 - w/2",
+            "div": [
+              {
                 "id": "iconed_hints",
                 "height": "ph"
-              }
-            },
-            {
-              "div": {
+              },
+              {
                 "id": "display_timers",
                 "height": "ph"
               }
-            }
-          ]
-        },
-        {
-          "tdiv": {
+            ]
+          },
+          {
             "id": "actionbar_hints_nest",
             "width": "1@shHud",
             "height": "0.065@shHud",
@@ -548,71 +406,55 @@
                 "flow": "vertical"
               }
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "tutorial_hints",
             "width": "pw",
             "position": "root",
             "pos": "50%sw-50%w, 1@bhHud + 0.67@shHud",
             "flow": "vertical"
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "minor_priority_hints",
             "width": "pw",
             "position": "root",
             "pos": "50%sw-50%w, @shHud - h",
             "flow": "vertical"
           }
+        ],
+        "hudMessages": {
+          "id": "hud_message_zone_capture_notification",
+          "width": "pw",
+          "height": "0.065@shHud",
+          "message_style": "zone_capture_notification",
+          "input-transparent": "yes"
         },
-        {
-          "hudMessages": {
-            "id": "hud_message_zone_capture_notification",
-            "width": "pw",
-            "height": "0.065@shHud",
-            "message_style": "zone_capture_notification",
-            "input-transparent": "yes"
-          }
-        },
-        {
-          "textAreaCentered": {
-            "id": "low-quality-model-warning",
-            "width": "pw",
-            "style": "color:@warningTextColor; font:@fontHudNormal;",
-            "text": "#low_quality_model_in_hangar",
-            "display": "hide"
-          }
+        "textAreaCentered": {
+          "id": "low-quality-model-warning",
+          "width": "pw",
+          "style": "color:@warningTextColor; font:@fontHudNormal;",
+          "text": "#low_quality_model_in_hangar",
+          "display": "hide"
         }
-      ]
-    }
-  },
-  {
-    "tdiv": {
+      }
+    },
+    {
       "id": "hud_live_stats_nest",
       "width": "@shHud",
       "pos": "pw/2-w/2, ph-h-0.03@shHud",
       "position": "absolute",
       "display": "hide"
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "id": "hud_message_timers"
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "behaviour": "darg",
       "position": "root",
       "pos": "0, 0",
       "size": "pw, ph"
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "flow": "vertical",
       "tacticalMap": {
         "id": "hud_tank_tactical_map",
@@ -634,10 +476,8 @@
           "leftTextAlign": "yes"
         }
       }
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "id": "hud_enemy_damage_nest",
       "position": "absolute",
       "pos": "pw - w, @menuTouchShortcutHeight + @touchElemetMargin",
@@ -666,10 +506,8 @@
         "flow": "vertical"
       }
     }
-  },
-  {
-    "timer": {
-      "id": "hud_message_timer"
-    }
+  ],
+  "timer": {
+    "id": "hud_message_timer"
   }
-]
+}

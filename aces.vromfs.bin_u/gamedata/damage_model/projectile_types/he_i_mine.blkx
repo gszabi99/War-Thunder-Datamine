@@ -8,22 +8,32 @@
   "stabilityReductionAfterPenetration": 0.15,
   "bulletType": "he_i_mine",
   "slopeEffectPreset": "ap",
-  "fresnel": [0.23,0.1,2.0],
-  "explodeOnRendinst": true,
-  "stabilityRicochetModifier": [
-    {
-      "mod1": [0.0,0.05]
-    },
-    {
-      "mod2": [20.0,0.1]
-    },
-    {
-      "mod3": [30.0,0.2]
-    },
-    {
-      "mod3": [45.0,0.3]
-    }
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
   ],
+  "explodeOnRendinst": true,
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.05
+    ],
+    "mod2": [
+      20.0,
+      0.1
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.2
+      ],
+      [
+        45.0,
+        0.3
+      ]
+    ]
+  },
   "pressureDamage": {
     "damageType": "pressure"
   }

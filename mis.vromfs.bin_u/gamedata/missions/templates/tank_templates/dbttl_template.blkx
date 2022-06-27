@@ -23,9 +23,9 @@
       "pressure": 760.0,
       "temperature": 30.0
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -38,84 +38,64 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "missionNamePostfix": {
           "postfix": "_DBttlA"
         }
       },
-      "actions": [
-        {
-          "varSetString": {
+      "actions": {
+        "varSetString": [
+          {
             "value": "dbttl_t1_capture_area",
             "var": "zone_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t1_spawn_01",
             "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t1_spawn_02",
             "var": "t1_spawn_02_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t2_spawn_01",
             "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t2_spawn_02",
             "var": "t2_spawn_02_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_battle_area",
             "var": "battle_area_name"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "dbttl_a_start"
-            },
-            {
-              "target": "dbttl_check_random_spawn"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "set_dbttl_timer"
-            },
-            {
-              "target": "dbttl_a_set_ticket_var"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": ""
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "dbttl_a_start",
+              "dbttl_check_random_spawn"
+            ]
+          },
+          {
+            "target": [
+              "set_dbttl_timer",
+              "dbttl_a_set_ticket_var"
+            ]
           }
+        ],
+        "comment": {
+          "value": ""
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "dbttl_timer_from_desc",
-            "fromDescriptor": "mission_timer"
-          }
+        "varSetInt": {
+          "value": 0,
+          "var": "dbttl_timer_from_desc",
+          "fromDescriptor": "mission_timer"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dbttl_b_init": {
       "is_enabled": true,
@@ -126,84 +106,64 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "missionNamePostfix": {
           "postfix": "_DBttlB"
         }
       },
-      "actions": [
-        {
-          "varSetString": {
+      "actions": {
+        "varSetString": [
+          {
             "value": "dbttl_t2_capture_area",
             "var": "zone_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t1_spawn_01",
             "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t1_spawn_02",
             "var": "t1_spawn_02_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t2_spawn_01",
             "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_t2_spawn_02",
             "var": "t2_spawn_02_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "dbttl_battle_area",
             "var": "battle_area_name"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "dbttl_b_start"
-            },
-            {
-              "target": "dbttl_check_random_spawn"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "set_dbttl_timer"
-            },
-            {
-              "target": "dbttl_b_set_ticket_var"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": ""
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "dbttl_b_start",
+              "dbttl_check_random_spawn"
+            ]
+          },
+          {
+            "target": [
+              "set_dbttl_timer",
+              "dbttl_b_set_ticket_var"
+            ]
           }
+        ],
+        "comment": {
+          "value": ""
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "dbttl_timer_from_desc",
-            "fromDescriptor": "mission_timer"
-          }
+        "varSetInt": {
+          "value": 0,
+          "var": "dbttl_timer_from_desc",
+          "fromDescriptor": "mission_timer"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dbttl_a_start": {
       "is_enabled": false,
@@ -218,79 +178,67 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@zone_name",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "isAADef",
             "type": "var"
           }
-        },
-        {
-          "varCompareBool": {
-            "var_value": "isAADef",
-            "value": false,
-            "comparasion_func": "equal"
-          }
+        ],
+        "varCompareBool": {
+          "var_value": "isAADef",
+          "value": false,
+          "comparasion_func": "equal"
         }
-      ],
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 1,
-            "timeMultiplier": 1.5,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "target": "@zone_name",
-            "canCaptureOnGround": false,
-            "playAirfieldSound": false,
-            "canCaptureInAir": false,
-            "canCaptureByGM": true,
-            "useHUDMarkers": true,
-            "captureNoPenalty": true,
-            "markUnitPreset": "tank_decal",
-            "markUnits": "cz_circle",
-            "zoneDefenders": [],
-            "tags": {
-              "air": false,
-              "helicopter": true,
-              "type_attack_helicopter": true,
-              "type_utility_helicopter": true,
-              "tank": true
-            }
+      },
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 1,
+          "timeMultiplier": 1.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "@zone_name",
+          "canCaptureOnGround": false,
+          "playAirfieldSound": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "useHUDMarkers": true,
+          "captureNoPenalty": true,
+          "markUnitPreset": "tank_decal",
+          "markUnits": "cz_circle",
+          "zoneDefenders": {},
+          "tags": {
+            "air": false,
+            "helicopter": true,
+            "type_attack_helicopter": true,
+            "type_utility_helicopter": true,
+            "tank": true
           }
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "wait": {
+          "time": 3.0
         },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "avg_DBttlA_objective_01",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "avg_DBttlA_objective_02",
             "object_var_comp_op": "equal",
             "object_var_name": ""
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "dbttl_zone_captured_by_t2"
-          }
+        ],
+        "triggerEnable": {
+          "target": "dbttl_zone_captured_by_t2"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dbttl_b_start": {
       "is_enabled": false,
@@ -305,79 +253,67 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@zone_name",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "isAADef",
             "type": "var"
           }
-        },
-        {
-          "varCompareBool": {
-            "var_value": "isAADef",
-            "value": false,
-            "comparasion_func": "equal"
-          }
+        ],
+        "varCompareBool": {
+          "var_value": "isAADef",
+          "value": false,
+          "comparasion_func": "equal"
         }
-      ],
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 2,
-            "timeMultiplier": 1.5,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "target": "@zone_name",
-            "canCaptureOnGround": false,
-            "playAirfieldSound": false,
-            "canCaptureInAir": false,
-            "canCaptureByGM": true,
-            "useHUDMarkers": true,
-            "captureNoPenalty": true,
-            "markUnitPreset": "tank_decal",
-            "markUnits": "cz_circle",
-            "zoneDefenders": [],
-            "tags": {
-              "air": false,
-              "helicopter": true,
-              "type_attack_helicopter": true,
-              "type_utility_helicopter": true,
-              "tank": true
-            }
+      },
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 2,
+          "timeMultiplier": 1.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "@zone_name",
+          "canCaptureOnGround": false,
+          "playAirfieldSound": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "useHUDMarkers": true,
+          "captureNoPenalty": true,
+          "markUnitPreset": "tank_decal",
+          "markUnits": "cz_circle",
+          "zoneDefenders": {},
+          "tags": {
+            "air": false,
+            "helicopter": true,
+            "type_attack_helicopter": true,
+            "type_utility_helicopter": true,
+            "tank": true
           }
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "wait": {
+          "time": 3.0
         },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "avg_DBttlB_objective_01",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "avg_DBttlB_objective_02",
             "object_var_comp_op": "equal",
             "object_var_name": ""
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "dbttl_zone_captured_by_t1"
-          }
+        ],
+        "triggerEnable": {
+          "target": "dbttl_zone_captured_by_t1"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dbttl_check_random_spawn": {
       "is_enabled": false,
@@ -388,179 +324,89 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t1_spawn_01_name",
             "type": "squad"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t1_spawn_02_name",
             "type": "squad"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t2_spawn_01_name",
             "type": "squad"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t2_spawn_02_name",
             "type": "squad"
           }
-        }
-      ],
-      "actions": [
-        {
-          "missionMarkAsRespawnPoint": [
-            {
-              "loc_name": "missions/spawn_random"
-            },
-            {
-              "spawnEffect": false
-            },
-            {
-              "isStrictSpawn": false
-            },
-            {
-              "isAirfield": false
-            },
-            {
-              "isUnit": false
-            },
-            {
-              "useExisting": false
-            },
-            {
-              "isIndividual": true
-            },
-            {
-              "removeAreas": false
-            },
-            {
-              "canSpawnOnNeutral": false
-            },
-            {
-              "showOnMap": true
-            },
-            {
-              "radius": -1.0
-            },
-            {
-              "onlyOnePlayerPerSpawnPoint": false
-            },
-            {
-              "resetStrictSpawnIndex": false
-            },
-            {
-              "replaceAreas": false
-            },
-            {
-              "forceCreate": false
-            },
-            {
-              "ignoreTeamsOnReuse": false
-            },
-            {
-              "target": "@t1_spawn_01_name"
-            },
-            {
-              "target": "@t1_spawn_02_name"
-            },
-            {
-              "areaNameForSortingByProximity": "@zone_name"
-            },
-            {
-              "team": "A"
-            },
-            {
-              "tags": {
-                "tank": true
-              }
+        ]
+      },
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "missions/spawn_random",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": [
+              "@t1_spawn_01_name",
+              "@t1_spawn_02_name"
+            ],
+            "areaNameForSortingByProximity": "@zone_name",
+            "team": "A",
+            "tags": {
+              "tank": true
             }
-          ]
-        },
-        {
-          "missionMarkAsRespawnPoint": [
-            {
-              "loc_name": "missions/spawn_random"
-            },
-            {
-              "spawnEffect": false
-            },
-            {
-              "isStrictSpawn": false
-            },
-            {
-              "isAirfield": false
-            },
-            {
-              "isUnit": false
-            },
-            {
-              "useExisting": false
-            },
-            {
-              "isIndividual": true
-            },
-            {
-              "removeAreas": false
-            },
-            {
-              "canSpawnOnNeutral": false
-            },
-            {
-              "showOnMap": true
-            },
-            {
-              "radius": -1.0
-            },
-            {
-              "onlyOnePlayerPerSpawnPoint": false
-            },
-            {
-              "resetStrictSpawnIndex": false
-            },
-            {
-              "replaceAreas": false
-            },
-            {
-              "forceCreate": false
-            },
-            {
-              "ignoreTeamsOnReuse": false
-            },
-            {
-              "target": "@t2_spawn_01_name"
-            },
-            {
-              "target": "@t2_spawn_02_name"
-            },
-            {
-              "areaNameForSortingByProximity": "@zone_name"
-            },
-            {
-              "team": "B"
-            },
-            {
-              "tags": {
-                "tank": true
-              }
+          },
+          {
+            "loc_name": "missions/spawn_random",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": [
+              "@t2_spawn_01_name",
+              "@t2_spawn_02_name"
+            ],
+            "areaNameForSortingByProximity": "@zone_name",
+            "team": "B",
+            "tags": {
+              "tank": true
             }
-          ]
-        },
-        {
-          "triggerEnable": {
-            "target": "dbttl_start"
           }
+        ],
+        "triggerEnable": {
+          "target": "dbttl_start"
         }
-      ],
+      },
       "else_actions": {
         "triggerEnable": {
           "target": "dbttl_start"
@@ -576,12 +422,12 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionMarkAsRespawnPoint": {
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
             "loc_name": "missions/spawn_01",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -604,10 +450,8 @@
             "tags": {
               "tank": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/spawn_01",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -631,19 +475,15 @@
               "tank": true
             }
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "dbttl_check_battle_area_exist"
-            },
-            {
-              "target": "dbttl_check_second_spawn_exist"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "dbttl_check_battle_area_exist",
+            "dbttl_check_second_spawn_exist"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dbttl_check_second_spawn_exist": {
       "is_enabled": false,
@@ -654,25 +494,23 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t1_spawn_02_name",
             "type": "squad"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t2_spawn_02_name",
             "type": "squad"
           }
-        }
-      ],
-      "actions": [
-        {
-          "missionMarkAsRespawnPoint": {
+        ]
+      },
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
             "loc_name": "missions/spawn_02",
             "spawnEffect": false,
             "isAirfield": false,
@@ -695,10 +533,8 @@
             "tags": {
               "tank": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/spawn_02",
             "spawnEffect": false,
             "isAirfield": false,
@@ -722,9 +558,9 @@
               "tank": true
             }
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dbttl_check_battle_area_exist": {
       "is_enabled": false,
@@ -735,7 +571,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "objectExists": {
@@ -757,7 +593,7 @@
           "newGridHorizontalCellCount": 0
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dbttl_zone_captured_by_t1": {
       "is_enabled": false,
@@ -778,34 +614,30 @@
           "army": 1
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "avg_DBttlB_objective_01",
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "avg_DBttlB_objective_02",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -100,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "B"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dbttl_zone_captured_by_t2": {
       "is_enabled": false,
@@ -826,34 +658,30 @@
           "army": 2
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "avg_DBttlA_objective_01",
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "avg_DBttlA_objective_02",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -100,
-            "valueSystem": "percentage",
-            "team": "A"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "A"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "set_dbttl_timer": {
       "is_enabled": false,
@@ -881,14 +709,12 @@
           "var": "dbttl_cur_timer",
           "input_var": "dbttl_timer_from_desc"
         },
-        "triggerEnable": [
-          {
-            "target": "dtbttl_timer"
-          },
-          {
-            "target": "dbttl_timer_end"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "dtbttl_timer",
+            "dbttl_timer_end"
+          ]
+        }
       },
       "else_actions": {
         "varSetInt": {
@@ -896,14 +722,12 @@
           "var": "dbttl_cur_timer",
           "input_var": "dbttl_timer"
         },
-        "triggerEnable": [
-          {
-            "target": "dtbttl_timer"
-          },
-          {
-            "target": "dbttl_timer_end"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "dtbttl_timer",
+            "dbttl_timer_end"
+          ]
+        }
       }
     },
     "dtbttl_timer": {
@@ -919,38 +743,32 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "dbttl_cur_timer"
-          }
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": -1.0,
+          "var": "dbttl_cur_timer"
         },
-        {
-          "missionSetTimeIndicator": {
-            "var": "dbttl_cur_timer"
-          }
+        "missionSetTimeIndicator": {
+          "var": "dbttl_cur_timer"
         },
-        {
-          "gameMPChangeScore": {
+        "gameMPChangeScore": [
+          {
             "value": 1,
             "valueSystem": "amount",
             "var": "t1_tickets_for_1_sec",
             "team": "A"
-          }
-        },
-        {
-          "gameMPChangeScore": {
+          },
+          {
             "value": 1,
             "valueSystem": "amount",
             "var": "t2_tickets_for_1_sec",
             "team": "B"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dbttl_timer_end": {
       "is_enabled": false,
@@ -973,16 +791,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "dbttl_timer_check_t1_win"
-          },
-          {
-            "target": "dbttl_timer_check_t2_win"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "dbttl_timer_check_t1_win",
+            "dbttl_timer_check_t2_win"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dbttl_timer_check_t1_win": {
       "is_enabled": false,
@@ -1012,7 +828,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dbttl_timer_check_t2_win": {
       "is_enabled": false,
@@ -1042,7 +858,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dbttl_a_set_ticket_var": {
       "is_enabled": false,
@@ -1064,32 +880,28 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "t2_tickets_for_1_sec",
-            "source_var": "mpTi1"
-          }
+      "actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "t2_tickets_for_1_sec",
+          "source_var": "mpTi1"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "t2_tickets_for_1_sec",
             "use_variable": true,
             "var_value": "dbttl_timer_from_desc"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": -1.0,
             "var": "t2_tickets_for_1_sec"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dbttl_b_set_ticket_var": {
       "is_enabled": false,
@@ -1111,32 +923,28 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "t1_tickets_for_1_sec",
-            "source_var": "mpTi1"
-          }
+      "actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "t1_tickets_for_1_sec",
+          "source_var": "mpTi1"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "t1_tickets_for_1_sec",
             "use_variable": true,
             "var_value": "dbttl_timer_from_desc"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": -1.0,
             "var": "t1_tickets_for_1_sec"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1151,8 +959,8 @@
         "timeLimit": 3600,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avg_DBttlA_objective_02": {
       "is_enabled": false,
@@ -1163,8 +971,8 @@
         "timeLimit": 3600,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avg_DBttlB_objective_01": {
       "is_enabled": false,
@@ -1175,8 +983,8 @@
         "timeLimit": 3600,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avg_DBttlB_objective_02": {
       "is_enabled": false,
@@ -1187,8 +995,8 @@
         "timeLimit": 3600,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -1204,17 +1012,33 @@
     "t1_tickets_for_1_sec": 0,
     "t2_tickets_for_1_sec": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "objectGroups": {
       "name": "cz_circle",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1831.7,4.65,2455.55]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1831.7,
+          4.65,
+          2455.55
+        ]
       ],
       "unit_class": "capture_zone_circle",
       "objLayer": 2,
@@ -1224,28 +1048,22 @@
       }
     }
   },
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

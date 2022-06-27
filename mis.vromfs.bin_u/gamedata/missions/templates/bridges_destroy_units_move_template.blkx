@@ -17,9 +17,9 @@
       "environment": "Day",
       "weather": "hazy"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -36,7 +36,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitSetProperties": {
           "object": "bridge_units_squad",
@@ -44,7 +44,7 @@
           "ignoresObstaclesAfterTime": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "check_bridge_units_stop": {
       "is_enabled": true,
@@ -84,7 +84,7 @@
           "useForTriggerFiltered": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "check_bridge_units_kill": {
       "is_enabled": true,
@@ -122,15 +122,25 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "bridge_units_squad",
           "doExplosion": true,
           "useForTriggerFiltered": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -141,37 +151,29 @@
     "bridges_stop_distance": 100.0,
     "bridges_destroy_distance": 50.0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

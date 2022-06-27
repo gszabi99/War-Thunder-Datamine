@@ -2,115 +2,49 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
     "mission": {
       "level": "levels/avn_blacksea_port.bin",
       "type": "domination",
@@ -135,7 +69,7 @@
         "isHelicoptersAllowed": false
       }
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -144,125 +78,83 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "briefing_capture_zone_01"
-              },
-              {
-                "point": "briefing_capture_zone_t1"
-              },
-              {
-                "point": "briefing_capture_zone_02"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "enemy"
-              },
-              {
-                "point": "briefing_capture_zone_01"
-              },
-              {
-                "point": "briefing_capture_zone_t2"
-              },
-              {
-                "point": "briefing_capture_zone_02"
-              }
-            ]
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": [
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "briefing_capture_zone_01",
+                "briefing_capture_zone_t1",
+                "briefing_capture_zone_02"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "briefing_capture_zone_01",
+                "briefing_capture_zone_t2",
+                "briefing_capture_zone_02"
+              ]
+            }
+          ],
+          "icon": [
+            {
               "icontype": "ship",
               "side": "ally",
               "target": "briefing_spawn_t1_boat_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "ship",
               "side": "ally",
               "target": "briefing_spawn_t1_boat_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "ship",
               "side": "enemy",
               "target": "briefing_spawn_t2_boat_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "ship",
               "side": "enemy",
               "target": "briefing_spawn_t2_boat_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone",
               "side": "ally",
               "target": "briefing_capture_zone_t1"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone",
               "side": "enemy",
               "target": "briefing_capture_zone_t2"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone_A",
               "side": "neutral",
               "target": "briefing_capture_zone_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone_B",
               "side": "neutral",
               "target": "briefing_capture_zone_02"
             }
-          },
-          {
-            "battleArea": {
-              "target": "briefing_battle_area"
-            }
+          ],
+          "battleArea": {
+            "target": "briefing_battle_area"
           }
-        ]
+        }
       }
     }
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/templates/navy_templates/ship_base_logic.blk",
         "importAreas": true,
         "importUnits": true,
@@ -274,11 +166,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/navy_templates/nbttl_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -290,11 +180,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/ships/blacksea_port/template_blacksea_port_air_spawn.blk",
         "importAreas": true,
         "importUnits": true,
@@ -306,11 +194,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/ships/blacksea_port/mainareas/blacksea_port_NBttl_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -322,11 +208,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/ships/blacksea_port/spotareas/blacksea_port_NBttl_spotareas_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -338,10 +222,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -350,18 +234,34 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "armada": {
       "name": "t1_player01",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2886.5,1378.2,-7470.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2886.5,
+          1378.2,
+          -7470.15
+        ]
       ],
       "unit_class": "a-20g",
       "objLayer": 1,
@@ -397,131 +297,269 @@
           "task": "FLY_WAYPOINT"
         }
       },
-      "way": []
+      "way": {}
     }
   },
   "areas": {
     "briefing_capture_zone_01": {
       "type": "Point",
       "tm": [
-        [300.0,0.0,0.0],
-        [0.0,211.1,0.0],
-        [0.0,0.0,300.0],
-        [1389.18,-0.000488281,5966.55]
+        [
+          300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          300.0
+        ],
+        [
+          1389.18,
+          -0.000488281,
+          5966.55
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_capture_zone_02": {
       "type": "Point",
       "tm": [
-        [300.0,0.0,0.0],
-        [0.0,211.1,0.0],
-        [0.0,0.0,300.0],
-        [4013.54,0.0,3765.67]
+        [
+          300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          300.0
+        ],
+        [
+          4013.54,
+          0.0,
+          3765.67
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_capture_zone_t1": {
       "type": "Point",
       "tm": [
-        [199.53,0.0,-224.025],
-        [0.0,211.1,0.0],
-        [224.025,0.0,199.53],
-        [3131.39,0.000732422,5391.93]
+        [
+          199.53,
+          0.0,
+          -224.025
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          224.025,
+          0.0,
+          199.53
+        ],
+        [
+          3131.39,
+          0.000732422,
+          5391.93
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_capture_zone_t2": {
       "type": "Point",
       "tm": [
-        [199.53,0.0,-224.025],
-        [0.0,211.1,0.0],
-        [224.025,0.0,199.53],
-        [2274.37,-0.00012207,4353.51]
+        [
+          199.53,
+          0.0,
+          -224.025
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          224.025,
+          0.0,
+          199.53
+        ],
+        [
+          2274.37,
+          -0.00012207,
+          4353.51
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_battle_area": {
       "type": "Box",
       "tm": [
-        [6500.0,0.0,0.0],
-        [0.0,700.0,0.0],
-        [0.0,0.0,6500.0],
-        [2670.83,0.0,4800.79]
+        [
+          6500.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          700.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6500.0
+        ],
+        [
+          2670.83,
+          0.0,
+          4800.79
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t2_boat_01": {
       "type": "Point",
       "tm": [
-        [0.527207,0.0,-0.849737],
-        [0.0,1.0,0.0],
-        [0.849737,0.0,0.527207],
-        [132.163,0.00146484,4872.54]
+        [
+          0.527207,
+          0.0,
+          -0.849737
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.849737,
+          0.0,
+          0.527207
+        ],
+        [
+          132.163,
+          0.00146484,
+          4872.54
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t2_boat_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [3024.84,0.0,2400.34]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3024.84,
+          0.0,
+          2400.34
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t1_boat_01": {
       "type": "Point",
       "tm": [
-        [0.923589,0.0,-0.383385],
-        [0.0,1.0,0.0],
-        [0.383385,0.0,0.923589],
-        [2575.27,-0.000244141,6950.84]
+        [
+          0.923589,
+          0.0,
+          -0.383385
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.383385,
+          0.0,
+          0.923589
+        ],
+        [
+          2575.27,
+          -0.000244141,
+          6950.84
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t1_boat_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [5093.75,0.000488281,5192.45]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5093.75,
+          0.000488281,
+          5192.45
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": false
       }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

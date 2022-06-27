@@ -20,10 +20,14 @@
       "optionalTakeOff": false,
       "environment": "Morning",
       "weather": "hazy",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "gt_cooperative": true
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -33,55 +37,37 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "player"
-              },
-              {
-                "point": "Player_Unit"
-              },
-              {
-                "point": "mission_trigger"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "Player_Unit",
+              "mission_trigger"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "Player_Unit"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "enemy",
               "target": "mission_trigger",
               "lookAt": "Player_Unit"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -94,65 +80,51 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "mission_trigger"
-          }
+      "conditions": {},
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "mission_trigger"
         },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "MC200_group"
-            },
-            {
-              "object": "hurricane_mk1_group"
-            },
-            {
-              "object": "hurricane_mk1_group2"
-            },
-            {
-              "plane": [
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "MC200_group",
+              "hurricane_mk1_group",
+              "hurricane_mk1_group2"
+            ],
+            "plane": {
+              "targetDeviation": [
                 {
-                  "targetDeviation": {
-                    "trigger": "machine gun",
-                    "defaultVal": 0.7,
-                    "limits": [0.4,1.0]
-                  }
+                  "trigger": "machine gun",
+                  "defaultVal": 0.7,
+                  "limits": [
+                    0.4,
+                    1.0
+                  ]
                 },
                 {
-                  "targetDeviation": {
-                    "trigger": "cannon",
-                    "defaultVal": 0.8,
-                    "limits": [0.6,1.0]
-                  }
+                  "trigger": "cannon",
+                  "defaultVal": 0.8,
+                  "limits": [
+                    0.6,
+                    1.0
+                  ]
                 }
               ]
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -160,9 +132,9 @@
             "object": "player_group",
             "targetableByAi": true
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "area_reached": {
       "is_enabled": true,
@@ -190,130 +162,78 @@
           "target": "mission_trigger"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "mission_trigger"
-          }
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "mission_trigger"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "single_malta_after_bombing01",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "single_malta_after_bombing01",
+          "status": 2
         },
-        {
-          "unitWakeUp": [
-            {
-              "target": "hurricane_mk1_group2"
-            },
-            {
-              "target": "hurricane_mk1_group"
-            }
+        "unitWakeUp": {
+          "target": [
+            "hurricane_mk1_group2",
+            "hurricane_mk1_group"
           ]
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "MC200_group"
-            },
-            {
-              "object": "Player_Unit"
-            },
-            {
-              "target": "hurricane_mk1_group"
-            },
-            {
-              "target": "hurricane_mk1_group2"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "hurricane_mk1_group"
-            },
-            {
-              "object": "hurricane_mk1_group2"
-            },
-            {
-              "target": "Player_Unit"
-            },
-            {
-              "target": "MC200_group"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 1
-            },
-            {
-              "playerAttractedEffRate": 0.05
-            }
-          ]
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "single_malta_after_bombing02"
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false,
+            "object": [
+              "MC200_group",
+              "Player_Unit"
+            ],
+            "target": [
+              "hurricane_mk1_group",
+              "hurricane_mk1_group2"
+            ],
+            "fireRandom": true
+          },
+          {
+            "playerAttracted": true,
+            "object": [
+              "hurricane_mk1_group",
+              "hurricane_mk1_group2"
+            ],
+            "target": [
+              "Player_Unit",
+              "MC200_group"
+            ],
+            "fireRandom": true,
+            "playerAttractedCount": 1,
+            "playerAttractedEffRate": 0.05
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "single_malta_after_bombing02"
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "indicator"
-            },
-            {
-              "target": "mission_complete"
-            }
+        "triggerEnable": {
+          "target": [
+            "indicator",
+            "mission_complete"
           ]
         },
-        {
-          "unitPutToSleep": {
-            "target": "Ju87_group"
-          }
+        "unitPutToSleep": {
+          "target": "Ju87_group"
         },
-        {
-          "unitSetIndication": [
-            {
-              "set": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "hurricane_mk1_group"
-            },
-            {
-              "target": "hurricane_mk1_group2"
-            }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "hurricane_mk1_group",
+            "hurricane_mk1_group2"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "indicator": {
       "is_enabled": false,
@@ -328,45 +248,25 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "missionSetTargetsIndicator": [
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "delta": 0
-          },
-          {
-            "icon": "air"
-          },
-          {
-            "icon army": 2
-          },
-          {
-            "set": true
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "target": "hurricane_mk1_group"
-          },
-          {
-            "target": "hurricane_mk1_group2"
-          }
-        ]
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "hurricane_mk1_group",
+            "hurricane_mk1_group2"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_complete": {
       "is_enabled": false,
@@ -382,35 +282,19 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 2
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "hurricane_mk1_group"
-          },
-          {
-            "object": "hurricane_mk1_group2"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "hurricane_mk1_group",
+            "hurricane_mk1_group2"
+          ]
+        }
       },
       "actions": {
         "missionSetTargetsIndicator": {
@@ -437,7 +321,7 @@
           "debriefingTimer": 12
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -459,8 +343,8 @@
         "ignoreDifficulty": false,
         "target": "mission_trigger"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_malta_after_bombing02": {
       "is_enabled": false,
@@ -472,23 +356,39 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "Player_Unit",
         "tm": [
-          [-0.67559,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,-0.67559],
-          [14738.3,550.0,-15139.6]
+          [
+            -0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            14738.3,
+            550.0,
+            -15139.6
+          ]
         ],
         "unit_class": "mc-202_italy",
         "closed_waypoints": false,
@@ -525,17 +425,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "MC200_group",
         "tm": [
-          [-0.67559,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,-0.67559],
-          [14806.5,550.0,-15123.8]
+          [
+            -0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            14806.5,
+            550.0,
+            -15123.8
+          ]
         ],
         "unit_class": "mc-202_italy",
         "closed_waypoints": false,
@@ -571,17 +485,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "hurricane_mk1_group",
         "tm": [
-          [2.08616e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,2.08616e-07],
-          [10102.5,1209.25,-5556.15]
+          [
+            2.08616E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            2.08616E-07
+          ],
+          [
+            10102.5,
+            1209.25,
+            -5556.15
+          ]
         ],
         "unit_class": "hurricane_mk1",
         "closed_waypoints": false,
@@ -619,17 +547,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "hurricane_mk1_group2",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [5897.9,700.0,-12536.5]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            5897.9,
+            700.0,
+            -12536.5
+          ]
         ],
         "unit_class": "hurricane_mk1",
         "closed_waypoints": false,
@@ -667,17 +609,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "Ju87_group",
         "tm": [
-          [0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,0.707107],
-          [12194.1,452.05,-12529.2]
+          [
+            0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.707107,
+            0.0,
+            0.707107
+          ],
+          [
+            12194.1,
+            452.05,
+            -12529.2
+          ]
         ],
         "unit_class": "ju-87b-2",
         "closed_waypoints": false,
@@ -718,10 +674,26 @@
           "Ju87_group_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12442.6,447.25,-12767.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                12442.6,
+                447.25,
+                -12767.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -734,10 +706,26 @@
           "Ju87_group_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12992.5,442.35,-13319.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                12992.5,
+                442.35,
+                -13319.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -750,10 +738,26 @@
           "Ju87_group_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13558.5,468.15,-13844.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                13558.5,
+                468.15,
+                -13844.6
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -766,10 +770,26 @@
           "Ju87_group_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14747.8,504.85,-14620.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14747.8,
+                504.85,
+                -14620.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -782,10 +802,26 @@
           "Ju87_group_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15229.0,422.55,-15357.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15229.0,
+                422.55,
+                -15357.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -798,10 +834,26 @@
           "Ju87_group_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [18106.8,839.6,-19502.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                18106.8,
+                839.6,
+                -19502.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -813,206 +865,470 @@
           }
         }
       }
-    },
-    {
-      "squad": {
-        "name": "player_group",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14252.6,-37.0,-14708.1]
+    ],
+    "squad": {
+      "name": "player_group",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": {
-          "squad_members": "Player_Unit",
-          "object_type": "isPlayer"
-        }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          14252.6,
+          -37.0,
+          -14708.1
+        ]
+      ],
+      "props": {
+        "squad_members": "Player_Unit",
+        "object_type": "isPlayer"
       }
     }
-  ],
+  },
   "areas": {
     "mission_trigger": {
       "type": "Sphere",
       "tm": [
-        [1000.0,0.0,-379.75],
-        [0.0,1000.0,0.0],
-        [403.868,0.0,1000.0],
-        [10541.7,541.0,-10248.8]
+        [
+          1000.0,
+          0.0,
+          -379.75
+        ],
+        [
+          0.0,
+          1000.0,
+          0.0
+        ],
+        [
+          403.868,
+          0.0,
+          1000.0
+        ],
+        [
+          10541.7,
+          541.0,
+          -10248.8
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect01": {
       "type": "Sphere",
       "tm": [
-        [-212.132,0.0,212.132],
-        [0.0,300.0,0.0],
-        [-212.132,0.0,-212.132],
-        [12897.3,114.95,-13347.9]
+        [
+          -212.132,
+          0.0,
+          212.132
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -212.132,
+          0.0,
+          -212.132
+        ],
+        [
+          12897.3,
+          114.95,
+          -13347.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect03": {
       "type": "Sphere",
       "tm": [
-        [-212.132,0.0,212.132],
-        [0.0,300.0,0.0],
-        [-212.132,0.0,-212.132],
-        [12598.7,114.95,-13338.0]
+        [
+          -212.132,
+          0.0,
+          212.132
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -212.132,
+          0.0,
+          -212.132
+        ],
+        [
+          12598.7,
+          114.95,
+          -13338.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect04": {
       "type": "Sphere",
       "tm": [
-        [-754.234,0.0,691.128],
-        [0.0,1023.0,0.0],
-        [-691.128,0.0,-754.234],
-        [11562.8,175.3,-11358.5]
+        [
+          -754.234,
+          0.0,
+          691.128
+        ],
+        [
+          0.0,
+          1023.0,
+          0.0
+        ],
+        [
+          -691.128,
+          0.0,
+          -754.234
+        ],
+        [
+          11562.8,
+          175.3,
+          -11358.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect05": {
       "type": "Sphere",
       "tm": [
-        [-182.628,0.0,238.006],
-        [0.0,300.0,0.0],
-        [-238.006,0.0,-182.628],
-        [11334.1,175.3,-10347.7]
+        [
+          -182.628,
+          0.0,
+          238.006
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -238.006,
+          0.0,
+          -182.628
+        ],
+        [
+          11334.1,
+          175.3,
+          -10347.7
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect06": {
       "type": "Sphere",
       "tm": [
-        [-297.433,0.0,39.1579],
-        [0.0,300.0,0.0],
-        [-39.1579,0.0,-297.433],
-        [9754.75,56.1,-7564.7]
+        [
+          -297.433,
+          0.0,
+          39.1579
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -39.1579,
+          0.0,
+          -297.433
+        ],
+        [
+          9754.75,
+          56.1,
+          -7564.7
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect07": {
       "type": "Sphere",
       "tm": [
-        [-446.149,0.0,58.7368],
-        [0.0,450.0,0.0],
-        [-58.7368,0.0,-446.149],
-        [10272.6,56.1,-7876.9]
+        [
+          -446.149,
+          0.0,
+          58.7368
+        ],
+        [
+          0.0,
+          450.0,
+          0.0
+        ],
+        [
+          -58.7368,
+          0.0,
+          -446.149
+        ],
+        [
+          10272.6,
+          56.1,
+          -7876.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect08": {
       "type": "Sphere",
       "tm": [
-        [-182.628,0.0,238.006],
-        [0.0,300.0,0.0],
-        [-238.006,0.0,-182.628],
-        [11977.5,175.3,-10517.5]
+        [
+          -182.628,
+          0.0,
+          238.006
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -238.006,
+          0.0,
+          -182.628
+        ],
+        [
+          11977.5,
+          175.3,
+          -10517.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect02": {
       "type": "Sphere",
       "tm": [
-        [-1103.09,0.0,1103.09],
-        [0.0,1560.0,0.0],
-        [-1103.09,0.0,-1103.09],
-        [11541.7,154.8,-13010.0]
+        [
+          -1103.09,
+          0.0,
+          1103.09
+        ],
+        [
+          0.0,
+          1560.0,
+          0.0
+        ],
+        [
+          -1103.09,
+          0.0,
+          -1103.09
+        ],
+        [
+          11541.7,
+          154.8,
+          -13010.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect09": {
       "type": "Sphere",
       "tm": [
-        [-297.433,0.0,39.1579],
-        [0.0,300.0,0.0],
-        [-39.1579,0.0,-297.433],
-        [11768.3,30.45,-6270.85]
+        [
+          -297.433,
+          0.0,
+          39.1579
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -39.1579,
+          0.0,
+          -297.433
+        ],
+        [
+          11768.3,
+          30.45,
+          -6270.85
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect10": {
       "type": "Sphere",
       "tm": [
-        [-297.433,0.0,39.1579],
-        [0.0,300.0,0.0],
-        [-39.1579,0.0,-297.433],
-        [12446.5,30.45,-6090.05]
+        [
+          -297.433,
+          0.0,
+          39.1579
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -39.1579,
+          0.0,
+          -297.433
+        ],
+        [
+          12446.5,
+          30.45,
+          -6090.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect11": {
       "type": "Sphere",
       "tm": [
-        [-297.433,0.0,39.1579],
-        [0.0,300.0,0.0],
-        [-39.1579,0.0,-297.433],
-        [13035.2,30.45,-4696.1]
+        [
+          -297.433,
+          0.0,
+          39.1579
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -39.1579,
+          0.0,
+          -297.433
+        ],
+        [
+          13035.2,
+          30.45,
+          -4696.1
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect12": {
       "type": "Sphere",
       "tm": [
-        [-297.433,0.0,39.1579],
-        [0.0,300.0,0.0],
-        [-39.1579,0.0,-297.433],
-        [11038.7,30.45,-5233.25]
+        [
+          -297.433,
+          0.0,
+          39.1579
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -39.1579,
+          0.0,
+          -297.433
+        ],
+        [
+          11038.7,
+          30.45,
+          -5233.25
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect13": {
       "type": "Sphere",
       "tm": [
-        [-297.433,0.0,39.1579],
-        [0.0,300.0,0.0],
-        [-39.1579,0.0,-297.433],
-        [10192.3,30.45,-6185.9]
+        [
+          -297.433,
+          0.0,
+          39.1579
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -39.1579,
+          0.0,
+          -297.433
+        ],
+        [
+          10192.3,
+          30.45,
+          -6185.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect14": {
       "type": "Sphere",
       "tm": [
-        [-535.379,0.0,70.4842],
-        [0.0,540.0,0.0],
-        [-70.4842,0.0,-535.379],
-        [10227.8,30.45,-4243.3]
+        [
+          -535.379,
+          0.0,
+          70.4842
+        ],
+        [
+          0.0,
+          540.0,
+          0.0
+        ],
+        [
+          -70.4842,
+          0.0,
+          -535.379
+        ],
+        [
+          10227.8,
+          30.45,
+          -4243.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "distance_effect15": {
       "type": "Sphere",
       "tm": [
-        [-505.636,0.0,66.5684],
-        [0.0,510.0,0.0],
-        [-66.5684,0.0,-505.636],
-        [11640.2,30.45,-4311.7]
+        [
+          -505.636,
+          0.0,
+          66.5684
+        ],
+        [
+          0.0,
+          510.0,
+          0.0
+        ],
+        [
+          -66.5684,
+          0.0,
+          -505.636
+        ],
+        [
+          11640.2,
+          30.45,
+          -4311.7
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

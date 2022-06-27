@@ -17,9 +17,9 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -32,101 +32,79 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "shablon morskih bombardirovshchikov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ne mozhet vydavat'sya dvum storonam odnovremenno"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ne mozhet vydavat'sya esli aktivny shturmoviki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "missionGetBalanceLevel": {
+          "input_var": "sbt_matching_rank"
         },
-        {
-          "missionGetBalanceLevel": {
-            "input_var": "sbt_matching_rank"
-          }
-        },
-        {
-          "triggerActivate": {
+        "triggerActivate": [
+          {
             "target": "sbt_matching_0_3",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "sbt_matching_4_7",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "sbt_matching_8_11",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "sbt_matching_12_16",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "sbt_matching_17_20",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "sbt_t1_bomber",
             "var": "sbt_t1_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "sbt_t2_bomber",
             "var": "sbt_t2_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "sbt_t1_fighter",
             "var": "sbt_t1_fighter_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "sbt_t2_fighter",
             "var": "sbt_t2_fighter_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "sbt_start": {
       "is_enabled": false,
@@ -142,7 +120,7 @@
           "var": "sbt_delay_timer"
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "comment": {
           "value": "zapuskaem"
@@ -151,7 +129,7 @@
           "target": "sbt_choose_army"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_choose_army": {
       "is_enabled": false,
@@ -178,28 +156,24 @@
           "comparasion_func": "notEqual"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "razresheno cheredovanie"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "i armiya ne ravna 0 - zapuskaetsya ne dlya dvuh storon"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "sbt_swap_army_t1"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "sbt_swap_army_t2"
           }
-        }
-      ],
+        ]
+      },
       "else_actions": {
         "comment": {
           "value": "zapuskaem obychnyj rezhim"
@@ -229,41 +203,33 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "sbt_swap_army_t2"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "sbt_swap_army_t2"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "byla vtoraya armiya. stavim pervuyu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem sozdanie bomberov"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 2,
             "var": "sbt_army_both_zero"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "sbt_last_army"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_choose_bomber"
-          }
+        ],
+        "triggerEnable": {
+          "target": "sbt_choose_bomber"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_swap_army_t2": {
       "is_enabled": false,
@@ -285,41 +251,33 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "sbt_swap_army_t1"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "sbt_swap_army_t1"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "byla vtoraya armiya. stavim pervuyu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem sozdanie bomberov"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 1,
             "var": "sbt_army_both_zero"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "sbt_last_army"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_choose_bomber"
-          }
+        ],
+        "triggerEnable": {
+          "target": "sbt_choose_bomber"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_template_end": {
       "is_enabled": false,
@@ -334,64 +292,42 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareBool": {
+      "conditions": {
+        "varCompareBool": [
+          {
             "var_value": "sbt_t1_is_active",
             "value": false,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareBool": {
+          },
+          {
             "var_value": "sbt_t2_is_active",
             "value": false,
             "comparasion_func": "equal"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "varSetBool": {
           "value": false,
           "var": "sbt_is_template_active"
         },
-        "triggerDisable": [
-          {
-            "target": "sbt_t1_fighters_disable"
-          },
-          {
-            "target": "sbt_t1_bombers_disable"
-          },
-          {
-            "target": "sbt_t2_fighters_disable"
-          },
-          {
-            "target": "sbt_t2_bombers_disable"
-          },
-          {
-            "target": "sbt_t1_def_activity_change"
-          },
-          {
-            "target": "sbt_t2_def_activity_change"
-          },
-          {
-            "target": "sbt_t1_kill_activity_change"
-          },
-          {
-            "target": "sbt_t2_kill_activity_change"
-          },
-          {
-            "target": "sbt_t1_bombers_disable"
-          },
-          {
-            "target": "sbt_t2_bombers_disable"
-          },
-          {
-            "target": "sbt_detecttion_range_checks"
-          }
-        ]
+        "triggerDisable": {
+          "target": [
+            "sbt_t1_fighters_disable",
+            "sbt_t1_bombers_disable",
+            "sbt_t2_fighters_disable",
+            "sbt_t2_bombers_disable",
+            "sbt_t1_def_activity_change",
+            "sbt_t2_def_activity_change",
+            "sbt_t1_kill_activity_change",
+            "sbt_t2_kill_activity_change",
+            "sbt_t1_bombers_disable",
+            "sbt_t2_bombers_disable",
+            "sbt_detecttion_range_checks"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_choose_bomber": {
       "is_enabled": false,
@@ -413,72 +349,52 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "armiya ravna 1. zapuskaem vetku skriptov pervoj armii"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "obnulyaem imya celi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem obnaruzhenie celi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dal'nejshee vozvrashchenie v skript budet iz togo shablona"
           }
+        ],
+        "varSetString": {
+          "value": "",
+          "var": "sbt_t1_target_name"
         },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "sbt_t1_target_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t1_check_convoy_target"
-          }
+        "triggerEnable": {
+          "target": "sbt_t1_check_convoy_target"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "armiya ravna 2. zapuskaem vetku skriptov vtoroj armii"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "obnulyaem imya celi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem obnaruzhenie celi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dal'nejshee vozvrashchenie v skript budet iz togo shablona"
           }
+        ],
+        "varSetString": {
+          "value": "",
+          "var": "sbt_t2_target_name"
         },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "sbt_t2_target_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t2_check_convoy_target"
-          }
+        "triggerEnable": {
+          "target": "sbt_t2_check_convoy_target"
         }
-      ]
+      }
     },
     "sbt_t1_check_convoy_target": {
       "is_enabled": false,
@@ -554,29 +470,23 @@
           "object": "@sbt_t1_target_name"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "govorim chto shablon za pervuyu armiyu aktiven"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "sbt_t1_is_active"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "sbt_t1_is_active"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t1_spawn_bombers"
-          }
+        "triggerEnable": {
+          "target": "sbt_t1_spawn_bombers"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "tochki poleta ne sushchestvuet. shablon ne rabotaet"
@@ -603,155 +513,115 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "sbt_t1_def_time"
-            },
-            {
-              "var": "sbt_t2_kill_time"
-            },
-            {
-              "var": "sbt_t1_def_players_activity_time"
-            },
-            {
-              "var": "sbt_t2_kill_players_activity_time"
-            }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 1,
+          "var": [
+            "sbt_t1_def_time",
+            "sbt_t2_kill_time",
+            "sbt_t1_def_players_activity_time",
+            "sbt_t2_kill_players_activity_time"
           ]
         },
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t1_fighters_retreat"
-            },
-            {
-              "target": "sbt_t1_fighters_disable"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t1_bombers_attack"
-            },
-            {
-              "target": "sbt_t1_bombers_target_destroyed"
-            },
-            {
-              "target": "sbt_t1_bombers_damaged"
-            },
-            {
-              "target": "sbt_t1_bombers_saved"
-            },
-            {
-              "target": "sbt_t1_bombers_not_saved"
-            },
-            {
-              "target": "sbt_t1_check_t2_quest_fail"
-            },
-            {
-              "target": "sbt_t1_check_t2_quest_success"
-            }
-          ]
-        },
-        {
-          "comment": {
+        "triggerDisable": [
+          {
+            "target": [
+              "sbt_t1_fighters_retreat",
+              "sbt_t1_fighters_disable"
+            ]
+          },
+          {
+            "target": [
+              "sbt_t1_bombers_attack",
+              "sbt_t1_bombers_target_destroyed",
+              "sbt_t1_bombers_damaged",
+              "sbt_t1_bombers_saved",
+              "sbt_t1_bombers_not_saved",
+              "sbt_t1_check_t2_quest_fail",
+              "sbt_t1_check_t2_quest_success"
+            ]
+          }
+        ],
+        "comment": [
+          {
             "value": "spavnim bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "spavnim istrebitelej"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zadaem parametry prikryshke i bobram"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim bomberu dvigat'sya k tochke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim yastrebam prikryvat' bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem ai istrebitelej"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem ai bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem dop skripty"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "sbt_t1_spawn_idx",
+          "from": 1,
+          "to_not_including": 5
         },
-        {
-          "varSetRandomInt": {
-            "var": "sbt_t1_spawn_idx",
-            "from": 1,
-            "to_not_including": 5
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "sbt_t1_bombers_spawn_",
             "var": "sbt_t1_bomber_spawn_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "sbt_t1_matching_move_",
             "var": "sbt_matching_t1_move_trigger_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@sbt_t1_spawn_idx",
             "digits": 2,
             "var": "sbt_t1_bomber_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@sbt_matching_type",
             "digits": 1,
             "var": "sbt_matching_t1_move_trigger_name"
           }
-        },
-        {
-          "unitRespawn": {
+        ],
+        "unitRespawn": [
+          {
             "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "@sbt_t1_bomber_name",
             "target": "@sbt_t1_bomber_spawn_name",
             "resetFormation": true
-          }
-        },
-        {
-          "unitRespawn": {
+          },
+          {
             "delay": 0.0,
-            "offset": [0.0,500.0,0.0],
+            "offset": [
+              0.0,
+              500.0,
+              0.0
+            ],
             "object": "@sbt_t1_fighter_name",
             "target": "@sbt_t1_bomber_spawn_name",
             "resetFormation": true
           }
-        },
-        {
-          "unitSetIndication": {
+        ],
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -759,10 +629,8 @@
             "object_var_value": 0,
             "target": "@sbt_t1_bomber_name",
             "team": "A"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": false,
             "target_marking": 0,
             "object_var_name": "",
@@ -771,9 +639,9 @@
             "target": "@sbt_t1_bomber_name",
             "team": "B"
           }
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -783,10 +651,8 @@
             "accuracy": 0.4,
             "effShootingRate": 0.4,
             "airEffShootingRate": 0.4
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -799,119 +665,87 @@
             "airEffShootingRate": 0.6,
             "enemyFireEvasion": "off"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "@sbt_matching_t1_move_trigger_name"
+          },
+          {
+            "target": [
+              "sbt_t1_fighters_retreat",
+              "sbt_t1_fighters_disable"
+            ]
+          },
+          {
+            "target": [
+              "sbt_t1_bombers_attack",
+              "sbt_t1_bombers_target_destroyed"
+            ]
+          },
+          {
+            "target": [
+              "sbt_t1_activity_end",
+              "sbt_t1_is_detect_alowed",
+              "sbt_t1_bombers_not_saved"
+            ]
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t1_fighters_retreat"
-            },
-            {
-              "target": "sbt_t1_fighters_disable"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t1_bombers_attack"
-            },
-            {
-              "target": "sbt_t1_bombers_target_destroyed"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t1_activity_end"
-            },
-            {
-              "target": "sbt_t1_is_detect_alowed"
-            },
-            {
-              "target": "sbt_t1_bombers_not_saved"
-            }
-          ]
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
           }
-        },
-        {
-          "unitMoveTo": {
-            "object_marking": 0,
-            "target": "@sbt_t1_bomber_name",
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "follow_target": true,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@sbt_t1_fighter_name",
-            "follow_offset": [0.0,500.0,0.0]
-          }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "@sbt_t1_fighter_name"
-            },
-            {
-              "target": "t2_players_squad"
-            },
-            {
-              "target": "ht_t2_hunter"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "targetTypeName": "airplane"
-            },
-            {
-              "targetDistMax": 4000.0
-            },
-            {
-              "maxNumAttackersPerTarget": 1
-            },
-            {
-              "attackAltRange": [250.0,10000.0]
-            },
-            {
-              "anchorTarget": "@sbt_t1_bomber_name"
-            },
-            {
-              "targetToAnchorDist": [3000.0,4000.0]
-            },
-            {
-              "resetObjectToFollow": false
-            }
+        ],
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "@sbt_t1_bomber_name",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": true,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@sbt_t1_fighter_name",
+          "follow_offset": [
+            0.0,
+            500.0,
+            0.0
           ]
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "@sbt_t1_fighter_name",
+          "target": [
+            "t2_players_squad",
+            "ht_t2_hunter"
+          ],
+          "fireRandom": true,
+          "targetTypeName": "airplane",
+          "targetDistMax": 4000.0,
+          "maxNumAttackersPerTarget": 1,
+          "attackAltRange": [
+            250.0,
+            10000.0
+          ],
+          "anchorTarget": "@sbt_t1_bomber_name",
+          "targetToAnchorDist": [
+            3000.0,
+            4000.0
+          ],
+          "resetObjectToFollow": false
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t1_fighters_retreat": {
       "is_enabled": false,
@@ -938,45 +772,39 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "vse bombery umerli ili uleteli"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem fajterov dostigshih tochki spaseniya"
           }
+        ],
+        "unitMoveTo": {
+          "target": "sbt_t1_retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@sbt_t1_fighter_name"
         },
-        {
-          "unitMoveTo": {
-            "target": "sbt_t1_retreat_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@sbt_t1_fighter_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t1_fighters_disable"
-          }
+        "triggerEnable": {
+          "target": "sbt_t1_fighters_disable"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t1_fighters_disable": {
       "is_enabled": false,
@@ -1019,7 +847,7 @@
           "useForTriggerFiltered": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t1_bombers_attack": {
       "is_enabled": false,
@@ -1082,16 +910,14 @@
           "fireRandom": true,
           "attackNumMax": 2
         },
-        "triggerEnable": [
-          {
-            "target": "sbt_t1_bombers_target_destroyed"
-          },
-          {
-            "target": "sbt_t1_bombers_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "sbt_t1_bombers_target_destroyed",
+            "sbt_t1_bombers_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t1_bombers_target_destroyed": {
       "is_enabled": false,
@@ -1153,7 +979,7 @@
           "target": "sbt_t1_bombers_disable"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t1_bombers_damaged": {
       "is_enabled": false,
@@ -1185,7 +1011,7 @@
           "value": "samolet sil'no povrezhden i hochet letet' domoj"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t1_bombers_disable": {
       "is_enabled": false,
@@ -1228,14 +1054,12 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "sbt_t1_bombers_target_destroyed"
-          },
-          {
-            "target": "sbt_t1_bombers_not_saved"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "sbt_t1_bombers_target_destroyed",
+            "sbt_t1_bombers_not_saved"
+          ]
+        },
         "comment": {
           "value": "eshche est' aktivnye bombery pryachem togo, kto spassya"
         },
@@ -1269,9 +1093,9 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenCountMatches": {
+      "conditions": {
+        "unitWhenCountMatches": [
+          {
             "object_type": "isActive",
             "object_marking": 0,
             "func": "less",
@@ -1280,10 +1104,8 @@
             "object_var_comp_op": "equal",
             "object": "@sbt_t1_bomber_name",
             "object_var_value": 0
-          }
-        },
-        {
-          "unitWhenCountMatches": {
+          },
+          {
             "object_type": "isActive",
             "object_marking": 0,
             "func": "less",
@@ -1293,8 +1115,8 @@
             "object": "@sbt_t1_fighter_name",
             "object_var_value": 0
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "net aktivnyh samoletov. mozhno dizejblit'"
@@ -1310,7 +1132,7 @@
           "target": "sbt_t1_bombers_disable"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t1_is_detect_alowed": {
       "is_enabled": false,
@@ -1332,59 +1154,39 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "govorim chto bombery ne obnaruzheny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "snachala nado najti bomberov. pryachem ih"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vydaem kvest na zashchitu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem otslezhivanie pozicii bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem skript obnaruzheniya"
           }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "sbt_t1_is_detected"
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "sbt_t1_is_detected"
-          }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 3500.0,
+          "target": [
+            "@sbt_t1_bomber_name",
+            "@sbt_t1_fighter_name"
+          ],
+          "team": "B"
         },
-        {
-          "unitSetStealth": [
-            {
-              "set": true
-            },
-            {
-              "radius": 3500.0
-            },
-            {
-              "target": "@sbt_t1_bomber_name"
-            },
-            {
-              "target": "@sbt_t1_fighter_name"
-            },
-            {
-              "team": "B"
-            }
-          ]
-        },
-        {
-          "unitSetIndication": {
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -1392,10 +1194,8 @@
             "object_var_value": 0,
             "target": "@sbt_t1_bomber_name",
             "team": "A"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": false,
             "target_marking": 0,
             "object_var_name": "",
@@ -1404,89 +1204,69 @@
             "target": "@sbt_t1_bomber_name",
             "team": "B"
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "sbt_t1_defend_bombers",
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "unit_or_area": "@sbt_t1_bomber_name",
+          "object_type": "isActive"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "sbt_t1_defend_bombers",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@sbt_t1_bomber_name",
-            "object_type": "isActive"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "sbt_t1_mis_obj_update"
+          },
+          {
+            "target": [
+              "sbt_t1_bombers_detected",
+              "sbt_detecttion_range_checks",
+              "sbt_t1_bombers_detected_by_players"
+            ]
           }
+        ]
+      },
+      "else_actions": {
+        "comment": {
+          "value": "bombery izvestny srazu"
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t1_bombers_detected"
-            },
-            {
-              "target": "sbt_detecttion_range_checks"
-            },
-            {
-              "target": "sbt_t1_bombers_detected_by_players"
-            }
-          ]
-        }
-      ],
-      "else_actions": [
-        {
-          "comment": {
-            "value": "bombery izvestny srazu"
-          }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 64000.0,
+          "target": "@sbt_t1_bomber_name"
         },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 64000.0,
-            "target": "@sbt_t1_bomber_name"
-          }
+        "varSetBool": {
+          "value": true,
+          "var": "sbt_t1_is_detected"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "sbt_t1_is_detected"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@sbt_t1_bomber_name",
+          "team": "Both"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@sbt_t1_bomber_name",
-            "team": "Both"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "sbt_t1_defend_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "sbt_t2_attack_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t1_mis_obj_update"
-          }
+        ],
+        "triggerEnable": {
+          "target": "sbt_t1_mis_obj_update"
         }
-      ]
+      }
     },
     "sbt_t1_mis_obj_update": {
       "is_enabled": false,
@@ -1508,14 +1288,12 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
-            "value": "bombery obnaruzheny obnovlyaem oba kvesta"
-          }
+      "actions": {
+        "comment": {
+          "value": "bombery obnaruzheny obnovlyaem oba kvesta"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t1_defend_bombers",
             "status": 1,
             "object_var_comp_op": "equal",
@@ -1523,10 +1301,8 @@
             "team": "A",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t2_attack_bombers",
             "status": 1,
             "object_var_comp_op": "equal",
@@ -1535,34 +1311,24 @@
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
           }
-        },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 1.0
-            },
-            {
-              "var": "sbt_t1_def_time"
-            },
-            {
-              "var": "sbt_t2_kill_time"
-            }
+        ],
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": [
+            "sbt_t1_def_time",
+            "sbt_t2_kill_time"
           ]
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "sbt_t1_def_activity_change"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "sbt_t2_kill_activity_change"
           }
-        }
-      ],
+        ]
+      },
       "else_actions": {
         "comment": {
           "value": "bombery ne obnaruzheny obnovlyaem tol'ko kvest na zashchitu"
@@ -1647,7 +1413,7 @@
           "object_type": "isActive"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t1_bombers_saved": {
       "is_enabled": false,
@@ -1674,32 +1440,24 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t1_bombers_not_saved"
-            },
-            {
-              "target": "sbt_t1_mis_obj_update"
-            },
-            {
-              "target": "sbt_t1_bombers_target_destroyed"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "sbt_t1_bombers_not_saved",
+            "sbt_t1_mis_obj_update",
+            "sbt_t1_bombers_target_destroyed"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "Vse bombery ushli s lokacii i v zhivyh ostalos' bol'she 3"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem byl li kvest u komandy B"
           }
-        },
-        {
-          "moSetObjectiveStatus": {
+        ],
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t1_defend_bombers",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -1708,10 +1466,8 @@
             "team": "A",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t1_defend_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
@@ -1721,24 +1477,18 @@
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "any"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t1_check_t2_quest_fail"
-            },
-            {
-              "target": "sbt_t1_def_activity_calc"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "sbt_t1_check_t2_quest_fail",
+            "sbt_t1_def_activity_calc"
           ]
         },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t1_bombers_not_saved": {
       "is_enabled": false,
@@ -1765,42 +1515,32 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t1_bombers_saved"
-            },
-            {
-              "target": "sbt_t1_mis_obj_update"
-            },
-            {
-              "target": "sbt_t1_bombers_target_destroyed"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "sbt_t1_bombers_saved",
+            "sbt_t1_mis_obj_update",
+            "sbt_t1_bombers_target_destroyed"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "zhivyh bomberov ostalos' men'she 4"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem byl li kvest u komandy B"
           }
+        ],
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@sbt_t1_bomber_name"
         },
-        {
-          "unitSetIndication": {
-            "set": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@sbt_t1_bomber_name"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t1_defend_bombers",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -1809,29 +1549,23 @@
             "team": "A",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t1_defend_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
+        ],
+        "triggerEnable": {
+          "target": "sbt_t1_check_t2_quest_success"
         },
-        {
-          "triggerEnable": {
-            "target": "sbt_t1_check_t2_quest_success"
-          }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t1_check_t2_quest_fail": {
       "is_enabled": false,
@@ -1852,14 +1586,12 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "sbt_t1_check_t2_quest_success"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "sbt_t1_check_t2_quest_success"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t2_attack_bombers",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -1868,24 +1600,20 @@
             "team": "B",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t2_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t1_check_t2_quest_success": {
       "is_enabled": false,
@@ -1906,19 +1634,15 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "sbt_t1_check_t2_quest_fail"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "sbt_t1_check_t2_quest_fail"
         },
-        {
-          "triggerEnable": {
-            "target": "sbt_t2_kill_activity_calc"
-          }
+        "triggerEnable": {
+          "target": "sbt_t2_kill_activity_calc"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t2_attack_bombers",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -1927,24 +1651,20 @@
             "team": "B",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t2_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t2_check_convoy_target": {
       "is_enabled": false,
@@ -2020,29 +1740,23 @@
           "object": "@sbt_t2_target_name"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "govorim chto shablon za pervuyu armiyu aktiven"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "sbt_t2_is_active"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "sbt_t2_is_active"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t2_spawn_bombers"
-          }
+        "triggerEnable": {
+          "target": "sbt_t2_spawn_bombers"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "tochki poleta ne sushchestvuet. shablon ne rabotaet"
@@ -2069,155 +1783,115 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "sbt_t1_kill_time"
-            },
-            {
-              "var": "sbt_t2_def_time"
-            },
-            {
-              "var": "sbt_t1_kill_players_activity_time"
-            },
-            {
-              "var": "sbt_t2_def_players_activity_time"
-            }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 1,
+          "var": [
+            "sbt_t1_kill_time",
+            "sbt_t2_def_time",
+            "sbt_t1_kill_players_activity_time",
+            "sbt_t2_def_players_activity_time"
           ]
         },
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t2_fighters_retreat"
-            },
-            {
-              "target": "sbt_t2_fighters_disable"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t2_bombers_attack"
-            },
-            {
-              "target": "sbt_t2_bombers_target_destroyed"
-            },
-            {
-              "target": "sbt_t2_bombers_damaged"
-            },
-            {
-              "target": "sbt_t2_bombers_saved"
-            },
-            {
-              "target": "sbt_t2_bombers_not_saved"
-            },
-            {
-              "target": "sbt_t2_check_t1_quest_fail"
-            },
-            {
-              "target": "sbt_t2_check_t1_quest_success"
-            }
-          ]
-        },
-        {
-          "comment": {
+        "triggerDisable": [
+          {
+            "target": [
+              "sbt_t2_fighters_retreat",
+              "sbt_t2_fighters_disable"
+            ]
+          },
+          {
+            "target": [
+              "sbt_t2_bombers_attack",
+              "sbt_t2_bombers_target_destroyed",
+              "sbt_t2_bombers_damaged",
+              "sbt_t2_bombers_saved",
+              "sbt_t2_bombers_not_saved",
+              "sbt_t2_check_t1_quest_fail",
+              "sbt_t2_check_t1_quest_success"
+            ]
+          }
+        ],
+        "comment": [
+          {
             "value": "spavnim bomberov i fajterov "
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "spavnim istrebitelej"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zadaem parametry prikryshke i bobram"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim bomberu dvigat'sya k tochke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim yastrebam prikryvat' bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem ai istrebitelej"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem ai bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem dop skripty"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "sbt_t2_spawn_idx",
+          "from": 1,
+          "to_not_including": 5
         },
-        {
-          "varSetRandomInt": {
-            "var": "sbt_t2_spawn_idx",
-            "from": 1,
-            "to_not_including": 5
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "sbt_t2_bombers_spawn_",
             "var": "sbt_t2_bomber_spawn_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "sbt_t2_matching_move_",
             "var": "sbt_matching_t2_move_trigger_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@sbt_t2_spawn_idx",
             "digits": 2,
             "var": "sbt_t2_bomber_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@sbt_matching_type",
             "digits": 1,
             "var": "sbt_matching_t2_move_trigger_name"
           }
-        },
-        {
-          "unitRespawn": {
+        ],
+        "unitRespawn": [
+          {
             "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "@sbt_t2_bomber_name",
             "target": "@sbt_t2_bomber_spawn_name",
             "resetFormation": false
-          }
-        },
-        {
-          "unitRespawn": {
+          },
+          {
             "delay": 0.0,
-            "offset": [0.0,500.0,0.0],
+            "offset": [
+              0.0,
+              500.0,
+              0.0
+            ],
             "object": "@sbt_t2_fighter_name",
             "target": "@sbt_t2_bomber_spawn_name",
             "resetFormation": false
           }
-        },
-        {
-          "unitSetIndication": {
+        ],
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -2225,10 +1899,8 @@
             "object_var_value": 0,
             "target": "@sbt_t2_bomber_name",
             "team": "B"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": false,
             "target_marking": 0,
             "object_var_name": "",
@@ -2237,9 +1909,9 @@
             "target": "@sbt_t2_bomber_name",
             "team": "A"
           }
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -2249,10 +1921,8 @@
             "accuracy": 0.4,
             "effShootingRate": 0.4,
             "airEffShootingRate": 0.4
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -2265,119 +1935,87 @@
             "airEffShootingRate": 0.6,
             "enemyFireEvasion": "off"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "@sbt_matching_t2_move_trigger_name"
+          },
+          {
+            "target": [
+              "sbt_t2_fighters_retreat",
+              "sbt_t2_fighters_disable"
+            ]
+          },
+          {
+            "target": [
+              "sbt_t2_bombers_attack",
+              "sbt_t2_bombers_target_destroyed"
+            ]
+          },
+          {
+            "target": [
+              "sbt_t2_activity_end",
+              "sbt_t2_is_detect_alowed",
+              "sbt_t2_bombers_not_saved"
+            ]
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t2_fighters_retreat"
-            },
-            {
-              "target": "sbt_t2_fighters_disable"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t2_bombers_attack"
-            },
-            {
-              "target": "sbt_t2_bombers_target_destroyed"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t2_activity_end"
-            },
-            {
-              "target": "sbt_t2_is_detect_alowed"
-            },
-            {
-              "target": "sbt_t2_bombers_not_saved"
-            }
-          ]
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
           }
-        },
-        {
-          "unitMoveTo": {
-            "object_marking": 0,
-            "target": "@sbt_t2_bomber_name",
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "follow_target": true,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@sbt_t2_fighter_name",
-            "follow_offset": [0.0,500.0,0.0]
-          }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "@sbt_t2_fighter_name"
-            },
-            {
-              "target": "t1_players_squad"
-            },
-            {
-              "target": "ht_t1_hunter"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "targetTypeName": "airplane"
-            },
-            {
-              "targetDistMax": 4000.0
-            },
-            {
-              "maxNumAttackersPerTarget": 1
-            },
-            {
-              "attackAltRange": [250.0,10000.0]
-            },
-            {
-              "anchorTarget": "@sbt_t2_bomber_name"
-            },
-            {
-              "targetToAnchorDist": [3000.0,4000.0]
-            },
-            {
-              "resetObjectToFollow": false
-            }
+        ],
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "@sbt_t2_bomber_name",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": true,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@sbt_t2_fighter_name",
+          "follow_offset": [
+            0.0,
+            500.0,
+            0.0
           ]
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "@sbt_t2_fighter_name",
+          "target": [
+            "t1_players_squad",
+            "ht_t1_hunter"
+          ],
+          "fireRandom": true,
+          "targetTypeName": "airplane",
+          "targetDistMax": 4000.0,
+          "maxNumAttackersPerTarget": 1,
+          "attackAltRange": [
+            250.0,
+            10000.0
+          ],
+          "anchorTarget": "@sbt_t2_bomber_name",
+          "targetToAnchorDist": [
+            3000.0,
+            4000.0
+          ],
+          "resetObjectToFollow": false
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t2_fighters_retreat": {
       "is_enabled": false,
@@ -2403,45 +2041,39 @@
           "object": "@sbt_t2_bomber_name"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "vse bombery umerli ili uleteli"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem fajterov dostigshih tochki spaseniya"
           }
+        ],
+        "unitMoveTo": {
+          "target": "sbt_t2_retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@sbt_t2_fighter_name"
         },
-        {
-          "unitMoveTo": {
-            "target": "sbt_t2_retreat_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@sbt_t2_fighter_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t2_fighters_disable"
-          }
+        "triggerEnable": {
+          "target": "sbt_t2_fighters_disable"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t2_fighters_disable": {
       "is_enabled": false,
@@ -2484,7 +2116,7 @@
           "useForTriggerFiltered": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_bombers_attack": {
       "is_enabled": false,
@@ -2547,16 +2179,14 @@
           "fireRandom": true,
           "attackNumMax": 2
         },
-        "triggerEnable": [
-          {
-            "target": "sbt_t2_bombers_target_destroyed"
-          },
-          {
-            "target": "sbt_t2_bombers_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "sbt_t2_bombers_target_destroyed",
+            "sbt_t2_bombers_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_bombers_target_destroyed": {
       "is_enabled": false,
@@ -2615,7 +2245,7 @@
           "target": "sbt_t2_bombers_disable"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_bombers_damaged": {
       "is_enabled": false,
@@ -2647,7 +2277,7 @@
           "value": "samolet sil'no povrezhden i hochet letet' domoj"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_bombers_disable": {
       "is_enabled": false,
@@ -2692,14 +2322,12 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "sbt_t2_bombers_target_destroyed"
-          },
-          {
-            "target": "sbt_t2_bombers_not_saved"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "sbt_t2_bombers_target_destroyed",
+            "sbt_t2_bombers_not_saved"
+          ]
+        },
         "comment": {
           "value": "eshche est' aktivnye bombery pryachem togo, kto spassya"
         },
@@ -2711,7 +2339,7 @@
           "target": "sbt_t2_bombers_saved"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_activity_end": {
       "is_enabled": false,
@@ -2726,9 +2354,9 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenCountMatches": {
+      "conditions": {
+        "unitWhenCountMatches": [
+          {
             "object_type": "isActive",
             "object_marking": 0,
             "func": "less",
@@ -2736,10 +2364,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "@sbt_t2_bomber_name"
-          }
-        },
-        {
-          "unitWhenCountMatches": {
+          },
+          {
             "object_type": "isActive",
             "object_marking": 0,
             "func": "less",
@@ -2749,8 +2375,8 @@
             "object": "@sbt_t2_fighter_name",
             "object_var_value": 0
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "net aktivnyh samoletov. mozhno dizejblit'"
@@ -2766,7 +2392,7 @@
           "target": "sbt_t2_bombers_disable"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_is_detect_alowed": {
       "is_enabled": false,
@@ -2788,59 +2414,39 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "govorim chto bombery ne obnaruzheny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "snachala nado najti bomberov. pryachem ih"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vydaem kvest na zashchitu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem otslezhivanie pozicii bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem skript obnaruzheniya"
           }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "sbt_t2_is_detected"
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "sbt_t2_is_detected"
-          }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 3500.0,
+          "target": [
+            "@sbt_t2_bomber_name",
+            "@sbt_t2_fighter_name"
+          ],
+          "team": "A"
         },
-        {
-          "unitSetStealth": [
-            {
-              "set": true
-            },
-            {
-              "radius": 3500.0
-            },
-            {
-              "target": "@sbt_t2_bomber_name"
-            },
-            {
-              "target": "@sbt_t2_fighter_name"
-            },
-            {
-              "team": "A"
-            }
-          ]
-        },
-        {
-          "unitSetIndication": {
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -2848,10 +2454,8 @@
             "object_var_value": 0,
             "target": "@sbt_t2_bomber_name",
             "team": "B"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": false,
             "target_marking": 0,
             "object_var_name": "",
@@ -2860,89 +2464,69 @@
             "target": "@sbt_t2_bomber_name",
             "team": "A"
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "sbt_t2_defend_bombers",
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "unit_or_area": "@sbt_t2_bomber_name",
+          "object_type": "isActive"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "sbt_t2_defend_bombers",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@sbt_t2_bomber_name",
-            "object_type": "isActive"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "sbt_t2_mis_obj_update"
+          },
+          {
+            "target": [
+              "sbt_t2_bombers_detected",
+              "sbt_detecttion_range_checks",
+              "sbt_t2_bombers_detected_by_players"
+            ]
           }
+        ]
+      },
+      "else_actions": {
+        "comment": {
+          "value": "bombery izvestny srazu"
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t2_bombers_detected"
-            },
-            {
-              "target": "sbt_detecttion_range_checks"
-            },
-            {
-              "target": "sbt_t2_bombers_detected_by_players"
-            }
-          ]
-        }
-      ],
-      "else_actions": [
-        {
-          "comment": {
-            "value": "bombery izvestny srazu"
-          }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 64000.0,
+          "target": "@sbt_t2_bomber_name"
         },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 64000.0,
-            "target": "@sbt_t2_bomber_name"
-          }
+        "varSetBool": {
+          "value": true,
+          "var": "sbt_t2_is_detected"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "sbt_t2_is_detected"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@sbt_t2_bomber_name",
+          "team": "Both"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@sbt_t2_bomber_name",
-            "team": "Both"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "sbt_t2_defend_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "sbt_t1_attack_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "sbt_t2_mis_obj_update"
-          }
+        ],
+        "triggerEnable": {
+          "target": "sbt_t2_mis_obj_update"
         }
-      ]
+      }
     },
     "sbt_t2_mis_obj_update": {
       "is_enabled": false,
@@ -2964,14 +2548,12 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
-            "value": "bombery obnaruzheny obnovlyaem oba kvesta"
-          }
+      "actions": {
+        "comment": {
+          "value": "bombery obnaruzheny obnovlyaem oba kvesta"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t2_defend_bombers",
             "status": 1,
             "object_var_comp_op": "equal",
@@ -2979,10 +2561,8 @@
             "team": "B",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t1_attack_bombers",
             "status": 1,
             "object_var_comp_op": "equal",
@@ -2991,34 +2571,24 @@
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
           }
-        },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 1.0
-            },
-            {
-              "var": "sbt_t1_kill_time"
-            },
-            {
-              "var": "sbt_t2_def_time"
-            }
+        ],
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": [
+            "sbt_t1_kill_time",
+            "sbt_t2_def_time"
           ]
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "sbt_t1_kill_activity_change"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "sbt_t2_def_activity_change"
           }
-        }
-      ],
+        ]
+      },
       "else_actions": {
         "comment": {
           "value": "bombery ne obnaruzheny obnovlyaem tol'ko kvest na zashchitu"
@@ -3103,7 +2673,7 @@
           "object_type": "isActive"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_bombers_saved": {
       "is_enabled": false,
@@ -3130,32 +2700,24 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t2_bombers_not_saved"
-            },
-            {
-              "target": "sbt_t2_mis_obj_update"
-            },
-            {
-              "target": "sbt_t1_bombers_target_destroyed"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "sbt_t2_bombers_not_saved",
+            "sbt_t2_mis_obj_update",
+            "sbt_t1_bombers_target_destroyed"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "Vse bombery ushli s lokacii i v zhivyh ostalos' bol'she 3"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem byl li kvest u komandy B"
           }
-        },
-        {
-          "moSetObjectiveStatus": {
+        ],
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t2_defend_bombers",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -3164,34 +2726,26 @@
             "team": "B",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isAlive"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t2_defend_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "sbt_t2_check_t1_quest_fail"
-            },
-            {
-              "target": "sbt_t2_def_activity_calc"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "sbt_t2_check_t1_quest_fail",
+            "sbt_t2_def_activity_calc"
           ]
         },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t2_bombers_not_saved": {
       "is_enabled": false,
@@ -3218,42 +2772,32 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "sbt_t2_bombers_saved"
-            },
-            {
-              "target": "sbt_t2_mis_obj_update"
-            },
-            {
-              "target": "sbt_t1_bombers_target_destroyed"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "sbt_t2_bombers_saved",
+            "sbt_t2_mis_obj_update",
+            "sbt_t1_bombers_target_destroyed"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "zhivyh bomberov ostalos' men'she 4"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem byl li kvest u komandy B"
           }
+        ],
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@sbt_t2_bomber_name"
         },
-        {
-          "unitSetIndication": {
-            "set": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@sbt_t2_bomber_name"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t2_defend_bombers",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -3262,29 +2806,23 @@
             "team": "B",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t2_defend_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
+        ],
+        "triggerEnable": {
+          "target": "sbt_t2_check_t1_quest_success"
         },
-        {
-          "triggerEnable": {
-            "target": "sbt_t2_check_t1_quest_success"
-          }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t2_check_t1_quest_fail": {
       "is_enabled": false,
@@ -3305,14 +2843,12 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "sbt_t2_check_t1_quest_success"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "sbt_t2_check_t1_quest_success"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t1_attack_bombers",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -3321,24 +2857,20 @@
             "team": "A",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t1_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_t2_check_t1_quest_success": {
       "is_enabled": false,
@@ -3359,19 +2891,15 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "sbt_t2_check_t1_quest_fail"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "sbt_t2_check_t1_quest_fail"
         },
-        {
-          "triggerEnable": {
-            "target": "sbt_t1_kill_activity_calc"
-          }
+        "triggerEnable": {
+          "target": "sbt_t1_kill_activity_calc"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "sbt_t1_attack_bombers",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -3380,24 +2908,20 @@
             "team": "A",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "sbt_t1_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_detecttion_range_checks": {
       "is_enabled": false,
@@ -3412,156 +2936,92 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "lpt_t1_detection_bonus",
             "type": "var"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "lpt_t2_detection_bonus",
             "type": "var"
           }
-        }
-      ],
-      "actions": [
-        {
-          "varSetReal": [
-            {
-              "value": 0.0
-            },
-            {
-              "var": "sbt_t1_detection_range"
-            },
-            {
-              "var": "sbt_t1_player_detection_range"
-            }
-          ]
-        },
-        {
-          "varSetReal": [
-            {
-              "value": 0.0
-            },
-            {
-              "var": "sbt_t2_detection_range"
-            },
-            {
-              "var": "sbt_t2_player_detection_range"
-            }
-          ]
-        },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 3500.0
-            },
-            {
-              "var": "sbt_t1_detection_range"
-            },
-            {
-              "var": "sbt_t1_player_detection_range"
-            },
-            {
-              "use_variable": true
-            },
-            {
-              "var_value": "sbt_base_detection_range"
-            }
-          ]
-        },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 0.0
-            },
-            {
-              "var": "sbt_t1_detection_range"
-            },
-            {
-              "var": "sbt_t1_player_detection_range"
-            },
-            {
-              "use_variable": true
-            },
-            {
-              "var_value": "lpt_t1_detection_bonus"
-            }
-          ]
-        },
-        {
-          "varModify": {
+        ]
+      },
+      "actions": {
+        "varSetReal": [
+          {
+            "value": 0.0,
+            "var": [
+              "sbt_t1_detection_range",
+              "sbt_t1_player_detection_range"
+            ]
+          },
+          {
+            "value": 0.0,
+            "var": [
+              "sbt_t2_detection_range",
+              "sbt_t2_player_detection_range"
+            ]
+          }
+        ],
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 3500.0,
+            "var": [
+              "sbt_t1_detection_range",
+              "sbt_t1_player_detection_range"
+            ],
+            "use_variable": true,
+            "var_value": "sbt_base_detection_range"
+          },
+          {
+            "operator": "add",
+            "value": 0.0,
+            "var": [
+              "sbt_t1_detection_range",
+              "sbt_t1_player_detection_range"
+            ],
+            "use_variable": true,
+            "var_value": "lpt_t1_detection_bonus"
+          },
+          {
             "operator": "add",
             "value": 2000.0,
             "var": "sbt_t1_player_detection_range"
-          }
-        },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 3500.0
-            },
-            {
-              "var": "sbt_t2_detection_range"
-            },
-            {
-              "var": "sbt_t2_player_detection_range"
-            },
-            {
-              "use_variable": true
-            },
-            {
-              "var_value": "sbt_base_detection_range"
-            }
-          ]
-        },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 0.0
-            },
-            {
-              "var": "sbt_t2_detection_range"
-            },
-            {
-              "var": "sbt_t2_player_detection_range"
-            },
-            {
-              "use_variable": true
-            },
-            {
-              "var_value": "lpt_t2_detection_bonus"
-            }
-          ]
-        },
-        {
-          "varModify": {
+          },
+          {
+            "operator": "add",
+            "value": 3500.0,
+            "var": [
+              "sbt_t2_detection_range",
+              "sbt_t2_player_detection_range"
+            ],
+            "use_variable": true,
+            "var_value": "sbt_base_detection_range"
+          },
+          {
+            "operator": "add",
+            "value": 0.0,
+            "var": [
+              "sbt_t2_detection_range",
+              "sbt_t2_player_detection_range"
+            ],
+            "use_variable": true,
+            "var_value": "lpt_t2_detection_bonus"
+          },
+          {
             "operator": "add",
             "value": 2000.0,
             "var": "sbt_t2_player_detection_range"
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
+        ],
+        "comment": {
+          "value": ""
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "sbt_matching": {
       "isCategory": true,
@@ -3586,45 +3046,35 @@
             "comparasion_func": "less"
           }
         },
-        "actions": [
-          {
-            "__varSetString": {
+        "actions": {
+          "__varSetString": [
+            {
               "value": "sbt_t1_bomber_rank_01",
               "var": "sbt_t1_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_bomber_rank_01",
               "var": "sbt_t2_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t1_fighter_rank_01",
               "var": "sbt_t1_fighter_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_fighter_rank_01",
               "var": "sbt_t2_fighter_name"
             }
+          ],
+          "varSetInt": {
+            "value": 1,
+            "var": "sbt_matching_type"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "sbt_matching_type"
-            }
-          },
-          {
-            "varSetReal": {
-              "value": 3000.0,
-              "var": "sbt_activity_distance"
-            }
+          "varSetReal": {
+            "value": 3000.0,
+            "var": "sbt_activity_distance"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_matching_4_7": {
         "is_enabled": false,
@@ -3639,61 +3089,49 @@
             "time": 1.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "sbt_matching_rank",
               "value": 8,
               "comparasion_func": "less"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "sbt_matching_rank",
               "value": 3,
               "comparasion_func": "more"
             }
-          }
-        ],
-        "actions": [
-          {
-            "__varSetString": {
+          ]
+        },
+        "actions": {
+          "__varSetString": [
+            {
               "value": "sbt_t1_bomber_rank_02",
               "var": "sbt_t1_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_bomber_rank_02",
               "var": "sbt_t2_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t1_fighter_rank_02",
               "var": "sbt_t1_fighter_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_fighter_rank_02",
               "var": "sbt_t2_fighter_name"
             }
+          ],
+          "varSetInt": {
+            "value": 2,
+            "var": "sbt_matching_type"
           },
-          {
-            "varSetInt": {
-              "value": 2,
-              "var": "sbt_matching_type"
-            }
-          },
-          {
-            "varSetReal": {
-              "value": 3500.0,
-              "var": "sbt_activity_distance"
-            }
+          "varSetReal": {
+            "value": 3500.0,
+            "var": "sbt_activity_distance"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_matching_8_11": {
         "is_enabled": false,
@@ -3708,61 +3146,49 @@
             "time": 1.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "sbt_matching_rank",
               "value": 12,
               "comparasion_func": "less"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "sbt_matching_rank",
               "value": 7,
               "comparasion_func": "more"
             }
-          }
-        ],
-        "actions": [
-          {
-            "__varSetString": {
+          ]
+        },
+        "actions": {
+          "__varSetString": [
+            {
               "value": "sbt_t1_bomber_rank_03",
               "var": "sbt_t1_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_bomber_rank_03",
               "var": "sbt_t2_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t1_fighter_rank_03",
               "var": "sbt_t1_fighter_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_fighter_rank_03",
               "var": "sbt_t2_fighter_name"
             }
+          ],
+          "varSetInt": {
+            "value": 3,
+            "var": "sbt_matching_type"
           },
-          {
-            "varSetInt": {
-              "value": 3,
-              "var": "sbt_matching_type"
-            }
-          },
-          {
-            "varSetReal": {
-              "value": 4000.0,
-              "var": "sbt_activity_distance"
-            }
+          "varSetReal": {
+            "value": 4000.0,
+            "var": "sbt_activity_distance"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_matching_12_16": {
         "is_enabled": false,
@@ -3777,61 +3203,49 @@
             "time": 1.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "sbt_matching_rank",
               "value": 17,
               "comparasion_func": "less"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "sbt_matching_rank",
               "value": 11,
               "comparasion_func": "more"
             }
-          }
-        ],
-        "actions": [
-          {
-            "__varSetString": {
+          ]
+        },
+        "actions": {
+          "__varSetString": [
+            {
               "value": "sbt_t1_bomber_rank_04",
               "var": "sbt_t1_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_bomber_rank_04",
               "var": "sbt_t2_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t1_fighter_rank_04",
               "var": "sbt_t1_fighter_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_fighter_rank_04",
               "var": "sbt_t2_fighter_name"
             }
+          ],
+          "varSetInt": {
+            "value": 4,
+            "var": "sbt_matching_type"
           },
-          {
-            "varSetInt": {
-              "value": 4,
-              "var": "sbt_matching_type"
-            }
-          },
-          {
-            "varSetReal": {
-              "value": 4500.0,
-              "var": "sbt_activity_distance"
-            }
+          "varSetReal": {
+            "value": 4500.0,
+            "var": "sbt_activity_distance"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_matching_17_20": {
         "is_enabled": false,
@@ -3853,45 +3267,35 @@
             "comparasion_func": "more"
           }
         },
-        "actions": [
-          {
-            "__varSetString": {
+        "actions": {
+          "__varSetString": [
+            {
               "value": "sbt_t1_bomber_rank_05",
               "var": "sbt_t1_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_bomber_rank_05",
               "var": "sbt_t2_bomber_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t1_fighter_rank_05",
               "var": "sbt_t1_fighter_name"
-            }
-          },
-          {
-            "__varSetString": {
+            },
+            {
               "value": "sbt_t2_fighter_rank_05",
               "var": "sbt_t2_fighter_name"
             }
+          ],
+          "varSetInt": {
+            "value": 5,
+            "var": "sbt_matching_type"
           },
-          {
-            "varSetInt": {
-              "value": 5,
-              "var": "sbt_matching_type"
-            }
-          },
-          {
-            "varSetReal": {
-              "value": 5000.0,
-              "var": "sbt_activity_distance"
-            }
+          "varSetReal": {
+            "value": 5000.0,
+            "var": "sbt_activity_distance"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_t1_matching_move_1": {
         "is_enabled": false,
@@ -3933,10 +3337,13 @@
             "destTimeMode": false,
             "object": "@sbt_t1_bomber_name",
             "speed": 300.0,
-            "altRange": [1500.0,1700.0]
+            "altRange": [
+              1500.0,
+              1700.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t1_matching_move_2": {
         "is_enabled": false,
@@ -3978,10 +3385,13 @@
             "destTimeMode": false,
             "object": "@sbt_t1_bomber_name",
             "speed": 320.0,
-            "altRange": [2300.0,2500.0]
+            "altRange": [
+              2300.0,
+              2500.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t1_matching_move_3": {
         "is_enabled": false,
@@ -4023,10 +3433,13 @@
             "destTimeMode": false,
             "object": "@sbt_t1_bomber_name",
             "speed": 340.0,
-            "altRange": [3200.0,3500.0]
+            "altRange": [
+              3200.0,
+              3500.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t1_matching_move_4": {
         "is_enabled": false,
@@ -4067,10 +3480,13 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "@sbt_t1_bomber_name",
-            "altRange": [4000.0,4200.0]
+            "altRange": [
+              4000.0,
+              4200.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t1_matching_move_5": {
         "is_enabled": false,
@@ -4111,10 +3527,13 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "@sbt_t1_bomber_name",
-            "altRange": [5200.0,5400.0]
+            "altRange": [
+              5200.0,
+              5400.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t2_matching_move_1": {
         "is_enabled": false,
@@ -4156,10 +3575,13 @@
             "destTimeMode": false,
             "object": "@sbt_t2_bomber_name",
             "speed": 300.0,
-            "altRange": [1500.0,1700.0]
+            "altRange": [
+              1500.0,
+              1700.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t2_matching_move_2": {
         "is_enabled": false,
@@ -4201,10 +3623,13 @@
             "destTimeMode": false,
             "object": "@sbt_t2_bomber_name",
             "speed": 320.0,
-            "altRange": [2300.0,2500.0]
+            "altRange": [
+              2300.0,
+              2500.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t2_matching_move_3": {
         "is_enabled": false,
@@ -4246,10 +3671,13 @@
             "destTimeMode": false,
             "object": "@sbt_t2_bomber_name",
             "speed": 340.0,
-            "altRange": [3200.0,3500.0]
+            "altRange": [
+              3200.0,
+              3500.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t2_matching_move_4": {
         "is_enabled": false,
@@ -4290,10 +3718,13 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "@sbt_t2_bomber_name",
-            "altRange": [4000.0,4200.0]
+            "altRange": [
+              4000.0,
+              4200.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "sbt_t2_matching_move_5": {
         "is_enabled": false,
@@ -4334,10 +3765,13 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "@sbt_t2_bomber_name",
-            "altRange": [5200.0,5400.0]
+            "altRange": [
+              5200.0,
+              5400.0
+            ]
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "sbt_t1_bombers_detected_by_players": {
@@ -4409,7 +3843,7 @@
           "target": "t2_detection_task_completed"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sbt_t2_bombers_detected_by_players": {
       "is_enabled": false,
@@ -4480,7 +3914,7 @@
           "target": "t1_detection_task_completed"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "players_activity": {
       "isCategory": true,
@@ -4694,48 +4128,40 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem aktivnost'"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "sbt_t1_def_player_activity_calc",
+            "input_var": "sbt_t1_def_players_activity_time"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "sbt_t1_def_player_activity_calc",
-              "input_var": "sbt_t1_def_players_activity_time"
-            }
-          },
-          {
-            "varModify": {
+          "varModify": [
+            {
               "operator": "mul",
               "value": 100.0,
               "var": "sbt_t1_def_player_activity_calc"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "divAB",
               "value": 100.0,
               "var": "sbt_t1_def_player_activity_calc",
               "use_variable": true,
               "var_value": "sbt_t1_def_time"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "sbt_t1_def_activity_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "sbt_t1_def_activity_check"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_t1_def_activity_check": {
         "is_enabled": false,
@@ -4787,48 +4213,40 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem aktivnost'"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "sbt_t2_def_player_activity_calc",
+            "input_var": "sbt_t2_def_players_activity_time"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "sbt_t2_def_player_activity_calc",
-              "input_var": "sbt_t2_def_players_activity_time"
-            }
-          },
-          {
-            "varModify": {
+          "varModify": [
+            {
               "operator": "mul",
               "value": 100.0,
               "var": "sbt_t2_def_player_activity_calc"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "divAB",
               "value": 100.0,
               "var": "sbt_t2_def_player_activity_calc",
               "use_variable": true,
               "var_value": "sbt_t2_def_time"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "sbt_t2_def_activity_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "sbt_t2_def_activity_check"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_t2_def_activity_check": {
         "is_enabled": false,
@@ -4880,48 +4298,40 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem aktivnost'"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "sbt_t1_kill_player_activity_calc",
+            "input_var": "sbt_t1_kill_players_activity_time"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "sbt_t1_kill_player_activity_calc",
-              "input_var": "sbt_t1_kill_players_activity_time"
-            }
-          },
-          {
-            "varModify": {
+          "varModify": [
+            {
               "operator": "mul",
               "value": 100.0,
               "var": "sbt_t1_kill_player_activity_calc"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "divAB",
               "value": 100.0,
               "var": "sbt_t1_kill_player_activity_calc",
               "use_variable": true,
               "var_value": "sbt_t1_kill_time"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "sbt_t1_kill_activity_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "sbt_t1_kill_activity_check"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_t1_kill_activity_check": {
         "is_enabled": false,
@@ -4983,48 +4393,40 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem aktivnost'"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "sbt_t2_kill_player_activity_calc",
+            "input_var": "sbt_t2_kill_players_activity_time"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "sbt_t2_kill_player_activity_calc",
-              "input_var": "sbt_t2_kill_players_activity_time"
-            }
-          },
-          {
-            "varModify": {
+          "varModify": [
+            {
               "operator": "mul",
               "value": 100.0,
               "var": "sbt_t2_kill_player_activity_calc"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "divAB",
               "value": 100.0,
               "var": "sbt_t2_kill_player_activity_calc",
               "use_variable": true,
               "var_value": "sbt_t2_kill_time"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "sbt_t2_kill_activity_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "sbt_t2_kill_activity_check"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "sbt_t2_kill_activity_check": {
         "is_enabled": false,
@@ -5087,8 +4489,8 @@
         "timeLimit": 10800,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "sbt_t2_defend_bombers": {
       "is_enabled": false,
@@ -5099,8 +4501,8 @@
         "timeLimit": 10800,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "sbt_t1_attack_bombers": {
       "is_enabled": false,
@@ -5111,8 +4513,8 @@
         "timeLimit": 10800,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "sbt_t2_attack_bombers": {
       "is_enabled": false,
@@ -5123,8 +4525,8 @@
         "timeLimit": 10800,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -5175,22 +4577,20 @@
     "sbt_t2_kill_player_activity_calc": 0,
     "sbt_last_army": 1
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

@@ -28,7 +28,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -39,143 +39,237 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "area_squad": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
         "name": "t2_killarea_realistic",
         "tm": [
-          [-4.47035e-08,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-4.47035e-08],
-          [-387.238,25.7046,2687.12]
+          [
+            -4.47035E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -4.47035E-08
+          ],
+          [
+            -387.238,
+            25.7046,
+            2687.12
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "t2_killarea_block01_realistic"
-          },
-          {
-            "squad_members": "t2_killarea_block02_realistic"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
+        "props": {
+          "squad_members": [
+            "t2_killarea_block01_realistic",
+            "t2_killarea_block02_realistic"
+          ]
+        }
+      },
+      {
         "name": "t1_killarea_realistic",
         "tm": [
-          [-4.47035e-08,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-4.47035e-08],
-          [-338.578,4.53395,2101.23]
+          [
+            -4.47035E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -4.47035E-08
+          ],
+          [
+            -338.578,
+            4.53395,
+            2101.23
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "t1_killarea_block01_realistic"
-          },
-          {
-            "squad_members": "t1_killarea_block02_realistic"
-          }
-        ]
+        "props": {
+          "squad_members": [
+            "t1_killarea_block01_realistic",
+            "t1_killarea_block02_realistic"
+          ]
+        }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "conq_battle_area_realistic": {
       "type": "Box",
       "tm": [
-        [-3380.0,0.0,0.0],
-        [0.0,644.0,0.0],
-        [0.0,0.0,-3380.0],
-        [-2308.4,84.7615,2396.28]
+        [
+          -3380.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          644.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -3380.0
+        ],
+        [
+          -2308.4,
+          84.7615,
+          2396.28
+        ]
       ],
       "objLayer": 5,
-      "props": []
+      "props": {}
     },
     "t2_killarea_block01_realistic": {
       "type": "Cylinder",
       "tm": [
-        [-9.53674e-06,0.0,-200.0],
-        [0.0,97.6116,0.0],
-        [200.0,0.0,-9.53674e-06],
-        [-2041.46,13.8833,3611.45]
+        [
+          -9.53674E-06,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          97.6116,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -9.53674E-06
+        ],
+        [
+          -2041.46,
+          13.8833,
+          3611.45
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t1_killarea_block01_realistic": {
       "type": "Cylinder",
       "tm": [
-        [-9.53674e-06,0.0,-200.0],
-        [0.0,97.6116,0.0],
-        [200.0,0.0,-9.53674e-06],
-        [-1543.06,5.42383,1196.91]
+        [
+          -9.53674E-06,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          97.6116,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -9.53674E-06
+        ],
+        [
+          -1543.06,
+          5.42383,
+          1196.91
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_killarea_block02_realistic": {
       "type": "Cylinder",
       "tm": [
-        [-9.53674e-06,0.0,-200.0],
-        [0.0,97.6116,0.0],
-        [200.0,0.0,-9.53674e-06],
-        [-2963.31,11.0129,3526.6]
+        [
+          -9.53674E-06,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          97.6116,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -9.53674E-06
+        ],
+        [
+          -2963.31,
+          11.0129,
+          3526.6
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t1_killarea_block02_realistic": {
       "type": "Cylinder",
       "tm": [
-        [-9.53674e-06,0.0,-200.0],
-        [0.0,97.6116,0.0],
-        [200.0,0.0,-9.53674e-06],
-        [-2443.15,4.39941,932.589]
+        [
+          -9.53674E-06,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          97.6116,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -9.53674E-06
+        ],
+        [
+          -2443.15,
+          4.39941,
+          932.589
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
         "enabled": false
-      }
-    },
-    {
-      "layer": {
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

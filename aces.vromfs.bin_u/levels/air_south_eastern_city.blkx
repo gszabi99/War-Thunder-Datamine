@@ -3,11 +3,26 @@
   "rendinstMaxHeight": 1000.0,
   "z_far": 100000.0,
   "impostorsDistAdditionalMul": 2.0,
-  "mapCoord0": [-65536.0,-65536.0],
-  "mapCoord1": [65536.0,65536.0],
-  "minAreaSize": [12000.0,12000.0],
-  "aiMapCoord0": [-65536.0,-65536.0],
-  "aiMapCoord1": [65536.0,65536.0],
+  "mapCoord0": [
+    -65536.0,
+    -65536.0
+  ],
+  "mapCoord1": [
+    65536.0,
+    65536.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "aiMapCoord0": [
+    -65536.0,
+    -65536.0
+  ],
+  "aiMapCoord1": [
+    65536.0,
+    65536.0
+  ],
   "customLevelMap": "air_south_eastern_city_map*",
   "numBorderCellsXPos": 16,
   "numBorderCellsXNeg": 16,
@@ -17,7 +32,10 @@
   "mirrorShrinkXNeg": 16.0,
   "mirrorShrinkZPos": 16.0,
   "mirrorShrinkZNeg": 16.0,
-  "gridSteps": [9216.0,9216.0],
+  "gridSteps": [
+    9216.0,
+    9216.0
+  ],
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "lastclip_horizon": true,
@@ -28,8 +46,14 @@
   "water_level": 0.0,
   "earth": {
     "earthWorldEnabled": true,
-    "earthWorldMin": [-65536.0,-65536.0],
-    "earthWorldMax": [65536.0,65536.0]
+    "earthWorldMin": [
+      -65536.0,
+      -65536.0
+    ],
+    "earthWorldMax": [
+      65536.0,
+      65536.0
+    ]
   },
   "stars": {
     "latitude": 34.0,
@@ -39,257 +63,208 @@
     "day": 27
   },
   "shader_vars": {
-    "specular_detect_land_color": [0.71,0.66,0.52,1.0],
+    "specular_detect_land_color": [
+      0.71,
+      0.66,
+      0.52,
+      1.0
+    ],
     "translucency_detection_hardness": 1.0,
     "smoothness_detection_hardness": 2.0,
-    "land_smoothness_detect_color": [0.62,0.61,0.54,2.0],
+    "land_smoothness_detect_color": [
+      0.62,
+      0.61,
+      0.54,
+      2.0
+    ],
     "max_river_width": 900.0,
     "ocean_density": 0.6,
     "river_density": 0.8,
     "water_color_noise_size": 1631.0,
-    "ocean0": [0.29,0.34,0.25,0.0],
-    "ocean1": [0.39,0.44,0.35,0.0],
-    "river0": [0.5,0.35,0.12,0.0],
-    "river1": [0.36,0.41,0.17,0.0]
+    "ocean0": [
+      0.29,
+      0.34,
+      0.25,
+      0.0
+    ],
+    "ocean1": [
+      0.39,
+      0.44,
+      0.35,
+      0.0
+    ],
+    "river0": [
+      0.5,
+      0.35,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.36,
+      0.41,
+      0.17,
+      0.0
+    ]
   },
-  "micro_details": [
-    {
-      "micro_detail": "microdetail_stone_b_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_soil_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_sand_c_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_soil_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_generic_granules_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_grass_b_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_forest_floor_b_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_generic_granules_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_wood_b_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_metal_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_snow_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_generic_granules_a_tex_n*"
-    },
-    {
-      "land_micro_details_uv_scale": 0.51
-    },
-    {
-      "microdetail_stone_b_tex_n*": {
-        "coloring": 0.9
-      }
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_b_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_sand_c_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_b_tex_n*",
+      "microdetail_forest_floor_b_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_wood_b_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 0.51,
+    "microdetail_stone_b_tex_n*": {
+      "coloring": 0.9
     }
-  ],
-  "randomGrass": [
-    {
-      "density": 0.75
-    },
-    {
-      "maxRadius": 400.0
-    },
-    {
-      "sowPerlinFreq": 0.1
-    },
-    {
-      "fadeDelta": 100.0
-    },
-    {
-      "lodFadeDelta": 30.0
-    },
-    {
-      "minLodDensity": 0.2
-    },
-    {
-      "blendToLandDelta": 100.0
-    },
-    {
-      "texSize": 256
-    },
-    {
-      "noise_first_rnd": 23.1407
-    },
-    {
-      "noise_first_val_mul": 1.0
-    },
-    {
-      "noise_first_val_add": 0.0
-    },
-    {
-      "noise_second_rnd": 0.05
-    },
-    {
-      "noise_second_val_mul": 1.0
-    },
-    {
-      "noise_second_val_add": 0.0
-    },
-    {
-      "directWindMul": 1.0
-    },
-    {
-      "noiseWindMul": 1.0
-    },
-    {
-      "windPerlinFreq": 50000.0
-    },
-    {
-      "directWindFreq": 1.0
-    },
-    {
-      "directWindModulationFreq": 1.0
-    },
-    {
-      "windWaveLength": 100.0
-    },
-    {
-      "windToColor": 0.2
-    },
-    {
-      "helicopterHorMul": 2.0
-    },
-    {
-      "helicopterVerMul": 1.0
-    },
-    {
-      "helicopterToDirectWindMul": 2.0
-    },
-    {
-      "helicopterFalloff": 0.001
-    },
-    {
-      "south_eastern_city_country_d": "south_eastern_city_country_m"
-    },
-    {
-      "equatorial_island_fields_01_d": "equatorial_island_fields_01_m"
-    },
-    {
-      "south_eastern_city_fields_01_d": "south_eastern_city_fields_01_m"
-    },
-    {
-      "fuego_islands_underwater_tex_d": "fuego_islands_underwater_tex_m"
-    },
-    {
-      "south_eastern_city_forest_01_d": "equatorial_island_forest_01_m"
-    },
-    {
-      "south_eastern_city_industrial_d": "south_eastern_city_industrial_m"
-    },
-    {
-      "south_eastern_city_landscapes_01_d": "south_eastern_city_landscapes_01_m"
-    },
-    {
-      "equatorial_island_main_rock_d": "equatorial_island_main_rock_m"
-    },
-    {
-      "skyscraper_city_lawn_tile_tex_d": "skyscraper_city_lawn_tile_tex_m"
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+  },
+  "randomGrass": {
+    "density": 0.75,
+    "maxRadius": 400.0,
+    "sowPerlinFreq": 0.1,
+    "fadeDelta": 100.0,
+    "lodFadeDelta": 30.0,
+    "minLodDensity": 0.2,
+    "blendToLandDelta": 100.0,
+    "texSize": 256,
+    "noise_first_rnd": 23.140692,
+    "noise_first_val_mul": 1.0,
+    "noise_first_val_add": 0.0,
+    "noise_second_rnd": 0.05,
+    "noise_second_val_mul": 1.0,
+    "noise_second_val_add": 0.0,
+    "directWindMul": 1.0,
+    "noiseWindMul": 1.0,
+    "windPerlinFreq": 50000.0,
+    "directWindFreq": 1.0,
+    "directWindModulationFreq": 1.0,
+    "windWaveLength": 100.0,
+    "windToColor": 0.2,
+    "helicopterHorMul": 2.0,
+    "helicopterVerMul": 1.0,
+    "helicopterToDirectWindMul": 2.0,
+    "helicopterFalloff": 0.001,
+    "south_eastern_city_country_d": "south_eastern_city_country_m",
+    "equatorial_island_fields_01_d": "equatorial_island_fields_01_m",
+    "south_eastern_city_fields_01_d": "south_eastern_city_fields_01_m",
+    "fuego_islands_underwater_tex_d": "fuego_islands_underwater_tex_m",
+    "south_eastern_city_forest_01_d": "equatorial_island_forest_01_m",
+    "south_eastern_city_industrial_d": "south_eastern_city_industrial_m",
+    "south_eastern_city_landscapes_01_d": "south_eastern_city_landscapes_01_m",
+    "equatorial_island_main_rock_d": "equatorial_island_main_rock_m",
+    "skyscraper_city_lawn_tile_tex_d": "skyscraper_city_lawn_tile_tex_m",
+    "layer": [
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_scatter_a_2",
         "density": 0.1,
         "horScale": 1.0,
         "verScale": 1.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#ffc01c7f",
-        "color_mask_r_to": "#cb94217f",
-        "color_mask_b_from": "#6a792d7f",
-        "color_mask_b_to": "#977e3e7f",
-        "color_mask_g_from": "#021836ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "/8Acfw==",
+        "color_mask_r_to": "y5Qhfw==",
+        "color_mask_b_from": "anktfw==",
+        "color_mask_b_to": "l34+fw==",
+        "color_mask_g_from": "Ahg2/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_scatter_b_1",
         "density": 0.35,
         "horScale": 2.5,
         "verScale": 2.5,
         "windMul": 0.05,
-        "color_mask_r_from": "#ffecbb7f",
-        "color_mask_r_to": "#ffdc177f",
-        "color_mask_b_from": "#6a792d7f",
-        "color_mask_b_to": "#344b127f",
-        "color_mask_g_from": "#021836ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "/+y7fw==",
+        "color_mask_r_to": "/9wXfw==",
+        "color_mask_b_from": "anktfw==",
+        "color_mask_b_to": "NEsSfw==",
+        "color_mask_g_from": "Ahg2/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_scatter_b_2",
         "density": 1.0,
         "horScale": 4.0,
         "verScale": 4.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#ffc01c7f",
-        "color_mask_r_to": "#cb94217f",
-        "color_mask_b_from": "#6a792d7f",
-        "color_mask_b_to": "#977e3e7f",
-        "color_mask_g_from": "#021836ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "/8Acfw==",
+        "color_mask_r_to": "y5Qhfw==",
+        "color_mask_b_from": "anktfw==",
+        "color_mask_b_to": "l34+fw==",
+        "color_mask_g_from": "Ahg2/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_scatter_a_3",
         "density": 3.0,
         "horScale": 2.5,
         "verScale": 3.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#63671b7f",
-        "color_mask_r_to": "#c286547f",
-        "color_mask_b_from": "#e2bf347f",
-        "color_mask_b_to": "#c8a64d7f",
-        "color_mask_g_from": "#021836ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "Y2cbfw==",
+        "color_mask_r_to": "woZUfw==",
+        "color_mask_b_from": "4r80fw==",
+        "color_mask_b_to": "yKZNfw==",
+        "color_mask_g_from": "Ahg2/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_scatter_b_2",
         "density": 15.0,
         "horScale": 2.0,
         "verScale": 2.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#ffc01c7f",
-        "color_mask_r_to": "#cb94217f",
-        "color_mask_b_from": "#6a792d7f",
-        "color_mask_b_to": "#977e3e7f",
-        "color_mask_g_from": "#021836ff",
-        "color_mask_g_to": "#f7f2baff"
+        "color_mask_r_from": "/8Acfw==",
+        "color_mask_r_to": "y5Qhfw==",
+        "color_mask_b_from": "anktfw==",
+        "color_mask_b_to": "l34+fw==",
+        "color_mask_g_from": "Ahg2/w==",
+        "color_mask_g_to": "9/K6/w=="
       }
-    }
-  ],
-  "technicsSkins": [
-    {
-      "groundSkin": "jungle"
-    },
-    {
-      "groundSkin": "default"
-    }
-  ],
+    ]
+  },
+  "technicsSkins": {
+    "groundSkin": [
+      "jungle",
+      "default"
+    ]
+  },
   "overrideRiLodRange": {
     "port_building_factory": {
       "lod0": 100.0,
@@ -429,258 +404,92 @@
       "lod3": 2200.0
     }
   },
-  "forceTexLQ": [
-    {
-      "tex": "decal_wall_brick_damage_a_tex_d*"
-    },
-    {
-      "tex": "decal_wall_brick_damage_a_tex_n*"
-    },
-    {
-      "tex": "wall_dirt_spots_decal_a_tex_m*"
-    },
-    {
-      "tex": "wall_leaks_decal_a_tex_m*"
-    },
-    {
-      "tex": "wall_stucco_damaged_decal_a_tex_m*"
-    },
-    {
-      "tex": "asphalt_a_tex_d*"
-    },
-    {
-      "tex": "asphalt_a_tex_n*"
-    },
-    {
-      "tex": "bitumen_roof_a_d*"
-    },
-    {
-      "tex": "bitumen_roof_a_n*"
-    },
-    {
-      "tex": "bronze_a_tex_d*"
-    },
-    {
-      "tex": "brick_large_blocks_a_d*"
-    },
-    {
-      "tex": "brick_large_blocks_a_n*"
-    },
-    {
-      "tex": "concrere_fortifications_d*"
-    },
-    {
-      "tex": "concrere_fortifications_n*"
-    },
-    {
-      "tex": "concrete_panels_c_tex_d*"
-    },
-    {
-      "tex": "concrete_panels_c_tex_n*"
-    },
-    {
-      "tex": "concrete_plates_ground_tex_d*"
-    },
-    {
-      "tex": "concrete_plates_ground_tex_n*"
-    },
-    {
-      "tex": "concrete_rough_a_tex_d*"
-    },
-    {
-      "tex": "concrete_rough_a_tex_n*"
-    },
-    {
-      "tex": "cracks_a_d*"
-    },
-    {
-      "tex": "cracks_a_n*"
-    },
-    {
-      "tex": "fabric_patterned_e_tex_d*"
-    },
-    {
-      "tex": "glass_tile_a_tex_d*"
-    },
-    {
-      "tex": "glass_tile_a_tex_n*"
-    },
-    {
-      "tex": "gypsum_d*"
-    },
-    {
-      "tex": "metal_bare_a_tex_d*"
-    },
-    {
-      "tex": "metal_bare_a_tex_n*"
-    },
-    {
-      "tex": "metal_bare_d*"
-    },
-    {
-      "tex": "metal_bare_n*"
-    },
-    {
-      "tex": "metal_painted_clear_a_tex_d*"
-    },
-    {
-      "tex": "metal_painted_clear_a_tex_n*"
-    },
-    {
-      "tex": "metal_painted_rusty_a_tex_d*"
-    },
-    {
-      "tex": "metal_painted_rusty_a_tex_n*"
-    },
-    {
-      "tex": "metal_sheet_a_tex_d*"
-    },
-    {
-      "tex": "metal_sheet_a_tex_n*"
-    },
-    {
-      "tex": "metal_tar_roof_d*"
-    },
-    {
-      "tex": "metal_tar_roof_n*"
-    },
-    {
-      "tex": "modern_brick_brown_dirt_b_tex_d*"
-    },
-    {
-      "tex": "modern_brick_brown_dirt_b_tex_n*"
-    },
-    {
-      "tex": "red_rust_b_d*"
-    },
-    {
-      "tex": "red_rust_b_n*"
-    },
-    {
-      "tex": "red_rust_d*"
-    },
-    {
-      "tex": "red_rust_n*"
-    },
-    {
-      "tex": "snow_a_tex_r*"
-    },
-    {
-      "tex": "rubber_tex_d*"
-    },
-    {
-      "tex": "rubber_tex_n*"
-    },
-    {
-      "tex": "stucco_new_d*"
-    },
-    {
-      "tex": "stucco_new_n*"
-    },
-    {
-      "tex": "stucco_white_broken_a_n*"
-    },
-    {
-      "tex": "stucco_white_b_d*"
-    },
-    {
-      "tex": "stucco_white_d*"
-    },
-    {
-      "tex": "stucco_white_n*"
-    },
-    {
-      "tex": "stucco_yellow_dirt_a_n*"
-    },
-    {
-      "tex": "wood_painted_a_tex_d*"
-    },
-    {
-      "tex": "wood_painted_a_tex_n*"
-    },
-    {
-      "tex": "wood_rough_d*"
-    },
-    {
-      "tex": "wood_rough_n*"
-    },
-    {
-      "tex": "wood_rough_b_d*"
-    },
-    {
-      "tex": "wood_rough_b_n*"
-    },
-    {
-      "tex": "wood_rough_tex_e_d*"
-    },
-    {
-      "tex": "wood_rough_tex_e_n*"
-    },
-    {
-      "tex": "small_buildings_overlay_tex_d*"
-    },
-    {
-      "tex": "clouds_m*"
-    },
-    {
-      "tex": "gypsum_m*"
-    },
-    {
-      "tex": "metal_tar_roof_b_tex_n*"
-    },
-    {
-      "tex": "sand_coast_d*"
-    },
-    {
-      "tex": "sand_dust_d*"
-    },
-    {
-      "tex": "sand_dust_n*"
-    },
-    {
-      "tex": "buildings_overlay_tex_d*"
-    },
-    {
-      "tex": "set_metal_constructions_tex_n*"
-    },
-    {
-      "tex": "gypsum_b_m*"
-    },
-    {
-      "tex": "metal_tar_roof_b_tex_d*"
-    },
-    {
-      "tex": "metal_tar_roof_b_tex_n*"
-    },
-    {
-      "tex": "buildings_overlay_blank_tex_d*"
-    },
-    {
-      "tex": "metal_rusted_d*"
-    },
-    {
-      "tex": "metal_rusted_n*"
-    },
-    {
-      "tex": "factory_crane_b_overlay_tex_d*"
-    },
-    {
-      "tex": "wire_netting_tex_d*"
-    },
-    {
-      "tex": "wire_netting_tex_n*"
-    },
-    {
-      "tex": "conex_box_decal_b_tex_d*"
-    },
-    {
-      "tex": "conex_box_d_decal_a_tex_d*"
-    },
-    {
-      "tex": "conex_box_d_decal_a_tex_n*"
-    },
-    {
-      "tex": "conex_box_d_overlay*"
-    }
-  ]
+  "forceTexLQ": {
+    "tex": [
+      "decal_wall_brick_damage_a_tex_d*",
+      "decal_wall_brick_damage_a_tex_n*",
+      "wall_dirt_spots_decal_a_tex_m*",
+      "wall_leaks_decal_a_tex_m*",
+      "wall_stucco_damaged_decal_a_tex_m*",
+      "asphalt_a_tex_d*",
+      "asphalt_a_tex_n*",
+      "bitumen_roof_a_d*",
+      "bitumen_roof_a_n*",
+      "bronze_a_tex_d*",
+      "brick_large_blocks_a_d*",
+      "brick_large_blocks_a_n*",
+      "concrere_fortifications_d*",
+      "concrere_fortifications_n*",
+      "concrete_panels_c_tex_d*",
+      "concrete_panels_c_tex_n*",
+      "concrete_plates_ground_tex_d*",
+      "concrete_plates_ground_tex_n*",
+      "concrete_rough_a_tex_d*",
+      "concrete_rough_a_tex_n*",
+      "cracks_a_d*",
+      "cracks_a_n*",
+      "fabric_patterned_e_tex_d*",
+      "glass_tile_a_tex_d*",
+      "glass_tile_a_tex_n*",
+      "gypsum_d*",
+      "metal_bare_a_tex_d*",
+      "metal_bare_a_tex_n*",
+      "metal_bare_d*",
+      "metal_bare_n*",
+      "metal_painted_clear_a_tex_d*",
+      "metal_painted_clear_a_tex_n*",
+      "metal_painted_rusty_a_tex_d*",
+      "metal_painted_rusty_a_tex_n*",
+      "metal_sheet_a_tex_d*",
+      "metal_sheet_a_tex_n*",
+      "metal_tar_roof_d*",
+      "metal_tar_roof_n*",
+      "modern_brick_brown_dirt_b_tex_d*",
+      "modern_brick_brown_dirt_b_tex_n*",
+      "red_rust_b_d*",
+      "red_rust_b_n*",
+      "red_rust_d*",
+      "red_rust_n*",
+      "snow_a_tex_r*",
+      "rubber_tex_d*",
+      "rubber_tex_n*",
+      "stucco_new_d*",
+      "stucco_new_n*",
+      "stucco_white_broken_a_n*",
+      "stucco_white_b_d*",
+      "stucco_white_d*",
+      "stucco_white_n*",
+      "stucco_yellow_dirt_a_n*",
+      "wood_painted_a_tex_d*",
+      "wood_painted_a_tex_n*",
+      "wood_rough_d*",
+      "wood_rough_n*",
+      "wood_rough_b_d*",
+      "wood_rough_b_n*",
+      "wood_rough_tex_e_d*",
+      "wood_rough_tex_e_n*",
+      "small_buildings_overlay_tex_d*",
+      "clouds_m*",
+      "gypsum_m*",
+      "metal_tar_roof_b_tex_n*",
+      "sand_coast_d*",
+      "sand_dust_d*",
+      "sand_dust_n*",
+      "buildings_overlay_tex_d*",
+      "set_metal_constructions_tex_n*",
+      "gypsum_b_m*",
+      "metal_tar_roof_b_tex_d*",
+      "metal_tar_roof_b_tex_n*",
+      "buildings_overlay_blank_tex_d*",
+      "metal_rusted_d*",
+      "metal_rusted_n*",
+      "factory_crane_b_overlay_tex_d*",
+      "wire_netting_tex_d*",
+      "wire_netting_tex_n*",
+      "conex_box_decal_b_tex_d*",
+      "conex_box_d_decal_a_tex_d*",
+      "conex_box_d_decal_a_tex_n*",
+      "conex_box_d_overlay*"
+    ]
+  }
 }

@@ -14,30 +14,62 @@
   "AileronSens": 0.18,
   "GearActuatorSpeed": 0.2,
   "WingActuatorSpeed": 0.1,
-  "CockpitDoorSpeedOpen": [150.0,300.0,0.5,0.0],
-  "CockpitDoorSpeedClose": [150.0,300.0,0.5,0.0],
+  "CockpitDoorSpeedOpen": [
+    150.0,
+    300.0,
+    0.5,
+    0.0
+  ],
+  "CockpitDoorSpeedClose": [
+    150.0,
+    300.0,
+    0.5,
+    0.0
+  ],
   "CockpitDoorBlockSpeed": 450.0,
   "CockpitOpenedDoorBreakSpeed": -1.0,
   "AirBrakeSpeed": 0.5,
-  "dvFlapsIn": [150.0,280.0,0.15,0.19],
-  "dvFlapsOut": [150.0,280.0,0.19,0.15],
+  "dvFlapsIn": [
+    150.0,
+    280.0,
+    0.15,
+    0.19
+  ],
+  "dvFlapsOut": [
+    150.0,
+    280.0,
+    0.19,
+    0.15
+  ],
   "Wingspan": 11.81,
   "SweptWingAngle": 2.0,
   "WingTaperRatio": 2.74,
   "Length": 10.49,
   "StabWidth": 4.75,
-  "FinHeight": 2.0531,
+  "FinHeight": 2.05305,
   "Crew": 1,
   "WingAngle": 1.0,
   "StabAngle": 1.3,
   "KeelAngle": 0.0,
-  "AileronAngles": [21.0,21.0],
-  "ElevatorAngles": [37.0,16.0],
+  "AileronAngles": [
+    21.0,
+    21.0
+  ],
+  "ElevatorAngles": [
+    37.0,
+    16.0
+  ],
   "InvertElevator": false,
-  "RudderAngles": [15.5,15.5],
+  "RudderAngles": [
+    15.5,
+    15.5
+  ],
   "RudderInterceptor": false,
   "Elevon": false,
-  "VSlats": [150.0,200.0],
+  "VSlats": [
+    150.0,
+    200.0
+  ],
   "Vne": 990.0,
   "VneMach": 0.9,
   "MinimalSpeed": 200.0,
@@ -49,70 +81,36 @@
   "VneCockpitDoor": 2000.0,
   "ArcadeLimitWepMultiplier": 1.2,
   "ArcadeHelpersSensitivity": 1.0,
-  "MomentOfInertia": [16000.0,34000.0,18000.0],
-  "AllowModsToChangeLongidutialBalance": false,
-  "AvailableControls": [
-    {
-      "hasAileronControl": true
-    },
-    {
-      "hasAileronTrimControl": true
-    },
-    {
-      "hasAileronTrimGroundControl": false
-    },
-    {
-      "hasElevatorControl": true
-    },
-    {
-      "hasElevatorTrimControl": true
-    },
-    {
-      "hasElevatorTrimGroundControl": false
-    },
-    {
-      "hasRudderControl": true
-    },
-    {
-      "hasRudderTrimControl": true
-    },
-    {
-      "hasRudderTrimGroundControl": false
-    },
-    {
-      "hasFlapsControl": true
-    },
-    {
-      "hasFlapsControl": true
-    },
-    {
-      "hasAirbrake": true
-    },
-    {
-      "hasGearControl": true
-    },
-    {
-      "hasArrestorControl": false
-    },
-    {
-      "hasWingFoldControl": false
-    },
-    {
-      "hasCockpitDoorControl": true
-    },
-    {
-      "hasWheelBrakeControl": true
-    },
-    {
-      "hasLockGearControl": false
-    },
-    {
-      "hasTakeoffFlapsPosition": true
-    },
-    {
-      "hasCombatFlapsPosition": true
-    }
+  "MomentOfInertia": [
+    16000.0,
+    34000.0,
+    18000.0
   ],
+  "AllowModsToChangeLongidutialBalance": false,
+  "AvailableControls": {
+    "hasAileronControl": true,
+    "hasAileronTrimControl": true,
+    "hasAileronTrimGroundControl": false,
+    "hasElevatorControl": true,
+    "hasElevatorTrimControl": true,
+    "hasElevatorTrimGroundControl": false,
+    "hasRudderControl": true,
+    "hasRudderTrimControl": true,
+    "hasRudderTrimGroundControl": false,
+    "hasFlapsControl": [
+      true,
+      true
+    ],
+    "hasAirbrake": true,
+    "hasGearControl": true,
+    "hasArrestorControl": false,
+    "hasWingFoldControl": false,
+    "hasCockpitDoorControl": true,
+    "hasWheelBrakeControl": true,
+    "hasLockGearControl": false,
+    "hasTakeoffFlapsPosition": true,
+    "hasCombatFlapsPosition": true
+  },
   "Areas": {
     "WingLeftIn": 3.88,
     "WingLeftMid": 3.68,
@@ -128,9 +126,9 @@
     "SmallHoleDrag": 0.01,
     "MediumHoleDrag": 0.02,
     "BigHoleDrag": 0.04,
-    "SmallHole": 0.0006,
+    "SmallHole": 0.00064516,
     "MediumHole": 0.0016,
-    "BigHole": 0.0055,
+    "BigHole": 0.005476,
     "WingLeftCut": 0.25,
     "WingRightCut": 0.4
   },
@@ -147,10 +145,26 @@
     "Stabilizer": 5.0,
     "Keel": 4.82,
     "Rudder": 4.82,
-    "Fuselage": [0.9,0.4,0.0],
-    "LeftStab": [-5.0,0.76,0.9],
-    "RightStab": [-5.0,0.76,-0.9],
-    "VertStab": [-5.2,1.5,0.0],
+    "Fuselage": [
+      0.9,
+      0.4,
+      0.0
+    ],
+    "LeftStab": [
+      -5.0,
+      0.76,
+      0.9
+    ],
+    "RightStab": [
+      -5.0,
+      0.76,
+      -0.9
+    ],
+    "VertStab": [
+      -5.2,
+      1.5,
+      0.0
+    ],
     "WingVWingFocusMultiplier": 0.0,
     "SineAOSMultiplier": 0.1
   },
@@ -363,9 +377,20 @@
     }
   },
   "Engine0": {
-    "Position": [-3.0,0.0,0.0],
-    "Direction": [-0.0,0.572939],
-    "PropPos": [-3.0,0.0,0.0],
+    "Position": [
+      -3.0,
+      0.0,
+      0.0
+    ],
+    "Direction": [
+      -0.0,
+      0.572939
+    ],
+    "PropPos": [
+      -3.0,
+      0.0,
+      0.0
+    ],
     "Main": {
       "FuelSystemNum": 0,
       "Type": "Jet",
@@ -389,11 +414,17 @@
       "OptimalSpeed": 324.0,
       "EngineInertiaMoment": 1.0,
       "EngineAcceleration": 0.15,
-      "RPMAmplitude0": [11500.0,0.0],
-      "RPMAmplitude1": [0.0,70.0],
+      "RPMAmplitude0": [
+        11500.0,
+        0.0
+      ],
+      "RPMAmplitude1": [
+        0.0,
+        70.0
+      ],
       "ConsumptionOmegaMax": 1.6,
       "ConsumptionOmegaMinCoeff": 1.6,
-      "ThrustOmegaMinCoeff": 0.016,
+      "ThrustOmegaMinCoeff": 0.0159547,
       "TurbineTimeConstant": 3.4,
       "Power": 1200.0,
       "Mode0": {
@@ -419,7 +450,7 @@
       },
       "Mode3": {
         "Throttle": 0.95,
-        "RPM": 0.9873,
+        "RPM": 0.98734,
         "ThrustMult": 0.95,
         "TorqueMult": 0.95,
         "ConsumptionMult": 1.1
@@ -433,7 +464,7 @@
       },
       "ThrustMax": {
         "Altitude_0": 0.0,
-        "Altitude_1": 8.8083,
+        "Altitude_1": 8.80827,
         "Altitude_2": 3047.0,
         "Altitude_3": 6095.0,
         "Altitude_4": 9143.0,
@@ -520,9 +551,18 @@
       "PhiFeather": 1.55,
       "Direction": 1,
       "CoaxProps": false,
-      "ThrottleRPMAuto0": [0.0,2000.0],
-      "ThrottleRPMAuto1": [1.0,11750.0],
-      "ThrottleRPMAuto2": [1.1,11750.0],
+      "ThrottleRPMAuto0": [
+        0.0,
+        2000.0
+      ],
+      "ThrottleRPMAuto1": [
+        1.0,
+        11750.0
+      ],
+      "ThrottleRPMAuto2": [
+        1.1,
+        11750.0
+      ],
       "Polar": {
         "lineClCoeff": 0.075,
         "Cl0": 0.4,
@@ -532,7 +572,7 @@
         "ClCritLow": -0.87,
         "CdMin": 0.012,
         "AfterCritParabAngle": 3.0,
-        "AfterCritDeclineCoeff": 0.0222,
+        "AfterCritDeclineCoeff": 0.0222222,
         "AfterCritMaxDistanceAngle": 36.0,
         "ClAfterCrit": 1.09,
         "MachFactor": 2,
@@ -577,7 +617,7 @@
     "Temperature": {
       "RadiatorType": 3,
       "NoIgnitionWaterHeatProducingFactor": 0.15,
-      "WaterTemperatureInertia": 5.6738,
+      "WaterTemperatureInertia": 5.67384,
       "WaterAirDensityPower": 0.0,
       "NoIgnitionOilHeatProducingFactor": 0.15,
       "OilTemperatureInertia": 20.0,
@@ -589,7 +629,10 @@
       "OilBoilingTemperature": 360.0,
       "OilThermostatInertia": 20.0,
       "OilThermostatSetPoint": 60.0,
-      "DegradationTime_10_5": [180.0,171.0],
+      "DegradationTime_10_5": [
+        180.0,
+        171.0
+      ],
       "HalfHealthWaterTemperatureToleranceDecrease": 170.0,
       "HalfHealthOilTemperatureToleranceDecrease": 9.5,
       "Mode0": {
@@ -684,11 +727,24 @@
     "AdvancedMass": false,
     "SeparateFuelTanks": true,
     "Takeoff": 6962.0,
-    "CenterOfGravity": [-0.45,0.3,0.0],
-    "WingCritOverload": [-144115.0,284115.0],
+    "CenterOfGravity": [
+      -0.45,
+      0.3,
+      0.0
+    ],
+    "WingCritOverload": [
+      -144115.0,
+      284115.0
+    ],
     "GearDestructionIndSpeed": 380.0,
-    "FlapsDestructionIndSpeedP1": [0.1,560.0],
-    "FlapsDestructionIndSpeedP2": [1.0,360.0],
+    "FlapsDestructionIndSpeedP1": [
+      0.1,
+      560.0
+    ],
+    "FlapsDestructionIndSpeedP2": [
+      1.0,
+      360.0
+    ],
     "Parts": {
       "engine1_dm": 900.0,
       "tank1_capacity": 339.0,
@@ -713,8 +769,8 @@
       "wing_r_dm": 129.847,
       "tailcontrol_dm": 30.4789,
       "stab_dm": 109.1,
-      "wingcontrol_r_dm": 5.2255,
-      "wingcontrol_l_dm": 5.2256,
+      "wingcontrol_r_dm": 5.22553,
+      "wingcontrol_l_dm": 5.22555,
       "elevator_dm": 61.1342,
       "fuse1_dm": 297.483,
       "wing2_l_dm": 185.654,
@@ -785,8 +841,8 @@
     "speedWEP0": 0.0,
     "climbSpeedIAS": true,
     "turnTimeFlaps": 0,
-    "Alt": [],
-    "IAS": []
+    "Alt": {},
+    "IAS": {}
   },
   "Test": {
     "mass": 6962.0

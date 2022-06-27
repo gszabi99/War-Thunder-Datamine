@@ -16,11 +16,15 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "locName": "missions/i180_examination",
       "locDesc": "missions/i180_examination/desc"
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -29,35 +33,25 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "airfield00",
               "lookAt": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "airfield",
               "side": "ally",
               "target": "airfield01"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -74,7 +68,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -89,9 +83,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "addAirfield": {
           "runwayStart": "airfield00",
@@ -114,7 +108,7 @@
           "realtimeTriggers": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "respawn": {
       "is_enabled": true,
@@ -143,31 +137,19 @@
           "runwayName": "airfield00",
           "objects": "armada_01"
         },
-        "triggerEnable": [
-          {
-            "target": "do_damage_preset01"
-          },
-          {
-            "target": "do_damage_preset02"
-          },
-          {
-            "target": "do_damage_preset03"
-          },
-          {
-            "target": "do_damage_preset04"
-          },
-          {
-            "target": "do_damage_preset05"
-          },
-          {
-            "target": "do_damage_preset06"
-          },
-          {
-            "target": "do_damage_preset07"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "do_damage_preset01",
+            "do_damage_preset02",
+            "do_damage_preset03",
+            "do_damage_preset04",
+            "do_damage_preset05",
+            "do_damage_preset06",
+            "do_damage_preset07"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "hint_show_warning": {
       "is_enabled": true,
@@ -210,7 +192,7 @@
           "object_var_value": 0
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "hint_hide_warning": {
       "is_enabled": true,
@@ -253,7 +235,7 @@
           "control": "ALL"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "hint_hide_xray": {
       "is_enabled": true,
@@ -289,7 +271,7 @@
           "object_var_value": 0
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "initial_damage_presets": {
       "isCategory": true,
@@ -325,55 +307,79 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "armada_01",
-              "invulnerabilityTimer": 0.0
-            }
+        "actions": {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "armada_01",
+            "invulnerabilityTimer": 0.0
           },
-          {
-            "unitDamage": {
+          "unitDamage": [
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "wing1_l_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 0.1,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "oil1_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "wingcontrol_l_dm"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       },
       "do_damage_preset02": {
         "is_enabled": true,
@@ -406,55 +412,79 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "armada_01",
-              "invulnerabilityTimer": 0.0
-            }
+        "actions": {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "armada_01",
+            "invulnerabilityTimer": 0.0
           },
-          {
-            "unitDamage": {
+          "unitDamage": [
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "fuse_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 0.9,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "tank1_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "rudder_dm"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       },
       "do_damage_preset03": {
         "is_enabled": true,
@@ -487,43 +517,59 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "armada_01",
-              "invulnerabilityTimer": 0.0
-            }
+        "actions": {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "armada_01",
+            "invulnerabilityTimer": 0.0
           },
-          {
-            "unitDamage": {
+          "unitDamage": [
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "fuse_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "aileron_r_dm"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       },
       "do_damage_preset04": {
         "is_enabled": true,
@@ -556,55 +602,79 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "armada_01",
-              "invulnerabilityTimer": 0.0
-            }
+        "actions": {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "armada_01",
+            "invulnerabilityTimer": 0.0
           },
-          {
-            "unitDamage": {
+          "unitDamage": [
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "wing1_r_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 0.1,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "oil1_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "wingcontrol_r_dm"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       },
       "do_damage_preset05": {
         "is_enabled": true,
@@ -637,55 +707,79 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "armada_01",
-              "invulnerabilityTimer": 0.0
-            }
+        "actions": {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "armada_01",
+            "invulnerabilityTimer": 0.0
           },
-          {
-            "unitDamage": {
+          "unitDamage": [
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "stab_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 0.9,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "tank1_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "rudder_dm"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       },
       "do_damage_preset06": {
         "is_enabled": true,
@@ -718,43 +812,59 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "armada_01",
-              "invulnerabilityTimer": 0.0
-            }
+        "actions": {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "armada_01",
+            "invulnerabilityTimer": 0.0
           },
-          {
-            "unitDamage": {
+          "unitDamage": [
+            {
               "power": 0.9,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "tank1_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "aileron_l_dm"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       },
       "do_damage_preset07": {
         "is_enabled": true,
@@ -787,43 +897,59 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "armada_01",
-              "invulnerabilityTimer": 0.0
-            }
+        "actions": {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "armada_01",
+            "invulnerabilityTimer": 0.0
           },
-          {
-            "unitDamage": {
+          "unitDamage": [
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "fin_dm"
-            }
-          },
-          {
-            "unitDamage": {
+            },
+            {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
-              "delay": [1.0,1.0],
-              "offset": [0.0,0.0,0.0],
-              "radiusOffset": [10.0,15.0],
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
               "target": "armada_01",
               "partName": "tailcontrol_dm"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       }
     },
     "special_damages": {
@@ -854,7 +980,7 @@
             "control": "ID_FLAPS_DOWN"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "preset07_broke_engine_01": {
         "is_enabled": true,
@@ -887,7 +1013,7 @@
             "control": "ID_TOGGLE_ENGINE"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "preset07_broke_engine_02": {
         "is_enabled": true,
@@ -926,7 +1052,7 @@
             "control": "ID_TOGGLE_ENGINE"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     }
   },
@@ -937,17 +1063,33 @@
   "variables": {
     "preset_id": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "armada": {
       "name": "armada_01",
       "tm": [
-        [0.488996,0.0,0.872286],
-        [0.0,1.0,0.0],
-        [-0.872286,0.0,0.488996],
-        [8171.85,212.2,10492.3]
+        [
+          0.488996,
+          0.0,
+          0.872286
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.872286,
+          0.0,
+          0.488996
+        ],
+        [
+          8171.85,
+          212.2,
+          10492.3
+        ]
       ],
       "unit_class": "i_180",
       "closed_waypoints": false,
@@ -982,62 +1124,104 @@
           "task": "FLY_WAYPOINT"
         }
       },
-      "way": []
+      "way": {}
     }
   },
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [-18.382,0.0,229.565],
-        [0.0,230.3,0.0],
-        [-229.565,0.0,-18.382],
-        [8172.95,210.5,10492.0]
+        [
+          -18.382,
+          0.0,
+          229.565
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -229.565,
+          0.0,
+          -18.382
+        ],
+        [
+          8172.95,
+          210.5,
+          10492.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [-18.382,0.0,229.565],
-        [0.0,230.3,0.0],
-        [-229.565,0.0,-18.382],
-        [8557.4,210.5,11224.0]
+        [
+          -18.382,
+          0.0,
+          229.565
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -229.565,
+          0.0,
+          -18.382
+        ],
+        [
+          8557.4,
+          210.5,
+          11224.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [-6.10606,0.0,76.2559],
-        [0.0,76.5,0.0],
-        [-76.2559,0.0,-6.10606],
-        [8169.78,210.5,10492.4]
+        [
+          -6.10606,
+          0.0,
+          76.2559
+        ],
+        [
+          0.0,
+          76.5,
+          0.0
+        ],
+        [
+          -76.2559,
+          0.0,
+          -6.10606
+        ],
+        [
+          8169.78,
+          210.5,
+          10492.4
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

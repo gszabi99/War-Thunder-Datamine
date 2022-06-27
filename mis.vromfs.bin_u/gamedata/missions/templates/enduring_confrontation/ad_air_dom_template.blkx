@@ -17,9 +17,9 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -36,44 +36,30 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "zeroing idx for battle"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "starting rotation"
           }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 0
-            },
-            {
-              "var": "ad_battle_idx"
-            },
-            {
-              "var": "ad_attack_from_idx"
-            },
-            {
-              "var": "ad_attack_to_idx"
-            },
-            {
-              "var": "ad_who_attack"
-            }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": [
+            "ad_battle_idx",
+            "ad_attack_from_idx",
+            "ad_attack_to_idx",
+            "ad_who_attack"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_start"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zone_start"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_end": {
       "is_enabled": false,
@@ -95,29 +81,23 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "ending template"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pausing in launching this template for 5 minutes"
           }
+        ],
+        "__varSetBool": {
+          "value": false,
+          "var": "ad_is_template_active"
         },
-        {
-          "__varSetBool": {
-            "value": false,
-            "var": "ad_is_template_active"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_pause"
-          }
+        "triggerEnable": {
+          "target": "ad_pause"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "moving along rotation"
@@ -147,30 +127,26 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "ending template"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "do not pause template starting"
           }
-        },
-        {
-          "varSetBool": {
+        ],
+        "varSetBool": [
+          {
             "value": false,
             "var": "ad_is_template_active"
-          }
-        },
-        {
-          "varSetBool": {
+          },
+          {
             "value": true,
             "var": "ad_is_launch_alowed"
           }
-        }
-      ],
+        ]
+      },
       "else_actions": {
         "comment": {
           "value": "moving along rotation"
@@ -193,111 +169,85 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "selecting random row for searching"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "need to ignore border values (1 i 7) "
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "counting starting index for search"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "counting maximum allowing idx for current col"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "finding minimal value"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "choosing current idx"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "starting rotation"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "ad_search_col_idx",
+          "from": 2,
+          "to_not_including": 7,
+          "var_to_not_including": "flt_zones_in_col"
         },
-        {
-          "varSetRandomInt": {
-            "var": "ad_search_col_idx",
-            "from": 2,
-            "to_not_including": 7,
-            "var_to_not_including": "flt_zones_in_col"
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_search_max_idx",
             "input_var": "ad_search_col_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_min_idx",
             "input_var": "ad_search_max_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_cur_idx",
             "input_var": "ad_search_min_idx"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "mul",
             "value": 7.0,
             "var": "ad_search_max_idx",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": -1.0,
             "var": "ad_search_max_idx"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 7.0,
             "var": "ad_search_min_idx",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 2.0,
             "var": "ad_search_min_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_rotator"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_search_zone_rotator"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_search_zone_rotator": {
       "is_enabled": false,
@@ -325,91 +275,69 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "no active searching procedure found and idx is valid"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "creating zone name"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "creating var name, which contains army"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "getting army"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "checking is army has no zero value"
           }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "ad_search_in_progress"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "ad_search_in_progress"
-          }
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "ad_search_cur_idx"
         },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "flt_area_",
             "var": "ad_search_zone_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_army_cur_var_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@ad_search_cur_idx",
             "digits": 2,
             "var": "ad_search_zone_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_cur_idx",
             "digits": 2,
             "var": "ad_search_army_cur_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_state",
             "digits": 0,
             "var": "ad_search_army_cur_var_name"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_cur_army",
+          "input_var": "@ad_search_army_cur_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_cur_army",
-            "input_var": "@ad_search_army_cur_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zero_army_check"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zero_army_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "not able to find"
@@ -439,301 +367,221 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "zone is used"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "creating left zone name"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "getting variable name which contains army"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "right zone name compilating"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "getting army var name"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "upper zone name compilating"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "getting army var name"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "bottom zone name compilating"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "getting army var name"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "checking left zone"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_search_left_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_right_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_upper_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_bottom_idx",
             "input_var": "ad_search_cur_idx"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "ad_search_left_idx"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": -1.0,
             "var": "ad_search_right_idx"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 1.0,
             "var": "ad_search_upper_idx",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 1.0,
             "var": "ad_search_upper_idx",
             "use_variable": true,
             "var_value": "flt_offset"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "ad_search_bottom_idx",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "ad_search_bottom_idx",
             "use_variable": true,
             "var_value": "flt_offset"
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "flt_area_",
             "var": "ad_search_left_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_army_left_var_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_right_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_army_right_var_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_upper_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_army_upper_var_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_bottom_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_army_bottom_var_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@ad_search_left_idx",
             "digits": 2,
             "var": "ad_search_left_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_left_idx",
             "digits": 2,
             "var": "ad_search_army_left_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_state",
             "digits": 0,
             "var": "ad_search_army_left_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_right_idx",
             "digits": 2,
             "var": "ad_search_right_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_right_idx",
             "digits": 2,
             "var": "ad_search_army_right_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_state",
             "digits": 0,
             "var": "ad_search_army_right_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_upper_idx",
             "digits": 2,
             "var": "ad_search_upper_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_upper_idx",
             "digits": 2,
             "var": "ad_search_army_upper_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_state",
             "digits": 0,
             "var": "ad_search_army_upper_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_bottom_idx",
             "digits": 2,
             "var": "ad_search_bottom_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_bottom_idx",
             "digits": 2,
             "var": "ad_search_army_bottom_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_state",
             "digits": 0,
             "var": "ad_search_army_bottom_var_name"
           }
+        ],
+        "__triggerEnable": {
+          "target": "ad_search_zone_left_exist"
         },
-        {
-          "__triggerEnable": {
-            "target": "ad_search_zone_left_exist"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_battle_restart"
-          }
+        "triggerEnable": {
+          "target": "ad_search_battle_restart"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "zone hasn't used"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "going along the rotation"
           }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "ad_search_in_progress"
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "ad_search_in_progress"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_rotator"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zone_rotator"
         }
-      ]
+      }
     },
     "ad_search_zone_left_exist": {
       "is_enabled": false,
@@ -761,40 +609,30 @@
           "invertResult": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "indeks ne vyshel za predely stroki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "i zona sushchestvuet"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem armiyu levoj yachejki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sravnivaem armii"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_left_army",
+          "input_var": "@ad_search_army_left_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_left_army",
-            "input_var": "@ad_search_army_left_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_left_army_check"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zone_left_army_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem proveryat' yachejku sprava"
@@ -817,71 +655,57 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "ad_search_left_army",
             "value": 0,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "ad_search_cur_army",
             "value": 0,
             "comparasion_func": "notEqual",
             "var_value_other": "ad_search_left_army"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
+        ]
+      },
+      "actions": {
+        "comment": [
+          {
             "value": "armiya levoj zony bol'she 0 i ne ravna armii proveryaemoj zony"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kidaem randomnyj kubik"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapominaem indeksy zon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "universal'naya proverka na boevuyu zonu"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "ad_search_random_check_idx",
+          "from": 1,
+          "to_not_including": 3
         },
-        {
-          "varSetRandomInt": {
-            "var": "ad_search_random_check_idx",
-            "from": 1,
-            "to_not_including": 3
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_search_zone_01_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_zone_02_idx",
             "input_var": "ad_search_left_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_final_check"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_search_zone_final_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem proveryat' yachejku sprava"
@@ -917,40 +741,30 @@
           "invertResult": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "indeks ne vyshel za predely stroki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "i zona sushchestvuet"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem armiyu levoj yachejki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sravnivaem armii"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_right_army",
+          "input_var": "@ad_search_army_right_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_right_army",
-            "input_var": "@ad_search_army_right_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_right_army_check"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zone_right_army_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem proveryat' yachejku sverhu"
@@ -973,71 +787,57 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "ad_search_cur_army",
             "value": 0,
             "comparasion_func": "notEqual",
             "var_value_other": "ad_search_right_army"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "ad_search_right_army",
             "value": 0,
             "comparasion_func": "more"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
+        ]
+      },
+      "actions": {
+        "comment": [
+          {
             "value": "armiya pravoj zony bol'she 0 i ne ravna armii proveryaemoj zony"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kidaem randomnyj kubik"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapominaem indeksy zon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "universal'naya proverka na boevuyu zonu"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "ad_search_random_check_idx",
+          "from": 1,
+          "to_not_including": 3
         },
-        {
-          "varSetRandomInt": {
-            "var": "ad_search_random_check_idx",
-            "from": 1,
-            "to_not_including": 3
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_search_zone_01_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_zone_02_idx",
             "input_var": "ad_search_right_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_final_check"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_search_zone_final_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem proveryat' yachejku sverhu"
@@ -1067,35 +867,27 @@
           "invertResult": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "zona sushchestvuet"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem armiyu verhnej yachejki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sravnivaem armii"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_upper_army",
+          "input_var": "@ad_search_army_upper_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_upper_army",
-            "input_var": "@ad_search_army_upper_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_upper_army_check"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zone_upper_army_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem proveryat' yachejku snizu"
@@ -1118,71 +910,57 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "ad_search_cur_army",
             "value": 0,
             "comparasion_func": "notEqual",
             "var_value_other": "ad_search_upper_army"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "ad_search_upper_army",
             "value": 0,
             "comparasion_func": "more"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
+        ]
+      },
+      "actions": {
+        "comment": [
+          {
             "value": "armiya verhnej zony bol'she 0 i ne ravna armii proveryaemoj zony"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kidaem randomnyj kubik"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapominaem indeksy zon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "universal'naya proverka na boevuyu zonu"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "ad_search_random_check_idx",
+          "from": 1,
+          "to_not_including": 3
         },
-        {
-          "varSetRandomInt": {
-            "var": "ad_search_random_check_idx",
-            "from": 1,
-            "to_not_including": 3
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_search_zone_01_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_zone_02_idx",
             "input_var": "ad_search_upper_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_final_check"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_search_zone_final_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem proveryat' yachejku snizu"
@@ -1212,35 +990,27 @@
           "invertResult": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "zona sushchestvuet"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem armiyu nizhnej yachejki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sravnivaem armii"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_bottom_army",
+          "input_var": "@ad_search_army_bottom_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_bottom_army",
-            "input_var": "@ad_search_army_bottom_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_bottom_army_check"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zone_bottom_army_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem dal'she po ciklu"
@@ -1267,71 +1037,57 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "ad_search_cur_army",
             "value": 0,
             "comparasion_func": "notEqual",
             "var_value_other": "ad_search_bottom_army"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "ad_search_bottom_army",
             "value": 0,
             "comparasion_func": "more"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
+        ]
+      },
+      "actions": {
+        "comment": [
+          {
             "value": "armiya verhnej zony bol'she 0 i ne ravna armii proveryaemoj zony"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kidaem randomnyj kubik"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapominaem indeksy zon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "universal'naya proverka na boevuyu zonu"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "ad_search_random_check_idx",
+          "from": 1,
+          "to_not_including": 3
         },
-        {
-          "varSetRandomInt": {
-            "var": "ad_search_random_check_idx",
-            "from": 1,
-            "to_not_including": 3
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_search_zone_01_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_search_zone_02_idx",
             "input_var": "ad_search_bottom_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_final_check"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_search_zone_final_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "idem dal'she po ciklu"
@@ -1365,54 +1121,42 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "boj budet v rodnoj zone"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem chtoby zona ne sovpala s predydushchej"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_check_idx",
+          "input_var": "ad_search_zone_01_idx"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_check_idx",
-            "input_var": "ad_search_zone_01_idx"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_check_previous_zone"
-          }
+        "triggerEnable": {
+          "target": "ad_check_previous_zone"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "boj budet v pogranichnoj zone"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem chtoby zona ne sovpala s predydushchej"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_check_idx",
+          "input_var": "ad_search_zone_02_idx"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_check_idx",
-            "input_var": "ad_search_zone_02_idx"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_check_previous_zone"
-          }
+        "triggerEnable": {
+          "target": "ad_check_previous_zone"
         }
-      ]
+      }
     },
     "ad_check_previous_zone": {
       "is_enabled": false,
@@ -1447,29 +1191,23 @@
           "target": "ad_quest_start"
         }
       },
-      "else_actions": [
-        {
-          "comment": {
+      "else_actions": {
+        "comment": [
+          {
             "value": "zony identichny. "
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "idem dal'she po ciklu"
           }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "ad_search_in_progress"
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "ad_search_in_progress"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_zone_rotator"
-          }
+        "triggerEnable": {
+          "target": "ad_search_zone_rotator"
         }
-      ]
+      }
     },
     "ad_quest_start": {
       "is_enabled": false,
@@ -1484,115 +1222,91 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "zapominaem imya zony kak poslednee"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem imya zony"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vydaem kvest obeim komandam"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem zonu zahvata"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem okonchanie bitvy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem proverku zahvaty zony"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_last_zone_idx",
+          "input_var": "ad_search_check_idx"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_last_zone_idx",
-            "input_var": "ad_search_check_idx"
-          }
+        "varSetString": {
+          "value": "flt_area_",
+          "var": "ad_zone_name"
         },
-        {
-          "varSetString": {
-            "value": "flt_area_",
-            "var": "ad_zone_name"
-          }
+        "varAddString": {
+          "value": "@ad_search_check_idx",
+          "digits": 2,
+          "var": "ad_zone_name"
         },
-        {
-          "varAddString": {
-            "value": "@ad_search_check_idx",
-            "digits": 2,
-            "var": "ad_zone_name"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "ad_air_dom_t1_quest",
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@ad_zone_name"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "ad_air_dom_t2_quest",
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@ad_zone_name"
           }
-        },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 20.0,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
-            "target": "@ad_zone_name",
-            "canCaptureOnGround": false,
-            "playAirfieldSound": false,
-            "canCaptureInAir": true,
-            "canCaptureByGM": false,
-            "onlyPlayersCanCapture": true,
-            "zoneType": "supremacy",
-            "silent_mode": true,
-            "captureNoPenalty": true,
-            "zoneDefenders": [],
-            "tags": {
-              "type_fighter": true
-            }
+        ],
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 20.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
+          "target": "@ad_zone_name",
+          "canCaptureOnGround": false,
+          "playAirfieldSound": false,
+          "canCaptureInAir": true,
+          "canCaptureByGM": false,
+          "onlyPlayersCanCapture": true,
+          "zoneType": "supremacy",
+          "silent_mode": true,
+          "captureNoPenalty": true,
+          "zoneDefenders": {},
+          "tags": {
+            "type_fighter": true
           }
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "ad_quest_fail"
+          },
+          {
+            "target": [
+              "ad_quest_t1_win",
+              "ad_quest_t2_win"
+            ]
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "ad_quest_t1_win"
-            },
-            {
-              "target": "ad_quest_t2_win"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "ad_quest_fail": {
       "is_enabled": false,
@@ -1608,70 +1322,54 @@
           "var": "ad_max_timer"
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "vremya zakonchilos', a zona ne zahvachena"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "obnulyaem indeks zony dlya bitvy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ubiraem zonu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kvesty provalivaem"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim chto zadanie ne aktivno"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "ad_quest_t1_win"
-            },
-            {
-              "target": "ad_quest_t2_win"
-            }
+        ],
+        "triggerDisable": {
+          "target": [
+            "ad_quest_t1_win",
+            "ad_quest_t2_win"
           ]
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_battle_idx"
-          }
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_battle_idx"
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 10.0,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
-            "target": "@ad_zone_name",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": true,
-            "canCaptureByGM": false,
-            "onlyPlayersCanCapture": true,
-            "silent_mode": true,
-            "captureNoPenalty": true,
-            "zoneDefenders": []
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 10.0,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
+          "target": "@ad_zone_name",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": true,
+          "canCaptureByGM": false,
+          "onlyPlayersCanCapture": true,
+          "silent_mode": true,
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "ad_air_dom_t1_quest",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -1680,10 +1378,8 @@
             "team": "A",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t2_quest",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -1692,38 +1388,30 @@
             "team": "B",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t1_quest",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t2_quest",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
+        ],
+        "wait": {
+          "time": 20.0
         },
-        {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_end"
-          }
+        "triggerEnable": {
+          "target": "ad_end"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_quest_t1_win": {
       "is_enabled": false,
@@ -1744,137 +1432,101 @@
           "army": 1
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "ad_quest_t2_win"
-            },
-            {
-              "target": "ad_quest_fail"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "ad_quest_t2_win",
+            "ad_quest_fail"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "komanda A zahvatila prevoshodstvo"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem indeks zony dlya posleduyushchej bitvy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim kto atakuet"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem znachenie armii tekushchej zony"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem zonu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "nagrazhdaem igrokov komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vypolnyaem zadaniya"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem peremennye bitvy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem heat zony"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_battle_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "ad_who_attack"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_heat_cur_army",
             "input_var": "@ad_heat_cur_army_var_name"
           }
+        ],
+        "varSetString": {
+          "value": "",
+          "var": "ad_heat_cur_army_var_name",
+          "input_var": "ad_zone_name"
         },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "ad_heat_cur_army_var_name",
-            "input_var": "ad_zone_name"
-          }
+        "varAddString": {
+          "value": "_state",
+          "digits": 0,
+          "var": "ad_heat_cur_army_var_name"
         },
-        {
-          "varAddString": {
-            "value": "_state",
-            "digits": 0,
-            "var": "ad_heat_cur_army_var_name"
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 10.0,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
+          "target": "@ad_zone_name",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": true,
+          "canCaptureByGM": false,
+          "onlyPlayersCanCapture": true,
+          "silent_mode": true,
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 10.0,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
-            "target": "@ad_zone_name",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": true,
-            "canCaptureByGM": false,
-            "onlyPlayersCanCapture": true,
-            "silent_mode": true,
-            "captureNoPenalty": true,
-            "zoneDefenders": []
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "t1_moderate_task_completed"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "ad_t1_quest_objectives_win"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "ad_heat_t1_change"
           }
-        },
-        {
-          "__triggerEnable": {
-            "target": "ad_battle_fill"
-          }
+        ],
+        "__triggerEnable": {
+          "target": "ad_battle_fill"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_quest_t2_win": {
       "is_enabled": false,
@@ -1895,132 +1547,98 @@
           "army": 2
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "ad_quest_t1_win"
-            },
-            {
-              "target": "ad_quest_fail"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "ad_quest_t1_win",
+            "ad_quest_fail"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "komanda A zahvatila prevoshodstvo"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem indeks zony dlya posleduyushchej bitvy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim kto atakuet"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem znachenie armii tekushchej zony"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem zonu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "nagrazhdaem igrokov komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vypolnyaem zadaniya"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem peremennye bitvy"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_battle_idx",
             "input_var": "ad_search_cur_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "ad_who_attack"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_heat_cur_army",
             "input_var": "@ad_heat_cur_army_var_name"
           }
+        ],
+        "varSetString": {
+          "value": "",
+          "var": "ad_heat_cur_army_var_name",
+          "input_var": "ad_zone_name"
         },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "ad_heat_cur_army_var_name",
-            "input_var": "ad_zone_name"
-          }
+        "varAddString": {
+          "value": "_state",
+          "digits": 0,
+          "var": "ad_heat_cur_army_var_name"
         },
-        {
-          "varAddString": {
-            "value": "_state",
-            "digits": 0,
-            "var": "ad_heat_cur_army_var_name"
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 10.0,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
+          "target": "@ad_zone_name",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": true,
+          "canCaptureByGM": false,
+          "onlyPlayersCanCapture": true,
+          "silent_mode": true,
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 10.0,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
-            "target": "@ad_zone_name",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": true,
-            "canCaptureByGM": false,
-            "onlyPlayersCanCapture": true,
-            "silent_mode": true,
-            "captureNoPenalty": true,
-            "zoneDefenders": []
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "t2_moderate_task_completed"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "ad_t2_quest_objectives_win"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "ad_heat_t2_change"
           }
-        },
-        {
-          "__triggerEnable": {
-            "target": "ad_battle_fill"
-          }
+        ],
+        "__triggerEnable": {
+          "target": "ad_battle_fill"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_battle_fill": {
       "is_enabled": false,
@@ -2042,90 +1660,70 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "boj budet iz zony 01 v zonu 02"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "forsiruem sleduyushchij shablon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zavershaem shablon"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_attack_from_idx",
             "input_var": "ad_search_zone_01_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_attack_to_idx",
             "input_var": "ad_search_zone_02_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 99,
             "var": "to_force_template_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_end"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_end"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "boj budet iz ony 02 v zonu 01"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "forsiruem sleduyushchij shablon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zavershaem shablon"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "ad_attack_from_idx",
             "input_var": "ad_search_zone_02_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "ad_attack_to_idx",
             "input_var": "ad_search_zone_01_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 99,
             "var": "to_force_template_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_end"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_end"
         }
-      ]
+      }
     },
     "ad_t1_quest_objectives_win": {
       "is_enabled": false,
@@ -2140,10 +1738,10 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "conditions": {},
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "ad_air_dom_t1_quest",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -2152,10 +1750,8 @@
             "team": "A",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t2_quest",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -2164,10 +1760,8 @@
             "team": "B",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t1_quest",
             "status": 0,
             "object_var_comp_op": "equal",
@@ -2175,10 +1769,8 @@
             "team": "A",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t2_quest",
             "status": 0,
             "object_var_comp_op": "equal",
@@ -2187,14 +1779,12 @@
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
           }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
+        ],
+        "wait": {
+          "time": 5.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_t2_quest_objectives_win": {
       "is_enabled": false,
@@ -2209,10 +1799,10 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "conditions": {},
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "ad_air_dom_t1_quest",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -2221,10 +1811,8 @@
             "team": "A",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t2_quest",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -2233,10 +1821,8 @@
             "team": "B",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t1_quest",
             "status": 0,
             "object_var_comp_op": "equal",
@@ -2244,24 +1830,20 @@
             "team": "A",
             "unit_or_area": "@ad_zone_name",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "ad_air_dom_t2_quest",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
+        ],
+        "wait": {
+          "time": 5.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_heat_t1_change": {
       "is_enabled": false,
@@ -2283,112 +1865,84 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "tekushchaya zona prinadlezhit komande 1 atakuem s nee"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem peremennuyu, hranyashchuyu heat"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem heat 10.000 dlya komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zavershaem shablon"
           }
+        ],
+        "varSetString": {
+          "value": "flt_area_",
+          "var": "ad_t1_heat_var_name"
         },
-        {
-          "varSetString": {
-            "value": "flt_area_",
-            "var": "ad_t1_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+        "varAddString": [
+          {
             "value": "@ad_search_zone_01_idx",
             "digits": 2,
             "var": "ad_t1_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_heat",
             "digits": 0,
             "var": "ad_t1_heat_var_name"
           }
+        ],
+        "varSetInt": {
+          "value": 10000,
+          "var": "@ad_t1_heat_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 10000,
-            "var": "@ad_t1_heat_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_end"
-          }
+        "triggerEnable": {
+          "target": "ad_end"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "tekshchaya zona prinadlezhit komande 2, atakuem so vtoroj"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem peremennuyu, hranyashchuyu heat"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem heat 10.000 dlya komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zavershaem shablon"
           }
+        ],
+        "varSetString": {
+          "value": "flt_area_",
+          "var": "ad_t1_heat_var_name"
         },
-        {
-          "varSetString": {
-            "value": "flt_area_",
-            "var": "ad_t1_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+        "varAddString": [
+          {
             "value": "@ad_search_zone_02_idx",
             "digits": 2,
             "var": "ad_t1_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_heat",
             "digits": 0,
             "var": "ad_t1_heat_var_name"
           }
+        ],
+        "varSetInt": {
+          "value": 10000,
+          "var": "@ad_t1_heat_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 10000,
-            "var": "@ad_t1_heat_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_end"
-          }
+        "triggerEnable": {
+          "target": "ad_end"
         }
-      ]
+      }
     },
     "ad_heat_t2_change": {
       "is_enabled": false,
@@ -2410,112 +1964,84 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "tekushchaya zona prinadlezhit komande 2 atakuem s nee"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem peremennuyu, hranyashchuyu heat"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem heat 20.000 dlya komandy B"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zavershaem shablon"
           }
+        ],
+        "varSetString": {
+          "value": "flt_area_",
+          "var": "ad_t2_heat_var_name"
         },
-        {
-          "varSetString": {
-            "value": "flt_area_",
-            "var": "ad_t2_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+        "varAddString": [
+          {
             "value": "@ad_search_zone_01_idx",
             "digits": 2,
             "var": "ad_t2_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_heat",
             "digits": 0,
             "var": "ad_t2_heat_var_name"
           }
+        ],
+        "varSetInt": {
+          "value": 20000,
+          "var": "@ad_t2_heat_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 20000,
-            "var": "@ad_t2_heat_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_end"
-          }
+        "triggerEnable": {
+          "target": "ad_end"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "tekshchaya zona prinadlezhit komande 1, atakuem so vtoroj"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem peremennuyu, hranyashchuyu heat"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem heat 20.000 dlya komandy B"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zavershaem shablon"
           }
+        ],
+        "varSetString": {
+          "value": "flt_area_",
+          "var": "ad_t2_heat_var_name"
         },
-        {
-          "varSetString": {
-            "value": "flt_area_",
-            "var": "ad_t2_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+        "varAddString": [
+          {
             "value": "@ad_search_zone_02_idx",
             "digits": 2,
             "var": "ad_t2_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_heat",
             "digits": 0,
             "var": "ad_t2_heat_var_name"
           }
+        ],
+        "varSetInt": {
+          "value": 20000,
+          "var": "@ad_t2_heat_var_name"
         },
-        {
-          "varSetInt": {
-            "value": 20000,
-            "var": "@ad_t2_heat_var_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_end"
-          }
+        "triggerEnable": {
+          "target": "ad_end"
         }
-      ]
+      }
     },
     "ad_search_battle_restart": {
       "is_enabled": false,
@@ -2530,31 +2056,25 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "ishchem bitvu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "ad_search_battle_idx"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "ad_search_battle_idx"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_battle_rotator"
-          }
+        "triggerEnable": {
+          "target": "ad_search_battle_rotator"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ad_search_battle_rotator": {
       "is_enabled": false,
@@ -2576,105 +2096,79 @@
           "comparasion_func": "less"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "indeks v diapazone"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ishchem _from"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ishchem_to"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchaem peremennuyu v kotoroj hranitsya heat"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem sootvetsvie"
           }
+        ],
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "ad_search_battle_idx"
         },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ad_search_battle_idx"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "lbt_battle_",
             "var": "ad_search_battle_from_var_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "lbt_battle_",
             "var": "ad_search_battle_to_var_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "flt_area_",
             "var": "ad_search_battle_heat_var_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@ad_search_battle_idx",
             "digits": 2,
             "var": "ad_search_battle_from_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_from_name",
             "digits": 0,
             "var": "ad_search_battle_from_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_battle_idx",
             "digits": 2,
             "var": "ad_search_battle_to_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_to_name",
             "digits": 0,
             "var": "ad_search_battle_to_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@ad_search_battle_idx",
             "digits": 2,
             "var": "ad_search_battle_heat_var_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_heat",
             "digits": 0,
             "var": "ad_search_battle_heat_var_name"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "ad_search_battle_check"
-          }
+        ],
+        "triggerEnable": {
+          "target": "ad_search_battle_check"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "poisk zakonchilsya, a zona ne sovpadaet s boevoj"
@@ -2697,38 +2191,32 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "ad_search_cur_idx",
             "value": 0,
             "comparasion_func": "notEqual",
             "var_value_other": "@ad_search_battle_from_var_name"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "ad_search_cur_idx",
             "value": 0,
             "comparasion_func": "notEqual",
             "var_value_other": "@ad_search_battle_to_var_name"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "@ad_search_battle_heat_var_name",
             "value": 10000,
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "@ad_search_battle_heat_var_name",
             "value": 20000,
             "comparasion_func": "notEqual"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "zona ne ekvivalenta. idem dal'she po ciklu"
@@ -2763,7 +2251,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "comment": {
           "value": "pauzim na 5 minut"
@@ -2776,7 +2264,7 @@
           "target": "ad_unpause"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "ad_unpause": {
       "is_enabled": false,
@@ -2791,27 +2279,23 @@
           "time": 300.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
-            "value": "snimaem s pauzy"
-          }
+      "conditions": {},
+      "actions": {
+        "comment": {
+          "value": "snimaem s pauzy"
         },
-        {
-          "varSetBool": {
+        "varSetBool": [
+          {
             "value": true,
             "var": "ad_is_launch_alowed"
-          }
-        },
-        {
-          "varSetBool": {
+          },
+          {
             "value": false,
             "var": "ad_is_template_active"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -2826,8 +2310,8 @@
         "timeLimit": 10800,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "ad_air_dom_t2_quest": {
       "is_enabled": false,
@@ -2838,8 +2322,8 @@
         "timeLimit": 10800,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -2891,32 +2375,26 @@
     "ad_search_battle_from_var_name": "",
     "ad_search_battle_heat_var_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

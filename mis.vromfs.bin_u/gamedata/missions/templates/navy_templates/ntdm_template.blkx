@@ -48,48 +48,40 @@
             "allModifications": true
           }
         },
-        "country_germany": [
-          {
-            "germ_pzkpfw_IV_ausf_G": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
+        "country_germany": {
+          "germ_pzkpfw_IV_ausf_G": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
           },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
+          "germ_pzkpfw_IV_ausf_F2": [
+            {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            },
+            {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            },
+            {
               "crewSkillsPercent": 100,
               "crewSpecialization": 2,
               "allWeapons": true,
               "allModifications": true
             }
-          },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
-          },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
-          },
-          {
-            "germ_jgdpz_38t": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
+          ],
+          "germ_jgdpz_38t": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
           }
-        ],
+        },
         "country_ussr": {
           "ussr_t_34_1942": {
             "crewSkillsPercent": 100,
@@ -124,7 +116,7 @@
         }
       }
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
   "imports": {
     "import_record": {
@@ -139,7 +131,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -154,64 +146,48 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "ntdm_t1_capture_area",
             "var": "zone_t1_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "ntdm_t2_capture_area",
             "var": "zone_t2_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "ntdm_t1_ai_ship_squad",
             "var": "t1_ai_squad_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "ntdm_t2_ai_ship_squad",
             "var": "t2_ai_squad_name"
           }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 0
-            },
-            {
-              "var": "t1_ai_int"
-            },
-            {
-              "var": "t2_ai_int"
-            }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": [
+            "t1_ai_int",
+            "t2_ai_int"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "ntdm_start"
-          }
+        "triggerEnable": {
+          "target": "ntdm_start"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "ntdm_start": {
       "is_enabled": false,
@@ -222,12 +198,12 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": [
+          {
             "army": 1,
             "timeMultiplier": 10.0,
             "disableZone": false,
@@ -239,17 +215,15 @@
             "canCaptureByGM": true,
             "useHUDMarkers": true,
             "captureNoPenalty": true,
-            "zoneDefenders": [],
+            "zoneDefenders": {},
             "tags": {
               "air": false,
               "type_hydroplane": true,
               "tank": false,
               "ship": true
             }
-          }
-        },
-        {
-          "missionMarkAsCaptureZone": {
+          },
+          {
             "army": 2,
             "timeMultiplier": 10.0,
             "disableZone": false,
@@ -261,7 +235,7 @@
             "canCaptureByGM": true,
             "useHUDMarkers": true,
             "captureNoPenalty": true,
-            "zoneDefenders": [],
+            "zoneDefenders": {},
             "tags": {
               "air": false,
               "type_hydroplane": true,
@@ -269,72 +243,44 @@
               "ship": true
             }
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "ntdm_t1_ai_counter"
-            },
-            {
-              "target": "ntdm_t2_ai_counter"
-            },
-            {
-              "target": "ntdm_ai_indicator"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "ntdm_t1_ai_counter",
+            "ntdm_t2_ai_counter",
+            "ntdm_ai_indicator"
           ]
         },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "@t1_ai_squad_name"
-            },
-            {
-              "object": "@t2_ai_squad_name"
-            },
-            {
-              "targetableByAi": false
-            },
-            {
-              "accuracy": 0.3
-            },
-            {
-              "airAccuracy": 0.8
-            }
-          ]
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "@t1_ai_squad_name",
+            "@t2_ai_squad_name"
+          ],
+          "targetableByAi": false,
+          "accuracy": 0.3,
+          "airAccuracy": 0.8
         },
-        {
-          "wait": {
-            "time": 15.0
-          }
+        "wait": {
+          "time": 15.0
         },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "avn_ntdm_objective_01",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "avn_ntdm_objective_02",
             "object_var_comp_op": "equal",
             "object_var_name": ""
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "game_logic": {
       "isCategory": true,
@@ -372,14 +318,12 @@
           }
         },
         "else_actions": {
-          "triggerEnable": [
-            {
-              "target": "ntdm_t1_lost_one_ship"
-            },
-            {
-              "target": "ntdm_t1_lose_by_lost_ship"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "ntdm_t1_lost_one_ship",
+              "ntdm_t1_lose_by_lost_ship"
+            ]
+          },
           "missionSetTargetsIndicator": {
             "target_type": "isActive",
             "target_marking": 0,
@@ -432,14 +376,12 @@
           }
         },
         "else_actions": {
-          "triggerEnable": [
-            {
-              "target": "ntdm_t2_lost_one_ship"
-            },
-            {
-              "target": "ntdm_t2_lose_by_lost_ship"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "ntdm_t2_lost_one_ship",
+              "ntdm_t2_lose_by_lost_ship"
+            ]
+          },
           "missionSetTargetsIndicator": {
             "target_type": "isActive",
             "target_marking": 0,
@@ -490,7 +432,7 @@
             "team": "A"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ntdm_t2_lose_by_lost_ship": {
         "is_enabled": false,
@@ -524,7 +466,7 @@
             "team": "B"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ntdm_ai_indicator": {
         "is_enabled": false,
@@ -539,9 +481,9 @@
             "time": 0.01
           }
         },
-        "conditions": [
-          {
-            "unitWhenStatus": {
+        "conditions": {
+          "unitWhenStatus": [
+            {
               "object_type": "isKilled",
               "check_objects": "any",
               "object_marking": 0,
@@ -551,10 +493,8 @@
               "target_type": "isAlive",
               "check_period": 1.0,
               "object": "@t1_ai_squad_name"
-            }
-          },
-          {
-            "unitWhenStatus": {
+            },
+            {
               "object_type": "isKilled",
               "check_objects": "any",
               "object_marking": 0,
@@ -565,11 +505,11 @@
               "check_period": 1.0,
               "object": "@t2_ai_squad_name"
             }
-          }
-        ],
-        "actions": [
-          {
-            "missionSetTargetsIndicator": {
+          ]
+        },
+        "actions": {
+          "missionSetTargetsIndicator": [
+            {
               "target_type": "isActive",
               "target_marking": 0,
               "object_var_name": "",
@@ -581,10 +521,8 @@
               "set": true,
               "target": "@t1_ai_squad_name",
               "team": "Both"
-            }
-          },
-          {
-            "missionSetTargetsIndicator": {
+            },
+            {
               "target_type": "isActive",
               "target_marking": 0,
               "object_var_name": "",
@@ -597,9 +535,9 @@
               "target": "@t2_ai_squad_name",
               "team": "Both"
             }
-          }
-        ],
-        "else_actions": []
+          ]
+        },
+        "else_actions": {}
       },
       "ntdm_t1_lost_one_ship": {
         "is_enabled": false,
@@ -639,7 +577,7 @@
             "team": "A"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ntdm_t2_lost_one_ship": {
         "is_enabled": false,
@@ -679,7 +617,7 @@
             "team": "B"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     }
   },
@@ -694,8 +632,8 @@
         "isPrimary": true,
         "timeLimit": 3600
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avn_ntdm_objective_02": {
       "is_enabled": false,
@@ -705,8 +643,8 @@
         "isPrimary": true,
         "timeLimit": 3600
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -718,32 +656,26 @@
     "zone_t1_name": "",
     "zone_t2_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

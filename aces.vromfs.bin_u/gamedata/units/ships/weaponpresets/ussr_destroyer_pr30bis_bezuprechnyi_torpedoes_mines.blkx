@@ -1,16 +1,12 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner10",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -18,7 +14,10 @@
       "emitter": "bone_torpedo_01",
       "bullets": 5,
       "useEmitter": true,
-      "emitterGenRange": [1.0,5.0],
+      "emitterGenRange": [
+        1,
+        5
+      ],
       "emitterGenFmt": "bone_torpedo_%02d",
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_01_dm",
@@ -26,7 +25,11 @@
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 20.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -36,17 +39,27 @@
         "gunnerDm": "tt_01_dm"
       },
       "limits": {
-        "yaw": [-135.0,135.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -135.0,
+          135.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
       "limitsDeadzone": {
-        "yaw": [-50.0,50.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -50.0,
+          50.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner11",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -54,7 +67,10 @@
       "emitter": "bone_torpedo_04",
       "bullets": 5,
       "useEmitter": true,
-      "emitterGenRange": [6.0,10.0],
+      "emitterGenRange": [
+        6,
+        10
+      ],
       "emitterGenFmt": "bone_torpedo_%02d",
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_02_dm",
@@ -62,7 +78,11 @@
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 20.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -72,17 +92,27 @@
         "gunnerDm": "tt_02_dm"
       },
       "limits": {
-        "yaw": [-130.0,130.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -130.0,
+          130.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
       "limitsDeadzone": {
-        "yaw": [-50.0,50.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -50.0,
+          50.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/ussr_mine_kb1_1931.blk",
@@ -90,15 +120,16 @@
       "bullets": 30,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [1.0,30.0],
+      "emitterGenRange": [
+        1,
+        30
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/ussr_mine_kb1_1931.blk",
@@ -106,11 +137,14 @@
       "bullets": 30,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [31.0,60.0],
+      "emitterGenRange": [
+        31,
+        60
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
     }
-  }
-]
+  ]
+}

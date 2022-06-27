@@ -9,20 +9,30 @@
   "bulletType": "special_common_tank",
   "slopeEffectPreset": "apbc",
   "modelName": "tank_bullet_he",
-  "fresnel": [0.23,0.1,2.0],
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
   "shellAnimation": "video/shells_animations/sap.ivf",
-  "stabilityRicochetModifier": [
-    {
-      "mod1": [0.0,0.05]
-    },
-    {
-      "mod2": [20.0,0.1]
-    },
-    {
-      "mod3": [30.0,0.2]
-    },
-    {
-      "mod3": [45.0,0.3]
-    }
-  ]
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.05
+    ],
+    "mod2": [
+      20.0,
+      0.1
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.2
+      ],
+      [
+        45.0,
+        0.3
+      ]
+    ]
+  }
 }

@@ -1,7 +1,7 @@
 {
   "root": {
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "pos": "50%pw-50%w, 50%ph-50%h",
       "position": "absolute",
@@ -12,39 +12,25 @@
           "text": "#chapters/benchmark",
           "caption": "yes"
         },
-        "Button_close": []
+        "Button_close": {}
       },
-      "tdiv": [
-        {
-          "flow": "vertical"
-        },
-        {
-          "width": "pw"
-        },
-        {
-          "pos": "50%pw-50%w, 0"
-        },
-        {
-          "position": "relative"
-        },
-        {
-          "margin-top": "0.01@scrn_tgt"
-        },
-        {
-          "margin-bottom": "0.005@scrn_tgt"
-        },
-        {
-          "tdiv": {
+      "tdiv": {
+        "flow": "vertical",
+        "width": "pw",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "margin-top": "0.01@scrn_tgt",
+        "margin-bottom": "0.005@scrn_tgt",
+        "tdiv": [
+          {
             "width": "pw",
             "margin-bottom": "0.005@scrn_tgt",
             "textarea": {
               "id": "mission_title",
               "width": "pw"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "width": "pw",
             "padding": "0.01@scrn_tgt, 0.01@scrn_tgt",
             "table": {
@@ -52,15 +38,15 @@
               "width": "pw"
             }
           }
-        }
-      ],
+        ]
+      },
       "navBar": {
         "navMiddle": {
           "Button_text": {
             "text": "#msgbox/btn_ok",
             "btnName": "A",
             "_on_click": "goBack",
-            "ButtonImg": []
+            "ButtonImg": {}
           }
         }
       }

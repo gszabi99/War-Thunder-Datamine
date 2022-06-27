@@ -1,16 +1,12 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "ex_armor_03"
-      },
-      {
-        "node": "ex_decor_09"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "ex_armor_03",
+      "ex_decor_09"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner5",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -29,13 +25,17 @@
         "gun": "depth_charge_mount_01"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -54,13 +54,17 @@
         "gun": "depth_charge_mount_02"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner7",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -79,13 +83,17 @@
         "gun": "depth_charge_mount_03"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner8",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -104,13 +112,17 @@
         "gun": "depth_charge_mount_04"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/germ_mine_emc.blk",
@@ -118,15 +130,16 @@
       "bullets": 15,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [1.0,15.0],
+      "emitterGenRange": [
+        1,
+        15
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/germ_mine_emc.blk",
@@ -134,11 +147,14 @@
       "bullets": 15,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [16.0,30.0],
+      "emitterGenRange": [
+        16,
+        30
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
     }
-  }
-]
+  ]
+}

@@ -13,59 +13,43 @@
         "decal_locked": "no",
         "achievement_locked": "no"
       },
-      "achievementTitle": [
-        {
-          "margin-left": "0.015@sf"
+      "achievementTitle": {
+        "margin-left": "0.015@sf",
+        "min-height": "@profileUnlockIconSize",
+        "width": "fw",
+        "flow": "vertical",
+        "activeText": {
+          "id": "achivment_title",
+          "text": "",
+          "max-width": "pw",
+          "pare-text": "yes",
+          "overlayTextColor": "unlockHeader"
         },
-        {
-          "min-height": "@profileUnlockIconSize"
-        },
-        {
-          "width": "fw"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "activeText": {
-            "id": "achivment_title",
-            "text": "",
-            "max-width": "pw",
-            "pare-text": "yes",
-            "overlayTextColor": "unlockHeader"
-          }
-        },
-        {
-          "textareaNoTab": {
+        "textareaNoTab": [
+          {
             "id": "description",
             "width": "pw",
             "overflow": "hidden",
             "smallFont": "yes",
             "text": ""
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "id": "conditions",
             "width": "pw",
             "overflow": "hidden",
             "smallFont": "yes",
             "text": "",
             "margin-top": "1@blockInterval"
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "id": "mult_desc",
             "width": "pw",
             "overflow": "hidden",
             "smallFont": "yes",
             "text": "",
             "margin-top": "1@blockInterval"
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "id": "reward",
             "text": "",
             "smallFont": "yes",
@@ -82,83 +66,69 @@
               "display": "hide"
             }
           }
+        ],
+        "challengeDescriptionProgress": {
+          "id": "progress_bar",
+          "value": "",
+          "display": "hide"
         },
-        {
-          "challengeDescriptionProgress": {
-            "id": "progress_bar",
-            "value": "",
-            "display": "hide"
-          }
-        },
-        {
-          "tdiv": [
+        "tdiv": {
+          "width": "pw",
+          "left": "-1@blockInterval",
+          "position": "relative",
+          "Button_text": [
             {
-              "width": "pw"
-            },
-            {
-              "left": "-1@blockInterval"
-            },
-            {
-              "position": "relative"
-            },
-            {
-              "Button_text": {
-                "id": "purchase_button",
-                "hideText": "yes",
-                "visualStyle": "purchase",
-                "enableOn": "hoverOrSelect",
-                "on_click": "onBuyUnlock",
-                "unlockId": "",
-                "btnName": "Y",
-                "buttonWink": [],
-                "ButtonImg": {
-                  "showOnSelect": "yes"
-                },
-                "textarea": {
-                  "id": "purchase_button_text",
-                  "class": "buttonText"
-                }
+              "id": "purchase_button",
+              "hideText": "yes",
+              "visualStyle": "purchase",
+              "enableOn": "hoverOrSelect",
+              "on_click": "onBuyUnlock",
+              "unlockId": "",
+              "btnName": "Y",
+              "buttonWink": {},
+              "ButtonImg": {
+                "showOnSelect": "yes"
+              },
+              "textarea": {
+                "id": "purchase_button_text",
+                "class": "buttonText"
               }
             },
             {
-              "Button_text": {
-                "id": "show_prizes_btn",
-                "trophyId": "",
-                "text": "#profile/awards",
-                "margin-top": "1@blockInterval",
-                "margin-bottom": "1@blockInterval",
-                "btnName": "L3",
-                "enableOn": "hoverOrSelect",
-                "display": "hide",
-                "on_click": "showUnlockPrizes",
-                "visualStyle": "secondary",
-                "buttonWink": [],
-                "ButtonImg": {
-                  "showOnSelect": "yes"
-                }
+              "id": "show_prizes_btn",
+              "trophyId": "",
+              "text": "#profile/awards",
+              "margin-top": "1@blockInterval",
+              "margin-bottom": "1@blockInterval",
+              "btnName": "L3",
+              "enableOn": "hoverOrSelect",
+              "display": "hide",
+              "on_click": "showUnlockPrizes",
+              "visualStyle": "secondary",
+              "buttonWink": {},
+              "ButtonImg": {
+                "showOnSelect": "yes"
               }
             },
             {
-              "Button_text": {
-                "id": "show_units_btn",
-                "unlockId": "",
-                "text": "#mainmenu/showVehicles",
-                "margin-top": "1@blockInterval",
-                "margin-bottom": "1@blockInterval",
-                "btnName": "X",
-                "enableOn": "hoverOrSelect",
-                "display": "hide",
-                "on_click": "showUnlockUnits",
-                "visualStyle": "secondary",
-                "buttonWink": [],
-                "ButtonImg": {
-                  "showOnSelect": "yes"
-                }
+              "id": "show_units_btn",
+              "unlockId": "",
+              "text": "#mainmenu/showVehicles",
+              "margin-top": "1@blockInterval",
+              "margin-bottom": "1@blockInterval",
+              "btnName": "X",
+              "enableOn": "hoverOrSelect",
+              "display": "hide",
+              "on_click": "showUnlockUnits",
+              "visualStyle": "secondary",
+              "buttonWink": {},
+              "ButtonImg": {
+                "showOnSelect": "yes"
               }
             }
           ]
         }
-      ],
+      },
       "unlockStages": {
         "id": "stages",
         "margin-left": "0.05@sf",
@@ -179,7 +149,7 @@
         "skip-navigation": "yes",
         "on_change_value": "unlockToFavorites",
         "unlockId": "",
-        "CheckBoxImg": [],
+        "CheckBoxImg": {},
         "ButtonImg": {
           "showOnSelect": "hover",
           "btnName": "A"

@@ -17,9 +17,9 @@
       "environment": "Day",
       "weather": "hazy"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -36,175 +36,117 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "pa_players_count"
-          }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "pa_players_count"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "special'no ne na init"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "SHABLON ZAMENYAET SOBOJ land_units_death_template"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poetomu imena triggerov i peremennyh nameryano ostavleny konfliktuyushchimi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "-------------------------------------------------------------------------"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "shablon, vklyuchayushchij zavisimost' kolichestva nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ot kolichestva igrokov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "-------------------------------------------------------------------------"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kolichestvo nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "4 igroka v komande: 11"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "10 igrokovv komande: 21"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vse igroki: 29 (vsya)"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "-------------------------------------------------------------------------"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "spisok peremennyh"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pa_cur_tickets - tekushchee kolichestvo ochkov komandy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pa_tickets_cost - stoimost' smerti nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pa_units_quantity - kolichestvo aktivnyh yunitov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "t1_land_death_counter - kolichestvo umershih yunitov komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "t2_land_death_counter - kolichestvo umershih yunitov komandy B"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pa_players_count - kolichestvo aktivnyh igrokov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "-------------------------------------------------------------------------"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem vseh yunitov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "po lyubomu probuzhdaem 5ppl skvad, chtoby ne pustoval schetchik vragov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem proverku kolichestva aktivnyh igrokov cherez 30 sekund"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem imya skvada dlya subquest_units"
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "t1_quest_units_squad"
-            },
-            {
-              "target": "t2_quest_units_squad"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "t1_quest_units_squad",
+            "t2_quest_units_squad"
           ]
         },
-        {
-          "unitWakeUp": {
+        "unitWakeUp": [
+          {
             "target": "t1_quest_units_squad",
             "numToWakeUp": 21
-          }
-        },
-        {
-          "unitWakeUp": {
+          },
+          {
             "target": "t2_quest_units_squad",
             "numToWakeUp": 21
           }
+        ],
+        "triggerEnable": {
+          "target": "pa_sb_check"
         },
-        {
-          "triggerEnable": {
-            "target": "pa_sb_check"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "t1_subquest_units_squad",
             "var": "subquest_units_t1_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_subquest_units_squad",
             "var": "subquest_units_t2_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "pa_players_plus_calculator": {
       "is_enabled": true,
@@ -236,7 +178,7 @@
           "var": "pa_players_count"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "pa_players_minus_calculator": {
       "is_enabled": true,
@@ -268,7 +210,7 @@
           "var": "pa_players_count"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "pa_sb_check": {
       "is_enabled": false,
@@ -293,61 +235,43 @@
         "comment": {
           "value": "ne simulyator - obychnaya logika"
         },
-        "triggerEnable": [
-          {
-            "target": "pa_check_5_ppl"
-          },
-          {
-            "target": "pa_check_10_ppl"
-          },
-          {
-            "target": "pa_check_all_ppl"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "pa_check_5_ppl",
+            "pa_check_10_ppl",
+            "pa_check_all_ppl"
+          ]
+        }
       },
-      "else_actions": [
-        {
-          "comment": {
+      "else_actions": {
+        "comment": [
+          {
             "value": "simulyator - spavnim vseh"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dizejblim proverku kolichestva igrokov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem kolichestvo igrokov chtoby proverka proshla korrektno"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem proverku na to chto vse igroki aktivny"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "pa_players_plus_calculator"
-            },
-            {
-              "target": "pa_players_minus_calculator"
-            }
+        ],
+        "triggerDisable": {
+          "target": [
+            "pa_players_plus_calculator",
+            "pa_players_minus_calculator"
           ]
         },
-        {
-          "varSetInt": {
-            "value": 32,
-            "var": "pa_players_count"
-          }
+        "varSetInt": {
+          "value": 32,
+          "var": "pa_players_count"
         },
-        {
-          "triggerEnable": {
-            "target": "pa_check_all_ppl"
-          }
+        "triggerEnable": {
+          "target": "pa_check_all_ppl"
         }
-      ]
+      }
     },
     "pa_check_5_ppl": {
       "is_enabled": false,
@@ -369,96 +293,70 @@
           "comparasion_func": "less"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "igrokov: 8 ili men'she"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem obshchee kolichestvo igrokov v obeih komandah"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poetomu sravnivaem ne s 5-tyu, a s 10-t'yu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "probuzhdaem skvad, raschitannyj na 5 igrokov v komande"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem tip missii"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "pa_players_plus_calculator"
-            },
-            {
-              "target": "pa_players_minus_calculator"
-            }
+        ],
+        "triggerDisable": [
+          {
+            "target": [
+              "pa_players_plus_calculator",
+              "pa_players_minus_calculator"
+            ]
+          },
+          {
+            "target": [
+              "pa_check_10_ppl",
+              "pa_check_all_ppl"
+            ]
+          }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "t1_quest_units_squad",
+            "t2_quest_units_squad"
           ]
         },
-        {
-          "triggerDisable": [
-            {
-              "target": "pa_check_10_ppl"
-            },
-            {
-              "target": "pa_check_all_ppl"
-            }
-          ]
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "t1_quest_units_squad"
-            },
-            {
-              "target": "t2_quest_units_squad"
-            }
-          ]
-        },
-        {
-          "unitWakeUp": {
+        "unitWakeUp": [
+          {
             "target": "t1_quest_units_squad",
             "numToWakeUp": 21
-          }
-        },
-        {
-          "unitWakeUp": {
+          },
+          {
             "target": "t2_quest_units_squad",
             "numToWakeUp": 21
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "hide_subquest_t1_units"
-            },
-            {
-              "target": "hide_subquest_t2_units"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "hide_subquest_t1_units",
+              "hide_subquest_t2_units"
+            ]
+          },
+          {
             "target": "pa_chek_one_side_mission_type"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "pa_check_10_ppl": {
       "is_enabled": false,
@@ -473,112 +371,84 @@
           "time": 45.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "pa_players_count",
             "value": 8,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "pa_players_count",
             "value": 21,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
+        ]
+      },
+      "actions": {
+        "comment": [
+          {
             "value": "igrokov bol'she 9 no men'she 20"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem obshchee kolichestvo igrokov v obeih komandah"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poetomu sravnivaem ne s 10-tyu, a s 20-t'yu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "probuzhdaem skvad, raschitannyj na 5 igrokov v komande"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem tip missii"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "pa_players_plus_calculator"
-            },
-            {
-              "target": "pa_players_minus_calculator"
-            }
+        ],
+        "triggerDisable": [
+          {
+            "target": [
+              "pa_players_plus_calculator",
+              "pa_players_minus_calculator"
+            ]
+          },
+          {
+            "target": [
+              "pa_check_5_ppl",
+              "pa_check_all_ppl"
+            ]
+          }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "t1_quest_units_squad",
+            "t2_quest_units_squad"
           ]
         },
-        {
-          "triggerDisable": [
-            {
-              "target": "pa_check_5_ppl"
-            },
-            {
-              "target": "pa_check_all_ppl"
-            }
-          ]
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "t1_quest_units_squad"
-            },
-            {
-              "target": "t2_quest_units_squad"
-            }
-          ]
-        },
-        {
-          "unitWakeUp": {
+        "unitWakeUp": [
+          {
             "target": "t1_quest_units_squad",
             "numToWakeUp": 29
-          }
-        },
-        {
-          "unitWakeUp": {
+          },
+          {
             "target": "t2_quest_units_squad",
             "numToWakeUp": 29
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "hide_subquest_t1_units"
-            },
-            {
-              "target": "hide_subquest_t2_units"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "hide_subquest_t1_units",
+              "hide_subquest_t2_units"
+            ]
+          },
+          {
             "target": "pa_chek_one_side_mission_type"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "pa_check_all_ppl": {
       "is_enabled": false,
@@ -600,79 +470,59 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "igrokov bol'she 20. kolichestvo nazemki: 29"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem obshchee kolichestvo igrokov v obeih komandah"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "probuzhdaem skvad, raschitannyj na polnye komandy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem tip missii"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "pa_players_plus_calculator"
-            },
-            {
-              "target": "pa_players_minus_calculator"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "pa_check_5_ppl"
-            },
-            {
-              "target": "pa_check_10_ppl"
-            }
-          ]
-        },
-        {
-          "unitWakeUp": {
-            "target": "t1_quest_units_squad"
+        ],
+        "triggerDisable": [
+          {
+            "target": [
+              "pa_players_plus_calculator",
+              "pa_players_minus_calculator"
+            ]
+          },
+          {
+            "target": [
+              "pa_check_5_ppl",
+              "pa_check_10_ppl"
+            ]
           }
-        },
-        {
-          "unitWakeUp": {
+        ],
+        "unitWakeUp": [
+          {
+            "target": "t1_quest_units_squad"
+          },
+          {
             "target": "t2_quest_units_squad"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "hide_subquest_t1_units"
-            },
-            {
-              "target": "hide_subquest_t2_units"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "hide_subquest_t1_units",
+              "hide_subquest_t2_units"
+            ]
+          },
+          {
             "target": "pa_chek_one_side_mission_type"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "pa_chek_one_side_mission_type": {
       "is_enabled": false,
@@ -694,52 +544,40 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "kvestovaya nazemka est' tol'bko u odnoj storony. ne delim na 2"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem podschet ochkov, kotorye budut otnimat'sya pri smerti yunita"
           }
+        ],
+        "varSetInt": {
+          "value": 1,
+          "var": "pa_div_modifier"
         },
-        {
-          "varSetInt": {
-            "value": 1,
-            "var": "pa_div_modifier"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "pa_ajust_tickets_cost"
-          }
+        "triggerEnable": {
+          "target": "pa_ajust_tickets_cost"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "nazemka est' u obeih storon, nado delit' na 2"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem podschet ochkov, kotorye budut otnimat'sya pri smerti yunita"
           }
+        ],
+        "varSetInt": {
+          "value": 2,
+          "var": "pa_div_modifier"
         },
-        {
-          "varSetInt": {
-            "value": 2,
-            "var": "pa_div_modifier"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "pa_ajust_tickets_cost"
-          }
+        "triggerEnable": {
+          "target": "pa_ajust_tickets_cost"
         }
-      ]
+      }
     },
     "pa_ajust_tickets_cost": {
       "is_enabled": false,
@@ -755,145 +593,105 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "more"
-          },
-          {
-            "value": 0
-          },
-          {
-            "object": "t1_quest_units_squad"
-          },
-          {
-            "object": "t2_quest_units_squad"
-          },
-          {
-            "var": "pa_units_quantity"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object": [
+            "t1_quest_units_squad",
+            "t2_quest_units_squad"
+          ],
+          "var": "pa_units_quantity"
+        }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "schitaem kolichestvo aktivnyh yunitov v obeih komandah"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "uvelichivaem peremennuyu podscheta"
           }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "pa_units_quantity"
-          }
+        ],
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "pa_units_quantity"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "podschitali kolichestvo yunitov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "podelim chislo na ustanovlennyj modifikator"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "poluchim kolichestvo tekushchih ochkov komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "razdelim kolichestvo ochkov na kolichestvo yunitov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dobavim 1 chtoby garantirovat' nulevoe kolichestvo ochkov pri smerti vsej nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "umnozhaem chislo na -1, chtoby tikety otnimalis'"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem trigger okonchaniya podschetov"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "divAB",
             "value": 2.0,
             "var": "pa_units_quantity",
             "use_variable": true,
             "var_value": "pa_div_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 0.0,
             "var": "pa_tickets_cost",
             "use_variable": true,
             "var_value": "pa_cur_tickets"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "pa_tickets_cost",
             "use_variable": true,
             "var_value": "pa_units_quantity"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "pa_tickets_cost"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": -1.0,
             "var": "pa_tickets_cost"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "pa_cur_tickets",
             "source_var": "mpTi1"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "pa_tickets_cost"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "pa_ajust_tickets_end"
-          }
+        ],
+        "triggerEnable": {
+          "target": "pa_ajust_tickets_end"
         }
-      ]
+      }
     },
     "pa_ajust_tickets_end": {
       "is_enabled": false,
@@ -908,46 +706,32 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "zakonchili podschet triggerov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vyklyuchaem trigger podscheta"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem sluzhebnye triggery"
           }
+        ],
+        "triggerDisable": {
+          "target": "pa_ajust_tickets_cost"
         },
-        {
-          "triggerDisable": {
-            "target": "pa_ajust_tickets_cost"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_land_damaged"
-            },
-            {
-              "target": "t2_land_damaged"
-            },
-            {
-              "target": "t1_all_land_destroyed"
-            },
-            {
-              "target": "t2_all_land_destroyed"
-            }
+        "triggerEnable": {
+          "target": [
+            "t1_land_damaged",
+            "t2_land_damaged",
+            "t1_all_land_destroyed",
+            "t2_all_land_destroyed"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_land_damaged": {
       "is_enabled": false,
@@ -985,7 +769,7 @@
           "var": "t1_land_death_counter"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_land_damaged": {
       "is_enabled": false,
@@ -1023,7 +807,7 @@
           "var": "t2_land_death_counter"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_all_land_destroyed": {
       "is_enabled": false,
@@ -1052,7 +836,7 @@
           "target": "t1_loose"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_all_land_destroyed": {
       "is_enabled": false,
@@ -1081,7 +865,7 @@
           "target": "t2_loose"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "hide_subquest_t1_units": {
       "is_enabled": false,
@@ -1110,7 +894,7 @@
           "target": "@subquest_units_t1_name"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "hide_subquest_t2_units": {
       "is_enabled": false,
@@ -1139,7 +923,7 @@
           "target": "@subquest_units_t2_name"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1158,32 +942,26 @@
     "pa_one_side_mission": false,
     "pa_div_modifier": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

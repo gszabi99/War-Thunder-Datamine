@@ -1,44 +1,32 @@
 {
   "root": {
-    "blur": [],
-    "blur_foreground": [],
-    "frame": [
-      {
-        "width": "0.4@scrn_tgt"
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "width": "0.4@scrn_tgt",
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "position": "absolute",
+      "class": "wndNav",
+      "frame_header": {
+        "activeText": {
+          "id": "title",
+          "text": "",
+          "caption": "yes"
+        },
+        "Button_close": {}
       },
-      {
-        "pos": "50%pw-50%w, 50%ph-50%h"
-      },
-      {
-        "position": "absolute"
-      },
-      {
-        "class": "wndNav"
-      },
-      {
-        "frame_header": {
-          "activeText": {
-            "id": "title",
-            "text": "",
-            "caption": "yes"
-          },
-          "Button_close": []
-        }
-      },
-      {
-        "text": {
+      "text": [
+        {
           "text": "#urlMissions/name"
-        }
-      },
-      {
-        "text": {
+        },
+        {
           "pos": "0, 1@blockInterval",
           "position": "relative",
           "text": "#urlMissions/url"
         }
-      },
-      {
-        "EditBox": {
+      ],
+      "EditBox": [
+        {
           "id": "name_editbox",
           "width": "pw",
           "pos": "0, 1@blockInterval",
@@ -47,10 +35,8 @@
           "_on_cancel_edit": "goBack",
           "on_change_value": "onChangeName",
           "on_activate": "onKbdWrapDown"
-        }
-      },
-      {
-        "EditBox": {
+        },
+        {
           "id": "url_editbox",
           "width": "pw",
           "pos": "0, 1@blockInterval",
@@ -59,28 +45,24 @@
           "on_change_value": "onChangeUrl",
           "_on_activate": "onApply"
         }
-      },
-      {
-        "navBar": {
-          "navMiddle": {
-            "Button_text": {
-              "id": "btn_apply",
-              "text": "#mainmenu/btnApply",
-              "enable": "no",
-              "btnName": "A",
-              "_on_click": "onApply",
-              "ButtonImg": []
-            }
+      ],
+      "navBar": {
+        "navMiddle": {
+          "Button_text": {
+            "id": "btn_apply",
+            "text": "#mainmenu/btnApply",
+            "enable": "no",
+            "btnName": "A",
+            "_on_click": "onApply",
+            "ButtonImg": {}
           }
         }
       },
-      {
-        "dummy": {
-          "on_click": "onKbdWrapDown",
-          "behaviour": "accesskey",
-          "accessKey": "Tab"
-        }
+      "dummy": {
+        "on_click": "onKbdWrapDown",
+        "behaviour": "accesskey",
+        "accessKey": "Tab"
       }
-    ]
+    }
   }
 }

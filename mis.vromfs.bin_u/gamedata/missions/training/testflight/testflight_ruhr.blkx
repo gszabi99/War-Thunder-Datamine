@@ -14,12 +14,16 @@
       "type": "testFlight",
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "locName": "missions/testFlight",
       "restoreType": "manual",
       "optionalTakeOff": false
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -28,56 +32,40 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "airfield00",
               "lookAt": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "airfield",
               "side": "ally",
               "target": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "artillery",
               "side": "ally",
               "target": "structures_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "artillery",
               "side": "ally",
               "target": "structures_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "artillery",
               "side": "ally",
               "target": "structures_03"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -94,7 +82,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -109,9 +97,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "addAirfield": {
           "runwayStart": "airfield00",
@@ -140,54 +128,30 @@
           "object": "train",
           "killLeaderToStop": true
         },
-        "unitSetProperties": [
-          {
-            "object_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "structures_05"
-          },
-          {
-            "object": "structures_06"
-          },
-          {
-            "lockSpeed": true
-          },
-          {
-            "waypointReachedDist": 0.0
-          }
-        ],
-        "unitSetRoute": [
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "route": "way_points_01"
-          },
-          {
-            "teleportToStart": true
-          },
-          {
-            "object": "structures_05"
-          },
-          {
-            "object": "structures_06"
-          }
-        ]
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "structures_05",
+            "structures_06"
+          ],
+          "lockSpeed": true,
+          "waypointReachedDist": 0.0
+        },
+        "unitSetRoute": {
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "route": "way_points_01",
+          "teleportToStart": true,
+          "object": [
+            "structures_05",
+            "structures_06"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "end": {
       "is_enabled": true,
@@ -217,7 +181,7 @@
           "objects": "armada_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "ai_plane_logic": {
       "isCategory": true,
@@ -231,12 +195,12 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "unitMoveTo": {
+        "conditions": {},
+        "actions": {
+          "unitMoveTo": [
+            {
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
@@ -255,11 +219,13 @@
               "destTimeMode": false,
               "object": "ai_plane_fighters",
               "follow_radius": 400.0,
-              "follow_offset": [-250.0,500.0,20.0]
-            }
-          },
-          {
-            "unitMoveTo": {
+              "follow_offset": [
+                -250.0,
+                500.0,
+                20.0
+              ]
+            },
+            {
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
@@ -278,34 +244,20 @@
               "destTimeMode": false,
               "object": "ai_plane_atackers"
             }
-          },
-          {
-            "unitSetProperties": [
-              {
-                "object_marking": 0
-              },
-              {
-                "object_var_name": ""
-              },
-              {
-                "object_var_comp_op": "equal"
-              },
-              {
-                "object_var_value": 0
-              },
-              {
-                "object": "ai_plane_fighters"
-              },
-              {
-                "object": "ai_plane_atackers"
-              },
-              {
-                "stealthRadius": 3000.0
-              }
-            ]
+          ],
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "ai_plane_fighters",
+              "ai_plane_atackers"
+            ],
+            "stealthRadius": 3000.0
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "atackers_move_to_frontline": {
         "is_enabled": true,
@@ -358,7 +310,7 @@
             "object": "ai_plane_atackers"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ai_put_to_sleep": {
         "is_enabled": true,
@@ -391,16 +343,14 @@
           }
         },
         "actions": {
-          "unitPutToSleep": [
-            {
-              "target": "ai_plane_fighters"
-            },
-            {
-              "target": "ai_plane_atackers"
-            }
-          ]
+          "unitPutToSleep": {
+            "target": [
+              "ai_plane_fighters",
+              "ai_plane_atackers"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "fighters_back_to_field": {
         "is_enabled": true,
@@ -436,7 +386,7 @@
             "objects": "ai_plane_fighters"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "locomotive_logic": {
@@ -478,7 +428,7 @@
             "speed": 0.0
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "loco_come_to_01_point": {
         "is_enabled": true,
@@ -515,7 +465,7 @@
             "target": "bridge01_is_dead"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     }
   },
@@ -523,19 +473,35 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "armada_01",
         "tm": [
-          [0.642788,0.0,0.766044],
-          [0.0,1.0,0.0],
-          [-0.766044,0.0,0.642788],
-          [934.25,57.7,-1885.3]
+          [
+            0.642788,
+            0.0,
+            0.766044
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            934.25,
+            57.7,
+            -1885.3
+          ]
         ],
         "unit_class": "bf-109f-4",
         "closed_waypoints": false,
@@ -572,17 +538,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ai_plane_fighters",
         "tm": [
-          [-0.989475,0.0,0.1447],
-          [0.0,1.0,0.0],
-          [-0.1447,0.0,-0.989475],
-          [2485.87,500.0,-1701.43]
+          [
+            -0.989475,
+            0.0,
+            0.1447
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.1447,
+            0.0,
+            -0.989475
+          ],
+          [
+            2485.87,
+            500.0,
+            -1701.43
+          ]
         ],
         "unit_class": "bf-109f-4",
         "objLayer": 1,
@@ -621,17 +601,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ai_plane_atackers",
         "tm": [
-          [0.943321,0.0,0.331882],
-          [0.0,1.0,0.0],
-          [-0.331882,0.0,0.943321],
-          [-5353.91,400.0,-1312.94]
+          [
+            0.943321,
+            0.0,
+            0.331882
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.331882,
+            0.0,
+            0.943321
+          ],
+          [
+            -5353.91,
+            400.0,
+            -1312.94
+          ]
         ],
         "unit_class": "bf-110f-2",
         "objLayer": 1,
@@ -670,17 +664,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "structures": {
+    ],
+    "structures": [
+      {
         "name": "structures_01",
         "tm": [
-          [0.737277,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,0.737277],
-          [1350.7,59.5,-771.95]
+          [
+            0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            1350.7,
+            59.5,
+            -771.95
+          ]
         ],
         "unit_class": "germ_50mm_pak38",
         "closed_waypoints": false,
@@ -702,22 +712,42 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "structures_02",
         "tm": [
-          [-0.766044,0.0,0.642788],
-          [0.0,1.0,0.0],
-          [-0.642788,0.0,-0.766044],
-          [1314.85,76.1,-1987.55]
+          [
+            -0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.642788,
+            0.0,
+            -0.766044
+          ],
+          [
+            1314.85,
+            76.1,
+            -1987.55
+          ]
         ],
         "unit_class": "germ_50mm_pak38",
         "closed_waypoints": false,
@@ -739,22 +769,42 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "structures_03",
         "tm": [
-          [-0.766044,0.0,0.642788],
-          [0.0,1.0,0.0],
-          [-0.642788,0.0,-0.766044],
-          [2332.67,76.1,-726.664]
+          [
+            -0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.642788,
+            0.0,
+            -0.766044
+          ],
+          [
+            2332.67,
+            76.1,
+            -726.664
+          ]
         ],
         "unit_class": "germ_50mm_pak38",
         "closed_waypoints": false,
@@ -776,22 +826,44 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "tankModels": {
+    ],
+    "tankModels": [
+      {
         "name": "structures_00",
         "tm": [
-          [0.121426,0.0,-0.9926],
-          [0.0,1.0,0.0],
-          [0.9926,0.0,0.121426],
-          [-1601.35,35.6959,300.65]
+          [
+            0.121426,
+            0.0,
+            -0.9926
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.9926,
+            0.0,
+            0.121426
+          ],
+          [
+            -1601.35,
+            35.6959,
+            300.65
+          ]
         ],
         "unit_class": "ussr_t_34_1941",
         "closed_waypoints": false,
@@ -813,23 +885,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "targetableByAi": false
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "structures_04",
         "tm": [
-          [-0.113773,0.0,-0.993507],
-          [0.0,1.0,0.0],
-          [0.993507,0.0,-0.113773],
-          [-1692.17,39.3215,884.798]
+          [
+            -0.113773,
+            0.0,
+            -0.993507
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.993507,
+            0.0,
+            -0.113773
+          ],
+          [
+            -1692.17,
+            39.3215,
+            884.798
+          ]
         ],
         "unit_class": "ussr_truck_gaz_aaa",
         "closed_waypoints": false,
@@ -851,23 +943,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "targetableByAi": false
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "structures_05",
         "tm": [
-          [0.662945,0.0,-0.748667],
-          [0.0,1.0,0.0],
-          [0.748667,0.0,0.662945],
-          [419.9,46.85,796.9]
+          [
+            0.662945,
+            0.0,
+            -0.748667
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.748667,
+            0.0,
+            0.662945
+          ],
+          [
+            419.9,
+            46.85,
+            796.9
+          ]
         ],
         "unit_class": "ussr_t_34_1941",
         "closed_waypoints": false,
@@ -889,23 +1001,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "targetableByAi": false
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "structures_06",
         "tm": [
-          [0.978133,0.0,0.207981],
-          [0.0,1.0,0.0],
-          [-0.207981,0.0,0.978133],
-          [-33.25,45.8,773.1]
+          [
+            0.978133,
+            0.0,
+            0.207981
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.207981,
+            0.0,
+            0.978133
+          ],
+          [
+            -33.25,
+            45.8,
+            773.1
+          ]
         ],
         "unit_class": "ussr_truck_gaz_aaa",
         "closed_waypoints": false,
@@ -927,23 +1059,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "targetableByAi": false
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "wheeled_vehicles": {
+    ],
+    "wheeled_vehicles": [
+      {
         "name": "locomotive",
         "tm": [
-          [0.471912,0.0,-0.881646],
-          [0.0,1.0,0.0],
-          [0.881646,0.0,0.471912],
-          [1503.17,34.3961,1488.63]
+          [
+            0.471912,
+            0.0,
+            -0.881646
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.881646,
+            0.0,
+            0.471912
+          ],
+          [
+            1503.17,
+            34.3961,
+            1488.63
+          ]
         ],
         "unit_class": "ussr_locomotive_e_1298",
         "objLayer": 1,
@@ -966,8 +1120,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true
@@ -976,10 +1136,26 @@
           "locomotive_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1532.27,36.3113,1434.34]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1532.27,
+                36.3113,
+                1434.34
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -992,10 +1168,26 @@
           "locomotive_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2033.48,46.1573,633.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2033.48,
+                46.1573,
+                633.6
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1008,10 +1200,26 @@
           "locomotive_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2056.37,46.4691,599.099]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2056.37,
+                46.4691,
+                599.099
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1024,10 +1232,26 @@
           "locomotive_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2757.17,50.0966,-394.626]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2757.17,
+                50.0966,
+                -394.626
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1040,10 +1264,26 @@
           "locomotive_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2773.07,49.8676,-423.849]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2773.07,
+                49.8676,
+                -423.849
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1056,10 +1296,26 @@
           "locomotive_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2892.66,50.0507,-700.172]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2892.66,
+                50.0507,
+                -700.172
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1072,10 +1328,26 @@
           "locomotive_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2905.48,49.8198,-741.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2905.48,
+                49.8198,
+                -741.6
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1088,10 +1360,26 @@
           "locomotive_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [4903.94,18.1066,-2452.54]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                4903.94,
+                18.1066,
+                -2452.54
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1104,10 +1392,26 @@
           "locomotive_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [4926.32,15.1284,-2433.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                4926.32,
+                15.1284,
+                -2433.45
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1120,10 +1424,26 @@
           "locomotive_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5032.9,16.7837,-2345.96]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                5032.9,
+                16.7837,
+                -2345.96
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1136,10 +1456,26 @@
           "locomotive_wp_11": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5084.99,15.383,-2303.83]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                5084.99,
+                15.383,
+                -2303.83
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1152,10 +1488,26 @@
           "locomotive_wp_12": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5260.63,15.1197,-2180.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                5260.63,
+                15.1197,
+                -2180.95
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1168,10 +1520,26 @@
           "locomotive_wp_13": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10225.9,26.2327,-4863.07]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10225.9,
+                26.2327,
+                -4863.07
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1184,10 +1552,26 @@
           "locomotive_wp_14": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10272.8,24.5595,-4856.81]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10272.8,
+                24.5595,
+                -4856.81
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1200,10 +1584,26 @@
           "locomotive_wp_15": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [16233.2,109.457,-8761.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                16233.2,
+                109.457,
+                -8761.2
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1216,10 +1616,26 @@
           "locomotive_wp_16": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [16300.6,112.853,-8833.04]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                16300.6,
+                112.853,
+                -8833.04
+              ]
             ],
             "props": {
               "speed": 60.0,
@@ -1232,10 +1648,26 @@
           "locomotive_wp_17": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [17155.5,93.1428,-10317.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                17155.5,
+                93.1428,
+                -10317.9
+              ]
             ],
             "props": {
               "speed": 45.0,
@@ -1248,10 +1680,26 @@
           "locomotive_wp_18": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [17179.7,93.0838,-10337.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                17179.7,
+                93.0838,
+                -10337.1
+              ]
             ],
             "props": {
               "speed": 30.0,
@@ -1264,10 +1712,26 @@
           "locomotive_wp_19": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [17534.5,60.5,-10653.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                17534.5,
+                60.5,
+                -10653.2
+              ]
             ],
             "props": {
               "speed": 10.0,
@@ -1278,16 +1742,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "carriage",
         "tm": [
-          [0.471912,0.0,-0.881646],
-          [0.0,1.0,0.0],
-          [0.881646,0.0,0.471912],
-          [1490.74,33.9148,1511.88]
+          [
+            0.471912,
+            0.0,
+            -0.881646
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.881646,
+            0.0,
+            0.471912
+          ],
+          [
+            1490.74,
+            33.9148,
+            1511.88
+          ]
         ],
         "unit_class": "ussr_freight_car_1926",
         "objLayer": 1,
@@ -1310,126 +1788,232 @@
           "count": 10,
           "formation_type": "cols",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
-        "name": "train",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1290.54,29.4902,2034.44]
+    ],
+    "squad": {
+      "name": "train",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "locomotive"
-          },
-          {
-            "squad_members": "carriage"
-          }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1290.54,
+          29.4902,
+          2034.44
+        ]
+      ],
+      "props": {
+        "object_marking": 0,
+        "squad_members": [
+          "locomotive",
+          "carriage"
         ]
       }
     }
-  ],
+  },
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [148.034,0.0,176.42],
-        [0.0,230.3,0.0],
-        [-176.42,0.0,148.034],
-        [910.25,19.0,-1916.75]
+        [
+          148.034,
+          0.0,
+          176.42
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -176.42,
+          0.0,
+          148.034
+        ],
+        [
+          910.25,
+          19.0,
+          -1916.75
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [148.034,0.0,176.42],
-        [0.0,230.3,0.0],
-        [-176.42,0.0,148.034],
-        [1699.45,19.0,-997.05]
+        [
+          148.034,
+          0.0,
+          176.42
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -176.42,
+          0.0,
+          148.034
+        ],
+        [
+          1699.45,
+          19.0,
+          -997.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [49.1733,0.0,58.6024],
-        [0.0,76.5,0.0],
-        [-58.6024,0.0,49.1733],
-        [937.45,56.55,-1881.2]
+        [
+          49.1733,
+          0.0,
+          58.6024
+        ],
+        [
+          0.0,
+          76.5,
+          0.0
+        ],
+        [
+          -58.6024,
+          0.0,
+          49.1733
+        ],
+        [
+          937.45,
+          56.55,
+          -1881.2
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "train_point01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [5442.63,12.0509,-2102.95]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5442.63,
+          12.0509,
+          -2102.95
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "randevu_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [767.094,400.0,65.7631]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          767.094,
+          400.0,
+          65.7631
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "frontline_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [9158.68,400.0,-32726.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          9158.68,
+          400.0,
+          -32726.8
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
+    ]
+  },
   "wayPoints": {
     "way_points_01": {
       "closed_waypoints": true,
@@ -1439,10 +2023,26 @@
         "way_points_01_wp_01": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1113.7,48.95,328.0]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1113.7,
+              48.95,
+              328.0
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -1455,10 +2055,26 @@
         "way_points_01_wp_02": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [825.55,26.5,2326.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              825.55,
+              26.5,
+              2326.75
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -1471,10 +2087,26 @@
         "way_points_01_wp_03": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [371.65,28.25,2614.65]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              371.65,
+              28.25,
+              2614.65
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -1487,10 +2119,26 @@
         "way_points_01_wp_04": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [-308.3,22.35,3039.0]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -308.3,
+              22.35,
+              3039.0
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -1503,10 +2151,26 @@
         "way_points_01_wp_05": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [-1135.25,34.8,1936.85]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -1135.25,
+              34.8,
+              1936.85
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -1519,10 +2183,26 @@
         "way_points_01_wp_06": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [-997.2,30.8,1275.95]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -997.2,
+              30.8,
+              1275.95
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -1535,10 +2215,26 @@
         "way_points_01_wp_07": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [-858.95,34.0,494.9]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -858.95,
+              34.0,
+              494.9
+            ]
           ],
           "props": {
             "speed": 300.0,
@@ -1551,10 +2247,26 @@
         "way_points_01_wp_08": {
           "type": "normal",
           "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [-589.8,38.3,595.75]
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -589.8,
+              38.3,
+              595.75
+            ]
           ],
           "props": {
             "speed": 300.0,

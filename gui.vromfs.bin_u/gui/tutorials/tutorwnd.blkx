@@ -1,29 +1,23 @@
 {
-  "root": [
-    {
-      "div": {
-        "id": "dark_screen",
-        "size": "sw, sh",
-        "position": "root"
-      }
+  "root": {
+    "div": {
+      "id": "dark_screen",
+      "size": "sw, sh",
+      "position": "root"
     },
-    {
-      "tdiv": {
+    "tdiv": [
+      {
         "id": "texts_screen",
         "size": "@rw, @rh",
         "pos": "@bw, @bh",
         "position": "absolute"
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "lines_block",
         "size": "sw, sh",
         "position": "root"
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "msg_block",
         "max-width": "70%sw",
         "left": "50%pw-50%w",
@@ -46,37 +40,29 @@
           "margin-top": "0.05@scrn_tgt",
           "text-valign": "center"
         }
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "arrows_container",
         "size": "pw, ph",
         "position": "absolute"
       }
+    ],
+    "Button_close": {
+      "id": "close_btn",
+      "display": "no",
+      "style": "pos:@rw+@bw-w, 1@topGamercardButtonsPos; position:absolute; margin-right:0;",
+      "_on_click": "goBack"
     },
-    {
-      "Button_close": {
-        "id": "close_btn",
-        "display": "no",
-        "style": "pos:@rw+@bw-w, 1@topGamercardButtonsPos; position:absolute; margin-right:0;",
-        "_on_click": "goBack"
-      }
+    "DummyButton": {
+      "id": "dummy_console_next",
+      "on_click": "consoleNext",
+      "btnName": "A",
+      "onlyA": "yes"
     },
-    {
-      "DummyButton": {
-        "id": "dummy_console_next",
-        "on_click": "consoleNext",
-        "btnName": "A",
-        "onlyA": "yes"
-      }
-    },
-    {
-      "timer": {
-        "id": "allow_cancel_timer",
-        "timer_handler_func": "onAllowCancelTimer",
-        "timer_interval_msec": "1000"
-      }
+    "timer": {
+      "id": "allow_cancel_timer",
+      "timer_handler_func": "onAllowCancelTimer",
+      "timer_interval_msec": "1000"
     }
-  ]
+  }
 }

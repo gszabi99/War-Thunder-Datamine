@@ -1,43 +1,21 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      },
-      {
-        "node": "depth_charge_07"
-      },
-      {
-        "node": "depth_charge_08"
-      },
-      {
-        "node": "depth_charge_09"
-      },
-      {
-        "node": "depth_charge_10"
-      },
-      {
-        "node": "depth_charge_11"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07",
+      "depth_charge_08",
+      "depth_charge_09",
+      "depth_charge_10",
+      "depth_charge_11"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner4",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/navalModels_weapons/320mm_mk108_weapon_alfa_rocket_launcher.blk",
@@ -76,15 +54,46 @@
         "gunnerDm": "auxiliary_caliber_turret_03_dm"
       },
       "limits": {
-        "yaw": [-150.0,150.0],
-        "pitch": [-8.0,85.0]
+        "yaw": [
+          -150.0,
+          150.0
+        ],
+        "pitch": [
+          -8.0,
+          85.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-150.0,-146.0,16.0,85.0],
-        "lim2": [-146.0,-6.0,-8.0,85.0],
-        "lim3": [-6.0,6.0,-4.0,85.0],
-        "lim4": [6.0,146.0,-8.0,85.0],
-        "lim5": [146.0,150.0,16.0,85.0]
+        "lim1": [
+          -150.0,
+          -146.0,
+          16.0,
+          85.0
+        ],
+        "lim2": [
+          -146.0,
+          -6.0,
+          -8.0,
+          85.0
+        ],
+        "lim3": [
+          -6.0,
+          6.0,
+          -4.0,
+          85.0
+        ],
+        "lim4": [
+          6.0,
+          146.0,
+          -8.0,
+          85.0
+        ],
+        "lim5": [
+          146.0,
+          150.0,
+          16.0,
+          85.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -94,19 +103,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -114,14 +125,21 @@
       "emitter": "bone_torpedo_01",
       "bullets": 2,
       "useEmitter": true,
-      "emitterGenRange": [1.0,2.0],
+      "emitterGenRange": [
+        1,
+        2
+      ],
       "emitterGenFmt": "bone_torpedo_%02d",
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_01_dm",
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 18.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -131,13 +149,17 @@
         "gunnerDm": "tt_01_dm"
       },
       "limits": {
-        "yaw": [-1.0,1.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -1.0,
+          1.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -145,14 +167,21 @@
       "emitter": "bone_torpedo_03",
       "bullets": 2,
       "useEmitter": true,
-      "emitterGenRange": [3.0,4.0],
+      "emitterGenRange": [
+        3,
+        4
+      ],
       "emitterGenFmt": "bone_torpedo_%02d",
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_02_dm",
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 18.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -162,9 +191,15 @@
         "gunnerDm": "tt_02_dm"
       },
       "limits": {
-        "yaw": [-1.0,1.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -1.0,
+          1.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

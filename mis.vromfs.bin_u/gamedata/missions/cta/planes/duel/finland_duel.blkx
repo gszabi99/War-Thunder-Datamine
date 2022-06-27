@@ -6,115 +6,49 @@
       "pressure": 760.0,
       "temperature": -10.0
     },
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
     "mission": {
       "level": "levels/avg_finland.bin",
       "type": "domination",
@@ -135,7 +69,7 @@
         "isShipsAllowed": false
       }
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -144,40 +78,30 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": true
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": true,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "ally",
               "target": "t1_spawn_area",
               "lookAt": "spawn_area"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "enemy",
               "target": "t2_spawn_area",
               "lookAt": "spawn_area"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -190,266 +114,142 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionMarkAsRespawnPoint": [
-            {
-              "loc_name": "missions/air_spawn1"
-            },
-            {
-              "spawnEffect": false
-            },
-            {
-              "isAirfield": false
-            },
-            {
-              "isAirfield": false
-            },
-            {
-              "isUnit": false
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radius": -1.0
-            },
-            {
-              "isStrictSpawn": true
-            },
-            {
-              "useExisting": false
-            },
-            {
-              "canSpawnOnNeutral": false
-            },
-            {
-              "showOnMap": false
-            },
-            {
-              "removeAreas": false
-            },
-            {
-              "isIndividual": false
-            },
-            {
-              "onlyOnePlayerPerSpawnPoint": false
-            },
-            {
-              "target": "t1_spawn01"
-            },
-            {
-              "target": "t1_spawn02"
-            },
-            {
-              "target": "t1_spawn03"
-            },
-            {
-              "target": "t1_spawn04"
-            },
-            {
-              "target": "t1_spawn05"
-            },
-            {
-              "target": "t1_spawn06"
-            },
-            {
-              "target": "t1_spawn07"
-            },
-            {
-              "target": "t1_spawn08"
-            },
-            {
-              "target": "t1_spawn09"
-            },
-            {
-              "target": "t1_spawn10"
-            },
-            {
-              "target": "t1_spawn11"
-            },
-            {
-              "target": "t1_spawn12"
-            },
-            {
-              "target": "t1_spawn13"
-            },
-            {
-              "target": "t1_spawn14"
-            },
-            {
-              "target": "t1_spawn15"
-            },
-            {
-              "target": "t1_spawn16"
-            },
-            {
-              "team": "A"
-            },
-            {
-              "tags": {
-                "tank": false,
-                "type_heavy_tank": false,
-                "type_medium_tank": false,
-                "type_light_tank": false,
-                "type_tank_destroyer": false,
-                "type_spaa": false,
-                "artillery": false,
-                "aaa": false
-              }
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "missions/air_spawn1",
+            "spawnEffect": false,
+            "isAirfield": [
+              false,
+              false
+            ],
+            "isUnit": false,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": -1.0,
+            "isStrictSpawn": true,
+            "useExisting": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": false,
+            "removeAreas": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "target": [
+              "t1_spawn01",
+              "t1_spawn02",
+              "t1_spawn03",
+              "t1_spawn04",
+              "t1_spawn05",
+              "t1_spawn06",
+              "t1_spawn07",
+              "t1_spawn08",
+              "t1_spawn09",
+              "t1_spawn10",
+              "t1_spawn11",
+              "t1_spawn12",
+              "t1_spawn13",
+              "t1_spawn14",
+              "t1_spawn15",
+              "t1_spawn16"
+            ],
+            "team": "A",
+            "tags": {
+              "tank": false,
+              "type_heavy_tank": false,
+              "type_medium_tank": false,
+              "type_light_tank": false,
+              "type_tank_destroyer": false,
+              "type_spaa": false,
+              "artillery": false,
+              "aaa": false
             }
-          ]
-        },
-        {
-          "missionMarkAsRespawnPoint": [
-            {
-              "loc_name": "missions/air_spawn1"
-            },
-            {
-              "spawnEffect": false
-            },
-            {
-              "isAirfield": false
-            },
-            {
-              "isAirfield": false
-            },
-            {
-              "isUnit": false
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radius": -1.0
-            },
-            {
-              "isStrictSpawn": true
-            },
-            {
-              "useExisting": false
-            },
-            {
-              "canSpawnOnNeutral": false
-            },
-            {
-              "showOnMap": false
-            },
-            {
-              "removeAreas": false
-            },
-            {
-              "isIndividual": false
-            },
-            {
-              "onlyOnePlayerPerSpawnPoint": false
-            },
-            {
-              "target": "t2_spawn01"
-            },
-            {
-              "target": "t2_spawn02"
-            },
-            {
-              "target": "t2_spawn03"
-            },
-            {
-              "target": "t2_spawn04"
-            },
-            {
-              "target": "t2_spawn05"
-            },
-            {
-              "target": "t2_spawn06"
-            },
-            {
-              "target": "t2_spawn07"
-            },
-            {
-              "target": "t2_spawn08"
-            },
-            {
-              "target": "t2_spawn09"
-            },
-            {
-              "target": "t2_spawn10"
-            },
-            {
-              "target": "t2_spawn11"
-            },
-            {
-              "target": "t2_spawn12"
-            },
-            {
-              "target": "t2_spawn13"
-            },
-            {
-              "target": "t2_spawn14"
-            },
-            {
-              "target": "t2_spawn15"
-            },
-            {
-              "target": "t2_spawn16"
-            },
-            {
-              "team": "B"
-            },
-            {
-              "tags": {
-                "tank": false,
-                "type_heavy_tank": false,
-                "type_medium_tank": false,
-                "type_light_tank": false,
-                "type_tank_destroyer": false,
-                "type_spaa": false,
-                "artillery": false,
-                "aaa": false
-              }
+          },
+          {
+            "loc_name": "missions/air_spawn1",
+            "spawnEffect": false,
+            "isAirfield": [
+              false,
+              false
+            ],
+            "isUnit": false,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": -1.0,
+            "isStrictSpawn": true,
+            "useExisting": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": false,
+            "removeAreas": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "target": [
+              "t2_spawn01",
+              "t2_spawn02",
+              "t2_spawn03",
+              "t2_spawn04",
+              "t2_spawn05",
+              "t2_spawn06",
+              "t2_spawn07",
+              "t2_spawn08",
+              "t2_spawn09",
+              "t2_spawn10",
+              "t2_spawn11",
+              "t2_spawn12",
+              "t2_spawn13",
+              "t2_spawn14",
+              "t2_spawn15",
+              "t2_spawn16"
+            ],
+            "team": "B",
+            "tags": {
+              "tank": false,
+              "type_heavy_tank": false,
+              "type_medium_tank": false,
+              "type_light_tank": false,
+              "type_tank_destroyer": false,
+              "type_spaa": false,
+              "artillery": false,
+              "aaa": false
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object": "all_players_squad",
-            "cannotShoot": true
           }
+        ],
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object": "all_players_squad",
+          "cannotShoot": true
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.01,
-            "realtimeTriggers": true
-          }
+        "missionSetTimeSpeed": {
+          "speed": 0.01,
+          "realtimeTriggers": true
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
+        "wait": {
+          "time": 1.0
         },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/duel_waiting_for_players",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "shouldBlink": false
-          }
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/duel_waiting_for_players",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "shouldBlink": false
         },
-        {
-          "missionGetMaxPlayers": {
-            "input_var": "max_players_int"
-          }
+        "missionGetMaxPlayers": {
+          "input_var": "max_players_int"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "update_timer": {
       "is_enabled": false,
@@ -464,19 +264,17 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenInArea": {
+      "conditions": {
+        "unitWhenInArea": [
+          {
             "math": "3D",
             "object_type": "isActive",
             "object_marking": 0,
             "check_objects": "any",
             "object": "all_players_squad",
             "target": "t1_spawn_area_big"
-          }
-        },
-        {
-          "unitWhenInArea": {
+          },
+          {
             "math": "3D",
             "object_type": "isActive",
             "object_marking": 0,
@@ -484,8 +282,8 @@
             "object": "all_players_squad",
             "target": "t2_spawn_area_big"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "varModify": {
           "operator": "add",
@@ -496,7 +294,7 @@
           "var": "timer"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "unit respawn": {
       "is_enabled": true,
@@ -517,17 +315,15 @@
           "value": 1,
           "comparasion_func": "less"
         },
-        "isAllPlayersInGame": []
+        "isAllPlayersInGame": {}
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "update_timer"
-          },
-          {
-            "target": "temporal_fix"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "update_timer",
+            "temporal_fix"
+          ]
+        },
         "playHint": {
           "hintType": "standard",
           "name": "",
@@ -543,7 +339,7 @@
           "target": "countdown"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "countdown": {
       "is_enabled": false,
@@ -591,9 +387,9 @@
           "var": "countdown_int"
         }
       },
-      "else_actions": [
-        {
-          "playHint": {
+      "else_actions": {
+        "playHint": [
+          {
             "hintType": "standard",
             "name": "hints/ffa_race_starts_in_00",
             "action": "show",
@@ -603,10 +399,8 @@
             "isOverFade": false,
             "target_marking": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "standard",
             "name": "hints/tournament_shooting_disabled",
             "action": "show",
@@ -617,46 +411,36 @@
             "target_marking": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
           }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": false
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": false
-          }
+        "triggerEnable": {
+          "target": "shooting_enable_timer"
         },
-        {
-          "triggerEnable": {
-            "target": "shooting_enable_timer"
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "name_for_respawn_base": "",
+          "timeMultiplier": 3.0,
+          "disableZone": false,
+          "target": "battle_area",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": true,
+          "canCaptureByGM": false
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "name_for_respawn_base": "",
-            "timeMultiplier": 3.0,
-            "disableZone": false,
-            "target": "battle_area",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": true,
-            "canCaptureByGM": false
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "countdown"
-          }
+        "triggerDisable": {
+          "target": "countdown"
         }
-      ]
+      }
     },
     "shooting_enable_timer": {
       "is_enabled": false,
@@ -688,16 +472,14 @@
           "var": "shooting_timer"
         }
       },
-      "else_actions": [
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object": "all_players_squad",
-            "cannotShoot": false
-          }
+      "else_actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object": "all_players_squad",
+          "cannotShoot": false
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "standard",
             "name": "hints/duel_battle_begin",
             "action": "show",
@@ -707,10 +489,8 @@
             "isOverFade": false,
             "target_marking": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "standard",
             "name": "hints/duel_battle_begin",
             "action": "hideCur",
@@ -721,28 +501,22 @@
             "target_marking": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
+            "time": 2.0
+          },
+          {
             "time": 2.0
           }
+        ],
+        "missionSetTimeIndicator": {
+          "var": "shooting_timer"
         },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "missionSetTimeIndicator": {
-            "var": "shooting_timer"
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "shooting_enable_timer"
-          }
+        "triggerDisable": {
+          "target": "shooting_enable_timer"
         }
-      ]
+      }
     },
     "deathMul_correction": {
       "is_enabled": false,
@@ -757,43 +531,35 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varModify": {
+      "conditions": {},
+      "actions": {
+        "varModify": [
+          {
             "operator": "divAB",
             "value": 2.0,
             "var": "max_players_int"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "mission_score_int",
             "use_variable": true,
             "var_value": "max_players_int"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 100.0,
             "var": "mission_score_int"
           }
+        ],
+        "wait": {
+          "time": 0.01
         },
-        {
-          "wait": {
-            "time": 0.01
-          }
-        },
-        {
-          "missionSetProperties": {
-            "deathPenaltyMulVar": "mission_score_int"
-          }
+        "missionSetProperties": {
+          "deathPenaltyMulVar": "mission_score_int"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "temporal_fix_timer": {
       "is_enabled": true,
@@ -808,7 +574,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -816,7 +582,7 @@
           "var": "temp_timer"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "temporal_fix": {
       "is_enabled": true,
@@ -838,27 +604,23 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 3.0,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "target": "battle_area",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": true,
-            "canCaptureByGM": false
-          }
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 3.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "battle_area",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": true,
+          "canCaptureByGM": false
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": false
-          }
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": false
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "standard",
             "name": "hints/tournament_shooting_disabled",
             "action": "show",
@@ -868,10 +630,8 @@
             "isOverFade": false,
             "target_marking": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "standard",
             "name": "hints/tournament_shooting_disabled",
             "action": "hideCur",
@@ -882,24 +642,20 @@
             "target_marking": 0,
             "shouldBlink": false
           }
+        ],
+        "triggerEnable": {
+          "target": "shooting_enable_timer"
         },
-        {
-          "triggerEnable": {
-            "target": "shooting_enable_timer"
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -915,18 +671,34 @@
     "countdown_hint_str": "",
     "temp_timer": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "t1_player02",
         "tm": [
-          [5.06639e-07,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,5.06639e-07],
-          [1087.45,2000.0,-1759.65]
+          [
+            5.06639E-07,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            5.06639E-07
+          ],
+          [
+            1087.45,
+            2000.0,
+            -1759.65
+          ]
         ],
         "unit_class": "a6m3_zero",
         "closed_waypoints": false,
@@ -962,17 +734,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-12588.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -12588.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1008,17 +794,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-12656.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -12656.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1054,17 +854,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-12738.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -12738.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1100,17 +914,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-12824.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -12824.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1146,17 +974,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-12898.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -12898.3
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1192,17 +1034,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-12984.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -12984.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1238,17 +1094,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13050.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13050.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1284,17 +1154,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13133.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13133.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1330,17 +1214,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player11",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13220.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13220.3
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1376,17 +1274,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player12",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13306.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13306.7
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1422,17 +1334,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player13",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13385.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13385.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1468,17 +1394,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player14",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13471.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13471.0
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1514,17 +1454,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player15",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13558.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13558.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1560,17 +1514,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player16",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1899.7,2840.4,-13657.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1899.7,
+            2840.4,
+            -13657.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1606,17 +1574,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-11495.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -11495.7
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1652,17 +1634,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-11601.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -11601.5
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1698,17 +1694,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-11690.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -11690.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1744,17 +1754,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-11802.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -11802.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1790,17 +1814,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-11942.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -11942.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1836,17 +1874,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12036.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12036.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1882,17 +1934,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12129.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12129.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1928,17 +1994,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12208.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12208.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1974,17 +2054,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12294.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12294.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2020,17 +2114,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12367.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12367.0
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2066,17 +2174,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player11",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12477.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12477.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2112,17 +2234,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player12",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12549.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12549.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2158,17 +2294,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player13",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12645.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12645.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2204,17 +2354,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player14",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12730.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12730.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2250,17 +2414,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player15",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12810.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12810.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2296,17 +2474,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player16",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12905.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12905.5
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2342,17 +2534,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player17",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-594.4,2840.4,-12982.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -594.4,
+            2840.4,
+            -12982.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2388,17 +2594,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player01",
         "tm": [
-          [0.0247856,0.0,-0.999693],
-          [0.0,1.0,0.0],
-          [0.999693,0.0,0.0247856],
-          [1088.99,2000.0,4231.97]
+          [
+            0.0247856,
+            0.0,
+            -0.999693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999693,
+            0.0,
+            0.0247856
+          ],
+          [
+            1088.99,
+            2000.0,
+            4231.97
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2433,534 +2653,1084 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
-        "name": "all_players_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2175.35,484.5,-6119.25]
+    ],
+    "squad": {
+      "name": "all_players_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": [
-          {
-            "squad_members": "t1_player01"
-          },
-          {
-            "squad_members": "t1_player02"
-          },
-          {
-            "squad_members": "t1_player03"
-          },
-          {
-            "squad_members": "t1_player04"
-          },
-          {
-            "squad_members": "t1_player05"
-          },
-          {
-            "squad_members": "t1_player06"
-          },
-          {
-            "squad_members": "t1_player07"
-          },
-          {
-            "squad_members": "t1_player08"
-          },
-          {
-            "squad_members": "t1_player09"
-          },
-          {
-            "squad_members": "t1_player10"
-          },
-          {
-            "squad_members": "t1_player11"
-          },
-          {
-            "squad_members": "t1_player12"
-          },
-          {
-            "squad_members": "t1_player13"
-          },
-          {
-            "squad_members": "t1_player14"
-          },
-          {
-            "squad_members": "t1_player15"
-          },
-          {
-            "squad_members": "t1_player16"
-          },
-          {
-            "squad_members": "t2_player01"
-          },
-          {
-            "squad_members": "t2_player02"
-          },
-          {
-            "squad_members": "t2_player03"
-          },
-          {
-            "squad_members": "t2_player04"
-          },
-          {
-            "squad_members": "t2_player05"
-          },
-          {
-            "squad_members": "t2_player06"
-          },
-          {
-            "squad_members": "t2_player07"
-          },
-          {
-            "squad_members": "t2_player08"
-          },
-          {
-            "squad_members": "t2_player09"
-          },
-          {
-            "squad_members": "t2_player10"
-          },
-          {
-            "squad_members": "t2_player11"
-          },
-          {
-            "squad_members": "t2_player12"
-          },
-          {
-            "squad_members": "t2_player13"
-          },
-          {
-            "squad_members": "t2_player14"
-          },
-          {
-            "squad_members": "t2_player15"
-          },
-          {
-            "squad_members": "t2_player16"
-          },
-          {
-            "squad_members": "t2_player17"
-          }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -2175.35,
+          484.5,
+          -6119.25
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "t1_player01",
+          "t1_player02",
+          "t1_player03",
+          "t1_player04",
+          "t1_player05",
+          "t1_player06",
+          "t1_player07",
+          "t1_player08",
+          "t1_player09",
+          "t1_player10",
+          "t1_player11",
+          "t1_player12",
+          "t1_player13",
+          "t1_player14",
+          "t1_player15",
+          "t1_player16",
+          "t2_player01",
+          "t2_player02",
+          "t2_player03",
+          "t2_player04",
+          "t2_player05",
+          "t2_player06",
+          "t2_player07",
+          "t2_player08",
+          "t2_player09",
+          "t2_player10",
+          "t2_player11",
+          "t2_player12",
+          "t2_player13",
+          "t2_player14",
+          "t2_player15",
+          "t2_player16",
+          "t2_player17"
         ]
       }
     }
-  ],
+  },
   "areas": {
     "spawn_area": {
       "type": "Sphere",
       "tm": [
-        [-0.00787354,0.0,-6000.0],
-        [0.0,6000.0,0.0],
-        [6000.0,0.0,-0.00787354],
-        [1086.55,2000.0,1237.15]
+        [
+          -0.00787354,
+          0.0,
+          -6000.0
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          6000.0,
+          0.0,
+          -0.00787354
+        ],
+        [
+          1086.55,
+          2000.0,
+          1237.15
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "battle_area": {
       "type": "Sphere",
       "tm": [
-        [-0.000854492,0.0,-12000.0],
-        [0.0,12000.0,0.0],
-        [12000.0,0.0,-0.000854492],
-        [1086.55,2000.0,1237.15]
+        [
+          -0.000854492,
+          0.0,
+          -12000.0
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          12000.0,
+          0.0,
+          -0.000854492
+        ],
+        [
+          1086.55,
+          2000.0,
+          1237.15
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "t1_spawn_area": {
       "type": "Sphere",
       "tm": [
-        [-0.000161743,0.0,-120.0],
-        [0.0,120.0,0.0],
-        [120.0,0.0,-0.000161743],
-        [1092.17,2000.0,4240.9]
+        [
+          -0.000161743,
+          0.0,
+          -120.0
+        ],
+        [
+          0.0,
+          120.0,
+          0.0
+        ],
+        [
+          120.0,
+          0.0,
+          -0.000161743
+        ],
+        [
+          1092.17,
+          2000.0,
+          4240.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn_area": {
       "type": "Sphere",
       "tm": [
-        [0.000161743,0.0,120.0],
-        [0.0,120.0,0.0],
-        [-120.0,0.0,0.000161743],
-        [1094.16,2000.0,-1757.98]
+        [
+          0.000161743,
+          0.0,
+          120.0
+        ],
+        [
+          0.0,
+          120.0,
+          0.0
+        ],
+        [
+          -120.0,
+          0.0,
+          0.000161743
+        ],
+        [
+          1094.16,
+          2000.0,
+          -1757.98
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn_area_big": {
       "type": "Sphere",
       "tm": [
-        [-0.00579834,0.0,-5902.4],
-        [0.0,8639.99,0.0],
-        [24623.9,0.0,-0.0146484],
-        [1085.99,2000.0,-1762.41]
+        [
+          -0.00579834,
+          0.0,
+          -5902.4
+        ],
+        [
+          0.0,
+          8639.99,
+          0.0
+        ],
+        [
+          24623.9,
+          0.0,
+          -0.0146484
+        ],
+        [
+          1085.99,
+          2000.0,
+          -1762.41
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "t1_spawn_area_big": {
       "type": "Sphere",
       "tm": [
-        [-0.00579834,0.0,-5902.4],
-        [0.0,8639.99,0.0],
-        [24623.9,0.0,-0.0146484],
-        [1085.25,2000.0,4233.23]
+        [
+          -0.00579834,
+          0.0,
+          -5902.4
+        ],
+        [
+          0.0,
+          8639.99,
+          0.0
+        ],
+        [
+          24623.9,
+          0.0,
+          -0.0146484
+        ],
+        [
+          1085.25,
+          2000.0,
+          4233.23
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "t2_spawn04": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [964.95,2000.0,-2269.85]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          964.95,
+          2000.0,
+          -2269.85
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn02": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1086.38,2000.0,-2269.69]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1086.38,
+          2000.0,
+          -2269.69
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn01": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1205.35,2000.0,-2269.55]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1205.35,
+          2000.0,
+          -2269.55
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn03": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1327.25,2000.0,-2269.4]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1327.25,
+          2000.0,
+          -2269.4
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn05": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [925.47,2000.0,-2309.61]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          925.47,
+          2000.0,
+          -2309.61
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn06": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1046.9,2000.0,-2309.45]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1046.9,
+          2000.0,
+          -2309.45
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn07": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1165.87,2000.0,-2309.31]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1165.87,
+          2000.0,
+          -2309.31
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn08": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1287.77,2000.0,-2309.16]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1287.77,
+          2000.0,
+          -2309.16
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn09": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [885.99,2000.0,-2349.37]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          885.99,
+          2000.0,
+          -2349.37
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn10": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1007.42,2000.0,-2349.21]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1007.42,
+          2000.0,
+          -2349.21
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn11": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1126.39,2000.0,-2349.07]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1126.39,
+          2000.0,
+          -2349.07
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn12": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1248.29,2000.0,-2348.92]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1248.29,
+          2000.0,
+          -2348.92
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn13": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [846.51,2000.0,-2389.13]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          846.51,
+          2000.0,
+          -2389.13
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn14": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [967.94,2000.0,-2388.97]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          967.94,
+          2000.0,
+          -2388.97
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn15": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1086.91,2000.0,-2388.83]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1086.91,
+          2000.0,
+          -2388.83
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t2_spawn16": {
       "type": "Sphere",
       "tm": [
-        [-0.00814056,0.0,30.0],
-        [0.0,30.0,0.0],
-        [-30.0,0.0,-0.00814056],
-        [1208.81,2000.0,-2388.68]
+        [
+          -0.00814056,
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -30.0,
+          0.0,
+          -0.00814056
+        ],
+        [
+          1208.81,
+          2000.0,
+          -2388.68
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn01": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [962.72,2000.0,4858.9]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          962.72,
+          2000.0,
+          4858.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn02": {
       "type": "Sphere",
       "tm": [
-        [-3.33786e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-3.33786e-06],
-        [1084.62,2000.0,4859.01]
+        [
+          -3.33786E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -3.33786E-06
+        ],
+        [
+          1084.62,
+          2000.0,
+          4859.01
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn03": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1203.59,2000.0,4859.12]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1203.59,
+          2000.0,
+          4859.12
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn04": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1325.02,2000.0,4859.25]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1325.02,
+          2000.0,
+          4859.25
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn05": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [923.23,2000.0,4819.15]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          923.23,
+          2000.0,
+          4819.15
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn06": {
       "type": "Sphere",
       "tm": [
-        [-3.33786e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-3.33786e-06],
-        [1045.13,2000.0,4819.26]
+        [
+          -3.33786E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -3.33786E-06
+        ],
+        [
+          1045.13,
+          2000.0,
+          4819.26
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn07": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1164.1,2000.0,4819.37]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1164.1,
+          2000.0,
+          4819.37
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn08": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1285.53,2000.0,4819.5]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1285.53,
+          2000.0,
+          4819.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn09": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [883.74,2000.0,4779.4]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          883.74,
+          2000.0,
+          4779.4
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn10": {
       "type": "Sphere",
       "tm": [
-        [-3.33786e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-3.33786e-06],
-        [1005.64,2000.0,4779.51]
+        [
+          -3.33786E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -3.33786E-06
+        ],
+        [
+          1005.64,
+          2000.0,
+          4779.51
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn11": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1124.61,2000.0,4779.62]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1124.61,
+          2000.0,
+          4779.62
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn12": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1246.04,2000.0,4779.75]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1246.04,
+          2000.0,
+          4779.75
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn13": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [844.25,2000.0,4739.65]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          844.25,
+          2000.0,
+          4739.65
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn14": {
       "type": "Sphere",
       "tm": [
-        [-3.33786e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-3.33786e-06],
-        [966.15,2000.0,4739.76]
+        [
+          -3.33786E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -3.33786E-06
+        ],
+        [
+          966.15,
+          2000.0,
+          4739.76
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn15": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1085.12,2000.0,4739.87]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1085.12,
+          2000.0,
+          4739.87
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "t1_spawn16": {
       "type": "Sphere",
       "tm": [
-        [-2.86102e-06,0.0,-30.0],
-        [0.0,30.0,0.0],
-        [30.0,0.0,-2.86102e-06],
-        [1206.55,2000.0,4740.0]
+        [
+          -2.86102E-06,
+          0.0,
+          -30.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0,
+          -2.86102E-06
+        ],
+        [
+          1206.55,
+          2000.0,
+          4740.0
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": false
       }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

@@ -1,139 +1,83 @@
-[
-  {
-    "timeToFire": 60.0
-  },
-  {
-    "timeToSmoke": 600.0
-  },
-  {
-    "hasExpl": true
-  },
-  {
-    "exhaustFx": "ship_exhaust"
-  },
-  {
-    "expClass": "exp_aaa"
-  },
-  {
-    "model": "lcvp_a"
-  },
-  {
-    "subclass": "warShip"
-  },
-  {
-    "dustFx": "water_units_dust"
-  },
-  {
-    "dynCollisionGeom": true
-  },
-  {
-    "moveType": "ship"
-  },
-  {
-    "maxFwdSpeed": 80.0
-  },
-  {
-    "maxRevSpeed": 5.0
-  },
-  {
-    "maxAngSpeed": 15.0
-  },
-  {
-    "maxAccel": 20.0
-  },
-  {
-    "maxDecel": 5.0
-  },
-  {
-    "maxAngAccel": 15.0
-  },
-  {
-    "maxAngAccel0": 2.0
-  },
-  {
-    "maxAngAccelV": 15.0
-  },
-  {
-    "groundNormSmoothViscosity": 0.1
-  },
-  {
-    "customUpdateDiv": 5
-  },
-  {
-    "SoundMove": "models.Ship"
-  },
-  {
-    "tailStartOffset": -45.0
-  },
-  {
-    "DamageParts": {
-      "armor7": {
-        "engine_dm": {
-          "hp": 25.0
-        },
-        "body_dm": {
-          "hp": 100.0
-        }
+{
+  "timeToFire": 60.0,
+  "timeToSmoke": 600.0,
+  "hasExpl": true,
+  "exhaustFx": "ship_exhaust",
+  "expClass": "exp_aaa",
+  "model": "lcvp_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "dynCollisionGeom": true,
+  "moveType": "ship",
+  "maxFwdSpeed": 80.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 15.0,
+  "maxAccel": 20.0,
+  "maxDecel": 5.0,
+  "maxAngAccel": 15.0,
+  "maxAngAccel0": 2.0,
+  "maxAngAccelV": 15.0,
+  "groundNormSmoothViscosity": 0.1,
+  "customUpdateDiv": 5,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": -45.0,
+  "DamageParts": {
+    "armor7": {
+      "engine_dm": {
+        "hp": 25.0
+      },
+      "body_dm": {
+        "hp": 100.0
       }
     }
   },
-  {
-    "class_tags": {
-      "pacific": true,
-      "mediterran": true,
-      "westernfront": true
-    }
+  "class_tags": {
+    "pacific": true,
+    "mediterran": true,
+    "westernfront": true
   },
-  {
-    "DamageEffects": [
+  "DamageEffects": {
+    "part": [
       {
-        "part": {
-          "name": "body_dm",
-          "onHit": {
-            "smoke": 0.01,
-            "fire": 0.01
-          },
-          "onKill": {
-            "expl": 1.0
-          }
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
         }
       },
       {
-        "part": {
-          "name": "engine_dm",
-          "onHit": {
-            "smoke": 0.1,
-            "fire": 0.01
-          },
-          "onKill": {
-            "body_dm": 1.0
-          }
+        "name": "engine_dm",
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
+        },
+        "onKill": {
+          "body_dm": 1.0
         }
       }
     ]
   },
-  {
-    "attach": {
-      "willys00": "willys",
-      "human_sit00": "usa_soldier_sit",
-      "human_sit01": "usa_soldier_sit",
-      "human_sit02": "usa_soldier_sit",
-      "human_sit03": "usa_soldier_sit",
-      "human_sit04": "usa_soldier_sit",
-      "human_sit05": "usa_soldier_sit",
-      "human_sit06": "usa_soldier_sit",
-      "human_wath00": "usa_soldier_watch"
-    }
+  "attach": {
+    "willys00": "willys",
+    "human_sit00": "usa_soldier_sit",
+    "human_sit01": "usa_soldier_sit",
+    "human_sit02": "usa_soldier_sit",
+    "human_sit03": "usa_soldier_sit",
+    "human_sit04": "usa_soldier_sit",
+    "human_sit05": "usa_soldier_sit",
+    "human_sit06": "usa_soldier_sit",
+    "human_wath00": "usa_soldier_watch"
   },
-  {
-    "sound": {
-      "path": "sounds/engines",
-      "pathStudio": "aircraft/engines",
-      "engine": "boat"
-    }
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
   },
-  {
-    "weapon": {
+  "weapon": [
+    {
       "trigger": "gunner0",
       "blk": "gameData/weapons/groundModels_weapons/common_mGun12mm.blk",
       "emitter": "gun0",
@@ -164,13 +108,17 @@
         "gun": "gun0"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-10.0,90.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -10.0,
+          90.0
+        ]
       }
-    }
-  },
-  {
-    "weapon": {
+    },
+    {
       "trigger": "gunner1",
       "blk": "gameData/weapons/groundModels_weapons/common_mGun12mm.blk",
       "emitter": "gun1",
@@ -201,9 +149,15 @@
         "gun": "gun1"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-10.0,90.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -10.0,
+          90.0
+        ]
       }
     }
-  }
-]
+  ]
+}

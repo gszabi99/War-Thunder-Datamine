@@ -2,41 +2,21 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11"
+      ]
+    },
     "player_teamB": {
       "army": 2
     },
@@ -64,7 +44,7 @@
       "pressure": 760.0,
       "temperature": -10.0
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -82,7 +62,7 @@
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -95,99 +75,69 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitPutToSleep": {
-            "target": "all_players_squad"
-          }
+      "conditions": {},
+      "actions": {
+        "unitPutToSleep": {
+          "target": "all_players_squad"
         },
-        {
-          "varSetBool": [
-            {
-              "value": false
-            },
-            {
-              "var": "show_wave_tooltip"
-            },
-            {
-              "var": "can_artillery_be_spawn"
-            }
+        "varSetBool": {
+          "value": false,
+          "var": [
+            "show_wave_tooltip",
+            "can_artillery_be_spawn"
           ]
         },
-        {
-          "missionGetBalanceLevel": {
-            "input_var": "balance_level"
-          }
+        "missionGetBalanceLevel": {
+          "input_var": "balance_level"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "obnulyaem peremennye indeksov volny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem proverku matching ranga"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 0
-            },
-            {
-              "var": "wave_cur_index"
-            },
-            {
-              "var": "wave_cur_spawn_idx"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
+            "value": 0,
+            "var": [
+              "wave_cur_index",
+              "wave_cur_spawn_idx"
+            ]
+          },
+          {
             "value": 0,
             "var": "land_units_alive"
           }
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "t1_dummies_squad",
             "isImmortal": true
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -196,84 +146,66 @@
             "accuracy": 0.0,
             "effShootingRate": 0.0
           }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "missions/air_spawn1",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "radius": -1.0,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "target": "t1_air_spawn",
-            "team": "A",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [0.0,0.0,0.0]
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "matching_0_1"
-            },
-            {
-              "target": "matching_2_4"
-            },
-            {
-              "target": "matching_5_8"
-            },
-            {
-              "target": "matching_9_12"
-            },
-            {
-              "target": "matching_13_16"
-            },
-            {
-              "target": "matching_17_20"
-            }
+        ],
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "missions/air_spawn1",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "useExisting": false,
+          "isIndividual": false,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "radius": -1.0,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "resetStrictSpawnIndex": false,
+          "replaceAreas": false,
+          "forceCreate": false,
+          "target": "t1_air_spawn",
+          "team": "A",
+          "separate_fuel_time": false,
+          "modular_airfield": false,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
           ]
         },
-        {
-          "wait": {
-            "time": 5.0
-          }
+        "triggerEnable": {
+          "target": [
+            "matching_0_1",
+            "matching_2_4",
+            "matching_5_8",
+            "matching_9_12",
+            "matching_13_16",
+            "matching_17_20"
+          ]
         },
-        {
-          "missionSetBombingArea": {
-            "army": 1,
-            "target": "bombing_area",
-            "hp": 10000.0,
-            "use_variable": true,
-            "var_value": "base_hp"
-          }
+        "wait": {
+          "time": 5.0
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t2_big_artillery"
-          }
+        "missionSetBombingArea": {
+          "army": 1,
+          "target": "bombing_area",
+          "hp": 10000.0,
+          "use_variable": true,
+          "var_value": "base_hp"
         },
-        {
-          "missionGetMaxPlayers": {
-            "input_var": "players_max_count_int"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "t2_big_artillery"
+        },
+        "missionGetMaxPlayers": {
+          "input_var": "players_max_count_int"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "matching_0_1": {
       "is_enabled": false,
@@ -295,77 +227,55 @@
           "comparasion_func": "less"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "matching_2_4"
-            },
-            {
-              "target": "matching_5_8"
-            },
-            {
-              "target": "matching_9_12"
-            },
-            {
-              "target": "matching_13_16"
-            },
-            {
-              "target": "matching_17_20"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_2_4",
+            "matching_5_8",
+            "matching_9_12",
+            "matching_13_16",
+            "matching_17_20"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "vremenno berem dannye kak dlya sleduyushchego ranga"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "bomber_rank_01",
             "var": "wave_plane_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "assault_rank_01",
             "var": "wave_plane_assault_name"
           }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
         },
-        {
-          "triggerEnable": {
-            "target": "fill_wave_counting_descriptor"
-          }
-        },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 47000.0,
             "var": "base_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 4.0,
             "var": "land_base_damge_to_zone"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "matching_2_4": {
       "is_enabled": false,
@@ -380,93 +290,69 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "balance_level",
             "value": 1,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "balance_level",
             "value": 5,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "matching_0_1"
-            },
-            {
-              "target": "matching_5_8"
-            },
-            {
-              "target": "matching_9_12"
-            },
-            {
-              "target": "matching_13_16"
-            },
-            {
-              "target": "matching_17_20"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_0_1",
+            "matching_5_8",
+            "matching_9_12",
+            "matching_13_16",
+            "matching_17_20"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "bomber_rank_01",
             "var": "wave_plane_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "assault_rank_01",
             "var": "wave_plane_assault_name"
           }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
         },
-        {
-          "triggerEnable": {
-            "target": "fill_wave_counting_descriptor"
-          }
-        },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 47000.0,
             "var": "base_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 4.0,
             "var": "land_base_damge_to_zone"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "matching_5_8": {
       "is_enabled": false,
@@ -481,93 +367,69 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "balance_level",
             "value": 4,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "balance_level",
             "value": 9,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "matching_0_1"
-            },
-            {
-              "target": "matching_2_4"
-            },
-            {
-              "target": "matching_9_12"
-            },
-            {
-              "target": "matching_13_16"
-            },
-            {
-              "target": "matching_17_20"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_0_1",
+            "matching_2_4",
+            "matching_9_12",
+            "matching_13_16",
+            "matching_17_20"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "bomber_rank_02",
             "var": "wave_plane_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "assault_rank_02",
             "var": "wave_plane_assault_name"
           }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
         },
-        {
-          "triggerEnable": {
-            "target": "fill_wave_counting_descriptor"
-          }
-        },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 77000.0,
             "var": "base_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 7.0,
             "var": "land_base_damge_to_zone"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "matching_9_12": {
       "is_enabled": false,
@@ -582,93 +444,69 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "balance_level",
             "value": 8,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "balance_level",
             "value": 13,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "matching_0_1"
-            },
-            {
-              "target": "matching_2_4"
-            },
-            {
-              "target": "matching_5_8"
-            },
-            {
-              "target": "matching_13_16"
-            },
-            {
-              "target": "matching_17_20"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_0_1",
+            "matching_2_4",
+            "matching_5_8",
+            "matching_13_16",
+            "matching_17_20"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "bomber_rank_03",
             "var": "wave_plane_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "assault_rank_03",
             "var": "wave_plane_assault_name"
           }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
         },
-        {
-          "triggerEnable": {
-            "target": "fill_wave_counting_descriptor"
-          }
-        },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 112000.0,
             "var": "base_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 10.0,
             "var": "land_base_damge_to_zone"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "matching_13_16": {
       "is_enabled": false,
@@ -683,93 +521,69 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "balance_level",
             "value": 12,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "balance_level",
             "value": 17,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "matching_0_1"
-            },
-            {
-              "target": "matching_2_4"
-            },
-            {
-              "target": "matching_5_8"
-            },
-            {
-              "target": "matching_9_12"
-            },
-            {
-              "target": "matching_17_20"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_0_1",
+            "matching_2_4",
+            "matching_5_8",
+            "matching_9_12",
+            "matching_17_20"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "bomber_rank_04",
             "var": "wave_plane_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "assault_rank_04",
             "var": "wave_plane_assault_name"
           }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
         },
-        {
-          "triggerEnable": {
-            "target": "fill_wave_counting_descriptor"
-          }
-        },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 224000.0,
             "var": "base_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 20.0,
             "var": "land_base_damge_to_zone"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "matching_17_20": {
       "is_enabled": false,
@@ -791,77 +605,55 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "matching_0_1"
-            },
-            {
-              "target": "matching_2_4"
-            },
-            {
-              "target": "matching_5_8"
-            },
-            {
-              "target": "matching_9_12"
-            },
-            {
-              "target": "matching_13_16"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_0_1",
+            "matching_2_4",
+            "matching_5_8",
+            "matching_9_12",
+            "matching_13_16"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "bomber_rank_05",
             "var": "wave_plane_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "assault_rank_05",
             "var": "wave_plane_assault_name"
           }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
         },
-        {
-          "triggerEnable": {
-            "target": "fill_wave_counting_descriptor"
-          }
-        },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 224000.0,
             "var": "base_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 20.0,
             "var": "land_base_damge_to_zone"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "fill_wave_counting_descriptor": {
       "is_enabled": false,
@@ -876,246 +668,178 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "chitaem kolichestvo voln"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "chitaem tajmer mezhdu volnami"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "chitaem mnozhitel' hp"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "chitaem kolichestvo bomberov v kazhdoj volne"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vychislyaem tajmer"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 15,
             "var": "waves_counter",
             "fromDescriptor": "waves_counter"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 90,
             "var": "next_wave_timer",
             "fromDescriptor": "next_wave_timer"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 6,
             "var": "wave_01_bombers_count",
             "fromDescriptor": "wave_01_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 6,
             "var": "wave_02_bombers_count",
             "fromDescriptor": "wave_02_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 9,
             "var": "wave_03_bombers_count",
             "fromDescriptor": "wave_03_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 9,
             "var": "wave_04_bombers_count",
             "fromDescriptor": "wave_04_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 9,
             "var": "wave_05_bombers_count",
             "fromDescriptor": "wave_05_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 6,
             "var": "wave_06_bombers_count",
             "fromDescriptor": "wave_06_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 6,
             "var": "wave_07_bombers_count",
             "fromDescriptor": "wave_07_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 12,
             "var": "wave_08_bombers_count",
             "fromDescriptor": "wave_08_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 12,
             "var": "wave_09_bombers_count",
             "fromDescriptor": "wave_09_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 6,
             "var": "wave_10_bombers_count",
             "fromDescriptor": "wave_10_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 9,
             "var": "wave_11_bombers_count",
             "fromDescriptor": "wave_11_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 9,
             "var": "wave_12_bombers_count",
             "fromDescriptor": "wave_12_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 6,
             "var": "wave_13_bombers_count",
             "fromDescriptor": "wave_13_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 12,
             "var": "wave_14_bombers_count",
             "fromDescriptor": "wave_14_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 12,
             "var": "wave_15_bombers_count",
             "fromDescriptor": "wave_15_bombers_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "mission_timer",
             "input_var": "waves_counter"
           }
+        ],
+        "varSetReal": {
+          "value": 1.0,
+          "var": "base_hp_modifier",
+          "fromDescriptor": "base_hp_modifier"
         },
-        {
-          "varSetReal": {
-            "value": 1.0,
-            "var": "base_hp_modifier",
-            "fromDescriptor": "base_hp_modifier"
-          }
-        },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "mul",
             "value": 1.0,
             "var": "base_hp",
             "use_variable": true,
             "var_value": "base_hp_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": -1.0,
             "var": "mission_timer"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": 1.0,
             "var": "mission_timer",
             "use_variable": true,
             "var_value": "next_wave_timer"
           }
+        ],
+        "varSetString": {
+          "value": "bomber",
+          "var": "next_wave_mode"
         },
-        {
-          "varSetString": {
-            "value": "bomber",
-            "var": "next_wave_mode"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "wave_01_start"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "calc_base_int_1hp_in_tickets"
-            },
-            {
-              "target": "bombers_leave_fight_zone"
-            },
-            {
-              "target": "bombing_area_destroyed"
-            },
-            {
-              "target": "move_to_leaving_point"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+          },
+          {
+            "target": [
+              "calc_base_int_1hp_in_tickets",
+              "bombers_leave_fight_zone",
+              "bombing_area_destroyed",
+              "move_to_leaving_point"
+            ]
+          },
+          {
             "target": "update_enemy_indicators"
           }
+        ],
+        "wait": {
+          "time": 15.0
         },
-        {
-          "wait": {
-            "time": 15.0
-          }
-        },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "show_wave_tooltip"
-          }
+        "varSetBool": {
+          "value": true,
+          "var": "show_wave_tooltip"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "wave_01_start": {
       "is_enabled": false,
@@ -1130,73 +854,57 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
+        "varModify": {
+          "operator": "subAB",
+          "value": 0.0,
+          "var": "num_active_units",
+          "use_variable": true,
+          "var_value": "wave_02_bombers_count"
         },
-        {
-          "varModify": {
-            "operator": "subAB",
-            "value": 0.0,
-            "var": "num_active_units",
-            "use_variable": true,
-            "var_value": "wave_02_bombers_count"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "assault",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_02_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_02_start": {
       "is_enabled": false,
@@ -1218,129 +926,89 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "so vtoroj volny mozhet nazemka otspavnit'sya pervyj raz"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "can_artillery_be_spawn"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "can_artillery_be_spawn"
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 100,
             "var": "num_active_units",
             "input_var": "max_active_units"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varModify": {
+          "operator": "subAB",
+          "value": 0.0,
+          "var": "num_active_units",
+          "use_variable": true,
+          "var_value": "wave_03_bombers_count"
         },
-        {
-          "varModify": {
-            "operator": "subAB",
-            "value": 0.0,
-            "var": "num_active_units",
-            "use_variable": true,
-            "var_value": "wave_03_bombers_count"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "random",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_03_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_03_start": {
       "is_enabled": false,
@@ -1362,124 +1030,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_04_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "bomber",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_04_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_04_start": {
       "is_enabled": false,
@@ -1501,124 +1131,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_05_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "assault",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_05_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_05_start": {
       "is_enabled": false,
@@ -1640,124 +1232,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_06_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "random",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_06_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_06_start": {
       "is_enabled": false,
@@ -1779,124 +1333,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_07_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "bomber",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_07_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_07_start": {
       "is_enabled": false,
@@ -1918,124 +1434,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_08_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "assault",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_08_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_08_start": {
       "is_enabled": false,
@@ -2057,129 +1535,89 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "so vos'moj volny mozhet nazemka otspavnit'sya povtorno"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "can_artillery_be_spawn"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "can_artillery_be_spawn"
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 100,
             "var": "num_active_units",
             "input_var": "max_active_units"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varModify": {
+          "operator": "subAB",
+          "value": 0.0,
+          "var": "num_active_units",
+          "use_variable": true,
+          "var_value": "wave_09_bombers_count"
         },
-        {
-          "varModify": {
-            "operator": "subAB",
-            "value": 0.0,
-            "var": "num_active_units",
-            "use_variable": true,
-            "var_value": "wave_09_bombers_count"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "random",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_09_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_09_start": {
       "is_enabled": false,
@@ -2201,124 +1639,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_10_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "bomber",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_10_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_10_start": {
       "is_enabled": false,
@@ -2340,124 +1740,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_11_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "assault",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_11_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_11_start": {
       "is_enabled": false,
@@ -2479,124 +1841,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_12_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "random",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_12_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_12_start": {
       "is_enabled": false,
@@ -2618,124 +1942,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_13_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "assault",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_13_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_13_start": {
       "is_enabled": false,
@@ -2757,124 +2043,86 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "povyshaem shans spavna nazemki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 15.0,
             "var": "land_units_mode_modifier"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "num_active_units",
             "use_variable": true,
             "var_value": "wave_14_bombers_count"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "random",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_14_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_14_start": {
       "is_enabled": false,
@@ -2896,112 +2144,76 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_start_check"
           }
+        ],
+        "wait": {
+          "time": 10.0
         },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        "varSetInt": {
+          "value": 100,
+          "var": "num_active_units",
+          "input_var": "max_active_units"
         },
-        {
-          "varSetInt": {
-            "value": 100,
-            "var": "num_active_units",
-            "input_var": "max_active_units"
-          }
+        "varModify": {
+          "operator": "subAB",
+          "value": 0.0,
+          "var": "num_active_units",
+          "use_variable": true,
+          "var_value": "wave_15_bombers_count"
         },
-        {
-          "varModify": {
-            "operator": "subAB",
-            "value": 0.0,
-            "var": "num_active_units",
-            "use_variable": true,
-            "var_value": "wave_15_bombers_count"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "bomber",
             "var": "next_wave_mode"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_15_start",
             "var": "next_wave_trigger_name"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "wave_15_start": {
       "is_enabled": false,
@@ -3023,74 +2235,48 @@
           "comparasion_func": "more",
           "var_value_other": "next_wave_timer"
         },
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "t2_ai_bombers_squad"
-          },
-          {
-            "object": "t2_big_artillery"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "var": "next_wave_bombers_limit"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "t2_ai_bombers_squad",
+            "t2_big_artillery"
+          ],
+          "object_var_value": 0,
+          "var": "next_wave_bombers_limit"
+        }
       },
-      "actions": [
-        {
-          "gameMPChangeScore": {
-            "value": -70,
-            "valueSystem": "amount",
-            "team": "B"
-          }
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -70,
+          "valueSystem": "amount",
+          "team": "B"
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "wave_spawn_logic"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "bombing_area_saved"
           }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
+        ],
+        "wait": {
+          "time": 30.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "wave_start_check": {
       "is_enabled": false,
@@ -3123,7 +2309,7 @@
           "target": "@next_wave_trigger_name"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "move_to_leaving_point": {
       "is_enabled": false,
@@ -3175,7 +2361,7 @@
           "useForTriggerFiltered": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombers_leave_fight_zone": {
       "is_enabled": false,
@@ -3215,7 +2401,7 @@
           "useForTriggerFiltered": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_area_destroyed": {
       "is_enabled": false,
@@ -3235,51 +2421,39 @@
           "target": "bombing_area"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "bombing_area_saved"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "bombing_area_saved"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "air_survive_pve_defend_target",
-            "status": 3,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "A"
-          }
+        "moSetObjectiveStatus": {
+          "target": "air_survive_pve_defend_target",
+          "status": 3,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "team": "A"
         },
-        {
-          "triggerEnable": {
-            "target": "mission_failed"
-          }
+        "triggerEnable": {
+          "target": "mission_failed"
         },
-        {
-          "comment": {
-            "value": "zapisi dlya statistiki o volne na kotoroj igroki pomerli"
-          }
+        "comment": {
+          "value": "zapisi dlya statistiki o volne na kotoroj igroki pomerli"
         },
-        {
-          "bigQueryAddRecord": {
+        "bigQueryAddRecord": [
+          {
             "name": "air_pve_mission_name",
             "params": "@big_query_mission_name"
-          }
-        },
-        {
-          "bigQueryAddRecord": {
+          },
+          {
             "name": "air_pve_fail_wave",
             "params": "@wave_cur_index"
-          }
-        },
-        {
-          "bigQueryAddRecord": {
+          },
+          {
             "name": "air_pve_fail_wave_matching",
             "params": "@balance_level"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "mission_failed": {
       "is_enabled": false,
@@ -3294,7 +2468,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "gameMPChangeScore": {
           "value": -10,
@@ -3302,7 +2476,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_area_saved": {
       "is_enabled": false,
@@ -3344,7 +2518,7 @@
           "target": "mission_succesed"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_succesed": {
       "is_enabled": false,
@@ -3359,7 +2533,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "gameMPChangeScore": {
           "value": -10,
@@ -3367,7 +2541,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "wave_spawn_logic": {
       "is_enabled": false,
@@ -3390,44 +2564,32 @@
           "var_value_other": "waves_counter"
         }
       },
-      "actions": [
-        {
-          "varSetRandomInt": {
-            "var": "wave_next_spawn_idx",
-            "from": 1,
-            "to_not_including": 6
-          }
+      "actions": {
+        "varSetRandomInt": {
+          "var": "wave_next_spawn_idx",
+          "from": 1,
+          "to_not_including": 6
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
+        ],
+        "__missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": false
         },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "__missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": false
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "wave_spawn_bombers_prepare"
-            },
-            {
-              "target": "wave_spawn_assault_prepare"
-            },
-            {
-              "target": "wave_spawn_random_prepare"
-            }
+        "triggerEnable": {
+          "target": [
+            "wave_spawn_bombers_prepare",
+            "wave_spawn_assault_prepare",
+            "wave_spawn_random_prepare"
           ]
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": ""
@@ -3457,40 +2619,30 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "wave_spawn_assault_prepare"
-            },
-            {
-              "target": "wave_spawn_random_prepare"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "wave_spawn_assault_prepare",
+            "wave_spawn_random_prepare"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "vybiraem rezhim sleduyushchej volny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetInt": {
+          "value": 2,
+          "var": "wave_game_mode"
         },
-        {
-          "varSetInt": {
-            "value": 2,
-            "var": "wave_game_mode"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "wave_spawn_prepare"
-          }
+        "triggerEnable": {
+          "target": "wave_spawn_prepare"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "wave_spawn_assault_prepare": {
       "is_enabled": false,
@@ -3512,40 +2664,30 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "wave_spawn_bombers_prepare"
-            },
-            {
-              "target": "wave_spawn_random_prepare"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "wave_spawn_bombers_prepare",
+            "wave_spawn_random_prepare"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "vybiraem rezhim sleduyushchej volny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetInt": {
+          "value": 1,
+          "var": "wave_game_mode"
         },
-        {
-          "varSetInt": {
-            "value": 1,
-            "var": "wave_game_mode"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "wave_spawn_prepare"
-          }
+        "triggerEnable": {
+          "target": "wave_spawn_prepare"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "wave_spawn_random_prepare": {
       "is_enabled": false,
@@ -3567,41 +2709,31 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "wave_spawn_bombers_prepare"
-            },
-            {
-              "target": "wave_spawn_assault_prepare"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "wave_spawn_bombers_prepare",
+            "wave_spawn_assault_prepare"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "vybiraem rezhim sleduyushchej volny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetRandomInt": {
+          "var": "wave_game_mode",
+          "from": 1,
+          "to_not_including": 3
         },
-        {
-          "varSetRandomInt": {
-            "var": "wave_game_mode",
-            "from": 1,
-            "to_not_including": 3
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "wave_spawn_prepare"
-          }
+        "triggerEnable": {
+          "target": "wave_spawn_prepare"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "wave_spawn_prepare": {
       "is_enabled": false,
@@ -3624,82 +2756,58 @@
           "var_value_other": "wave_next_spawn_idx"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "zapominaem imya spavna"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "uvelichivaem tekushchij indeks volny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sbrasyvaem tajmer sleduyushchej volny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "wave_cur_spawn_idx",
             "input_var": "wave_next_spawn_idx"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "next_wave_cur_timer"
           }
+        ],
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "wave_cur_index"
         },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "wave_cur_index"
-          }
+        "varSetString": {
+          "value": "t2_spawn_",
+          "var": "wave_spawn_name"
         },
-        {
-          "varSetString": {
-            "value": "t2_spawn_",
-            "var": "wave_spawn_name"
-          }
+        "varAddString": {
+          "value": "@wave_cur_spawn_idx",
+          "digits": 2,
+          "var": "wave_spawn_name"
         },
-        {
-          "varAddString": {
-            "value": "@wave_cur_spawn_idx",
-            "digits": 2,
-            "var": "wave_spawn_name"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "wave_spawn_bombers"
-            },
-            {
-              "target": "wave_spawn_assault"
-            },
-            {
-              "target": "wave_spawn_land"
-            },
-            {
-              "target": "wave_last_wave_check"
-            }
+        "triggerEnable": {
+          "target": [
+            "wave_spawn_bombers",
+            "wave_spawn_assault",
+            "wave_spawn_land",
+            "wave_last_wave_check"
           ]
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": ""
@@ -3729,237 +2837,187 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "wave_game_mode bol'she 1. spavnim bobrov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem imya bombera"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "nazemka"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "wave_spawn_assault"
-            },
-            {
-              "target": "wave_spawn_land"
-            }
+        ],
+        "triggerDisable": {
+          "target": [
+            "wave_spawn_assault",
+            "wave_spawn_land"
           ]
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "",
             "var": "bombers_wave_name",
             "input_var": "wave_plane_bomber_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_",
             "var": "wave_cur_bombers_count_variable_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "_wave_",
             "digits": 2,
             "var": "bombers_wave_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@wave_cur_index",
             "digits": 2,
             "var": "bombers_wave_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@wave_cur_index",
             "digits": 2,
             "var": "wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_bombers_count",
             "digits": 0,
             "var": "wave_cur_bombers_count_variable_name"
           }
+        ],
+        "varGetStringValue": {
+          "from_var_name": "wave_cur_bombers_count_variable_name",
+          "var": "wave_cur_bombers_count_variable_name"
         },
-        {
-          "varGetStringValue": {
-            "from_var_name": "wave_cur_bombers_count_variable_name",
-            "var": "wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "wave_cur_bombers_count",
             "input_var": "@wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 24,
             "var": "num_bombers_to_sleep"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "mul",
             "value": 10.0,
             "var": "wave_cur_bombers_count",
             "use_variable": true,
             "var_value": "players_online_count_int"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 10.0,
             "var": "wave_cur_bombers_count",
             "use_variable": true,
             "var_value": "players_max_count_int"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 1.0,
             "var": "num_bombers_to_sleep",
             "use_variable": true,
             "var_value": "wave_cur_bombers_count"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 1.0,
             "var": "land_units_mode",
             "use_variable": true,
             "var_value": "land_units_mode_modifier"
           }
+        ],
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "keepFormation": false,
+          "object": "@bombers_wave_name",
+          "object_type": "isInactive",
+          "target": "@wave_spawn_name"
         },
-        {
-          "unitRespawn": {
-            "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
-            "keepFormation": false,
-            "object": "@bombers_wave_name",
-            "object_type": "isInactive",
-            "target": "@wave_spawn_name"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "clamp_put_to_sleep_count"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_last_wave_check"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_spawn_land"
           }
+        ],
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "bombing_point",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@bombers_wave_name",
+          "object_type": "isActive"
         },
-        {
-          "unitMoveTo": {
-            "object_marking": 0,
-            "target": "bombing_point",
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@bombers_wave_name",
-            "object_type": "isActive"
-          }
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "@bombers_wave_name",
+          "target": "t1_dummies_squad",
+          "fireRandom": true,
+          "weaponType": "bombs"
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@bombers_wave_name",
-            "target": "t1_dummies_squad",
-            "fireRandom": true,
-            "weaponType": "bombs"
-          }
+        "unitMark": {
+          "target_marking": 0,
+          "target": "@bombers_wave_name",
+          "target_marking_var": "wave_cur_index"
         },
-        {
-          "unitMark": {
-            "target_marking": 0,
-            "target": "@bombers_wave_name",
-            "target_marking_var": "wave_cur_index"
-          }
+        "varSetRandomInt": {
+          "var": "land_units_mode",
+          "from": 0,
+          "to_not_including": 100
         },
-        {
-          "varSetRandomInt": {
-            "var": "land_units_mode",
-            "from": 0,
-            "to_not_including": 100
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 64000.0,
-            "target": "@bombers_wave_name"
-          }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 64000.0,
+          "target": "@bombers_wave_name"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "wave_spawn_assault": {
       "is_enabled": false,
@@ -3981,248 +3039,194 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "wave_game_mode ravno 1. spavnim bobrov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem imya bombera"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "nazemka"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "wave_spawn_bombers"
-            },
-            {
-              "target": "wave_spawn_land"
-            }
+        ],
+        "triggerDisable": {
+          "target": [
+            "wave_spawn_bombers",
+            "wave_spawn_land"
           ]
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "",
             "var": "bombers_wave_name",
             "input_var": "wave_plane_assault_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "wave_",
             "var": "wave_cur_bombers_count_variable_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "_wave_",
             "digits": 2,
             "var": "bombers_wave_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@wave_cur_index",
             "digits": 2,
             "var": "bombers_wave_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@wave_cur_index",
             "digits": 2,
             "var": "wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_bombers_count",
             "digits": 0,
             "var": "wave_cur_bombers_count_variable_name"
           }
+        ],
+        "varGetStringValue": {
+          "from_var_name": "wave_cur_bombers_count_variable_name",
+          "var": "wave_cur_bombers_count_variable_name"
         },
-        {
-          "varGetStringValue": {
-            "from_var_name": "wave_cur_bombers_count_variable_name",
-            "var": "wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "wave_cur_bombers_count",
             "input_var": "@wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 24,
             "var": "num_bombers_to_sleep"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "mul",
             "value": 10.0,
             "var": "wave_cur_bombers_count",
             "use_variable": true,
             "var_value": "players_online_count_int"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 10.0,
             "var": "wave_cur_bombers_count",
             "use_variable": true,
             "var_value": "players_max_count_int"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 1.0,
             "var": "num_bombers_to_sleep",
             "use_variable": true,
             "var_value": "wave_cur_bombers_count"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 1.0,
             "var": "land_units_mode",
             "use_variable": true,
             "var_value": "land_units_mode_modifier"
           }
+        ],
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            -2000.0,
+            0.0
+          ],
+          "keepFormation": false,
+          "object": "@bombers_wave_name",
+          "object_type": "isInactive",
+          "target": "@wave_spawn_name"
         },
-        {
-          "unitRespawn": {
-            "delay": 0.0,
-            "offset": [0.0,-2000.0,0.0],
-            "keepFormation": false,
-            "object": "@bombers_wave_name",
-            "object_type": "isInactive",
-            "target": "@wave_spawn_name"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "clamp_put_to_sleep_count"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_last_wave_check"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "wave_spawn_land"
           }
+        ],
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
+        "unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": "@bombers_wave_name"
         },
-        {
-          "unitLoadBehTree": {
-            "name": "missionAssault",
-            "objects": "@bombers_wave_name"
-          }
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "assault_point",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@bombers_wave_name",
+          "object_type": "isActive"
         },
-        {
-          "unitMoveTo": {
-            "object_marking": 0,
-            "target": "assault_point",
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@bombers_wave_name",
-            "object_type": "isActive"
-          }
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "@bombers_wave_name",
+          "target": "t1_dummies_squad",
+          "fireRandom": true,
+          "weaponType": "bombs"
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@bombers_wave_name",
-            "target": "t1_dummies_squad",
-            "fireRandom": true,
-            "weaponType": "bombs"
-          }
+        "unitMark": {
+          "target_marking": 0,
+          "target": "@bombers_wave_name",
+          "target_marking_var": "wave_cur_index"
         },
-        {
-          "unitMark": {
-            "target_marking": 0,
-            "target": "@bombers_wave_name",
-            "target_marking_var": "wave_cur_index"
-          }
+        "varSetRandomInt": {
+          "var": "land_units_mode",
+          "from": 0,
+          "to_not_including": 100
         },
-        {
-          "varSetRandomInt": {
-            "var": "land_units_mode",
-            "from": 0,
-            "to_not_including": 100
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 64000.0,
-            "target": "@bombers_wave_name"
-          }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 64000.0,
+          "target": "@bombers_wave_name"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "clamp_put_to_sleep_count": {
       "is_enabled": false,
@@ -4336,156 +3340,116 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "assault checker ne ravno 1. spavnim bobrov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapreshchaem spavnit's yanazemke "
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "wave_spawn_bombers"
-            },
-            {
-              "target": "wave_spawn_assault"
-            }
+        ],
+        "triggerDisable": {
+          "target": [
+            "wave_spawn_bombers",
+            "wave_spawn_assault"
           ]
         },
-        {
-          "varSetString": {
-            "value": "wave_",
-            "var": "wave_cur_bombers_count_variable_name"
-          }
+        "varSetString": {
+          "value": "wave_",
+          "var": "wave_cur_bombers_count_variable_name"
         },
-        {
-          "varAddString": {
+        "varAddString": [
+          {
             "value": "@wave_cur_index",
             "digits": 2,
             "var": "wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_bombers_count",
             "digits": 0,
             "var": "wave_cur_bombers_count_variable_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_land",
             "digits": 0,
             "var": "wave_spawn_name"
           }
+        ],
+        "varGetStringValue": {
+          "from_var_name": "wave_cur_bombers_count_variable_name",
+          "var": "wave_cur_bombers_count_variable_name"
         },
-        {
-          "varGetStringValue": {
-            "from_var_name": "wave_cur_bombers_count_variable_name",
-            "var": "wave_cur_bombers_count_variable_name"
-          }
+        "varSetInt": {
+          "value": 0,
+          "var": "wave_cur_bombers_count",
+          "input_var": "@wave_cur_bombers_count_variable_name"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "wave_cur_bombers_count",
-            "input_var": "@wave_cur_bombers_count_variable_name"
-          }
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "keepFormation": false,
+          "object": "t2_big_artillery",
+          "object_type": "isInactive",
+          "target": "@wave_spawn_name",
+          "randomObjectsCountVar": "wave_cur_bombers_count",
+          "randomSpawn": true
         },
-        {
-          "unitRespawn": {
-            "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
-            "keepFormation": false,
-            "object": "t2_big_artillery",
-            "object_type": "isInactive",
-            "target": "@wave_spawn_name",
-            "randomObjectsCountVar": "wave_cur_bombers_count",
-            "randomSpawn": true
-          }
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "t2_big_artillery",
+          "target": "t1_dummies_squad",
+          "fireRandom": true
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "t2_big_artillery",
-            "target": "t1_dummies_squad",
-            "fireRandom": true
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "land_units_attacking_prepare"
-            },
-            {
-              "target": "land_units_destroyed"
-            },
-            {
-              "target": "land_units_damaged"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
+            "target": [
+              "land_units_attacking_prepare",
+              "land_units_destroyed",
+              "land_units_damaged"
+            ]
+          },
+          {
             "target": "wave_last_wave_check"
           }
+        ],
+        "varModify": {
+          "operator": "add",
+          "value": 0.0,
+          "var": "land_units_alive",
+          "use_variable": true,
+          "var_value": "wave_cur_bombers_count"
         },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 0.0,
-            "var": "land_units_alive",
-            "use_variable": true,
-            "var_value": "wave_cur_bombers_count"
-          }
-        },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "can_artillery_be_spawn"
-          }
+        "varSetBool": {
+          "value": false,
+          "var": "can_artillery_be_spawn"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "dizejblim sami sebya, chtoby ne torchat' v pamyati"
@@ -4524,39 +3488,29 @@
           "target": "regular_wave_tooltip"
         }
       },
-      "else_actions": [
-        {
-          "comment": {
+      "else_actions": {
+        "comment": [
+          {
             "value": "tekushchaya volna -  poslednyaya"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vyklyuchaem indikator vremeni"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "mission_timer"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "mission_timer"
-          }
+        "missionSetTimeIndicator": {
+          "var": "mission_timer"
         },
-        {
-          "missionSetTimeIndicator": {
-            "var": "mission_timer"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "last_wave_tooltip"
-          }
+        "triggerEnable": {
+          "target": "last_wave_tooltip"
         }
-      ]
+      }
     },
     "land_units_attacking_prepare": {
       "is_enabled": false,
@@ -4608,7 +3562,7 @@
           "target": "land_units_attacking"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "land_units_attacking": {
       "is_enabled": false,
@@ -4637,7 +3591,7 @@
           "damageHP_var": "land_damage_to_zone"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "land_units_destroyed": {
       "is_enabled": false,
@@ -4664,29 +3618,23 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "land_units_attacking_prepare"
-            },
-            {
-              "target": "land_units_attacking"
-            }
-          ]
-        },
-        {
-          "triggerDisable": {
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "land_units_attacking_prepare",
+              "land_units_attacking"
+            ]
+          },
+          {
             "target": "land_units_damaged"
           }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        ],
+        "wait": {
+          "time": 3.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "land_units_damaged": {
       "is_enabled": false,
@@ -4721,7 +3669,7 @@
           "var": "land_units_alive"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "update_common_indicators": {
       "is_enabled": false,
@@ -4736,122 +3684,98 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "tajmer sleduyushchej volny"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "indikator hp bazy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vychitaem tikety"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "next_wave_cur_timer"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "base_int_hp",
             "use_variable": true,
             "var_value": "base_hp"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 1000.0,
             "var": "base_int_hp"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "diff_tickets",
             "use_variable": true,
             "var_value": "base_int_hp"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": 1.0,
             "var": "diff_tickets",
             "use_variable": true,
             "var_value": "base_int_1hp_in_tickets"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": -1.0,
             "var": "diff_tickets"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "base_int_hp_old",
             "input_var": "base_int_hp"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "base_int_hp"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "diff_tickets",
             "input_var": "base_int_hp_old"
           }
+        ],
+        "missionGetBombingAreaHP": {
+          "target": "bombing_area",
+          "input_var": "base_hp"
         },
-        {
-          "missionGetBombingAreaHP": {
-            "target": "bombing_area",
-            "input_var": "base_hp"
-          }
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 1,
+          "delta": 0,
+          "icon": "building",
+          "icon army": 1,
+          "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "t1_dummies_squad",
+          "var": "base_int_hp"
         },
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isActive",
-            "target_marking": 1,
-            "delta": 0,
-            "icon": "building",
-            "icon army": 1,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t1_dummies_squad",
-            "var": "base_int_hp"
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "diff_tickets",
-            "team": "A"
-          }
+        "gameMPChangeScore": {
+          "value": 0,
+          "valueSystem": "amount",
+          "var": "diff_tickets",
+          "team": "A"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "update_enemy_indicators": {
       "is_enabled": false,
@@ -4866,25 +3790,21 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "indikator bomberov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "indikator gaubic"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "kolichestvo ostavshihsya voln"
           }
-        },
-        {
-          "missionSetTargetsIndicator": {
+        ],
+        "missionSetTargetsIndicator": [
+          {
             "target_type": "canBomb",
             "target_marking": 1,
             "delta": 0,
@@ -4895,10 +3815,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t2_ai_bombers_squad"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isActive",
             "target_marking": 1,
             "delta": 0,
@@ -4909,10 +3827,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t2_big_artillery"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -4925,9 +3841,9 @@
             "target": "t1_dummies_squad",
             "var": "wave_indicator"
           }
-        },
-        {
-          "unitSetIndication": {
+        ],
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -4935,10 +3851,8 @@
             "object_var_value": 0,
             "target": "t2_ai_bombers_squad",
             "target_type": "canBomb"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": false,
             "target_marking": 0,
             "object_var_name": "",
@@ -4947,32 +3861,26 @@
             "target": "t2_ai_bombers_squad",
             "target_type": "noBombs"
           }
+        ],
+        "varSetInt": {
+          "value": 15,
+          "var": "wave_indicator",
+          "input_var": "waves_counter"
         },
-        {
-          "varSetInt": {
-            "value": 15,
-            "var": "wave_indicator",
-            "input_var": "waves_counter"
-          }
+        "varModify": {
+          "operator": "subAB",
+          "value": 1.0,
+          "var": "wave_indicator",
+          "use_variable": true,
+          "var_value": "wave_cur_index"
         },
-        {
-          "varModify": {
-            "operator": "subAB",
-            "value": 1.0,
-            "var": "wave_indicator",
-            "use_variable": true,
-            "var_value": "wave_cur_index"
-          }
-        },
-        {
-          "__varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "wave_indicator"
-          }
+        "__varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "wave_indicator"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bombers_cant_bomb": {
       "is_enabled": true,
@@ -5015,7 +3923,7 @@
           "useForTriggerFiltered": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "regular_wave_tooltip": {
       "is_enabled": false,
@@ -5037,9 +3945,9 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "playHint": {
+      "actions": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/new_wave_incoming",
             "action": "show",
@@ -5051,10 +3959,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/new_wave_incoming",
             "action": "hide",
@@ -5067,14 +3973,12 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0
           }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        ],
+        "wait": {
+          "time": 3.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "last_wave_tooltip": {
       "is_enabled": false,
@@ -5096,9 +4000,9 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "playHint": {
+      "actions": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/last_wave_incoming",
             "action": "show",
@@ -5110,10 +4014,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/last_wave_incoming",
             "action": "hide",
@@ -5126,14 +4028,12 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0
           }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        ],
+        "wait": {
+          "time": 3.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "calc_base_int_1hp_in_tickets": {
       "is_enabled": false,
@@ -5148,53 +4048,45 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "base_int_hp"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "base_int_1hp_in_tickets",
             "source_var": "mpTi1"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "base_int_hp",
             "use_variable": true,
             "var_value": "base_hp"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 1000.0,
             "var": "base_int_hp"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "base_int_1hp_in_tickets",
             "use_variable": true,
             "var_value": "base_int_hp"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "update_common_indicators"
-          }
+        ],
+        "triggerEnable": {
+          "target": "update_common_indicators"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "players_online_counter": {
       "isCategory": true,
@@ -5232,7 +4124,7 @@
             "var": "players_online_count_int"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "players_online_counter_more": {
         "is_enabled": true,
@@ -5267,7 +4159,7 @@
             "var": "players_online_count_int"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "fail_mission_by_zero_players": {
@@ -5303,7 +4195,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -5319,8 +4211,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "last_wave": {
       "is_enabled": false,
@@ -5330,8 +4222,8 @@
         "isPrimary": true,
         "timeLimit": 3600
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -5390,18 +4282,34 @@
     "players_online_count_int": 8,
     "players_max_count_int": 10
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "t1_player01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1919.62,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1919.62,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5438,17 +4346,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1959.68,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1959.68,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5485,17 +4407,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1999.74,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1999.74,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5532,17 +4468,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2039.8,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2039.8,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5579,17 +4529,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2079.86,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2079.86,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5626,17 +4590,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2119.92,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2119.92,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5673,17 +4651,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2159.98,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2159.98,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5720,17 +4712,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2200.04,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2200.04,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5767,17 +4773,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2240.1,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2240.1,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5814,17 +4834,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2280.16,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2280.16,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5861,17 +4895,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player11",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2320.22,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2320.22,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5907,17 +4955,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player12",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2360.28,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2360.28,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5953,17 +5015,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player13",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2400.33,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2400.33,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -5999,17 +5075,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player14",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2440.39,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2440.39,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6045,17 +5135,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player15",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2480.45,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2480.45,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6091,17 +5195,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player16",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2520.51,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2520.51,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6137,17 +5255,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player17",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2560.57,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2560.57,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6183,17 +5315,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player18",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2600.63,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2600.63,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6229,17 +5375,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player19",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2640.69,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2640.69,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6275,17 +5435,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player20",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2680.75,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2680.75,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6321,17 +5495,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player21",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2720.81,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2720.81,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6367,17 +5555,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player22",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2760.87,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2760.87,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6413,17 +5615,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player23",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2800.93,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2800.93,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6459,17 +5675,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player24",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2840.99,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2840.99,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6505,17 +5735,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player25",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2881.05,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2881.05,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6551,17 +5795,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player26",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2921.11,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2921.11,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6597,17 +5855,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player27",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2961.17,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2961.17,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6643,17 +5915,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player28",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3001.23,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3001.23,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6689,17 +5975,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player29",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3041.29,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3041.29,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6735,17 +6035,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player30",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3081.35,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3081.35,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6781,17 +6095,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player31",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3121.41,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3121.41,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6827,17 +6155,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player32",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3161.47,400.0,3520.91]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3161.47,
+            400.0,
+            3520.91
+          ]
         ],
         "unit_class": "dummy_plane",
         "objLayer": 1,
@@ -6873,144 +6215,88 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
-        "name": "all_players_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2540.54,400.0,3638.75]
+    ],
+    "squad": {
+      "name": "all_players_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_player01"
-          },
-          {
-            "squad_members": "t1_player02"
-          },
-          {
-            "squad_members": "t1_player03"
-          },
-          {
-            "squad_members": "t1_player04"
-          },
-          {
-            "squad_members": "t1_player05"
-          },
-          {
-            "squad_members": "t1_player06"
-          },
-          {
-            "squad_members": "t1_player07"
-          },
-          {
-            "squad_members": "t1_player08"
-          },
-          {
-            "squad_members": "t1_player09"
-          },
-          {
-            "squad_members": "t1_player10"
-          },
-          {
-            "squad_members": "t1_player11"
-          },
-          {
-            "squad_members": "t1_player12"
-          },
-          {
-            "squad_members": "t1_player13"
-          },
-          {
-            "squad_members": "t1_player14"
-          },
-          {
-            "squad_members": "t1_player15"
-          },
-          {
-            "squad_members": "t1_player16"
-          },
-          {
-            "squad_members": "t1_player17"
-          },
-          {
-            "squad_members": "t1_player18"
-          },
-          {
-            "squad_members": "t1_player19"
-          },
-          {
-            "squad_members": "t1_player20"
-          },
-          {
-            "squad_members": "t1_player21"
-          },
-          {
-            "squad_members": "t1_player22"
-          },
-          {
-            "squad_members": "t1_player23"
-          },
-          {
-            "squad_members": "t1_player24"
-          },
-          {
-            "squad_members": "t1_player25"
-          },
-          {
-            "squad_members": "t1_player26"
-          },
-          {
-            "squad_members": "t1_player27"
-          },
-          {
-            "squad_members": "t1_player28"
-          },
-          {
-            "squad_members": "t1_player29"
-          },
-          {
-            "squad_members": "t1_player30"
-          },
-          {
-            "squad_members": "t1_player31"
-          },
-          {
-            "squad_members": "t1_player32"
-          }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2540.54,
+          400.0,
+          3638.75
+        ]
+      ],
+      "props": {
+        "object_marking": 0,
+        "squad_members": [
+          "t1_player01",
+          "t1_player02",
+          "t1_player03",
+          "t1_player04",
+          "t1_player05",
+          "t1_player06",
+          "t1_player07",
+          "t1_player08",
+          "t1_player09",
+          "t1_player10",
+          "t1_player11",
+          "t1_player12",
+          "t1_player13",
+          "t1_player14",
+          "t1_player15",
+          "t1_player16",
+          "t1_player17",
+          "t1_player18",
+          "t1_player19",
+          "t1_player20",
+          "t1_player21",
+          "t1_player22",
+          "t1_player23",
+          "t1_player24",
+          "t1_player25",
+          "t1_player26",
+          "t1_player27",
+          "t1_player28",
+          "t1_player29",
+          "t1_player30",
+          "t1_player31",
+          "t1_player32"
         ]
       }
     }
-  ],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  },
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

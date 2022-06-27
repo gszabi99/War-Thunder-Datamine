@@ -15,8 +15,18 @@
   "GearActuatorSpeed": 0.2,
   "WingActuatorSpeed": 0.1,
   "CockpitDoorSpeed": 0.1,
-  "dvFlapsIn": [150.0,280.0,0.15,0.25],
-  "dvFlapsOut": [150.0,280.0,0.15,0.02],
+  "dvFlapsIn": [
+    150.0,
+    280.0,
+    0.15,
+    0.25
+  ],
+  "dvFlapsOut": [
+    150.0,
+    280.0,
+    0.15,
+    0.02
+  ],
   "Wingspan": 5.7,
   "Length": 7.75,
   "StabWidth": 2.0,
@@ -25,10 +35,22 @@
   "WingAngle": 0.0,
   "StabAngle": 0.0,
   "KeelAngle": 0.0,
-  "AileronAngles": [14.0,14.0],
-  "ElevatorAngles": [28.0,20.0],
-  "RudderAngles": [28.0,28.0],
-  "VSlats": [165.0,240.0],
+  "AileronAngles": [
+    14.0,
+    14.0
+  ],
+  "ElevatorAngles": [
+    28.0,
+    20.0
+  ],
+  "RudderAngles": [
+    28.0,
+    28.0
+  ],
+  "VSlats": [
+    165.0,
+    240.0
+  ],
   "Vne": 800.0,
   "VneMach": 1.1,
   "MinimalSpeed": 240.0,
@@ -41,7 +63,11 @@
   "ArcadeHelpersSensitivity": 1.0,
   "EngineForceMultiplier": 1.0,
   "EngineWepForceMultiplier": 1.1,
-  "MomentOfInertia": [1876.12,5868.94,4696.34],
+  "MomentOfInertia": [
+    1876.12,
+    5868.94,
+    4696.34
+  ],
   "IgnoreErrors": true,
   "AvailableControls": {
     "hasAileronControl": true,
@@ -78,17 +104,17 @@
     "SmallHoleDrag": 0.01,
     "MediumHoleDrag": 0.02,
     "BigHoleDrag": 0.04,
-    "SmallHole": 0.0006,
+    "SmallHole": 0.00064516,
     "MediumHole": 0.0016,
-    "BigHole": 0.0055,
+    "BigHole": 0.005476,
     "WingLeftCut": 0.25,
     "WingRightCut": 0.25
   },
   "Focus": {
-    "FocusOffset": 0.0643,
+    "FocusOffset": 0.0642857,
     "WingVertPos": 0.0,
-    "AlphaShift": 0.3214,
-    "FlapsShift": 0.0964,
+    "AlphaShift": 0.321429,
+    "FlapsShift": 0.0964286,
     "GearShift": -0.1,
     "WingInFocus": 0.46,
     "WingMidFocus": 1.57,
@@ -97,17 +123,33 @@
     "Stabilizer": 4.8,
     "Keel": 4.8,
     "Rudder": 5.3,
-    "Fuselage": [-2.02222,0.0,0.0],
-    "LeftStab": [-4.8,0.0,1.0],
-    "RightStab": [-4.8,0.0,-1.0],
-    "VertStab": [-4.8,0.3,0.0],
+    "Fuselage": [
+      -2.02222,
+      0.0,
+      0.0
+    ],
+    "LeftStab": [
+      -4.8,
+      0.0,
+      1.0
+    ],
+    "RightStab": [
+      -4.8,
+      0.0,
+      -1.0
+    ],
+    "VertStab": [
+      -4.8,
+      0.3,
+      0.0
+    ],
     "WingVWingFocusMultiplier": 0.0,
     "SineAOSMultiplier": 1.0
   },
   "Aerodynamics": {
     "GearCd": 0.035,
     "RadiatorCd": 0.003,
-    "FuseCd": 0.0,
+    "FuseCd": 1E-06,
     "AirbrakeCd": 0.0,
     "ClToCmCoeff": 0.055,
     "UseSpinLoss": false,
@@ -136,7 +178,7 @@
       "CdMin": 0.0045
     },
     "Fuselage": {
-      "lineClCoeff": 0.0065,
+      "lineClCoeff": 0.00647059,
       "Cl0": 0.0,
       "alphaCritHigh": 17.0,
       "alphaCritLow": -17.0,
@@ -174,9 +216,20 @@
     }
   },
   "Engine0": {
-    "Position": [-1.7,0.3,0.0],
-    "Direction": [0.0,0.0],
-    "PropPos": [-1.7,0.3,0.0],
+    "Position": [
+      -1.7,
+      0.3,
+      0.0
+    ],
+    "Direction": [
+      0.0,
+      0.0
+    ],
+    "PropPos": [
+      -1.7,
+      0.3,
+      0.0
+    ],
     "Main": {
       "Type": "PVRD",
       "Mass": 120.0,
@@ -194,11 +247,17 @@
       "ExtinguisherNum": 0,
       "EngineInertiaMoment": 1.0,
       "EngineAcceleration": 0.15,
-      "RPMAmplitude0": [3480.0,0.0],
-      "RPMAmplitude1": [0.0,2.0],
+      "RPMAmplitude0": [
+        3480.0,
+        0.0
+      ],
+      "RPMAmplitude1": [
+        0.0,
+        2.0
+      ],
       "ConsumptionOmegaMax": 0.377,
-      "ConsumptionOmegaMinCoeff": 1039.1801,
-      "ThrustOmegaMinCoeff": 0.0,
+      "ConsumptionOmegaMinCoeff": 1039.18,
+      "ThrustOmegaMinCoeff": 2.40202E-11,
       "TurbineTimeConstant": 0.5,
       "ThrustMax": {
         "Altitude_0": 1000.0,
@@ -274,7 +333,7 @@
     "Mixer": {
       "IsControllable": false,
       "Type": 0,
-      "AltitudePressureToP0": 0.1182
+      "AltitudePressureToP0": 0.118161
     },
     "Controls": {
       "hasThrottleControl": true,
@@ -289,9 +348,16 @@
     "OilMass": 1.0,
     "AdvancedMass": false,
     "Takeoff": 2600.0,
-    "CenterOfGravity": [0.0,0.0,0.0],
-    "WingCritOverload": [-185740.0,185740.0],
-    "Parts": [],
+    "CenterOfGravity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "WingCritOverload": [
+      -185740.0,
+      185740.0
+    ],
+    "Parts": {},
     "PartsWithSurface": {
       "fuse_dm": 141.621,
       "tail_dm": 74.4972,
@@ -303,7 +369,7 @@
       "bomb1_dm": 78.131,
       "fin_dm": 10.4512,
       "pilot_dm": 11.137,
-      "rudder_dm": 3.6249
+      "rudder_dm": 3.62486
     }
   },
   "SelfSealingTanks": {
@@ -333,8 +399,8 @@
   },
   "Passport": {
     "mass": 0.0,
-    "Alt": [],
-    "IAS": []
+    "Alt": {},
+    "IAS": {}
   },
   "Test": {
     "mass": 2805.0

@@ -1,148 +1,130 @@
-[
-  {
-    "tdiv": {
-      "id": "gc_navbar_sizer",
-      "size": "pw, ph",
-      "navLeft": [
+{
+  "tdiv": {
+    "id": "gc_navbar_sizer",
+    "size": "pw, ph",
+    "navLeft": {
+      "Button_text": [
         {
-          "Button_text": {
-            "id": "btn_view_replay",
-            "text": "#mainmenu/btnViewReplay",
-            "btnName": "start",
-            "_on_click": "onViewReplay",
-            "display": "hide",
-            "ButtonImg": []
+          "id": "btn_view_replay",
+          "text": "#mainmenu/btnViewReplay",
+          "btnName": "start",
+          "_on_click": "onViewReplay",
+          "display": "hide",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_save_replay",
+          "text": "#mainmenu/btnSaveReplay",
+          "_on_click": "onSaveReplay",
+          "display": "hide",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_view_highlights",
+          "class": "image",
+          "text": "#mainmenu/btnViewHighlights",
+          "_on_click": "onViewHighlights",
+          "display": "hide",
+          "enable": "no",
+          "isColoredImg": "yes",
+          "img": {
+            "background-image": "#ui/gameuiskin#nv_icon.png"
+          },
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_requirements_list",
+          "text": "#unlocks/requirements",
+          "_on_click": "onViewBattleTaskRequirements",
+          "display": "hide",
+          "enable": "no",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_upload_facebook_scrn",
+          "on_click": "onFacebookLoginAndPostScrnshot",
+          "display": "hide",
+          "tooltip": "",
+          "btnName": "LB",
+          "ButtonImg": {},
+          "cardImg": {
+            "background-image": "#ui/gameuiskin#facebook_logo.svg",
+            "input-transparent": "yes"
+          },
+          "text": {
+            "id": "text_facebook_action",
+            "pos": "0,50%ph-50%h",
+            "position": "relative",
+            "text": "#mainmenu/btnUploadFacebookScreenshot",
+            "input-transparent": "yes"
           }
         },
         {
-          "Button_text": {
-            "id": "btn_save_replay",
-            "text": "#mainmenu/btnSaveReplay",
-            "_on_click": "onSaveReplay",
-            "display": "hide",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_view_highlights",
-            "class": "image",
-            "text": "#mainmenu/btnViewHighlights",
-            "_on_click": "onViewHighlights",
-            "display": "hide",
-            "enable": "no",
-            "isColoredImg": "yes",
-            "img": {
-              "background-image": "#ui/gameuiskin#nv_icon.png"
-            },
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_requirements_list",
-            "text": "#unlocks/requirements",
-            "_on_click": "onViewBattleTaskRequirements",
-            "display": "hide",
-            "enable": "no",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_upload_facebook_scrn",
-            "on_click": "onFacebookLoginAndPostScrnshot",
-            "display": "hide",
-            "tooltip": "",
-            "btnName": "LB",
-            "ButtonImg": [],
-            "cardImg": {
-              "background-image": "#ui/gameuiskin#facebook_logo.svg",
-              "input-transparent": "yes"
-            },
-            "text": {
-              "id": "text_facebook_action",
-              "pos": "0,50%ph-50%h",
-              "position": "relative",
-              "text": "#mainmenu/btnUploadFacebookScreenshot",
-              "input-transparent": "yes"
-            }
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_user_options",
-            "text": "#mainmenu/btnUserAction",
-            "btnName": "RB",
-            "on_click": "onUserOptions",
-            "ButtonImg": []
-          }
+          "id": "btn_user_options",
+          "text": "#mainmenu/btnUserAction",
+          "btnName": "RB",
+          "on_click": "onUserOptions",
+          "ButtonImg": {}
         }
-      ],
-      "navMiddle": [
+      ]
+    },
+    "navMiddle": {
+      "id": "nav_middle",
+      "Button_text": [
         {
-          "id": "nav_middle"
-        },
-        {
-          "Button_text": {
-            "id": "btn_next",
-            "class": "battle",
-            "navButtonFont": "yes",
-            "text": "#mainmenu/btnOk",
-            "css-hier-invalidate": "yes",
-            "_on_click": "onNext",
-            "btnName": "X",
-            "display": "hide",
-            "pattern": {
-              "type": "bright_texture"
-            },
-            "buttonWink": {
-              "_transp-timer": "0"
-            },
-            "buttonGlance": [],
-            "ButtonImg": [],
-            "btnText": {
-              "id": "btn_next_text",
-              "text": "#mainmenu/btnOk"
-            }
+          "id": "btn_next",
+          "class": "battle",
+          "navButtonFont": "yes",
+          "text": "#mainmenu/btnOk",
+          "css-hier-invalidate": "yes",
+          "_on_click": "onNext",
+          "btnName": "X",
+          "display": "hide",
+          "pattern": {
+            "type": "bright_texture"
+          },
+          "buttonWink": {
+            "_transp-timer": "0"
+          },
+          "buttonGlance": {},
+          "ButtonImg": {},
+          "btnText": {
+            "id": "btn_next_text",
+            "text": "#mainmenu/btnOk"
           }
         },
         {
-          "Button_text": {
-            "id": "btn_skip",
-            "text": "#msgbox/btn_skip",
-            "_on_click": "goBack",
-            "btnName": "B",
-            "ButtonImg": []
-          }
-        }
-      ],
-      "navRight": {
-        "Button_text": {
-          "id": "btn_back",
-          "text": "#mainmenu/btnQuit",
+          "id": "btn_skip",
+          "text": "#msgbox/btn_skip",
           "_on_click": "goBack",
           "btnName": "B",
-          "display": "hide",
-          "visualStyle": "secondary",
-          "buttonWink": [],
-          "ButtonImg": []
+          "ButtonImg": {}
         }
+      ]
+    },
+    "navRight": {
+      "Button_text": {
+        "id": "btn_back",
+        "text": "#mainmenu/btnQuit",
+        "_on_click": "goBack",
+        "btnName": "B",
+        "display": "hide",
+        "visualStyle": "secondary",
+        "buttonWink": {},
+        "ButtonImg": {}
       }
     }
   },
-  {
-    "dummy": {
+  "dummy": [
+    {
       "_on_click": "onNext",
       "behavior": "accesskey",
       "accessKey": "Enter"
-    }
-  },
-  {
-    "dummy": {
+    },
+    {
       "_on_click": "goBack",
       "btnName": "B",
       "behavior": "accesskey"
     }
-  }
-]
+  ]
+}

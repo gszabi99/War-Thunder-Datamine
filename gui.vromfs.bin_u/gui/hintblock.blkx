@@ -1,49 +1,27 @@
 {
-  "tdiv": [
-    {
-      "id": "hud_hints_nest"
-    },
-    {
-      "width": "2/3@rwHud"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "css-hier-invalidate": "yes"
-    },
-    {
-      "behavior": "Timer"
-    },
-    {
-      "tdiv": [
-        {
-          "width": "pw"
-        },
-        {
-          "position": "absolute"
-        },
-        {
-          "pos": "pw/2 - w/2, -h"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "tdiv": {
+  "tdiv": {
+    "id": "hud_hints_nest",
+    "width": "2/3@rwHud",
+    "flow": "vertical",
+    "css-hier-invalidate": "yes",
+    "behavior": "Timer",
+    "tdiv": [
+      {
+        "width": "pw",
+        "position": "absolute",
+        "pos": "pw/2 - w/2, -h",
+        "flow": "vertical",
+        "tdiv": [
+          {
             "id": "common_priority_hints",
             "width": "pw",
             "flow": "vertical"
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "ship_obstacle_rf",
             "size": "pw, 0.04@shHud"
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "width": "pw",
             "min-height": "0.1@shHud",
             "tdiv": {
@@ -54,36 +32,24 @@
               "flow": "vertical"
             }
           }
-        }
-      ]
-    },
-    {
-      "tdiv": [
-        {
-          "height": "0.08@shHud"
-        },
-        {
-          "position": "relative"
-        },
-        {
-          "left": "pw/2 - w/2"
-        },
-        {
-          "div": {
+        ]
+      },
+      {
+        "height": "0.08@shHud",
+        "position": "relative",
+        "left": "pw/2 - w/2",
+        "div": [
+          {
             "id": "iconed_hints",
             "height": "ph"
-          }
-        },
-        {
-          "div": {
+          },
+          {
             "id": "display_timers",
             "height": "ph"
           }
-        }
-      ]
-    },
-    {
-      "tdiv": {
+        ]
+      },
+      {
         "id": "actionbar_hints_nest",
         "width": "1@shHud",
         "height": "0.065@shHud",
@@ -100,43 +66,35 @@
             "flow": "vertical"
           }
         }
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "tutorial_hints",
         "width": "pw",
         "position": "root",
         "pos": "50%sw-50%w, 1@bhHud + 0.67@shHud",
         "flow": "vertical"
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "minor_priority_hints",
         "width": "pw",
         "position": "root",
         "pos": "50%sw-50%w, @shHud - h",
         "flow": "vertical"
       }
+    ],
+    "hudMessages": {
+      "id": "hud_message_zone_capture_notification",
+      "width": "pw",
+      "height": "0.065@shHud",
+      "message_style": "zone_capture_notification",
+      "input-transparent": "yes"
     },
-    {
-      "hudMessages": {
-        "id": "hud_message_zone_capture_notification",
-        "width": "pw",
-        "height": "0.065@shHud",
-        "message_style": "zone_capture_notification",
-        "input-transparent": "yes"
-      }
-    },
-    {
-      "textAreaCentered": {
-        "id": "low-quality-model-warning",
-        "width": "pw",
-        "style": "color:@warningTextColor; font:@fontHudNormal;",
-        "text": "#low_quality_model_in_hangar",
-        "display": "hide"
-      }
+    "textAreaCentered": {
+      "id": "low-quality-model-warning",
+      "width": "pw",
+      "style": "color:@warningTextColor; font:@fontHudNormal;",
+      "text": "#low_quality_model_in_hangar",
+      "display": "hide"
     }
-  ]
+  }
 }

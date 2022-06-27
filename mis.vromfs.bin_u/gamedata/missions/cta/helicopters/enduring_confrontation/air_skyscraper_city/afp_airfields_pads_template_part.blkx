@@ -16,7 +16,7 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
   "imports": {
     "import_record": {
@@ -31,7 +31,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -46,660 +46,522 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "naznachaem tipy aerodromam"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "naznachaem armiyu aerodromam"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ukazyvaem defoltnye sostoyaniya aerodromam"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem pozicii aerodromov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ustanivalivaem maksimal'no kolichestvo aerodromov dlya komandy 1"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "ustanivalivaem maksimal'no kolichestvo aerodromov dlya komandy 2"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zadaem obshchee kolichestvo aerodromov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "marking t2 pads as hidden"
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "pad",
             "var": "afp_field_type_01"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_02"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_03"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_04"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_05"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_06"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_07"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_08"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_09"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_10"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_11"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "pad",
             "var": "afp_field_type_12"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 2,
             "var": "afp_field_army_01"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_02"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_03"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_04"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_05"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_06"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "afp_field_army_07"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "afp_field_army_08"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "afp_field_army_09"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_10"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_11"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 2,
             "var": "afp_field_army_12"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_01"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_02"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_03"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_04"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_05"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_06"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_06"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "afp_field_state_07"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "afp_field_state_08"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 1,
             "var": "afp_field_state_09"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_10"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_11"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": -1,
             "var": "afp_field_state_12"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 12,
             "var": "afp_field_max_count"
           }
-        },
-        {
-          "__varSetString": [
-            {
-              "value": "near"
-            },
-            {
-              "var": "afp_field_position_01"
-            },
-            {
-              "var": "afp_field_position_02"
-            },
-            {
-              "var": "afp_field_position_03"
-            },
-            {
-              "var": "afp_field_position_10"
-            },
-            {
-              "var": "afp_field_position_11"
-            },
-            {
-              "var": "afp_field_position_12"
-            }
-          ]
-        },
-        {
-          "__varSetString": [
-            {
-              "value": "middle"
-            },
-            {
-              "var": "afp_field_position_04"
-            },
-            {
-              "var": "afp_field_position_05"
-            },
-            {
-              "var": "afp_field_position_06"
-            }
-          ]
-        },
-        {
-          "__varSetString": [
-            {
-              "value": "far"
-            },
-            {
-              "var": "afp_field_position_07"
-            },
-            {
-              "var": "afp_field_position_08"
-            },
-            {
-              "var": "afp_field_position_09"
-            }
-          ]
-        },
-        {
-          "__varSetInt": {
+        ],
+        "__varSetString": [
+          {
+            "value": "near",
+            "var": [
+              "afp_field_position_01",
+              "afp_field_position_02",
+              "afp_field_position_03",
+              "afp_field_position_10",
+              "afp_field_position_11",
+              "afp_field_position_12"
+            ]
+          },
+          {
+            "value": "middle",
+            "var": [
+              "afp_field_position_04",
+              "afp_field_position_05",
+              "afp_field_position_06"
+            ]
+          },
+          {
+            "value": "far",
+            "var": [
+              "afp_field_position_07",
+              "afp_field_position_08",
+              "afp_field_position_09"
+            ]
+          }
+        ],
+        "__varSetInt": [
+          {
             "value": 3,
             "var": "afp_field_t1_max_near_count"
-          }
-        },
-        {
-          "__varSetInt": {
+          },
+          {
             "value": 3,
             "var": "afp_field_t1_max_middle_count"
-          }
-        },
-        {
-          "__varSetInt": {
+          },
+          {
             "value": 3,
             "var": "afp_field_t1_max_far_count"
-          }
-        },
-        {
-          "__varSetInt": {
+          },
+          {
             "value": 3,
             "var": "afp_field_t2_max_near_count"
-          }
-        },
-        {
-          "__varSetInt": {
+          },
+          {
             "value": 3,
             "var": "afp_field_t2_max_middle_count"
-          }
-        },
-        {
-          "__varSetInt": {
+          },
+          {
             "value": 3,
             "var": "afp_field_t2_max_far_count"
           }
-        },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "afp_t2_hidden"
-          }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "afp_t2_hidden"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "squad": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "squad": [
+      {
         "name": "afp_all_dummies_squad",
         "tm": [
-          [-1.0,0.0,-5.96046e-08],
-          [0.0,1.0,0.0],
-          [5.96046e-08,0.0,-1.0],
-          [15105.4,90.4886,18061.7]
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            15105.4,
+            90.4886,
+            18061.7
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "afp_dummy_01"
-          },
-          {
-            "squad_members": "afp_dummy_02"
-          },
-          {
-            "squad_members": "afp_dummy_03"
-          },
-          {
-            "squad_members": "afp_dummy_04"
-          },
-          {
-            "squad_members": "afp_dummy_05"
-          },
-          {
-            "squad_members": "afp_dummy_06"
-          },
-          {
-            "squad_members": "afp_dummy_07"
-          },
-          {
-            "squad_members": "afp_dummy_08"
-          },
-          {
-            "squad_members": "afp_dummy_09"
-          },
-          {
-            "squad_members": "afp_dummy_10"
-          },
-          {
-            "squad_members": "afp_dummy_11"
-          },
-          {
-            "squad_members": "afp_dummy_12"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "afp_dummy_01",
+            "afp_dummy_02",
+            "afp_dummy_03",
+            "afp_dummy_04",
+            "afp_dummy_05",
+            "afp_dummy_06",
+            "afp_dummy_07",
+            "afp_dummy_08",
+            "afp_dummy_09",
+            "afp_dummy_10",
+            "afp_dummy_11",
+            "afp_dummy_12"
+          ]
+        }
+      },
+      {
         "name": "afp_all_fields_squad",
         "tm": [
-          [-1.0,0.0,-5.96046e-08],
-          [0.0,1.0,0.0],
-          [5.96046e-08,0.0,-1.0],
-          [17615.5,2063.48,-14569.4]
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            17615.5,
+            2063.48,
+            -14569.4
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "afp_base_01"
-          },
-          {
-            "squad_members": "afp_base_02"
-          },
-          {
-            "squad_members": "afp_base_03"
-          },
-          {
-            "squad_members": "afp_base_04"
-          },
-          {
-            "squad_members": "afp_base_05"
-          },
-          {
-            "squad_members": "afp_base_06"
-          },
-          {
-            "squad_members": "afp_base_07"
-          },
-          {
-            "squad_members": "afp_base_08"
-          },
-          {
-            "squad_members": "afp_base_09"
-          },
-          {
-            "squad_members": "afp_base_10"
-          },
-          {
-            "squad_members": "afp_base_11"
-          },
-          {
-            "squad_members": "afp_base_12"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "afp_base_01",
+            "afp_base_02",
+            "afp_base_03",
+            "afp_base_04",
+            "afp_base_05",
+            "afp_base_06",
+            "afp_base_07",
+            "afp_base_08",
+            "afp_base_09",
+            "afp_base_10",
+            "afp_base_11",
+            "afp_base_12"
+          ]
+        }
+      },
+      {
         "name": "afp_t1_squad",
         "tm": [
-          [-1.0,0.0,-5.96046e-08],
-          [0.0,1.0,0.0],
-          [5.96046e-08,0.0,-1.0],
-          [10358.0,2063.48,-20595.8]
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            10358.0,
+            2063.48,
+            -20595.8
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "afp_base_01"
-          },
-          {
-            "squad_members": "afp_base_02"
-          },
-          {
-            "squad_members": "afp_base_03"
-          },
-          {
-            "squad_members": "afp_base_04"
-          },
-          {
-            "squad_members": "afp_base_05"
-          },
-          {
-            "squad_members": "afp_base_06"
-          },
-          {
-            "squad_members": "afp_base_07"
-          },
-          {
-            "squad_members": "afp_base_08"
-          },
-          {
-            "squad_members": "afp_base_09"
-          },
-          {
-            "squad_members": "afp_base_10"
-          },
-          {
-            "squad_members": "afp_base_11"
-          },
-          {
-            "squad_members": "afp_base_12"
-          },
-          {
-            "object_type": "isTeamA"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "afp_base_01",
+            "afp_base_02",
+            "afp_base_03",
+            "afp_base_04",
+            "afp_base_05",
+            "afp_base_06",
+            "afp_base_07",
+            "afp_base_08",
+            "afp_base_09",
+            "afp_base_10",
+            "afp_base_11",
+            "afp_base_12"
+          ],
+          "object_type": "isTeamA"
+        }
+      },
+      {
         "name": "afp_t2_squad",
         "tm": [
-          [-1.0,0.0,-5.96046e-08],
-          [0.0,1.0,0.0],
-          [5.96046e-08,0.0,-1.0],
-          [18007.6,2063.48,-9234.78]
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            18007.6,
+            2063.48,
+            -9234.78
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "afp_base_01"
-          },
-          {
-            "squad_members": "afp_base_02"
-          },
-          {
-            "squad_members": "afp_base_03"
-          },
-          {
-            "squad_members": "afp_base_04"
-          },
-          {
-            "squad_members": "afp_base_05"
-          },
-          {
-            "squad_members": "afp_base_06"
-          },
-          {
-            "squad_members": "afp_base_07"
-          },
-          {
-            "squad_members": "afp_base_08"
-          },
-          {
-            "squad_members": "afp_base_09"
-          },
-          {
-            "squad_members": "afp_base_10"
-          },
-          {
-            "squad_members": "afp_base_11"
-          },
-          {
-            "squad_members": "afp_base_12"
-          },
-          {
-            "object_type": "isTeamB"
-          }
-        ]
-      }
-    },
-    {
-      "armada": {
-        "name": "ft_armada",
-        "tm": [
-          [-1.0,0.0,-5.96046e-08],
-          [0.0,1.0,0.0],
-          [5.96046e-08,0.0,-1.0],
-          [3886.35,1396.5,5134.7]
-        ],
-        "unit_class": "b-17g",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "B17G_4x2000lbs",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
+          "object_marking": 0,
+          "squad_members": [
+            "afp_base_01",
+            "afp_base_02",
+            "afp_base_03",
+            "afp_base_04",
+            "afp_base_05",
+            "afp_base_06",
+            "afp_base_07",
+            "afp_base_08",
+            "afp_base_09",
+            "afp_base_10",
+            "afp_base_11",
+            "afp_base_12"
+          ],
+          "object_type": "isTeamB"
+        }
       }
+    ],
+    "armada": {
+      "name": "ft_armada",
+      "tm": [
+        [
+          -1.0,
+          0.0,
+          -5.96046E-08
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          5.96046E-08,
+          0.0,
+          -1.0
+        ],
+        [
+          3886.35,
+          1396.5,
+          5134.7
+        ]
+      ],
+      "unit_class": "b-17g",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "B17G_4x2000lbs",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
     },
-    {
-      "objectGroups": {
+    "objectGroups": [
+      {
         "name": "afp_base_07",
         "tm": [
-          [-0.073514,0.0,-0.997294],
-          [0.0,1.0,0.0],
-          [0.997294,0.0,-0.073514],
-          [-4288.2,396.491,-11360.7]
+          [
+            -0.073514,
+            0.0,
+            -0.997294
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.997294,
+            0.0,
+            -0.073514
+          ],
+          [
+            -4288.2,
+            396.491,
+            -11360.7
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_ussr",
         "objLayer": 2,
@@ -707,16 +569,30 @@
           "army": 1,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_04",
         "tm": [
-          [0.266859,0.0,-0.963736],
-          [0.0,1.0,0.0],
-          [0.963736,0.0,0.266859],
-          [3119.8,282.326,-5820.85]
+          [
+            0.266859,
+            0.0,
+            -0.963736
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.963736,
+            0.0,
+            0.266859
+          ],
+          [
+            3119.8,
+            282.326,
+            -5820.85
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_ussr",
         "objLayer": 2,
@@ -724,16 +600,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_05",
         "tm": [
-          [-0.500772,0.0,-0.86558],
-          [0.0,1.0,0.0],
-          [0.86558,0.0,-0.500772],
-          [-4779.35,151.851,-5353.68]
+          [
+            -0.500772,
+            0.0,
+            -0.86558
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.86558,
+            0.0,
+            -0.500772
+          ],
+          [
+            -4779.35,
+            151.851,
+            -5353.68
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_ussr",
         "objLayer": 2,
@@ -741,16 +631,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_09",
         "tm": [
-          [0.0391735,0.0,-0.999233],
-          [0.0,1.0,0.0],
-          [0.999233,0.0,0.0391735],
-          [-14104.3,16.8341,-9450.92]
+          [
+            0.0391735,
+            0.0,
+            -0.999233
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999233,
+            0.0,
+            0.0391735
+          ],
+          [
+            -14104.3,
+            16.8341,
+            -9450.92
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_ussr",
         "objLayer": 2,
@@ -758,16 +662,30 @@
           "army": 1,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_08",
         "tm": [
-          [0.0207345,0.0,-0.999785],
-          [0.0,1.0,0.0],
-          [0.999785,0.0,0.0207345],
-          [-8708.55,125.184,-9186.2]
+          [
+            0.0207345,
+            0.0,
+            -0.999785
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999785,
+            0.0,
+            0.0207345
+          ],
+          [
+            -8708.55,
+            125.184,
+            -9186.2
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_ussr",
         "objLayer": 2,
@@ -775,16 +693,30 @@
           "army": 1,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_01",
         "tm": [
-          [0.506054,0.0,-0.862502],
-          [0.0,1.0,0.0],
-          [0.862502,0.0,0.506054],
-          [-799.05,245.383,-1783.2]
+          [
+            0.506054,
+            0.0,
+            -0.862502
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.862502,
+            0.0,
+            0.506054
+          ],
+          [
+            -799.05,
+            245.383,
+            -1783.2
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_usa",
         "objLayer": 2,
@@ -792,16 +724,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_02",
         "tm": [
-          [-0.463283,0.0,-0.886211],
-          [0.0,1.0,0.0],
-          [0.886211,0.0,-0.463283],
-          [-7115.11,90.9138,-2118.56]
+          [
+            -0.463283,
+            0.0,
+            -0.886211
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.886211,
+            0.0,
+            -0.463283
+          ],
+          [
+            -7115.11,
+            90.9138,
+            -2118.56
+          ]
         ],
         "unit_class": "dynHelipad_beton_c_usa",
         "objLayer": 2,
@@ -809,16 +755,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_06",
         "tm": [
-          [-0.00772528,0.0,-0.99997],
-          [0.0,1.0,0.0],
-          [0.99997,0.0,-0.00772528],
-          [-14184.8,56.75,-7019.4]
+          [
+            -0.00772528,
+            0.0,
+            -0.99997
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99997,
+            0.0,
+            -0.00772528
+          ],
+          [
+            -14184.8,
+            56.75,
+            -7019.4
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_ussr",
         "objLayer": 2,
@@ -826,16 +786,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_03",
         "tm": [
-          [0.171386,0.0,-0.985204],
-          [0.0,1.0,0.0],
-          [0.985204,0.0,0.171386],
-          [-16430.5,25.1516,-2294.08]
+          [
+            0.171386,
+            0.0,
+            -0.985204
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.985204,
+            0.0,
+            0.171386
+          ],
+          [
+            -16430.5,
+            25.1516,
+            -2294.08
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_ussr",
         "objLayer": 2,
@@ -843,16 +817,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_10",
         "tm": [
-          [0.242824,0.0,-0.970071],
-          [0.0,1.0,0.0],
-          [0.970071,0.0,0.242824],
-          [-771.474,181.585,4163.59]
+          [
+            0.242824,
+            0.0,
+            -0.970071
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.970071,
+            0.0,
+            0.242824
+          ],
+          [
+            -771.474,
+            181.585,
+            4163.59
+          ]
         ],
         "unit_class": "dynHelipad_dirt_a_usa",
         "objLayer": 2,
@@ -860,16 +848,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_11",
         "tm": [
-          [-0.0100615,0.0,-0.999949],
-          [0.0,1.0,0.0],
-          [0.999949,0.0,-0.0100615],
-          [-5174.1,76.2172,5121.5]
+          [
+            -0.0100615,
+            0.0,
+            -0.999949
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999949,
+            0.0,
+            -0.0100615
+          ],
+          [
+            -5174.1,
+            76.2172,
+            5121.5
+          ]
         ],
         "unit_class": "dynHelipad_beton_c_ussr",
         "objLayer": 2,
@@ -877,16 +879,30 @@
           "army": 2,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "afp_base_12",
         "tm": [
-          [0.547973,0.0,-0.836495],
-          [0.0,1.0,0.0],
-          [0.836495,0.0,0.547973],
-          [-12849.4,-30.1154,6158.2]
+          [
+            0.547973,
+            0.0,
+            -0.836495
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.836495,
+            0.0,
+            0.547973
+          ],
+          [
+            -12849.4,
+            -30.1154,
+            6158.2
+          ]
         ],
         "unit_class": "dynHelipad_beton_c_ussr",
         "objLayer": 2,
@@ -895,15 +911,31 @@
           "active": false
         }
       }
-    },
-    {
-      "structures": {
+    ],
+    "structures": [
+      {
         "name": "afp_dummy_07",
         "tm": [
-          [-0.488101,0.0,-0.872787],
-          [0.0,1.0,0.0],
-          [0.872787,0.0,-0.488101],
-          [-4288.2,396.491,-11360.7]
+          [
+            -0.488101,
+            0.0,
+            -0.872787
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.872787,
+            0.0,
+            -0.488101
+          ],
+          [
+            -4288.2,
+            396.491,
+            -11360.7
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -926,22 +958,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_04",
         "tm": [
-          [0.266859,0.0,-0.963736],
-          [0.0,1.0,0.0],
-          [0.963736,0.0,0.266859],
-          [3119.8,282.326,-5820.85]
+          [
+            0.266859,
+            0.0,
+            -0.963736
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.963736,
+            0.0,
+            0.266859
+          ],
+          [
+            3119.8,
+            282.326,
+            -5820.85
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -964,22 +1016,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_05",
         "tm": [
-          [-0.500772,0.0,-0.86558],
-          [0.0,1.0,0.0],
-          [0.86558,0.0,-0.500772],
-          [-4779.35,151.851,-5353.68]
+          [
+            -0.500772,
+            0.0,
+            -0.86558
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.86558,
+            0.0,
+            -0.500772
+          ],
+          [
+            -4779.35,
+            151.851,
+            -5353.68
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1002,22 +1074,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_09",
         "tm": [
-          [0.0391735,0.0,-0.999233],
-          [0.0,1.0,0.0],
-          [0.999233,0.0,0.0391735],
-          [-14104.3,16.8341,-9450.92]
+          [
+            0.0391735,
+            0.0,
+            -0.999233
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999233,
+            0.0,
+            0.0391735
+          ],
+          [
+            -14104.3,
+            16.8341,
+            -9450.92
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1040,22 +1132,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_08",
         "tm": [
-          [0.0207345,0.0,-0.999785],
-          [0.0,1.0,0.0],
-          [0.999785,0.0,0.0207345],
-          [-8708.55,125.184,-9186.2]
+          [
+            0.0207345,
+            0.0,
+            -0.999785
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999785,
+            0.0,
+            0.0207345
+          ],
+          [
+            -8708.55,
+            125.184,
+            -9186.2
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1078,22 +1190,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_01",
         "tm": [
-          [0.506054,0.0,-0.862502],
-          [0.0,1.0,0.0],
-          [0.862502,0.0,0.506054],
-          [-799.05,245.383,-1783.2]
+          [
+            0.506054,
+            0.0,
+            -0.862502
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.862502,
+            0.0,
+            0.506054
+          ],
+          [
+            -799.05,
+            245.383,
+            -1783.2
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1116,22 +1248,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_02",
         "tm": [
-          [-0.00173029,0.0,-0.999999],
-          [0.0,1.0,0.0],
-          [0.999999,0.0,-0.00173029],
-          [-7115.11,90.9138,-2118.56]
+          [
+            -0.00173029,
+            0.0,
+            -0.999999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999999,
+            0.0,
+            -0.00173029
+          ],
+          [
+            -7115.11,
+            90.9138,
+            -2118.56
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1154,22 +1306,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_06",
         "tm": [
-          [-0.978023,0.0,-0.208498],
-          [0.0,1.0,0.0],
-          [0.208498,0.0,-0.978023],
-          [-14184.8,56.75,-7019.4]
+          [
+            -0.978023,
+            0.0,
+            -0.208498
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.208498,
+            0.0,
+            -0.978023
+          ],
+          [
+            -14184.8,
+            56.75,
+            -7019.4
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1192,22 +1364,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_03",
         "tm": [
-          [0.171386,0.0,-0.985204],
-          [0.0,1.0,0.0],
-          [0.985204,0.0,0.171386],
-          [-16430.5,25.1516,-2294.08]
+          [
+            0.171386,
+            0.0,
+            -0.985204
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.985204,
+            0.0,
+            0.171386
+          ],
+          [
+            -16430.5,
+            25.1516,
+            -2294.08
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1230,22 +1422,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_10",
         "tm": [
-          [0.0462542,0.0,-0.99893],
-          [0.0,1.0,0.0],
-          [0.99893,0.0,0.0462542],
-          [-771.474,181.585,4163.59]
+          [
+            0.0462542,
+            0.0,
+            -0.99893
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99893,
+            0.0,
+            0.0462542
+          ],
+          [
+            -771.474,
+            181.585,
+            4163.59
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1268,22 +1480,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_11",
         "tm": [
-          [0.547256,0.0,-0.836965],
-          [0.0,1.0,0.0],
-          [0.836965,0.0,0.547256],
-          [-5174.1,76.2172,5121.5]
+          [
+            0.547256,
+            0.0,
+            -0.836965
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.836965,
+            0.0,
+            0.547256
+          ],
+          [
+            -5174.1,
+            76.2172,
+            5121.5
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1306,22 +1538,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "afp_dummy_12",
         "tm": [
-          [0.745803,0.0,-0.666166],
-          [0.0,1.0,0.0],
-          [0.666166,0.0,0.745803],
-          [-12849.4,-30.1154,6158.2]
+          [
+            0.745803,
+            0.0,
+            -0.666166
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.666166,
+            0.0,
+            0.745803
+          ],
+          [
+            -12849.4,
+            -30.1154,
+            6158.2
+          ]
         ],
         "unit_class": "dummy_immortal",
         "objLayer": 2,
@@ -1344,203 +1596,443 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "helipads_area": {
       "type": "Box",
       "tm": [
-        [-0.00878906,0.0,-28672.0],
-        [0.0,1200.0,0.0],
-        [28672.0,0.0,-0.00878906],
-        [-10000.0,10.3,1536.0]
+        [
+          -0.00878906,
+          0.0,
+          -28672.0
+        ],
+        [
+          0.0,
+          1200.0,
+          0.0
+        ],
+        [
+          28672.0,
+          0.0,
+          -0.00878906
+        ],
+        [
+          -10000.0,
+          10.3,
+          1536.0
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "afp_zone_07": {
       "type": "Box",
       "tm": [
-        [-288.997,0.0,-525.815],
-        [0.0,250.0,0.0],
-        [525.815,0.0,-288.997],
-        [-4288.2,432.832,-11360.7]
+        [
+          -288.997,
+          0.0,
+          -525.815
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          525.815,
+          0.0,
+          -288.997
+        ],
+        [
+          -4288.2,
+          432.832,
+          -11360.7
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_04": {
       "type": "Box",
       "tm": [
-        [161.083,0.0,-577.973],
-        [0.0,250.0,0.0],
-        [577.973,0.0,161.083],
-        [3119.91,219.72,-5820.85]
+        [
+          161.083,
+          0.0,
+          -577.973
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          577.973,
+          0.0,
+          161.083
+        ],
+        [
+          3119.91,
+          219.72,
+          -5820.85
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_05": {
       "type": "Box",
       "tm": [
-        [-304.984,0.0,-516.706],
-        [0.0,250.0,0.0],
-        [516.706,0.0,-304.983],
-        [-4781.27,159.333,-5354.37]
+        [
+          -304.984,
+          0.0,
+          -516.706
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          516.706,
+          0.0,
+          -304.983
+        ],
+        [
+          -4781.27,
+          159.333,
+          -5354.37
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_09": {
       "type": "Box",
       "tm": [
-        [19.2495,0.0,-599.691],
-        [0.0,250.0,0.0],
-        [599.691,0.0,19.2495],
-        [-14104.3,0.0,-9450.92]
+        [
+          19.2495,
+          0.0,
+          -599.691
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          599.691,
+          0.0,
+          19.2495
+        ],
+        [
+          -14104.3,
+          0.0,
+          -9450.92
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_08": {
       "type": "Box",
       "tm": [
-        [-28.8211,0.0,599.307],
-        [0.0,250.0,0.0],
-        [-599.307,0.0,-28.8211],
-        [-8708.55,105.9,-9186.2]
+        [
+          -28.8211,
+          0.0,
+          599.307
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -599.307,
+          0.0,
+          -28.8211
+        ],
+        [
+          -8708.55,
+          105.9,
+          -9186.2
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_01": {
       "type": "Box",
       "tm": [
-        [311.467,0.0,-512.824],
-        [0.0,250.0,0.0],
-        [512.824,0.0,311.466],
-        [-799.02,245.543,-1783.2]
+        [
+          311.467,
+          0.0,
+          -512.824
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          512.824,
+          0.0,
+          311.466
+        ],
+        [
+          -799.02,
+          245.543,
+          -1783.2
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_02": {
       "type": "Box",
       "tm": [
-        [5.24113,0.0,599.977],
-        [0.0,250.0,0.0],
-        [-649.975,0.0,5.67755],
-        [-7115.15,79.9998,-2118.57]
+        [
+          5.24113,
+          0.0,
+          599.977
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -649.975,
+          0.0,
+          5.67755
+        ],
+        [
+          -7115.15,
+          79.9998,
+          -2118.57
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_06": {
       "type": "Box",
       "tm": [
-        [585.899,0.0,129.316],
-        [0.0,250.0,0.0],
-        [-129.316,0.0,585.899],
-        [-14184.8,17.4514,-7019.39]
+        [
+          585.899,
+          0.0,
+          129.316
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -129.316,
+          0.0,
+          585.899
+        ],
+        [
+          -14184.8,
+          17.4514,
+          -7019.39
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_03": {
       "type": "Box",
       "tm": [
-        [-110.596,0.0,589.719],
-        [0.0,250.0,0.0],
-        [-589.719,0.0,-110.596],
-        [-16430.5,25.1516,-2294.08]
+        [
+          -110.596,
+          0.0,
+          589.719
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -589.719,
+          0.0,
+          -110.596
+        ],
+        [
+          -16430.5,
+          25.1516,
+          -2294.08
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_10": {
       "type": "Box",
       "tm": [
-        [-296.403,0.0,-521.675],
-        [0.0,250.0,0.0],
-        [521.675,2.73703e-05,-296.403],
-        [-771.494,219.729,4163.59]
+        [
+          -296.403,
+          0.0,
+          -521.675
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          521.675,
+          2.73703E-05,
+          -296.403
+        ],
+        [
+          -771.494,
+          219.729,
+          4163.59
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_11": {
       "type": "Box",
       "tm": [
-        [333.033,0.0,-499.088],
-        [0.0,250.0,0.0],
-        [499.088,0.0,333.033],
-        [-5195.59,49.6995,5098.71]
+        [
+          333.033,
+          0.0,
+          -499.088
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          499.088,
+          0.0,
+          333.033
+        ],
+        [
+          -5195.59,
+          49.6995,
+          5098.71
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "afp_zone_12": {
       "type": "Box",
       "tm": [
-        [436.205,0.0,-411.978],
-        [0.0,250.0,0.0],
-        [411.978,0.0,436.205],
-        [-12871.3,27.3101,6144.28]
+        [
+          436.205,
+          0.0,
+          -411.978
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          411.978,
+          0.0,
+          436.205
+        ],
+        [
+          -12871.3,
+          27.3101,
+          6144.28
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "st_t1_retreat_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [0.0,500.0,-34650.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          500.0,
+          -34650.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "helipads_central_safezone": {
       "type": "Box",
       "tm": [
-        [-0.00125558,0.0,-4096.0],
-        [0.0,1200.0,0.0],
-        [28672.0,0.0,-0.00878906],
-        [-10000.0,10.3,1536.0]
+        [
+          -0.00125558,
+          0.0,
+          -4096.0
+        ],
+        [
+          0.0,
+          1200.0,
+          0.0
+        ],
+        [
+          28672.0,
+          0.0,
+          -0.00878906
+        ],
+        [
+          -10000.0,
+          10.3,
+          1536.0
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": false
       }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

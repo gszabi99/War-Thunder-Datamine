@@ -24,12 +24,15 @@
       "weather": "hazy",
       "missionDebriefing": "",
       "missionBriefing": "",
-      "tags": []
+      "tags": {}
     },
-    "cover_points": [],
+    "cover_points": {},
     "aiParams": {
       "aiEffectivenessViscosity": 90.0,
-      "effectivenessDistances": [2500.0,7000.0]
+      "effectivenessDistances": [
+        2500.0,
+        7000.0
+      ]
     },
     "briefing": {
       "place_loc": "",
@@ -52,7 +55,7 @@
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -69,35 +72,29 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "triggerEnable": {
+      "conditions": {},
+      "actions": {
+        "triggerEnable": [
+          {
             "target": "landing_skip"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "landing_real_start"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
-        },
-        {
-          "airfieldSetIndication": {
-            "set": true,
-            "target": ""
-          }
+        ],
+        "airfieldSetIndication": {
+          "set": true,
+          "target": ""
         }
-      ]
+      }
     },
     "landing_quick_start": {
       "is_enabled": false,
@@ -119,47 +116,37 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "unitMoveTo": {
-            "target": "landing_spawn_point",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "object": "#player_sq",
-            "move_type": "teleport",
-            "lookat": "landing_lookAt_point",
-            "velocity": 250.0
-          }
+      "actions": {
+        "unitMoveTo": {
+          "target": "landing_spawn_point",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 0.0,
+          "object": "#player_sq",
+          "move_type": "teleport",
+          "lookat": "landing_lookAt_point",
+          "velocity": 250.0
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "mo_dynamic_landing"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "mo_dynamic_landing"
-          }
+        "triggerEnable": {
+          "target": "landing_end"
         },
-        {
-          "triggerEnable": {
-            "target": "landing_end"
-          }
-        },
-        {
-          "missionCompleted": {
-            "timer": true
-          }
+        "missionCompleted": {
+          "timer": true
         }
-      ]
+      }
     },
     "landing_real_start": {
       "is_enabled": false,
@@ -174,37 +161,29 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "wait": {
+      "conditions": {},
+      "actions": {
+        "wait": [
+          {
+            "time": 2.0
+          },
+          {
             "time": 2.0
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "mo_dynamic_landing"
         },
-        {
-          "wait": {
-            "time": 2.0
-          }
+        "triggerEnable": {
+          "target": "landing_end"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "mo_dynamic_landing"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "landing_end"
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "completed_offline",
-            "activate_type": "ignoreConditions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
+        "triggerActivate": {
+          "target": "completed_offline",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         }
-      ]
+      }
     },
     "landing_end": {
       "is_enabled": false,
@@ -237,7 +216,7 @@
         "wait": {
           "time": 2.0
         },
-        "missionDebriefing": []
+        "missionDebriefing": {}
       }
     },
     "landing_skip": {
@@ -264,14 +243,12 @@
         "triggerDisable": {
           "target": "landing_start"
         },
-        "triggerEnable": [
-          {
-            "target": "completed_online"
-          },
-          {
-            "target": "completed_offline"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "completed_online",
+            "completed_offline"
+          ]
+        }
       }
     }
   },
@@ -288,8 +265,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "mo_dynamic_ship_landing": {
       "is_enabled": false,
@@ -301,38 +278,70 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "landing_real": false,
     "landing_skip": false
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
   "areas": {
     "landing_spawn_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-48.3,0.0,-79.05]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -48.3,
+          0.0,
+          -79.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "landing_lookAt_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [93.3,0.0,28.25]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          93.3,
+          0.0,
+          28.25
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

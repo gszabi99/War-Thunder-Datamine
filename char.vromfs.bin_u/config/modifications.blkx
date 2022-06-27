@@ -12035,19 +12035,17 @@
           "trackMesh": "ger_winterketten_phys_track_line",
           "nonSymmetricMesh": true
         },
-        "hideNodes": [
-          {
-            "node": "track_l"
-          },
-          {
-            "node": "track_r"
-          }
-        ],
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r"
+          ]
+        },
         "damagePartsOverride": {
           "tracks": {
             "hpMult": 1.2,
-            "track_l_01_dm": [],
-            "track_r_01_dm": []
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
           }
         }
       }
@@ -12066,22 +12064,20 @@
         "mulSideRotMaxSpd": 1.05,
         "mulSideRotMinFric": 0.95,
         "mulSideRotMaxFric": 0.95,
-        "hideNodes": [
-          {
-            "node": "track_l"
-          },
-          {
-            "node": "track_r"
-          }
-        ],
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r"
+          ]
+        },
         "tracks": {
           "width": 0.56
         },
         "damagePartsOverride": {
           "tracks": {
             "hpMult": 1.2,
-            "track_l_01_dm": [],
-            "track_r_01_dm": []
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
           }
         }
       }
@@ -12100,14 +12096,12 @@
         "mulSideRotMaxSpd": 1.05,
         "mulSideRotMinFric": 0.95,
         "mulSideRotMaxFric": 0.95,
-        "hideNodes": [
-          {
-            "node": "track_l"
-          },
-          {
-            "node": "track_r"
-          }
-        ],
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r"
+          ]
+        },
         "tracks": {
           "width": 0.56,
           "trackMesh": "ger_ostketten_phys_track_line",
@@ -12116,8 +12110,8 @@
         "damagePartsOverride": {
           "tracks": {
             "hpMult": 1.2,
-            "track_l_01_dm": [],
-            "track_r_01_dm": []
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
           }
         }
       }
@@ -12137,8 +12131,8 @@
         "damagePartsOverride": {
           "tracks": {
             "hpMult": 0.75,
-            "track_r_dm": [],
-            "track_l_dm": []
+            "track_r_dm": {},
+            "track_l_dm": {}
           }
         }
       }
@@ -12403,13 +12397,46 @@
       "modClass": "firepower",
       "effects": {
         "rangefinderMounted": true,
-        "distanceError": [1.0,3.0,20.0,100.0],
-        "distanceThresholdMin": [50.0,200.0,400.0,2000.0],
-        "distanceThresholdMax": [150.0,300.0,800.0,4000.0],
-        "distanceErrorRealistic": [3.0,50.0,100.0,100.0],
-        "distanceThresholdMinRealistic": [50.0,100.0,500.0,2000.0],
-        "distanceThresholdMaxRealistic": [100.0,500.0,2000.0,4000.0],
-        "timeMeasurementRange": [3.0,1.0],
+        "distanceError": [
+          1.0,
+          3.0,
+          20.0,
+          100.0
+        ],
+        "distanceThresholdMin": [
+          50.0,
+          200.0,
+          400.0,
+          2000.0
+        ],
+        "distanceThresholdMax": [
+          150.0,
+          300.0,
+          800.0,
+          4000.0
+        ],
+        "distanceErrorRealistic": [
+          3.0,
+          50.0,
+          100.0,
+          100.0
+        ],
+        "distanceThresholdMinRealistic": [
+          50.0,
+          100.0,
+          500.0,
+          2000.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          100.0,
+          500.0,
+          2000.0,
+          4000.0
+        ],
+        "timeMeasurementRange": [
+          3.0,
+          1.0
+        ],
         "rcostAddParam": 0.98
       }
     },
@@ -12419,18 +12446,16 @@
       "modClass": "firepower",
       "effects": {
         "rcostAddParam": 0.98,
-        "sensors": [
-          {
-            "sensor": {
+        "sensors": {
+          "sensor": [
+            {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-            }
-          },
-          {
-            "sensor": {
+            },
+            {
               "blk": "gameData/sensors/it_ralm-101.blk"
             }
-          }
-        ]
+          ]
+        }
       }
     },
     "laser_rangefinder_lws": {
@@ -12440,26 +12465,57 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
-        "distanceError": [1.0,1.0,5.0,10.0],
-        "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
-        "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
-        "distanceErrorRealistic": [1.0,1.0,5.0,10.0],
-        "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
-        "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
-        "timeMeasurementRange": [0.5,0.5],
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
         "rcostAddParam": 0.98,
-        "sensors": [
-          {
-            "sensor": {
+        "sensors": {
+          "sensor": [
+            {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-            }
-          },
-          {
-            "sensor": {
+            },
+            {
               "blk": "gameData/sensors/it_ralm-101.blk"
             }
-          }
-        ]
+          ]
+        }
       }
     },
     "laser_rangefinder_ircm_lws_t_90a": {
@@ -12469,26 +12525,57 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
-        "distanceError": [1.0,1.0,5.0,10.0],
-        "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
-        "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
-        "distanceErrorRealistic": [1.0,1.0,5.0,10.0],
-        "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
-        "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
-        "timeMeasurementRange": [0.5,0.5],
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
         "rcostAddParam": 0.98,
-        "sensors": [
-          {
-            "sensor": {
+        "sensors": {
+          "sensor": [
+            {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-            }
-          },
-          {
-            "sensor": {
+            },
+            {
               "blk": "gameData/sensors/su_tshu_1_11.blk"
             }
-          }
-        ]
+          ]
+        }
       }
     },
     "modern_tank_laser_rangefinder": {
@@ -12498,13 +12585,46 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
-        "distanceError": [1.0,1.0,5.0,10.0],
-        "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
-        "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
-        "distanceErrorRealistic": [1.0,1.0,5.0,10.0],
-        "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
-        "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
-        "timeMeasurementRange": [0.5,0.5],
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
         "rcostAddParam": 0.98,
         "sensors": {
           "sensor": {
@@ -12548,13 +12668,46 @@
       "modClass": "firepower",
       "effects": {
         "rangefinderMounted": true,
-        "distanceError": [1.0,3.0,20.0,100.0],
-        "distanceThresholdMin": [50.0,200.0,400.0,1000.0],
-        "distanceThresholdMax": [150.0,300.0,800.0,1500.0],
-        "distanceErrorRealistic": [3.0,50.0,100.0,150.0],
-        "distanceThresholdMinRealistic": [50.0,100.0,500.0,1000.0],
-        "distanceThresholdMaxRealistic": [100.0,500.0,1000.0,2500.0],
-        "timeMeasurementRange": [4.0,2.0],
+        "distanceError": [
+          1.0,
+          3.0,
+          20.0,
+          100.0
+        ],
+        "distanceThresholdMin": [
+          50.0,
+          200.0,
+          400.0,
+          1000.0
+        ],
+        "distanceThresholdMax": [
+          150.0,
+          300.0,
+          800.0,
+          1500.0
+        ],
+        "distanceErrorRealistic": [
+          3.0,
+          50.0,
+          100.0,
+          150.0
+        ],
+        "distanceThresholdMinRealistic": [
+          50.0,
+          100.0,
+          500.0,
+          1000.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          100.0,
+          500.0,
+          1000.0,
+          2500.0
+        ],
+        "timeMeasurementRange": [
+          4.0,
+          2.0
+        ],
         "rcostAddParam": 0.98
       }
     },
@@ -20087,12 +20240,12 @@
         "overheatTimingMulOverdrive": 0.9
       },
       "overdriveEffect_inverted": {
-        "mulMaxDeltaAngleOverdrive": 1.1111,
-        "overheatTimingMulOverdrive": 1.1111
+        "mulMaxDeltaAngleOverdrive": 1.11111,
+        "overheatTimingMulOverdrive": 1.11111
       },
       "upgradeEffect_inverted": {
-        "mulMaxDeltaAngleOverdrive": 1.1111,
-        "overheatTimingMulOverdrive": 1.1111
+        "mulMaxDeltaAngleOverdrive": 1.11111,
+        "overheatTimingMulOverdrive": 1.11111
       }
     }
   }

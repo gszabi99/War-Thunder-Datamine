@@ -1,158 +1,161 @@
-[
-  {
-    "sonicGun": true
+{
+  "sonicGun": true,
+  "shotFreq": 0.11,
+  "bulletsCluster": 1,
+  "isBulletBelt": [
+    false,
+    false
+  ],
+  "bullets": 10000,
+  "sonicFxType": "duna_sonic_wave",
+  "sonicHitFxType": "dust_ground_wave_sand_big",
+  "sonicGroundFxType": "duna_sonic_dust_wave",
+  "fxType": "duna_sonic_muzzle",
+  "fxGroundDust": "dust_ground_wave_dirt_big",
+  "fxGrassDust": "dust_ground_wave_grass_big",
+  "fxSandDust": "dust_ground_wave_sand_big",
+  "fxSnowDust": "dust_ground_wave_snow_big",
+  "fxConcreteDust": "dust_ground_wave_asphalt_big",
+  "fxWaterShockWave": "dust_waterwave_big",
+  "shouldCollideWithRendinsts": true,
+  "sound_path": "tanks/weapon_tanks/cannons",
+  "sound_pathStudio": "desert/weapon",
+  "sound": "cannon_sonic",
+  "sound_inside": "cannon_sonic_interior",
+  "sfxReloadBullet": "evt_sonic_reload",
+  "notUseDefaultBulletInGui": true,
+  "noiseFromShot": 60.0,
+  "bullet": {
+    "bulletName": "sonicWave",
+    "bulletCount": 25,
+    "bulletType": "heat_fs_tank",
+    "guiCustomIcon": "sonic_tank",
+    "mass": 1.0,
+    "caliber": 1.0,
+    "speed": 1.0,
+    "hitpower": {
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower5000m": [
+        0.5,
+        5000.0
+      ],
+      "HitPower7000m": [
+        0.1,
+        7000.0
+      ]
+    },
+    "armorpower": {
+      "ArmorPower0m": [
+        20.0,
+        10.0
+      ],
+      "ArmorPower20000m": [
+        0.0,
+        20000.0
+      ]
+    },
+    "sonicDamage": {
+      "damageType": "sonic",
+      "penetration": 100.0,
+      "horAngles": [
+        -2.0,
+        2.0
+      ],
+      "verAngles": [
+        -30.0,
+        3.0
+      ],
+      "speed": 300.0,
+      "distance": 1500.0,
+      "damage": {
+        "p": [
+          [
+            0.0,
+            100.0
+          ],
+          [
+            500.0,
+            40.0
+          ],
+          [
+            2000.0,
+            10.0
+          ]
+        ]
+      }
+    }
   },
-  {
-    "shotFreq": 0.11
-  },
-  {
-    "bulletsCluster": 1
-  },
-  {
-    "isBulletBelt": false
-  },
-  {
-    "isBulletBelt": false
-  },
-  {
-    "bullets": 10000
-  },
-  {
-    "sonicFxType": "duna_sonic_wave"
-  },
-  {
-    "sonicHitFxType": "dust_ground_wave_sand_big"
-  },
-  {
-    "sonicGroundFxType": "duna_sonic_dust_wave"
-  },
-  {
-    "fxType": "duna_sonic_muzzle"
-  },
-  {
-    "fxGroundDust": "dust_ground_wave_dirt_big"
-  },
-  {
-    "fxGrassDust": "dust_ground_wave_grass_big"
-  },
-  {
-    "fxSandDust": "dust_ground_wave_sand_big"
-  },
-  {
-    "fxSnowDust": "dust_ground_wave_snow_big"
-  },
-  {
-    "fxConcreteDust": "dust_ground_wave_asphalt_big"
-  },
-  {
-    "fxWaterShockWave": "dust_waterwave_big"
-  },
-  {
-    "shouldCollideWithRendinsts": true
-  },
-  {
-    "sound_path": "tanks/weapon_tanks/cannons"
-  },
-  {
-    "sound_pathStudio": "desert/weapon"
-  },
-  {
-    "sound": "cannon_sonic"
-  },
-  {
-    "sound_inside": "cannon_sonic_interior"
-  },
-  {
-    "sfxReloadBullet": "evt_sonic_reload"
-  },
-  {
-    "notUseDefaultBulletInGui": true
-  },
-  {
-    "noiseFromShot": 60.0
-  },
-  {
+  "sonic_wave": {
     "bullet": {
-      "bulletName": "sonicWave",
+      "bulletName": "",
       "bulletCount": 25,
-      "bulletType": "heat_fs_tank",
+      "bulletType": "sonicWave",
+      "shellAnimation": "video/shells_animations/awd.ivf",
       "guiCustomIcon": "sonic_tank",
       "mass": 1.0,
       "caliber": 1.0,
       "speed": 1.0,
       "hitpower": {
-        "HitPower0m": [1.0,500.0],
-        "HitPower5000m": [0.5,5000.0],
-        "HitPower7000m": [0.1,7000.0]
+        "HitPower0m": [
+          1.0,
+          500.0
+        ],
+        "HitPower5000m": [
+          0.5,
+          5000.0
+        ],
+        "HitPower7000m": [
+          0.1,
+          7000.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [20.0,10.0],
-        "ArmorPower20000m": [0.0,20000.0]
+        "ArmorPower0m": [
+          20.0,
+          10.0
+        ],
+        "ArmorPower20000m": [
+          0.0,
+          20000.0
+        ]
       },
       "sonicDamage": {
         "damageType": "sonic",
         "penetration": 100.0,
-        "horAngles": [-2.0,2.0],
-        "verAngles": [-30.0,3.0],
+        "horAngles": [
+          -2.0,
+          2.0
+        ],
+        "verAngles": [
+          -2.0,
+          2.0
+        ],
         "speed": 300.0,
         "distance": 1500.0,
-        "damage": [
-          {
-            "p": [0.0,100.0]
-          },
-          {
-            "p": [500.0,40.0]
-          },
-          {
-            "p": [2000.0,10.0]
-          }
-        ]
-      }
-    }
-  },
-  {
-    "sonic_wave": {
-      "bullet": {
-        "bulletName": "",
-        "bulletCount": 25,
-        "bulletType": "sonicWave",
-        "shellAnimation": "video/shells_animations/awd.ivf",
-        "guiCustomIcon": "sonic_tank",
-        "mass": 1.0,
-        "caliber": 1.0,
-        "speed": 1.0,
-        "hitpower": {
-          "HitPower0m": [1.0,500.0],
-          "HitPower5000m": [0.5,5000.0],
-          "HitPower7000m": [0.1,7000.0]
-        },
-        "armorpower": {
-          "ArmorPower0m": [20.0,10.0],
-          "ArmorPower20000m": [0.0,20000.0]
-        },
-        "sonicDamage": {
-          "damageType": "sonic",
-          "penetration": 100.0,
-          "horAngles": [-2.0,2.0],
-          "verAngles": [-2.0,2.0],
-          "speed": 300.0,
-          "distance": 1500.0,
-          "damage": [
-            {
-              "p": [0.0,100.0]
-            },
-            {
-              "p": [600.0,40.0]
-            },
-            {
-              "p": [1000.0,20.0]
-            },
-            {
-              "p": [1500.0,10.0]
-            }
+        "damage": {
+          "p": [
+            [
+              0.0,
+              100.0
+            ],
+            [
+              600.0,
+              40.0
+            ],
+            [
+              1000.0,
+              20.0
+            ],
+            [
+              1500.0,
+              10.0
+            ]
           ]
         }
       }
     }
   }
-]
+}

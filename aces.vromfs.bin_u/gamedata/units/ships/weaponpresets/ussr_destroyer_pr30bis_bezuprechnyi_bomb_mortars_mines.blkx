@@ -1,40 +1,20 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "torpedo_01"
-      },
-      {
-        "node": "torpedo_02"
-      },
-      {
-        "node": "torpedo_03"
-      },
-      {
-        "node": "torpedo_04"
-      },
-      {
-        "node": "torpedo_05"
-      },
-      {
-        "node": "torpedo_06"
-      },
-      {
-        "node": "torpedo_07"
-      },
-      {
-        "node": "torpedo_08"
-      },
-      {
-        "node": "torpedo_09"
-      },
-      {
-        "node": "torpedo_10"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "torpedo_01",
+      "torpedo_02",
+      "torpedo_03",
+      "torpedo_04",
+      "torpedo_05",
+      "torpedo_06",
+      "torpedo_07",
+      "torpedo_08",
+      "torpedo_09",
+      "torpedo_10"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner12",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -54,13 +34,17 @@
         "gun": "depth_charge_mount_01"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner13",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -80,13 +64,17 @@
         "gun": "depth_charge_mount_02"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/ussr_mine_kb1_1931.blk",
@@ -94,15 +82,16 @@
       "bullets": 30,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [1.0,30.0],
+      "emitterGenRange": [
+        1,
+        30
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/ussr_mine_kb1_1931.blk",
@@ -110,11 +99,14 @@
       "bullets": 30,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [31.0,60.0],
+      "emitterGenRange": [
+        31,
+        60
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
     }
-  }
-]
+  ]
+}

@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -30,7 +34,11 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_frag_i_t",
     "slopeEffectPreset": "ap",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/he.ivf",
     "speed": 609.6,
@@ -39,20 +47,50 @@
     "maxDistance": 2000.0,
     "hitPowerMult": 2.0,
     "onHitChanceMultFire": 2.5,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,300.0],
-    "farHitPower": [0.1,700.0],
-    "endHitPower": [0.008,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [2.0,150.0],
-    "midArmorPower": [2.0,600.0],
-    "farArmorPower": [2.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      300.0
+    ],
+    "farHitPower": [
+      0.1,
+      700.0
+    ],
+    "endHitPower": [
+      0.008,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      2.0,
+      150.0
+    ],
+    "midArmorPower": [
+      2.0,
+      600.0
+    ],
+    "farArmorPower": [
+      2.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "fuseDelayDist": 0.4,
     "explodeTreshold": 0.3,
     "explodeHitPower": 38.0,
     "explodeArmorPower": 6.0,
-    "explodeRadius": [0.11,1.1],
+    "explodeRadius": [
+      0.11,
+      1.1
+    ],
     "shutterDamage": true,
     "shutterDamageRadius": 2.3,
     "shutterAmount": 50,
@@ -66,30 +104,57 @@
     "explosionPatchRadius": 1.4,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.05
+      ],
+      "mod2": [
+        20.0,
+        0.1
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.2
+        ],
+        [
+          45.0,
+          0.3
+        ]
+      ]
+    },
     "armorpower": {
-      "ArmorPower0m": [2.0,10.0],
-      "ArmorPower100m": [2.0,100.0],
-      "ArmorPower500m": [2.0,500.0],
-      "ArmorPower1000m": [2.0,1000.0],
-      "ArmorPower1450m": [2.0,1450.0],
-      "ArmorPower1500m": [0.0,1500.0]
+      "ArmorPower0m": [
+        2.0,
+        10.0
+      ],
+      "ArmorPower100m": [
+        2.0,
+        100.0
+      ],
+      "ArmorPower500m": [
+        2.0,
+        500.0
+      ],
+      "ArmorPower1000m": [
+        2.0,
+        1000.0
+      ],
+      "ArmorPower1450m": [
+        2.0,
+        1450.0
+      ],
+      "ArmorPower1500m": [
+        0.0,
+        1500.0
+      ]
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "30mmDarkRed",
       "trail": "black"
@@ -264,37 +329,51 @@
     "cockpit": "m4_gun_inside",
     "ai": "m4_gun_ai"
   },
-  "overheat": [
-    {
-      "overheat": [3.0,0.0]
-    },
-    {
-      "overheat": [7.0,0.5]
-    },
-    {
-      "overheat": [12.0,0.9]
-    }
-  ],
-  "deviation": [
-    {
-      "deviation": [2.0,5.0]
-    },
-    {
-      "deviation": [7.0,10.0]
-    }
-  ],
+  "overheat": {
+    "overheat": [
+      [
+        3.0,
+        0.0
+      ],
+      [
+        7.0,
+        0.5
+      ],
+      [
+        12.0,
+        0.9
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        2.0,
+        5.0
+      ],
+      [
+        7.0,
+        10.0
+      ]
+    ]
+  },
   "ho203_new_gun": {
     "maxDeltaAngle": 0.96,
-    "overheat": [
-      {
-        "overheat": [2.0,0.0]
-      },
-      {
-        "overheat": [6.0,0.5]
-      },
-      {
-        "overheat": [10.0,0.9]
-      }
-    ]
+    "overheat": {
+      "overheat": [
+        [
+          2.0,
+          0.0
+        ],
+        [
+          6.0,
+          0.5
+        ],
+        [
+          10.0,
+          0.9
+        ]
+      ]
+    }
   }
 }

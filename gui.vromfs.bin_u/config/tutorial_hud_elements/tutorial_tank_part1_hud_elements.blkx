@@ -1,6 +1,6 @@
-[
-  {
-    "tdiv": {
+{
+  "tdiv": [
+    {
       "id": "hud_tutorial_tank_movement_info",
       "_set_aabb_by_object": "tankDebuffs",
       "position": "absolute",
@@ -25,21 +25,13 @@
         "style": "font:@fontHudNormal; text-align:center; color:#ffffff;",
         "text": "#hud_tutorial_tank_movement_info"
       }
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "id": "hud_tutorial_tactical_map_texts"
-      },
-      {
-        "_set_aabb_by_object": "map"
-      },
-      {
-        "position": "absolute"
-      },
-      {
-        "textareaNoTab": {
+    },
+    {
+      "id": "hud_tutorial_tactical_map_texts",
+      "_set_aabb_by_object": "map",
+      "position": "absolute",
+      "textareaNoTab": [
+        {
           "shadeStyle": "HudHeader3D",
           "width": "1pw",
           "id": "hud_tutorial_tank_minimap_itself",
@@ -48,10 +40,8 @@
           "display": "hide",
           "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
           "text": "#hud_tutorial_tank_minimap_itself"
-        }
-      },
-      {
-        "textareaNoTab": {
+        },
+        {
           "shadeStyle": "HudHeader3D",
           "width": "1pw",
           "id": "hud_tutorial_tank_about_minimap_markers",
@@ -61,11 +51,9 @@
           "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
           "text": "#hints/tutorial_tank_about_minimap_markers"
         }
-      }
-    ]
-  },
-  {
-    "tdiv": {
+      ]
+    },
+    {
       "id": "hud_tutorial_tank_press_to_continue_map",
       "_set_aabb_by_object": "map",
       "position": "absolute",
@@ -80,18 +68,12 @@
         "display": "show",
         "value": "hints/tutorial_press_id_continue"
       }
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "id": "hud_tutorial_tank_minimap_all_captions"
-      },
-      {
-        "_set_aabb_by_object": "map"
-      },
-      {
-        "textareaNoTab": {
+    },
+    {
+      "id": "hud_tutorial_tank_minimap_all_captions",
+      "_set_aabb_by_object": "map",
+      "textareaNoTab": [
+        {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_minimap_player_tank",
           "position": "absolute",
@@ -99,10 +81,8 @@
           "display": "show",
           "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
           "text": "#hud_tutorial_tank_minimap_player_tank"
-        }
-      },
-      {
-        "textareaNoTab": {
+        },
+        {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_minimap_enemy_tank",
           "position": "absolute",
@@ -110,10 +90,8 @@
           "display": "show",
           "style": "font:@fontHudMedium; text-align:center; color:#c93e3e;",
           "text": "#hud_tutorial_tank_minimap_enemy_tank"
-        }
-      },
-      {
-        "textareaNoTab": {
+        },
+        {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_minimap_friendly_tank",
           "position": "absolute",
@@ -122,9 +100,9 @@
           "style": "font:@fontHudMedium; text-align:right; color:#276cff;",
           "text": "#hud_tutorial_tank_minimap_friendly_tank"
         }
-      },
-      {
-        "img": {
+      ],
+      "img": [
+        {
           "id": "tutorial_tank_arrow_player_map",
           "position": "absolute",
           "pos": "6%pw-0%w, 19%ph-0%h",
@@ -132,10 +110,8 @@
           "rotation": "125",
           "display": "show",
           "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
-        "img": {
+        },
+        {
           "id": "tutorial_tank_arrow_enemy_map",
           "position": "absolute",
           "pos": "33%pw-50%w, 16%ph-0%h",
@@ -143,10 +119,8 @@
           "rotation": "180",
           "display": "show",
           "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
-        "img": {
+        },
+        {
           "id": "tutorial_tank_arrow_ally_map",
           "position": "absolute",
           "pos": "13%pw-0%w, 67%ph-100%h",
@@ -154,11 +128,9 @@
           "display": "show",
           "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
         }
-      }
-    ]
-  },
-  {
-    "tdiv": {
+      ]
+    },
+    {
       "shadeStyle": "HudHeader3D",
       "id": "hud_tutorial_tank_press_to_continue_cross",
       "hintStyle": "hudHintYellow",
@@ -170,27 +142,15 @@
       "pos": "100%pw-100%w, 45%ph-50%h",
       "display": "show",
       "value": "hints/tutorial_press_id_continue"
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "id": "hud_tutorial_tank_xray_all_texts"
-      },
-      {
-        "_set_aabb_by_object": "hitCamera"
-      },
-      {
-        "pos": "50%pw, 50%ph"
-      },
-      {
-        "size": "288, 146"
-      },
-      {
-        "position": "root"
-      },
-      {
-        "textareaNoTab": {
+    },
+    {
+      "id": "hud_tutorial_tank_xray_all_texts",
+      "_set_aabb_by_object": "hitCamera",
+      "pos": "50%pw, 50%ph",
+      "size": "288, 146",
+      "position": "root",
+      "textareaNoTab": [
+        {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_xray_itself",
           "position": "absolute",
@@ -198,10 +158,8 @@
           "display": "hide",
           "style": "font:@fontHudMedium; text-align:right; color:#ffffff;",
           "text": "#hud_tutorial_tank_xray_itself"
-        }
-      },
-      {
-        "textareaNoTab": {
+        },
+        {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_xray_explanation",
           "position": "absolute",
@@ -210,10 +168,8 @@
           "width": "0.9pw",
           "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
           "text": "#hud_tutorial_tank_xray_explanation"
-        }
-      },
-      {
-        "textareaNoTab": {
+        },
+        {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_xray_crew_count",
           "position": "absolute",
@@ -222,10 +178,8 @@
           "display": "hide",
           "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
           "text": "#hud_tutorial_tank_xray_crew_count"
-        }
-      },
-      {
-        "textareaNoTab": {
+        },
+        {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_fire_and_explosion",
           "position": "absolute",
@@ -235,11 +189,9 @@
           "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
           "text": "#hud_tutorial_tank_fire_and_explosion"
         }
-      }
-    ]
-  },
-  {
-    "tdiv": {
+      ]
+    },
+    {
       "shadeStyle": "HudHeader3D",
       "id": "hud_tutorial_tank_press_to_continue_xray",
       "hintStyle": "hudHintYellow",
@@ -252,10 +204,8 @@
       "display": "show",
       "style": "font:@fontHudMedium; text-align:right; color:#ebeb22;",
       "value": "hints/tutorial_press_id_continue"
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "id": "hud_tutorial_tank_minimap_artillery",
       "_set_aabb_by_object": "map",
       "img": {
@@ -267,32 +217,22 @@
         "display": "show",
         "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
       }
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "id": "hud_tutorial_tank_tickets_all_texts"
+    },
+    {
+      "id": "hud_tutorial_tank_tickets_all_texts",
+      "_set_aabb_by_object": "multiplayerScore",
+      "position": "root",
+      "textareaNoTab": {
+        "shadeStyle": "HudHeader3D",
+        "id": "hud_tutorial_tank_tickets_zone_white_corners",
+        "position": "absolute",
+        "pos": "50%pw-50%w, 270%ph-0%h",
+        "display": "hide",
+        "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
+        "text": "#hud_tutorial_tank_tickets_zone_white_corners"
       },
-      {
-        "_set_aabb_by_object": "multiplayerScore"
-      },
-      {
-        "position": "root"
-      },
-      {
-        "textareaNoTab": {
-          "shadeStyle": "HudHeader3D",
-          "id": "hud_tutorial_tank_tickets_zone_white_corners",
-          "position": "absolute",
-          "pos": "50%pw-50%w, 270%ph-0%h",
-          "display": "hide",
-          "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
-          "text": "#hud_tutorial_tank_tickets_zone_white_corners"
-        }
-      },
-      {
-        "img": {
+      "img": [
+        {
           "id": "tutorial_tank_arrow_white_corners01",
           "position": "absolute",
           "pos": "52%pw-50%w, 90%ph-0%h",
@@ -300,10 +240,8 @@
           "rotation": "7",
           "display": "hide",
           "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
-        "img": {
+        },
+        {
           "id": "tutorial_tank_arrow_white_corners02",
           "position": "absolute",
           "pos": "48%pw-50%w, 90%ph-0%h",
@@ -312,9 +250,9 @@
           "display": "hide",
           "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
         }
-      },
-      {
-        "tdiv": {
+      ],
+      "tdiv": [
+        {
           "id": "tutorial_tank_arrow_friendly_tickets",
           "flow": "vertical",
           "pos": "10%pw-100%w, 0",
@@ -337,10 +275,8 @@
             "style": "font:@fontHudMedium; text-align:right; color:#276cff;",
             "text": "#hud_tutorial_tank_your_team_tickets"
           }
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "id": "tutorial_tank_arrow_enemy_tickets",
           "flow": "vertical",
           "pos": "90%pw-100%w, 0",
@@ -364,28 +300,22 @@
             "text": "#hud_tutorial_tank_enemy_team_tickets"
           }
         }
-      }
-    ]
-  },
-  {
-    "frame": {
+      ]
+    }
+  ],
+  "frame": [
+    {
       "id": "tank_tutorial_basic_shooting_screen01",
       "position": "root",
       "pos": "0.5sw-0.5w, 0.5sh-0.5h",
       "height": "1440/2560w",
       "width": "0.95@rw",
-      "img": [
-        {
-          "size": "pw,ph"
-        },
-        {
-          "display": "show"
-        },
-        {
-          "background-image": "@!ui/images/tutorial/tank_tutorial_basic_shooting_screen01.jpg?P1"
-        },
-        {
-          "tdiv": {
+      "img": {
+        "size": "pw,ph",
+        "display": "show",
+        "background-image": "@!ui/images/tutorial/tank_tutorial_basic_shooting_screen01.jpg?P1",
+        "tdiv": [
+          {
             "id": "hud_tutorial_tank_cursor_location",
             "position": "absolute",
             "pos": "49%pw-100%w, 25%ph-50%h",
@@ -407,10 +337,8 @@
               "display": "show",
               "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow_right.png"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "hud_tutorial_tank_cannon_aiming",
             "position": "absolute",
             "pos": "55.8%pw-50%w, 23%ph-h",
@@ -433,10 +361,8 @@
               "display": "show",
               "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "hud_tutorial_tank_cross_location",
             "position": "absolute",
             "pos": "55.8%pw-50%w, 26%ph",
@@ -459,12 +385,10 @@
               "text": "#hud_tutorial_tank_cross_location"
             }
           }
-        }
-      ]
-    }
-  },
-  {
-    "frame": {
+        ]
+      }
+    },
+    {
       "id": "tank_tutorial_basic_shooting01",
       "position": "root",
       "pos": "0.5sw-0.5w, 0.5sh-0.5h",
@@ -478,10 +402,8 @@
         "movie-state": "playing",
         "movie-load": "video/tutorial_video/tank_tutorial_basic_shooting01.ivf"
       }
-    }
-  },
-  {
-    "frame": {
+    },
+    {
       "id": "tank_tutorial_basic_shooting_screen02",
       "position": "root",
       "pos": "0.5sw-0.5w, 0.5sh-0.5h",
@@ -492,10 +414,8 @@
         "display": "show",
         "background-image": "@!ui/images/tutorial/tank_tutorial_basic_shooting_screen02.jpg?P1"
       }
-    }
-  },
-  {
-    "frame": {
+    },
+    {
       "id": "tank_tutorial_basic_shooting02",
       "position": "root",
       "pos": "0.5sw-0.5w, 0.5sh-0.5h",
@@ -509,10 +429,8 @@
         "movie-state": "playing",
         "movie-load": "video/tutorial_video/tank_tutorial_basic_shooting02.ivf"
       }
-    }
-  },
-  {
-    "frame": {
+    },
+    {
       "id": "tank_tutorial_basic_shooting_screen03",
       "position": "root",
       "pos": "0.5sw-0.5w, 0.5sh-0.5h",
@@ -523,26 +441,18 @@
         "background-image": "@!ui/images/tutorial/tank_tutorial_basic_shooting_screen03.jpg?P1",
         "size": "pw,ph"
       }
-    }
-  },
-  {
-    "frame": {
+    },
+    {
       "id": "tutorial_tank_sight_color_img",
       "position": "absolute",
       "pos": "100%pw-100%w, 0%ph-0%h",
       "size": "478/720@shHud, 260/720@shHud",
-      "img": [
-        {
-          "size": "pw,ph"
-        },
-        {
-          "display": "show"
-        },
-        {
-          "background-image": "@!ui/images/tutorial/tutorial_tank_sight_color_img.jpg?P1"
-        },
-        {
-          "textareaNoTab": {
+      "img": {
+        "size": "pw,ph",
+        "display": "show",
+        "background-image": "@!ui/images/tutorial/tutorial_tank_sight_color_img.jpg?P1",
+        "textareaNoTab": [
+          {
             "shadeStyle": "HudHeader3D",
             "id": "hud_tutorial_tank_cross_general",
             "width": "0.5pw",
@@ -551,10 +461,8 @@
             "display": "show",
             "style": "font:@fontHudMedium; text-align:right; color:#ffffff;",
             "text": "#hud_tutorial_tank_cross_general"
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "shadeStyle": "HudHeader3D",
             "id": "hud_tutorial_tank_cross_green",
             "position": "absolute",
@@ -563,10 +471,8 @@
             "width": "0.95pw",
             "style": "font:@fontHudNormal; text-align:center; color:#ffffff;",
             "text": "#hud_tutorial_tank_cross_green"
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "shadeStyle": "HudHeader3D",
             "id": "hud_tutorial_tank_cross_yellow",
             "position": "absolute",
@@ -575,10 +481,8 @@
             "display": "show",
             "style": "font:@fontHudNormal; text-align:center; color:#ffffff;",
             "text": "#hud_tutorial_tank_cross_yellow"
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "shadeStyle": "HudHeader3D",
             "id": "hud_tutorial_tank_cross_red",
             "position": "absolute",
@@ -588,12 +492,12 @@
             "style": "font:@fontHudNormal; text-align:center; color:#ffffff;",
             "text": "#hud_tutorial_tank_cross_red"
           }
-        }
-      ]
+        ]
+      }
     }
-  },
-  {
-    "textareaNoTab": {
+  ],
+  "textareaNoTab": [
+    {
       "shadeStyle": "HudHeader3D",
       "id": "hud_tutorial_tank_artillery_strike",
       "position": "absolute",
@@ -602,10 +506,8 @@
       "display": "show",
       "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
       "text": "#hud_tutorial_tank_artillery_strike"
-    }
-  },
-  {
-    "textareaNoTab": {
+    },
+    {
       "shadeStyle": "HudHeader3D",
       "id": "hud_tutorial_tank_artillery_warning",
       "position": "absolute",
@@ -623,5 +525,5 @@
         "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
       }
     }
-  }
-]
+  ]
+}

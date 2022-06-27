@@ -1,8 +1,8 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "pos": "0.5pw-0.5w, 0.5ph-0.5h",
       "position": "absolute",
@@ -38,27 +38,15 @@
           "size": "pw, ph"
         }
       },
-      "tdiv": [
-        {
-          "width": "pw"
-        },
-        {
-          "max-height": "fh"
-        },
-        {
-          "pos": "0, 1@framePadding"
-        },
-        {
-          "position": "relative"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "overflow-y": "auto"
-        },
-        {
-          "textarea": {
+      "tdiv": {
+        "width": "pw",
+        "max-height": "fh",
+        "pos": "0, 1@framePadding",
+        "position": "relative",
+        "flow": "vertical",
+        "overflow-y": "auto",
+        "textarea": [
+          {
             "id": "award_desc",
             "pos": "50%pw-50%w, 0",
             "position": "relative",
@@ -67,10 +55,8 @@
             "text": "",
             "font-bold": "@fontMedium",
             "on_link_click": "proccessLinkFromText"
-          }
-        },
-        {
-          "textarea": {
+          },
+          {
             "id": "award_reward",
             "pos": "50%pw-50%w, 0",
             "position": "relative",
@@ -80,44 +66,38 @@
             "text": "",
             "on_link_click": "proccessLinkFromText"
           }
+        ],
+        "tdiv": {
+          "id": "reward_markup",
+          "pos": "0.5pw-0.5w, 0",
+          "position": "relative",
+          "flow": "vertical",
+          "display": "hide"
         },
-        {
-          "tdiv": {
-            "id": "reward_markup",
-            "pos": "0.5pw-0.5w, 0",
-            "position": "relative",
-            "flow": "vertical",
-            "display": "hide"
-          }
+        "rankUpList": {
+          "id": "reward_aircrafts",
+          "max-width": "pw",
+          "pos": "0.5pw-0.5w,0",
+          "position": "relative",
+          "flow": "h-flow",
+          "holdTooltipChildren": "yes",
+          "on_activate": "onUnitActivate",
+          "on_click": "onUnitActivate",
+          "on_r_click": "onUnitActivate"
         },
-        {
-          "rankUpList": {
-            "id": "reward_aircrafts",
-            "max-width": "pw",
-            "pos": "0.5pw-0.5w,0",
-            "position": "relative",
-            "flow": "h-flow",
-            "holdTooltipChildren": "yes",
-            "on_activate": "onUnitActivate",
-            "on_click": "onUnitActivate",
-            "on_r_click": "onUnitActivate"
-          }
-        },
-        {
-          "textAreaCentered": {
-            "id": "next_award",
-            "max-width": "pw",
-            "pos": "50%pw-50%w, 0.03@sf",
-            "position": "relative",
-            "textHide": "yes",
-            "text": ""
-          }
+        "textAreaCentered": {
+          "id": "next_award",
+          "max-width": "pw",
+          "pos": "50%pw-50%w, 0.03@sf",
+          "position": "relative",
+          "textHide": "yes",
+          "text": ""
         }
-      ],
+      },
       "navBar": {
-        "navLeft": [
-          {
-            "Button_text": {
+        "navLeft": {
+          "Button_text": [
+            {
               "id": "btn_postLink",
               "_on_click": "onFacebookPostLink",
               "display": "hide",
@@ -132,10 +112,8 @@
                 "text": "#facebook/postLink",
                 "input-transparent": "yes"
               }
-            }
-          },
-          {
-            "Button_text": {
+            },
+            {
               "id": "btn_upload_facebook_scrn",
               "display": "hide",
               "pressAction": "share",
@@ -152,10 +130,8 @@
                 "text": "#mainmenu/btnUploadFacebookScreenshot",
                 "input-transparent": "yes"
               }
-            }
-          },
-          {
-            "Button_text": {
+            },
+            {
               "id": "btn_upload_facebook_wallPost",
               "display": "hide",
               "pressAction": "share",
@@ -172,39 +148,35 @@
                 "text": "#facebook/postLink",
                 "input-transparent": "yes"
               }
-            }
-          },
-          {
-            "Button_text": {
+            },
+            {
               "id": "btn_sendEmail",
               "display": "hide",
               "text": "#mainmenu/btnSendEmail",
               "on_click": "sendInvitation"
             }
-          }
-        ],
-        "navRight": [
-          {
-            "Button_text": {
+          ]
+        },
+        "navRight": {
+          "Button_text": [
+            {
               "id": "btn_use_decorator",
               "text": "#decorator/use/decal",
               "btnName": "Y",
               "_on_click": "onUseDecorator",
               "enable": "no",
               "display": "hide",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "btn_ok",
               "text": "#mainmenu/btnOk",
               "btnName": "X",
               "_on_click": "onOk",
-              "ButtonImg": []
+              "ButtonImg": {}
             }
-          }
-        ]
+          ]
+        }
       }
     }
   }

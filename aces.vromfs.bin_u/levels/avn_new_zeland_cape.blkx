@@ -6,19 +6,55 @@
   "clipmap_tex_mips": 7,
   "customLevelMap": "avn_new_zealand_map*",
   "customLevelTankMap": "avn_new_zealand_tankmap*",
-  "mapCoord0": [-32768.0,-32768.0],
-  "mapCoord1": [32768.0,32768.0],
-  "aiMapCoord0": [-32768.0,-32768.0],
-  "aiMapCoord1": [32768.0,32768.0],
-  "minAreaSize": [12000.0,12000.0],
-  "gridSteps": [2048.0,2048.0],
-  "aiTanksMapCoord0": [-12000.0,-6880.0],
-  "aiTanksMapCoord1": [12000.0,17120.0],
-  "tankMapCoord0": [-12000.0,-6880.0],
-  "tankMapCoord1": [12000.0,17120.0],
-  "tankGridSteps": [1200.0,1200.0],
-  "tankGridSize": [24000.0,24000.0],
-  "tankMapColorMult": "#fffff5c8",
+  "mapCoord0": [
+    -32768.0,
+    -32768.0
+  ],
+  "mapCoord1": [
+    32768.0,
+    32768.0
+  ],
+  "aiMapCoord0": [
+    -32768.0,
+    -32768.0
+  ],
+  "aiMapCoord1": [
+    32768.0,
+    32768.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "gridSteps": [
+    2048.0,
+    2048.0
+  ],
+  "aiTanksMapCoord0": [
+    -12000.0,
+    -6880.0
+  ],
+  "aiTanksMapCoord1": [
+    12000.0,
+    17120.0
+  ],
+  "tankMapCoord0": [
+    -12000.0,
+    -6880.0
+  ],
+  "tankMapCoord1": [
+    12000.0,
+    17120.0
+  ],
+  "tankGridSteps": [
+    1200.0,
+    1200.0
+  ],
+  "tankGridSize": [
+    24000.0,
+    24000.0
+  ],
+  "tankMapColorMult": "///1yA==",
   "numBorderCellsXPos": 4,
   "numBorderCellsXNeg": 4,
   "numBorderCellsZPos": 4,
@@ -33,47 +69,23 @@
   "lastclip_horizon": true,
   "vsmAngleThreshold": 20.0,
   "min_wind_strength": 3.0,
-  "micro_details": [
-    {
-      "micro_detail": "microdetail_stone_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_sand_c_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_sand_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_soil_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_generic_granules_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_grass_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_forest_floor_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_fabric_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_wood_b_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_metal_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_snow_a_tex_n"
-    },
-    {
-      "micro_detail": "microdetail_generic_granules_a_tex_n"
-    },
-    {
-      "land_micro_details_uv_scale": 0.51
-    }
-  ],
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n",
+      "microdetail_sand_c_tex_n",
+      "microdetail_sand_a_tex_n",
+      "microdetail_soil_a_tex_n",
+      "microdetail_generic_granules_a_tex_n",
+      "microdetail_grass_a_tex_n",
+      "microdetail_forest_floor_a_tex_n",
+      "microdetail_fabric_a_tex_n",
+      "microdetail_wood_b_tex_n",
+      "microdetail_metal_a_tex_n",
+      "microdetail_snow_a_tex_n",
+      "microdetail_generic_granules_a_tex_n"
+    ],
+    "land_micro_details_uv_scale": 0.51
+  },
   "weather": {
     "cloudsOffsetBase": 100.0,
     "cloudsOffsetFrom": 20000.0,
@@ -83,8 +95,14 @@
   },
   "earth": {
     "earthWorldEnabled": true,
-    "earthWorldMin": [-65536.0,-65536.0],
-    "earthWorldMax": [65536.0,65536.0]
+    "earthWorldMin": [
+      -65536.0,
+      -65536.0
+    ],
+    "earthWorldMax": [
+      65536.0,
+      65536.0
+    ]
   },
   "shader_vars": {
     "parallax_shadow_strength": 7.0,
@@ -94,108 +112,71 @@
     "max_river_width": 500.0,
     "ocean_density": 0.85,
     "river_density": 0.6,
-    "ocean0": [0.29,0.34,0.25,0.0],
-    "ocean1": [0.39,0.44,0.35,0.0],
-    "river0": [0.5,0.35,0.12,0.0],
-    "river1": [0.36,0.41,0.17,0.0]
+    "ocean0": [
+      0.29,
+      0.34,
+      0.25,
+      0.0
+    ],
+    "ocean1": [
+      0.39,
+      0.44,
+      0.35,
+      0.0
+    ],
+    "river0": [
+      0.5,
+      0.35,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.36,
+      0.41,
+      0.17,
+      0.0
+    ]
   },
-  "randomGrass": [
-    {
-      "density": 0.9
-    },
-    {
-      "maxRadius": 660.0
-    },
-    {
-      "sowPerlinFreq": 0.1
-    },
-    {
-      "fadeDelta": 100.0
-    },
-    {
-      "lodFadeDelta": 10.0
-    },
-    {
-      "minLodDensity": 0.18
-    },
-    {
-      "blendToLandDelta": 100.0
-    },
-    {
-      "texSize": 1024
-    },
-    {
-      "noise_first_rnd": 23.1407
-    },
-    {
-      "noise_first_val_mul": 1.0
-    },
-    {
-      "noise_first_val_add": 0.0
-    },
-    {
-      "noise_second_rnd": 0.05
-    },
-    {
-      "noise_second_val_mul": 1.0
-    },
-    {
-      "noise_second_val_add": 0.0
-    },
-    {
-      "directWindMul": 1.0
-    },
-    {
-      "noiseWindMul": 1.0
-    },
-    {
-      "windPerlinFreq": 50000.0
-    },
-    {
-      "directWindFreq": 1.0
-    },
-    {
-      "directWindModulationFreq": 1.0
-    },
-    {
-      "windWaveLength": 100.0
-    },
-    {
-      "windToColor": 0.2
-    },
-    {
-      "helicopterHorMul": 2.0
-    },
-    {
-      "helicopterVerMul": 1.0
-    },
-    {
-      "helicopterToDirectWindMul": 2.0
-    },
-    {
-      "helicopterFalloff": 0.001
-    },
-    {
-      "fuego_islands_main_fields_tex_d": "fuego_islands_main_fields_tex_m"
-    },
-    {
-      "fuego_islands_main_meadows_tex_d": "fuego_islands_main_meadows_tex_m"
-    },
-    {
-      "fuego_islands_main_plato_tex_d": "fuego_islands_main_plato_tex_m"
-    },
-    {
-      "fuego_islands_main_village_tex_d": "fuego_islands_main_village_tex_m"
-    },
-    {
-      "blacksea_port_wild_isl_ground_tex_d": "blacksea_port_wild_isl_ground_tex_m"
-    },
-    {
-      "avn_japan_main_village_tex_d": "avn_japan_main_village_tex_m"
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,1.0,0.0],
+  "randomGrass": {
+    "density": 0.9,
+    "maxRadius": 660.0,
+    "sowPerlinFreq": 0.1,
+    "fadeDelta": 100.0,
+    "lodFadeDelta": 10.0,
+    "minLodDensity": 0.18,
+    "blendToLandDelta": 100.0,
+    "texSize": 1024,
+    "noise_first_rnd": 23.140692,
+    "noise_first_val_mul": 1.0,
+    "noise_first_val_add": 0.0,
+    "noise_second_rnd": 0.05,
+    "noise_second_val_mul": 1.0,
+    "noise_second_val_add": 0.0,
+    "directWindMul": 1.0,
+    "noiseWindMul": 1.0,
+    "windPerlinFreq": 50000.0,
+    "directWindFreq": 1.0,
+    "directWindModulationFreq": 1.0,
+    "windWaveLength": 100.0,
+    "windToColor": 0.2,
+    "helicopterHorMul": 2.0,
+    "helicopterVerMul": 1.0,
+    "helicopterToDirectWindMul": 2.0,
+    "helicopterFalloff": 0.001,
+    "fuego_islands_main_fields_tex_d": "fuego_islands_main_fields_tex_m",
+    "fuego_islands_main_meadows_tex_d": "fuego_islands_main_meadows_tex_m",
+    "fuego_islands_main_plato_tex_d": "fuego_islands_main_plato_tex_m",
+    "fuego_islands_main_village_tex_d": "fuego_islands_main_village_tex_m",
+    "blacksea_port_wild_isl_ground_tex_d": "blacksea_port_wild_isl_ground_tex_m",
+    "avn_japan_main_village_tex_d": "avn_japan_main_village_tex_m",
+    "layer": [
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ],
         "res": "grass_fill_a",
         "density": 10.0,
         "horScale": 2.0,
@@ -203,17 +184,20 @@
         "verScale": 3.0,
         "verMinScale": 1.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#43ad1cff",
-        "color_mask_r_to": "#599428ff",
-        "color_mask_b_from": "#ccb452ff",
-        "color_mask_b_to": "#9e5c23ff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [1.0,0.0,0.0,0.0],
+        "color_mask_r_from": "Q60c/w==",
+        "color_mask_r_to": "WZQo/w==",
+        "color_mask_b_from": "zLRS/w==",
+        "color_mask_b_to": "nlwj/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_fill_a",
         "density": 4.0,
         "horScale": 1.0,
@@ -221,17 +205,20 @@
         "verScale": 3.0,
         "verMinScale": 1.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#43ad1cff",
-        "color_mask_r_to": "#599428ff",
-        "color_mask_b_from": "#ccb452ff",
-        "color_mask_b_to": "#9e5c23ff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [1.0,0.0,0.0,0.0],
+        "color_mask_r_from": "Q60c/w==",
+        "color_mask_r_to": "WZQo/w==",
+        "color_mask_b_from": "zLRS/w==",
+        "color_mask_b_to": "nlwj/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_reed_a",
         "density": 0.5,
         "horScale": 2.0,
@@ -240,17 +227,20 @@
         "verMinScale": 2.0,
         "windMul": 0.05,
         "radiusMul": 0.4,
-        "color_mask_r_from": "#e6d087ff",
-        "color_mask_r_to": "#bfa377ff",
-        "color_mask_b_from": "#8db356ff",
-        "color_mask_b_to": "#a8a548ff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,1.0,0.0],
+        "color_mask_r_from": "5tCH/w==",
+        "color_mask_r_to": "v6N3/w==",
+        "color_mask_b_from": "jbNW/w==",
+        "color_mask_b_to": "qKVI/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ],
         "res": "grass_sword_a",
         "density": 0.05,
         "horScale": 2.0,
@@ -259,17 +249,20 @@
         "verMinScale": 1.0,
         "windMul": 0.05,
         "radiusMul": 0.4,
-        "color_mask_r_from": "#9e7357ff",
-        "color_mask_r_to": "#6e5646ff",
-        "color_mask_b_from": "#558c3aff",
-        "color_mask_b_to": "#1c6b1dff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "nnNX/w==",
+        "color_mask_r_to": "blZG/w==",
+        "color_mask_b_from": "VYw6/w==",
+        "color_mask_b_to": "HGsd/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_daisies_a",
         "density": 1.0,
         "horScale": 2.0,
@@ -278,17 +271,20 @@
         "verMinScale": 2.0,
         "windMul": 0.05,
         "radiusMul": 0.3,
-        "color_mask_r_from": "#d8ecf2ff",
-        "color_mask_r_to": "#a7c3ccff",
-        "color_mask_b_from": "#fcb130ff",
-        "color_mask_b_to": "#ed9d47ff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,0.0,1.0,0.0],
+        "color_mask_r_from": "2Ozy/w==",
+        "color_mask_r_to": "p8PM/w==",
+        "color_mask_b_from": "/LEw/w==",
+        "color_mask_b_to": "7Z1H/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
         "res": "grass_heather_a",
         "density": 1.0,
         "horScale": 2.0,
@@ -297,17 +293,20 @@
         "verMinScale": 2.0,
         "windMul": 0.05,
         "radiusMul": 0.3,
-        "color_mask_r_from": "#a82d58ff",
-        "color_mask_r_to": "#844e9eff",
-        "color_mask_b_from": "#506837ff",
-        "color_mask_b_to": "#4b5a12ff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,0.0,1.0,0.0],
+        "color_mask_r_from": "qC1Y/w==",
+        "color_mask_r_to": "hE6e/w==",
+        "color_mask_b_from": "UGg3/w==",
+        "color_mask_b_to": "S1oS/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
         "res": "grass_tavolga_a",
         "density": 0.5,
         "horScale": 1.0,
@@ -316,17 +315,20 @@
         "verMinScale": 1.0,
         "windMul": 0.05,
         "radiusMul": 0.3,
-        "color_mask_r_from": "#d8ecf2ff",
-        "color_mask_r_to": "#a7c3eaff",
-        "color_mask_b_from": "#459636ff",
-        "color_mask_b_to": "#4e7a3aff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "2Ozy/w==",
+        "color_mask_r_to": "p8Pq/w==",
+        "color_mask_b_from": "RZY2/w==",
+        "color_mask_b_to": "Tno6/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_paigle_a",
         "density": 0.5,
         "horScale": 1.5,
@@ -335,17 +337,20 @@
         "verMinScale": 2.0,
         "windMul": 0.05,
         "radiusMul": 0.3,
-        "color_mask_r_from": "#fad461ff",
-        "color_mask_r_to": "#e3c22dff",
-        "color_mask_b_from": "#459636ff",
-        "color_mask_b_to": "#4e7a3aff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "+tRh/w==",
+        "color_mask_r_to": "48It/w==",
+        "color_mask_b_from": "RZY2/w==",
+        "color_mask_b_to": "Tno6/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_tulip_a",
         "density": 0.1,
         "horScale": 2.0,
@@ -354,17 +359,20 @@
         "verMinScale": 2.0,
         "windMul": 0.05,
         "radiusMul": 0.3,
-        "color_mask_r_from": "#fad461ff",
-        "color_mask_r_to": "#ad132fff",
-        "color_mask_b_from": "#648c4dff",
-        "color_mask_b_to": "#4e7a35ff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [1.0,0.0,0.0,0.0],
+        "color_mask_r_from": "+tRh/w==",
+        "color_mask_r_to": "rRMv/w==",
+        "color_mask_b_from": "ZIxN/w==",
+        "color_mask_b_to": "Tno1/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_wheat_a",
         "density": 3.0,
         "horScale": 1.8,
@@ -373,17 +381,20 @@
         "verMinScale": 0.8,
         "windMul": 0.05,
         "radiusMul": 0.4,
-        "color_mask_r_from": "#7b612f7f",
-        "color_mask_r_to": "#b4a4347f",
-        "color_mask_b_from": "#3e662d7f",
-        "color_mask_b_to": "#4a251c7f",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [1.0,1.0,0.0,0.0],
+        "color_mask_r_from": "e2Evfw==",
+        "color_mask_r_to": "tKQ0fw==",
+        "color_mask_b_from": "PmYtfw==",
+        "color_mask_b_to": "SiUcfw==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_simple_a",
         "density": 6.0,
         "horScale": 1.2,
@@ -392,17 +403,20 @@
         "verMinScale": 0.5,
         "windMul": 0.05,
         "radiusMul": 0.5,
-        "color_mask_r_from": "#9da2027f",
-        "color_mask_r_to": "#1f4b0a7f",
-        "color_mask_b_from": "#10610e7f",
-        "color_mask_b_to": "#0314037f",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,0.0,1.0,0.0],
+        "color_mask_r_from": "naICfw==",
+        "color_mask_r_to": "H0sKfw==",
+        "color_mask_b_from": "EGEOfw==",
+        "color_mask_b_to": "AxQDfw==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
         "res": "grass_tavolga_a",
         "density": 0.08,
         "horScale": 2.0,
@@ -410,17 +424,20 @@
         "verScale": 2.4,
         "verMinScale": 2.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#2b32e2ff",
-        "color_mask_r_to": "#4770b7ff",
-        "color_mask_g_from": "#252823ff",
-        "color_mask_g_to": "#c6cdc0ff",
-        "color_mask_b_from": "#2c552fff",
-        "color_mask_b_to": "#8dc857ff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,0.0,1.0,0.0],
+        "color_mask_r_from": "KzLi/w==",
+        "color_mask_r_to": "R3C3/w==",
+        "color_mask_g_from": "JSgj/w==",
+        "color_mask_g_to": "xs3A/w==",
+        "color_mask_b_from": "LFUv/w==",
+        "color_mask_b_to": "jchX/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
         "res": "grass_tavolga_a",
         "density": 1.0,
         "horScale": 1.8,
@@ -428,17 +445,20 @@
         "verScale": 1.8,
         "verMinScale": 1.4,
         "windMul": 0.05,
-        "color_mask_r_from": "#b6a292ff",
-        "color_mask_r_to": "#886b59ff",
-        "color_mask_g_from": "#252823ff",
-        "color_mask_g_to": "#c6cdc0ff",
-        "color_mask_b_from": "#968858ff",
-        "color_mask_b_to": "#98958bff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [1.0,0.0,0.0,0.0],
+        "color_mask_r_from": "tqKS/w==",
+        "color_mask_r_to": "iGtZ/w==",
+        "color_mask_g_from": "JSgj/w==",
+        "color_mask_g_to": "xs3A/w==",
+        "color_mask_b_from": "lohY/w==",
+        "color_mask_b_to": "mJWL/w=="
+      },
+      {
+        "maskChannel": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_tavolga_a",
         "density": 1.0,
         "horScale": 2.1,
@@ -446,17 +466,20 @@
         "verScale": 1.8,
         "verMinScale": 1.1,
         "windMul": 0.05,
-        "color_mask_r_from": "#cecc45ff",
-        "color_mask_r_to": "#b7b358ff",
-        "color_mask_b_from": "#459636ff",
-        "color_mask_b_to": "#4e7a3aff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "zsxF/w==",
+        "color_mask_r_to": "t7NY/w==",
+        "color_mask_b_from": "RZY2/w==",
+        "color_mask_b_to": "Tno6/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_daisies_a",
         "density": 2.0,
         "horScale": 1.4,
@@ -464,49 +487,55 @@
         "verScale": 2.0,
         "verMinScale": 1.0,
         "windMul": 0.05,
-        "color_mask_r_from": "#d8ecf2ff",
-        "color_mask_r_to": "#a7c3ccff",
-        "color_mask_b_from": "#fcb130ff",
-        "color_mask_b_to": "#ed9d47ff",
-        "color_mask_g_from": "#332521ff",
-        "color_mask_g_to": "#f7f2baff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,1.0,0.0],
+        "color_mask_r_from": "2Ozy/w==",
+        "color_mask_r_to": "p8PM/w==",
+        "color_mask_b_from": "/LEw/w==",
+        "color_mask_b_to": "7Z1H/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ],
         "res": "grass_fill_a",
         "density": 5.0,
         "horScale": 0.9,
         "horMinScale": 0.5,
         "verScale": 1.5,
         "verMinScale": 0.5,
-        "color_mask_r_from": "#b5beaeff",
-        "color_mask_r_to": "#738660ff",
-        "color_mask_g_from": "#252823ff",
-        "color_mask_g_to": "#c6cdc0ff",
-        "color_mask_b_from": "#2c552fff",
-        "color_mask_b_to": "#8dc857ff"
-      }
-    },
-    {
-      "layer": {
-        "maskChannel": [0.0,1.0,0.0,0.0],
+        "color_mask_r_from": "tb6u/w==",
+        "color_mask_r_to": "c4Zg/w==",
+        "color_mask_g_from": "JSgj/w==",
+        "color_mask_g_to": "xs3A/w==",
+        "color_mask_b_from": "LFUv/w==",
+        "color_mask_b_to": "jchX/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
         "res": "grass_fill_a",
         "density": 3.0,
         "horScale": 0.9,
         "horMinScale": 0.5,
         "verScale": 1.9,
         "verMinScale": 0.7,
-        "color_mask_r_from": "#b5beaeff",
-        "color_mask_r_to": "#738660ff",
-        "color_mask_g_from": "#252823ff",
-        "color_mask_g_to": "#c6cdc0ff",
-        "color_mask_b_from": "#2c552fff",
-        "color_mask_b_to": "#8dc857ff"
+        "color_mask_r_from": "tb6u/w==",
+        "color_mask_r_to": "c4Zg/w==",
+        "color_mask_g_from": "JSgj/w==",
+        "color_mask_g_to": "xs3A/w==",
+        "color_mask_b_from": "LFUv/w==",
+        "color_mask_b_to": "jchX/w=="
       }
-    }
-  ],
+    ]
+  },
   "overrideRiLodRange": {
     "mediterranean_stone_small_a": {
       "lod0": 50.0,
@@ -998,153 +1027,65 @@
       "lod3": 8000.0
     }
   },
-  "forceTexLQ": [
-    {
-      "tex": "hawaii_viilage_tex_d*"
-    },
-    {
-      "tex": "hawaii_viilage_tex_n*"
-    },
-    {
-      "tex": "port_building_floors_tex_d*"
-    },
-    {
-      "tex": "port_building_skyscrapers_b_tex_d*"
-    },
-    {
-      "tex": "port_building_skyscrapers_a_tex_d*"
-    },
-    {
-      "tex": "karelia_stone_small_tex_n*"
-    },
-    {
-      "tex": "port_building_floors_tex_n*"
-    },
-    {
-      "tex": "port_building_skyscrapers_a_tex_n*"
-    },
-    {
-      "tex": "port_building_skyscrapers_b_tex_n*"
-    },
-    {
-      "tex": "buildings_overlay_tex_d*"
-    },
-    {
-      "tex": "china_town_01_tex_d*"
-    },
-    {
-      "tex": "concrete_plates_ground_tex_d*"
-    },
-    {
-      "tex": "decal_road_soil_d_tex_d*"
-    },
-    {
-      "tex": "sicily_city_build_tex_d*"
-    },
-    {
-      "tex": "sicily_city_build_tex_n*"
-    },
-    {
-      "tex": "china_town_01_tex_n*"
-    },
-    {
-      "tex": "decal_road_soil_d_tex_r*"
-    }
-  ],
-  "forceTexMQ": [
-    {
-      "tex": "phang_nga_bay_rocks_tex_d*"
-    },
-    {
-      "tex": "volcanic_cliff_flat_a_tex_d*"
-    },
-    {
-      "tex": "volcanic_cliffs_tex_d*"
-    },
-    {
-      "tex": "container_ship_triple_e_class_a_tex_m*"
-    },
-    {
-      "tex": "fuego_rocks_huge_tex_d*"
-    },
-    {
-      "tex": "japan_houses_overlay*"
-    },
-    {
-      "tex": "japan_pagoda_a_overlay*"
-    },
-    {
-      "tex": "japan_pagoda_b_overlay*"
-    },
-    {
-      "tex": "japan_pagoda_c_overlay*"
-    },
-    {
-      "tex": "japan_portal_c_terrace_a_overlay*"
-    },
-    {
-      "tex": "japan_sheer_cliff_tex_d*"
-    },
-    {
-      "tex": "junk_boat_sails_tex_d*"
-    },
-    {
-      "tex": "port_crane_e_overlay*"
-    },
-    {
-      "tex": "port_crane_f_overlay*"
-    },
-    {
-      "tex": "air_afghan_snow_with_dirt_tex_d*"
-    },
-    {
-      "tex": "blacksea_port_wild_isl_ground_tex_d*"
-    },
-    {
-      "tex": "norway_rocks_tex_n*"
-    },
-    {
-      "tex": "volcanic_cliff_flat_a_tex_n*"
-    },
-    {
-      "tex": "volcanic_cliffs_tex_n*"
-    },
-    {
-      "tex": "ground_decal_rocks_tex_d*"
-    },
-    {
-      "tex": "ground_decal_rocks_tex_r*"
-    },
-    {
-      "tex": "concrete_plates_ground_tex_n*"
-    },
-    {
-      "tex": "detail_rocks_rare_tex_d*"
-    },
-    {
-      "tex": "detail_rocks_rare_tex_r*"
-    },
-    {
-      "tex": "stone_buildings_constructor_tex_n*"
-    },
-    {
-      "tex": "fuego_islands_main_meadows_tex_d*"
-    },
-    {
-      "tex": "fuego_islands_underwater_tex_d*"
-    },
-    {
-      "tex": "mediterranean_stone_small_tex_d*"
-    }
-  ],
-  "technicsSkins": [
-    {
-      "groundSkin": "forest"
-    },
-    {
-      "groundSkin": "default"
-    }
-  ],
+  "forceTexLQ": {
+    "tex": [
+      "hawaii_viilage_tex_d*",
+      "hawaii_viilage_tex_n*",
+      "port_building_floors_tex_d*",
+      "port_building_skyscrapers_b_tex_d*",
+      "port_building_skyscrapers_a_tex_d*",
+      "karelia_stone_small_tex_n*",
+      "port_building_floors_tex_n*",
+      "port_building_skyscrapers_a_tex_n*",
+      "port_building_skyscrapers_b_tex_n*",
+      "buildings_overlay_tex_d*",
+      "china_town_01_tex_d*",
+      "concrete_plates_ground_tex_d*",
+      "decal_road_soil_d_tex_d*",
+      "sicily_city_build_tex_d*",
+      "sicily_city_build_tex_n*",
+      "china_town_01_tex_n*",
+      "decal_road_soil_d_tex_r*"
+    ]
+  },
+  "forceTexMQ": {
+    "tex": [
+      "phang_nga_bay_rocks_tex_d*",
+      "volcanic_cliff_flat_a_tex_d*",
+      "volcanic_cliffs_tex_d*",
+      "container_ship_triple_e_class_a_tex_m*",
+      "fuego_rocks_huge_tex_d*",
+      "japan_houses_overlay*",
+      "japan_pagoda_a_overlay*",
+      "japan_pagoda_b_overlay*",
+      "japan_pagoda_c_overlay*",
+      "japan_portal_c_terrace_a_overlay*",
+      "japan_sheer_cliff_tex_d*",
+      "junk_boat_sails_tex_d*",
+      "port_crane_e_overlay*",
+      "port_crane_f_overlay*",
+      "air_afghan_snow_with_dirt_tex_d*",
+      "blacksea_port_wild_isl_ground_tex_d*",
+      "norway_rocks_tex_n*",
+      "volcanic_cliff_flat_a_tex_n*",
+      "volcanic_cliffs_tex_n*",
+      "ground_decal_rocks_tex_d*",
+      "ground_decal_rocks_tex_r*",
+      "concrete_plates_ground_tex_n*",
+      "detail_rocks_rare_tex_d*",
+      "detail_rocks_rare_tex_r*",
+      "stone_buildings_constructor_tex_n*",
+      "fuego_islands_main_meadows_tex_d*",
+      "fuego_islands_underwater_tex_d*",
+      "mediterranean_stone_small_tex_d*"
+    ]
+  },
+  "technicsSkins": {
+    "groundSkin": [
+      "forest",
+      "default"
+    ]
+  },
   "waterStub": {
     "enable": true,
     "maxZ": 32768.0,

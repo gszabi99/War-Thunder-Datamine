@@ -7,7 +7,7 @@
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
-  "tags": [],
+  "tags": {},
   "bomb": {
     "mass": 410.0,
     "mass_lbs": 750.0,
@@ -20,7 +20,11 @@
     "length": 2.56,
     "distFromCmToStab": 0.2,
     "CxK": 1.6,
-    "WdK": [0.1,0.1,0.1],
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
     "wingAreaMult": 1.5,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
@@ -36,19 +40,49 @@
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
-    "explodeTreshold": 0.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "explodeTreshold": 1E-05,
     "explodeHitPower": 1000.0,
     "explodeArmorPower": 160.0,
-    "explodeRadius": [10.0,25.0],
+    "explodeRadius": [
+      10.0,
+      25.0
+    ],
     "explosionPatchHeightScale": 0.15,
     "rendinstDamageRadius": 29.0,
     "shutterDamage": true,
@@ -82,41 +116,21 @@
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true
       },
-      "guidanceAutopilot": [
-        {
-          "timeOut": 3.0
-        },
-        {
-          "elevationAdd": 1.0
-        },
-        {
-          "elevationAdd": 1.2
-        },
-        {
-          "baseIndSpeed": 1300.0
-        },
-        {
-          "angleToAccelMult": 0.0
-        },
-        {
-          "omegaToAccelMult": 3.0
-        },
-        {
-          "reqAccelMax": 3.0
-        },
-        {
-          "accelControlProp": 0.1
-        },
-        {
-          "accelControlIntg": 0.1
-        },
-        {
-          "accelControlIntgLim": 0.75
-        },
-        {
-          "accelControlDiff": 0.1
-        }
-      ]
+      "guidanceAutopilot": {
+        "timeOut": 3.0,
+        "elevationAdd": [
+          1.0,
+          1.2
+        ],
+        "baseIndSpeed": 1300.0,
+        "angleToAccelMult": 0.0,
+        "omegaToAccelMult": 3.0,
+        "reqAccelMax": 3.0,
+        "accelControlProp": 0.1,
+        "accelControlIntg": 0.1,
+        "accelControlIntgLim": 0.75,
+        "accelControlDiff": 0.1
+      }
     },
     "arcadeProp": {
       "finsAoaHor": 0.18,

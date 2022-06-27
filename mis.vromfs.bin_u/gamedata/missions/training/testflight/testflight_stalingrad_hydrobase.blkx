@@ -16,10 +16,14 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "locName": "missions/testFlight"
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -28,41 +32,31 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "airfield00",
               "lookAt": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "airfield",
               "side": "ally",
               "target": "airfield01"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/bridges/stalingrad_bridges.blk",
         "importAreas": true,
         "importUnits": true,
@@ -74,11 +68,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/training/testFlight/testFlight_stalingrad_ai_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -90,10 +82,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -106,9 +98,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "addAirfield": {
           "runwayStart": "airfield00",
@@ -121,31 +113,19 @@
           "runwayName": "airfield00",
           "objects": "armada_01"
         },
-        "unitSetIndication": [
-          {
-            "set": true
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "target": "structures_01"
-          },
-          {
-            "target": "structures_02"
-          }
-        ]
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "structures_01",
+            "structures_02"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "end": {
       "is_enabled": true,
@@ -175,26 +155,42 @@
           "objects": "armada_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "armada_01",
         "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [8752.7,-24.3,6890.85]
+          [
+            -0.843392,
+            0.0,
+            -0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            8752.7,
+            -24.3,
+            6890.85
+          ]
         ],
         "unit_class": "pby-5a_ussr",
         "closed_waypoints": false,
@@ -230,17 +226,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ai_plane_fighters",
         "tm": [
-          [0.934475,0.0,0.356028],
-          [0.0,1.0,0.0],
-          [-0.356028,0.0,0.934475],
-          [5580.97,400.0,7536.22]
+          [
+            0.934475,
+            0.0,
+            0.356028
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.356028,
+            0.0,
+            0.934475
+          ],
+          [
+            5580.97,
+            400.0,
+            7536.22
+          ]
         ],
         "unit_class": "la-5_type39",
         "objLayer": 1,
@@ -278,17 +288,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ai_plane_atackers",
         "tm": [
-          [0.522483,0.0,0.85265],
-          [0.0,1.0,0.0],
-          [-0.85265,0.0,0.522483],
-          [7385.95,300.0,4852.0]
+          [
+            0.522483,
+            0.0,
+            0.85265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.85265,
+            0.0,
+            0.522483
+          ],
+          [
+            7385.95,
+            300.0,
+            4852.0
+          ]
         ],
         "unit_class": "il_2_1941",
         "objLayer": 1,
@@ -325,17 +349,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "tankModels": {
+    ],
+    "tankModels": [
+      {
         "name": "structures_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6329.6,5.85003,9048.05]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6329.6,
+            5.85003,
+            9048.05
+          ]
         ],
         "unit_class": "germ_pzkpfw_IV_ausf_F2",
         "closed_waypoints": false,
@@ -355,23 +395,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "targetableByAi": false
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "structures_02",
         "tm": [
-          [0.146583,0.0,0.989198],
-          [0.0,1.0,0.0],
-          [-0.989198,0.0,0.146583],
-          [6371.31,0.759342,9147.13]
+          [
+            0.146583,
+            0.0,
+            0.989198
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.989198,
+            0.0,
+            0.146583
+          ],
+          [
+            6371.31,
+            0.759342,
+            9147.13
+          ]
         ],
         "unit_class": "germ_truck_sdkfz_6_2_tent",
         "closed_waypoints": false,
@@ -391,256 +451,484 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "targetableByAi": false
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "ships": {
-        "name": "ships_02",
-        "tm": [
-          [0.932881,0.0,-0.360186],
-          [0.0,1.0,0.0],
-          [0.360186,0.0,0.932881],
-          [7784.69,-12.0,9057.0]
+    ],
+    "ships": {
+      "name": "ships_02",
+      "tm": [
+        [
+          0.932881,
+          0.0,
+          -0.360186
         ],
-        "unit_class": "ussr_pr_123bis",
-        "objLayer": 1,
-        "closed_waypoints": true,
-        "isShipSpline": true,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 1,
-          "formation_step": [15.0,2.5],
-          "formation_noise": [1.7,1.8],
-          "uniqueName": "",
-          "attack_type": "dont_aim"
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.360186,
+          0.0,
+          0.932881
+        ],
+        [
+          7784.69,
+          -12.0,
+          9057.0
+        ]
+      ],
+      "unit_class": "ussr_pr_123bis",
+      "objLayer": 1,
+      "closed_waypoints": true,
+      "isShipSpline": true,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "props": {
+        "army": 1,
+        "count": 3,
+        "formation_type": "cols",
+        "formation_div": 1,
+        "formation_step": [
+          15.0,
+          2.5
+        ],
+        "formation_noise": [
+          1.7,
+          1.8
+        ],
+        "uniqueName": "",
+        "attack_type": "dont_aim"
+      },
+      "way": {
+        "ships_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              8054.72,
+              -12.0,
+              8932.1
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
         },
-        "way": {
-          "ships_01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [8054.72,-12.0,8932.1]
+        "ships_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ships_01_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [8127.38,-12.0,8681.94]
+            [
+              0.0,
+              1.0,
+              0.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ships_01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [8309.47,-12.0,8574.82]
+            [
+              0.0,
+              0.0,
+              1.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ships_01_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [8728.43,-12.0,8555.5]
+            [
+              8127.38,
+              -12.0,
+              8681.94
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "ships_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ships_01_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [9869.27,-12.0,8199.53]
+            [
+              0.0,
+              1.0,
+              0.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ships_01_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [9955.66,-12.0,8850.74]
+            [
+              0.0,
+              0.0,
+              1.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ships_01_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [8602.91,-12.0,9303.48]
+            [
+              8309.47,
+              -12.0,
+              8574.82
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "ships_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ships_01_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [8176.48,-12.0,9138.96]
+            [
+              0.0,
+              1.0,
+              0.0
             ],
-            "props": {
-              "speed": 65.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              8728.43,
+              -12.0,
+              8555.5
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "ships_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              9869.27,
+              -12.0,
+              8199.53
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "ships_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              9955.66,
+              -12.0,
+              8850.74
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "ships_01_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              8602.91,
+              -12.0,
+              9303.48
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "ships_01_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              8176.48,
+              -12.0,
+              9138.96
+            ]
+          ],
+          "props": {
+            "speed": 65.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
           }
         }
       }
     }
-  ],
+  },
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [-194.233,0.0,-123.74],
-        [0.0,230.3,0.0],
-        [123.74,0.0,-194.233],
-        [8763.89,-9.56311,7007.0]
+        [
+          -194.233,
+          0.0,
+          -123.74
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          123.74,
+          0.0,
+          -194.233
+        ],
+        [
+          8763.89,
+          -9.56311,
+          7007.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [-194.233,0.0,-123.74],
-        [0.0,230.3,0.0],
-        [123.74,0.0,-194.233],
-        [8991.25,-7.59428,7994.88]
+        [
+          -194.233,
+          0.0,
+          -123.74
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          123.74,
+          0.0,
+          -194.233
+        ],
+        [
+          8991.25,
+          -7.59428,
+          7994.88
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [-64.5194,0.0,-41.1035],
-        [0.0,76.5,0.0],
-        [41.1035,0.0,-64.5194],
-        [8756.23,-9.66403,6981.08]
+        [
+          -64.5194,
+          0.0,
+          -41.1035
+        ],
+        [
+          0.0,
+          76.5,
+          0.0
+        ],
+        [
+          41.1035,
+          0.0,
+          -64.5194
+        ],
+        [
+          8756.23,
+          -9.66403,
+          6981.08
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "frontline_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [21190.1,300.0,33580.1]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          21190.1,
+          300.0,
+          33580.1
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "randevu_point": {
       "type": "Point",
       "tm": [
-        [0.972166,0.0,-0.234295],
-        [0.0,1.0,0.0],
-        [0.234295,0.0,0.972166],
-        [10797.6,300.0,9482.2]
+        [
+          0.972166,
+          0.0,
+          -0.234295
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.234295,
+          0.0,
+          0.972166
+        ],
+        [
+          10797.6,
+          300.0,
+          9482.2
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

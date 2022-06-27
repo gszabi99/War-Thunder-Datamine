@@ -16,7 +16,7 @@
       "weather": "hazy"
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -33,7 +33,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varSetInt": {
           "value": 100,
@@ -49,7 +49,7 @@
           "target": "secondary_loot__init"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "secondary_loot__init": {
       "is_enabled": false,
@@ -82,7 +82,7 @@
           "target": "secondary_loot__loop"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "secondary_loot__loop": {
       "is_enabled": false,
@@ -105,55 +105,43 @@
           "var_value_other": "secondary_loot_spots_active"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "secondary_loot_i"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "secondary_loot_rng"
           }
+        ],
+        "varSetString": {
+          "value": "secondary_loot_pt_",
+          "var": "secondary_loot_str"
         },
-        {
-          "varSetString": {
-            "value": "secondary_loot_pt_",
-            "var": "secondary_loot_str"
-          }
+        "varAddString": {
+          "value": "",
+          "digits": 2,
+          "var": "secondary_loot_str",
+          "input_var": "secondary_loot_i"
         },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "secondary_loot_str",
-            "input_var": "secondary_loot_i"
-          }
+        "varSetRandomInt": {
+          "var": "secondary_loot_rng",
+          "from": 0,
+          "to_not_including": 10,
+          "var_to_not_including": "secondary_loot_spots_total"
         },
-        {
-          "varSetRandomInt": {
-            "var": "secondary_loot_rng",
-            "from": 0,
-            "to_not_including": 10,
-            "var_to_not_including": "secondary_loot_spots_total"
-          }
+        "varSetInt": {
+          "value": 0,
+          "var": "secondary_loot_i2"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "secondary_loot_i2"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "secondary_loot__loop2"
-          }
+        "triggerEnable": {
+          "target": "secondary_loot__loop2"
         }
-      ],
+      },
       "else_actions": {
         "varSetInt": {
           "value": 0,
@@ -283,93 +271,79 @@
           "var_value_other": "secondary_loot_spots_active"
         }
       },
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "secondary_loot_i"
-          }
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "secondary_loot_i"
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "secondary_loot_pt_",
             "var": "secondary_loot_str"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "secondary_loot_spot_",
             "var": "secondary_loot_str2"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "",
             "digits": 2,
             "var": "secondary_loot_str",
             "input_var": "secondary_loot_i"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "",
             "digits": 2,
             "var": "secondary_loot_str2",
             "input_var": "@secondary_loot_str"
           }
-        },
-        {
-          "__missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.0,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
-            "target": "@secondary_loot_str2",
-            "playAirfieldSound": false,
-            "canCaptureByGM": true,
-            "captureNoPenalty": true,
-            "zoneDefenders": [],
-            "capture_tags": {
-              "country_germany": true,
-              "country_ussr": false
-            }
+        ],
+        "__missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
+          "target": "@secondary_loot_str2",
+          "playAirfieldSound": false,
+          "canCaptureByGM": true,
+          "captureNoPenalty": true,
+          "zoneDefenders": {},
+          "capture_tags": {
+            "country_germany": true,
+            "country_ussr": false
           }
         },
-        {
-          "__hudElementShow": {
-            "element": "",
-            "show": false,
-            "time": 0
-          }
+        "__hudElementShow": {
+          "element": "",
+          "show": false,
+          "time": 0
         },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.0,
-            "target": "@secondary_loot_str2"
-          }
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": false,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 0.0,
+          "target": "@secondary_loot_str2"
         }
-      ],
+      },
       "else_actions": {
         "varSetInt": {
           "value": 0,
           "var": "secondary_loot_i"
         },
-        "triggerEnable": [
-          {
-            "target": "secondary_loot__loop_zones"
-          },
-          {
-            "target": "secondary_loot__completed"
-          }
-        ],
+        "triggerEnable": {
+          "target": [
+            "secondary_loot__loop_zones",
+            "secondary_loot__completed"
+          ]
+        },
         "triggerDisable": {
           "target": "secondary_loot__set_captures"
         }
@@ -396,48 +370,40 @@
           "var_value_other": "secondary_loot_spots_active"
         }
       },
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "secondary_loot_i"
-          }
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "secondary_loot_i"
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "secondary_loot_pt_",
             "var": "secondary_loot_str2"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "secondary_loot_spot_",
             "var": "secondary_loot_str"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "",
             "digits": 2,
             "var": "secondary_loot_str2",
             "input_var": "secondary_loot_i"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "",
             "digits": 2,
             "var": "secondary_loot_str",
             "input_var": "@secondary_loot_str2"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "secondary_loot__capture"
-          }
+        ],
+        "triggerEnable": {
+          "target": "secondary_loot__capture"
         }
-      ],
+      },
       "else_actions": {
         "varSetInt": {
           "value": 0,
@@ -461,34 +427,30 @@
           "time": 0.06
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "secondary_loot_i",
             "value": 0,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "@secondary_loot_str2",
             "value": 0,
             "comparasion_func": "more"
           }
-        },
-        {
-          "unitWhenInArea": {
-            "math": "2D",
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "check_objects": "any",
-            "object": "@secondary_loot_player_sq",
-            "target": "@secondary_loot_str"
-          }
+        ],
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "@secondary_loot_player_sq",
+          "target": "@secondary_loot_str"
         }
-      ],
+      },
       "actions": {
         "varSetString": {
           "value": "secondary_loot_cap_",
@@ -620,7 +582,7 @@
           "object_var_name": ""
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "Trigger_01": {
       "is_enabled": false,
@@ -635,7 +597,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitMoveTo": {
           "object_marking": 0,
@@ -683,7 +645,7 @@
           "target": "Trigger_02"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "Trigger_02": {
       "is_enabled": false,
@@ -698,7 +660,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "__unitPutToSleep": {
           "target": "objectGroups_01"
@@ -710,7 +672,7 @@
           "object_var_name": ""
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -724,8 +686,8 @@
         "isPrimary": false,
         "timeLimit": 1800
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -758,18 +720,34 @@
     "secondary_loot_dice": 0,
     "secondary_loot_probability": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "tankModels": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
         "name": "tankModels_01",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-271.486,64.9666,-50.4191]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -271.486,
+            64.9666,
+            -50.4191
+          ]
         ],
         "unit_class": "germ_pzkpfw_III_ausf_J",
         "objLayer": 1,
@@ -792,23 +770,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "objectGroups_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-204.5,65.3,-155.85]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -204.5,
+            65.3,
+            -155.85
+          ]
         ],
         "unit_class": "ussr_at_spg_9",
         "objLayer": 2,
@@ -831,484 +829,1074 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "dont_aim",
           "isDelayed": true
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "armada": {
-        "name": "armada_01",
-        "tm": [
-          [0.976296,0.0,-0.21644],
-          [0.0,1.0,0.0],
-          [0.21644,0.0,0.976296],
-          [-1856.66,470.749,118.208]
+    ],
+    "armada": {
+      "name": "armada_01",
+      "tm": [
+        [
+          0.976296,
+          0.0,
+          -0.21644
         ],
-        "unit_class": "ju-87r-2",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 3,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.21644,
+          0.0,
+          0.976296
+        ],
+        [
+          -1856.66,
+          470.749,
+          118.208
+        ]
+      ],
+      "unit_class": "ju-87r-2",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 3,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "isDelayed": true,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
     }
-  ],
+  },
   "areas": {
     "secondary_loot_spot_01": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-202.434,65.6076,-274.192]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -202.434,
+          65.6076,
+          -274.192
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_02": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-228.887,65.6077,-248.278]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -228.887,
+          65.6077,
+          -248.278
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_03": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-247.156,65.6077,-219.11]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -247.156,
+          65.6077,
+          -219.11
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_04": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-258.379,65.6078,-204.627]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -258.379,
+          65.6078,
+          -204.627
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_05": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-545.804,65.6079,-180.681]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -545.804,
+          65.6079,
+          -180.681
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_06": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-272.12,65.6078,-182.731]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -272.12,
+          65.6078,
+          -182.731
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_07": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-554.706,65.6078,-129.905]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -554.706,
+          65.6078,
+          -129.905
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_08": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-282.376,65.6078,-141.044]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -282.376,
+          65.6078,
+          -141.044
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_09": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-274.047,65.6078,-126.174]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -274.047,
+          65.6078,
+          -126.174
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_10": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-296.2,65.6,-79.6]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -296.2,
+          65.6,
+          -79.6
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_11": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-314.85,65.6,-122.2]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -314.85,
+          65.6,
+          -122.2
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_12": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-514.282,65.6078,-131.02]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -514.282,
+          65.6078,
+          -131.02
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_13": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-327.839,65.6077,-144.104]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -327.839,
+          65.6077,
+          -144.104
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_14": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-387.42,65.6077,-94.1219]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -387.42,
+          65.6077,
+          -94.1219
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_15": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-398.689,65.6077,-147.821]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -398.689,
+          65.6077,
+          -147.821
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_16": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-350.795,65.6077,-186.092]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -350.795,
+          65.6077,
+          -186.092
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_17": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-305.184,65.6077,-202.492]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -305.184,
+          65.6077,
+          -202.492
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_18": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-515.324,65.6077,-168.284]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -515.324,
+          65.6077,
+          -168.284
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_19": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-287.28,65.6077,-230.672]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -287.28,
+          65.6077,
+          -230.672
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_20": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-270.969,65.6077,-276.996]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -270.969,
+          65.6077,
+          -276.996
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_21": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-257.386,65.6077,-294.826]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -257.386,
+          65.6077,
+          -294.826
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_22": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-489.493,65.6077,-179.246]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -489.493,
+          65.6077,
+          -179.246
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_23": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-340.699,65.6077,-259.703]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -340.699,
+          65.6077,
+          -259.703
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_24": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-456.916,65.6077,-222.593]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -456.916,
+          65.6077,
+          -222.593
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_25": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-395.271,65.6077,-200.955]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -395.271,
+          65.6077,
+          -200.955
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_26": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-379.162,65.6077,-189.464]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -379.162,
+          65.6077,
+          -189.464
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_27": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-436.339,65.6078,-170.76]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -436.339,
+          65.6078,
+          -170.76
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_28": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-379.754,65.6078,-366.007]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -379.754,
+          65.6078,
+          -366.007
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_29": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-381.097,65.6078,-326.461]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -381.097,
+          65.6078,
+          -326.461
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_30": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-391.118,65.6078,-311.448]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -391.118,
+          65.6078,
+          -311.448
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_31": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-402.218,65.6078,-280.707]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -402.218,
+          65.6078,
+          -280.707
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_32": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-424.73,65.6079,-240.612]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -424.73,
+          65.6079,
+          -240.612
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_33": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-413.654,65.6081,-373.301]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -413.654,
+          65.6081,
+          -373.301
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_34": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-420.973,65.6081,-347.506]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -420.973,
+          65.6081,
+          -347.506
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_35": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-448.278,65.6082,-272.376]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -448.278,
+          65.6082,
+          -272.376
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "secondary_loot_spot_36": {
       "type": "Sphere",
       "tm": [
-        [40.0,0.0,0.0],
-        [0.0,40.0,0.0],
-        [0.0,0.0,40.0],
-        [-455.39,65.6082,-255.912]
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -455.39,
+          65.6082,
+          -255.912
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

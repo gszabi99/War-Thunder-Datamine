@@ -1,22 +1,14 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner2",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -32,7 +24,11 @@
       "ammoDP": "torpedo_01_dm",
       "hideIfBroken": true,
       "startSpeed": 4.4,
-      "startDir": [0.0,1.0,10.0],
+      "startDir": [
+        0.0,
+        1.0,
+        10.0
+      ],
       "enableCourseCorrection": true,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -41,13 +37,17 @@
         "gun": "bone_torpedo_01"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -62,7 +62,11 @@
       "breechDP": "torpedo_02_dm",
       "ammoDP": "torpedo_02_dm",
       "startSpeed": 4.4,
-      "startDir": [0.0,1.0,-10.0],
+      "startDir": [
+        0.0,
+        1.0,
+        -10.0
+      ],
       "enableCourseCorrection": true,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -72,9 +76,15 @@
         "gun": "bone_torpedo_02"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

@@ -21,11 +21,11 @@
       "pressure": 760.0,
       "temperature": -10.0
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/templates/enduring_confrontation/flt_frontline_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -37,11 +37,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/planes/simulator/air_denmark/frontline/flt_frontline_part.blk",
         "importAreas": true,
         "importUnits": true,
@@ -53,11 +51,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/planes/simulator/air_denmark/frontline/flt_sea_spawns_part.blk",
         "importAreas": true,
         "importUnits": true,
@@ -69,11 +65,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/enduring_confrontation/ad_air_dom_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -85,10 +79,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -101,364 +95,210 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
             "value": 10,
             "var": "flt_big_aaa_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 10,
             "var": "flt_small_aaa_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 20,
             "var": "flt_art_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 50,
             "var": "flt_tank_weight"
-          }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 8
-            },
-            {
-              "var": "flt_zones_in_row"
-            },
-            {
-              "var": "flt_zones_in_col_real"
-            }
-          ]
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 8
-            },
-            {
-              "var": "flt_zones_in_col"
-            },
-            {
-              "var": "flt_zones_in_row_real"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
+          },
+          {
+            "value": 8,
+            "var": [
+              "flt_zones_in_row",
+              "flt_zones_in_col_real"
+            ]
+          },
+          {
+            "value": 8,
+            "var": [
+              "flt_zones_in_col",
+              "flt_zones_in_row_real"
+            ]
+          },
+          {
             "value": 0,
             "var": "flt_total_zones"
+          },
+          {
+            "value": 1,
+            "var": [
+              "flt_area_45_state",
+              "flt_area_61_state",
+              "flt_area_62_state"
+            ]
+          },
+          {
+            "value": 2,
+            "var": [
+              "flt_area_03_state",
+              "flt_area_04_state",
+              "flt_area_12_state",
+              "flt_area_20_state"
+            ]
+          },
+          {
+            "value": 0,
+            "var": [
+              "flt_area_07_state",
+              "flt_area_08_state",
+              "flt_area_15_state",
+              "flt_area_16_state",
+              "flt_area_23_state",
+              "flt_area_24_state",
+              "flt_area_29_state",
+              "flt_area_30_state",
+              "flt_area_31_state",
+              "flt_area_32_state",
+              "flt_area_33_state",
+              "flt_area_34_state",
+              "flt_area_35_state",
+              "flt_area_37_state",
+              "flt_area_38_state",
+              "flt_area_39_state",
+              "flt_area_44_state",
+              "flt_area_52_state",
+              "flt_area_53_state",
+              "flt_area_54_state",
+              "flt_area_60_state"
+            ]
           }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "flt_area_45_state"
-            },
-            {
-              "var": "flt_area_61_state"
-            },
-            {
-              "var": "flt_area_62_state"
-            }
-          ]
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 2
-            },
-            {
-              "var": "flt_area_03_state"
-            },
-            {
-              "var": "flt_area_04_state"
-            },
-            {
-              "var": "flt_area_12_state"
-            },
-            {
-              "var": "flt_area_20_state"
-            }
-          ]
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 0
-            },
-            {
-              "var": "flt_area_07_state"
-            },
-            {
-              "var": "flt_area_08_state"
-            },
-            {
-              "var": "flt_area_15_state"
-            },
-            {
-              "var": "flt_area_16_state"
-            },
-            {
-              "var": "flt_area_23_state"
-            },
-            {
-              "var": "flt_area_24_state"
-            },
-            {
-              "var": "flt_area_29_state"
-            },
-            {
-              "var": "flt_area_30_state"
-            },
-            {
-              "var": "flt_area_31_state"
-            },
-            {
-              "var": "flt_area_32_state"
-            },
-            {
-              "var": "flt_area_33_state"
-            },
-            {
-              "var": "flt_area_34_state"
-            },
-            {
-              "var": "flt_area_35_state"
-            },
-            {
-              "var": "flt_area_37_state"
-            },
-            {
-              "var": "flt_area_38_state"
-            },
-            {
-              "var": "flt_area_39_state"
-            },
-            {
-              "var": "flt_area_44_state"
-            },
-            {
-              "var": "flt_area_52_state"
-            },
-            {
-              "var": "flt_area_53_state"
-            },
-            {
-              "var": "flt_area_54_state"
-            },
-            {
-              "var": "flt_area_60_state"
-            }
-          ]
-        },
-        {
-          "comment": {
+        ],
+        "comment": [
+          {
             "value": "nastrojki frontlajna"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "obshchee kolichestvo zon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vyschityvaem kolichestvo zon pokazyvayushchih glubinu fronta"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "team A zones"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "team b zones"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sea zones"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pomechaem zony komand (v cikle po algoritmu)"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "risuem liniyu fronta"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 0.0,
             "var": "flt_total_zones",
             "use_variable": true,
             "var_value": "flt_zones_in_row"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": 3.0,
             "var": "flt_total_zones",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
           }
-        },
-        {
-          "varSetString": [
-            {
-              "value": "sea"
-            },
-            {
-              "var": "flt_area_07_type"
-            },
-            {
-              "var": "flt_area_08_type"
-            },
-            {
-              "var": "flt_area_15_type"
-            },
-            {
-              "var": "flt_area_16_type"
-            },
-            {
-              "var": "flt_area_23_type"
-            },
-            {
-              "var": "flt_area_24_type"
-            },
-            {
-              "var": "flt_area_29_type"
-            },
-            {
-              "var": "flt_area_30_type"
-            },
-            {
-              "var": "flt_area_31_type"
-            },
-            {
-              "var": "flt_area_32_type"
-            },
-            {
-              "var": "flt_area_33_type"
-            },
-            {
-              "var": "flt_area_34_type"
-            },
-            {
-              "var": "flt_area_35_type"
-            },
-            {
-              "var": "flt_area_37_type"
-            },
-            {
-              "var": "flt_area_38_type"
-            },
-            {
-              "var": "flt_area_39_type"
-            },
-            {
-              "var": "flt_area_44_type"
-            },
-            {
-              "var": "flt_area_52_type"
-            },
-            {
-              "var": "flt_area_53_type"
-            },
-            {
-              "var": "flt_area_54_type"
-            },
-            {
-              "var": "flt_area_60_type"
-            }
+        ],
+        "varSetString": {
+          "value": "sea",
+          "var": [
+            "flt_area_07_type",
+            "flt_area_08_type",
+            "flt_area_15_type",
+            "flt_area_16_type",
+            "flt_area_23_type",
+            "flt_area_24_type",
+            "flt_area_29_type",
+            "flt_area_30_type",
+            "flt_area_31_type",
+            "flt_area_32_type",
+            "flt_area_33_type",
+            "flt_area_34_type",
+            "flt_area_35_type",
+            "flt_area_37_type",
+            "flt_area_38_type",
+            "flt_area_39_type",
+            "flt_area_44_type",
+            "flt_area_52_type",
+            "flt_area_53_type",
+            "flt_area_54_type",
+            "flt_area_60_type"
           ]
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "flt_mirrior_start"
-          }
+        "varSetBool": {
+          "value": true,
+          "var": "flt_mirrior_start"
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "flt_army_state_start"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "flt_draw_frontline"
           }
-        },
-        {
-          "missionBattleArea": {
-            "air": true,
-            "ground": false,
-            "mapArea": false,
-            "airMapArea": true,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": true,
-            "area": "flt_battle_area",
-            "newGridHorizontalCellCount": 7,
-            "gridCellCountVar": "flt_zones_in_row"
-          }
+        ],
+        "missionBattleArea": {
+          "air": true,
+          "ground": false,
+          "mapArea": false,
+          "airMapArea": true,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "flt_battle_area",
+          "newGridHorizontalCellCount": 7,
+          "gridCellCountVar": "flt_zones_in_row"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

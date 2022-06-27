@@ -48,48 +48,40 @@
             "allModifications": true
           }
         },
-        "country_germany": [
-          {
-            "germ_pzkpfw_IV_ausf_G": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
+        "country_germany": {
+          "germ_pzkpfw_IV_ausf_G": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
           },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
+          "germ_pzkpfw_IV_ausf_F2": [
+            {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            },
+            {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            },
+            {
               "crewSkillsPercent": 100,
               "crewSpecialization": 2,
               "allWeapons": true,
               "allModifications": true
             }
-          },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
-          },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
-          },
-          {
-            "germ_jgdpz_38t": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
+          ],
+          "germ_jgdpz_38t": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
           }
-        ],
+        },
         "country_ussr": {
           "ussr_t_34_1942": {
             "crewSkillsPercent": 100,
@@ -124,7 +116,7 @@
         }
       }
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
   "imports": {
     "import_record": {
@@ -139,7 +131,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -154,33 +146,27 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetString": {
+          "value": "nconq_capture_area",
+          "var": "zone_name"
         },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
-            "value": "nconq_capture_area",
-            "var": "zone_name"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "nconq_start"
-          }
+        "triggerEnable": {
+          "target": "nconq_start"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "nconq_start": {
       "is_enabled": false,
@@ -191,9 +177,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionMarkAsCaptureZone": {
           "army": 0,
@@ -208,7 +194,7 @@
           "useHUDMarkers": true,
           "zoneType": "domination",
           "showBorderOnMap": true,
-          "zoneDefenders": [],
+          "zoneDefenders": {},
           "tags": {
             "air": false,
             "type_hydroplane": true,
@@ -225,7 +211,7 @@
           "object_var_name": ""
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "draw_square": {
       "is_enabled": true,
@@ -240,27 +226,21 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "n_w_corner",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "n_e_corner",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "s_w_corner",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "type": "area",
             "target": "@zone_t1_name",
             "army": 1,
@@ -273,43 +253,37 @@
               "tank": true
             }
           }
-        }
-      ],
-      "actions": [
-        {
-          "missionShowMapLine": {
+        ]
+      },
+      "actions": {
+        "missionShowMapLine": [
+          {
             "areaNameFrom": "n_w_corner",
             "areaNameTo": "n_e_corner",
             "team": "Both",
             "scale": 0.7
-          }
-        },
-        {
-          "missionShowMapLine": {
+          },
+          {
             "areaNameFrom": "n_e_corner",
             "areaNameTo": "s_e_corner",
             "team": "Both",
             "scale": 0.7
-          }
-        },
-        {
-          "missionShowMapLine": {
+          },
+          {
             "areaNameFrom": "s_e_corner",
             "areaNameTo": "s_w_corner",
             "team": "Both",
             "scale": 0.7
-          }
-        },
-        {
-          "missionShowMapLine": {
+          },
+          {
             "areaNameFrom": "s_w_corner",
             "areaNameTo": "n_w_corner",
             "team": "Both",
             "scale": 0.7
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -323,40 +297,34 @@
         "isPrimary": true,
         "timeLimit": 3600
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "modename": "nconq_",
     "zone_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

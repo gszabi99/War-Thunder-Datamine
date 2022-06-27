@@ -1,48 +1,42 @@
 {
-  "navLeft": [
-    {
-      "Button_text": {
+  "navLeft": {
+    "Button_text": [
+      {
         "id": "btn_usercard",
         "text": "#mainmenu/btnUserCard",
         "on_click": "onUserCard",
         "display": "hide",
         "btnName": "Y",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_mpStat",
         "text": "#hotkeys/ID_MPSTATSCREEN",
         "btnName": "L3",
         "_on_click": "onMpStatScreen",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_spectator",
         "text": "#multiplayer/spectator",
         "btnName": "Y",
         "_on_click": "onSpectator",
         "display": "hide",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_complain",
         "text": "#mainmenu/btnComplain",
         "btnName": "X",
         "_on_click": "onComplain",
         "display": "hide",
-        "ButtonImg": []
+        "ButtonImg": {}
       }
-    }
-  ],
-  "navRight": [
-    {
-      "Button_text": {
+    ]
+  },
+  "navRight": {
+    "Button_text": [
+      {
         "id": "btn_activateorder",
         "text": "#flightmenu/btnActivateOrder",
         "display": "hide",
@@ -52,11 +46,9 @@
         "behavior": "Timer",
         "timer_handler_func": "onOrderTimerUpdate",
         "timer_interval_msec": "1000",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_select",
         "btnName": "X",
         "text": "#mainmenu/toBattle",
@@ -71,16 +63,14 @@
         "buttonWink": {
           "_transp-timer": "0"
         },
-        "buttonGlance": [],
+        "buttonGlance": {},
         "textarea": {
           "id": "btn_select_text",
           "text": "#mainmenu/toBattle"
         },
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_select_no_enter",
         "btnName": "X",
         "noEnter": "yes",
@@ -96,26 +86,22 @@
         "buttonWink": {
           "_transp-timer": "0"
         },
-        "buttonGlance": [],
+        "buttonGlance": {},
         "textarea": {
           "id": "btn_select_no_enter_text",
           "text": "#mainmenu/toBattle"
         },
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_back",
         "text": "#mainmenu/btnBack",
         "btnName": "B",
         "_on_click": "goBack",
         "display": "hide",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_QuitMission",
         "btnName": "X",
         "noEnter": "yes",
@@ -131,35 +117,33 @@
         "buttonWink": {
           "_transp-timer": "0"
         },
-        "buttonGlance": [],
+        "buttonGlance": {},
         "btnText": {
           "id": "btn_QuitMission_text",
           "text": "#flightmenu/btnQuitMission"
         },
-        "ButtonImg": []
+        "ButtonImg": {}
       }
-    },
-    {
-      "tdiv": {
-        "id": "loadanim",
+    ],
+    "tdiv": {
+      "id": "loadanim",
+      "position": "relative",
+      "padding": "4.612*@scrn_tgt/100.0+0.5*@scrn_tgt/100.0, 0, 1*@scrn_tgt/100.0, 0",
+      "display": "hide",
+      "animated_wait_icon": {
+        "pos": "0, 50%h-50%h",
+        "position": "absolute",
+        "background-rotation": "0"
+      },
+      "loading": {
+        "name": "loading",
+        "pos": "0,0",
         "position": "relative",
-        "padding": "4.612*@scrn_tgt/100.0+0.5*@scrn_tgt/100.0, 0, 1*@scrn_tgt/100.0, 0",
-        "display": "hide",
-        "animated_wait_icon": {
-          "pos": "0, 50%h-50%h",
-          "position": "absolute",
-          "background-rotation": "0"
-        },
-        "loading": {
-          "name": "loading",
-          "pos": "0,0",
-          "position": "relative",
-          "re-type": "text",
-          "style": "font:@fontBigBold;color:@mainTitleTextColor;",
-          "text": "#loading",
-          "text-align": "left"
-        }
+        "re-type": "text",
+        "style": "font:@fontBigBold;color:@mainTitleTextColor;",
+        "text": "#loading",
+        "text-align": "left"
       }
     }
-  ]
+  }
 }

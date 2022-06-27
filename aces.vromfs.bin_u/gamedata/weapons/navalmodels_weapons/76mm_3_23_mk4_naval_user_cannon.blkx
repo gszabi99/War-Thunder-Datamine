@@ -9,7 +9,10 @@
   "shotFreq": 0.15,
   "bullets": 1,
   "recoilOffset": 0.48,
-  "recoilTimes": [0.15,0.4],
+  "recoilTimes": [
+    0.15,
+    0.4
+  ],
   "shouldCollideWithRendinsts": true,
   "fxType": "muzzle_naval_80mm",
   "fxGroundDust": "dust_ground_wave_dirt_med",
@@ -50,15 +53,25 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_frag_dist_fuse",
     "slopeEffectPreset": "ap",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/he_df.ivf",
     "explosionInAir": true,
     "bulletName": "76mm_mk26_aa",
     "timeFuseDistanceError": 50.0,
     "dynamicKv": true,
-    "relativeVelHitShift": [300.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.1,
     "fuseDelay": 0.0,
     "fuseOnWater": true,
@@ -71,9 +84,18 @@
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.5],
-      "mod2": [15.0,0.7],
-      "mod3": [30.0,0.99]
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -85,52 +107,65 @@
       "kinetic": {
         "damageType": "generic"
       },
-      "shatter": [
-        {
-          "useRealShatters": true
-        },
-        {
-          "countPortion": 0.08
-        },
-        {
-          "segment": {
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.08,
+        "segment": [
+          {
             "radiusScale": 5.0,
             "penetrationScale": 1.5,
             "damageScale": 1.22,
-            "angles": [0.0,30.0],
+            "angles": [
+              0.0,
+              30.0
+            ],
             "countPortion": 0.15,
             "onHitChanceMultFire": 15.0,
             "aggregateDamage": true
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 3.0,
             "penetrationScale": 1.0,
             "damageScale": 1.22,
-            "angles": [30.0,90.0],
+            "angles": [
+              30.0,
+              90.0
+            ],
             "countPortion": 0.75,
             "onHitChanceMultFire": 10.0
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 3.0,
             "penetrationScale": 1.0,
             "damageScale": 1.22,
-            "angles": [90.0,180.0],
+            "angles": [
+              90.0,
+              180.0
+            ],
             "countPortion": 0.1
           }
-        }
-      ]
+        ]
+      }
     },
     "hitpower": {
-      "HitPower0m": [1.0,500.0],
-      "HitPower4000m": [0.5,4000.0],
-      "HitPower8000m": [0.1,8000.0]
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower4000m": [
+        0.5,
+        4000.0
+      ],
+      "HitPower8000m": [
+        0.1,
+        8000.0
+      ]
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "76mmRedShip",
       "trail": "black"
@@ -316,15 +351,25 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_frag_dist_fuse",
       "slopeEffectPreset": "ap",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_df.ivf",
       "explosionInAir": true,
       "bulletName": "76mm_mk26_aa",
       "timeFuseDistanceError": 50.0,
       "dynamicKv": true,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.1,
       "fuseDelay": 0.0,
       "fuseOnWater": true,
@@ -337,9 +382,18 @@
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod1": [
+          0.0,
+          0.5
+        ],
+        "mod2": [
+          15.0,
+          0.7
+        ],
+        "mod3": [
+          30.0,
+          0.99
+        ]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -351,52 +405,65 @@
         "kinetic": {
           "damageType": "generic"
         },
-        "shatter": [
-          {
-            "useRealShatters": true
-          },
-          {
-            "countPortion": 0.08
-          },
-          {
-            "segment": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.08,
+          "segment": [
+            {
               "radiusScale": 5.0,
               "penetrationScale": 1.5,
               "damageScale": 1.22,
-              "angles": [0.0,30.0],
+              "angles": [
+                0.0,
+                30.0
+              ],
               "countPortion": 0.15,
               "onHitChanceMultFire": 15.0,
               "aggregateDamage": true
-            }
-          },
-          {
-            "segment": {
+            },
+            {
               "radiusScale": 3.0,
               "penetrationScale": 1.0,
               "damageScale": 1.22,
-              "angles": [30.0,90.0],
+              "angles": [
+                30.0,
+                90.0
+              ],
               "countPortion": 0.75,
               "onHitChanceMultFire": 10.0
-            }
-          },
-          {
-            "segment": {
+            },
+            {
               "radiusScale": 3.0,
               "penetrationScale": 1.0,
               "damageScale": 1.22,
-              "angles": [90.0,180.0],
+              "angles": [
+                90.0,
+                180.0
+              ],
               "countPortion": 0.1
             }
-          }
-        ]
+          ]
+        }
       },
       "hitpower": {
-        "HitPower0m": [1.0,500.0],
-        "HitPower4000m": [0.5,4000.0],
-        "HitPower8000m": [0.1,8000.0]
+        "HitPower0m": [
+          1.0,
+          500.0
+        ],
+        "HitPower4000m": [
+          0.5,
+          4000.0
+        ],
+        "HitPower8000m": [
+          0.1,
+          8000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "76mmRedShip",
         "trail": "black"
@@ -583,11 +650,18 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "common_tank",
       "slopeEffectPreset": "ap",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "76mm_mk3_common",
       "dynamicKv": true,
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "fuseDelayDist": 1.6,
       "explodeTreshold": 8.0,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
@@ -598,20 +672,26 @@
       "explosionPatchRadius": 2.2,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "damage": {
         "kinetic": {
           "damageType": "generic",
@@ -620,44 +700,59 @@
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
         },
-        "shatter": [
-          {
-            "useRealShatters": true
-          },
-          {
-            "countPortion": 0.15
-          },
-          {
-            "segment": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.15,
+          "segment": [
+            {
               "radiusScale": 7.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [0.0,30.0],
+              "angles": [
+                0.0,
+                30.0
+              ],
               "countPortion": 0.3,
               "onHitChanceMultFire": 20.0,
               "aggregateDamage": true
-            }
-          },
-          {
-            "segment": {
+            },
+            {
               "radiusScale": 3.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [30.0,180.0],
+              "angles": [
+                30.0,
+                180.0
+              ],
               "countPortion": 0.7,
               "onHitChanceMultFire": 20.0
             }
-          }
-        ]
+          ]
+        }
       },
       "hitpower": {
-        "HitPower0m": [1.0,500.0],
-        "HitPower4000m": [1.0,4000.0],
-        "HitPower7000m": [1.0,7000.0],
-        "HitPower8000m": [0.5,8000.0]
+        "HitPower0m": [
+          1.0,
+          500.0
+        ],
+        "HitPower4000m": [
+          1.0,
+          4000.0
+        ],
+        "HitPower7000m": [
+          1.0,
+          7000.0
+        ],
+        "HitPower8000m": [
+          0.5,
+          8000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "76mmWhiteShip",
         "trail": "black"

@@ -17,8 +17,14 @@
   },
   "scanPatterns": {
     "ranging": {
-      "azimuthLimits": [-8.0,8.0],
-      "elevationLimits": [-8.0,8.0],
+      "azimuthLimits": [
+        -8.0,
+        8.0
+      ],
+      "elevationLimits": [
+        -8.0,
+        8.0
+      ],
       "type": "no"
     }
   },
@@ -74,8 +80,14 @@
             "value": 0.0
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-8.0,8.0],
-            "distanceRange": [300.0,10000.0]
+            "azimuthRange": [
+              -8.0,
+              8.0
+            ],
+            "distanceRange": [
+              300.0,
+              10000.0
+            ]
           }
         },
         "setStandbyMode": {
@@ -85,7 +97,7 @@
           "setEnabled": {
             "value": false
           },
-          "clearTargets": []
+          "clearTargets": {}
         },
         "setLockMode": {
           "setModeName": {
@@ -94,9 +106,9 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": [],
-          "clearTargetsOfInterest": [],
-          "resetScanPhase": [],
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
+          "resetScanPhase": {},
           "setFsmActive": {
             "fsm": "lock",
             "active": true
@@ -114,10 +126,10 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargetsOfInterest": [],
-          "addTargetOfInterest": [],
-          "setLastTargetOfInterestActive": [],
-          "updateActiveTargetOfInterest": [],
+          "clearTargetsOfInterest": {},
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
           "setDistGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
@@ -132,31 +144,27 @@
           }
         }
       },
-      "transitions": [
-        {
-          "init": {
-            "stateFrom": "init",
-            "event": "init",
-            "stateTo": "standby",
-            "actions": {
-              "init": [],
-              "setStandbyMode": []
-            }
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "standby",
+          "actions": {
+            "init": {},
+            "setStandbyMode": {}
           }
         },
-        {
-          "lock": {
-            "stateFrom": "standby",
-            "command": "selectTarget",
-            "event": "enable",
-            "stateTo": "lock",
-            "actions": {
-              "setLockMode": []
-            }
+        "lock": {
+          "stateFrom": "standby",
+          "command": "selectTarget",
+          "event": "enable",
+          "stateTo": "lock",
+          "actions": {
+            "setLockMode": {}
           }
         },
-        {
-          "track": {
+        "track": [
+          {
             "stateFrom": "lock",
             "event": "targetDetected",
             "stateTo": "track",
@@ -165,71 +173,51 @@
                 "fsm": "lock",
                 "active": false
               },
-              "setTrackMode": []
+              "setTrackMode": {}
             }
-          }
-        },
-        {
-          "track": [
-            {
-              "stateFrom": "lock"
-            },
-            {
-              "stateFrom": "track"
-            },
-            {
-              "command": "selectTarget"
-            },
-            {
-              "event": "disable"
-            },
-            {
-              "stateTo": "standby"
-            },
-            {
-              "actions": [
+          },
+          {
+            "stateFrom": [
+              "lock",
+              "track"
+            ],
+            "command": "selectTarget",
+            "event": "disable",
+            "stateTo": "standby",
+            "actions": {
+              "setFsmActive": [
                 {
-                  "setFsmActive": {
-                    "fsm": "lock",
-                    "active": false
-                  }
+                  "fsm": "lock",
+                  "active": false
                 },
                 {
-                  "setFsmActive": {
-                    "fsm": "track",
-                    "active": false
-                  }
-                },
-                {
-                  "setStandbyMode": []
+                  "fsm": "track",
+                  "active": false
                 }
-              ]
-            }
-          ]
-        },
-        {
-          "finishedTrack": {
-            "stateFrom": "track",
-            "event": "targetsOfInterestCleanup",
-            "stateTo": "lock",
-            "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
-              "setLockMode": []
+              ],
+              "setStandbyMode": {}
             }
           }
+        ],
+        "finishedTrack": {
+          "stateFrom": "track",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "lock",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setLockMode": {}
+          }
         },
-        {
-          "switchScopeRange": {
-            "command": "rangeSwitch",
-            "actions": {
-              "setNextScopeRange": []
-            }
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": {}
           }
         }
-      ]
+      }
     },
     "lock": {
       "stateInit": "lock",
@@ -237,13 +225,13 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": []
+            "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         }
       }
@@ -254,13 +242,13 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         },
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": [],
+            "updateActiveTargetOfInterest": {},
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
@@ -274,7 +262,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
+            "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 0.5
             },

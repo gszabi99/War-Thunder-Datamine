@@ -1,22 +1,12 @@
 {
-  "tdiv": [
-    {
-      "id": "ww_operation_log_info"
-    },
-    {
-      "width": "pw"
-    },
-    {
-      "height": "fh"
-    },
-    {
-      "position": "relative"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "tdiv": {
+  "tdiv": {
+    "id": "ww_operation_log_info",
+    "width": "pw",
+    "height": "fh",
+    "position": "relative",
+    "flow": "vertical",
+    "tdiv": [
+      {
         "id": "ww_operation_empty_log",
         "width": "pw",
         "height": "0.04@scrn_tgt",
@@ -27,27 +17,15 @@
           "position": "relative",
           "text": "#worldwar/log/is_empty"
         }
-      }
-    },
-    {
-      "tdiv": [
-        {
-          "id": "ww_operation_log_frame"
-        },
-        {
-          "width": "pw"
-        },
-        {
-          "height": "fh"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "overflow-y": "auto"
-        },
-        {
-          "tdiv": {
+      },
+      {
+        "id": "ww_operation_log_frame",
+        "width": "pw",
+        "height": "fh",
+        "flow": "vertical",
+        "overflow-y": "auto",
+        "tdiv": [
+          {
             "id": "show_prev_logs",
             "width": "pw",
             "height": "1@logBlockHeaderHeight",
@@ -87,44 +65,30 @@
                 }
               }
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "ww_operation_log",
             "width": "pw",
             "flow": "vertical",
             "total-input-transparent": "yes"
-          }
-        },
-        {
-          "tdiv": [
-            {
-              "id": "show_next_logs"
+          },
+          {
+            "id": "show_next_logs",
+            "width": "pw",
+            "height": "1@logBlockHeaderHeight",
+            "background-color": "@objectiveHeaderBackground",
+            "textareaNoTab": {
+              "id": "show_next_logs_text",
+              "behavior": "button",
+              "width": "fw",
+              "padding-left": "1@framePadding",
+              "position": "relative",
+              "top": "(ph-h)/2",
+              "text": "#userlog/showMore",
+              "on_click": "onClickShowNextLogs"
             },
-            {
-              "width": "pw"
-            },
-            {
-              "height": "1@logBlockHeaderHeight"
-            },
-            {
-              "background-color": "@objectiveHeaderBackground"
-            },
-            {
-              "textareaNoTab": {
-                "id": "show_next_logs_text",
-                "behavior": "button",
-                "width": "fw",
-                "padding-left": "1@framePadding",
-                "position": "relative",
-                "top": "(ph-h)/2",
-                "text": "#userlog/showMore",
-                "on_click": "onClickShowNextLogs"
-              }
-            },
-            {
-              "frameBlock_dark": {
+            "frameBlock_dark": [
+              {
                 "height": "ph",
                 "hasBorder": "no",
                 "padding": "1@dp, 0",
@@ -140,10 +104,8 @@
                   "noMargin": "yes",
                   "useParentHeight": "yes"
                 }
-              }
-            },
-            {
-              "frameBlock_dark": {
+              },
+              {
                 "height": "ph",
                 "hasBorder": "no",
                 "padding": "1@dp, 0",
@@ -160,13 +122,11 @@
                   "noMargin": "yes"
                 }
               }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "tdiv": {
+            ]
+          }
+        ]
+      },
+      {
         "width": "pw",
         "flow-align": "left",
         "background-color": "@operationLogFilterBar",
@@ -184,6 +144,6 @@
           "text": "#userlog/showMore"
         }
       }
-    }
-  ]
+    ]
+  }
 }

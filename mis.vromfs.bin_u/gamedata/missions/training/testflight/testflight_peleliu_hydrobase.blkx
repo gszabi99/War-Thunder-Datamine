@@ -16,10 +16,14 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "locName": "missions/testFlight"
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -28,63 +32,45 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "airfield00",
               "lookAt": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "airfield",
               "side": "ally",
               "target": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "ally",
               "target": "ships_03"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "truck",
               "side": "ally",
               "target": "wheeled_vehicles_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "truck",
               "side": "ally",
               "target": "wheeled_vehicles_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "artillery",
               "side": "ally",
               "target": "air_defence_01"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -101,7 +87,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -112,75 +98,133 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [230.3,0.0,0.0],
-        [0.0,230.3,0.0],
-        [0.0,0.0,230.3],
-        [-1533.28,1.0,-6468.27]
+        [
+          230.3,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          230.3
+        ],
+        [
+          -1533.28,
+          1.0,
+          -6468.27
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [230.3,0.0,0.0],
-        [0.0,230.3,0.0],
-        [0.0,0.0,230.3],
-        [-2710.73,1.0,-7672.97]
+        [
+          230.3,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          230.3
+        ],
+        [
+          -2710.73,
+          1.0,
+          -7672.97
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [76.5,0.0,0.0],
-        [0.0,76.5,0.0],
-        [0.0,0.0,76.5],
-        [-1520.93,1.0,-6447.57]
+        [
+          76.5,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          76.5,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          76.5
+        ],
+        [
+          -1520.93,
+          1.0,
+          -6447.57
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "end_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [3417.33,600.0,-3216.55]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3417.33,
+          600.0,
+          -3216.55
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

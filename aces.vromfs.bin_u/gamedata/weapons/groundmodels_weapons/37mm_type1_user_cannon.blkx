@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -49,37 +53,62 @@
     "stuckingAngle": 45.0,
     "bulletType": "aphe_tank",
     "slopeEffectPreset": "ap",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "shellAnimation": "video/shells_animations/aphe.ivf",
     "bulletName": "37mm_aphe",
-    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
     "fuseDelayDist": 1.2,
     "explodeTreshold": 9.0,
-    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "explosionEffect": "hit_28_38mm_metal_ap",
     "groundCollisionEffect": "hit_28_38mm_dirt_ap",
     "ricochetEffect": "hit_28_38mm_metal_ap",
     "waterCollisionEffect": "hit_28_38mm_water",
     "explosionPatchRadius": 0.4,
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.2]
-      },
-      {
-        "mod2": [20.0,0.4]
-      },
-      {
-        "mod3": [30.0,0.6]
-      },
-      {
-        "mod3": [45.0,0.9]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.2
+      ],
+      "mod2": [
+        20.0,
+        0.4
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
+      ]
+    },
     "hitpower": {
-      "HitPower0m": [1.0,0.0],
-      "HitPower1000m": [0.9,0.0],
-      "HitPower10000m": [0.8,10000.0]
+      "HitPower0m": [
+        1.0,
+        0.0
+      ],
+      "HitPower1000m": [
+        0.9,
+        0.0
+      ],
+      "HitPower10000m": [
+        0.8,
+        10000.0
+      ]
     },
     "damage": {
       "kinetic": {
@@ -91,7 +120,10 @@
       }
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "37mmRed",
       "trail": "black"
@@ -177,15 +209,42 @@
       }
     },
     "armorpower": {
-      "ArmorPower0m": [55.0,10.0],
-      "ArmorPower100m": [50.0,100.0],
-      "ArmorPower250m": [39.0,250.0],
-      "ArmorPower500m": [34.0,500.0],
-      "ArmorPower750m": [32.0,750.0],
-      "ArmorPower1000m": [25.0,1000.0],
-      "ArmorPower1250m": [10.0,1250.0],
-      "ArmorPower1500m": [2.0,1500.0],
-      "ArmorPower4000m": [1.0,4000.0]
+      "ArmorPower0m": [
+        55.0,
+        10.0
+      ],
+      "ArmorPower100m": [
+        50.0,
+        100.0
+      ],
+      "ArmorPower250m": [
+        39.0,
+        250.0
+      ],
+      "ArmorPower500m": [
+        34.0,
+        500.0
+      ],
+      "ArmorPower750m": [
+        32.0,
+        750.0
+      ],
+      "ArmorPower1000m": [
+        25.0,
+        1000.0
+      ],
+      "ArmorPower1250m": [
+        10.0,
+        1250.0
+      ],
+      "ArmorPower1500m": [
+        2.0,
+        1500.0
+      ],
+      "ArmorPower4000m": [
+        1.0,
+        4000.0
+      ]
     }
   },
   "37mm_type_1_APHE": {
@@ -209,37 +268,62 @@
       "stuckingAngle": 45.0,
       "bulletType": "aphe_tank",
       "slopeEffectPreset": "ap",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "37mm_type1_ap",
-      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
       "fuseDelayDist": 1.2,
       "explodeTreshold": 9.0,
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_ap",
       "groundCollisionEffect": "hit_28_38mm_dirt_ap",
       "ricochetEffect": "hit_28_38mm_metal_ap",
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 0.4,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.2]
-        },
-        {
-          "mod2": [20.0,0.4]
-        },
-        {
-          "mod3": [30.0,0.6]
-        },
-        {
-          "mod3": [45.0,0.9]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.2
+        ],
+        "mod2": [
+          20.0,
+          0.4
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.6
+          ],
+          [
+            45.0,
+            0.9
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower0m": [1.0,0.0],
-        "HitPower1000m": [0.9,0.0],
-        "HitPower10000m": [0.8,10000.0]
+        "HitPower0m": [
+          1.0,
+          0.0
+        ],
+        "HitPower1000m": [
+          0.9,
+          0.0
+        ],
+        "HitPower10000m": [
+          0.8,
+          10000.0
+        ]
       },
       "damage": {
         "kinetic": {
@@ -251,7 +335,10 @@
         }
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "37mmRed",
         "trail": "black"

@@ -16,9 +16,9 @@
       "environment": "Day",
       "weather": "hazy"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -31,40 +31,34 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
             "value": 10,
             "var": "common_airdef_restore_time",
             "fromDescriptor": "airDefenceOnCZRestoreTime"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "zone01_airdef_restore_timer",
             "input_var": "common_airdef_restore_time"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "zone02_airdef_restore_timer",
             "input_var": "common_airdef_restore_time"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "zone03_airdef_restore_timer",
             "input_var": "common_airdef_restore_time"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "zone_01": {
       "isCategory": true,
@@ -78,7 +72,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -90,25 +84,19 @@
           "unitPutToSleep": {
             "target": "sq_zone_01_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_01_captured_by_t0"
-            },
-            {
-              "target": "zone_01_captured_by_t1"
-            },
-            {
-              "target": "zone_01_captured_by_t2"
-            },
-            {
-              "target": "zone_01_get_airdef_initial_num"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "zone_01_captured_by_t0",
+              "zone_01_captured_by_t1",
+              "zone_01_captured_by_t2",
+              "zone_01_get_airdef_initial_num"
+            ]
+          },
           "moAddMissionObjective": {
             "target": "avn_zone01_airdef_objective"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_01_get_airdef_initial_num": {
         "is_enabled": false,
@@ -143,7 +131,7 @@
             "var": "zone01_airdef_initial_num"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_01_captured_by_t0": {
         "is_enabled": false,
@@ -175,32 +163,26 @@
             "targetAir": false,
             "targetGnd": false
           },
-          "triggerEnable": [
-            {
-              "target": "zone_01_captured_by_t1"
-            },
-            {
-              "target": "zone_01_captured_by_t2"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "zone_01_captured_by_t1",
+              "zone_01_captured_by_t2"
+            ]
+          },
           "varSetInt": {
             "value": 0,
             "var": "zone01_airdef_restore_timer",
             "input_var": "common_airdef_restore_time"
           },
-          "triggerDisable": [
-            {
-              "target": "zone_01_airdef_can_be_restored"
-            },
-            {
-              "target": "zone_01_airdef_restore_timer"
-            },
-            {
-              "target": "zone_01_airdef_restoring"
-            }
-          ]
+          "triggerDisable": {
+            "target": [
+              "zone_01_airdef_can_be_restored",
+              "zone_01_airdef_restore_timer",
+              "zone_01_airdef_restoring"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_01_captured_by_t1": {
         "is_enabled": false,
@@ -247,16 +229,14 @@
           "unitWakeUp": {
             "target": "sq_zone_01_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_01_captured_by_t0"
-            },
-            {
-              "target": "zone_01_airdef_can_be_restored"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "zone_01_captured_by_t0",
+              "zone_01_airdef_can_be_restored"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_01_captured_by_t2": {
         "is_enabled": false,
@@ -303,16 +283,14 @@
           "unitWakeUp": {
             "target": "sq_zone_01_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_01_captured_by_t0"
-            },
-            {
-              "target": "zone_01_airdef_can_be_restored"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "zone_01_captured_by_t0",
+              "zone_01_airdef_can_be_restored"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_01_airdef_can_be_restored": {
         "is_enabled": false,
@@ -431,7 +409,7 @@
             "useForTriggerFiltered": true
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "zone_02": {
@@ -446,7 +424,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -458,25 +436,19 @@
           "unitPutToSleep": {
             "target": "sq_zone_02_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_02_captured_by_t0"
-            },
-            {
-              "target": "zone_02_captured_by_t1"
-            },
-            {
-              "target": "zone_02_captured_by_t2"
-            },
-            {
-              "target": "zone_02_get_airdef_initial_num"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "zone_02_captured_by_t0",
+              "zone_02_captured_by_t1",
+              "zone_02_captured_by_t2",
+              "zone_02_get_airdef_initial_num"
+            ]
+          },
           "moAddMissionObjective": {
             "target": "avn_zone02_airdef_objective"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_02_get_airdef_initial_num": {
         "is_enabled": false,
@@ -511,7 +483,7 @@
             "var": "zone02_airdef_initial_num"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_02_captured_by_t0": {
         "is_enabled": false,
@@ -543,32 +515,26 @@
             "targetAir": false,
             "targetGnd": false
           },
-          "triggerEnable": [
-            {
-              "target": "zone_02_captured_by_t1"
-            },
-            {
-              "target": "zone_02_captured_by_t2"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "zone_02_captured_by_t1",
+              "zone_02_captured_by_t2"
+            ]
+          },
           "varSetInt": {
             "value": 0,
             "var": "zone02_airdef_restore_timer",
             "input_var": "common_airdef_restore_time"
           },
-          "triggerDisable": [
-            {
-              "target": "zone_02_airdef_can_be_restored"
-            },
-            {
-              "target": "zone_02_airdef_restore_timer"
-            },
-            {
-              "target": "zone_02_airdef_restoring"
-            }
-          ]
+          "triggerDisable": {
+            "target": [
+              "zone_02_airdef_can_be_restored",
+              "zone_02_airdef_restore_timer",
+              "zone_02_airdef_restoring"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_02_captured_by_t1": {
         "is_enabled": false,
@@ -615,16 +581,14 @@
           "unitWakeUp": {
             "target": "sq_zone_02_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_02_captured_by_t0"
-            },
-            {
-              "target": "zone_02_airdef_can_be_restored"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "zone_02_captured_by_t0",
+              "zone_02_airdef_can_be_restored"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_02_captured_by_t2": {
         "is_enabled": false,
@@ -671,16 +635,14 @@
           "unitWakeUp": {
             "target": "sq_zone_02_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_02_captured_by_t0"
-            },
-            {
-              "target": "zone_02_airdef_can_be_restored"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "zone_02_captured_by_t0",
+              "zone_02_airdef_can_be_restored"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_02_airdef_can_be_restored": {
         "is_enabled": false,
@@ -799,7 +761,7 @@
             "useForTriggerFiltered": true
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "zone_03": {
@@ -814,7 +776,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -826,25 +788,19 @@
           "unitPutToSleep": {
             "target": "sq_zone_03_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_03_captured_by_t0"
-            },
-            {
-              "target": "zone_03_captured_by_t1"
-            },
-            {
-              "target": "zone_03_captured_by_t2"
-            },
-            {
-              "target": "zone_03_get_airdef_initial_num"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "zone_03_captured_by_t0",
+              "zone_03_captured_by_t1",
+              "zone_03_captured_by_t2",
+              "zone_03_get_airdef_initial_num"
+            ]
+          },
           "moAddMissionObjective": {
             "target": "avn_zone03_airdef_objective"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_03_get_airdef_initial_num": {
         "is_enabled": false,
@@ -879,7 +835,7 @@
             "var": "zone03_airdef_initial_num"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_03_captured_by_t0": {
         "is_enabled": false,
@@ -911,32 +867,26 @@
             "targetAir": false,
             "targetGnd": false
           },
-          "triggerEnable": [
-            {
-              "target": "zone_03_captured_by_t1"
-            },
-            {
-              "target": "zone_03_captured_by_t2"
-            }
-          ],
+          "triggerEnable": {
+            "target": [
+              "zone_03_captured_by_t1",
+              "zone_03_captured_by_t2"
+            ]
+          },
           "varSetInt": {
             "value": 0,
             "var": "zone03_airdef_restore_timer",
             "input_var": "common_airdef_restore_time"
           },
-          "triggerDisable": [
-            {
-              "target": "zone_03_airdef_can_be_restored"
-            },
-            {
-              "target": "zone_03_airdef_restore_timer"
-            },
-            {
-              "target": "zone_03_airdef_restoring"
-            }
-          ]
+          "triggerDisable": {
+            "target": [
+              "zone_03_airdef_can_be_restored",
+              "zone_03_airdef_restore_timer",
+              "zone_03_airdef_restoring"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_03_captured_by_t1": {
         "is_enabled": false,
@@ -983,16 +933,14 @@
           "unitWakeUp": {
             "target": "sq_zone_03_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_03_captured_by_t0"
-            },
-            {
-              "target": "zone_03_airdef_can_be_restored"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "zone_03_captured_by_t0",
+              "zone_03_airdef_can_be_restored"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_03_captured_by_t2": {
         "is_enabled": false,
@@ -1039,16 +987,14 @@
           "unitWakeUp": {
             "target": "sq_zone_03_airdef"
           },
-          "triggerEnable": [
-            {
-              "target": "zone_03_captured_by_t0"
-            },
-            {
-              "target": "zone_03_airdef_can_be_restored"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "zone_03_captured_by_t0",
+              "zone_03_airdef_can_be_restored"
+            ]
+          }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "zone_03_airdef_can_be_restored": {
         "is_enabled": false,
@@ -1167,7 +1113,7 @@
             "useForTriggerFiltered": true
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     }
   },
@@ -1182,8 +1128,8 @@
         "isPrimary": true,
         "timeLimit": 1800
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avn_zone02_airdef_objective": {
       "is_enabled": false,
@@ -1193,8 +1139,8 @@
         "isPrimary": true,
         "timeLimit": 1800
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avn_zone03_airdef_objective": {
       "is_enabled": false,
@@ -1204,8 +1150,8 @@
         "isPrimary": true,
         "timeLimit": 1800
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -1217,32 +1163,26 @@
     "zone02_airdef_restore_timer": 0,
     "zone03_airdef_restore_timer": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

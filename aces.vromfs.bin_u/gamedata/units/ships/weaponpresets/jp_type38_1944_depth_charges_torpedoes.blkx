@@ -1,146 +1,86 @@
-[
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner1"
+{
+  "Weapon": [
+    {
+      "trigger": "gunner1",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/jp_450mm_type2_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 1,
+      "launchAnimVar": "anim_launch_torpedo_01",
+      "animLaunchTime": 1.85,
+      "launchTime": 0.1,
+      "barrelDP": "tt_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_01_dm",
+      "startSpeed": 2.6,
+      "startDir": [
+        0.0,
+        1.0,
+        10.0
+      ],
+      "enableCourseCorrection": true,
+      "useStartSpeed": true,
+      "allowableDelta": [
+        180.0,
+        180.0
+      ],
+      "turret": {
+        "head": "bone_torpedo_01",
+        "gun": "bone_torpedo_01"
       },
-      {
-        "triggerGroup": "torpedoes"
-      },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/jp_450mm_type2_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_01"
-      },
-      {
-        "bullets": 1
-      },
-      {
-        "launchAnimVar": "anim_launch_torpedo_01"
-      },
-      {
-        "animLaunchTime": 1.85
-      },
-      {
-        "launchTime": 0.1
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "ammoDP": "torpedo_01_dm"
-      },
-      {
-        "startSpeed": 2.6
-      },
-      {
-        "startDir": [0.0,1.0,10.0]
-      },
-      {
-        "enableCourseCorrection": true
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "turret": {
-          "head": "bone_torpedo_01",
-          "gun": "bone_torpedo_01"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limits": {
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner2"
+    },
+    {
+      "trigger": "gunner2",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/jp_450mm_type2_torpedo.blk",
+      "emitter": "bone_torpedo_02",
+      "bullets": 1,
+      "launchAnimVar": "anim_launch_torpedo_02",
+      "animLaunchTime": 1.85,
+      "launchTime": 0.1,
+      "barrelDP": "tt_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_02_dm",
+      "startSpeed": 2.6,
+      "startDir": [
+        0.0,
+        1.0,
+        -10.0
+      ],
+      "enableCourseCorrection": true,
+      "useStartSpeed": true,
+      "allowableDelta": [
+        180.0,
+        180.0
+      ],
+      "turret": {
+        "head": "bone_torpedo_02",
+        "gun": "bone_torpedo_02"
       },
-      {
-        "triggerGroup": "torpedoes"
-      },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/jp_450mm_type2_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_02"
-      },
-      {
-        "bullets": 1
-      },
-      {
-        "launchAnimVar": "anim_launch_torpedo_02"
-      },
-      {
-        "animLaunchTime": 1.85
-      },
-      {
-        "launchTime": 0.1
-      },
-      {
-        "barrelDP": "tt_02_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "ammoDP": "torpedo_02_dm"
-      },
-      {
-        "startSpeed": 2.6
-      },
-      {
-        "startDir": [0.0,1.0,-10.0]
-      },
-      {
-        "enableCourseCorrection": true
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "turret": {
-          "head": "bone_torpedo_02",
-          "gun": "bone_torpedo_02"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limits": {
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_jp_type95.blk",
@@ -149,10 +89,8 @@
       "external": true,
       "dropSpeed": 3.0,
       "ammoDP": "depth_charge_01_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_jp_type95.blk",
@@ -161,10 +99,8 @@
       "external": true,
       "dropSpeed": 4.2,
       "ammoDP": "depth_charge_02_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_jp_type95.blk",
@@ -173,10 +109,8 @@
       "external": true,
       "dropSpeed": 5.4,
       "ammoDP": "depth_charge_03_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_jp_type95.blk",
@@ -185,10 +119,8 @@
       "external": true,
       "dropSpeed": 6.6,
       "ammoDP": "depth_charge_04_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_jp_type95.blk",
@@ -197,10 +129,8 @@
       "external": true,
       "dropSpeed": 7.8,
       "ammoDP": "depth_charge_05_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_jp_type95.blk",
@@ -210,5 +140,5 @@
       "dropSpeed": 9.0,
       "ammoDP": "depth_charge_06_dm"
     }
-  }
-]
+  ]
+}

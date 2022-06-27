@@ -1,72 +1,32 @@
-[
-  {
-    "cannon": true
-  },
-  {
-    "weaponType": 3
-  },
-  {
-    "bUseHookAsRel": true
-  },
-  {
-    "emitColor": [1.0,1.0,0.0]
-  },
-  {
-    "emitI": 10.0
-  },
-  {
-    "emitR": 3.0
-  },
-  {
-    "emitTime": 0.03
-  },
-  {
-    "aimMinDist": 10.0
-  },
-  {
-    "aimMaxDist": 1000.0
-  },
-  {
-    "maxDeltaAngle": 0.28
-  },
-  {
-    "shotFreq": 20.0
-  },
-  {
-    "traceFreq": 3
-  },
-  {
-    "bEnablePause": false
-  },
-  {
-    "bullets": 500
-  },
-  {
-    "bulletsCluster": 2
-  },
-  {
-    "preset_cost": 150
-  },
-  {
-    "mass": 125.0
-  },
-  {
-    "shouldCollideWithRendinsts": true
-  },
-  {
-    "fxType": "muzzle_air_20mm"
-  },
-  {
-    "fxMultipleSpawn": true
-  },
-  {
-    "amountPerTier": 1.0
-  },
-  {
-    "iconType": "doublebarreled_box"
-  },
-  {
-    "bullet": {
+{
+  "cannon": true,
+  "weaponType": 3,
+  "bUseHookAsRel": true,
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 10.0,
+  "aimMaxDist": 1000.0,
+  "maxDeltaAngle": 0.28,
+  "shotFreq": 20.0,
+  "traceFreq": 3,
+  "bEnablePause": false,
+  "bullets": 500,
+  "bulletsCluster": 2,
+  "preset_cost": 150,
+  "mass": 125.0,
+  "shouldCollideWithRendinsts": true,
+  "fxType": "muzzle_air_20mm",
+  "fxMultipleSpawn": true,
+  "amountPerTier": 1.0,
+  "iconType": "doublebarreled_box",
+  "bullet": [
+    {
       "mass": 0.199,
       "caliber": 0.023,
       "speed": 700.0,
@@ -83,40 +43,85 @@
       "shellAnimation": "video/shells_animations/ap.ivf",
       "hitPowerMult": 25.0,
       "onHitChanceMultFire": 5.0,
-      "nearHitPower": [1.0,200.0],
-      "midHitPower": [0.8,400.0],
-      "farHitPower": [0.6,700.0],
-      "endHitPower": [0.1,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        200.0
+      ],
+      "midHitPower": [
+        0.8,
+        400.0
+      ],
+      "farHitPower": [
+        0.6,
+        700.0
+      ],
+      "endHitPower": [
+        0.1,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_ap",
       "groundCollisionEffect": "hit_28_38mm_dirt_ap",
       "ricochetEffect": "hit_28_38mm_metal_ap",
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 0.4,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "armorpower": {
-        "ArmorPower0m": [29.0,10.0],
-        "ArmorPower100m": [26.0,100.0],
-        "ArmorPower500m": [20.0,500.0],
-        "ArmorPower1000m": [16.0,1000.0],
-        "ArmorPower1500m": [14.0,1500.0],
-        "ArmorPower2000m": [9.0,2000.0],
-        "ArmorPower2500m": [8.0,2500.0]
+        "ArmorPower0m": [
+          29.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          26.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          20.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          16.0,
+          1000.0
+        ],
+        "ArmorPower1500m": [
+          14.0,
+          1500.0
+        ],
+        "ArmorPower2000m": [
+          9.0,
+          2000.0
+        ],
+        "ArmorPower2500m": [
+          8.0,
+          2500.0
+        ]
       },
       "collisions": {
         "default": {
@@ -199,14 +204,15 @@
         }
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "noColor"
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.196,
       "caliber": 0.023,
       "speed": 710.0,
@@ -215,12 +221,30 @@
       "bulletType": "frag_i_t",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.0,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he",
       "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -230,7 +254,10 @@
       "explodeTreshold": 0.1,
       "explodeHitPower": 16.0,
       "explodeArmorPower": 6.0,
-      "explodeRadius": [0.057,0.57],
+      "explodeRadius": [
+        0.057,
+        0.57
+      ],
       "fuseDelayDist": 0.5,
       "shutterDamage": true,
       "shutterDamageRadius": 2.5,
@@ -238,12 +265,30 @@
       "shutterArmorPower": 6.0,
       "shutterHit": 3.5,
       "armorpower": {
-        "ArmorPower0m": [2.0,10.0],
-        "ArmorPower100m": [2.0,100.0],
-        "ArmorPower500m": [1.5,500.0],
-        "ArmorPower1000m": [1.0,1000.0],
-        "ArmorPower1450m": [0.5,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          2.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          2.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          1.5,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          0.5,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "collisions": {
         "default": {
@@ -326,30 +371,33 @@
         }
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "20mmRed",
         "trail": "noTrail"
       }
     }
+  ],
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_gsh_23_outside",
+    "cockpit": "cannon_gsh_23_inside",
+    "ai": "cannon_gsh_23_ai"
   },
-  {
-    "gunSound": {
-      "path": "sounds/guns",
-      "pathStudio": "aircraft/weapon",
-      "outside": "cannon_gsh_23_outside",
-      "cockpit": "cannon_gsh_23_inside",
-      "ai": "cannon_gsh_23_ai"
-    }
-  },
-  {
+  "overheat": {
     "overheat": [
-      {
-        "overheat": [100.0,0.0]
-      },
-      {
-        "overheat": [200.0,0.05]
-      }
+      [
+        100.0,
+        0.0
+      ],
+      [
+        200.0,
+        0.05
+      ]
     ]
   }
-]
+}

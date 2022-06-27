@@ -29,7 +29,7 @@
       "environment": "Morning",
       "weather": "clear"
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -38,75 +38,51 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 2
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "ally_planes_squad"
-              },
-              {
-                "point": "objectGroups_03"
-              },
-              {
-                "point": "objectGroups_03"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 2,
+            "side": "ally",
+            "point": [
+              "ally_planes_squad",
+              "objectGroups_03",
+              "objectGroups_03"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "ally",
               "target": "ally_player_wing",
               "lookAt": "objectGroups_03"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "enemy",
               "target": "german_109_second_wave01",
               "lookAt": "objectGroups_03"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "building",
               "side": "ally",
               "target": "objectGroups_03"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "bomber",
               "side": "enemy",
               "target": "brief_bomber02",
               "lookAt": "brief_point_to_bomber02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "bomber",
               "side": "enemy",
               "target": "enemy_110_03",
               "lookAt": "brief_point_to_bomber01"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -121,7 +97,7 @@
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -136,32 +112,26 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitPutToSleep": {
+      "conditions": {},
+      "actions": {
+        "unitPutToSleep": [
+          {
             "target": "german_109_second_wave01"
-          }
-        },
-        {
-          "unitPutToSleep": {
+          },
+          {
             "target": "german_109_second_wave02"
-          }
-        },
-        {
-          "unitPutToSleep": {
+          },
+          {
             "target": "ally_cover_planes02"
-          }
-        },
-        {
-          "unitPutToSleep": {
+          },
+          {
             "target": "german_cover02"
           }
-        },
-        {
-          "unitMoveTo": {
+        ],
+        "unitMoveTo": [
+          {
             "target": "enemy_fly_point01",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -170,10 +140,8 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "enemy_110_01"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "enemy_fly_point02",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -182,10 +150,8 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "enemy_110_02"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "enemy_fly_point03",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -194,10 +160,8 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "enemy_110_03"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "enemy_fly_point04",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -206,10 +170,8 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "enemy_110_04"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "enemy_fly_point05",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -218,10 +180,8 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "german_cover_squad"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "enemy_fly_point05",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -231,65 +191,49 @@
             "horizontalDirectionForTeleport": true,
             "object": "ally_planes_squad"
           }
+        ],
+        "unitSetProperties": {
+          "object": "enemy_howitzer_sq",
+          "stealthRadius": 0.0,
+          "targetAir": false,
+          "targetGnd": true,
+          "accuracy": 0.9,
+          "effShootingRate": 0.0
         },
-        {
-          "unitSetProperties": {
-            "object": "enemy_howitzer_sq",
-            "stealthRadius": 0.0,
-            "targetAir": false,
-            "targetGnd": true,
-            "accuracy": 0.9,
-            "effShootingRate": 0.0
-          }
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "enemy_howitzer_sq",
+          "target": "structures_01",
+          "fireRandom": true
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "enemy_howitzer_sq",
-            "target": "structures_01",
-            "fireRandom": true
-          }
+        "missionSetBombingArea": {
+          "army": 1,
+          "target": "ally_bomb_area",
+          "hp": 20000.0
         },
-        {
-          "missionSetBombingArea": {
-            "army": 1,
-            "target": "ally_bomb_area",
-            "hp": 20000.0
-          }
+        "wait": {
+          "time": 3.0
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "__missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 2.0,
+          "target": "wayp01"
         },
-        {
-          "__missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 2.0,
-            "target": "wayp01"
-          }
+        "moAddMissionObjective": {
+          "target": "kursk_single_spotter"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "kursk_single_spotter"
-          }
+        "triggerEnable": {
+          "target": "spotter_indication"
         },
-        {
-          "triggerEnable": {
-            "target": "spotter_indication"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "enemy_correctors_squad"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target": "enemy_correctors_squad"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "init_wake_up": {
       "is_enabled": true,
@@ -311,16 +255,14 @@
         }
       },
       "actions": {
-        "unitWakeUp": [
-          {
-            "target": "german_cover02"
-          },
-          {
-            "target": "ally_cover_planes02"
-          }
-        ]
+        "unitWakeUp": {
+          "target": [
+            "german_cover02",
+            "ally_cover_planes02"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "enemy_cover_atack": {
       "is_enabled": true,
@@ -345,52 +287,44 @@
           "target": "battle_area"
         }
       },
-      "actions": [
-        {
-          "moAddMissionObjective": {
-            "target": "kursk_single_spotter"
-          }
+      "actions": {
+        "moAddMissionObjective": {
+          "target": "kursk_single_spotter"
         },
-        {
-          "__missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "wayp01"
-          }
+        "__missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "wayp01"
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "enemy_arty_damage"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "spotter_indication"
           }
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": true,
             "object": "german_cover_squad",
             "target": "ally_planes_squad",
             "fireRandom": true,
             "playerAttractedCount": 1,
             "playerAttractedEffRate": 0.3
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "ally_planes_squad",
             "target": "german_cover_squad",
             "fireRandom": true
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "ally_base_destroyed": {
       "is_enabled": true,
@@ -434,7 +368,7 @@
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "spotters_destroyed": {
       "is_enabled": true,
@@ -458,124 +392,98 @@
           "object": "enemy_correctors_squad"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
+      "actions": {
+        "triggerDisable": [
+          {
             "target": "enemy_arty_damage"
-          }
-        },
-        {
-          "triggerDisable": {
+          },
+          {
             "target": "ally_base_destroyed"
-          }
-        },
-        {
-          "triggerDisable": {
+          },
+          {
             "target": "spotter_indication"
           }
+        ],
+        "moSetObjectiveStatus": {
+          "target": "kursk_single_spotter",
+          "status": 2
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "kursk_single_spotter",
-            "status": 2
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
+            "time": 5.0
+          },
+          {
             "time": 5.0
           }
+        ],
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "bomber",
+          "icon army": 2,
+          "set": false,
+          "target": "enemy_correctors_squad"
         },
-        {
-          "wait": {
-            "time": 5.0
-          }
+        "unitSetProperties": {
+          "object": "enemy_howitzer_sq",
+          "attack_type": "dont_aim"
         },
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isAlive",
-            "target_marking": 0,
-            "delta": 0,
-            "icon": "bomber",
-            "icon army": 2,
-            "set": false,
-            "target": "enemy_correctors_squad"
-          }
+        "unitWakeUp": {
+          "target": "german_109_second_wave01"
         },
-        {
-          "unitSetProperties": {
-            "object": "enemy_howitzer_sq",
-            "attack_type": "dont_aim"
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "german_109_second_wave01"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "cover_planes_killed"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "second_wave_if_arcade"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "cover_indication"
           }
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": true,
             "object": "german_cover_squad",
             "target": "ally_planes_squad",
             "fireRandom": true,
             "playerAttractedCount": 1,
             "playerAttractedEffRate": 0.3
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "ally_planes_squad",
             "target": "german_cover_squad",
             "fireRandom": true
           }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target": "german_cover_squad"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "german_cover_squad"
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/enemy_got_air_reinforcements",
             "action": "show",
             "shouldFadeOut": true,
             "time": -1.0
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/enemy_got_air_reinforcements",
             "action": "hide",
             "shouldFadeOut": true,
             "time": -1.0
           }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "kursk_single_dogfight"
-          }
+        ],
+        "moAddMissionObjective": {
+          "target": "kursk_single_dogfight"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "cover_planes_killed": {
       "is_enabled": false,
@@ -634,7 +542,7 @@
           "target": "live_battlezone"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "spotter_indication": {
       "is_enabled": false,
@@ -649,7 +557,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -661,7 +569,7 @@
           "target": "enemy_correctors_squad"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "enemy_arty_damage": {
       "is_enabled": false,
@@ -676,14 +584,14 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionBombingAreaDamage": {
           "target": "ally_bomb_area",
           "damageHP": 66.0
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "cover_indication": {
       "is_enabled": false,
@@ -698,7 +606,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isActive",
@@ -710,7 +618,7 @@
           "target": "german_cover_squad"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "live_battlezone": {
       "is_enabled": false,
@@ -756,7 +664,7 @@
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "second_wave_if_arcade": {
       "is_enabled": false,
@@ -782,7 +690,7 @@
           "target": "german_109_second_wave02"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -798,8 +706,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "kursk_single_dogfight": {
       "is_enabled": false,
@@ -811,8 +719,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "kursk_single_live": {
       "is_enabled": false,
@@ -824,23 +732,39 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "enemy_110_03",
         "tm": [
-          [0.461749,0.0,-0.887011],
-          [0.0,1.0,0.0],
-          [0.887011,0.0,0.461749],
-          [-3473.15,2000.0,-1013.1]
+          [
+            0.461749,
+            0.0,
+            -0.887011
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887011,
+            0.0,
+            0.461749
+          ],
+          [
+            -3473.15,
+            2000.0,
+            -1013.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-110c-4",
@@ -874,17 +798,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_110_04",
         "tm": [
-          [1.0,0.0,1.19209e-07],
-          [0.0,1.0,0.0],
-          [-1.19209e-07,0.0,1.0],
-          [-4632.4,1469.35,-2301.0]
+          [
+            1.0,
+            0.0,
+            1.19209E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.19209E-07,
+            0.0,
+            1.0
+          ],
+          [
+            -4632.4,
+            1469.35,
+            -2301.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-110c-4",
@@ -918,17 +856,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_110_02",
         "tm": [
-          [-0.0871557,0.0,0.996194],
-          [0.0,1.0,0.0],
-          [-0.996194,0.0,-0.0871557],
-          [-4888.5,1896.25,1003.45]
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.996194,
+            0.0,
+            -0.0871557
+          ],
+          [
+            -4888.5,
+            1896.25,
+            1003.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-110c-4",
@@ -962,17 +914,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_110_01",
         "tm": [
-          [-0.999048,0.0,0.0436202],
-          [0.0,1.0,0.0],
-          [-0.0436202,0.0,-0.999048],
-          [-6153.15,2000.0,-934.65]
+          [
+            -0.999048,
+            0.0,
+            0.0436202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0436202,
+            0.0,
+            -0.999048
+          ],
+          [
+            -6153.15,
+            2000.0,
+            -934.65
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-110c-4",
@@ -1006,17 +972,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ally_player_wing",
         "tm": [
-          [0.939692,0.0,-0.34202],
-          [0.0,1.0,0.0],
-          [0.34202,0.0,0.939692],
-          [-12940.2,2113.55,3233.85]
+          [
+            0.939692,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            0.939692
+          ],
+          [
+            -12940.2,
+            2113.55,
+            3233.85
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "yak-9t",
@@ -1050,17 +1030,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "german_cover01",
         "tm": [
-          [0.21644,0.0,-0.976296],
-          [0.0,1.0,0.0],
-          [0.976296,0.0,0.21644],
-          [-2948.88,3000.0,-616.184]
+          [
+            0.21644,
+            0.0,
+            -0.976296
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.976296,
+            0.0,
+            0.21644
+          ],
+          [
+            -2948.88,
+            3000.0,
+            -616.184
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "fw-190a-5",
@@ -1096,17 +1090,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ally_cover_planes01",
         "tm": [
-          [0.939692,0.0,-0.34202],
-          [0.0,1.0,0.0],
-          [0.34202,0.0,0.939692],
-          [-13126.3,2426.7,2615.21]
+          [
+            0.939692,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            0.939692
+          ],
+          [
+            -13126.3,
+            2426.7,
+            2615.21
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "yak-7b",
@@ -1141,17 +1149,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "german_109_second_wave01",
         "tm": [
-          [-0.608762,0.0,0.793353],
-          [0.0,1.0,0.0],
-          [-0.793353,0.0,-0.608762],
-          [1774.55,3000.0,-8786.2]
+          [
+            -0.608762,
+            0.0,
+            0.793353
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.793353,
+            0.0,
+            -0.608762
+          ],
+          [
+            1774.55,
+            3000.0,
+            -8786.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109g-6",
@@ -1186,17 +1208,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "german_cover02",
         "tm": [
-          [0.21644,0.0,-0.976296],
-          [0.0,1.0,0.0],
-          [0.976296,0.0,0.21644],
-          [-2838.05,3000.0,-616.9]
+          [
+            0.21644,
+            0.0,
+            -0.976296
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.976296,
+            0.0,
+            0.21644
+          ],
+          [
+            -2838.05,
+            3000.0,
+            -616.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "fw-190a-5",
@@ -1232,17 +1268,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "german_109_second_wave02",
         "tm": [
-          [-0.608762,0.0,0.793353],
-          [0.0,1.0,0.0],
-          [-0.793353,0.0,-0.608762],
-          [1757.6,3000.0,-8802.9]
+          [
+            -0.608762,
+            0.0,
+            0.793353
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.793353,
+            0.0,
+            -0.608762
+          ],
+          [
+            1757.6,
+            3000.0,
+            -8802.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109g-6",
@@ -1277,17 +1327,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ally_cover_planes02",
         "tm": [
-          [0.939692,0.0,-0.34202],
-          [0.0,1.0,0.0],
-          [0.34202,0.0,0.939692],
-          [-13119.6,2426.7,2640.4]
+          [
+            0.939692,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            0.939692
+          ],
+          [
+            -13119.6,
+            2426.7,
+            2640.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "yak-7b",
@@ -1322,17 +1386,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "enemy_correctors_squad",
         "tm": [
-          [0.737277,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,0.737277],
-          [-4198.1,569.3,-1178.24]
+          [
+            0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            -4198.1,
+            569.3,
+            -1178.24
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
@@ -1346,31 +1426,39 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "enemy_110_03"
-          },
-          {
-            "squad_members": "enemy_110_04"
-          },
-          {
-            "squad_members": "enemy_110_02"
-          },
-          {
-            "squad_members": "enemy_110_01"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "enemy_110_03",
+            "enemy_110_04",
+            "enemy_110_02",
+            "enemy_110_01"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "ally_planes_squad",
         "tm": [
-          [0.737277,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,0.737277],
-          [-14463.2,1212.3,4700.78]
+          [
+            0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            -14463.2,
+            1212.3,
+            4700.78
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
@@ -1384,28 +1472,38 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "ally_cover_planes01"
-          },
-          {
-            "squad_members": "ally_player_wing"
-          },
-          {
-            "squad_members": "ally_cover_planes02"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ally_cover_planes01",
+            "ally_player_wing",
+            "ally_cover_planes02"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "german_cover_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-339.7,3301.8,-3498.05]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -339.7,
+            3301.8,
+            -3498.05
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
@@ -1419,31 +1517,39 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "german_cover01"
-          },
-          {
-            "squad_members": "german_cover02"
-          },
-          {
-            "squad_members": "german_109_second_wave01"
-          },
-          {
-            "squad_members": "german_109_second_wave02"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "german_cover01",
+            "german_cover02",
+            "german_109_second_wave01",
+            "german_109_second_wave02"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8514.5,200.45,-16171.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8514.5,
+            200.45,
+            -16171.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
@@ -1457,79 +1563,57 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "enemy_howitzer01"
-          },
-          {
-            "squad_members": "enemy_howitzer02"
-          },
-          {
-            "squad_members": "enemy_howitzer03"
-          },
-          {
-            "squad_members": "enemy_howitzer04"
-          },
-          {
-            "squad_members": "enemy_howitzer05"
-          },
-          {
-            "squad_members": "enemy_howitzer06"
-          },
-          {
-            "squad_members": "enemy_howitzer07"
-          },
-          {
-            "squad_members": "enemy_howitzer08"
-          },
-          {
-            "squad_members": "enemy_howitzer09"
-          },
-          {
-            "squad_members": "enemy_howitzer10"
-          },
-          {
-            "squad_members": "enemy_howitzer11"
-          },
-          {
-            "squad_members": "enemy_howitzer12"
-          },
-          {
-            "squad_members": "enemy_howitzer13"
-          },
-          {
-            "squad_members": "enemy_howitzer14"
-          },
-          {
-            "squad_members": "enemy_howitzer15"
-          },
-          {
-            "squad_members": "enemy_howitzer16"
-          },
-          {
-            "squad_members": "enemy_howitzer17"
-          },
-          {
-            "squad_members": "enemy_howitzer18"
-          },
-          {
-            "squad_members": "enemy_howitzer19"
-          },
-          {
-            "squad_members": "enemy_howitzer20"
-          }
-        ],
-        "way": []
+        "props": {
+          "squad_members": [
+            "enemy_howitzer01",
+            "enemy_howitzer02",
+            "enemy_howitzer03",
+            "enemy_howitzer04",
+            "enemy_howitzer05",
+            "enemy_howitzer06",
+            "enemy_howitzer07",
+            "enemy_howitzer08",
+            "enemy_howitzer09",
+            "enemy_howitzer10",
+            "enemy_howitzer11",
+            "enemy_howitzer12",
+            "enemy_howitzer13",
+            "enemy_howitzer14",
+            "enemy_howitzer15",
+            "enemy_howitzer16",
+            "enemy_howitzer17",
+            "enemy_howitzer18",
+            "enemy_howitzer19",
+            "enemy_howitzer20"
+          ]
+        },
+        "way": {}
       }
-    },
-    {
-      "objectGroups": {
+    ],
+    "objectGroups": [
+      {
         "name": "objectGroups_01",
         "tm": [
-          [-0.996195,0.0,0.0871556],
-          [0.0,1.0,0.0],
-          [-0.0871556,0.0,-0.996195],
-          [-5015.4,151.68,-1986.8]
+          [
+            -0.996195,
+            0.0,
+            0.0871556
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871556,
+            0.0,
+            -0.996195
+          ],
+          [
+            -5015.4,
+            151.68,
+            -1986.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "alliance_big_camp_pit_entrenchment_s",
@@ -1547,17 +1631,31 @@
           "army": 1,
           "active": true
         },
-        "way": []
-      }
-    },
-    {
-      "objectGroups": {
+        "way": {}
+      },
+      {
         "name": "objectGroups_02",
         "tm": [
-          [-0.996195,0.0,0.0871556],
-          [0.0,1.0,0.0],
-          [-0.0871556,0.0,-0.996195],
-          [-6248.1,132.73,-1732.45]
+          [
+            -0.996195,
+            0.0,
+            0.0871556
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871556,
+            0.0,
+            -0.996195
+          ],
+          [
+            -6248.1,
+            132.73,
+            -1732.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "alliance_big_camp_pit_entrenchment_s",
@@ -1575,17 +1673,31 @@
           "army": 1,
           "active": true
         },
-        "way": []
-      }
-    },
-    {
-      "objectGroups": {
+        "way": {}
+      },
+      {
         "name": "objectGroups_03",
         "tm": [
-          [-0.996195,0.0,0.0871556],
-          [0.0,1.0,0.0],
-          [-0.0871556,0.0,-0.996195],
-          [-5392.05,137.106,-1504.45]
+          [
+            -0.996195,
+            0.0,
+            0.0871556
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871556,
+            0.0,
+            -0.996195
+          ],
+          [
+            -5392.05,
+            137.106,
+            -1504.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "alliance_big_camp_pit_entrenchment_s",
@@ -1603,17 +1715,31 @@
           "army": 1,
           "active": true
         },
-        "way": []
-      }
-    },
-    {
-      "objectGroups": {
+        "way": {}
+      },
+      {
         "name": "objectGroups_04",
         "tm": [
-          [-0.996195,0.0,0.0871556],
-          [0.0,1.0,0.0],
-          [-0.0871556,0.0,-0.996195],
-          [-5898.55,125.764,-1195.4]
+          [
+            -0.996195,
+            0.0,
+            0.0871556
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871556,
+            0.0,
+            -0.996195
+          ],
+          [
+            -5898.55,
+            125.764,
+            -1195.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "alliance_big_camp_pit_entrenchment_s",
@@ -1631,17 +1757,33 @@
           "army": 1,
           "active": true
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "structures": {
+    ],
+    "structures": [
+      {
         "name": "enemy_howitzer01",
         "tm": [
-          [-5.96046e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,-5.96046e-08],
-          [-4319.65,159.535,-17951.6]
+          [
+            -5.96046E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            -4319.65,
+            159.535,
+            -17951.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1660,22 +1802,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer02",
         "tm": [
-          [-5.96046e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,-5.96046e-08],
-          [-4220.45,158.324,-17925.0]
+          [
+            -5.96046E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            -4220.45,
+            158.324,
+            -17925.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1694,22 +1856,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer03",
         "tm": [
-          [-5.96046e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,-5.96046e-08],
-          [-4162.3,157.718,-17905.6]
+          [
+            -5.96046E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            -4162.3,
+            157.718,
+            -17905.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1728,22 +1910,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer04",
         "tm": [
-          [-5.96046e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,-5.96046e-08],
-          [-4284.2,156.254,-18067.1]
+          [
+            -5.96046E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            -4284.2,
+            156.254,
+            -18067.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1762,22 +1964,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer05",
         "tm": [
-          [-5.96046e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,-5.96046e-08],
-          [-4163.2,155.441,-17990.8]
+          [
+            -5.96046E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            -4163.2,
+            155.441,
+            -17990.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1796,22 +2018,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer06",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [2948.9,141.345,-16548.0]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            2948.9,
+            141.345,
+            -16548.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1830,22 +2072,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer07",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [3051.95,150.223,-16522.3]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            3051.95,
+            150.223,
+            -16522.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1864,22 +2126,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer08",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [3155.0,153.763,-16496.7]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            3155.0,
+            153.763,
+            -16496.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1898,22 +2180,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer09",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [3020.2,146.278,-16634.0]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            3020.2,
+            146.278,
+            -16634.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1932,22 +2234,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer10",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [3149.15,150.028,-16626.6]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            3149.15,
+            150.028,
+            -16626.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -1966,22 +2288,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer11",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [7777.25,194.076,-12190.3]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            7777.25,
+            194.076,
+            -12190.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2000,22 +2342,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer12",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [7908.15,195.126,-12068.8]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            7908.15,
+            195.126,
+            -12068.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2034,22 +2396,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer13",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [8039.05,193.834,-11947.2]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            8039.05,
+            193.834,
+            -11947.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2068,22 +2450,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer14",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [7898.25,193.85,-12218.0]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            7898.25,
+            193.85,
+            -12218.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2102,22 +2504,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer15",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [8016.1,193.85,-12095.1]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            8016.1,
+            193.85,
+            -12095.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2136,22 +2558,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer16",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [7881.5,198.693,-16390.8]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            7881.5,
+            198.693,
+            -16390.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2170,22 +2612,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer17",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [7976.95,201.484,-16266.5]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            7976.95,
+            201.484,
+            -16266.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2204,22 +2666,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer18",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [8072.4,199.421,-16142.2]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            8072.4,
+            199.421,
+            -16142.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2238,22 +2720,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer19",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [8002.0,197.734,-16511.3]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            8002.0,
+            197.734,
+            -16511.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2272,22 +2774,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "enemy_howitzer20",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [8116.15,202.059,-16385.7]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            8116.15,
+            202.059,
+            -16385.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_quest_large_art_noground",
@@ -2306,22 +2828,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "structures_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-5808.05,130.05,-1914.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -5808.05,
+            130.05,
+            -1914.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "dummy",
@@ -2340,176 +2882,366 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "enemy_fly_point01": {
       "type": "Sphere",
       "tm": [
-        [147.455,0.0,-135.118],
-        [0.0,200.0,0.0],
-        [135.118,0.0,147.455],
-        [-6167.07,2000.0,-1169.5]
+        [
+          147.455,
+          0.0,
+          -135.118
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          135.118,
+          0.0,
+          147.455
+        ],
+        [
+          -6167.07,
+          2000.0,
+          -1169.5
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "enemy_fly_point02": {
       "type": "Sphere",
       "tm": [
-        [147.455,0.0,-135.118],
-        [0.0,200.0,0.0],
-        [135.118,0.0,147.455],
-        [-4511.93,1896.25,965.32]
+        [
+          147.455,
+          0.0,
+          -135.118
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          135.118,
+          0.0,
+          147.455
+        ],
+        [
+          -4511.93,
+          1896.25,
+          965.32
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "enemy_fly_point03": {
       "type": "Sphere",
       "tm": [
-        [147.455,0.0,-135.118],
-        [0.0,200.0,0.0],
-        [135.118,0.0,147.455],
-        [-3237.44,2000.0,-967.24]
+        [
+          147.455,
+          0.0,
+          -135.118
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          135.118,
+          0.0,
+          147.455
+        ],
+        [
+          -3237.44,
+          2000.0,
+          -967.24
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "enemy_fly_point04": {
       "type": "Sphere",
       "tm": [
-        [147.455,0.0,-135.118],
-        [0.0,200.0,0.0],
-        [135.118,0.0,147.455],
-        [-4574.75,1469.35,-2531.17]
+        [
+          147.455,
+          0.0,
+          -135.118
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          135.118,
+          0.0,
+          147.455
+        ],
+        [
+          -4574.75,
+          1469.35,
+          -2531.17
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "enemy_fly_point05": {
       "type": "Sphere",
       "tm": [
-        [147.455,0.0,-135.118],
-        [0.0,200.0,0.0],
-        [135.118,0.0,147.455],
-        [-3767.62,3686.85,-889.038]
+        [
+          147.455,
+          0.0,
+          -135.118
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          135.118,
+          0.0,
+          147.455
+        ],
+        [
+          -3767.62,
+          3686.85,
+          -889.038
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "battle_area": {
       "type": "Sphere",
       "tm": [
-        [11059.2,0.0,-10133.9],
-        [0.0,15000.0,0.0],
-        [10133.9,0.0,11059.2],
-        [-4048.73,1186.85,-672.132]
+        [
+          11059.2,
+          0.0,
+          -10133.9
+        ],
+        [
+          0.0,
+          15000.0,
+          0.0
+        ],
+        [
+          10133.9,
+          0.0,
+          11059.2
+        ],
+        [
+          -4048.73,
+          1186.85,
+          -672.132
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "ally_bomb_area": {
       "type": "Cylinder",
       "tm": [
-        [1000.0,0.0,0.0],
-        [0.0,920.65,0.0],
-        [0.0,0.0,1000.0],
-        [-5712.2,52.5,-1766.75]
+        [
+          1000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          920.65,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1000.0
+        ],
+        [
+          -5712.2,
+          52.5,
+          -1766.75
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "live_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-11526.8,1622.6,4921.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -11526.8,
+          1622.6,
+          4921.15
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "wayp01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [9000.25,2113.6,-10391.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          9000.25,
+          2113.6,
+          -10391.8
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "brief_point_to_bomber01": {
       "type": "Sphere",
       "tm": [
-        [727.2,0.0,0.0],
-        [0.0,727.2,0.0],
-        [0.0,0.0,727.2],
-        [-8681.6,176.0,6304.35]
+        [
+          727.2,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          727.2,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          727.2
+        ],
+        [
+          -8681.6,
+          176.0,
+          6304.35
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "brief_bomber02": {
       "type": "Sphere",
       "tm": [
-        [684.4,0.0,0.0],
-        [0.0,684.4,0.0],
-        [0.0,0.0,684.4],
-        [-8339.3,9.2,-3162.05]
+        [
+          684.4,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          684.4,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          684.4
+        ],
+        [
+          -8339.3,
+          9.2,
+          -3162.05
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "brief_point_to_bomber02": {
       "type": "Sphere",
       "tm": [
-        [687.2,0.0,0.0],
-        [0.0,687.2,0.0],
-        [0.0,0.0,687.2],
-        [-2943.3,167.05,-9115.25]
+        [
+          687.2,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          687.2,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          687.2
+        ],
+        [
+          -2943.3,
+          167.05,
+          -9115.25
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ]
+    ]
+  }
 }

@@ -35,7 +35,11 @@
       "CxK": 90.0,
       "CyK": 0.0,
       "CxAoA": 0.0,
-      "WdK": [0.0,0.0,0.0],
+      "WdK": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "precision": 10,
       "isChaff": true,
       "force": 0.1,
@@ -59,15 +63,42 @@
       "spawnExplosionFx": false,
       "explosionOffset": 0.05,
       "hitPowerMult": 1.0,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,400.0],
-      "farHitPower": [0.1,1000.0],
-      "endHitPower": [0.01,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "nearArmorPower": [3.0,50.0],
-      "midArmorPower": [2.0,400.0],
-      "farArmorPower": [0.2,700.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        400.0
+      ],
+      "farHitPower": [
+        0.1,
+        1000.0
+      ],
+      "endHitPower": [
+        0.01,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "nearArmorPower": [
+        3.0,
+        50.0
+      ],
+      "midArmorPower": [
+        2.0,
+        400.0
+      ],
+      "farArmorPower": [
+        0.2,
+        700.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "distanceFuse": false,
       "rendinstDamageRadius": 0.1,
       "advancedMissiles": false,
@@ -78,20 +109,26 @@
       "price": 300.0,
       "amountPerTier": 30.0,
       "iconType": "ltc",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "radarVisibility": {
         "band0": 1.1
       }

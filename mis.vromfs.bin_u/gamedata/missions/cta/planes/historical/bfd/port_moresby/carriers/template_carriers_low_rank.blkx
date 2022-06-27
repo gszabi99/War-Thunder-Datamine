@@ -15,7 +15,7 @@
       "weather": "clear"
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -28,109 +28,81 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/carriers_spawn"
-          },
-          {
-            "spawnEffect": false
-          },
-          {
-            "isAirfield": true
-          },
-          {
-            "isUnit": false
-          },
-          {
-            "radius": -1.0
-          },
-          {
-            "destructionAwardMultiplier": 1.0
-          },
-          {
-            "isStrictSpawn": false
-          },
-          {
-            "useExisting": false
-          },
-          {
-            "isIndividual": false
-          },
-          {
-            "removeAreas": false
-          },
-          {
-            "canSpawnOnNeutral": false
-          },
-          {
-            "showOnMap": true
-          },
-          {
-            "onlyOnePlayerPerSpawnPoint": false
-          },
-          {
-            "resetStrictSpawnIndex": false
-          },
-          {
-            "forceCreate": false
-          },
-          {
-            "replaceAreas": false
-          },
-          {
-            "target": "t2_carrier_01"
-          },
-          {
-            "target": "t2_carrier_02"
-          },
-          {
-            "target": "t2_carrier_03"
-          },
-          {
-            "team": "B"
-          },
-          {
-            "object": "t2_carriers_squad"
-          },
-          {
-            "awardByBodyHp": false
-          },
-          {
-            "tags": {
-              "type_bomber": false,
-              "type_assault": false,
-              "type_interceptor": false,
-              "type_aa_fighter": false,
-              "carrier_take_off": true,
-              "tank": false
-            }
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "missions/carriers_spawn",
+          "spawnEffect": false,
+          "isAirfield": true,
+          "isUnit": false,
+          "radius": -1.0,
+          "destructionAwardMultiplier": 1.0,
+          "isStrictSpawn": false,
+          "useExisting": false,
+          "isIndividual": false,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "resetStrictSpawnIndex": false,
+          "forceCreate": false,
+          "replaceAreas": false,
+          "target": [
+            "t2_carrier_01",
+            "t2_carrier_02",
+            "t2_carrier_03"
+          ],
+          "team": "B",
+          "object": "t2_carriers_squad",
+          "awardByBodyHp": false,
+          "tags": {
+            "type_bomber": false,
+            "type_assault": false,
+            "type_interceptor": false,
+            "type_aa_fighter": false,
+            "carrier_take_off": true,
+            "tank": false
           }
-        ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "ships": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
         "name": "t2_carrier_01",
         "tm": [
-          [0.766045,0.0,0.642788],
-          [0.0,1.0,0.0],
-          [-0.642788,0.0,0.766045],
-          [-19259.0,27.5,-17960.7]
+          [
+            0.766045,
+            0.0,
+            0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.642788,
+            0.0,
+            0.766045
+          ],
+          [
+            -19259.0,
+            27.5,
+            -17960.7
+          ]
         ],
         "unit_class": "ijn_cv_soryu",
         "closed_waypoints": false,
@@ -151,8 +123,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -160,10 +138,26 @@
           "t2_airfield01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-17077.3,-96.0,-16221.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -17077.3,
+                -96.0,
+                -16221.7
+              ]
             ],
             "props": {
               "speed": 5.0,
@@ -174,16 +168,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "t2_carrier_03",
         "tm": [
-          [0.843392,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843392],
-          [-19148.4,32.9,-18882.1]
+          [
+            0.843392,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843392
+          ],
+          [
+            -19148.4,
+            32.9,
+            -18882.1
+          ]
         ],
         "unit_class": "ijn_cv_soryu",
         "closed_waypoints": false,
@@ -204,8 +212,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -213,10 +227,26 @@
           "t2_airfield03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-16908.0,-96.0,-17271.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -16908.0,
+                -96.0,
+                -17271.2
+              ]
             ],
             "props": {
               "speed": 5.0,
@@ -227,16 +257,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "t2_carrier_02",
         "tm": [
-          [0.793354,0.0,0.608762],
-          [0.0,1.0,0.0],
-          [-0.608762,0.0,0.793354],
-          [-18128.6,32.9,-19403.0]
+          [
+            0.793354,
+            0.0,
+            0.608762
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608762,
+            0.0,
+            0.793354
+          ],
+          [
+            -18128.6,
+            32.9,
+            -19403.0
+          ]
         ],
         "unit_class": "ijn_cv_soryu",
         "closed_waypoints": false,
@@ -257,8 +301,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -266,10 +316,26 @@
           "t2_airfield02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-16021.0,-96.0,-17960.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -16021.0,
+                -96.0,
+                -17960.9
+              ]
             ],
             "props": {
               "speed": 5.0,
@@ -281,34 +347,42 @@
           }
         }
       }
-    },
-    {
-      "squad": {
-        "name": "t2_carriers_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-19160.9,0.0,-17708.8]
+    ],
+    "squad": {
+      "name": "t2_carriers_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_carrier_01"
-          },
-          {
-            "squad_members": "t2_carrier_02"
-          },
-          {
-            "squad_members": "t2_carrier_03"
-          }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -19160.9,
+          0.0,
+          -17708.8
+        ]
+      ],
+      "props": {
+        "object_marking": 0,
+        "squad_members": [
+          "t2_carrier_01",
+          "t2_carrier_02",
+          "t2_carrier_03"
         ]
       }
     }
-  ],
-  "areas": [],
-  "objLayers": [],
-  "wayPoints": []
+  },
+  "areas": {},
+  "objLayers": {},
+  "wayPoints": {}
 }

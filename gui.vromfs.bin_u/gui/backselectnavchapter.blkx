@@ -1,103 +1,87 @@
 {
-  "navLeft": [
-    {
-      "Button_text": {
+  "navLeft": {
+    "Button_text": [
+      {
         "id": "btn_back",
         "text": "#mainmenu/btnBack",
         "btnName": "B",
         "_on_click": "goBack",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_favorite",
         "text": "#mainmenu/btnFavorite",
         "btnName": "Y",
         "display": "hide",
         "enable": "no",
         "_on_click": "onFav",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_refresh_console",
         "text": "#mainmenu/btnRefresh",
         "btnName": "L3",
         "_on_click": "onRefresh",
         "display": "hide",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_add_mission",
         "display": "hide",
         "text": "#urlMissions/add",
         "_on_click": "onAddMission",
-        "ButtonImg": []
+        "ButtonImg": {}
       }
-    },
-    {
-      "CheckBox": {
-        "id": "favorite_missions_switch",
-        "pos": "0, 50%ph-50%h",
-        "position": "relative",
-        "btnName": "LB",
-        "display": "hide",
-        "text": "#mainmenu/onlyFavorite",
-        "value": "no",
-        "on_change_value": "onOnlyFavoritesSwitch",
-        "CheckBoxImg": [],
-        "ButtonImg": []
-      }
+    ],
+    "CheckBox": {
+      "id": "favorite_missions_switch",
+      "pos": "0, 50%ph-50%h",
+      "position": "relative",
+      "btnName": "LB",
+      "display": "hide",
+      "text": "#mainmenu/onlyFavorite",
+      "value": "no",
+      "on_change_value": "onOnlyFavoritesSwitch",
+      "CheckBoxImg": {},
+      "ButtonImg": {}
     }
-  ],
-  "navRight": [
-    {
-      "Button_text": {
+  },
+  "navRight": {
+    "Button_text": [
+      {
         "id": "btn_inviteSquad",
         "text": "#squad/invite_player",
         "_on_click": "onInviteSquad",
         "display": "hide",
         "btnName": "RB",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_modify_mission",
         "btnName": "L3",
         "display": "hide",
         "text": "#urlMissions/modify",
         "_on_click": "onModifyMission",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_delete_mission",
         "btnName": "R3",
         "display": "hide",
         "text": "#urlMissions/delete",
         "_on_click": "onDeleteMission",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_purchase_campaigns",
         "btnName": "LT",
         "display": "hide",
         "enable": "no",
         "text": "#btn/buyMoreCampaigns",
         "_on_click": "onBuyCampaign",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_select_console",
         "skip-navigation": "yes",
         "btnName": "A",
@@ -105,11 +89,9 @@
         "enable": "no",
         "text": "#mainmenu/btnSelect",
         "_on_click": "onHoveredItemSelect",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_start",
         "class": "battle",
         "navButtonFont": "yes",
@@ -117,17 +99,17 @@
         "_on_click": "onStart",
         "css-hier-invalidate": "yes",
         "btnName": "X",
-        "pattern": [],
+        "pattern": {},
         "buttonWink": {
           "_transp-timer": "0"
         },
-        "buttonGlance": [],
-        "ButtonImg": [],
+        "buttonGlance": {},
+        "ButtonImg": {},
         "btnText": {
           "id": "btn_start_text",
           "text": "#multiplayer/btnStart"
         }
       }
-    }
-  ]
+    ]
+  }
 }

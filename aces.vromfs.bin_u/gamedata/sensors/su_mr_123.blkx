@@ -17,8 +17,14 @@
   "scanPatterns": {
     "lock": {
       "type": "pyramide",
-      "azimuthLimits": [-150.0,150.0],
-      "elevationLimits": [-10.0,70.0],
+      "azimuthLimits": [
+        -150.0,
+        150.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        70.0
+      ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 20.0,
       "rollStabLimit": 20.0,
@@ -31,8 +37,14 @@
     },
     "losLock": {
       "type": "pyramide",
-      "azimuthLimits": [-150.0,150.0],
-      "elevationLimits": [-10.0,70.0],
+      "azimuthLimits": [
+        -150.0,
+        150.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        70.0
+      ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 20.0,
       "rollStabLimit": 20.0,
@@ -45,8 +57,14 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-150.0,150.0],
-      "elevationLimits": [-10.0,70.0],
+      "azimuthLimits": [
+        -150.0,
+        150.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        70.0
+      ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 20.0,
       "rollStabLimit": 20.0
@@ -77,7 +95,7 @@
           "setEnabled": {
             "value": false
           },
-          "setTargetDesignationRange": [],
+          "setTargetDesignationRange": {},
           "setTransiver": {
             "transiver": "track"
           },
@@ -85,50 +103,36 @@
             "signal": "track"
           }
         },
-        "setStandbyMode": [
-          {
-            "setModeName": {
-              "name": "standby"
-            }
+        "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
           },
-          {
-            "setEnabled": {
-              "value": false
-            }
+          "setEnabled": {
+            "value": false
           },
-          {
-            "setScanPattern": {
-              "scanPattern": "lock"
-            }
+          "setScanPattern": {
+            "scanPattern": "lock"
           },
-          {
-            "setCenterAzimuth": {
-              "source": "constant",
-              "value": 0.0
-            }
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
           },
-          {
-            "clearTargetsOfInterest": []
-          },
-          {
-            "setFsmActive": {
+          "clearTargetsOfInterest": {},
+          "setFsmActive": [
+            {
               "fsm": "lock",
               "active": false
-            }
-          },
-          {
-            "setFsmActive": {
+            },
+            {
               "fsm": "track",
               "active": false
             }
-          },
-          {
-            "setCenterElevation": {
-              "source": "constant",
-              "value": 5.5
-            }
+          ],
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 5.5
           }
-        ],
+        },
         "setLockMode": {
           "setModeName": {
             "name": "acquisition"
@@ -143,11 +147,11 @@
           "setScanPattern": {
             "scanPattern": "lock"
           },
-          "resetScanPhase": [],
+          "resetScanPhase": {},
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
-          "clearTargetsOfInterest": [],
+          "clearTargetsOfInterest": {},
           "setFsmActive": {
             "fsm": "lock",
             "active": true
@@ -168,8 +172,8 @@
           "setScanPattern": {
             "scanPattern": "losLock"
           },
-          "resetScanPhase": [],
-          "clearTargetsOfInterest": [],
+          "resetScanPhase": {},
+          "clearTargetsOfInterest": {},
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
@@ -227,10 +231,10 @@
           "setScanPattern": {
             "scanPattern": "track"
           },
-          "clearTargetsOfInterest": [],
-          "addTargetOfInterest": [],
-          "setLastTargetOfInterestActive": [],
-          "updateActiveTargetOfInterest": [],
+          "clearTargetsOfInterest": {},
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -257,8 +261,8 @@
           "event": "init",
           "stateTo": "standby",
           "actions": {
-            "init": [],
-            "setStandbyMode": []
+            "init": {},
+            "setStandbyMode": {}
           }
         },
         "checkLockType0": {
@@ -276,7 +280,7 @@
           "event": "designationTypeEquals",
           "stateTo": "lock",
           "actions": {
-            "setLockMode": []
+            "setLockMode": {}
           }
         },
         "checkLockType1": {
@@ -294,8 +298,8 @@
           "event": "designationTypeEquals",
           "stateTo": "losLock",
           "actions": {
-            "setLosVisualPreLockMode": [],
-            "setLosLockMode": []
+            "setLosVisualPreLockMode": {},
+            "setLosLockMode": {}
           }
         },
         "checkLockType2": {
@@ -313,8 +317,8 @@
           "event": "designationTypeEquals",
           "stateTo": "visualLock",
           "actions": {
-            "setLosVisualPreLockMode": [],
-            "setVisualLockMode": []
+            "setLosVisualPreLockMode": {},
+            "setVisualLockMode": {}
           }
         },
         "finishLockTypeCheck": {
@@ -322,84 +326,54 @@
           "event": "designationTypeNotEquals",
           "stateTo": "standby"
         },
-        "track": [
-          {
-            "stateFrom": "lock"
-          },
-          {
-            "stateFrom": "losLock"
-          },
-          {
-            "stateFrom": "visualLock"
-          },
-          {
-            "event": "targetDetected"
-          },
-          {
-            "stateTo": "track"
-          },
-          {
-            "actions": {
-              "setTrackMode": [],
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              }
+        "track": {
+          "stateFrom": [
+            "lock",
+            "losLock",
+            "visualLock"
+          ],
+          "event": "targetDetected",
+          "stateTo": "track",
+          "actions": {
+            "setTrackMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
             }
           }
-        ],
-        "failedLock": [
-          {
-            "stateFrom": "lock"
-          },
-          {
-            "stateFrom": "losLock"
-          },
-          {
-            "stateFrom": "visualLock"
-          },
-          {
-            "event": "scanFinished"
-          },
-          {
-            "stateTo": "standby"
-          },
-          {
-            "actions": {
-              "setStandbyMode": [],
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              }
+        },
+        "failedLock": {
+          "stateFrom": [
+            "lock",
+            "losLock",
+            "visualLock"
+          ],
+          "event": "scanFinished",
+          "stateTo": "standby",
+          "actions": {
+            "setStandbyMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
             }
           }
-        ],
-        "finishedTrack": [
-          {
-            "stateFrom": "track"
-          },
-          {
-            "event": "targetsOfInterestCleanup"
-          },
-          {
-            "command": "selectTarget"
-          },
-          {
-            "command": "designateTarget"
-          },
-          {
-            "stateTo": "standby"
-          },
-          {
-            "actions": {
-              "setStandbyMode": [],
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              }
+        },
+        "finishedTrack": {
+          "stateFrom": "track",
+          "event": "targetsOfInterestCleanup",
+          "command": [
+            "selectTarget",
+            "designateTarget"
+          ],
+          "stateTo": "standby",
+          "actions": {
+            "setStandbyMode": {},
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
             }
           }
-        ]
+        }
       }
     },
     "lock": {
@@ -408,13 +382,13 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": []
+            "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         }
       }
@@ -425,13 +399,13 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         },
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": [],
+            "updateActiveTargetOfInterest": {},
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -451,7 +425,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
+            "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 1.0
             },

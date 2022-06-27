@@ -28,7 +28,10 @@
         "localTime": 9.0
       },
       "customWeather": {
-        "windDir": [0.6,0.8],
+        "windDir": [
+          0.6,
+          0.8
+        ],
         "wind_scale": 3.0,
         "max_wind_strength": 6.0,
         "wind_strength": 6.0,
@@ -42,9 +45,9 @@
         }
       }
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -57,20 +60,24 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetFade": {
           "mode": "fadeOut",
-          "color": [0.0,0.0,0.0],
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "time": 0.0
         },
         "missionForceMusic": {
           "evName": "australia_victory_theme"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_start": {
       "is_enabled": true,
@@ -85,109 +92,95 @@
           "time": 0.01
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.2
           }
-        },
-        {
-          "missionForceUpdate": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 30.0
-            },
-            {
-              "target": "dd00"
-            },
-            {
-              "target": "dd01"
-            },
-            {
-              "target": "dd02"
-            },
-            {
-              "target": "dd03"
-            },
-            {
-              "target": "battleship00"
-            },
-            {
-              "target": "battleship01"
-            },
-            {
-              "target": "carrier02"
-            }
+        ],
+        "missionForceUpdate": {
+          "target_type": "isAlive",
+          "dt": 0.05,
+          "timeToUpdate": 30.0,
+          "target": [
+            "dd00",
+            "dd01",
+            "dd02",
+            "dd03",
+            "battleship00",
+            "battleship01",
+            "carrier02"
           ]
         },
-        {
-          "preloadRendInsts": {
+        "preloadRendInsts": [
+          {
             "object": "point_00"
-          }
-        },
-        {
-          "preloadRendInsts": {
+          },
+          {
             "object": "point_01"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 0.3
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 11.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.5
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 12.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 13.0
           }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "missionStartCutscene": {
+        "missionStartCutscene": [
+          {
             "target": "point_00",
             "second_target": "point_01",
             "duration": 11.5,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.0,
             "frequency": 1.0,
-            "linear_at_vel": [0.1,0.1,0.1],
-            "linear_eye_vel": [-300.0,0.1,250.0],
+            "linear_at_vel": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "linear_eye_vel": [
+              -300.0,
+              0.1,
+              250.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -205,24 +198,45 @@
             "fov_accel": 0.0,
             "mustHaveGui": false,
             "constant_fov": 70.0,
-            "linear_at": [-11000.0,0.0,12350.0],
-            "linear_eye": [0.01,0.0,0.0],
-            "endFade": [0.5,0.0],
+            "linear_at": [
+              -11000.0,
+              0.0,
+              12350.0
+            ],
+            "linear_eye": [
+              0.01,
+              0.0,
+              0.0
+            ],
+            "endFade": [
+              0.5,
+              0.0
+            ],
             "delayPlayer": true
-          }
-        },
-        {
-          "missionStartCutscene": {
+          },
+          {
             "target": "point_05",
             "second_target": "point_03",
             "duration": 12.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.0,
             "frequency": 1.0,
-            "linear_at_vel": [0.01,0.1,0.01],
-            "linear_eye_vel": [-250.0,0.1,0.01],
+            "linear_at_vel": [
+              0.01,
+              0.1,
+              0.01
+            ],
+            "linear_eye_vel": [
+              -250.0,
+              0.1,
+              0.01
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -240,24 +254,45 @@
             "fov_accel": 0.0,
             "mustHaveGui": false,
             "constant_fov": 70.0,
-            "linear_at": [-4436.0,150.0,-2750.0],
-            "linear_eye": [1.0,0.5,0.0],
-            "endFade": [0.5,0.0],
+            "linear_at": [
+              -4436.0,
+              150.0,
+              -2750.0
+            ],
+            "linear_eye": [
+              1.0,
+              0.5,
+              0.0
+            ],
+            "endFade": [
+              0.5,
+              0.0
+            ],
             "delayPlayer": true
-          }
-        },
-        {
-          "missionStartCutscene": {
+          },
+          {
             "target": "point_03",
             "second_target": "point_04",
             "duration": 15.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 0.0,
             "frequency": 1.0,
-            "linear_at_vel": [-0.01,0.01,0.01],
-            "linear_eye_vel": [-0.01,-1.0,-250.0],
+            "linear_at_vel": [
+              -0.01,
+              0.01,
+              0.01
+            ],
+            "linear_eye_vel": [
+              -0.01,
+              -1.0,
+              -250.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -275,14 +310,25 @@
             "fov_accel": 0.0,
             "mustHaveGui": false,
             "constant_fov": 70.0,
-            "linear_at": [-450.0,-300.0,-12250.0],
-            "linear_eye": [-150.0,-290.0,50.0],
-            "endFade": [3.0,2.0],
+            "linear_at": [
+              -450.0,
+              -300.0,
+              -12250.0
+            ],
+            "linear_eye": [
+              -150.0,
+              -290.0,
+              50.0
+            ],
+            "endFade": [
+              3.0,
+              2.0
+            ],
             "delayPlayer": true
           }
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -306,10 +352,8 @@
             "target": "point_02",
             "finalLook": "point_03",
             "changeLookTime": 12.0
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -333,78 +377,106 @@
             "target": "point_02",
             "changeLookTime": 12.0
           }
-        },
-        {
-          "missionDebriefing": []
-        }
-      ],
-      "else_actions": []
+        ],
+        "missionDebriefing": {}
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
-        "name": "player",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1345.05,364.45,-4529.95]
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": {
+      "name": "player",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "unit_class": "a6m2_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "uniqueName": "",
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1345.05,
+          364.45,
+          -4529.95
+        ]
+      ],
+      "unit_class": "a6m2_zero",
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "props": {
+        "army": 1,
+        "count": 1,
+        "uniqueName": "",
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
     },
-    {
-      "ships": {
+    "ships": [
+      {
         "name": "dd00",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-13141.3,0.0,-3650.95]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -13141.3,
+            0.0,
+            -3650.95
+          ]
         ],
         "unit_class": "uk_destroyer_battle_2series",
         "closed_waypoints": false,
@@ -425,8 +497,14 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [60.0,4.0],
-          "formation_noise": [-0.3,0.1],
+          "formation_step": [
+            60.0,
+            4.0
+          ],
+          "formation_noise": [
+            -0.3,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -434,10 +512,26 @@
           "dd00_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11562.5,0.0,-14226.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -11562.5,
+                0.0,
+                -14226.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -448,16 +542,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "dd01",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-12243.3,0.0,-2983.55]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -12243.3,
+            0.0,
+            -2983.55
+          ]
         ],
         "unit_class": "uss_dd_georgetown",
         "closed_waypoints": false,
@@ -478,8 +586,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -487,10 +601,26 @@
           "dd01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11946.7,0.0,-5878.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -11946.7,
+                0.0,
+                -5878.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -503,10 +633,26 @@
           "dd01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11416.5,0.0,-8881.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -11416.5,
+                0.0,
+                -8881.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -519,10 +665,26 @@
           "dd01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-9686.75,0.0,-14052.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -9686.75,
+                0.0,
+                -14052.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -533,16 +695,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "dd02",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-13077.0,0.0,-2476.25]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -13077.0,
+            0.0,
+            -2476.25
+          ]
         ],
         "unit_class": "uk_destroyer_battle_2series",
         "closed_waypoints": false,
@@ -563,8 +739,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -572,10 +754,26 @@
           "dd02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11073.5,0.0,-14479.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -11073.5,
+                0.0,
+                -14479.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -586,16 +784,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "battleship00",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-12437.0,0.0,-3935.95]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -12437.0,
+            0.0,
+            -3935.95
+          ]
         ],
         "unit_class": "uk_cruiser_london",
         "closed_waypoints": false,
@@ -616,8 +828,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -625,10 +843,26 @@
           "battleship00_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-10673.2,0.0,-14364.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -10673.2,
+                0.0,
+                -14364.4
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -639,16 +873,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "battleship01",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-13265.1,0.0,-4796.2]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -13265.1,
+            0.0,
+            -4796.2
+          ]
         ],
         "unit_class": "uk_cruiser_tiger",
         "closed_waypoints": false,
@@ -669,8 +917,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -678,10 +932,26 @@
           "battleship01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-12495.0,0.0,-13007.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -12495.0,
+                0.0,
+                -13007.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -692,16 +962,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "carrier02",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-12895.2,0.0,-4873.45]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -12895.2,
+            0.0,
+            -4873.45
+          ]
         ],
         "unit_class": "uk_aircraftcarrier_ark_royal",
         "closed_waypoints": false,
@@ -722,8 +1006,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -731,10 +1021,26 @@
           "carrier02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11699.5,0.0,-13322.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -11699.5,
+                0.0,
+                -13322.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -745,16 +1051,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "dd03",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-12919.9,0.0,-6193.15]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -12919.9,
+            0.0,
+            -6193.15
+          ]
         ],
         "unit_class": "uk_destroyer_battle_2series",
         "closed_waypoints": false,
@@ -775,8 +1095,14 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [60.0,4.0],
-          "formation_noise": [-0.3,0.1],
+          "formation_step": [
+            60.0,
+            4.0
+          ],
+          "formation_noise": [
+            -0.3,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -784,10 +1110,26 @@
           "dd03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-12002.6,0.0,-12835.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -12002.6,
+                0.0,
+                -12835.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -799,16 +1141,32 @@
           }
         }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "point_00": {
       "type": "Point",
       "tm": [
-        [-0.793353,0.0,0.608761],
-        [0.0,1.0,0.0],
-        [-0.608761,0.0,-0.793353],
-        [590.5,100.0,-13449.6]
+        [
+          -0.793353,
+          0.0,
+          0.608761
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.608761,
+          0.0,
+          -0.793353
+        ],
+        [
+          590.5,
+          100.0,
+          -13449.6
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -817,10 +1175,26 @@
     "point_01": {
       "type": "Point",
       "tm": [
-        [-0.953717,0.0,-0.300706],
-        [0.0,1.0,0.0],
-        [0.300706,0.0,-0.953717],
-        [-6715.35,668.2,-3033.95]
+        [
+          -0.953717,
+          0.0,
+          -0.300706
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.300706,
+          0.0,
+          -0.953717
+        ],
+        [
+          -6715.35,
+          668.2,
+          -3033.95
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -829,10 +1203,26 @@
     "point_02": {
       "type": "Point",
       "tm": [
-        [0.906308,0.0,-0.422618],
-        [0.0,1.0,0.0],
-        [0.422618,0.0,0.906308],
-        [-10146.4,309.15,-8145.85]
+        [
+          0.906308,
+          0.0,
+          -0.422618
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.422618,
+          0.0,
+          0.906308
+        ],
+        [
+          -10146.4,
+          309.15,
+          -8145.85
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -841,10 +1231,26 @@
     "point_03": {
       "type": "Point",
       "tm": [
-        [0.130527,0.0,-0.991445],
-        [0.0,1.0,0.0],
-        [0.991445,0.0,0.130527],
-        [-12850.0,330.0,-1500.0]
+        [
+          0.130527,
+          0.0,
+          -0.991445
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.991445,
+          0.0,
+          0.130527
+        ],
+        [
+          -12850.0,
+          330.0,
+          -1500.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -853,10 +1259,26 @@
     "point_04": {
       "type": "Point",
       "tm": [
-        [0.0436198,0.0,-0.999048],
-        [0.0,1.0,0.0],
-        [0.999048,0.0,0.0436198],
-        [-13300.0,30.0,-13750.0]
+        [
+          0.0436198,
+          0.0,
+          -0.999048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999048,
+          0.0,
+          0.0436198
+        ],
+        [
+          -13300.0,
+          30.0,
+          -13750.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -865,16 +1287,32 @@
     "point_05": {
       "type": "Point",
       "tm": [
-        [-0.906308,0.0,-0.422618],
-        [0.0,1.0,0.0],
-        [0.422618,0.0,-0.906308],
-        [-8414.65,168.0,1243.85]
+        [
+          -0.906308,
+          0.0,
+          -0.422618
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.422618,
+          0.0,
+          -0.906308
+        ],
+        [
+          -8414.65,
+          168.0,
+          1243.85
+        ]
       ],
       "props": {
         "forceReplication": true
       }
     }
   },
-  "objLayers": [],
-  "wayPoints": []
+  "objLayers": {},
+  "wayPoints": {}
 }

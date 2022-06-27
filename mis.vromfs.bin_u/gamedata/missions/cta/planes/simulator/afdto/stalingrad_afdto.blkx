@@ -2,115 +2,49 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      },
-      {
-        "wing": "t1_player17"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16"
+      ]
+    },
     "mission": {
       "level": "levels/stalingrad.bin",
       "type": "domination",
@@ -130,110 +64,74 @@
         "isAirplanesAllowed": true
       }
     },
-    "spectator_points": [
-      {
-        "spectatorPoint": "spectator_point_01"
-      },
-      {
-        "spectatorPoint": "spectator_point_02"
-      },
-      {
-        "spectatorPoint": "spectator_point_03"
-      },
-      {
-        "spectatorPoint": "spectator_point_04"
-      }
-    ],
-    "briefing": [
-      {
-        "place_loc": ""
-      },
-      {
-        "date_loc": ""
-      },
-      {
-        "objective_loc": ""
-      },
-      {
-        "music": "action_01"
-      },
-      {
-        "part": [
-          {
-            "event": ""
-          },
-          {
-            "minTime": 6
-          },
-          {
-            "slide": {
+    "spectator_points": {
+      "spectatorPoint": [
+        "spectator_point_01",
+        "spectator_point_02",
+        "spectator_point_03",
+        "spectator_point_04"
+      ]
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": [
+        {
+          "event": "",
+          "minTime": 6,
+          "slide": [
+            {
               "map": false,
               "minTime": 6,
               "picture": "versus/airfield_domination_01"
-            }
-          },
-          {
-            "slide": {
+            },
+            {
               "map": false,
               "minTime": 6,
               "picture": "versus/airfield_domination_02"
             }
-          }
-        ]
-      },
-      {
-        "part": {
+          ]
+        },
+        {
           "event": "",
           "minTime": 0,
-          "slide": [
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "icon": {
+          "slide": {
+            "map": true,
+            "minTime": 4,
+            "picture": "",
+            "icon": [
+              {
                 "icontype": "airfield",
                 "side": "ally",
                 "target": "t1_airfield"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "airfield",
                 "side": "enemy",
                 "target": "t2_airfield"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "basezone_A",
                 "side": "neutral",
                 "target": "og_airfield01"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "basezone_C",
                 "side": "neutral",
                 "target": "og_airfield03"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "basezone_B",
                 "side": "neutral",
                 "target": "og_airfield02"
               }
-            }
-          ]
+            ]
+          }
         }
-      }
-    ]
+      ]
+    }
   },
   "imports": {
     "import_record": {
@@ -248,7 +146,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -263,12 +161,12 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": [
+          {
             "army": 0,
             "name_for_respawn_base": "",
             "timeMultiplier": 1.0,
@@ -277,10 +175,8 @@
             "canCaptureOnGround": true,
             "canCaptureInAir": false,
             "airfield": "og_airfield01"
-          }
-        },
-        {
-          "missionMarkAsCaptureZone": {
+          },
+          {
             "army": 0,
             "name_for_respawn_base": "",
             "timeMultiplier": 1.0,
@@ -289,10 +185,8 @@
             "canCaptureOnGround": true,
             "canCaptureInAir": false,
             "airfield": "og_airfield03"
-          }
-        },
-        {
-          "missionMarkAsCaptureZone": {
+          },
+          {
             "army": 0,
             "name_for_respawn_base": "",
             "timeMultiplier": 1.0,
@@ -302,30 +196,26 @@
             "canCaptureInAir": false,
             "airfield": "og_airfield02"
           }
+        ],
+        "unitSetProperties": {
+          "object": [
+            "t1_spawn_def_sq",
+            "t2_spawn_def_sq"
+          ],
+          "accuracy": 0.6,
+          "effShootingRate": 0.6
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_spawn_def_sq"
-            },
-            {
-              "object": "t2_spawn_def_sq"
-            },
-            {
-              "accuracy": 0.6
-            },
-            {
-              "effShootingRate": 0.6
-            }
-          ]
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+        "missionMarkAsRespawnPoint": [
+          {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
             "isAirfield": true,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -338,15 +228,17 @@
             "tags": {
               "tank": false
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
             "isAirfield": true,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -360,9 +252,9 @@
               "tank": false
             }
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -378,87 +270,159 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "objectGroups": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
         "name": "t1_airfield",
         "tm": [
-          [-0.976296,0.0,-0.21644],
-          [0.0,1.0,0.0],
-          [0.21644,0.0,-0.976296],
-          [-3318.35,-7.3,-9222.4]
+          [
+            -0.976296,
+            0.0,
+            -0.21644
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.21644,
+            0.0,
+            -0.976296
+          ],
+          [
+            -3318.35,
+            -7.3,
+            -9222.4
+          ]
         ],
         "unit_class": "dynAF_stalingrad_dirt1_ally",
         "props": {
           "army": 1,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "t2_airfield",
         "tm": [
-          [0.953717,0.0,0.300706],
-          [0.0,1.0,0.0],
-          [-0.300706,0.0,0.953717],
-          [8389.45,3.9984,-6643.65]
+          [
+            0.953717,
+            0.0,
+            0.300706
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.300706,
+            0.0,
+            0.953717
+          ],
+          [
+            8389.45,
+            3.9984,
+            -6643.65
+          ]
         ],
         "unit_class": "dynAF_stalingrad_dirt1_ally",
         "props": {
           "army": 2,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "og_airfield01",
         "tm": [
-          [1.0,0.0,5.36442e-07],
-          [0.0,1.0,0.0],
-          [-5.36442e-07,0.0,1.0],
-          [978.4,3.9984,-11344.2]
+          [
+            1.0,
+            0.0,
+            5.36442E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -5.36442E-07,
+            0.0,
+            1.0
+          ],
+          [
+            978.4,
+            3.9984,
+            -11344.2
+          ]
         ],
         "unit_class": "dynAF_kh_gol_airfield_gumrak",
         "props": {
           "army": 0,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "og_airfield02",
         "tm": [
-          [0.5373,0.0,-0.843391],
-          [0.0,1.0,0.0],
-          [0.843391,0.0,0.5373],
-          [2794.3,3.9984,-7720.8]
+          [
+            0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            2794.3,
+            3.9984,
+            -7720.8
+          ]
         ],
         "unit_class": "dynAF_kh_gol_airfield_gumrak",
         "props": {
           "army": 0,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "og_airfield03",
         "tm": [
-          [-1.0,0.0,1.78814e-07],
-          [0.0,1.0,0.0],
-          [-1.78814e-07,0.0,-1.0],
-          [4281.2,3.9984,-4089.8]
+          [
+            -1.0,
+            0.0,
+            1.78814E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.78814E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            4281.2,
+            3.9984,
+            -4089.8
+          ]
         ],
         "unit_class": "dynAF_kh_gol_airfield_gumrak",
         "props": {
@@ -466,15 +430,31 @@
           "active": true
         }
       }
-    },
-    {
-      "armada": {
+    ],
+    "armada": [
+      {
         "name": "t1_player01",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-4603.3,427.1,-12958.2]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -4603.3,
+            427.1,
+            -12958.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -507,17 +487,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player02",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-4853.5,27.1,-13012.1]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -4853.5,
+            27.1,
+            -13012.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -550,17 +544,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player03",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-5103.7,27.1,-13065.9]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -5103.7,
+            27.1,
+            -13065.9
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -593,17 +601,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player04",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-5353.9,27.1,-13119.8]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -5353.9,
+            27.1,
+            -13119.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -636,17 +658,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player05",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-5604.0,27.1,-13173.6]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -5604.0,
+            27.1,
+            -13173.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -679,17 +715,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player06",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-5854.2,27.1,-13227.5]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -5854.2,
+            27.1,
+            -13227.5
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -722,17 +772,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player07",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-6104.4,27.1,-13281.3]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -6104.4,
+            27.1,
+            -13281.3
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -765,17 +829,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player08",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [-6354.5,27.1,-13335.2]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            -6354.5,
+            27.1,
+            -13335.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -808,17 +886,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player01",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [21187.7,454.25,-1405.05]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            21187.7,
+            454.25,
+            -1405.05
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -851,17 +943,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player02",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [21365.8,454.25,-1559.45]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            21365.8,
+            454.25,
+            -1559.45
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -894,17 +1000,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player03",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [21543.7,454.25,-1713.95]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            21543.7,
+            454.25,
+            -1713.95
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -937,17 +1057,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player04",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [21721.8,454.25,-1868.35]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            21721.8,
+            454.25,
+            -1868.35
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -980,17 +1114,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player05",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [21899.8,454.25,-2022.75]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            21899.8,
+            454.25,
+            -2022.75
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1023,17 +1171,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player06",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [22077.9,454.25,-2177.15]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            22077.9,
+            454.25,
+            -2177.15
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1066,17 +1228,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player07",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [22255.9,454.25,-2331.55]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            22255.9,
+            454.25,
+            -2331.55
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1109,17 +1285,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player08",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [22434.0,454.25,-2486.05]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            22434.0,
+            454.25,
+            -2486.05
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1152,17 +1342,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player09",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [16554.4,27.1,4870.2]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            16554.4,
+            27.1,
+            4870.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1195,17 +1399,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player10",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [16375.1,27.1,4870.2]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            16375.1,
+            27.1,
+            4870.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1238,17 +1456,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player11",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [16230.5,27.1,4816.1]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            16230.5,
+            27.1,
+            4816.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1281,17 +1513,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player12",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [16085.9,27.1,4762.0]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            16085.9,
+            27.1,
+            4762.0
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1324,17 +1570,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player13",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [15941.4,27.1,4707.9]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            15941.4,
+            27.1,
+            4707.9
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1367,17 +1627,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player14",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [15796.8,27.1,4653.8]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            15796.8,
+            27.1,
+            4653.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1410,17 +1684,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player15",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [15652.3,27.1,4599.7]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            15652.3,
+            27.1,
+            4599.7
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1453,17 +1741,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player16",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [15507.7,27.1,4545.6]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            15507.7,
+            27.1,
+            4545.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1496,17 +1798,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player17",
         "tm": [
-          [-0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,-0.130526],
-          [15407.7,27.1,4145.6]
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            15407.7,
+            27.1,
+            4145.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1540,17 +1856,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player09",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19127.4,27.1,22788.5]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19127.4,
+            27.1,
+            22788.5
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1583,17 +1913,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player10",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19168.8,27.1,22762.4]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19168.8,
+            27.1,
+            22762.4
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1626,17 +1970,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player11",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19210.2,27.1,22736.4]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19210.2,
+            27.1,
+            22736.4
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1669,17 +2027,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player12",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19251.6,27.1,22710.3]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19251.6,
+            27.1,
+            22710.3
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1712,17 +2084,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player13",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19293.0,27.1,22684.3]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19293.0,
+            27.1,
+            22684.3
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1755,17 +2141,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player14",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19334.4,27.1,22658.2]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19334.4,
+            27.1,
+            22658.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1798,17 +2198,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player15",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19375.8,27.1,22632.2]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19375.8,
+            27.1,
+            22632.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1841,17 +2255,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player16",
         "tm": [
-          [0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843391],
-          [19435.4,27.1,22589.0]
+          [
+            0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            19435.4,
+            27.1,
+            22589.0
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1884,17 +2312,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "t1_spawn_big_def05",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-2981.95,20.0,-9243.6]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -2981.95,
+            20.0,
+            -9243.6
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -1912,22 +2356,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_def02",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-2727.1,21.65,-9043.7]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -2727.1,
+            21.65,
+            -9043.7
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -1945,22 +2409,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_def03",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-2709.4,18.65,-9217.7]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -2709.4,
+            18.65,
+            -9217.7
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -1978,22 +2462,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_def04",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-3895.85,-2.0,-9294.05]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -3895.85,
+            -2.0,
+            -9294.05
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2011,22 +2515,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_big_def03",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-3483.05,18.55,-9159.95]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -3483.05,
+            18.55,
+            -9159.95
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2044,22 +2568,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_def06",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-3595.75,20.6,-9373.6]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -3595.75,
+            20.6,
+            -9373.6
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2077,22 +2621,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_big_def04",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-2672.45,-11.0,-8965.95]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -2672.45,
+            -11.0,
+            -8965.95
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2110,22 +2674,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_def01",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-2963.8,-11.0,-9064.19]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -2963.8,
+            -11.0,
+            -9064.19
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2143,22 +2727,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_def05",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-2770.31,-11.0,-8920.88]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -2770.31,
+            -11.0,
+            -8920.88
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2176,22 +2780,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_big_def02",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-3249.3,21.95,-9317.15]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -3249.3,
+            21.95,
+            -9317.15
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2209,22 +2833,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_spawn_big_def01",
         "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-3124.1,18.55,-9017.75]
+          [
+            -0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            -0.906308
+          ],
+          [
+            -3124.1,
+            18.55,
+            -9017.75
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
@@ -2242,22 +2886,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_def04",
         "tm": [
-          [0.887011,0.0,-0.461748],
-          [0.0,1.0,0.0],
-          [0.461748,0.0,0.887011],
-          [8582.8,20.95,-6661.9]
+          [
+            0.887011,
+            0.0,
+            -0.461748
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.461748,
+            0.0,
+            0.887011
+          ],
+          [
+            8582.8,
+            20.95,
+            -6661.9
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2275,22 +2939,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_def01",
         "tm": [
-          [0.887011,0.0,-0.461748],
-          [0.0,1.0,0.0],
-          [0.461748,0.0,0.887011],
-          [8598.35,-520.55,-6351.4]
+          [
+            0.887011,
+            0.0,
+            -0.461748
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.461748,
+            0.0,
+            0.887011
+          ],
+          [
+            8598.35,
+            -520.55,
+            -6351.4
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2308,22 +2992,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_def05",
         "tm": [
-          [0.887011,0.0,-0.461748],
-          [0.0,1.0,0.0],
-          [0.461748,0.0,0.887011],
-          [7978.1,20.95,-6589.6]
+          [
+            0.887011,
+            0.0,
+            -0.461748
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.461748,
+            0.0,
+            0.887011
+          ],
+          [
+            7978.1,
+            20.95,
+            -6589.6
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2341,22 +3045,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_def03",
         "tm": [
-          [0.887011,0.0,-0.461748],
-          [0.0,1.0,0.0],
-          [0.461748,0.0,0.887011],
-          [8767.65,20.95,-6610.35]
+          [
+            0.887011,
+            0.0,
+            -0.461748
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.461748,
+            0.0,
+            0.887011
+          ],
+          [
+            8767.65,
+            20.95,
+            -6610.35
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2374,22 +3098,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_def06",
         "tm": [
-          [0.887011,0.0,-0.461748],
-          [0.0,1.0,0.0],
-          [0.461748,0.0,0.887011],
-          [7789.6,20.95,-6701.2]
+          [
+            0.887011,
+            0.0,
+            -0.461748
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.461748,
+            0.0,
+            0.887011
+          ],
+          [
+            7789.6,
+            20.95,
+            -6701.2
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2407,22 +3151,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_def02",
         "tm": [
-          [0.887011,0.0,-0.461748],
-          [0.0,1.0,0.0],
-          [0.461748,0.0,0.887011],
-          [8928.65,18.8,-6401.3]
+          [
+            0.887011,
+            0.0,
+            -0.461748
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.461748,
+            0.0,
+            0.887011
+          ],
+          [
+            8928.65,
+            18.8,
+            -6401.3
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2440,22 +3204,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_big_def04",
         "tm": [
-          [0.819152,0.0,-0.573577],
-          [0.0,1.0,0.0],
-          [0.573577,0.0,0.819152],
-          [8975.5,24.5,-6549.1]
+          [
+            0.819152,
+            0.0,
+            -0.573577
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573577,
+            0.0,
+            0.819152
+          ],
+          [
+            8975.5,
+            24.5,
+            -6549.1
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2473,22 +3257,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_big_def01",
         "tm": [
-          [0.819152,0.0,-0.573577],
-          [0.0,1.0,0.0],
-          [0.573577,0.0,0.819152],
-          [8634.9,23.3,-6488.95]
+          [
+            0.819152,
+            0.0,
+            -0.573577
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573577,
+            0.0,
+            0.819152
+          ],
+          [
+            8634.9,
+            23.3,
+            -6488.95
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2506,22 +3310,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_big_def02",
         "tm": [
-          [0.819152,0.0,-0.573577],
-          [0.0,1.0,0.0],
-          [0.573577,0.0,0.819152],
-          [8189.25,29.1,-6613.55]
+          [
+            0.819152,
+            0.0,
+            -0.573577
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573577,
+            0.0,
+            0.819152
+          ],
+          [
+            8189.25,
+            29.1,
+            -6613.55
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2539,22 +3363,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_big_def05",
         "tm": [
-          [0.819152,0.0,-0.573577],
-          [0.0,1.0,0.0],
-          [0.573577,0.0,0.819152],
-          [7885.85,18.2,-7024.1]
+          [
+            0.819152,
+            0.0,
+            -0.573577
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573577,
+            0.0,
+            0.819152
+          ],
+          [
+            7885.85,
+            18.2,
+            -7024.1
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2572,22 +3416,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_spawn_big_def03",
         "tm": [
-          [0.819152,0.0,-0.573577],
-          [0.0,1.0,0.0],
-          [0.573577,0.0,0.819152],
-          [8182.3,20.95,-6791.2]
+          [
+            0.819152,
+            0.0,
+            -0.573577
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573577,
+            0.0,
+            0.819152
+          ],
+          [
+            8182.3,
+            20.95,
+            -6791.2
+          ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -2605,372 +3469,522 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "t1_spawn_def_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3554.45,212.35,-9190.45]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3554.45,
+            212.35,
+            -9190.45
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "t1_spawn_def01"
-          },
-          {
-            "squad_members": "t1_spawn_def02"
-          },
-          {
-            "squad_members": "t1_spawn_def03"
-          },
-          {
-            "squad_members": "t1_spawn_def04"
-          },
-          {
-            "squad_members": "t1_spawn_def05"
-          },
-          {
-            "squad_members": "t1_spawn_def06"
-          },
-          {
-            "squad_members": "t1_spawn_big_def01"
-          },
-          {
-            "squad_members": "t1_spawn_big_def02"
-          },
-          {
-            "squad_members": "t1_spawn_big_def03"
-          },
-          {
-            "squad_members": "t1_spawn_big_def04"
-          },
-          {
-            "squad_members": "t1_spawn_big_def05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "t1_spawn_def01",
+            "t1_spawn_def02",
+            "t1_spawn_def03",
+            "t1_spawn_def04",
+            "t1_spawn_def05",
+            "t1_spawn_def06",
+            "t1_spawn_big_def01",
+            "t1_spawn_big_def02",
+            "t1_spawn_big_def03",
+            "t1_spawn_big_def04",
+            "t1_spawn_big_def05"
+          ]
+        }
+      },
+      {
         "name": "t2_spawn_def_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2172.4,212.35,-2988.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2172.4,
+            212.35,
+            -2988.35
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "t2_spawn_def01"
-          },
-          {
-            "squad_members": "t2_spawn_def02"
-          },
-          {
-            "squad_members": "t2_spawn_def03"
-          },
-          {
-            "squad_members": "t2_spawn_def04"
-          },
-          {
-            "squad_members": "t2_spawn_def05"
-          },
-          {
-            "squad_members": "t2_spawn_def06"
-          },
-          {
-            "squad_members": "t2_spawn_big_def01"
-          },
-          {
-            "squad_members": "t2_spawn_big_def02"
-          },
-          {
-            "squad_members": "t2_spawn_big_def03"
-          },
-          {
-            "squad_members": "t2_spawn_big_def04"
-          },
-          {
-            "squad_members": "t2_spawn_big_def05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "t2_spawn_def01",
+            "t2_spawn_def02",
+            "t2_spawn_def03",
+            "t2_spawn_def04",
+            "t2_spawn_def05",
+            "t2_spawn_def06",
+            "t2_spawn_big_def01",
+            "t2_spawn_big_def02",
+            "t2_spawn_big_def03",
+            "t2_spawn_big_def04",
+            "t2_spawn_big_def05"
+          ]
+        }
+      },
+      {
         "name": "t1_players_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6281.15,84.35,-5689.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6281.15,
+            84.35,
+            -5689.2
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "t1_player01"
-          },
-          {
-            "squad_members": "t1_player02"
-          },
-          {
-            "squad_members": "t1_player03"
-          },
-          {
-            "squad_members": "t1_player04"
-          },
-          {
-            "squad_members": "t1_player05"
-          },
-          {
-            "squad_members": "t1_player06"
-          },
-          {
-            "squad_members": "t1_player07"
-          },
-          {
-            "squad_members": "t1_player08"
-          },
-          {
-            "squad_members": "t1_player09"
-          },
-          {
-            "squad_members": "t1_player10"
-          },
-          {
-            "squad_members": "t1_player11"
-          },
-          {
-            "squad_members": "t1_player12"
-          },
-          {
-            "squad_members": "t1_player13"
-          },
-          {
-            "squad_members": "t1_player14"
-          },
-          {
-            "squad_members": "t1_player15"
-          },
-          {
-            "squad_members": "t1_player16"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "t1_player01",
+            "t1_player02",
+            "t1_player03",
+            "t1_player04",
+            "t1_player05",
+            "t1_player06",
+            "t1_player07",
+            "t1_player08",
+            "t1_player09",
+            "t1_player10",
+            "t1_player11",
+            "t1_player12",
+            "t1_player13",
+            "t1_player14",
+            "t1_player15",
+            "t1_player16"
+          ]
+        }
+      },
+      {
         "name": "t2_players_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7424.15,84.35,-5562.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            7424.15,
+            84.35,
+            -5562.0
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "t2_player01"
-          },
-          {
-            "squad_members": "t2_player02"
-          },
-          {
-            "squad_members": "t2_player03"
-          },
-          {
-            "squad_members": "t2_player04"
-          },
-          {
-            "squad_members": "t2_player05"
-          },
-          {
-            "squad_members": "t2_player06"
-          },
-          {
-            "squad_members": "t2_player07"
-          },
-          {
-            "squad_members": "t2_player08"
-          },
-          {
-            "squad_members": "t2_player09"
-          },
-          {
-            "squad_members": "t2_player10"
-          },
-          {
-            "squad_members": "t2_player11"
-          },
-          {
-            "squad_members": "t2_player12"
-          },
-          {
-            "squad_members": "t2_player13"
-          },
-          {
-            "squad_members": "t2_player14"
-          },
-          {
-            "squad_members": "t2_player15"
-          },
-          {
-            "squad_members": "t2_player16"
-          }
-        ]
+        "props": {
+          "squad_members": [
+            "t2_player01",
+            "t2_player02",
+            "t2_player03",
+            "t2_player04",
+            "t2_player05",
+            "t2_player06",
+            "t2_player07",
+            "t2_player08",
+            "t2_player09",
+            "t2_player10",
+            "t2_player11",
+            "t2_player12",
+            "t2_player13",
+            "t2_player14",
+            "t2_player15",
+            "t2_player16"
+          ]
+        }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "area_02": {
       "type": "Sphere",
       "tm": [
-        [1369.7,0.0,0.0],
-        [0.0,1369.7,0.0],
-        [0.0,0.0,1369.7],
-        [-3171.45,160.0,1169.05]
+        [
+          1369.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1369.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1369.7
+        ],
+        [
+          -3171.45,
+          160.0,
+          1169.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_03": {
       "type": "Sphere",
       "tm": [
-        [909.0,0.0,0.0],
-        [0.0,909.0,0.0],
-        [0.0,0.0,909.0],
-        [-11801.8,187.0,2283.65]
+        [
+          909.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          909.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          909.0
+        ],
+        [
+          -11801.8,
+          187.0,
+          2283.65
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_04": {
       "type": "Sphere",
       "tm": [
-        [1214.9,0.0,0.0],
-        [0.0,1214.9,0.0],
-        [0.0,0.0,1214.9],
-        [-14369.7,240.3,11130.0]
+        [
+          1214.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1214.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1214.9
+        ],
+        [
+          -14369.7,
+          240.3,
+          11130.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_05": {
       "type": "Sphere",
       "tm": [
-        [11276.3,0.0,-4104.24],
-        [0.0,12000.0,0.0],
-        [4104.24,0.0,11276.3],
-        [2647.3,262.45,-7810.35]
+        [
+          11276.3,
+          0.0,
+          -4104.24
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          4104.24,
+          0.0,
+          11276.3
+        ],
+        [
+          2647.3,
+          262.45,
+          -7810.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_06": {
       "type": "Sphere",
       "tm": [
-        [1037.5,0.0,0.0],
-        [0.0,1037.5,0.0],
-        [0.0,0.0,1037.5],
-        [-24774.4,142.636,7403.5]
+        [
+          1037.5,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1037.5,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1037.5
+        ],
+        [
+          -24774.4,
+          142.636,
+          7403.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_07": {
       "type": "Sphere",
       "tm": [
-        [992.0,0.0,0.0],
-        [0.0,992.0,0.0],
-        [0.0,0.0,992.0],
-        [-26208.9,211.9,-4307.0]
+        [
+          992.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          992.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          992.0
+        ],
+        [
+          -26208.9,
+          211.9,
+          -4307.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_08": {
       "type": "Sphere",
       "tm": [
-        [7810.37,0.0,1731.52],
-        [0.0,8000.0,0.0],
-        [-1731.52,0.0,7810.37],
-        [2647.3,262.45,-7810.35]
+        [
+          7810.37,
+          0.0,
+          1731.52
+        ],
+        [
+          0.0,
+          8000.0,
+          0.0
+        ],
+        [
+          -1731.52,
+          0.0,
+          7810.37
+        ],
+        [
+          2647.3,
+          262.45,
+          -7810.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_09": {
       "type": "Sphere",
       "tm": [
-        [6000.0,0.0,1195.57],
-        [0.0,6000.0,0.0],
-        [-1195.57,0.0,6000.0],
-        [-3247.73,107.6,-9194.9]
+        [
+          6000.0,
+          0.0,
+          1195.57
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          -1195.57,
+          0.0,
+          6000.0
+        ],
+        [
+          -3247.73,
+          107.6,
+          -9194.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "capture_zone01": {
       "type": "Sphere",
       "tm": [
-        [435.152,0.0,1195.57],
-        [0.0,1272.3,0.0],
-        [-1195.57,0.0,435.152],
-        [1320.5,107.6,-11486.0]
+        [
+          435.152,
+          0.0,
+          1195.57
+        ],
+        [
+          0.0,
+          1272.3,
+          0.0
+        ],
+        [
+          -1195.57,
+          0.0,
+          435.152
+        ],
+        [
+          1320.5,
+          107.6,
+          -11486.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "capture_zone02": {
       "type": "Box",
       "tm": [
-        [338.563,0.0,176.245],
-        [0.0,254.46,0.0],
-        [-452.361,0.0,868.978],
-        [2685.85,2.7,-7886.2]
+        [
+          338.563,
+          0.0,
+          176.245
+        ],
+        [
+          0.0,
+          254.46,
+          0.0
+        ],
+        [
+          -452.361,
+          0.0,
+          868.978
+        ],
+        [
+          2685.85,
+          2.7,
+          -7886.2
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "area_12": {
       "type": "Sphere",
       "tm": [
-        [435.152,0.0,1195.57],
-        [0.0,1272.3,0.0],
-        [-1195.57,0.0,435.152],
-        [8476.25,107.6,-6536.81]
+        [
+          435.152,
+          0.0,
+          1195.57
+        ],
+        [
+          0.0,
+          1272.3,
+          0.0
+        ],
+        [
+          -1195.57,
+          0.0,
+          435.152
+        ],
+        [
+          8476.25,
+          107.6,
+          -6536.81
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "capture_zone03": {
       "type": "Sphere",
       "tm": [
-        [435.152,0.0,1195.57],
-        [0.0,1272.3,0.0],
-        [-1195.57,0.0,435.152],
-        [4011.8,107.6,-3880.45]
+        [
+          435.152,
+          0.0,
+          1195.57
+        ],
+        [
+          0.0,
+          1272.3,
+          0.0
+        ],
+        [
+          -1195.57,
+          0.0,
+          435.152
+        ],
+        [
+          4011.8,
+          107.6,
+          -3880.45
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

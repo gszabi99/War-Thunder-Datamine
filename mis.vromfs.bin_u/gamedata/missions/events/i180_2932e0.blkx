@@ -16,7 +16,11 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "hideDamageFromPlayer": true,
       "requiredPackage": "pkg_main",
       "reqFeature": "i180Spring2019DiagnosticsPreset07",
@@ -80,7 +84,7 @@
         "airToAirMissileDetection": false
       }
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -89,35 +93,25 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "airfield00",
               "lookAt": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "airfield",
               "side": "ally",
               "target": "airfield01"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -134,7 +128,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -149,34 +143,50 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varSetInt": {
           "value": 7,
           "var": "preset_id"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "armada": {
       "name": "armada_01",
       "tm": [
-        [0.488996,0.0,0.872286],
-        [0.0,1.0,0.0],
-        [-0.872286,0.0,0.488996],
-        [8171.85,212.2,10492.3]
+        [
+          0.488996,
+          0.0,
+          0.872286
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.872286,
+          0.0,
+          0.488996
+        ],
+        [
+          8171.85,
+          212.2,
+          10492.3
+        ]
       ],
       "unit_class": "i_180",
       "closed_waypoints": false,
@@ -211,62 +221,104 @@
           "task": "FLY_WAYPOINT"
         }
       },
-      "way": []
+      "way": {}
     }
   },
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [-18.382,0.0,229.565],
-        [0.0,230.3,0.0],
-        [-229.565,0.0,-18.382],
-        [8172.95,210.5,10492.0]
+        [
+          -18.382,
+          0.0,
+          229.565
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -229.565,
+          0.0,
+          -18.382
+        ],
+        [
+          8172.95,
+          210.5,
+          10492.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [-18.382,0.0,229.565],
-        [0.0,230.3,0.0],
-        [-229.565,0.0,-18.382],
-        [8557.4,210.5,11224.0]
+        [
+          -18.382,
+          0.0,
+          229.565
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -229.565,
+          0.0,
+          -18.382
+        ],
+        [
+          8557.4,
+          210.5,
+          11224.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [-6.10606,0.0,76.2559],
-        [0.0,76.5,0.0],
-        [-76.2559,0.0,-6.10606],
-        [8169.8,210.45,10492.4]
+        [
+          -6.10606,
+          0.0,
+          76.2559
+        ],
+        [
+          0.0,
+          76.5,
+          0.0
+        ],
+        [
+          -76.2559,
+          0.0,
+          -6.10606
+        ],
+        [
+          8169.8,
+          210.45,
+          10492.4
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

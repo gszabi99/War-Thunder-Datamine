@@ -1,396 +1,260 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_chargemount_01"
-      },
-      {
-        "node": "depth_chargemount_02"
-      },
-      {
-        "node": "depth_chargemount_03"
-      },
-      {
-        "node": "depth_chargemount_05"
-      },
-      {
-        "node": "depth_chargemount_06"
-      },
-      {
-        "node": "depth_chargemount_07"
-      },
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      },
-      {
-        "node": "depth_charge_07"
-      },
-      {
-        "node": "holder_01"
-      },
-      {
-        "node": "holder_02"
-      },
-      {
-        "node": "holder_03"
-      },
-      {
-        "node": "holder_05"
-      },
-      {
-        "node": "holder_06"
-      },
-      {
-        "node": "holder_07"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_chargemount_01",
+      "depth_chargemount_02",
+      "depth_chargemount_03",
+      "depth_chargemount_05",
+      "depth_chargemount_06",
+      "depth_chargemount_07",
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07",
+      "holder_01",
+      "holder_02",
+      "holder_03",
+      "holder_05",
+      "holder_06",
+      "holder_07"
     ]
   },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner12"
+  "Weapon": [
+    {
+      "trigger": "gunner12",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 4,
+      "useEmitter": true,
+      "emitterGenRange": [
+        1,
+        2
+      ],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": [
+        "tt_01_dm",
+        "tt_01_dm"
+      ],
+      "brokenBarrelAllowShoot": [
+        false,
+        false
+      ],
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_01",
+        "gun": "tt_01",
+        "gunnerDm": "tt_01_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
+      "limits": {
+        "yaw": [
+          0.0,
+          145.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_01"
-      },
-      {
-        "bullets": 4
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitterGenRange": [1.0,2.0]
-      },
-      {
-        "emitterGenFmt": "bone_torpedo_%02d"
-      },
-      {
-        "ammoDpGenFmt": "torpedo_%02d_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [4.0,0.0,0.0]
-      },
-      {
-        "startSpeed": 18.0
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 40.0
-      },
-      {
-        "turret": {
-          "head": "tt_head_01",
-          "gun": "tt_01",
-          "gunnerDm": "tt_01_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,145.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [0.0,40.0],
-          "pitch": [0.0,0.0]
-        }
+      "limitsDeadzone": {
+        "yaw": [
+          0.0,
+          40.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner13"
+    },
+    {
+      "trigger": "gunner13",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk",
+      "emitter": "bone_torpedo_03",
+      "bullets": 4,
+      "useEmitter": true,
+      "emitterGenRange": [
+        3,
+        4
+      ],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": [
+        "tt_02_dm",
+        "tt_02_dm"
+      ],
+      "brokenBarrelAllowShoot": [
+        false,
+        false
+      ],
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_02",
+        "gun": "tt_02",
+        "gunnerDm": "tt_02_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
+      "limits": {
+        "yaw": [
+          -145.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_03"
-      },
-      {
-        "bullets": 4
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitterGenRange": [3.0,4.0]
-      },
-      {
-        "emitterGenFmt": "bone_torpedo_%02d"
-      },
-      {
-        "ammoDpGenFmt": "torpedo_%02d_dm"
-      },
-      {
-        "barrelDP": "tt_02_dm"
-      },
-      {
-        "barrelDP": "tt_02_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [4.0,0.0,0.0]
-      },
-      {
-        "startSpeed": 18.0
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 40.0
-      },
-      {
-        "turret": {
-          "head": "tt_head_02",
-          "gun": "tt_02",
-          "gunnerDm": "tt_02_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [-145.0,0.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-40.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limitsDeadzone": {
+        "yaw": [
+          -40.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner14"
+    },
+    {
+      "trigger": "gunner14",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk",
+      "emitter": "bone_torpedo_05",
+      "bullets": 4,
+      "useEmitter": true,
+      "emitterGenRange": [
+        5,
+        6
+      ],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": [
+        "tt_03_dm",
+        "tt_03_dm"
+      ],
+      "brokenBarrelAllowShoot": [
+        false,
+        false
+      ],
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_03",
+        "gun": "tt_03",
+        "gunnerDm": "tt_03_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
+      "limits": {
+        "yaw": [
+          0.0,
+          137.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_05"
-      },
-      {
-        "bullets": 4
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitterGenRange": [5.0,6.0]
-      },
-      {
-        "emitterGenFmt": "bone_torpedo_%02d"
-      },
-      {
-        "ammoDpGenFmt": "torpedo_%02d_dm"
-      },
-      {
-        "barrelDP": "tt_03_dm"
-      },
-      {
-        "barrelDP": "tt_03_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [4.0,0.0,0.0]
-      },
-      {
-        "startSpeed": 18.0
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 40.0
-      },
-      {
-        "turret": {
-          "head": "tt_head_03",
-          "gun": "tt_03",
-          "gunnerDm": "tt_03_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,137.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [0.0,37.0],
-          "pitch": [0.0,0.0]
-        }
+      "limitsDeadzone": {
+        "yaw": [
+          0.0,
+          37.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner15"
+    },
+    {
+      "trigger": "gunner15",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk",
+      "emitter": "bone_torpedo_07",
+      "bullets": 4,
+      "useEmitter": true,
+      "emitterGenRange": [
+        7,
+        8
+      ],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": [
+        "tt_04_dm",
+        "tt_04_dm"
+      ],
+      "brokenBarrelAllowShoot": [
+        false,
+        false
+      ],
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_04",
+        "gun": "tt_04",
+        "gunnerDm": "tt_04_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
+      "limits": {
+        "yaw": [
+          -137.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/jp_610mm_type8_no2_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_07"
-      },
-      {
-        "bullets": 4
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitterGenRange": [7.0,8.0]
-      },
-      {
-        "emitterGenFmt": "bone_torpedo_%02d"
-      },
-      {
-        "ammoDpGenFmt": "torpedo_%02d_dm"
-      },
-      {
-        "barrelDP": "tt_04_dm"
-      },
-      {
-        "barrelDP": "tt_04_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [4.0,0.0,0.0]
-      },
-      {
-        "startSpeed": 18.0
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 40.0
-      },
-      {
-        "turret": {
-          "head": "tt_head_04",
-          "gun": "tt_04",
-          "gunnerDm": "tt_04_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [-137.0,0.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-37.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limitsDeadzone": {
+        "yaw": [
+          -37.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner16",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -409,13 +273,17 @@
         "gun": "gun_01"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner17",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -434,9 +302,15 @@
         "gun": "gun_02"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

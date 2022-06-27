@@ -5,123 +5,91 @@
     "pos": "-sw,sh-h-1@bh",
     "background-image": "#ui/gameuiskin#optionlist_background_down.png"
   },
-  "root": [
-    {
-      "menutitle": {
-        "id": "menu-title"
-      }
+  "root": {
+    "menutitle": {
+      "id": "menu-title"
     },
-    {
-      "tdiv": {
+    "tdiv": [
+      {
         "id": "bg_picture_container",
         "size": "sw, sh",
         "position": "root",
         "background-color": "@black",
-        "tdiv": [
-          {
-            "pos": "50%sw-50%w,50%sh-50%h"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "size": "2.333sh, sh"
-          },
-          {
-            "overflow": "hidden"
-          },
-          {
-            "tdiv": {
+        "tdiv": {
+          "pos": "50%sw-50%w,50%sh-50%h",
+          "position": "absolute",
+          "size": "2.333sh, sh",
+          "overflow": "hidden",
+          "tdiv": [
+            {
               "id": "animated_bg_picture",
               "pos": "pw/2-w/2, ph/2-h/2",
               "position": "absolute",
               "size": "2.5sh, sh",
               "behaviour": "multiLayerImage",
               "blend-time": "500"
-            }
-          },
-          {
-            "tdiv": {
+            },
+            {
               "size": "0.333sh, sh",
               "pos": "-w/2, 0",
               "position": "absolute",
               "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss.png",
               "background-color": "@black"
-            }
-          },
-          {
-            "tdiv": {
+            },
+            {
               "size": "0.333sh, sh",
               "pos": "pw -w/2, 0",
               "position": "absolute",
               "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss.png",
               "background-color": "@black"
             }
-          }
-        ]
-      }
-    },
-    {
-      "tdiv": [
-        {
-          "min-width": "0.35*@sf"
-        },
-        {
-          "height": "sh"
-        },
-        {
-          "pos": "@bw + 10%@rw, 0"
-        },
-        {
-          "position": "absolute"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "ShadeDiv": {
+          ]
+        }
+      },
+      {
+        "min-width": "0.35*@sf",
+        "height": "sh",
+        "pos": "@bw + 10%@rw, 0",
+        "position": "absolute",
+        "flow": "vertical",
+        "ShadeDiv": [
+          {
             "min-width": "0.35*@sf",
             "width": "100%pw",
             "height": "sh - 1@topBarHeight - 1@bottomBarHeight",
             "pos": "50%pw-50%w, 1@topBarHeight",
             "position": "absolute"
-          }
-        },
-        {
-          "ShadeDiv": {
+          },
+          {
             "min-width": "0.33*@sf",
             "width": "pw",
             "height": "1@topBarHeight",
             "pos": "50%pw-50%w, 0",
             "position": "absolute"
-          }
-        },
-        {
-          "ShadeDiv": {
+          },
+          {
             "min-width": "0.33*@sf",
             "width": "pw",
             "height": "1@bottomBarHeight",
             "position": "absolute",
             "pos": "50%pw-50%w, ph - h"
           }
-        },
-        {
-          "Red_shadow_light": {
+        ],
+        "Red_shadow_light": [
+          {
             "pos": "50%pw-50%w, 0",
             "position": "absolute",
             "size": "300%pw, 1@topBarHeight",
             "class": "inverted"
-          }
-        },
-        {
-          "Red_shadow_light": {
+          },
+          {
             "size": "300%pw, 1@bottomBarHeight",
             "position": "absolute",
             "pos": "50%pw-50%w, ph - h"
           }
-        },
-        {
-          "GameLogoPlate": {
+        ],
+        "GameLogoPlate": [
+          {
             "position": "absolute",
             "pos": "50%pw-50%w, -4",
             "size": "90%pw,20%ph",
@@ -152,10 +120,8 @@
                 "padding-left": "0.02@scrn_tgt"
               }
             }
-          }
-        },
-        {
-          "GameLogoPlate": {
+          },
+          {
             "size": "90%pw,15%ph",
             "pos": "50%pw-50%w, 85%ph+4",
             "position": "absolute",
@@ -174,468 +140,376 @@
               }
             }
           }
-        },
-        {
-          "tdiv": [
+        ],
+        "tdiv": {
+          "pos": "50%pw-50%w, 20%ph",
+          "position": "absolute",
+          "size": "90%pw, 65%ph",
+          "padding": "4@dp, 0",
+          "flow": "vertical",
+          "frame": [
             {
-              "pos": "50%pw-50%w, 20%ph"
-            },
-            {
-              "position": "absolute"
-            },
-            {
-              "size": "90%pw, 65%ph"
-            },
-            {
-              "padding": "4@dp, 0"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "frame": [
+              "width": "pw",
+              "flow": "vertical",
+              "input-transparent": "yes",
+              "padding": "1@framePadding",
+              "tdiv": [
                 {
-                  "width": "pw"
-                },
-                {
-                  "flow": "vertical"
-                },
-                {
-                  "input-transparent": "yes"
-                },
-                {
-                  "padding": "1@framePadding"
-                },
-                {
+                  "flow": "vertical",
+                  "width": "pw-0.03@scrn_tgt",
+                  "pos": "50%pw-50%w, 0",
+                  "position": "relative",
                   "tdiv": [
                     {
-                      "flow": "vertical"
-                    },
-                    {
-                      "width": "pw-0.03@scrn_tgt"
-                    },
-                    {
-                      "pos": "50%pw-50%w, 0"
-                    },
-                    {
-                      "position": "relative"
-                    },
-                    {
-                      "tdiv": {
-                        "flow": "vertical",
+                      "flow": "vertical",
+                      "width": "pw",
+                      "text": {
+                        "text": "#mainmenu/login",
+                        "talign": "left",
+                        "padding-left": "5",
+                        "input-transparent": "yes"
+                      },
+                      "EditBox": {
+                        "id": "loginbox_username",
                         "width": "pw",
-                        "text": {
-                          "text": "#mainmenu/login",
-                          "talign": "left",
-                          "padding-left": "5",
-                          "input-transparent": "yes"
-                        },
-                        "EditBox": {
-                          "id": "loginbox_username",
-                          "width": "pw",
-                          "noMargin": "yes",
-                          "ime-title": "#mainmenu/login",
-                          "type": "mail",
-                          "_on_activate": "onDoneEnter",
-                          "on_change_value": "onChangeLogin",
-                          "_on_cancel_edit": "goBack"
-                        }
+                        "noMargin": "yes",
+                        "ime-title": "#mainmenu/login",
+                        "type": "mail",
+                        "_on_activate": "onDoneEnter",
+                        "on_change_value": "onChangeLogin",
+                        "_on_cancel_edit": "goBack"
                       }
                     },
                     {
-                      "tdiv": {
-                        "flow": "vertical",
+                      "flow": "vertical",
+                      "width": "pw",
+                      "text": {
+                        "text": "#mainmenu/password",
+                        "talign": "left",
+                        "padding-left": "5",
+                        "input-transparent": "yes"
+                      },
+                      "EditBox": {
+                        "id": "loginbox_password",
                         "width": "pw",
-                        "text": {
-                          "text": "#mainmenu/password",
-                          "talign": "left",
-                          "padding-left": "5",
-                          "input-transparent": "yes"
-                        },
-                        "EditBox": {
-                          "id": "loginbox_password",
-                          "width": "pw",
-                          "type": "password",
-                          "ime-title": "#mainmenu/password",
-                          "_on_activate": "onDoneEnter",
-                          "_on_cancel_edit": "goBack",
-                          "on_change_value": "setLoginBtnState"
-                        },
-                        "tdiv": [
+                        "type": "password",
+                        "ime-title": "#mainmenu/password",
+                        "_on_activate": "onDoneEnter",
+                        "_on_cancel_edit": "goBack",
+                        "on_change_value": "setLoginBtnState"
+                      },
+                      "tdiv": {
+                        "position": "relative",
+                        "pos": "pw-w-2,0",
+                        "smallFont": "yes",
+                        "text": [
                           {
-                            "position": "relative"
+                            "id": "loginbox_password_caps_indicator",
+                            "overlayTextColor": "warning",
+                            "text-align": "right",
+                            "text": "#mainmenu/password/capslock",
+                            "display": "hide"
                           },
                           {
-                            "pos": "pw-w-2,0"
-                          },
-                          {
-                            "smallFont": "yes"
-                          },
-                          {
-                            "text": {
-                              "id": "loginbox_password_caps_indicator",
-                              "overlayTextColor": "warning",
-                              "text-align": "right",
-                              "text": "#mainmenu/password/capslock",
-                              "display": "hide"
-                            }
-                          },
-                          {
-                            "text": {
-                              "id": "loginbox_password_layout_indicator",
-                              "text": "",
-                              "text-align": "right",
-                              "padding-left": "1@blockInterval"
-                            }
+                            "id": "loginbox_password_layout_indicator",
+                            "text": "",
+                            "text-align": "right",
+                            "padding-left": "1@blockInterval"
                           }
                         ]
                       }
                     },
                     {
+                      "id": "sharding_block",
+                      "width": "90%pw",
+                      "pos": "0, 0.02@scrn_tgt",
+                      "position": "relative",
+                      "textarea": {
+                        "text": "#mainmenu/server",
+                        "style": "paragraph-indent:0;",
+                        "input-transparent": "yes",
+                        "inactive": "yes"
+                      },
                       "tdiv": {
-                        "id": "sharding_block",
-                        "width": "90%pw",
+                        "id": "sharding_dropright_block",
+                        "width": "fw",
+                        "margin-left": "0.032@scrn_tgt",
+                        "class": "circuitDropright"
+                      }
+                    }
+                  ],
+                  "LoginCheckBoxesBlock": {
+                    "id": "login_boxes_block",
+                    "flow": "vertical",
+                    "width": "pw",
+                    "CheckBox": [
+                      {
+                        "id": "loginbox_remote_comp",
+                        "width": "pw",
+                        "pos": "0, 0",
+                        "position": "relative",
+                        "display": "show",
+                        "enable": "yes",
+                        "_on_change_value": "onChangeAutosave",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
+                        "textarea": {
+                          "width": "pw",
+                          "position": "relative",
+                          "pos": "0, 50%ph-50%h",
+                          "style": "wrap-indent:0; paragraph-indent:0;",
+                          "smallFont": "yes",
+                          "text": "#options/remote_device",
+                          "input-transparent": "yes"
+                        },
+                        "CheckBoxImg": {}
+                      },
+                      {
+                        "id": "loginbox_code_remember_this_device",
+                        "width": "pw",
+                        "pos": "0, 0",
+                        "position": "relative",
+                        "display": "hide",
+                        "enable": "no",
+                        "_on_change_value": "onChangeAutosave",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
+                        "textarea": {
+                          "width": "pw",
+                          "position": "relative",
+                          "pos": "0, 50%ph-50%h",
+                          "style": "wrap-indent:0; paragraph-indent:0;",
+                          "smallFont": "yes",
+                          "text": "#options/remember_cur_device",
+                          "input-transparent": "yes"
+                        },
+                        "CheckBoxImg": {}
+                      },
+                      {
+                        "id": "loginbox_autosave_login",
+                        "width": "pw-0.025@scrn_tgt",
                         "pos": "0, 0.02@scrn_tgt",
                         "position": "relative",
+                        "_on_change_value": "onChangeAutosave",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
                         "textarea": {
-                          "text": "#mainmenu/server",
-                          "style": "paragraph-indent:0;",
-                          "input-transparent": "yes",
-                          "inactive": "yes"
+                          "width": "pw",
+                          "position": "relative",
+                          "pos": "0, 50%ph-50%h",
+                          "style": "wrap-indent:0; paragraph-indent:0;",
+                          "smallFont": "yes",
+                          "text": "#mainmenu/saveLogin",
+                          "input-transparent": "yes"
                         },
-                        "tdiv": {
-                          "id": "sharding_dropright_block",
-                          "width": "fw",
-                          "margin-left": "0.032@scrn_tgt",
-                          "class": "circuitDropright"
-                        }
+                        "CheckBoxImg": {}
+                      },
+                      {
+                        "id": "loginbox_autosave_password",
+                        "width": "pw",
+                        "pos": "0, 0.015@scrn_tgt",
+                        "position": "relative",
+                        "_on_change_value": "onChangeAutosave",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
+                        "textarea": {
+                          "id": "loginbox_autosave_password_text",
+                          "width": "pw",
+                          "position": "relative",
+                          "pos": "0, 0.005@sf",
+                          "style": "wrap-indent:0; paragraph-indent:0;",
+                          "smallFont": "yes",
+                          "text": "#mainmenu/savePassword",
+                          "input-transparent": "yes"
+                        },
+                        "CheckBoxImg": {}
+                      },
+                      {
+                        "id": "loginbox_disable_ssl_cert",
+                        "width": "pw",
+                        "pos": "0, 0.015@scrn_tgt",
+                        "position": "relative",
+                        "_on_change_value": "onChangeAutosave",
+                        "display": "hide",
+                        "enable": "no",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
+                        "textarea": {
+                          "width": "pw",
+                          "position": "relative",
+                          "pos": "0, 0.005@sf",
+                          "style": "wrap-indent:0; paragraph-indent:0;",
+                          "smallFont": "yes",
+                          "text": "#mainmenu/disableSSLCert",
+                          "input-transparent": "yes"
+                        },
+                        "CheckBoxImg": {}
+                      },
+                      {
+                        "id": "loginbox_autologin",
+                        "width": "pw",
+                        "pos": "0, 0.015@scrn_tgt",
+                        "position": "relative",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
+                        "textarea": {
+                          "width": "pw",
+                          "position": "relative",
+                          "pos": "0, 50%ph-50%h",
+                          "style": "wrap-indent:0; paragraph-indent:0;",
+                          "smallFont": "yes",
+                          "text": "#options/auto_login",
+                          "input-transparent": "yes"
+                        },
+                        "CheckBoxImg": {}
                       }
+                    ],
+                    "button": [
+                      {
+                        "id": "btn_signUp_link",
+                        "pos": "0, 0.015@scrn_tgt",
+                        "position": "relative",
+                        "text": "#mainmenu/signUp",
+                        "_on_click": "onSignUp",
+                        "noMargin": "yes",
+                        "tfont": "small",
+                        "talign": "left",
+                        "class": "link",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
+                        "focus_border": {},
+                        "underline": {}
+                      },
+                      {
+                        "id": "btn_recovery_link",
+                        "text": "#msgbox/btn_recovery",
+                        "pos": "0, 0.01@scrn_tgt",
+                        "position": "relative",
+                        "noMargin": "yes",
+                        "tfont": "small",
+                        "talign": "left",
+                        "class": "link",
+                        "_on_click": "onForgetPassword",
+                        "btnName": "SpaceA",
+                        "ButtonImg": {},
+                        "focus_border": {},
+                        "underline": {}
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "login_action",
+                  "position": "relative",
+                  "width": "pw",
+                  "padding-top": "2@framePadding",
+                  "class": "authorization",
+                  "Button_text": {
+                    "id": "login_action_button",
+                    "class": "battle",
+                    "navButtonFont": "yes",
+                    "text": "#msgbox/btn_signIn",
+                    "_on_click": "onOk",
+                    "css-hier-invalidate": "yes",
+                    "btnName": "X",
+                    "focusBtnName": "A",
+                    "pattern": {
+                      "type": "bright_texture"
                     },
-                    {
-                      "LoginCheckBoxesBlock": [
-                        {
-                          "id": "login_boxes_block"
-                        },
-                        {
-                          "flow": "vertical"
-                        },
-                        {
-                          "width": "pw"
-                        },
-                        {
-                          "CheckBox": {
-                            "id": "loginbox_remote_comp",
-                            "width": "pw",
-                            "pos": "0, 0",
-                            "position": "relative",
-                            "display": "show",
-                            "enable": "yes",
-                            "_on_change_value": "onChangeAutosave",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "textarea": {
-                              "width": "pw",
-                              "position": "relative",
-                              "pos": "0, 50%ph-50%h",
-                              "style": "wrap-indent:0; paragraph-indent:0;",
-                              "smallFont": "yes",
-                              "text": "#options/remote_device",
-                              "input-transparent": "yes"
-                            },
-                            "CheckBoxImg": []
-                          }
-                        },
-                        {
-                          "CheckBox": {
-                            "id": "loginbox_code_remember_this_device",
-                            "width": "pw",
-                            "pos": "0, 0",
-                            "position": "relative",
-                            "display": "hide",
-                            "enable": "no",
-                            "_on_change_value": "onChangeAutosave",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "textarea": {
-                              "width": "pw",
-                              "position": "relative",
-                              "pos": "0, 50%ph-50%h",
-                              "style": "wrap-indent:0; paragraph-indent:0;",
-                              "smallFont": "yes",
-                              "text": "#options/remember_cur_device",
-                              "input-transparent": "yes"
-                            },
-                            "CheckBoxImg": []
-                          }
-                        },
-                        {
-                          "CheckBox": {
-                            "id": "loginbox_autosave_login",
-                            "width": "pw-0.025@scrn_tgt",
-                            "pos": "0, 0.02@scrn_tgt",
-                            "position": "relative",
-                            "_on_change_value": "onChangeAutosave",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "textarea": {
-                              "width": "pw",
-                              "position": "relative",
-                              "pos": "0, 50%ph-50%h",
-                              "style": "wrap-indent:0; paragraph-indent:0;",
-                              "smallFont": "yes",
-                              "text": "#mainmenu/saveLogin",
-                              "input-transparent": "yes"
-                            },
-                            "CheckBoxImg": []
-                          }
-                        },
-                        {
-                          "CheckBox": {
-                            "id": "loginbox_autosave_password",
-                            "width": "pw",
-                            "pos": "0, 0.015@scrn_tgt",
-                            "position": "relative",
-                            "_on_change_value": "onChangeAutosave",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "textarea": {
-                              "id": "loginbox_autosave_password_text",
-                              "width": "pw",
-                              "position": "relative",
-                              "pos": "0, 0.005@sf",
-                              "style": "wrap-indent:0; paragraph-indent:0;",
-                              "smallFont": "yes",
-                              "text": "#mainmenu/savePassword",
-                              "input-transparent": "yes"
-                            },
-                            "CheckBoxImg": []
-                          }
-                        },
-                        {
-                          "CheckBox": {
-                            "id": "loginbox_disable_ssl_cert",
-                            "width": "pw",
-                            "pos": "0, 0.015@scrn_tgt",
-                            "position": "relative",
-                            "_on_change_value": "onChangeAutosave",
-                            "display": "hide",
-                            "enable": "no",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "textarea": {
-                              "width": "pw",
-                              "position": "relative",
-                              "pos": "0, 0.005@sf",
-                              "style": "wrap-indent:0; paragraph-indent:0;",
-                              "smallFont": "yes",
-                              "text": "#mainmenu/disableSSLCert",
-                              "input-transparent": "yes"
-                            },
-                            "CheckBoxImg": []
-                          }
-                        },
-                        {
-                          "CheckBox": {
-                            "id": "loginbox_autologin",
-                            "width": "pw",
-                            "pos": "0, 0.015@scrn_tgt",
-                            "position": "relative",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "textarea": {
-                              "width": "pw",
-                              "position": "relative",
-                              "pos": "0, 50%ph-50%h",
-                              "style": "wrap-indent:0; paragraph-indent:0;",
-                              "smallFont": "yes",
-                              "text": "#options/auto_login",
-                              "input-transparent": "yes"
-                            },
-                            "CheckBoxImg": []
-                          }
-                        },
-                        {
-                          "button": {
-                            "id": "btn_signUp_link",
-                            "pos": "0, 0.015@scrn_tgt",
-                            "position": "relative",
-                            "text": "#mainmenu/signUp",
-                            "_on_click": "onSignUp",
-                            "noMargin": "yes",
-                            "tfont": "small",
-                            "talign": "left",
-                            "class": "link",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "focus_border": [],
-                            "underline": []
-                          }
-                        },
-                        {
-                          "button": {
-                            "id": "btn_recovery_link",
-                            "text": "#msgbox/btn_recovery",
-                            "pos": "0, 0.01@scrn_tgt",
-                            "position": "relative",
-                            "noMargin": "yes",
-                            "tfont": "small",
-                            "talign": "left",
-                            "class": "link",
-                            "_on_click": "onForgetPassword",
-                            "btnName": "SpaceA",
-                            "ButtonImg": [],
-                            "focus_border": [],
-                            "underline": []
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "tdiv": {
-                    "id": "login_action",
-                    "position": "relative",
-                    "width": "pw",
-                    "padding-top": "2@framePadding",
-                    "class": "authorization",
-                    "Button_text": {
-                      "id": "login_action_button",
-                      "class": "battle",
-                      "navButtonFont": "yes",
-                      "text": "#msgbox/btn_signIn",
-                      "_on_click": "onOk",
-                      "css-hier-invalidate": "yes",
-                      "btnName": "X",
-                      "focusBtnName": "A",
-                      "pattern": {
-                        "type": "bright_texture"
-                      },
-                      "buttonWink": {
-                        "_transp-timer": "0"
-                      },
-                      "buttonGlance": [],
-                      "btnText": {
-                        "text": "#msgbox/btn_signIn"
-                      },
-                      "ButtonImg": []
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "frame": [
-                {
-                  "id": "secondary_auth_block"
-                },
-                {
-                  "margin-top": "1@blockInterval"
-                },
-                {
-                  "width": "pw"
-                },
-                {
-                  "padding": "1@framePadding"
-                },
-                {
-                  "class": "authorization"
-                },
-                {
-                  "flow": "vertical"
-                },
-                {
-                  "Button_text": {
-                    "id": "steam_login_action_button",
-                    "text": "#mainmenu/loginWithSteam",
-                    "css-hier-invalidate": "yes",
-                    "btnName": "LB",
-                    "focusBtnName": "A",
-                    "_on_click": "onSteamAuthorization",
-                    "visualStyle": "secondary",
-                    "buttonWink": [],
-                    "ButtonImg": []
-                  }
-                },
-                {
-                  "Button_text": {
-                    "id": "sso_login_action_button",
-                    "text": "#mainmenu/loginWithSso",
-                    "css-hier-invalidate": "yes",
-                    "btnName": "RB",
-                    "focusBtnName": "A",
-                    "_on_click": "onSsoAuthorization",
-                    "hideText": "yes",
-                    "externalLink": "yes",
-                    "hasConsoleImage": "yes",
-                    "ButtonImg": [],
+                    "buttonWink": {
+                      "_transp-timer": "0"
+                    },
+                    "buttonGlance": {},
                     "btnText": {
-                      "text": "#mainmenu/loginWithSso",
-                      "underline": []
-                    }
+                      "text": "#msgbox/btn_signIn"
+                    },
+                    "ButtonImg": {}
                   }
                 }
               ]
             },
             {
-              "frame": {
-                "margin-top": "1@blockInterval",
-                "size": "pw, fh",
-                "tdiv": [
+              "id": "secondary_auth_block",
+              "margin-top": "1@blockInterval",
+              "width": "pw",
+              "padding": "1@framePadding",
+              "class": "authorization",
+              "flow": "vertical",
+              "Button_text": [
+                {
+                  "id": "steam_login_action_button",
+                  "text": "#mainmenu/loginWithSteam",
+                  "css-hier-invalidate": "yes",
+                  "btnName": "LB",
+                  "focusBtnName": "A",
+                  "_on_click": "onSteamAuthorization",
+                  "visualStyle": "secondary",
+                  "buttonWink": {},
+                  "ButtonImg": {}
+                },
+                {
+                  "id": "sso_login_action_button",
+                  "text": "#mainmenu/loginWithSso",
+                  "css-hier-invalidate": "yes",
+                  "btnName": "RB",
+                  "focusBtnName": "A",
+                  "_on_click": "onSsoAuthorization",
+                  "hideText": "yes",
+                  "externalLink": "yes",
+                  "hasConsoleImage": "yes",
+                  "ButtonImg": {},
+                  "btnText": {
+                    "text": "#mainmenu/loginWithSso",
+                    "underline": {}
+                  }
+                }
+              ]
+            },
+            {
+              "margin-top": "1@blockInterval",
+              "size": "pw, fh",
+              "tdiv": {
+                "id": "links_block",
+                "pos": "0.015@scrn_tgt, 0",
+                "position": "relative",
+                "flow": "vertical",
+                "button": [
                   {
-                    "id": "links_block"
+                    "id": "btn_faq_link",
+                    "text": "#mainmenu/faq",
+                    "on_click": "onMsgLink",
+                    "link": "#url/faq",
+                    "bqKey": "login_page",
+                    "tfont": "small",
+                    "class": "link",
+                    "talign": "left",
+                    "noMargin": "yes",
+                    "btnName": "SpaceA",
+                    "ButtonImg": {},
+                    "focus_border": {},
+                    "underline": {}
                   },
                   {
-                    "pos": "0.015@scrn_tgt, 0"
-                  },
-                  {
-                    "position": "relative"
-                  },
-                  {
-                    "flow": "vertical"
-                  },
-                  {
-                    "button": {
-                      "id": "btn_faq_link",
-                      "text": "#mainmenu/faq",
-                      "on_click": "onMsgLink",
-                      "link": "#url/faq",
-                      "bqKey": "login_page",
-                      "tfont": "small",
-                      "class": "link",
-                      "talign": "left",
-                      "noMargin": "yes",
-                      "btnName": "SpaceA",
-                      "ButtonImg": [],
-                      "focus_border": [],
-                      "underline": []
-                    }
-                  },
-                  {
-                    "button": {
-                      "id": "btn_support_link",
-                      "text": "#mainmenu/support",
-                      "on_click": "onMsgLink",
-                      "link": "#url/support",
-                      "bqKey": "login_page",
-                      "class": "link",
-                      "noMargin": "yes",
-                      "tfont": "small",
-                      "talign": "left",
-                      "btnName": "SpaceA",
-                      "ButtonImg": [],
-                      "underline": []
-                    }
+                    "id": "btn_support_link",
+                    "text": "#mainmenu/support",
+                    "on_click": "onMsgLink",
+                    "link": "#url/support",
+                    "bqKey": "login_page",
+                    "class": "link",
+                    "noMargin": "yes",
+                    "tfont": "small",
+                    "talign": "left",
+                    "btnName": "SpaceA",
+                    "ButtonImg": {},
+                    "underline": {}
                   }
                 ]
               }
             }
           ]
         }
-      ]
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "browser_bug_disclaimer",
         "width": "0.8sw - 0.8*@sf",
         "pos": "50%pw-50%w, 83%sh - 1@bh -50%h",
@@ -652,108 +526,94 @@
           "width": "pw"
         }
       }
+    ],
+    "div": {
+      "behaviour": "button",
+      "size": "sw,sh",
+      "position": "root",
+      "on_click": "onClosePopups"
     },
-    {
-      "div": {
-        "behaviour": "button",
-        "size": "sw,sh",
-        "position": "root",
-        "on_click": "onClosePopups"
-      }
+    "ProjectAwardsPanel": {
+      "id": "project-awards"
     },
-    {
-      "ProjectAwardsPanel": {
-        "id": "project-awards"
-      }
-    },
-    {
-      "TopMenuPanel": [
+    "TopMenuPanel": {
+      "input-transparent": "yes",
+      "shadowSafeArea": {},
+      "tdiv": [
         {
-          "input-transparent": "yes"
-        },
-        {
-          "shadowSafeArea": []
-        },
-        {
-          "tdiv": {
-            "size": "1@swOrRwInVr, ph-(1@bh+1@topGamercardDarkLineHeight)*1@isInVr",
-            "pos": "1@bwInVr, (1@bh-1@topGamercardDarkLineHeight)*1@isInVr",
-            "position": "absolute",
-            "TopMenuPanelBg": {
-              "width": "pw"
-            }
+          "size": "1@swOrRwInVr, ph-(1@bh+1@topGamercardDarkLineHeight)*1@isInVr",
+          "pos": "1@bwInVr, (1@bh-1@topGamercardDarkLineHeight)*1@isInVr",
+          "position": "absolute",
+          "TopMenuPanelBg": {
+            "width": "pw"
           }
         },
         {
+          "pos": "pw-w-1@bw, 1@bh",
+          "position": "absolute",
           "tdiv": {
-            "pos": "pw-w-1@bw, 1@bh",
-            "position": "absolute",
-            "tdiv": {
-              "id": "language_selector",
+            "id": "language_selector",
+            "pos": "0, ph/2-h/2",
+            "position": "relative",
+            "display": "hide",
+            "text": {
+              "id": "label_language",
+              "text": "#profile/language",
               "pos": "0, ph/2-h/2",
               "position": "relative",
-              "display": "hide",
-              "text": {
-                "id": "label_language",
-                "text": "#profile/language",
-                "pos": "0, ph/2-h/2",
-                "position": "relative",
-                "talign": "left",
-                "margin": "@sIco/8, 0, @sIco/4, 0",
-                "input-transparent": "yes",
-                "inactive": "yes"
-              },
-              "Button_text": {
-                "id": "btn_language",
-                "position": "relative",
-                "noMargin": "yes",
-                "visualStyle": "noFrame",
-                "imgSize": "big",
-                "on_click": "onPopupLanguages",
-                "popupMenuBrightIcons": "yes",
-                "popupMenuWithoutHover": "yes",
-                "btnName": "Y",
-                "ButtonImg": [],
-                "cardImg": {
-                  "id": "btn_language_icon",
-                  "background-image": "#ui/gameuiskin#lang_usa.svg"
-                },
-                "btnText": {
-                  "id": "btn_language_text",
-                  "text": "#profile/language/en",
-                  "pos": "@blockInterval, 50%ph-50%h",
-                  "position": "relative",
-                  "text-align": "left"
-                }
-              }
+              "talign": "left",
+              "margin": "@sIco/8, 0, @sIco/4, 0",
+              "input-transparent": "yes",
+              "inactive": "yes"
             },
-            "Button_close": {
-              "id": "button_exit",
-              "_on_click": "goBack",
-              "relative": "yes"
+            "Button_text": {
+              "id": "btn_language",
+              "position": "relative",
+              "noMargin": "yes",
+              "visualStyle": "noFrame",
+              "imgSize": "big",
+              "on_click": "onPopupLanguages",
+              "popupMenuBrightIcons": "yes",
+              "popupMenuWithoutHover": "yes",
+              "btnName": "Y",
+              "ButtonImg": {},
+              "cardImg": {
+                "id": "btn_language_icon",
+                "background-image": "#ui/gameuiskin#lang_usa.svg"
+              },
+              "btnText": {
+                "id": "btn_language_text",
+                "text": "#profile/language/en",
+                "pos": "@blockInterval, 50%ph-50%h",
+                "position": "relative",
+                "text-align": "left"
+              }
             }
+          },
+          "Button_close": {
+            "id": "button_exit",
+            "_on_click": "goBack",
+            "relative": "yes"
           }
         }
       ]
     },
-    {
-      "BottomMenuPanel": {
-        "input-transparent": "yes",
-        "shadowSafeArea": [],
-        "line": [],
-        "tdiv": {
-          "behavior": "bhvUpdater",
-          "value": "{\"viewId\": \"COPYRIGHT_TEXT\"}",
-          "css-hier-invalidate": "yes",
-          "pos": "pw-w-1@bw, 50%ph - 50%h",
-          "position": "absolute",
-          "copyright": {
-            "id": "copyright_text"
-          }
+    "BottomMenuPanel": {
+      "input-transparent": "yes",
+      "shadowSafeArea": {},
+      "line": {},
+      "tdiv": {
+        "behavior": "bhvUpdater",
+        "value": "{\"viewId\": \"COPYRIGHT_TEXT\"}",
+        "css-hier-invalidate": "yes",
+        "pos": "pw-w-1@bw, 50%ph - 50%h",
+        "position": "absolute",
+        "copyright": {
+          "id": "copyright_text"
         }
       }
     }
-  ],
+  },
   "dummy": {
     "behavior": "button",
     "_on_click": "onKbdWrapDown",

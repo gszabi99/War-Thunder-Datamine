@@ -18,9 +18,9 @@
       "weather": "hazy",
       "scoreLimit": 10000
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -36,87 +36,55 @@
         "periodicEvent": {
           "time": 1.0
         },
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "moAddMissionObjective": {
-            "target": "avg_Capt_objective_01"
+      "conditions": {},
+      "actions": {
+        "moAddMissionObjective": {
+          "target": "avg_Capt_objective_01"
+        },
+        "unitPutToSleep": [
+          {
+            "target": [
+              "tcp_t1_capture_area_01_group",
+              "tcp_t1_capture_area_02_group",
+              "tcp_t1_capture_area_03_group",
+              "tcp_t1_capture_area_04_group",
+              "tcp_t1_capture_area_05_group",
+              "tcp_t1_capture_area_06_group"
+            ]
+          },
+          {
+            "target": [
+              "tcp_t2_capture_area_01_group",
+              "tcp_t2_capture_area_02_group",
+              "tcp_t2_capture_area_03_group",
+              "tcp_t2_capture_area_04_group",
+              "tcp_t2_capture_area_05_group"
+            ]
           }
+        ],
+        "varSetInt": {
+          "var": "tcp_point_spawn_timer",
+          "value": 0
         },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "tcp_t1_capture_area_01_group"
-            },
-            {
-              "target": "tcp_t1_capture_area_02_group"
-            },
-            {
-              "target": "tcp_t1_capture_area_03_group"
-            },
-            {
-              "target": "tcp_t1_capture_area_04_group"
-            },
-            {
-              "target": "tcp_t1_capture_area_05_group"
-            },
-            {
-              "target": "tcp_t1_capture_area_06_group"
-            }
-          ]
+        "varSetRandomInt": {
+          "var": "tcp_last_side",
+          "from": 1,
+          "to_not_including": 3
         },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "tcp_t2_capture_area_01_group"
-            },
-            {
-              "target": "tcp_t2_capture_area_02_group"
-            },
-            {
-              "target": "tcp_t2_capture_area_03_group"
-            },
-            {
-              "target": "tcp_t2_capture_area_04_group"
-            },
-            {
-              "target": "tcp_t2_capture_area_05_group"
-            }
-          ]
+        "comment": {
+          "value": "prinuditel'no startuem central'nuyu tochku"
         },
-        {
-          "varSetInt": {
-            "var": "tcp_point_spawn_timer",
-            "value": 0
-          }
+        "varSetString": {
+          "var": "tcp_cur_point",
+          "value": "tcp_t1_capture_area_06"
         },
-        {
-          "varSetRandomInt": {
-            "var": "tcp_last_side",
-            "from": 1,
-            "to_not_including": 3
-          }
-        },
-        {
-          "comment": {
-            "value": "prinuditel'no startuem central'nuyu tochku"
-          }
-        },
-        {
-          "varSetString": {
-            "var": "tcp_cur_point",
-            "value": "tcp_t1_capture_area_06"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tcp_t1_check_choose_point"
-          }
+        "triggerEnable": {
+          "target": "tcp_t1_check_choose_point"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_timers_updater": {
       "is_enabled": true,
@@ -131,38 +99,32 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varModify": {
+      "conditions": {},
+      "actions": {
+        "varModify": [
+          {
             "var": "tcp_point_spawn_timer",
             "operator": "add",
             "value": 1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_point_01_timer",
             "operator": "add",
             "value": 1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_point_02_timer",
             "operator": "add",
             "value": 1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_point_03_timer",
             "operator": "add",
             "value": 1.0
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "tcp_new_capture_point": {
       "is_enabled": true,
@@ -177,38 +139,34 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "tcp_point_spawn_timer",
             "value": 0,
             "comparasion_func": "more",
             "var_value_other": "tcp_delay_between_spawns"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_active_zones_counter",
             "value": 3,
             "comparasion_func": "less"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "varSetInt": {
           "var": "tcp_point_spawn_timer",
           "value": 0
         },
-        "triggerEnable": [
-          {
-            "target": "tcp_t1_side_chooser"
-          },
-          {
-            "target": "tcp_t2_side_chooser"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_t1_side_chooser",
+            "tcp_t2_side_chooser"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t1_side_chooser": {
       "is_enabled": false,
@@ -242,7 +200,7 @@
           "target": "tcp_t1_start_point_chooser"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t2_side_chooser": {
       "is_enabled": false,
@@ -276,7 +234,7 @@
           "target": "tcp_t2_start_point_chooser"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t1_start_point_chooser": {
       "is_enabled": false,
@@ -291,29 +249,25 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareString": {
+      "conditions": {
+        "varCompareString": [
+          {
             "var_value": "tcp_area_01",
             "value": "",
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_02",
             "value": "",
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_03",
             "value": "",
             "comparasion_func": "equal"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "na 1 tochku bol'she, tak kak dobavlyaem central'nuyu"
@@ -336,7 +290,7 @@
           "target": "tcp_t1_check_choose_point"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t2_start_point_chooser": {
       "is_enabled": false,
@@ -351,29 +305,25 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareString": {
+      "conditions": {
+        "varCompareString": [
+          {
             "var_value": "tcp_area_01",
             "value": "",
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_02",
             "value": "",
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_03",
             "value": "",
             "comparasion_func": "equal"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "varSetRandomInt": {
           "var": "tcp_point_randomizer",
@@ -393,7 +343,7 @@
           "target": "tcp_t2_check_choose_point"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t1_check_choose_point": {
       "is_enabled": false,
@@ -408,56 +358,46 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareString": {
+      "conditions": {
+        "varCompareString": [
+          {
             "var_value": "tcp_area_01",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_02",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_03",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
           }
-        }
-      ],
-      "actions": [
-        {
-          "varSetString": {
-            "var": "tcp_cur_point_possibility",
-            "value": ""
-          }
+        ]
+      },
+      "actions": {
+        "varSetString": {
+          "var": "tcp_cur_point_possibility",
+          "value": ""
         },
-        {
-          "varAddString": {
+        "varAddString": [
+          {
             "var": "tcp_cur_point_possibility",
             "value": "@tcp_cur_point",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_cur_point_possibility",
             "value": "_possibility",
             "digits": 0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "tcp_t1_fail_choose_point"
-          }
+        ],
+        "triggerEnable": {
+          "target": "tcp_t1_fail_choose_point"
         }
-      ],
+      },
       "else_actions": {
         "triggerEnable": {
           "target": "tcp_t1_start_point_chooser"
@@ -477,56 +417,46 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareString": {
+      "conditions": {
+        "varCompareString": [
+          {
             "var_value": "tcp_area_01",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_02",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_03",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
           }
-        }
-      ],
-      "actions": [
-        {
-          "varSetString": {
-            "var": "tcp_cur_point_possibility",
-            "value": ""
-          }
+        ]
+      },
+      "actions": {
+        "varSetString": {
+          "var": "tcp_cur_point_possibility",
+          "value": ""
         },
-        {
-          "varAddString": {
+        "varAddString": [
+          {
             "var": "tcp_cur_point_possibility",
             "value": "@tcp_cur_point",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_cur_point_possibility",
             "value": "_possibility",
             "digits": 0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "tcp_t2_fail_choose_point"
-          }
+        ],
+        "triggerEnable": {
+          "target": "tcp_t2_fail_choose_point"
         }
-      ],
+      },
       "else_actions": {
         "triggerEnable": {
           "target": "tcp_t2_start_point_chooser"
@@ -563,17 +493,13 @@
           "var": "@tcp_cur_point_possibility",
           "value": 0
         },
-        "triggerEnable": [
-          {
-            "target": "tcp_choose_point_01"
-          },
-          {
-            "target": "tcp_choose_point_02"
-          },
-          {
-            "target": "tcp_choose_point_03"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_choose_point_01",
+            "tcp_choose_point_02",
+            "tcp_choose_point_03"
+          ]
+        }
       }
     },
     "tcp_t2_fail_choose_point": {
@@ -606,17 +532,13 @@
           "var": "@tcp_cur_point_possibility",
           "value": 0
         },
-        "triggerEnable": [
-          {
-            "target": "tcp_choose_point_01"
-          },
-          {
-            "target": "tcp_choose_point_02"
-          },
-          {
-            "target": "tcp_choose_point_03"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_choose_point_01",
+            "tcp_choose_point_02",
+            "tcp_choose_point_03"
+          ]
+        }
       }
     },
     "t1_all_zones_uses": {
@@ -632,94 +554,72 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "tcp_t1_capture_area_01_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t1_capture_area_02_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t1_capture_area_03_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t1_capture_area_04_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t1_capture_area_05_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t1_capture_area_06_possibility",
             "value": 0,
             "comparasion_func": "equal"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
-            "value": "vse zony byli ispol'zovany po razu.  nachinaem novyj krug"
-          }
+        ]
+      },
+      "actions": {
+        "comment": {
+          "value": "vse zony byli ispol'zovany po razu.  nachinaem novyj krug"
         },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "var": "tcp_t1_capture_area_01_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t1_capture_area_02_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t1_capture_area_03_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t1_capture_area_04_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t1_capture_area_05_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t1_capture_area_06_possibility",
             "value": 1
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t2_all_zones_uses": {
       "is_enabled": true,
@@ -734,81 +634,63 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "tcp_t2_capture_area_01_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t2_capture_area_02_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t2_capture_area_03_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t2_capture_area_04_possibility",
             "value": 0,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "tcp_t2_capture_area_05_possibility",
             "value": 0,
             "comparasion_func": "equal"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
-            "value": "vse zony byli ispol'zovany po razu.  nachinaem novyj krug"
-          }
+        ]
+      },
+      "actions": {
+        "comment": {
+          "value": "vse zony byli ispol'zovany po razu.  nachinaem novyj krug"
         },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "var": "tcp_t2_capture_area_01_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t2_capture_area_02_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t2_capture_area_03_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t2_capture_area_04_possibility",
             "value": 1
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_t2_capture_area_05_possibility",
             "value": 1
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "tcp_zone_captured_by_t1_reward": {
       "is_enabled": false,
@@ -823,48 +705,40 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
-            "var": "tcp_mp_reward",
-            "value": 0
-          }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "var": "tcp_mp_reward",
+          "value": 0
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "var": "tcp_mp_reward",
             "operator": "add",
             "value": 20.0,
             "use_variable": false
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_mp_reward",
             "operator": "mul",
             "value": -100.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_mp_reward",
             "operator": "mul",
             "value": 1.0,
             "use_variable": true,
             "var_value": "tcp_mp_multiplier"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "tcp_mp_reward",
-            "team": "B"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": 0,
+          "valueSystem": "amount",
+          "var": "tcp_mp_reward",
+          "team": "B"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_zone_captured_by_t2_reward": {
       "is_enabled": false,
@@ -879,48 +753,40 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
-            "var": "tcp_mp_reward",
-            "value": 0
-          }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "var": "tcp_mp_reward",
+          "value": 0
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "var": "tcp_mp_reward",
             "operator": "add",
             "value": 20.0,
             "use_variable": false
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_mp_reward",
             "operator": "mul",
             "value": -100.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_mp_reward",
             "operator": "mul",
             "value": 1.0,
             "use_variable": true,
             "var_value": "tcp_mp_multiplier"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "tcp_mp_reward",
-            "team": "A"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": 0,
+          "valueSystem": "amount",
+          "var": "tcp_mp_reward",
+          "team": "A"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_choose_point_01": {
       "is_enabled": false,
@@ -935,173 +801,145 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareString": {
+      "conditions": {
+        "varCompareString": [
+          {
             "var_value": "tcp_area_01",
             "value": "",
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_02",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_03",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "tcp_choose_point_02"
-            },
-            {
-              "target": "tcp_choose_point_03"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "tcp_choose_point_02",
+            "tcp_choose_point_03"
           ]
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "var": "tcp_area_01",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": ""
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "var": "tcp_area_01",
             "value": "@tcp_cur_point",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "@tcp_area_01",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "_group",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_01",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "var": "tcp_point_01_timer",
             "value": 0
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_point_spawn_timer",
             "value": 0
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "var": "tcp_zones_counter",
             "operator": "add",
             "value": 1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_mp_multiplier",
             "operator": "add",
             "value": 0.1
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_active_zones_counter",
             "operator": "add",
             "value": 1.0
           }
+        ],
+        "unitWakeUp": {
+          "target": "@tcp_capture_group"
         },
-        {
-          "unitWakeUp": {
-            "target": "@tcp_capture_group"
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "@tcp_area_01",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "captureNoPenalty": true
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.5,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "target": "@tcp_area_01",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": false,
-            "canCaptureByGM": true,
-            "captureNoPenalty": true
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": true,
+          "attach": true,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@tcp_capture_effect"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": true,
-            "attach": true,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@tcp_capture_effect"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "tcp_despawn_point_01"
-            },
-            {
-              "target": "tcp_t1_captured_zone_01"
-            },
-            {
-              "target": "tcp_t1_captured_zone_01"
-            }
+        "triggerEnable": {
+          "target": [
+            "tcp_despawn_point_01",
+            "tcp_t1_captured_zone_01",
+            "tcp_t1_captured_zone_01"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_despawn_point_01": {
       "is_enabled": false,
@@ -1124,100 +962,88 @@
           "var_value_other": "tcp_wait_capture_timer"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.5,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "target": "@tcp_area_01"
-          }
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.5,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "target": "@tcp_area_01"
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "var": "tcp_capture_group",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_area_01",
             "value": ""
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "var": "tcp_capture_group",
             "value": "@tcp_area_01",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "_group",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_01",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
           }
+        ],
+        "unitPutToSleep": {
+          "target": "@tcp_capture_group"
         },
-        {
-          "unitPutToSleep": {
-            "target": "@tcp_capture_group"
-          }
+        "varModify": {
+          "var": "tcp_active_zones_counter",
+          "operator": "add",
+          "value": -1.0
         },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": -1.0
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": false,
+          "attach": false,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@tcp_capture_effect"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": false,
-            "attach": false,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@tcp_capture_effect"
-          }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "tcp_t1_captured_zone_01"
-            },
-            {
-              "target": "tcp_t1_captured_zone_02"
-            }
+        "triggerDisable": {
+          "target": [
+            "tcp_t1_captured_zone_01",
+            "tcp_t1_captured_zone_02"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_t1_captured_zone_01": {
       "is_enabled": false,
@@ -1239,16 +1065,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "tcp_zone_captured_by_t1_reward"
-          },
-          {
-            "target": "tcp_captured_zone_01_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_zone_captured_by_t1_reward",
+            "tcp_captured_zone_01_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t2_captured_zone_01": {
       "is_enabled": false,
@@ -1270,16 +1094,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "tcp_zone_captured_by_t2_reward"
-          },
-          {
-            "target": "tcp_captured_zone_01_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_zone_captured_by_t2_reward",
+            "tcp_captured_zone_01_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_choose_point_02": {
       "is_enabled": false,
@@ -1294,173 +1116,145 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareString": {
+      "conditions": {
+        "varCompareString": [
+          {
             "var_value": "tcp_area_02",
             "value": "",
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_01",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_03",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "tcp_choose_point_01"
-            },
-            {
-              "target": "tcp_choose_point_03"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "tcp_choose_point_01",
+            "tcp_choose_point_03"
           ]
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "var": "tcp_area_02",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": ""
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "var": "tcp_area_02",
             "value": "@tcp_cur_point",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "@tcp_area_02",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "_group",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_02",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "var": "tcp_point_02_timer",
             "value": 0
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_point_spawn_timer",
             "value": 0
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "var": "tcp_zones_counter",
             "operator": "add",
             "value": 1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_mp_multiplier",
             "operator": "add",
             "value": 0.1
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_active_zones_counter",
             "operator": "add",
             "value": 1.0
           }
+        ],
+        "unitWakeUp": {
+          "target": "@tcp_capture_group"
         },
-        {
-          "unitWakeUp": {
-            "target": "@tcp_capture_group"
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "@tcp_area_02",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "captureNoPenalty": true
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.5,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "target": "@tcp_area_02",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": false,
-            "canCaptureByGM": true,
-            "captureNoPenalty": true
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": true,
+          "attach": true,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@tcp_capture_effect"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": true,
-            "attach": true,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@tcp_capture_effect"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "tcp_despawn_point_02"
-            },
-            {
-              "target": "tcp_t1_captured_zone_02"
-            },
-            {
-              "target": "tcp_t2_captured_zone_02"
-            }
+        "triggerEnable": {
+          "target": [
+            "tcp_despawn_point_02",
+            "tcp_t1_captured_zone_02",
+            "tcp_t2_captured_zone_02"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_despawn_point_02": {
       "is_enabled": false,
@@ -1483,100 +1277,88 @@
           "var_value_other": "tcp_wait_capture_timer"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.5,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "target": "@tcp_area_02"
-          }
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.5,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "target": "@tcp_area_02"
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "var": "tcp_capture_group",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_area_02",
             "value": ""
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "var": "tcp_capture_group",
             "value": "@tcp_area_02",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "_group",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_02",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
           }
+        ],
+        "unitPutToSleep": {
+          "target": "@tcp_capture_group"
         },
-        {
-          "unitPutToSleep": {
-            "target": "@tcp_capture_group"
-          }
+        "varModify": {
+          "var": "tcp_active_zones_counter",
+          "operator": "add",
+          "value": -1.0
         },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": -1.0
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": false,
+          "attach": false,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@tcp_capture_effect"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": false,
-            "attach": false,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@tcp_capture_effect"
-          }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "tcp_t1_captured_zone_02"
-            },
-            {
-              "target": "tcp_t2_captured_zone_02"
-            }
+        "triggerDisable": {
+          "target": [
+            "tcp_t1_captured_zone_02",
+            "tcp_t2_captured_zone_02"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_t1_captured_zone_02": {
       "is_enabled": false,
@@ -1598,16 +1380,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "tcp_zone_captured_by_t1_reward"
-          },
-          {
-            "target": "tcp_captured_zone_02_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_zone_captured_by_t1_reward",
+            "tcp_captured_zone_02_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t2_captured_zone_02": {
       "is_enabled": false,
@@ -1629,16 +1409,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "tcp_zone_captured_by_t2_reward"
-          },
-          {
-            "target": "tcp_captured_zone_02_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_zone_captured_by_t2_reward",
+            "tcp_captured_zone_02_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_choose_point_03": {
       "is_enabled": false,
@@ -1653,173 +1431,145 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareString": {
+      "conditions": {
+        "varCompareString": [
+          {
             "var_value": "tcp_area_03",
             "value": "",
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_01",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
-          }
-        },
-        {
-          "varCompareString": {
+          },
+          {
             "var_value": "tcp_area_02",
             "value": "@tcp_cur_point",
             "comparasion_func": "notEqual"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "tcp_choose_point_01"
-            },
-            {
-              "target": "tcp_choose_point_02"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "tcp_choose_point_01",
+            "tcp_choose_point_02"
           ]
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "var": "tcp_area_03",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": ""
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "var": "tcp_area_03",
             "value": "@tcp_cur_point",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "@tcp_area_03",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "_group",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_03",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "var": "tcp_point_03_timer",
             "value": 0
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "var": "tcp_point_spawn_timer",
             "value": 0
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "var": "tcp_zones_counter",
             "operator": "add",
             "value": 1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_mp_multiplier",
             "operator": "add",
             "value": 0.1
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_active_zones_counter",
             "operator": "add",
             "value": 1.0
           }
+        ],
+        "unitWakeUp": {
+          "target": "@tcp_capture_group"
         },
-        {
-          "unitWakeUp": {
-            "target": "@tcp_capture_group"
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "@tcp_area_03",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "captureNoPenalty": true
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.5,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "target": "@tcp_area_03",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": false,
-            "canCaptureByGM": true,
-            "captureNoPenalty": true
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": true,
+          "attach": true,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@tcp_capture_effect"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": true,
-            "attach": true,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@tcp_capture_effect"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "tcp_despawn_point_01"
-            },
-            {
-              "target": "tcp_t1_captured_zone_03"
-            },
-            {
-              "target": "tcp_t2_captured_zone_03"
-            }
+        "triggerEnable": {
+          "target": [
+            "tcp_despawn_point_01",
+            "tcp_t1_captured_zone_03",
+            "tcp_t2_captured_zone_03"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_t1_despawn_point_03": {
       "is_enabled": false,
@@ -1842,100 +1592,88 @@
           "var_value_other": "tcp_wait_capture_timer"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.5,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "target": "@tcp_area_03"
-          }
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.5,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "target": "@tcp_area_03"
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "var": "tcp_capture_group",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "var": "tcp_area_03",
             "value": ""
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "var": "tcp_capture_group",
             "value": "@tcp_area_03",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_group",
             "value": "_group",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_03",
             "digits": 0
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
           }
+        ],
+        "unitPutToSleep": {
+          "target": "@tcp_capture_group"
         },
-        {
-          "unitPutToSleep": {
-            "target": "@tcp_capture_group"
-          }
+        "varModify": {
+          "var": "tcp_active_zones_counter",
+          "operator": "add",
+          "value": -1.0
         },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": -1.0
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": false,
+          "attach": false,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@tcp_capture_effect"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": false,
-            "attach": false,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@tcp_capture_effect"
-          }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "tcp_t1_captured_zone_03"
-            },
-            {
-              "target": "tcp_t2_captured_zone_03"
-            }
+        "triggerDisable": {
+          "target": [
+            "tcp_t1_captured_zone_03",
+            "tcp_t2_captured_zone_03"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_t1_captured_zone_03": {
       "is_enabled": false,
@@ -1957,16 +1695,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "tcp_zone_captured_by_t1_reward"
-          },
-          {
-            "target": "tcp_captured_zone_03_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_zone_captured_by_t1_reward",
+            "tcp_captured_zone_03_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_t2_captured_zone_03": {
       "is_enabled": false,
@@ -1988,16 +1724,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "tcp_zone_captured_by_t2_reward"
-          },
-          {
-            "target": "tcp_captured_zone_03_disable"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "tcp_zone_captured_by_t2_reward",
+            "tcp_captured_zone_03_disable"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tcp_captured_zone_01_disable": {
       "is_enabled": false,
@@ -2012,37 +1746,31 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
-            "var": "tcp_point_01_timer",
-            "value": 0
-          }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "var": "tcp_point_01_timer",
+          "value": 0
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "var": "tcp_point_01_timer",
             "operator": "add",
             "value": 1.0,
             "use_variable": true,
             "var_value": "tcp_wait_capture_timer"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_point_01_timer",
             "operator": "add",
             "value": 1.0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "tcp_despawn_point_01"
-          }
+        ],
+        "triggerEnable": {
+          "target": "tcp_despawn_point_01"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_captured_zone_02_disable": {
       "is_enabled": false,
@@ -2057,37 +1785,31 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
-            "var": "tcp_point_02_timer",
-            "value": 0
-          }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "var": "tcp_point_02_timer",
+          "value": 0
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "var": "tcp_point_02_timer",
             "operator": "add",
             "value": 1.0,
             "use_variable": true,
             "var_value": "tcp_wait_capture_timer"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_point_02_timer",
             "operator": "add",
             "value": 1.0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "tcp_despawn_point_02"
-          }
+        ],
+        "triggerEnable": {
+          "target": "tcp_despawn_point_02"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tcp_captured_zone_03_disable": {
       "is_enabled": false,
@@ -2102,37 +1824,31 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": {
-            "var": "tcp_point_03_timer",
-            "value": 0
-          }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "var": "tcp_point_03_timer",
+          "value": 0
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "var": "tcp_point_03_timer",
             "operator": "add",
             "value": 1.0,
             "use_variable": true,
             "var_value": "tcp_wait_capture_timer"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "tcp_point_03_timer",
             "operator": "add",
             "value": 1.0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "tcp_t1_despawn_point_03"
-          }
+        ],
+        "triggerEnable": {
+          "target": "tcp_t1_despawn_point_03"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -2147,8 +1863,8 @@
         "timeLimit": 3600,
         "team": "Both"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -2183,31 +1899,25 @@
     "tcp_t2_capture_area_04_possibility": 1,
     "tcp_t2_capture_area_05_possibility": 1
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ]
+    ]
+  }
 }

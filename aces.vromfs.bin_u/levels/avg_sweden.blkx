@@ -1,1811 +1,1259 @@
-[
-  {
-    "mandatoryLandquality": 1
+{
+  "mandatoryLandquality": 1,
+  "enableApex": false,
+  "impostorsDistAdditionalMul": 1.0,
+  "hmapLodCount": 6,
+  "clipmap_tex_mips": 7,
+  "mapCoord0": [
+    -16384.0,
+    -16384.0
+  ],
+  "mapCoord1": [
+    16384.0,
+    16384.0
+  ],
+  "aiMapCoord0": [
+    -20384.0,
+    -20384.0
+  ],
+  "aiMapCoord1": [
+    20384.0,
+    20384.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "gridSteps": [
+    [
+      8192.0,
+      8192.0
+    ],
+    [
+      3250.0,
+      3250.0
+    ]
+  ],
+  "aiTanksMapCoord0": [
+    -2048.0,
+    -2048.0
+  ],
+  "aiTanksMapCoord1": [
+    2048.0,
+    2048.0
+  ],
+  "tankMapCoord0": [
+    -2048.0,
+    -2048.0
+  ],
+  "tankMapCoord1": [
+    2048.0,
+    2048.0
+  ],
+  "tankGridSteps": [
+    205.0,
+    205.0
+  ],
+  "tankGridSize": [
+    4096.0,
+    4096.0
+  ],
+  "tankMapColorMult": "///1yA==",
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 8,
+  "numBorderCellsZPos": 8,
+  "numBorderCellsZNeg": 8,
+  "mirrorShrinkXPos": 256.0,
+  "mirrorShrinkXNeg": 256.0,
+  "mirrorShrinkZPos": 256.0,
+  "mirrorShrinkZNeg": 256.0,
+  "water_level": 0.0,
+  "average_ground_level": 8.0,
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types_naval.blk",
+  "lastclip_horizon": [
+    true,
+    true
+  ],
+  "vsmAngleThreshold": 20.0,
+  "tankFogMul": 4.2,
+  "soundAmbientPath": "sounds/ambient",
+  "soundAmbientEvent": "global_amb_tropics",
+  "lastClip": true,
+  "wind_scale": 0.8,
+  "max_wind_strength": 2.5,
+  "puddlesPowerScale": 1.0,
+  "puddlesSpread": 1.0,
+  "puddlesSeed": 25.0,
+  "layeredFogThicknessScale100": 70.0,
+  "layeredFogHeightOffset": 1.0,
+  "layeredFogDensityMul": 0.2,
+  "layeredFogAmbientColorTintBrightness": 0.2,
+  "layeredFogAmbientColorTint": [
+    0.0,
+    0.5,
+    0.5
+  ],
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n",
+      "microdetail_stone_a_tex_n",
+      "microdetail_sand_a_tex_n",
+      "microdetail_soil_a_tex_n",
+      "microdetail_generic_granules_a_tex_n",
+      "microdetail_grass_a_tex_n",
+      "microdetail_forest_floor_a_tex_n",
+      "microdetail_fabric_a_tex_n",
+      "microdetail_wood_b_tex_n",
+      "microdetail_metal_a_tex_n",
+      "microdetail_snow_a_tex_n",
+      "microdetail_generic_granules_a_tex_n"
+    ],
+    "land_micro_details_uv_scale": 0.51,
+    "microdetail_stone_a_tex_n": {
+      "coloring": 0.1
+    },
+    "microdetail_sand_a_tex_n": {
+      "coloring": 0.2
+    },
+    "microdetail_soil_a_tex_n": {
+      "coloring": 0.2
+    },
+    "microdetail_forest_floor_a_tex_n": {
+      "coloring": 0.9
+    },
+    "microdetail_grass_a_tex_n": {
+      "coloring": 0.9
+    },
+    "microdetail_moss_a_tex_n": {
+      "coloring": 0.9
+    },
+    "microdetail_scan_grass_a_tex_n": {
+      "coloring": 0.9
+    }
   },
-  {
-    "enableApex": false
+  "weather": {
+    "cloudsOffsetBase": 100.0,
+    "cloudsOffsetFrom": 20000.0,
+    "cloudsOffsetTo": 40000.0,
+    "minCloudBaseKm": 0.8,
+    "minHazeBaseKm": -50.0
   },
-  {
-    "impostorsDistAdditionalMul": 1.0
+  "stars": {
+    "latitude": 10.0,
+    "longitude": 106.0,
+    "year": 1957,
+    "month": 6,
+    "day": 14
   },
-  {
-    "hmapLodCount": 6
+  "earth": {
+    "earthWorldEnabled": true,
+    "earthWorldMin": [
+      -32768.0,
+      -32768.0
+    ],
+    "earthWorldMax": [
+      32768.0,
+      32768.0
+    ]
   },
-  {
-    "clipmap_tex_mips": 7
+  "shader_vars": {
+    "parallax_shadow_strength": 7.0,
+    "parallax_shadow_length": 2.0,
+    "water_color_noise_size": 1137.0,
+    "max_river_width": 500.0,
+    "ocean_density": 1.0,
+    "river_density": 0.2,
+    "land_bump_scale": -3.0,
+    "land_smoothness_detect_color": [
+      0.36,
+      0.31,
+      0.33,
+      0.3
+    ],
+    "translucency_detection_hardness": 1.0,
+    "specular_detect_land_color": [
+      0.55,
+      0.0,
+      0.5,
+      0.0
+    ],
+    "water_aces_params": [
+      5.0,
+      0.4,
+      3.0,
+      0.0
+    ],
+    "water_aces_color_and_density": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ]
   },
-  {
-    "mapCoord0": [-16384.0,-16384.0]
-  },
-  {
-    "mapCoord1": [16384.0,16384.0]
-  },
-  {
-    "aiMapCoord0": [-20384.0,-20384.0]
-  },
-  {
-    "aiMapCoord1": [20384.0,20384.0]
-  },
-  {
-    "minAreaSize": [12000.0,12000.0]
-  },
-  {
-    "gridSteps": [8192.0,8192.0]
-  },
-  {
-    "gridSteps": [3250.0,3250.0]
-  },
-  {
-    "aiTanksMapCoord0": [-2048.0,-2048.0]
-  },
-  {
-    "aiTanksMapCoord1": [2048.0,2048.0]
-  },
-  {
-    "tankMapCoord0": [-2048.0,-2048.0]
-  },
-  {
-    "tankMapCoord1": [2048.0,2048.0]
-  },
-  {
-    "tankGridSteps": [205.0,205.0]
-  },
-  {
-    "tankGridSize": [4096.0,4096.0]
-  },
-  {
-    "tankMapColorMult": "#fffff5c8"
-  },
-  {
-    "numBorderCellsXPos": 0
-  },
-  {
-    "numBorderCellsXNeg": 8
-  },
-  {
-    "numBorderCellsZPos": 8
-  },
-  {
-    "numBorderCellsZNeg": 8
-  },
-  {
-    "mirrorShrinkXPos": 256.0
-  },
-  {
-    "mirrorShrinkXNeg": 256.0
-  },
-  {
-    "mirrorShrinkZPos": 256.0
-  },
-  {
-    "mirrorShrinkZNeg": 256.0
-  },
-  {
-    "water_level": 0.0
-  },
-  {
-    "average_ground_level": 8.0
-  },
-  {
-    "weatherPreset": "gameData/environments/weather_preset_1.blk"
-  },
-  {
-    "weatherTypes": "gameData/environments/weather_types_naval.blk"
-  },
-  {
-    "lastclip_horizon": true
-  },
-  {
-    "lastclip_horizon": true
-  },
-  {
-    "vsmAngleThreshold": 20.0
-  },
-  {
-    "tankFogMul": 4.2
-  },
-  {
-    "soundAmbientPath": "sounds/ambient"
-  },
-  {
-    "soundAmbientEvent": "global_amb_tropics"
-  },
-  {
-    "lastClip": true
-  },
-  {
-    "wind_scale": 0.8
-  },
-  {
-    "max_wind_strength": 2.5
-  },
-  {
-    "puddlesPowerScale": 1.0
-  },
-  {
-    "puddlesSpread": 1.0
-  },
-  {
-    "puddlesSeed": 25.0
-  },
-  {
-    "layeredFogThicknessScale100": 70.0
-  },
-  {
-    "layeredFogHeightOffset": 1.0
-  },
-  {
-    "layeredFogDensityMul": 0.2
-  },
-  {
-    "layeredFogAmbientColorTintBrightness": 0.2
-  },
-  {
-    "layeredFogAmbientColorTint": [0.0,0.5,0.5]
-  },
-  {
-    "micro_details": [
-      {
-        "micro_detail": "microdetail_stone_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_stone_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_sand_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_soil_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_generic_granules_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_grass_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_forest_floor_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_fabric_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_wood_b_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_metal_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_snow_a_tex_n"
-      },
-      {
-        "micro_detail": "microdetail_generic_granules_a_tex_n"
-      },
-      {
-        "land_micro_details_uv_scale": 0.51
-      },
-      {
-        "microdetail_stone_a_tex_n": {
-          "coloring": 0.1
+  "randomGrass": {
+    "density": 2.0,
+    "maxRadius": 230.0,
+    "sowPerlinFreq": 0.1,
+    "fadeDelta": 100.0,
+    "lodFadeDelta": 100.0,
+    "minLodDensity": 0.3,
+    "blendToLandDelta": 100.0,
+    "texSize": 1024,
+    "noise_first_rnd": 23.140692,
+    "noise_first_val_mul": 1.0,
+    "noise_first_val_add": 0.0,
+    "noise_second_rnd": 0.05,
+    "noise_second_val_mul": 1.0,
+    "noise_second_val_add": 0.0,
+    "directWindMul": 1.0,
+    "noiseWindMul": 1.0,
+    "windPerlinFreq": 50000.0,
+    "directWindFreq": 1.0,
+    "directWindModulationFreq": 1.0,
+    "windWaveLength": 100.0,
+    "windToColor": 0.2,
+    "helicopterHorMul": 2.0,
+    "helicopterVerMul": 1.0,
+    "helicopterToDirectWindMul": 2.0,
+    "helicopterFalloff": 0.001,
+    "avg_fulda_fields_a": "avg_fulda_fields_a_scatter_mask",
+    "small_grass": {
+      "grass_grid_size": 0.625,
+      "grass_distance": 200.0,
+      "hor_size_mul": 1.5,
+      "alphaSuffix": "_a",
+      "grass_types": {
+        "generic_grass_tall_a": {
+          "diffuse": "grass_generic_grass_tall_a_tex_d",
+          "normal": "grass_generic_grass_tall_a_tex_n",
+          "size_lod_mul": 1.05,
+          "size_lod_wide_mul": 2.0,
+          "tile_tc_x": 2.0,
+          "variations": 1,
+          "height": 0.25,
+          "height_rnd_add": 0.15,
+          "hor_size": 0.5,
+          "hor_size_rnd_add": 0.0625,
+          "color_mask_r_from": "TGQrWg==",
+          "color_mask_r_to": "gnBWWg==",
+          "color_mask_g_from": "Hx8fWg==",
+          "color_mask_g_to": "eYhVWg==",
+          "color_mask_b_from": "TV0yWg==",
+          "color_mask_b_to": "b24sWg==",
+          "height_from_weight_mul": 0.3,
+          "height_from_weight_add": 0.7,
+          "density_from_weight_mul": 0.2,
+          "density_from_weight_add": 0.4,
+          "vertical_angle_add": 0.1,
+          "vertical_angle_mul": 0.5,
+          "ht_rnd_add": 0.15
+        },
+        "generic_grass_tall_b": {
+          "diffuse": "grass_generic_grass_tall_b_tex_d",
+          "normal": "grass_generic_grass_tall_b_tex_n",
+          "size_lod_mul": 1.05,
+          "size_lod_wide_mul": 2.0,
+          "tile_tc_x": 2.0,
+          "variations": 1,
+          "height": 0.25,
+          "height_rnd_add": 0.15,
+          "hor_size": 0.35,
+          "hor_size_rnd_add": 0.0625,
+          "color_mask_r_from": "a30sWg==",
+          "color_mask_r_to": "g3pHWg==",
+          "color_mask_g_from": "Q0NDWg==",
+          "color_mask_g_to": "jJ1nWg==",
+          "color_mask_b_from": "ZG0kWg==",
+          "color_mask_b_to": "mHNTWg==",
+          "height_from_weight_mul": 0.3,
+          "height_from_weight_add": 0.7,
+          "density_from_weight_mul": 0.2,
+          "density_from_weight_add": 0.4,
+          "vertical_angle_add": 0.1,
+          "vertical_angle_mul": 0.5,
+          "ht_rnd_add": 0.15
+        },
+        "generic_bush_a": {
+          "diffuse": "grass_generic_bush_a_tex_d",
+          "normal": "grass_generic_bush_a_tex_n",
+          "size_lod_mul": 1.05,
+          "size_lod_wide_mul": 2.0,
+          "tile_tc_x": 2.0,
+          "variations": 1,
+          "height": 0.25,
+          "ht_rnd_add": 0.25,
+          "hor_size": 0.15,
+          "hor_size_rnd_add": 0.2,
+          "stiffness": 0.4,
+          "color_mask_r_from": "GDMBWg==",
+          "color_mask_r_to": "NUAFWg==",
+          "color_mask_g_from": "BQUFWg==",
+          "color_mask_g_to": "+vr6Wg==",
+          "color_mask_b_from": "LwsIWg==",
+          "color_mask_b_to": "LSYiWg==",
+          "height_from_weight_mul": 0.3,
+          "height_from_weight_add": 0.7,
+          "density_from_weight_mul": 0.2,
+          "density_from_weight_add": 0.0,
+          "vertical_angle_add": -0.2,
+          "vertical_angle_mul": 0.5
+        },
+        "generic_grass_small_a": {
+          "diffuse": "grass_generic_grass_small_a_tex_d",
+          "normal": "grass_generic_grass_small_a_tex_n",
+          "size_lod_mul": 1.05,
+          "size_lod_wide_mul": 2.0,
+          "tile_tc_x": 2.0,
+          "variations": 1,
+          "height": 0.45,
+          "ht_rnd_add": 0.2,
+          "hor_size": 0.1,
+          "hor_size_rnd_add": 0.2,
+          "stiffness": 0.2,
+          "color_mask_r_from": "IDMMWg==",
+          "color_mask_r_to": "CDQEWg==",
+          "color_mask_g_from": "ICEYWg==",
+          "color_mask_g_to": "oKdLWg==",
+          "color_mask_b_from": "iWszWg==",
+          "color_mask_b_to": "e3E6Wg==",
+          "height_from_weight_mul": 0.5,
+          "height_from_weight_add": 0.5,
+          "density_from_weight_mul": 0.1,
+          "density_from_weight_add": 0.9,
+          "vertical_angle_add": 0.6,
+          "vertical_angle_mul": 0.7
+        },
+        "rye_a": {
+          "diffuse": "grass_rye_tex_d",
+          "normal": "grass_rye_tex_n",
+          "size_lod_mul": 1.05,
+          "size_lod_wide_mul": 2.0,
+          "tile_tc_x": 2.0,
+          "variations": 1,
+          "height": 0.35,
+          "ht_rnd_add": 0.3,
+          "hor_size": 0.5,
+          "hor_size_rnd_add": 0.4,
+          "color_mask_r_from": "fXhZWg==",
+          "color_mask_r_to": "79GzWg==",
+          "color_mask_g_from": "T09PWg==",
+          "color_mask_g_to": "pqaDWg==",
+          "color_mask_b_from": "WkUXWg==",
+          "color_mask_b_to": "h00uVA==",
+          "height_from_weight_mul": 0.4,
+          "height_from_weight_add": 0.6,
+          "density_from_weight_mul": 0.45,
+          "density_from_weight_add": 0.0
+        },
+        "wheat_a": {
+          "diffuse": "grass_wheat_tex_d",
+          "normal": "grass_wheat_tex_n",
+          "size_lod_mul": 1.05,
+          "size_lod_wide_mul": 2.0,
+          "tile_tc_x": 2.0,
+          "variations": 1,
+          "height": 0.25,
+          "ht_rnd_add": 0.25,
+          "hor_size": 0.1,
+          "hor_size_rnd_add": 0.3,
+          "color_mask_r_from": "SzEQWg==",
+          "color_mask_r_to": "qJZEWg==",
+          "color_mask_g_from": "VVVVWg==",
+          "color_mask_g_to": "ppiYWg==",
+          "color_mask_b_from": "k3I6Wg==",
+          "color_mask_b_to": "mHNTWg==",
+          "height_from_weight_mul": 0.4,
+          "height_from_weight_add": 0.6,
+          "density_from_weight_mul": 0.45,
+          "density_from_weight_add": 0.0
+        },
+        "nograss": {
+          "density_from_weight_mul": 0.0,
+          "density_from_weight_add": 0.0
         }
       },
-      {
-        "microdetail_sand_a_tex_n": {
-          "coloring": 0.2
+      "decals": {
+        "blue_channel_grass": {
+          "id": 2,
+          "generic_bush_a": 1.35,
+          "wheat_a": 2.0,
+          "generic_grass_small_a": 4.5
         }
+      }
+    },
+    "layer": [
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_reed_a",
+        "density": 1.0,
+        "horScale": 1.2,
+        "horMinScale": 0.9,
+        "verScale": 0.2,
+        "verMinScale": 0.9,
+        "windMul": 0.05,
+        "radiusMul": 0.4,
+        "color_mask_r_from": "5tCH/w==",
+        "color_mask_r_to": "v6N3/w==",
+        "color_mask_b_from": "jbNW/w==",
+        "color_mask_b_to": "qKVI/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
       },
       {
-        "microdetail_soil_a_tex_n": {
-          "coloring": 0.2
-        }
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_sword_a",
+        "density": 0.05,
+        "horScale": 1.2,
+        "horMinScale": 0.9,
+        "verScale": 0.2,
+        "verMinScale": 0.9,
+        "windMul": 0.05,
+        "radiusMul": 0.4,
+        "color_mask_r_from": "nnNX/w==",
+        "color_mask_r_to": "blZG/w==",
+        "color_mask_b_from": "VYw6/w==",
+        "color_mask_b_to": "HGsd/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
       },
       {
-        "microdetail_forest_floor_a_tex_n": {
-          "coloring": 0.9
-        }
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_daisies_a",
+        "density": 1.0,
+        "horScale": 1.2,
+        "horMinScale": 0.9,
+        "verScale": 0.2,
+        "verMinScale": 0.9,
+        "windMul": 0.05,
+        "radiusMul": 0.3,
+        "color_mask_r_from": "2Ozy/w==",
+        "color_mask_r_to": "p8PM/w==",
+        "color_mask_b_from": "/LEw/w==",
+        "color_mask_b_to": "7Z1H/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
       },
       {
-        "microdetail_grass_a_tex_n": {
-          "coloring": 0.9
-        }
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_heather_a",
+        "density": 1.0,
+        "horScale": 1.2,
+        "horMinScale": 0.5,
+        "verScale": 0.2,
+        "verMinScale": 0.5,
+        "windMul": 0.05,
+        "radiusMul": 0.3,
+        "color_mask_r_from": "qC1Y/w==",
+        "color_mask_r_to": "hE6e/w==",
+        "color_mask_b_from": "UGg3/w==",
+        "color_mask_b_to": "S1oS/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
       },
       {
-        "microdetail_moss_a_tex_n": {
-          "coloring": 0.9
-        }
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_tavolga_a",
+        "density": 0.5,
+        "horScale": 1.2,
+        "horMinScale": 0.5,
+        "verScale": 0.2,
+        "verMinScale": 0.5,
+        "windMul": 0.05,
+        "radiusMul": 0.3,
+        "color_mask_r_from": "2Ozy/w==",
+        "color_mask_r_to": "p8Pq/w==",
+        "color_mask_b_from": "RZY2/w==",
+        "color_mask_b_to": "Tno6/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
       },
       {
-        "microdetail_scan_grass_a_tex_n": {
-          "coloring": 0.9
-        }
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_paigle_a",
+        "density": 0.5,
+        "horScale": 1.2,
+        "horMinScale": 0.5,
+        "verScale": 0.2,
+        "verMinScale": 0.5,
+        "windMul": 0.05,
+        "radiusMul": 0.3,
+        "color_mask_r_from": "+tRh/w==",
+        "color_mask_r_to": "48It/w==",
+        "color_mask_b_from": "RZY2/w==",
+        "color_mask_b_to": "Tno6/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_tulip_a",
+        "density": 0.1,
+        "horScale": 1.2,
+        "horMinScale": 0.5,
+        "verScale": 0.2,
+        "verMinScale": 0.5,
+        "windMul": 0.05,
+        "radiusMul": 0.3,
+        "color_mask_r_from": "+tRh/w==",
+        "color_mask_r_to": "rRMv/w==",
+        "color_mask_b_from": "ZIxN/w==",
+        "color_mask_b_to": "Tno1/w==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_wheat_a",
+        "density": 3.0,
+        "horScale": 1.8,
+        "horMinScale": 0.9,
+        "verScale": 0.2,
+        "verMinScale": 0.8,
+        "windMul": 0.05,
+        "radiusMul": 0.4,
+        "color_mask_r_from": "e2Evfw==",
+        "color_mask_r_to": "tKQ0fw==",
+        "color_mask_b_from": "PmYtfw==",
+        "color_mask_b_to": "SiUcfw==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
+        "maskChannel": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "res": "grass_simple_a",
+        "density": 6.0,
+        "horScale": 1.2,
+        "horMinScale": 0.9,
+        "verScale": 0.2,
+        "verMinScale": 0.5,
+        "windMul": 0.05,
+        "radiusMul": 0.5,
+        "color_mask_r_from": "naICfw==",
+        "color_mask_r_to": "H0sKfw==",
+        "color_mask_b_from": "EGEOfw==",
+        "color_mask_b_to": "AxQDfw==",
+        "color_mask_g_from": "MyUh/w==",
+        "color_mask_g_to": "9/K6/w=="
       }
     ]
   },
-  {
-    "weather": {
-      "cloudsOffsetBase": 100.0,
-      "cloudsOffsetFrom": 20000.0,
-      "cloudsOffsetTo": 40000.0,
-      "minCloudBaseKm": 0.8,
-      "minHazeBaseKm": -50.0
+  "overrideRiLodRange": {
+    "fulda_castle_tower_d": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 700.0,
+      "lod3": 25000.0
+    },
+    "fulda_castle_building_c": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 700.0,
+      "lod3": 25000.0
+    },
+    "fulda_castle_building_b": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 700.0,
+      "lod3": 25000.0
+    },
+    "fulda_castle_tower_c": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 700.0,
+      "lod3": 25000.0
+    },
+    "fulda_castle_wall_a": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 700.0,
+      "lod3": 25000.0
+    },
+    "fulda_castle_wall_b": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 700.0,
+      "lod3": 25000.0
+    },
+    "fulda_castle_main_base": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 700.0,
+      "lod3": 25000.0
+    },
+    "modern_siding_suburb_building_a": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_b": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_c": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_d": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_e": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_f": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_g": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_h": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "modern_siding_suburb_building_i": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 15000.0
+    },
+    "brick_lighthouse_d_building": {
+      "lod0": 100.0,
+      "lod1": 250.0,
+      "lod2": 1100.0,
+      "lod3": 5000.0
+    },
+    "brick_lighthouse_d": {
+      "lod0": 50.0,
+      "lod1": 150.0,
+      "lod2": 700.0,
+      "lod3": 5000.0
+    },
+    "tree_oak_large_a": {
+      "lod0": 200.0,
+      "lod1": 10000.0
+    },
+    "tree_oak_larger_a": {
+      "lod0": 200.0,
+      "lod1": 10000.0
+    },
+    "tree_oak_larger_b": {
+      "lod0": 200.0,
+      "lod1": 10000.0
+    },
+    "brvillagehouse01": {
+      "lod0": 100.0,
+      "lod1": 2200.0
+    },
+    "brvillagehouse02": {
+      "lod0": 100.0,
+      "lod1": 2555.0
+    },
+    "brvillagehouse11": {
+      "lod0": 100.0,
+      "lod1": 2650.0
+    },
+    "brvillagehouse13": {
+      "lod0": 100.0,
+      "lod1": 2220.0
+    },
+    "brvillagehouse15": {
+      "lod0": 100.0,
+      "lod1": 2500.0
+    },
+    "brcity_house05": {
+      "lod0": 100.0,
+      "lod1": 5600.0
+    },
+    "brcity_house06": {
+      "lod0": 100.0,
+      "lod1": 2590.0
+    },
+    "brcity_house10": {
+      "lod0": 100.0,
+      "lod1": 2555.0
+    },
+    "brcity_house12": {
+      "lod0": 100.0,
+      "lod1": 2550.0
+    },
+    "brcity_house15": {
+      "lod0": 100.0,
+      "lod1": 2560.0
+    },
+    "brcity_house19": {
+      "lod0": 100.0,
+      "lod1": 2560.0
+    },
+    "brcity_house24": {
+      "lod0": 100.0,
+      "lod1": 2650.0
+    },
+    "brcity_house25": {
+      "lod0": 100.0,
+      "lod1": 2640.0
+    },
+    "brcity_house26": {
+      "lod0": 100.0,
+      "lod1": 2520.0
+    },
+    "brcity_house28": {
+      "lod0": 100.0,
+      "lod1": 2620.0
+    },
+    "brcity_house32": {
+      "lod0": 100.0,
+      "lod1": 2520.0
+    },
+    "brcity_house33": {
+      "lod0": 100.0,
+      "lod1": 2110.0
+    },
+    "brcity_house34": {
+      "lod0": 100.0,
+      "lod1": 2550.0
+    },
+    "brcity_house42": {
+      "lod0": 100.0,
+      "lod1": 2420.0
+    },
+    "brcity_house43": {
+      "lod0": 100.0,
+      "lod1": 2410.0
+    },
+    "brcity_house46": {
+      "lod0": 100.0,
+      "lod1": 2420.0
+    },
+    "brvillagehouse12": {
+      "lod0": 100.0,
+      "lod1": 2520.0
+    },
+    "brvillagehouse08": {
+      "lod0": 100.0,
+      "lod1": 2610.0
+    },
+    "brvillagehouse05": {
+      "lod0": 100.0,
+      "lod1": 2570.0
+    },
+    "brvillagehouse14": {
+      "lod0": 100.0,
+      "lod1": 2580.0
+    },
+    "brcity_house07": {
+      "lod0": 100.0,
+      "lod1": 5580.0
+    },
+    "brcity_house01": {
+      "lod0": 100.0,
+      "lod1": 5000.0
+    },
+    "brvillagehouse09": {
+      "lod0": 100.0,
+      "lod1": 2525.0
+    },
+    "brvillagehouse07": {
+      "lod0": 100.0,
+      "lod1": 2500.0
+    },
+    "brcity_house23": {
+      "lod0": 100.0,
+      "lod1": 2560.0
+    },
+    "brcity_house22": {
+      "lod0": 100.0,
+      "lod1": 2785.0
+    },
+    "brcity_house38": {
+      "lod0": 100.0,
+      "lod1": 2640.0
+    },
+    "brvillagehouse04": {
+      "lod0": 100.0,
+      "lod1": 2890.0
+    },
+    "brcity_house30": {
+      "lod0": 100.0,
+      "lod1": 1825.0
+    },
+    "brcity_house21": {
+      "lod0": 100.0,
+      "lod1": 1875.0
+    },
+    "brcity_house41": {
+      "lod0": 100.0,
+      "lod1": 1875.0
+    },
+    "brcity_house44": {
+      "lod0": 100.0,
+      "lod1": 2405.0
+    },
+    "brvillagehouse10": {
+      "lod0": 100.0,
+      "lod1": 2605.0
+    },
+    "brcity_house35": {
+      "lod0": 100.0,
+      "lod1": 2575.0
+    },
+    "brcity_house45": {
+      "lod0": 100.0,
+      "lod1": 2600.0
+    },
+    "brcity_house09": {
+      "lod0": 100.0,
+      "lod1": 2500.0
+    },
+    "brvillagehouse06": {
+      "lod0": 100.0,
+      "lod1": 2610.0
+    },
+    "brcity_house03": {
+      "lod0": 100.0,
+      "lod1": 5500.0
+    },
+    "brcity_house29": {
+      "lod0": 100.0,
+      "lod1": 2655.0
+    },
+    "brvillagehouse03": {
+      "lod0": 100.0,
+      "lod1": 2655.0
+    },
+    "brcity_house04": {
+      "lod0": 100.0,
+      "lod1": 1790.0
+    },
+    "brcity_house08": {
+      "lod0": 100.0,
+      "lod1": 1705.0
+    },
+    "brcity_house13": {
+      "lod0": 100.0,
+      "lod1": 2495.0
+    },
+    "brcity_house17": {
+      "lod0": 100.0,
+      "lod1": 1950.0
+    },
+    "brcity_house27": {
+      "lod0": 100.0,
+      "lod1": 1850.0
+    },
+    "brcity_house31": {
+      "lod0": 100.0,
+      "lod1": 1720.0
+    },
+    "brcity_house36": {
+      "lod0": 100.0,
+      "lod1": 1815.0
+    },
+    "brcity_house37": {
+      "lod0": 100.0,
+      "lod1": 1695.0
+    },
+    "brcity_house40": {
+      "lod0": 100.0,
+      "lod1": 2605.0
+    },
+    "brcity_house02": {
+      "lod0": 100.0,
+      "lod1": 5550.0
+    },
+    "brcity_house11": {
+      "lod0": 100.0,
+      "lod1": 1855.0
+    },
+    "brcity_house39": {
+      "lod0": 100.0,
+      "lod1": 2505.0
+    },
+    "brcity_house14": {
+      "lod0": 100.0,
+      "lod1": 1870.0
+    },
+    "brcity_house16": {
+      "lod0": 100.0,
+      "lod1": 2575.0
+    },
+    "brcity_house20": {
+      "lod0": 100.0,
+      "lod1": 1855.0
+    },
+    "mozdok_fir1": {
+      "lod0": 250.0,
+      "lod1": 5700.0
+    },
+    "liveoak_03_rendinst": {
+      "lod0": 550.0,
+      "lod1": 4500.0
+    },
+    "euraspen_fall_03_rendinst": {
+      "lod0": 550.0,
+      "lod1": 2500.0
+    },
+    "european_street_lamp_b": {
+      "lod0": 150.0,
+      "lod1": 450.0,
+      "lod2": 700.0
+    },
+    "european_street_lamp_a": {
+      "lod0": 150.0,
+      "lod1": 450.0,
+      "lod2": 700.0
+    },
+    "market_stand_a": {
+      "lod0": 300.0,
+      "lod1": 900.0,
+      "lod2": 1300.0
+    },
+    "bobbin_cable_set_a": {
+      "lod0": 50.0,
+      "lod1": 100.0,
+      "lod2": 700.0
+    },
+    "88mm_flak_36_canon_b": {
+      "lod0": 60.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 1200.0
+    },
+    "flower_bed_a": {
+      "lod0": 60.0,
+      "lod1": 120.0,
+      "lod2": 500.0
+    },
+    "fishing_boat_a": {
+      "lod0": 100.0,
+      "lod1": 300.0,
+      "lod2": 800.0,
+      "lod3": 1000.0
+    },
+    "tree_maple_large_a": {
+      "lod0": 100.0,
+      "lod1": 3000.0
+    },
+    "tree_maple_large_b": {
+      "lod0": 100.0,
+      "lod1": 3000.0
+    },
+    "tree_autumn_large_a": {
+      "lod0": 170.0,
+      "lod1": 3000.0
+    },
+    "tree_autumn_large_b": {
+      "lod0": 90.0,
+      "lod1": 3000.0
+    },
+    "tree_autumn_large_c": {
+      "lod0": 170.0,
+      "lod1": 3000.0
+    },
+    "tree_autumn_large_d": {
+      "lod0": 90.0,
+      "lod1": 3000.0
     }
   },
-  {
-    "stars": {
-      "latitude": 10.0,
-      "longitude": 106.0,
-      "year": 1957,
-      "month": 6,
-      "day": 14
-    }
-  },
-  {
-    "earth": {
-      "earthWorldEnabled": true,
-      "earthWorldMin": [-32768.0,-32768.0],
-      "earthWorldMax": [32768.0,32768.0]
-    }
-  },
-  {
-    "shader_vars": {
-      "parallax_shadow_strength": 7.0,
-      "parallax_shadow_length": 2.0,
-      "water_color_noise_size": 1137.0,
-      "max_river_width": 500.0,
-      "ocean_density": 1.0,
-      "river_density": 0.2,
-      "land_bump_scale": -3.0,
-      "land_smoothness_detect_color": [0.36,0.31,0.33,0.3],
-      "translucency_detection_hardness": 1.0,
-      "specular_detect_land_color": [0.55,0.0,0.5,0.0],
-      "water_aces_params": [5.0,0.4,3.0,0.0],
-      "water_aces_color_and_density": [0.5,0.5,0.5,0.5]
-    }
-  },
-  {
-    "randomGrass": [
-      {
-        "density": 2.0
-      },
-      {
-        "maxRadius": 230.0
-      },
-      {
-        "sowPerlinFreq": 0.1
-      },
-      {
-        "fadeDelta": 100.0
-      },
-      {
-        "lodFadeDelta": 100.0
-      },
-      {
-        "minLodDensity": 0.3
-      },
-      {
-        "blendToLandDelta": 100.0
-      },
-      {
-        "texSize": 1024
-      },
-      {
-        "noise_first_rnd": 23.1407
-      },
-      {
-        "noise_first_val_mul": 1.0
-      },
-      {
-        "noise_first_val_add": 0.0
-      },
-      {
-        "noise_second_rnd": 0.05
-      },
-      {
-        "noise_second_val_mul": 1.0
-      },
-      {
-        "noise_second_val_add": 0.0
-      },
-      {
-        "directWindMul": 1.0
-      },
-      {
-        "noiseWindMul": 1.0
-      },
-      {
-        "windPerlinFreq": 50000.0
-      },
-      {
-        "directWindFreq": 1.0
-      },
-      {
-        "directWindModulationFreq": 1.0
-      },
-      {
-        "windWaveLength": 100.0
-      },
-      {
-        "windToColor": 0.2
-      },
-      {
-        "helicopterHorMul": 2.0
-      },
-      {
-        "helicopterVerMul": 1.0
-      },
-      {
-        "helicopterToDirectWindMul": 2.0
-      },
-      {
-        "helicopterFalloff": 0.001
-      },
-      {
-        "avg_fulda_fields_a": "avg_fulda_fields_a_scatter_mask"
-      },
-      {
-        "small_grass": {
-          "grass_grid_size": 0.625,
-          "grass_distance": 200.0,
-          "hor_size_mul": 1.5,
-          "alphaSuffix": "_a",
-          "grass_types": {
-            "generic_grass_tall_a": {
-              "diffuse": "grass_generic_grass_tall_a_tex_d",
-              "normal": "grass_generic_grass_tall_a_tex_n",
-              "size_lod_mul": 1.05,
-              "size_lod_wide_mul": 2.0,
-              "tile_tc_x": 2.0,
-              "variations": 1,
-              "height": 0.25,
-              "height_rnd_add": 0.15,
-              "hor_size": 0.5,
-              "hor_size_rnd_add": 0.0625,
-              "color_mask_r_from": "#4c642b5a",
-              "color_mask_r_to": "#8270565a",
-              "color_mask_g_from": "#1f1f1f5a",
-              "color_mask_g_to": "#7988555a",
-              "color_mask_b_from": "#4d5d325a",
-              "color_mask_b_to": "#6f6e2c5a",
-              "height_from_weight_mul": 0.3,
-              "height_from_weight_add": 0.7,
-              "density_from_weight_mul": 0.2,
-              "density_from_weight_add": 0.4,
-              "vertical_angle_add": 0.1,
-              "vertical_angle_mul": 0.5,
-              "ht_rnd_add": 0.15
-            },
-            "generic_grass_tall_b": {
-              "diffuse": "grass_generic_grass_tall_b_tex_d",
-              "normal": "grass_generic_grass_tall_b_tex_n",
-              "size_lod_mul": 1.05,
-              "size_lod_wide_mul": 2.0,
-              "tile_tc_x": 2.0,
-              "variations": 1,
-              "height": 0.25,
-              "height_rnd_add": 0.15,
-              "hor_size": 0.35,
-              "hor_size_rnd_add": 0.0625,
-              "color_mask_r_from": "#6b7d2c5a",
-              "color_mask_r_to": "#837a475a",
-              "color_mask_g_from": "#4343435a",
-              "color_mask_g_to": "#8c9d675a",
-              "color_mask_b_from": "#646d245a",
-              "color_mask_b_to": "#9873535a",
-              "height_from_weight_mul": 0.3,
-              "height_from_weight_add": 0.7,
-              "density_from_weight_mul": 0.2,
-              "density_from_weight_add": 0.4,
-              "vertical_angle_add": 0.1,
-              "vertical_angle_mul": 0.5,
-              "ht_rnd_add": 0.15
-            },
-            "generic_bush_a": {
-              "diffuse": "grass_generic_bush_a_tex_d",
-              "normal": "grass_generic_bush_a_tex_n",
-              "size_lod_mul": 1.05,
-              "size_lod_wide_mul": 2.0,
-              "tile_tc_x": 2.0,
-              "variations": 1,
-              "height": 0.25,
-              "ht_rnd_add": 0.25,
-              "hor_size": 0.15,
-              "hor_size_rnd_add": 0.2,
-              "stiffness": 0.4,
-              "color_mask_r_from": "#1833015a",
-              "color_mask_r_to": "#3540055a",
-              "color_mask_g_from": "#0505055a",
-              "color_mask_g_to": "#fafafa5a",
-              "color_mask_b_from": "#2f0b085a",
-              "color_mask_b_to": "#2d26225a",
-              "height_from_weight_mul": 0.3,
-              "height_from_weight_add": 0.7,
-              "density_from_weight_mul": 0.2,
-              "density_from_weight_add": 0.0,
-              "vertical_angle_add": -0.2,
-              "vertical_angle_mul": 0.5
-            },
-            "generic_grass_small_a": {
-              "diffuse": "grass_generic_grass_small_a_tex_d",
-              "normal": "grass_generic_grass_small_a_tex_n",
-              "size_lod_mul": 1.05,
-              "size_lod_wide_mul": 2.0,
-              "tile_tc_x": 2.0,
-              "variations": 1,
-              "height": 0.45,
-              "ht_rnd_add": 0.2,
-              "hor_size": 0.1,
-              "hor_size_rnd_add": 0.2,
-              "stiffness": 0.2,
-              "color_mask_r_from": "#20330c5a",
-              "color_mask_r_to": "#0834045a",
-              "color_mask_g_from": "#2021185a",
-              "color_mask_g_to": "#a0a74b5a",
-              "color_mask_b_from": "#896b335a",
-              "color_mask_b_to": "#7b713a5a",
-              "height_from_weight_mul": 0.5,
-              "height_from_weight_add": 0.5,
-              "density_from_weight_mul": 0.1,
-              "density_from_weight_add": 0.9,
-              "vertical_angle_add": 0.6,
-              "vertical_angle_mul": 0.7
-            },
-            "rye_a": {
-              "diffuse": "grass_rye_tex_d",
-              "normal": "grass_rye_tex_n",
-              "size_lod_mul": 1.05,
-              "size_lod_wide_mul": 2.0,
-              "tile_tc_x": 2.0,
-              "variations": 1,
-              "height": 0.35,
-              "ht_rnd_add": 0.3,
-              "hor_size": 0.5,
-              "hor_size_rnd_add": 0.4,
-              "color_mask_r_from": "#7d78595a",
-              "color_mask_r_to": "#efd1b35a",
-              "color_mask_g_from": "#4f4f4f5a",
-              "color_mask_g_to": "#a6a6835a",
-              "color_mask_b_from": "#5a45175a",
-              "color_mask_b_to": "#874d2e54",
-              "height_from_weight_mul": 0.4,
-              "height_from_weight_add": 0.6,
-              "density_from_weight_mul": 0.45,
-              "density_from_weight_add": 0.0
-            },
-            "wheat_a": {
-              "diffuse": "grass_wheat_tex_d",
-              "normal": "grass_wheat_tex_n",
-              "size_lod_mul": 1.05,
-              "size_lod_wide_mul": 2.0,
-              "tile_tc_x": 2.0,
-              "variations": 1,
-              "height": 0.25,
-              "ht_rnd_add": 0.25,
-              "hor_size": 0.1,
-              "hor_size_rnd_add": 0.3,
-              "color_mask_r_from": "#4b31105a",
-              "color_mask_r_to": "#a896445a",
-              "color_mask_g_from": "#5555555a",
-              "color_mask_g_to": "#a698985a",
-              "color_mask_b_from": "#93723a5a",
-              "color_mask_b_to": "#9873535a",
-              "height_from_weight_mul": 0.4,
-              "height_from_weight_add": 0.6,
-              "density_from_weight_mul": 0.45,
-              "density_from_weight_add": 0.0
-            },
-            "nograss": {
-              "density_from_weight_mul": 0.0,
-              "density_from_weight_add": 0.0
-            }
-          },
-          "decals": {
-            "blue_channel_grass": {
-              "id": 2,
-              "generic_bush_a": 1.35,
-              "wheat_a": 2.0,
-              "generic_grass_small_a": 4.5
-            }
-          }
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_reed_a",
-          "density": 1.0,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 0.2,
-          "verMinScale": 0.9,
-          "windMul": 0.05,
-          "radiusMul": 0.4,
-          "color_mask_r_from": "#e6d087ff",
-          "color_mask_r_to": "#bfa377ff",
-          "color_mask_b_from": "#8db356ff",
-          "color_mask_b_to": "#a8a548ff",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_sword_a",
-          "density": 0.05,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 0.2,
-          "verMinScale": 0.9,
-          "windMul": 0.05,
-          "radiusMul": 0.4,
-          "color_mask_r_from": "#9e7357ff",
-          "color_mask_r_to": "#6e5646ff",
-          "color_mask_b_from": "#558c3aff",
-          "color_mask_b_to": "#1c6b1dff",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_daisies_a",
-          "density": 1.0,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 0.2,
-          "verMinScale": 0.9,
-          "windMul": 0.05,
-          "radiusMul": 0.3,
-          "color_mask_r_from": "#d8ecf2ff",
-          "color_mask_r_to": "#a7c3ccff",
-          "color_mask_b_from": "#fcb130ff",
-          "color_mask_b_to": "#ed9d47ff",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_heather_a",
-          "density": 1.0,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 0.2,
-          "verMinScale": 0.5,
-          "windMul": 0.05,
-          "radiusMul": 0.3,
-          "color_mask_r_from": "#a82d58ff",
-          "color_mask_r_to": "#844e9eff",
-          "color_mask_b_from": "#506837ff",
-          "color_mask_b_to": "#4b5a12ff",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_tavolga_a",
-          "density": 0.5,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 0.2,
-          "verMinScale": 0.5,
-          "windMul": 0.05,
-          "radiusMul": 0.3,
-          "color_mask_r_from": "#d8ecf2ff",
-          "color_mask_r_to": "#a7c3eaff",
-          "color_mask_b_from": "#459636ff",
-          "color_mask_b_to": "#4e7a3aff",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_paigle_a",
-          "density": 0.5,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 0.2,
-          "verMinScale": 0.5,
-          "windMul": 0.05,
-          "radiusMul": 0.3,
-          "color_mask_r_from": "#fad461ff",
-          "color_mask_r_to": "#e3c22dff",
-          "color_mask_b_from": "#459636ff",
-          "color_mask_b_to": "#4e7a3aff",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_tulip_a",
-          "density": 0.1,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 0.2,
-          "verMinScale": 0.5,
-          "windMul": 0.05,
-          "radiusMul": 0.3,
-          "color_mask_r_from": "#fad461ff",
-          "color_mask_r_to": "#ad132fff",
-          "color_mask_b_from": "#648c4dff",
-          "color_mask_b_to": "#4e7a35ff",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_wheat_a",
-          "density": 3.0,
-          "horScale": 1.8,
-          "horMinScale": 0.9,
-          "verScale": 0.2,
-          "verMinScale": 0.8,
-          "windMul": 0.05,
-          "radiusMul": 0.4,
-          "color_mask_r_from": "#7b612f7f",
-          "color_mask_r_to": "#b4a4347f",
-          "color_mask_b_from": "#3e662d7f",
-          "color_mask_b_to": "#4a251c7f",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
-          "res": "grass_simple_a",
-          "density": 6.0,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 0.2,
-          "verMinScale": 0.5,
-          "windMul": 0.05,
-          "radiusMul": 0.5,
-          "color_mask_r_from": "#9da2027f",
-          "color_mask_r_to": "#1f4b0a7f",
-          "color_mask_b_from": "#10610e7f",
-          "color_mask_b_to": "#0314037f",
-          "color_mask_g_from": "#332521ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      }
+  "forceTexLQ": {
+    "tex": [
+      "decal_concrete_plates_b_tex_d*",
+      "spruce_branches_a_tex_d*",
+      "stone_sett_rounded_tex_d*",
+      "tree_branches_autumn_tex_d*",
+      "tree_oak_branches_tex_d*",
+      "tree_poplar_branches_tex_d*",
+      "tree_populus_branches_flowers_tex_d*",
+      "tree_populus_branches_tex_a_d*",
+      "tree_populus_branches_tex_d*",
+      "decal_asphalt_road_d_tex_d*",
+      "decal_asphalt_road_d_tex_r*",
+      "decal_ground_building_dirt_a_tex_d*",
+      "decal_leaves_autumn_a_tex_d*",
+      "wood_painted_a_tex_d*",
+      "asphalt_damaged_a_tex_d*",
+      "brick_facad_a_d*",
+      "brick_large_blocks_a_d*",
+      "brick_large_blocks_a_floor_d*",
+      "brick_medieval_a_d*",
+      "brick_medieval_d_tex_d*",
+      "burnt_tank_overlay*",
+      "ceramic_tiles_roof_a_tex_d*",
+      "ceramic_tiles_roof_b_tex_d*",
+      "ceramic_tiles_roof_c_tex_d*",
+      "ceramic_tiles_roof_d_tex_d*",
+      "ceramic_tiles_roof_f_tex_d*",
+      "concrere_fortifications_d*",
+      "concrere_fortifications_n*",
+      "concrete_panels_b_tex_d*",
+      "concrete_panels_c_tex_d*",
+      "concrete_panels_d*",
+      "concrete_plates_d*",
+      "debris_bricks_trash_d*",
+      "debris_concrete_a_tex_d*",
+      "dragonteeth_a_tex_n*",
+      "logs_and_planks_constructor_n*",
+      "metal_painted_clear_a_tex_d*",
+      "metal_painted_clear_a_tex_n*",
+      "metal_painted_rusty_a_tex_d*",
+      "metal_painted_rusty_a_tex_n*",
+      "metal_sheet_a_tex_n*",
+      "metal_tar_roof_b_tex_d*",
+      "metal_tar_roof_b_tex_n*",
+      "metal_tar_roof_c_tex_d*",
+      "metal_tar_roof_c_tex_n*",
+      "snow_a_tex_d*",
+      "snow_a_tex_n*",
+      "stone_sett_rounded_tex_n*",
+      "stucco_new_d*",
+      "stucco_new_n*",
+      "stucco_rough_tex_d*",
+      "stucco_rough_tex_n*",
+      "stucco_white_broken_a_d*",
+      "stucco_white_broken_a_n*",
+      "stucco_white_d*",
+      "stucco_white_n*",
+      "tree_branches_maple_tex_d*",
+      "ussr_camo_green*",
+      "vietnam_fence_decor_tex_d*",
+      "finland_houses_overlay*",
+      "fulda_castle_overlay*",
+      "decal_road_soil_d_tex_d*",
+      "detail_forest_tex_d*",
+      "fishing_boat_a_tex_n*",
+      "floating_pier_a_overlay*",
+      "ground_decal_medieval_tex_d*",
+      "hawaii_viilage_tex_d*",
+      "hawaii_viilage_tex_n*",
+      "karelia_stone_small_tex_n*",
+      "opel_blitz_kfz_305_tex_n*",
+      "opel_blitz_omnibus_tex_n*",
+      "sicily_cafe_n*",
+      "sicily_city_build_tex_n*",
+      "tree_populus_sea_branches_tex_d*",
+      "lifeboat_a_n*",
+      "lifeboat_a_d*",
+      "peugeot_402_tex_n*",
+      "sicily_flowerpots_n*",
+      "sicily_lamps_n*",
+      "st_bridge_beton_tex_n*",
+      "country_road_all_tex_d*",
+      "china_town_01_tex_d*",
+      "buildings_overlay_tex_d*",
+      "china_town_01_tex_n*",
+      "sawmill_overlay*",
+      "spud_pontoon_overlay*",
+      "concrete_plates_ground_tex_n*",
+      "flak_36_set_tex_n*",
+      "log_house_constructor_tex_d*",
+      "metal_plates_painted_a_tex_d*",
+      "nvrsk_wood_storehouses_overlay*",
+      "abandoned_factory_overlay*",
+      "country_road_all_tex_r*",
+      "park_sett_road_d_tex_d*",
+      "park_sett_road_d_tex_r*",
+      "decal_asphalt_road_b_tex_d*",
+      "decal_asphalt_road_b_tex_r*",
+      "concrete_plates_ground_tex_d*",
+      "decal_asphalt_road_a_tex_d*",
+      "detail_asphalt_a_tex_d*",
+      "detail_concrete_cracked_tex_d*",
+      "detail_concrete_tex_d*",
+      "detail_dirt_tex_d*",
+      "detail_grass_a_tex_d*",
+      "detail_grass_pebbles_tex_d*",
+      "detail_grass_small_tex_d*",
+      "detail_ground_tex_d*",
+      "detail_jungle_grass_fields_tex_d*",
+      "detail_mud_tex_d*",
+      "detail_rocks_pacific_tex_d*",
+      "detail_rocks_tex_d*",
+      "detail_sand_ground_tex_d*",
+      "detail_sett_cracked_tex_d*",
+      "detail_sett_small_old_tex_d*",
+      "detail_stone_tiles_tex_d*",
+      "detail_tropic_deadleaves_tex_d*",
+      "european_street_lamp_decor_tex_d*",
+      "european_street_lamp_decor_tex_n*",
+      "european_town_stuff_tex_n*",
+      "fabric_patches_a_tex_d*",
+      "fabric_patches_a_tex_n*",
+      "fishing_boat_a_tex_d*",
+      "flak_36_set_tex_d*",
+      "global_brick_wall_tex_n*",
+      "ground_decal_asphalt_cracked_tex_d*",
+      "ground_decal_asphalt_dirt_tex_d*",
+      "ground_decal_asphalt_patch_a_tex_d*",
+      "ground_decal_soil_cliff_tex_d*",
+      "ground_decal_tank_trails_tex_d*",
+      "log_house_constructor_tex_n*",
+      "log_house_walls_old_tex_n*",
+      "metal_plates_painted_a_tex_n*",
+      "modern_brick_painted_b_tex_n*",
+      "opel_blitz_kfz_305_tex_d*",
+      "opel_blitz_omnibus_tex_d*",
+      "sicily_city_build_tex_d*",
+      "stone_buildings_constructor_tex_n*",
+      "wood_painted_a_tex_n*",
+      "wood_siding_a_tex_n*",
+      "avn_japan_main_city_tex_d*",
+      "avn_japan_main_city_tex_m*",
+      "decal_asphalt_road_worn_a_tex_d*",
+      "decal_road_rail_tramway_a_tex_d*",
+      "finland_stone_small_tex_d*",
+      "fuego_islands_main_meadows_tex_d*",
+      "fuego_islands_main_meadows_tex_m*",
+      "america_win_doors_tex_n*",
+      "american_parking_meter_tex_n*",
+      "asphalt_damaged_a_tex_n*",
+      "bitumen_roof_a_n*",
+      "br_cityhouses_n*",
+      "brick_facad_a_n*",
+      "brick_large_blocks_a_n*",
+      "brick_lighthouse_d_overlay*",
+      "brick_medieval_a_n*",
+      "brick_medieval_b_tex_n*",
+      "brick_medieval_broken_a_tex_n*",
+      "brick_medieval_c_tex_n*",
+      "brick_medieval_d_tex_n*",
+      "bunker_doors_windows_a_tex_n*",
+      "ceramic_tiles_roof_a_tex_n*",
+      "ceramic_tiles_roof_b_tex_n*",
+      "ceramic_tiles_roof_c_tex_n*",
+      "ceramic_tiles_roof_d_tex_n*",
+      "ceramic_tiles_roof_f_tex_n*",
+      "clay_a_composite_tex_n*",
+      "concrete_panels_b_tex_n*",
+      "concrete_panels_c_tex_n*",
+      "concrete_panels_n*",
+      "concrete_pier_a_overlay*",
+      "concrete_pier_c_overlay*",
+      "concrete_pier_j_stair_overlay*",
+      "concrete_plates_n*",
+      "concrete_reinforced_broken_a_tex_n*",
+      "concrete_rough_a_tex_n*",
+      "debris_bricks_trash_n*",
+      "debris_bricks_trash_n*",
+      "debris_concrete_a_tex_n*",
+      "european_doors_windows_a_tex_n*",
+      "france_town_windows_doors_tex_n*",
+      "glass_tile_a_tex_n*",
+      "peugeot_402_tex_d*",
+      "pier_boats_a_marine_a_overlay*",
+      "sandbags_tex_n*",
+      "sicily_benches_n*",
+      "sicily_canopies_n*",
+      "storage_gsm_fuel_tank_horizontal_a_n*",
+      "vietnam_fence_decor_tex_n*",
+      "concrete_plates_ground_tex_n*",
+      "detail_sett_medieval_b_tex*",
+      "ground_decal_battlefield_dirt_dark_tex_d*",
+      "avg_fulda_fields_a_scatter_mask*"
     ]
   },
-  {
-    "overrideRiLodRange": {
-      "fulda_castle_tower_d": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 700.0,
-        "lod3": 25000.0
-      },
-      "fulda_castle_building_c": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 700.0,
-        "lod3": 25000.0
-      },
-      "fulda_castle_building_b": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 700.0,
-        "lod3": 25000.0
-      },
-      "fulda_castle_tower_c": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 700.0,
-        "lod3": 25000.0
-      },
-      "fulda_castle_wall_a": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 700.0,
-        "lod3": 25000.0
-      },
-      "fulda_castle_wall_b": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 700.0,
-        "lod3": 25000.0
-      },
-      "fulda_castle_main_base": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 700.0,
-        "lod3": 25000.0
-      },
-      "modern_siding_suburb_building_a": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_b": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_c": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_d": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_e": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_f": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_g": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_h": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "modern_siding_suburb_building_i": {
-        "lod0": 100.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 15000.0
-      },
-      "brick_lighthouse_d_building": {
-        "lod0": 100.0,
-        "lod1": 250.0,
-        "lod2": 1100.0,
-        "lod3": 5000.0
-      },
-      "brick_lighthouse_d": {
-        "lod0": 50.0,
-        "lod1": 150.0,
-        "lod2": 700.0,
-        "lod3": 5000.0
-      },
-      "tree_oak_large_a": {
-        "lod0": 200.0,
-        "lod1": 10000.0
-      },
-      "tree_oak_larger_a": {
-        "lod0": 200.0,
-        "lod1": 10000.0
-      },
-      "tree_oak_larger_b": {
-        "lod0": 200.0,
-        "lod1": 10000.0
-      },
-      "brvillagehouse01": {
-        "lod0": 100.0,
-        "lod1": 2200.0
-      },
-      "brvillagehouse02": {
-        "lod0": 100.0,
-        "lod1": 2555.0
-      },
-      "brvillagehouse11": {
-        "lod0": 100.0,
-        "lod1": 2650.0
-      },
-      "brvillagehouse13": {
-        "lod0": 100.0,
-        "lod1": 2220.0
-      },
-      "brvillagehouse15": {
-        "lod0": 100.0,
-        "lod1": 2500.0
-      },
-      "brcity_house05": {
-        "lod0": 100.0,
-        "lod1": 5600.0
-      },
-      "brcity_house06": {
-        "lod0": 100.0,
-        "lod1": 2590.0
-      },
-      "brcity_house10": {
-        "lod0": 100.0,
-        "lod1": 2555.0
-      },
-      "brcity_house12": {
-        "lod0": 100.0,
-        "lod1": 2550.0
-      },
-      "brcity_house15": {
-        "lod0": 100.0,
-        "lod1": 2560.0
-      },
-      "brcity_house19": {
-        "lod0": 100.0,
-        "lod1": 2560.0
-      },
-      "brcity_house24": {
-        "lod0": 100.0,
-        "lod1": 2650.0
-      },
-      "brcity_house25": {
-        "lod0": 100.0,
-        "lod1": 2640.0
-      },
-      "brcity_house26": {
-        "lod0": 100.0,
-        "lod1": 2520.0
-      },
-      "brcity_house28": {
-        "lod0": 100.0,
-        "lod1": 2620.0
-      },
-      "brcity_house32": {
-        "lod0": 100.0,
-        "lod1": 2520.0
-      },
-      "brcity_house33": {
-        "lod0": 100.0,
-        "lod1": 2110.0
-      },
-      "brcity_house34": {
-        "lod0": 100.0,
-        "lod1": 2550.0
-      },
-      "brcity_house42": {
-        "lod0": 100.0,
-        "lod1": 2420.0
-      },
-      "brcity_house43": {
-        "lod0": 100.0,
-        "lod1": 2410.0
-      },
-      "brcity_house46": {
-        "lod0": 100.0,
-        "lod1": 2420.0
-      },
-      "brvillagehouse12": {
-        "lod0": 100.0,
-        "lod1": 2520.0
-      },
-      "brvillagehouse08": {
-        "lod0": 100.0,
-        "lod1": 2610.0
-      },
-      "brvillagehouse05": {
-        "lod0": 100.0,
-        "lod1": 2570.0
-      },
-      "brvillagehouse14": {
-        "lod0": 100.0,
-        "lod1": 2580.0
-      },
-      "brcity_house07": {
-        "lod0": 100.0,
-        "lod1": 5580.0
-      },
-      "brcity_house01": {
-        "lod0": 100.0,
-        "lod1": 5000.0
-      },
-      "brvillagehouse09": {
-        "lod0": 100.0,
-        "lod1": 2525.0
-      },
-      "brvillagehouse07": {
-        "lod0": 100.0,
-        "lod1": 2500.0
-      },
-      "brcity_house23": {
-        "lod0": 100.0,
-        "lod1": 2560.0
-      },
-      "brcity_house22": {
-        "lod0": 100.0,
-        "lod1": 2785.0
-      },
-      "brcity_house38": {
-        "lod0": 100.0,
-        "lod1": 2640.0
-      },
-      "brvillagehouse04": {
-        "lod0": 100.0,
-        "lod1": 2890.0
-      },
-      "brcity_house30": {
-        "lod0": 100.0,
-        "lod1": 1825.0
-      },
-      "brcity_house21": {
-        "lod0": 100.0,
-        "lod1": 1875.0
-      },
-      "brcity_house41": {
-        "lod0": 100.0,
-        "lod1": 1875.0
-      },
-      "brcity_house44": {
-        "lod0": 100.0,
-        "lod1": 2405.0
-      },
-      "brvillagehouse10": {
-        "lod0": 100.0,
-        "lod1": 2605.0
-      },
-      "brcity_house35": {
-        "lod0": 100.0,
-        "lod1": 2575.0
-      },
-      "brcity_house45": {
-        "lod0": 100.0,
-        "lod1": 2600.0
-      },
-      "brcity_house09": {
-        "lod0": 100.0,
-        "lod1": 2500.0
-      },
-      "brvillagehouse06": {
-        "lod0": 100.0,
-        "lod1": 2610.0
-      },
-      "brcity_house03": {
-        "lod0": 100.0,
-        "lod1": 5500.0
-      },
-      "brcity_house29": {
-        "lod0": 100.0,
-        "lod1": 2655.0
-      },
-      "brvillagehouse03": {
-        "lod0": 100.0,
-        "lod1": 2655.0
-      },
-      "brcity_house04": {
-        "lod0": 100.0,
-        "lod1": 1790.0
-      },
-      "brcity_house08": {
-        "lod0": 100.0,
-        "lod1": 1705.0
-      },
-      "brcity_house13": {
-        "lod0": 100.0,
-        "lod1": 2495.0
-      },
-      "brcity_house17": {
-        "lod0": 100.0,
-        "lod1": 1950.0
-      },
-      "brcity_house27": {
-        "lod0": 100.0,
-        "lod1": 1850.0
-      },
-      "brcity_house31": {
-        "lod0": 100.0,
-        "lod1": 1720.0
-      },
-      "brcity_house36": {
-        "lod0": 100.0,
-        "lod1": 1815.0
-      },
-      "brcity_house37": {
-        "lod0": 100.0,
-        "lod1": 1695.0
-      },
-      "brcity_house40": {
-        "lod0": 100.0,
-        "lod1": 2605.0
-      },
-      "brcity_house02": {
-        "lod0": 100.0,
-        "lod1": 5550.0
-      },
-      "brcity_house11": {
-        "lod0": 100.0,
-        "lod1": 1855.0
-      },
-      "brcity_house39": {
-        "lod0": 100.0,
-        "lod1": 2505.0
-      },
-      "brcity_house14": {
-        "lod0": 100.0,
-        "lod1": 1870.0
-      },
-      "brcity_house16": {
-        "lod0": 100.0,
-        "lod1": 2575.0
-      },
-      "brcity_house20": {
-        "lod0": 100.0,
-        "lod1": 1855.0
-      },
-      "mozdok_fir1": {
-        "lod0": 250.0,
-        "lod1": 5700.0
-      },
-      "liveoak_03_rendinst": {
-        "lod0": 550.0,
-        "lod1": 4500.0
-      },
-      "euraspen_fall_03_rendinst": {
-        "lod0": 550.0,
-        "lod1": 2500.0
-      },
-      "european_street_lamp_b": {
-        "lod0": 150.0,
-        "lod1": 450.0,
-        "lod2": 700.0
-      },
-      "european_street_lamp_a": {
-        "lod0": 150.0,
-        "lod1": 450.0,
-        "lod2": 700.0
-      },
-      "market_stand_a": {
-        "lod0": 300.0,
-        "lod1": 900.0,
-        "lod2": 1300.0
-      },
-      "bobbin_cable_set_a": {
-        "lod0": 50.0,
-        "lod1": 100.0,
-        "lod2": 700.0
-      },
-      "88mm_flak_36_canon_b": {
-        "lod0": 60.0,
-        "lod1": 200.0,
-        "lod2": 400.0,
-        "lod3": 1200.0
-      },
-      "flower_bed_a": {
-        "lod0": 60.0,
-        "lod1": 120.0,
-        "lod2": 500.0
-      },
-      "fishing_boat_a": {
-        "lod0": 100.0,
-        "lod1": 300.0,
-        "lod2": 800.0,
-        "lod3": 1000.0
-      },
-      "tree_maple_large_a": {
-        "lod0": 100.0,
-        "lod1": 3000.0
-      },
-      "tree_maple_large_b": {
-        "lod0": 100.0,
-        "lod1": 3000.0
-      },
-      "tree_autumn_large_a": {
-        "lod0": 170.0,
-        "lod1": 3000.0
-      },
-      "tree_autumn_large_b": {
-        "lod0": 90.0,
-        "lod1": 3000.0
-      },
-      "tree_autumn_large_c": {
-        "lod0": 170.0,
-        "lod1": 3000.0
-      },
-      "tree_autumn_large_d": {
-        "lod0": 90.0,
-        "lod1": 3000.0
-      }
-    }
-  },
-  {
-    "forceTexLQ": [
-      {
-        "tex": "decal_concrete_plates_b_tex_d*"
-      },
-      {
-        "tex": "spruce_branches_a_tex_d*"
-      },
-      {
-        "tex": "stone_sett_rounded_tex_d*"
-      },
-      {
-        "tex": "tree_branches_autumn_tex_d*"
-      },
-      {
-        "tex": "tree_oak_branches_tex_d*"
-      },
-      {
-        "tex": "tree_poplar_branches_tex_d*"
-      },
-      {
-        "tex": "tree_populus_branches_flowers_tex_d*"
-      },
-      {
-        "tex": "tree_populus_branches_tex_a_d*"
-      },
-      {
-        "tex": "tree_populus_branches_tex_d*"
-      },
-      {
-        "tex": "decal_asphalt_road_d_tex_d*"
-      },
-      {
-        "tex": "decal_asphalt_road_d_tex_r*"
-      },
-      {
-        "tex": "decal_ground_building_dirt_a_tex_d*"
-      },
-      {
-        "tex": "decal_leaves_autumn_a_tex_d*"
-      },
-      {
-        "tex": "wood_painted_a_tex_d*"
-      },
-      {
-        "tex": "asphalt_damaged_a_tex_d*"
-      },
-      {
-        "tex": "brick_facad_a_d*"
-      },
-      {
-        "tex": "brick_large_blocks_a_d*"
-      },
-      {
-        "tex": "brick_large_blocks_a_floor_d*"
-      },
-      {
-        "tex": "brick_medieval_a_d*"
-      },
-      {
-        "tex": "brick_medieval_d_tex_d*"
-      },
-      {
-        "tex": "burnt_tank_overlay*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_a_tex_d*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_b_tex_d*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_c_tex_d*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_d_tex_d*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_f_tex_d*"
-      },
-      {
-        "tex": "concrere_fortifications_d*"
-      },
-      {
-        "tex": "concrere_fortifications_n*"
-      },
-      {
-        "tex": "concrete_panels_b_tex_d*"
-      },
-      {
-        "tex": "concrete_panels_c_tex_d*"
-      },
-      {
-        "tex": "concrete_panels_d*"
-      },
-      {
-        "tex": "concrete_plates_d*"
-      },
-      {
-        "tex": "debris_bricks_trash_d*"
-      },
-      {
-        "tex": "debris_concrete_a_tex_d*"
-      },
-      {
-        "tex": "dragonteeth_a_tex_n*"
-      },
-      {
-        "tex": "logs_and_planks_constructor_n*"
-      },
-      {
-        "tex": "metal_painted_clear_a_tex_d*"
-      },
-      {
-        "tex": "metal_painted_clear_a_tex_n*"
-      },
-      {
-        "tex": "metal_painted_rusty_a_tex_d*"
-      },
-      {
-        "tex": "metal_painted_rusty_a_tex_n*"
-      },
-      {
-        "tex": "metal_sheet_a_tex_n*"
-      },
-      {
-        "tex": "metal_tar_roof_b_tex_d*"
-      },
-      {
-        "tex": "metal_tar_roof_b_tex_n*"
-      },
-      {
-        "tex": "metal_tar_roof_c_tex_d*"
-      },
-      {
-        "tex": "metal_tar_roof_c_tex_n*"
-      },
-      {
-        "tex": "snow_a_tex_d*"
-      },
-      {
-        "tex": "snow_a_tex_n*"
-      },
-      {
-        "tex": "stone_sett_rounded_tex_n*"
-      },
-      {
-        "tex": "stucco_new_d*"
-      },
-      {
-        "tex": "stucco_new_n*"
-      },
-      {
-        "tex": "stucco_rough_tex_d*"
-      },
-      {
-        "tex": "stucco_rough_tex_n*"
-      },
-      {
-        "tex": "stucco_white_broken_a_d*"
-      },
-      {
-        "tex": "stucco_white_broken_a_n*"
-      },
-      {
-        "tex": "stucco_white_d*"
-      },
-      {
-        "tex": "stucco_white_n*"
-      },
-      {
-        "tex": "tree_branches_maple_tex_d*"
-      },
-      {
-        "tex": "ussr_camo_green*"
-      },
-      {
-        "tex": "vietnam_fence_decor_tex_d*"
-      },
-      {
-        "tex": "finland_houses_overlay*"
-      },
-      {
-        "tex": "fulda_castle_overlay*"
-      },
-      {
-        "tex": "decal_road_soil_d_tex_d*"
-      },
-      {
-        "tex": "detail_forest_tex_d*"
-      },
-      {
-        "tex": "fishing_boat_a_tex_n*"
-      },
-      {
-        "tex": "floating_pier_a_overlay*"
-      },
-      {
-        "tex": "ground_decal_medieval_tex_d*"
-      },
-      {
-        "tex": "hawaii_viilage_tex_d*"
-      },
-      {
-        "tex": "hawaii_viilage_tex_n*"
-      },
-      {
-        "tex": "karelia_stone_small_tex_n*"
-      },
-      {
-        "tex": "opel_blitz_kfz_305_tex_n*"
-      },
-      {
-        "tex": "opel_blitz_omnibus_tex_n*"
-      },
-      {
-        "tex": "sicily_cafe_n*"
-      },
-      {
-        "tex": "sicily_city_build_tex_n*"
-      },
-      {
-        "tex": "tree_populus_sea_branches_tex_d*"
-      },
-      {
-        "tex": "lifeboat_a_n*"
-      },
-      {
-        "tex": "lifeboat_a_d*"
-      },
-      {
-        "tex": "peugeot_402_tex_n*"
-      },
-      {
-        "tex": "sicily_flowerpots_n*"
-      },
-      {
-        "tex": "sicily_lamps_n*"
-      },
-      {
-        "tex": "st_bridge_beton_tex_n*"
-      },
-      {
-        "tex": "country_road_all_tex_d*"
-      },
-      {
-        "tex": "china_town_01_tex_d*"
-      },
-      {
-        "tex": "buildings_overlay_tex_d*"
-      },
-      {
-        "tex": "china_town_01_tex_n*"
-      },
-      {
-        "tex": "sawmill_overlay*"
-      },
-      {
-        "tex": "spud_pontoon_overlay*"
-      },
-      {
-        "tex": "concrete_plates_ground_tex_n*"
-      },
-      {
-        "tex": "flak_36_set_tex_n*"
-      },
-      {
-        "tex": "log_house_constructor_tex_d*"
-      },
-      {
-        "tex": "metal_plates_painted_a_tex_d*"
-      },
-      {
-        "tex": "nvrsk_wood_storehouses_overlay*"
-      },
-      {
-        "tex": "abandoned_factory_overlay*"
-      },
-      {
-        "tex": "country_road_all_tex_r*"
-      },
-      {
-        "tex": "park_sett_road_d_tex_d*"
-      },
-      {
-        "tex": "park_sett_road_d_tex_r*"
-      },
-      {
-        "tex": "decal_asphalt_road_b_tex_d*"
-      },
-      {
-        "tex": "decal_asphalt_road_b_tex_r*"
-      },
-      {
-        "tex": "concrete_plates_ground_tex_d*"
-      },
-      {
-        "tex": "decal_asphalt_road_a_tex_d*"
-      },
-      {
-        "tex": "detail_asphalt_a_tex_d*"
-      },
-      {
-        "tex": "detail_concrete_cracked_tex_d*"
-      },
-      {
-        "tex": "detail_concrete_tex_d*"
-      },
-      {
-        "tex": "detail_dirt_tex_d*"
-      },
-      {
-        "tex": "detail_grass_a_tex_d*"
-      },
-      {
-        "tex": "detail_grass_pebbles_tex_d*"
-      },
-      {
-        "tex": "detail_grass_small_tex_d*"
-      },
-      {
-        "tex": "detail_ground_tex_d*"
-      },
-      {
-        "tex": "detail_jungle_grass_fields_tex_d*"
-      },
-      {
-        "tex": "detail_mud_tex_d*"
-      },
-      {
-        "tex": "detail_rocks_pacific_tex_d*"
-      },
-      {
-        "tex": "detail_rocks_tex_d*"
-      },
-      {
-        "tex": "detail_sand_ground_tex_d*"
-      },
-      {
-        "tex": "detail_sett_cracked_tex_d*"
-      },
-      {
-        "tex": "detail_sett_small_old_tex_d*"
-      },
-      {
-        "tex": "detail_stone_tiles_tex_d*"
-      },
-      {
-        "tex": "detail_tropic_deadleaves_tex_d*"
-      },
-      {
-        "tex": "european_street_lamp_decor_tex_d*"
-      },
-      {
-        "tex": "european_street_lamp_decor_tex_n*"
-      },
-      {
-        "tex": "european_town_stuff_tex_n*"
-      },
-      {
-        "tex": "fabric_patches_a_tex_d*"
-      },
-      {
-        "tex": "fabric_patches_a_tex_n*"
-      },
-      {
-        "tex": "fishing_boat_a_tex_d*"
-      },
-      {
-        "tex": "flak_36_set_tex_d*"
-      },
-      {
-        "tex": "global_brick_wall_tex_n*"
-      },
-      {
-        "tex": "ground_decal_asphalt_cracked_tex_d*"
-      },
-      {
-        "tex": "ground_decal_asphalt_dirt_tex_d*"
-      },
-      {
-        "tex": "ground_decal_asphalt_patch_a_tex_d*"
-      },
-      {
-        "tex": "ground_decal_soil_cliff_tex_d*"
-      },
-      {
-        "tex": "ground_decal_tank_trails_tex_d*"
-      },
-      {
-        "tex": "log_house_constructor_tex_n*"
-      },
-      {
-        "tex": "log_house_walls_old_tex_n*"
-      },
-      {
-        "tex": "metal_plates_painted_a_tex_n*"
-      },
-      {
-        "tex": "modern_brick_painted_b_tex_n*"
-      },
-      {
-        "tex": "opel_blitz_kfz_305_tex_d*"
-      },
-      {
-        "tex": "opel_blitz_omnibus_tex_d*"
-      },
-      {
-        "tex": "sicily_city_build_tex_d*"
-      },
-      {
-        "tex": "stone_buildings_constructor_tex_n*"
-      },
-      {
-        "tex": "wood_painted_a_tex_n*"
-      },
-      {
-        "tex": "wood_siding_a_tex_n*"
-      },
-      {
-        "tex": "avn_japan_main_city_tex_d*"
-      },
-      {
-        "tex": "avn_japan_main_city_tex_m*"
-      },
-      {
-        "tex": "decal_asphalt_road_worn_a_tex_d*"
-      },
-      {
-        "tex": "decal_road_rail_tramway_a_tex_d*"
-      },
-      {
-        "tex": "finland_stone_small_tex_d*"
-      },
-      {
-        "tex": "fuego_islands_main_meadows_tex_d*"
-      },
-      {
-        "tex": "fuego_islands_main_meadows_tex_m*"
-      },
-      {
-        "tex": "america_win_doors_tex_n*"
-      },
-      {
-        "tex": "american_parking_meter_tex_n*"
-      },
-      {
-        "tex": "asphalt_damaged_a_tex_n*"
-      },
-      {
-        "tex": "bitumen_roof_a_n*"
-      },
-      {
-        "tex": "br_cityhouses_n*"
-      },
-      {
-        "tex": "brick_facad_a_n*"
-      },
-      {
-        "tex": "brick_large_blocks_a_n*"
-      },
-      {
-        "tex": "brick_lighthouse_d_overlay*"
-      },
-      {
-        "tex": "brick_medieval_a_n*"
-      },
-      {
-        "tex": "brick_medieval_b_tex_n*"
-      },
-      {
-        "tex": "brick_medieval_broken_a_tex_n*"
-      },
-      {
-        "tex": "brick_medieval_c_tex_n*"
-      },
-      {
-        "tex": "brick_medieval_d_tex_n*"
-      },
-      {
-        "tex": "bunker_doors_windows_a_tex_n*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_a_tex_n*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_b_tex_n*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_c_tex_n*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_d_tex_n*"
-      },
-      {
-        "tex": "ceramic_tiles_roof_f_tex_n*"
-      },
-      {
-        "tex": "clay_a_composite_tex_n*"
-      },
-      {
-        "tex": "concrete_panels_b_tex_n*"
-      },
-      {
-        "tex": "concrete_panels_c_tex_n*"
-      },
-      {
-        "tex": "concrete_panels_n*"
-      },
-      {
-        "tex": "concrete_pier_a_overlay*"
-      },
-      {
-        "tex": "concrete_pier_c_overlay*"
-      },
-      {
-        "tex": "concrete_pier_j_stair_overlay*"
-      },
-      {
-        "tex": "concrete_plates_n*"
-      },
-      {
-        "tex": "concrete_reinforced_broken_a_tex_n*"
-      },
-      {
-        "tex": "concrete_rough_a_tex_n*"
-      },
-      {
-        "tex": "debris_bricks_trash_n*"
-      },
-      {
-        "tex": "debris_bricks_trash_n*"
-      },
-      {
-        "tex": "debris_concrete_a_tex_n*"
-      },
-      {
-        "tex": "european_doors_windows_a_tex_n*"
-      },
-      {
-        "tex": "france_town_windows_doors_tex_n*"
-      },
-      {
-        "tex": "glass_tile_a_tex_n*"
-      },
-      {
-        "tex": "peugeot_402_tex_d*"
-      },
-      {
-        "tex": "pier_boats_a_marine_a_overlay*"
-      },
-      {
-        "tex": "sandbags_tex_n*"
-      },
-      {
-        "tex": "sicily_benches_n*"
-      },
-      {
-        "tex": "sicily_canopies_n*"
-      },
-      {
-        "tex": "storage_gsm_fuel_tank_horizontal_a_n*"
-      },
-      {
-        "tex": "vietnam_fence_decor_tex_n*"
-      },
-      {
-        "tex": "concrete_plates_ground_tex_n*"
-      },
-      {
-        "tex": "detail_sett_medieval_b_tex*"
-      },
-      {
-        "tex": "ground_decal_battlefield_dirt_dark_tex_d*"
-      },
-      {
-        "tex": "avg_fulda_fields_a_scatter_mask*"
-      }
+  "forceTexMQ": {
+    "tex": [
+      "avg_fulda_fields_a*",
+      "ussr_tram_x_d*",
+      "ussr_tram_x_n*",
+      "france_town_houses_overlay*",
+      "decal_sett_medieval_road_b_tex_r*",
+      "avg_sweden_detailed_part_tex_d*",
+      "avg_sweden_detailed_part_tex_m*",
+      "decal_concrete_plates_b_tex_r*",
+      "decal_road_soil_d_tex_r*",
+      "detail_asphalt_a_tex_r*",
+      "detail_concrete_cracked_tex_r*",
+      "detail_dirt_tex_r*",
+      "detail_forest_tex_r*",
+      "detail_grass_a_tex_r*",
+      "detail_grass_pebbles_tex_r*",
+      "detail_ground_tex_r*",
+      "detail_jungle_grass_fields_tex_r*",
+      "detail_mud_tex_r*",
+      "detail_rocks_pacific_tex_r*",
+      "detail_rocks_tex_r*",
+      "detail_sand_ground_tex_r*",
+      "detail_sett_medieval_b_tex_r*",
+      "detail_sett_cracked_tex_r*",
+      "dodge_wf32_n*",
+      "ground_decal_asphalt_cracked_tex_r*",
+      "ground_decal_asphalt_holes_tex_r*",
+      "ground_decal_battlefield_dirt_dark_tex_r*",
+      "ground_decal_soil_cliff_tex_r*",
+      "sicily_benches_tex_n*",
+      "decal_ground_building_dirt_a_tex_r*",
+      "ground_decal_asphalt_holes_tex_d*",
+      "port_crane_overlay*"
     ]
   },
-  {
-    "forceTexMQ": [
-      {
-        "tex": "avg_fulda_fields_a*"
-      },
-      {
-        "tex": "ussr_tram_x_d*"
-      },
-      {
-        "tex": "ussr_tram_x_n*"
-      },
-      {
-        "tex": "france_town_houses_overlay*"
-      },
-      {
-        "tex": "decal_sett_medieval_road_b_tex_r*"
-      },
-      {
-        "tex": "avg_sweden_detailed_part_tex_d*"
-      },
-      {
-        "tex": "avg_sweden_detailed_part_tex_m*"
-      },
-      {
-        "tex": "decal_concrete_plates_b_tex_r*"
-      },
-      {
-        "tex": "decal_road_soil_d_tex_r*"
-      },
-      {
-        "tex": "detail_asphalt_a_tex_r*"
-      },
-      {
-        "tex": "detail_concrete_cracked_tex_r*"
-      },
-      {
-        "tex": "detail_dirt_tex_r*"
-      },
-      {
-        "tex": "detail_forest_tex_r*"
-      },
-      {
-        "tex": "detail_grass_a_tex_r*"
-      },
-      {
-        "tex": "detail_grass_pebbles_tex_r*"
-      },
-      {
-        "tex": "detail_ground_tex_r*"
-      },
-      {
-        "tex": "detail_jungle_grass_fields_tex_r*"
-      },
-      {
-        "tex": "detail_mud_tex_r*"
-      },
-      {
-        "tex": "detail_rocks_pacific_tex_r*"
-      },
-      {
-        "tex": "detail_rocks_tex_r*"
-      },
-      {
-        "tex": "detail_sand_ground_tex_r*"
-      },
-      {
-        "tex": "detail_sett_medieval_b_tex_r*"
-      },
-      {
-        "tex": "detail_sett_cracked_tex_r*"
-      },
-      {
-        "tex": "dodge_wf32_n*"
-      },
-      {
-        "tex": "ground_decal_asphalt_cracked_tex_r*"
-      },
-      {
-        "tex": "ground_decal_asphalt_holes_tex_r*"
-      },
-      {
-        "tex": "ground_decal_battlefield_dirt_dark_tex_r*"
-      },
-      {
-        "tex": "ground_decal_soil_cliff_tex_r*"
-      },
-      {
-        "tex": "sicily_benches_tex_n*"
-      },
-      {
-        "tex": "decal_ground_building_dirt_a_tex_r*"
-      },
-      {
-        "tex": "ground_decal_asphalt_holes_tex_d*"
-      },
-      {
-        "tex": "port_crane_overlay*"
-      }
-    ]
-  },
-  {
-    "technicsSkins": [
-      {
-        "groundSkin": "urban"
-      },
-      {
-        "groundSkin": "default"
-      }
+  "technicsSkins": {
+    "groundSkin": [
+      "urban",
+      "default"
     ]
   }
-]
+}

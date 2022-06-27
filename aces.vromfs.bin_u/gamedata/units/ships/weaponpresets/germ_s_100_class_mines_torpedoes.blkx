@@ -1,11 +1,9 @@
-[
-  {
-    "hideNodes": {
-      "node": "ex_decor_09"
-    }
+{
+  "hideNodes": {
+    "node": "ex_decor_09"
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner5",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -20,7 +18,11 @@
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.5,0.0,0.0],
+      "startFxOffset": [
+        4.5,
+        0.0,
+        0.0
+      ],
       "startSpeed": 18.0,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -29,13 +31,17 @@
         "gun": "bone_torpedo_01"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -50,7 +56,11 @@
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.5,0.0,0.0],
+      "startFxOffset": [
+        4.5,
+        0.0,
+        0.0
+      ],
       "startSpeed": 18.0,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -59,13 +69,17 @@
         "gun": "bone_torpedo_02"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/germ_mine_emf.blk",
@@ -73,15 +87,16 @@
       "bullets": 2,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [1.0,2.0],
+      "emitterGenRange": [
+        1,
+        2
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/germ_mine_emf.blk",
@@ -89,11 +104,14 @@
       "bullets": 2,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [3.0,4.0],
+      "emitterGenRange": [
+        3,
+        4
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
     }
-  }
-]
+  ]
+}

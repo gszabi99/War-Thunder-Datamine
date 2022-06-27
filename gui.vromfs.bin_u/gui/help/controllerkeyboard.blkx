@@ -1,799 +1,551 @@
 {
-  "tdiv": [
-    {
-      "id": "keyboard_div"
-    },
-    {
-      "width": "pw"
-    },
-    {
-      "padding": "@framePadding"
-    },
-    {
-      "pos": "0.5pw-0.5w, 0.5ph-0.5h"
-    },
-    {
-      "position": "relative"
-    },
-    {
-      "flow": "horizontal"
-    },
-    {
-      "keyboard": [
+  "tdiv": {
+    "id": "keyboard_div",
+    "width": "pw",
+    "padding": "@framePadding",
+    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+    "position": "relative",
+    "flow": "horizontal",
+    "keyboard": {
+      "background-image": "#ui/gameuiskin#button00.png",
+      "background-color": "@white",
+      "background-position": "4",
+      "background-repeat": "expand",
+      "padding": "0, 0.5@kbPad, 0, 0",
+      "row": {
+        "margin-bottom": "1*@scrn_tgt/100.0",
+        "kb": [
+          {
+            "id": "Esc",
+            "text": "#key/Esc"
+          },
+          {
+            "id": "F1",
+            "text": "F1",
+            "pos": "0.5@kbh+1@kbPad,0"
+          },
+          {
+            "id": "F2",
+            "text": "F2"
+          },
+          {
+            "id": "F3",
+            "text": "F3"
+          },
+          {
+            "id": "F4",
+            "text": "F4"
+          },
+          {
+            "id": "F5",
+            "text": "F5",
+            "pos": "0.5@kbh,0"
+          },
+          {
+            "id": "F6",
+            "text": "F6"
+          },
+          {
+            "id": "F7",
+            "text": "F7"
+          },
+          {
+            "id": "F8",
+            "text": "F8"
+          },
+          {
+            "id": "F9",
+            "text": "F9",
+            "pos": "0.5@kbh,0"
+          },
+          {
+            "id": "F10",
+            "text": "F10"
+          },
+          {
+            "id": "F11",
+            "text": "F11"
+          },
+          {
+            "id": "F12",
+            "text": "F12"
+          },
+          {
+            "id": "Prnt_Scrn",
+            "text": "#key/Prnt_Scrn/short",
+            "class": "smallFont",
+            "pos": "0.5@kbh,0"
+          },
+          {
+            "id": "Scroll_Lock",
+            "text": "#key/Scroll_Lock/short",
+            "class": "smallFont"
+          },
+          {
+            "id": "Break",
+            "text": "#key/Break",
+            "class": "smallFont"
+          }
+        ]
+      },
+      "_newline": {
+        "size": "0"
+      },
+      "tdiv": [
         {
-          "background-image": "#ui/gameuiskin#button00.png"
-        },
-        {
-          "background-color": "@white"
-        },
-        {
-          "background-position": "4"
-        },
-        {
-          "background-repeat": "expand"
-        },
-        {
-          "padding": "0, 0.5@kbPad, 0, 0"
-        },
-        {
+          "flow": "vertical",
           "row": [
             {
-              "margin-bottom": "1*@scrn_tgt/100.0"
-            },
-            {
-              "kb": {
-                "id": "Esc",
-                "text": "#key/Esc"
-              }
-            },
-            {
-              "kb": {
-                "id": "F1",
-                "text": "F1",
-                "pos": "0.5@kbh+1@kbPad,0"
-              }
-            },
-            {
-              "kb": {
-                "id": "F2",
-                "text": "F2"
-              }
-            },
-            {
-              "kb": {
-                "id": "F3",
-                "text": "F3"
-              }
-            },
-            {
-              "kb": {
-                "id": "F4",
-                "text": "F4"
-              }
-            },
-            {
-              "kb": {
-                "id": "F5",
-                "text": "F5",
-                "pos": "0.5@kbh,0"
-              }
-            },
-            {
-              "kb": {
-                "id": "F6",
-                "text": "F6"
-              }
-            },
-            {
-              "kb": {
-                "id": "F7",
-                "text": "F7"
-              }
-            },
-            {
-              "kb": {
-                "id": "F8",
-                "text": "F8"
-              }
-            },
-            {
-              "kb": {
-                "id": "F9",
-                "text": "F9",
-                "pos": "0.5@kbh,0"
-              }
-            },
-            {
-              "kb": {
-                "id": "F10",
-                "text": "F10"
-              }
-            },
-            {
-              "kb": {
-                "id": "F11",
-                "text": "F11"
-              }
-            },
-            {
-              "kb": {
-                "id": "F12",
-                "text": "F12"
-              }
-            },
-            {
-              "kb": {
-                "id": "Prnt_Scrn",
-                "text": "#key/Prnt_Scrn/short",
-                "class": "smallFont",
-                "pos": "0.5@kbh,0"
-              }
-            },
-            {
-              "kb": {
-                "id": "Scroll_Lock",
-                "text": "#key/Scroll_Lock/short",
+              "kb": [
+                {
+                  "id": "`",
+                  "text": "`"
+                },
+                {
+                  "id": "1",
+                  "text": "1"
+                },
+                {
+                  "id": "2",
+                  "text": "2"
+                },
+                {
+                  "id": "3",
+                  "text": "3"
+                },
+                {
+                  "id": "4",
+                  "text": "4"
+                },
+                {
+                  "id": "5",
+                  "text": "5"
+                },
+                {
+                  "id": "6",
+                  "text": "6"
+                },
+                {
+                  "id": "7",
+                  "text": "7"
+                },
+                {
+                  "id": "8",
+                  "text": "8"
+                },
+                {
+                  "id": "9",
+                  "text": "9"
+                },
+                {
+                  "id": "0",
+                  "text": "0"
+                },
+                {
+                  "id": "-",
+                  "text": "-"
+                },
+                {
+                  "id": "=",
+                  "text": "="
+                },
+                {
+                  "id": "Insert",
+                  "text": "#key/Insert/short",
+                  "pos": "0.5@kbh,0"
+                },
+                {
+                  "id": "Home",
+                  "text": "#key/Home",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Page_Up",
+                  "text": "#key/Page_Up/short",
+                  "class": "smallFont"
+                }
+              ],
+              "bgk": {
+                "id": "Backspace",
+                "text": "#key/Backspace/short",
+                "width": "1.5@kbh",
                 "class": "smallFont"
               }
             },
             {
-              "kb": {
-                "id": "Break",
-                "text": "#key/Break",
+              "bgk": {
+                "id": "Tab",
+                "text": "#key/Tab",
+                "width": "1.5@kbh",
                 "class": "smallFont"
-              }
-            }
-          ]
-        },
-        {
-          "_newline": {
-            "size": "0"
-          }
-        },
-        {
-          "tdiv": [
-            {
-              "flow": "vertical"
-            },
-            {
-              "row": [
+              },
+              "kb": [
                 {
-                  "kb": {
-                    "id": "`",
-                    "text": "`"
-                  }
+                  "id": "Q",
+                  "text": "Q"
                 },
                 {
-                  "kb": {
-                    "id": "1",
-                    "text": "1"
-                  }
+                  "id": "W",
+                  "text": "W"
                 },
                 {
-                  "kb": {
-                    "id": "2",
-                    "text": "2"
-                  }
+                  "id": "E",
+                  "text": "E"
                 },
                 {
-                  "kb": {
-                    "id": "3",
-                    "text": "3"
-                  }
+                  "id": "R",
+                  "text": "R"
                 },
                 {
-                  "kb": {
-                    "id": "4",
-                    "text": "4"
-                  }
+                  "id": "T",
+                  "text": "T"
                 },
                 {
-                  "kb": {
-                    "id": "5",
-                    "text": "5"
-                  }
+                  "id": "Y",
+                  "text": "Y"
                 },
                 {
-                  "kb": {
-                    "id": "6",
-                    "text": "6"
-                  }
+                  "id": "U",
+                  "text": "U"
                 },
                 {
-                  "kb": {
-                    "id": "7",
-                    "text": "7"
-                  }
+                  "id": "I",
+                  "text": "I"
                 },
                 {
-                  "kb": {
-                    "id": "8",
-                    "text": "8"
-                  }
+                  "id": "O",
+                  "text": "O"
                 },
                 {
-                  "kb": {
-                    "id": "9",
-                    "text": "9"
-                  }
+                  "id": "P",
+                  "text": "P"
                 },
                 {
-                  "kb": {
-                    "id": "0",
-                    "text": "0"
-                  }
+                  "id": "[",
+                  "text": "["
                 },
                 {
-                  "kb": {
-                    "id": "-",
-                    "text": "-"
-                  }
+                  "id": "]",
+                  "text": "]"
                 },
                 {
-                  "kb": {
-                    "id": "=",
-                    "text": "="
-                  }
+                  "id": "\\",
+                  "text": "\\"
                 },
                 {
-                  "kb": {
-                    "id": "Insert",
-                    "text": "#key/Insert/short",
-                    "pos": "0.5@kbh,0"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Home",
-                    "text": "#key/Home",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Page_Up",
-                    "text": "#key/Page_Up/short",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "bgk": {
-                    "id": "Backspace",
-                    "text": "#key/Backspace/short",
-                    "width": "1.5@kbh",
-                    "class": "smallFont"
-                  }
-                }
-              ]
-            },
-            {
-              "row": [
-                {
-                  "bgk": {
-                    "id": "Tab",
-                    "text": "#key/Tab",
-                    "width": "1.5@kbh",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Q",
-                    "text": "Q"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "W",
-                    "text": "W"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "E",
-                    "text": "E"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "R",
-                    "text": "R"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "T",
-                    "text": "T"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Y",
-                    "text": "Y"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "U",
-                    "text": "U"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "I",
-                    "text": "I"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "O",
-                    "text": "O"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "P",
-                    "text": "P"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "[",
-                    "text": "["
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "]",
-                    "text": "]"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "\\",
-                    "text": "\\"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Delete",
-                    "text": "#key/Delete/short",
-                    "pos": "0.5@kbh,0",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "End",
-                    "text": "#key/End",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Page_Down",
-                    "text": "#key/Page_Down/short",
-                    "class": "smallFont"
-                  }
-                }
-              ]
-            },
-            {
-              "row": [
-                {
-                  "bgk": {
-                    "id": "Caps_Lock",
-                    "text": "#key/Caps_Lock/short",
-                    "width": "1.75@kbh",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "bgk": {
-                    "id": "Enter",
-                    "text": "#key/Enter",
-                    "width": "1.75@kbh+1@kbPad"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "A",
-                    "text": "A"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "S",
-                    "text": "S"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "D",
-                    "text": "D"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "F",
-                    "text": "F"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "G",
-                    "text": "G"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "H",
-                    "text": "H"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "J",
-                    "text": "J"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "K",
-                    "text": "K"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "L",
-                    "text": "L"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": ";",
-                    "text": ";"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "'",
-                    "text": "'"
-                  }
-                }
-              ]
-            },
-            {
-              "row": [
-                {
-                  "bgk": {
-                    "id": "Shift",
-                    "text": "#key/Shift",
-                    "width": "2@kbh",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "bgk": {
-                    "id": "Right_Shift",
-                    "text": "#key/Shift",
-                    "width": "2.5@kbh+2@kbPad",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Z",
-                    "text": "Z"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "X",
-                    "text": "X"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "C",
-                    "text": "C"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "V",
-                    "text": "V"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "B",
-                    "text": "B"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "N",
-                    "text": "N"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "M",
-                    "text": "M"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": ",",
-                    "text": ","
-                  }
-                },
-                {
-                  "kb": {
-                    "id": ".",
-                    "text": "."
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "/",
-                    "text": "/"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Up",
-                    "text": "#key/Up",
-                    "class": "smallFont",
-                    "pos": "1.5@kbh+1@kbPad,0"
-                  }
-                }
-              ]
-            },
-            {
-              "row": [
-                {
-                  "margin-bottom": "1@kbPad"
-                },
-                {
-                  "bgk": {
-                    "id": "Ctrl",
-                    "text": "#key/Ctrl",
-                    "width": "1.5@kbh",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "bgk": {
-                    "id": "Alt",
-                    "text": "#key/Alt",
-                    "width": "1.25@kbh",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "bgk": {
-                    "id": "Space",
-                    "text": "#key/Space",
-                    "width": "9@kbh+9@kbPad"
-                  }
-                },
-                {
-                  "bgk": {
-                    "id": "Right_Alt",
-                    "text": "#key/Alt",
-                    "width": "1.25@kbh",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "bgk": {
-                    "id": "Right_Ctrl",
-                    "text": "#key/Ctrl",
-                    "width": "1.5@kbh",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Left",
-                    "text": "#key/Left",
-                    "class": "smallFont",
-                    "pos": "0.5@kbh,0"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Down",
-                    "text": "#key/Down",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Right",
-                    "text": "#key/Right",
-                    "class": "smallFont"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "tdiv": [
-            {
-              "flow": "vertical"
-            },
-            {
-              "pos": "1.0@kbh,0"
-            },
-            {
-              "position": "relative"
-            },
-            {
-              "row": [
-                {
-                  "kb": {
-                    "id": "Num_Lock",
-                    "text": "#key/Num_Lock/short",
-                    "class": "smallFont"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_bar",
-                    "text": "/"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_star",
-                    "text": "*"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_minus",
-                    "text": "-"
-                  }
-                }
-              ]
-            },
-            {
-              "row": [
-                {
-                  "kb": {
-                    "id": "Num_7",
-                    "text": "7"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_8",
-                    "text": "8"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_9",
-                    "text": "9"
-                  }
-                }
-              ]
-            },
-            {
-              "row": [
-                {
-                  "kb": {
-                    "id": "Num_4",
-                    "text": "4"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_5",
-                    "text": "5"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_6",
-                    "text": "6"
-                  }
-                },
-                {
-                  "dblk": {
-                    "id": "Num_plus",
-                    "text": "+"
-                  }
-                }
-              ]
-            },
-            {
-              "row": [
-                {
-                  "kb": {
-                    "id": "Num_1",
-                    "text": "1"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_2",
-                    "text": "2"
-                  }
-                },
-                {
-                  "kb": {
-                    "id": "Num_3",
-                    "text": "3"
-                  }
-                }
-              ]
-            },
-            {
-              "row": {
-                "bgk": {
-                  "id": "Num_0",
-                  "text": "0",
-                  "width": "2@kbh+1@kbPad"
-                },
-                "kb": {
-                  "id": "Num_Del",
+                  "id": "Delete",
                   "text": "#key/Delete/short",
+                  "pos": "0.5@kbh,0",
                   "class": "smallFont"
                 },
-                "dblk": {
-                  "id": "Num_Enter",
-                  "text": "#key/Enter",
+                {
+                  "id": "End",
+                  "text": "#key/End",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Page_Down",
+                  "text": "#key/Page_Down/short",
                   "class": "smallFont"
                 }
+              ]
+            },
+            {
+              "bgk": [
+                {
+                  "id": "Caps_Lock",
+                  "text": "#key/Caps_Lock/short",
+                  "width": "1.75@kbh",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Enter",
+                  "text": "#key/Enter",
+                  "width": "1.75@kbh+1@kbPad"
+                }
+              ],
+              "kb": [
+                {
+                  "id": "A",
+                  "text": "A"
+                },
+                {
+                  "id": "S",
+                  "text": "S"
+                },
+                {
+                  "id": "D",
+                  "text": "D"
+                },
+                {
+                  "id": "F",
+                  "text": "F"
+                },
+                {
+                  "id": "G",
+                  "text": "G"
+                },
+                {
+                  "id": "H",
+                  "text": "H"
+                },
+                {
+                  "id": "J",
+                  "text": "J"
+                },
+                {
+                  "id": "K",
+                  "text": "K"
+                },
+                {
+                  "id": "L",
+                  "text": "L"
+                },
+                {
+                  "id": ";",
+                  "text": ";"
+                },
+                {
+                  "id": "'",
+                  "text": "'"
+                }
+              ]
+            },
+            {
+              "bgk": [
+                {
+                  "id": "Shift",
+                  "text": "#key/Shift",
+                  "width": "2@kbh",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Right_Shift",
+                  "text": "#key/Shift",
+                  "width": "2.5@kbh+2@kbPad",
+                  "class": "smallFont"
+                }
+              ],
+              "kb": [
+                {
+                  "id": "Z",
+                  "text": "Z"
+                },
+                {
+                  "id": "X",
+                  "text": "X"
+                },
+                {
+                  "id": "C",
+                  "text": "C"
+                },
+                {
+                  "id": "V",
+                  "text": "V"
+                },
+                {
+                  "id": "B",
+                  "text": "B"
+                },
+                {
+                  "id": "N",
+                  "text": "N"
+                },
+                {
+                  "id": "M",
+                  "text": "M"
+                },
+                {
+                  "id": ",",
+                  "text": ","
+                },
+                {
+                  "id": ".",
+                  "text": "."
+                },
+                {
+                  "id": "/",
+                  "text": "/"
+                },
+                {
+                  "id": "Up",
+                  "text": "#key/Up",
+                  "class": "smallFont",
+                  "pos": "1.5@kbh+1@kbPad,0"
+                }
+              ]
+            },
+            {
+              "margin-bottom": "1@kbPad",
+              "bgk": [
+                {
+                  "id": "Ctrl",
+                  "text": "#key/Ctrl",
+                  "width": "1.5@kbh",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Alt",
+                  "text": "#key/Alt",
+                  "width": "1.25@kbh",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Space",
+                  "text": "#key/Space",
+                  "width": "9@kbh+9@kbPad"
+                },
+                {
+                  "id": "Right_Alt",
+                  "text": "#key/Alt",
+                  "width": "1.25@kbh",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Right_Ctrl",
+                  "text": "#key/Ctrl",
+                  "width": "1.5@kbh",
+                  "class": "smallFont"
+                }
+              ],
+              "kb": [
+                {
+                  "id": "Left",
+                  "text": "#key/Left",
+                  "class": "smallFont",
+                  "pos": "0.5@kbh,0"
+                },
+                {
+                  "id": "Down",
+                  "text": "#key/Down",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Right",
+                  "text": "#key/Right",
+                  "class": "smallFont"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "flow": "vertical",
+          "pos": "1.0@kbh,0",
+          "position": "relative",
+          "row": [
+            {
+              "kb": [
+                {
+                  "id": "Num_Lock",
+                  "text": "#key/Num_Lock/short",
+                  "class": "smallFont"
+                },
+                {
+                  "id": "Num_bar",
+                  "text": "/"
+                },
+                {
+                  "id": "Num_star",
+                  "text": "*"
+                },
+                {
+                  "id": "Num_minus",
+                  "text": "-"
+                }
+              ]
+            },
+            {
+              "kb": [
+                {
+                  "id": "Num_7",
+                  "text": "7"
+                },
+                {
+                  "id": "Num_8",
+                  "text": "8"
+                },
+                {
+                  "id": "Num_9",
+                  "text": "9"
+                }
+              ]
+            },
+            {
+              "kb": [
+                {
+                  "id": "Num_4",
+                  "text": "4"
+                },
+                {
+                  "id": "Num_5",
+                  "text": "5"
+                },
+                {
+                  "id": "Num_6",
+                  "text": "6"
+                }
+              ],
+              "dblk": {
+                "id": "Num_plus",
+                "text": "+"
+              }
+            },
+            {
+              "kb": [
+                {
+                  "id": "Num_1",
+                  "text": "1"
+                },
+                {
+                  "id": "Num_2",
+                  "text": "2"
+                },
+                {
+                  "id": "Num_3",
+                  "text": "3"
+                }
+              ]
+            },
+            {
+              "bgk": {
+                "id": "Num_0",
+                "text": "0",
+                "width": "2@kbh+1@kbPad"
+              },
+              "kb": {
+                "id": "Num_Del",
+                "text": "#key/Delete/short",
+                "class": "smallFont"
+              },
+              "dblk": {
+                "id": "Num_Enter",
+                "text": "#key/Enter",
+                "class": "smallFont"
               }
             }
           ]
         }
       ]
     },
-    {
-      "tdiv": {
+    "tdiv": [
+      {
         "size": "fw, 6@kbh + 5@kbPad + 1*@scrn_tgt/100.0",
         "pos": "0,2@kbPad",
         "position": "relative",
-        "ydiv": [
-          {
-            "width": "pw"
-          },
-          {
-            "height": "ph"
-          },
-          {
-            "max-width": "134/205h"
-          },
-          {
-            "max-height": "205/134w"
-          },
-          {
-            "pos": "50%pw-50%w, 50%ph-50%h"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "background-image": "#ui/images/controls/mouse.png"
-          },
-          {
-            "background-color": "@mousekeyActiveBgColor"
-          },
-          {
-            "background-position": "4"
-          },
-          {
-            "background-repeat": "expand"
-          },
-          {
-            "mouseKey": {
+        "ydiv": {
+          "width": "pw",
+          "height": "ph",
+          "max-width": "134/205h",
+          "max-height": "205/134w",
+          "pos": "50%pw-50%w, 50%ph-50%h",
+          "position": "absolute",
+          "background-image": "#ui/images/controls/mouse.png",
+          "background-color": "@mousekeyActiveBgColor",
+          "background-position": "4",
+          "background-repeat": "expand",
+          "mouseKey": [
+            {
               "id": "LMB",
               "width": "65/205ph",
               "height": "69/205ph",
@@ -803,10 +555,8 @@
               "background-image": "#ui/images/controls/mouse_lb.png",
               "background-position": "4",
               "background-repeat": "expand"
-            }
-          },
-          {
-            "mouseKey": {
+            },
+            {
               "id": "RMB",
               "width": "65/205ph",
               "height": "69/205ph",
@@ -816,10 +566,8 @@
               "background-image": "#ui/images/controls/mouse_rb.png",
               "background-position": "4",
               "background-repeat": "expand"
-            }
-          },
-          {
-            "mouseKey": {
+            },
+            {
               "id": "MMB",
               "width": "24/205ph",
               "height": "57/205ph",
@@ -831,20 +579,16 @@
               "background-position": "4",
               "background-repeat": "expand"
             }
-          }
-        ]
-      }
-    },
-    {
-      "tdiv": {
+          ]
+        }
+      },
+      {
         "id": "full_shortcuts_texts",
         "width": "pw",
         "height": "fh",
         "overflow-y": "auto"
       }
-    },
-    {
-      "_newline": []
-    }
-  ]
+    ],
+    "_newline": {}
+  }
 }

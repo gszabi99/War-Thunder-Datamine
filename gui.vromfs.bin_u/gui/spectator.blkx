@@ -1,26 +1,16 @@
-[
-  {
-    "tdiv": [
-      {
-        "id": "spectator_root"
-      },
-      {
-        "size": "sw - 2@bw, sh - 2@bh"
-      },
-      {
-        "pos": "pw/2-w/2, ph/2-h/2"
-      },
-      {
+{
+  "tdiv": [
+    {
+      "id": "spectator_root",
+      "size": "sw - 2@bw, sh - 2@bh",
+      "pos": "pw/2-w/2, ph/2-h/2",
+      "position": "absolute",
+      "multiplayerScore": {
+        "pos": "50%pw-50%w, 2@spectatorToolbarPadding + 1@spectatorToolbarBtnSize + 0.02@scrn_tgt",
         "position": "absolute"
       },
-      {
-        "multiplayerScore": {
-          "pos": "50%pw-50%w, 2@spectatorToolbarPadding + 1@spectatorToolbarBtnSize + 0.02@scrn_tgt",
-          "position": "absolute"
-        }
-      },
-      {
-        "tdiv": {
+      "tdiv": [
+        {
           "id": "stats_left",
           "css-hier-invalidate": "yes",
           "re-type": "9rect",
@@ -65,10 +55,8 @@
             "position": "absolute",
             "textShade": "yes"
           }
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "id": "stats_right",
           "css-hier-invalidate": "yes",
           "re-type": "9rect",
@@ -113,10 +101,8 @@
             "position": "absolute",
             "textShade": "yes"
           }
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "id": "spectator_hud_damage",
           "size": "0.15@shHud, 0.15@shHud",
           "position": "absolute",
@@ -127,65 +113,39 @@
             "id": "xray_render_dmg_indicator_spectator",
             "size": "pw, ph"
           }
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "id": "spectator_hud_action_bar",
           "position": "absolute",
           "pos": "pw/2-w/2, ph-h"
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "pos": "pw/2-w/2, ph-h - 0.06@shHud - 1@sIco",
           "position": "absolute",
           "flow": "vertical",
-          "tdiv": [
-            {
-              "id": "hud_hints_nest"
-            },
-            {
-              "width": "2/3@rwHud"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "css-hier-invalidate": "yes"
-            },
-            {
-              "behavior": "Timer"
-            },
-            {
-              "tdiv": [
-                {
-                  "width": "pw"
-                },
-                {
-                  "position": "absolute"
-                },
-                {
-                  "pos": "pw/2 - w/2, -h"
-                },
-                {
-                  "flow": "vertical"
-                },
-                {
-                  "tdiv": {
+          "tdiv": {
+            "id": "hud_hints_nest",
+            "width": "2/3@rwHud",
+            "flow": "vertical",
+            "css-hier-invalidate": "yes",
+            "behavior": "Timer",
+            "tdiv": [
+              {
+                "width": "pw",
+                "position": "absolute",
+                "pos": "pw/2 - w/2, -h",
+                "flow": "vertical",
+                "tdiv": [
+                  {
                     "id": "common_priority_hints",
                     "width": "pw",
                     "flow": "vertical"
-                  }
-                },
-                {
-                  "tdiv": {
+                  },
+                  {
                     "id": "ship_obstacle_rf",
                     "size": "pw, 0.04@shHud"
-                  }
-                },
-                {
-                  "tdiv": {
+                  },
+                  {
                     "width": "pw",
                     "min-height": "0.1@shHud",
                     "tdiv": {
@@ -196,36 +156,24 @@
                       "flow": "vertical"
                     }
                   }
-                }
-              ]
-            },
-            {
-              "tdiv": [
-                {
-                  "height": "0.08@shHud"
-                },
-                {
-                  "position": "relative"
-                },
-                {
-                  "left": "pw/2 - w/2"
-                },
-                {
-                  "div": {
+                ]
+              },
+              {
+                "height": "0.08@shHud",
+                "position": "relative",
+                "left": "pw/2 - w/2",
+                "div": [
+                  {
                     "id": "iconed_hints",
                     "height": "ph"
-                  }
-                },
-                {
-                  "div": {
+                  },
+                  {
                     "id": "display_timers",
                     "height": "ph"
                   }
-                }
-              ]
-            },
-            {
-              "tdiv": {
+                ]
+              },
+              {
                 "id": "actionbar_hints_nest",
                 "width": "1@shHud",
                 "height": "0.065@shHud",
@@ -242,45 +190,37 @@
                     "flow": "vertical"
                   }
                 }
-              }
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "id": "tutorial_hints",
                 "width": "pw",
                 "position": "root",
                 "pos": "50%sw-50%w, 1@bhHud + 0.67@shHud",
                 "flow": "vertical"
-              }
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "id": "minor_priority_hints",
                 "width": "pw",
                 "position": "root",
                 "pos": "50%sw-50%w, @shHud - h",
                 "flow": "vertical"
               }
+            ],
+            "hudMessages": {
+              "id": "hud_message_zone_capture_notification",
+              "width": "pw",
+              "height": "0.065@shHud",
+              "message_style": "zone_capture_notification",
+              "input-transparent": "yes"
             },
-            {
-              "hudMessages": {
-                "id": "hud_message_zone_capture_notification",
-                "width": "pw",
-                "height": "0.065@shHud",
-                "message_style": "zone_capture_notification",
-                "input-transparent": "yes"
-              }
-            },
-            {
-              "textAreaCentered": {
-                "id": "low-quality-model-warning",
-                "width": "pw",
-                "style": "color:@warningTextColor; font:@fontHudNormal;",
-                "text": "#low_quality_model_in_hangar",
-                "display": "hide"
-              }
+            "textAreaCentered": {
+              "id": "low-quality-model-warning",
+              "width": "pw",
+              "style": "color:@warningTextColor; font:@fontHudNormal;",
+              "text": "#low_quality_model_in_hangar",
+              "display": "hide"
             }
-          ],
+          },
           "activeText": {
             "id": "waiting_for_target_spawn",
             "pos": "pw/2-w/2, 0",
@@ -308,18 +248,16 @@
               "display": "hide"
             }
           }
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "behaviour": "darg",
           "position": "root",
           "pos": "0, 0",
           "size": "sw, sh"
         }
-      },
-      {
-        "spectatorFrame": {
+      ],
+      "spectatorFrame": [
+        {
           "id": "log_div",
           "css-hier-invalidate": "yes",
           "position": "absolute",
@@ -339,12 +277,10 @@
               "navigatorShortcuts": "yes",
               "on_select": "onBtnLogTabSwitch"
             },
-            "tdiv": [
-              {
-                "size": "pw, fh"
-              },
-              {
-                "tdiv": {
+            "tdiv": {
+              "size": "pw, fh",
+              "tdiv": [
+                {
                   "id": "history_container",
                   "position": "absolute",
                   "size": "pw, ph",
@@ -359,29 +295,23 @@
                     "punctuation-exception": "-.,'\"():/\\@[]=^+",
                     "text": ""
                   }
-                }
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "id": "order_status",
                   "position": "absolute",
                   "size": "pw, ph"
                 }
-              },
-              {
-                "chatPlaceSpectator": {
-                  "id": "chat_container",
-                  "position": "absolute",
-                  "size": "pw, ph",
-                  "display": "hide"
-                }
+              ],
+              "chatPlaceSpectator": {
+                "id": "chat_container",
+                "position": "absolute",
+                "size": "pw, ph",
+                "display": "hide"
               }
-            ]
+            }
           }
-        }
-      },
-      {
-        "spectatorFrame": {
+        },
+        {
           "id": "map_div",
           "css-hier-invalidate": "yes",
           "position": "absolute",
@@ -399,57 +329,39 @@
               "on_click": "onMapClick"
             }
           }
-        }
-      },
-      {
-        "spectatorFrame": [
-          {
-            "id": "controls_div"
-          },
-          {
-            "pos": "50%pw-50%w, -1@spectatorToolbarPadding"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "padding": "1@spectatorToolbarPadding"
-          },
-          {
-            "input-transparent": "yes"
-          },
-          {
-            "hoverButton": {
+        },
+        {
+          "id": "controls_div",
+          "pos": "50%pw-50%w, -1@spectatorToolbarPadding",
+          "position": "absolute",
+          "padding": "1@spectatorToolbarPadding",
+          "input-transparent": "yes",
+          "hoverButton": [
+            {
               "id": "ID_FLIGHTMENU",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "icon": {
                 "background-image": "#ui/gameuiskin#btn_modifications.svg"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_MPSTATSCREEN",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "icon": {
                 "background-image": "#ui/gameuiskin#leaderboard.svg"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "controls_mpstats_replays",
               "tooltip": "#hotkeys/ID_MPSTATSCREEN",
               "_on_click": "onBtnMpStatScreen",
               "icon": {
                 "background-image": "#ui/gameuiskin#leaderboard.svg"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_PREV_PLANE",
               "on_click": "onBtnShortcut",
               "is_shortcut": "yes",
@@ -457,10 +369,8 @@
                 "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
                 "rotation": "270"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_NEXT_PLANE",
               "on_click": "onBtnShortcut",
               "is_shortcut": "yes",
@@ -468,127 +378,99 @@
                 "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
                 "rotation": "90"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_CAMERA_DEFAULT",
               "text": "1",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_TOGGLE_FOLLOWING_CAMERA",
               "text": "2",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_OPERATOR",
               "text": "3",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_FLYBY",
               "text": "4",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_WING",
               "text": "5",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_GUN",
               "text": "6",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_RANDOMIZE",
               "text": "#mainmenu/btnReplayCameraRandom",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_FREE",
               "text": "#mainmenu/btnReplayCameraFree",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_FREE_PARENTED",
               "text": "#mainmenu/btnReplayCameraFreeParented",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_FREE_ATTACHED",
               "text": "#mainmenu/btnReplayCameraFreeAttached",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_CAMERA_HOVER",
               "text": "#mainmenu/btnReplayCameraHover",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "enable": "no"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut",
               "icon": {
                 "background-image": "#ui/gameuiskin#cursor.svg"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_SHOW_MARKERS",
               "text": "#icon/mpstats/raceLastCheckpoint",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut"
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_SLOWER",
               "on_click": "onBtnShortcut",
               "is_shortcut": "yes",
@@ -597,30 +479,24 @@
                 "rotation": "180",
                 "background-position": "0, h"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_FASTER",
               "on_click": "onBtnShortcut",
               "is_shortcut": "yes",
               "icon": {
                 "background-image": "#ui/gameuiskin#replay_forward.svg"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_BACKWARD",
               "on_click": "onBtnBackward",
               "is_shortcut": "yes",
               "icon": {
                 "background-image": "#ui/gameuiskin#replay_restart.svg"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_PAUSE",
               "on_click": "onBtnShortcut",
               "is_shortcut": "yes",
@@ -628,10 +504,8 @@
                 "id": "icon",
                 "background-image": "#ui/gameuiskin#replay_pause.svg"
               }
-            }
-          },
-          {
-            "hoverButton": {
+            },
+            {
               "id": "ID_REPLAY_FORWARD",
               "on_click": "onBtnForward",
               "is_shortcut": "yes",
@@ -640,9 +514,9 @@
                 "rotation": "180"
               }
             }
-          },
-          {
-            "tdiv": {
+          ],
+          "tdiv": [
+            {
               "id": "controls_cameras_icon",
               "top": "ph/2-h/2",
               "position": "relative",
@@ -657,77 +531,59 @@
                 "background-image": "#ui/gameuiskin#player_spectator.svg",
                 "background-svg-size": "@sIco, @sIco"
               }
-            }
-          },
-          {
-            "tdiv": [
-              {
-                "id": "controls_timeline"
-              },
-              {
-                "top": "ph/2-h/2"
-              },
-              {
-                "position": "relative"
-              },
-              {
-                "text": {
+            },
+            {
+              "id": "controls_timeline",
+              "top": "ph/2-h/2",
+              "position": "relative",
+              "text": [
+                {
                   "id": "txt_replay_time_current",
                   "width": "0.10@sf",
                   "top": "ph/2-h/2",
                   "position": "relative",
                   "text": "#ui/not_applicable"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "txt_replay_time_total",
                   "width": "0.10@sf",
                   "top": "ph/2-h/2",
                   "position": "relative",
                   "text": "#ui/not_applicable"
                 }
-              },
-              {
-                "expProgress": {
-                  "id": "timeline_progress",
-                  "top": "ph/2-h/2",
-                  "position": "relative",
-                  "width": "1@spectatorTimerProgressWidth",
-                  "max": "1000",
-                  "value": "0"
-                }
+              ],
+              "expProgress": {
+                "id": "timeline_progress",
+                "top": "ph/2-h/2",
+                "position": "relative",
+                "width": "1@spectatorTimerProgressWidth",
+                "max": "1000",
+                "value": "0"
               }
-            ]
+            }
+          ],
+          "text": {
+            "id": "txt_replay_time_speed",
+            "top": "ph/2-h/2",
+            "position": "relative",
+            "width": "0.07@sf;",
+            "text": "#ui/not_applicable",
+            "enable": "no"
           },
-          {
+          "buttons_block": {
+            "id": "controls_timer",
+            "height": "@spectatorToolbarBtnSize",
+            "enable": "no",
             "text": {
-              "id": "txt_replay_time_speed",
+              "id": "txt_mission_timer",
               "top": "ph/2-h/2",
               "position": "relative",
               "width": "0.07@sf;",
-              "text": "#ui/not_applicable",
-              "enable": "no"
-            }
-          },
-          {
-            "buttons_block": {
-              "id": "controls_timer",
-              "height": "@spectatorToolbarBtnSize",
-              "enable": "no",
-              "text": {
-                "id": "txt_mission_timer",
-                "top": "ph/2-h/2",
-                "position": "relative",
-                "width": "0.07@sf;",
-                "text": "#ui/not_applicable"
-              }
+              "text": "#ui/not_applicable"
             }
           }
-        ]
-      },
-      {
-        "spectatorFrame": {
+        },
+        {
           "id": "map_large_div",
           "display": "hide",
           "width": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
@@ -755,9 +611,9 @@
             "have_shortcut": "no"
           }
         }
-      },
-      {
-        "toggleButton": {
+      ],
+      "toggleButton": [
+        {
           "id": "btnToggleStats1",
           "on_click": "onToggleButtonClick",
           "attachSide": "left",
@@ -765,11 +621,9 @@
           "toggleObj": "stats_left",
           "pos": "-4@dp, 1@spectatorTopOffset - h",
           "position": "absolute",
-          "icon": []
-        }
-      },
-      {
-        "toggleButton": {
+          "icon": {}
+        },
+        {
           "id": "btnToggleStats2",
           "on_click": "onToggleButtonClick",
           "attachSide": "right",
@@ -777,11 +631,9 @@
           "toggleObj": "stats_right",
           "pos": "pw-w +4@dp, 1@spectatorTopOffset - h",
           "position": "absolute",
-          "icon": []
-        }
-      },
-      {
-        "toggleButton": {
+          "icon": {}
+        },
+        {
           "id": "btnToggleLog",
           "on_click": "onToggleButtonClick",
           "attachSide": "left",
@@ -789,11 +641,9 @@
           "toggleObj": "log_div",
           "pos": "-4@dp, ph-h - 1@spectatorTableWidth -16@sf/@pf",
           "position": "absolute",
-          "icon": []
-        }
-      },
-      {
-        "toggleButton": {
+          "icon": {}
+        },
+        {
           "id": "btnToggleMap",
           "on_click": "onToggleButtonClick",
           "attachSide": "right",
@@ -801,57 +651,47 @@
           "toggleObj": "map_div",
           "pos": "pw-w +4@dp, ph-h - 1@spectatorTableWidth -16@sf/@pf",
           "position": "absolute",
-          "icon": []
+          "icon": {}
         }
-      },
-      {
-        "hitCamera": {
-          "id": "hud_hitcamera",
-          "position": "absolute",
-          "pos": "pw - w, ph-h - 1@spectatorTableWidth -2@framePadding - @cIco - 2@blockInterval",
-          "input-transparent": "yes",
-          "total-input-transparent": "yes",
-          "result": "",
-          "_transp-timer": "0",
-          "hitCameraRender": {
-            "hitCameraTitle": {
-              "id": "title"
-            },
-            "enemyDamageStatusPanel": {
-              "id": "damageStatus"
-            },
-            "hitCameraInfo": {
-              "id": "info"
-            }
+      ],
+      "hitCamera": {
+        "id": "hud_hitcamera",
+        "position": "absolute",
+        "pos": "pw - w, ph-h - 1@spectatorTableWidth -2@framePadding - @cIco - 2@blockInterval",
+        "input-transparent": "yes",
+        "total-input-transparent": "yes",
+        "result": "",
+        "_transp-timer": "0",
+        "hitCameraRender": {
+          "hitCameraTitle": {
+            "id": "title"
+          },
+          "enemyDamageStatusPanel": {
+            "id": "damageStatus"
+          },
+          "hitCameraInfo": {
+            "id": "info"
           }
         }
       },
-      {
-        "textareaNoTab": {
-          "id": "txt_replay_session_id",
-          "pos": "0.085@sf, sh-0.015@sf",
-          "position": "root",
-          "tinyFont": "yes",
-          "textHide": "yes",
-          "text": ""
-        }
+      "textareaNoTab": {
+        "id": "txt_replay_session_id",
+        "pos": "0.085@sf, sh-0.015@sf",
+        "position": "root",
+        "tinyFont": "yes",
+        "textHide": "yes",
+        "text": ""
       },
-      {
-        "timer": {
-          "id": "update_timer",
-          "timer_handler_func": "onUpdate"
-        }
+      "timer": {
+        "id": "update_timer",
+        "timer_handler_func": "onUpdate"
       }
-    ]
-  },
-  {
-    "tdiv": {
+    },
+    {
       "id": "hud_message_timers"
     }
-  },
-  {
-    "timer": {
-      "id": "hud_message_timer"
-    }
+  ],
+  "timer": {
+    "id": "hud_message_timer"
   }
-]
+}

@@ -7,7 +7,7 @@
     "btnName": "B",
     "on_click": "onCancelSlotChoose",
     "tooltip": "",
-    "blur": [],
+    "blur": {},
     "blur_foreground": {
       "isRoot": "yes"
     }
@@ -76,71 +76,45 @@
         }
       }
     },
-    "navRight": [
-      {
-        "Button_text": {
+    "navRight": {
+      "Button_text": [
+        {
           "id": "btn_repairall",
           "hideText": "yes",
           "btnName": "L3",
           "display": "hide",
           "_on_click": "onRepairAll",
           "visualStyle": "purchase",
-          "buttonWink": [],
-          "buttonGlance": [],
-          "ButtonImg": [],
+          "buttonWink": {},
+          "buttonGlance": {},
+          "ButtonImg": {},
           "textarea": {
             "id": "btn_repairall_text",
             "class": "buttonText",
             "text": "#mainmenu/btnRepairAll"
           }
-        }
-      },
-      {
-        "Button_text": [
-          {
-            "id": "btn_spend_exp"
+        },
+        {
+          "id": "btn_spend_exp",
+          "navButtonFont": "yes",
+          "display": "hide",
+          "hideText": "yes",
+          "_on_click": "onSpendExcessExp",
+          "css-hier-invalidate": [
+            "yes",
+            "yes"
+          ],
+          "btnName": "X",
+          "visualStyle": "secondary",
+          "buttonWink": {},
+          "textarea": {
+            "id": "btn_spend_exp_text",
+            "class": "buttonText",
+            "text": "#weaponry/research"
           },
-          {
-            "navButtonFont": "yes"
-          },
-          {
-            "display": "hide"
-          },
-          {
-            "hideText": "yes"
-          },
-          {
-            "_on_click": "onSpendExcessExp"
-          },
-          {
-            "css-hier-invalidate": "yes"
-          },
-          {
-            "css-hier-invalidate": "yes"
-          },
-          {
-            "btnName": "X"
-          },
-          {
-            "visualStyle": "secondary"
-          },
-          {
-            "buttonWink": []
-          },
-          {
-            "textarea": {
-              "id": "btn_spend_exp_text",
-              "class": "buttonText",
-              "text": "#weaponry/research"
-            }
-          },
-          {
-            "ButtonImg": []
-          }
-        ]
-      },
-      {
-        "Button_text": {
+          "ButtonImg": {}
+        },
+        {
           "id": "btn_buy_unit",
           "navButtonFont": "yes",
           "css-hier-invalidate": "yes",
@@ -149,26 +123,24 @@
           "btnName": "X",
           "visualStyle": "purchase",
           "text": "#shop/btnOrderUnit",
-          "buttonWink": [],
-          "buttonGlance": [],
-          "ButtonImg": []
+          "buttonWink": {},
+          "buttonGlance": {},
+          "ButtonImg": {}
         }
-      },
-      {
-        "tdiv": {
-          "margin": "1@buttonMargin",
-          "ComboBox": {
-            "id": "show_mode",
-            "width": "300@sf/@pf",
-            "on_select": "onChangeShowMode",
-            "tooltip": "#mainmenu/showModesInfo/tooltip",
-            "btnName": "R3"
-          }
+      ],
+      "tdiv": {
+        "margin": "1@buttonMargin",
+        "ComboBox": {
+          "id": "show_mode",
+          "width": "300@sf/@pf",
+          "on_select": "onChangeShowMode",
+          "tooltip": "#mainmenu/showModesInfo/tooltip",
+          "btnName": "R3"
         }
       }
-    ]
+    }
   },
   "focusFrameAnimBlock": {
-    "focusFrameAnimObj": []
+    "focusFrameAnimObj": {}
   }
 }

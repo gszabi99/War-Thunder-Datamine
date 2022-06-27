@@ -9,208 +9,141 @@
     "antiTankRocket": true,
     "antiShipRocket": true
   },
-  "rocket": [
-    {
-      "caliber": 0.0874
-    },
-    {
-      "length": 1.717
-    },
-    {
-      "mass": 27.26
-    },
-    {
-      "mass": 26.7
-    },
-    {
-      "massEnd": 21.54
-    },
-    {
-      "maxDistance": 4000.0
-    },
-    {
-      "minDistance": 30.0
-    },
-    {
-      "rendinstDamageRadius": 0.152
-    },
-    {
-      "hitPowerMult": 400.0
-    },
-    {
-      "force": 7100.0
-    },
-    {
-      "timeFire": 1.5
-    },
-    {
-      "spawnExplosionFx": false
-    },
-    {
-      "spawnExplosionWreckage": false
-    },
-    {
-      "distanceFuse": false
-    },
-    {
-      "distFromCmToStab": 0.01
-    },
-    {
-      "WdK": [0.1,0.1,0.1]
-    },
-    {
-      "dragCx": 0.016
-    },
-    {
-      "CxK": 1.2
-    },
-    {
-      "useStartSpeed": true
-    },
-    {
-      "startSpeed": 0.0
-    },
-    {
-      "endSpeed": 0.0
-    },
-    {
-      "maxSpeed": 430.0
-    },
-    {
-      "amountPerTier": 4.0
-    },
-    {
-      "iconType": "rockets_ap_small_group"
-    },
-    {
-      "advancedMissiles": false
-    },
-    {
-      "autoaimEnabled": false
-    },
-    {
-      "aiGroundOnly": false
-    },
-    {
-      "aiAirOnly": false
-    },
-    {
-      "normalizationPreset": "ap"
-    },
-    {
-      "ricochetPreset": "ap"
-    },
-    {
-      "secondaryShattersPreset": "ap_large_caliber"
-    },
-    {
-      "stabilityThreshold": 0.05
-    },
-    {
-      "stabilityCaliberToArmorThreshold": 5.0
-    },
-    {
-      "stabilityReductionAfterRicochet": 0.3
-    },
-    {
-      "stabilityReductionAfterPenetration": 0.0
-    },
-    {
-      "stucking": 0.7
-    },
-    {
-      "stuckingAngle": 45.0
-    },
-    {
-      "bulletType": "ap_tank"
-    },
-    {
-      "slopeEffectPreset": "ap"
-    },
-    {
-      "fresnel": [0.23,0.1,2.0]
-    },
-    {
-      "shellAnimation": "video/shells_animations/aphe.ivf"
-    },
-    {
-      "fireEffect": "rocket_fire_light_multiple"
-    },
-    {
-      "smokeEffect": ""
-    },
-    {
-      "hazeEffect": ""
-    },
-    {
-      "endSmokeViscosity": 0.05
-    },
-    {
-      "explosionEffect": "explosion_midair_small"
-    },
-    {
-      "groundCollisionEffect": "hit_59_80mm_dirt_ap"
-    },
-    {
-      "ricochetEffect": "hit_59_80mm_metal_ap"
-    },
-    {
-      "waterCollisionEffect": "hit_81_105mm_water_ap"
-    },
-    {
-      "explosionPatchRadius": 3.4
-    },
-    {
-      "maxDeltaAngle": 3.5
-    },
-    {
-      "armorpower": {
-        "ArmorPower0m": [100.0,10.0],
-        "ArmorPower500m": [92.0,500.0],
-        "ArmorPower2000m": [68.0,2000.0],
-        "ArmorPower7000m": [33.0,7000.0]
-      }
-    },
-    {
-      "hitpower": {
-        "HitPower0m": [1.0,500.0],
-        "HitPower10000m": [1.0,10000.0]
-      }
-    },
-    {
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.2]
-        },
-        {
-          "mod2": [20.0,0.4]
-        },
-        {
-          "mod3": [30.0,0.6]
-        },
-        {
-          "mod3": [45.0,0.9]
-        }
+  "rocket": {
+    "caliber": 0.0874,
+    "length": 1.717,
+    "mass": [
+      27.26,
+      26.7
+    ],
+    "massEnd": 21.54,
+    "maxDistance": 4000.0,
+    "minDistance": 30.0,
+    "rendinstDamageRadius": 0.152,
+    "hitPowerMult": 400.0,
+    "force": 7100.0,
+    "timeFire": 1.5,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "distanceFuse": false,
+    "distFromCmToStab": 0.01,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "dragCx": 0.016,
+    "CxK": 1.2,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 430.0,
+    "amountPerTier": 4.0,
+    "iconType": "rockets_ap_small_group",
+    "advancedMissiles": false,
+    "autoaimEnabled": false,
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "secondaryShattersPreset": "ap_large_caliber",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "ap_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "shellAnimation": "video/shells_animations/aphe.ivf",
+    "fireEffect": "rocket_fire_light_multiple",
+    "smokeEffect": "",
+    "hazeEffect": "",
+    "endSmokeViscosity": 0.05,
+    "explosionEffect": "explosion_midair_small",
+    "groundCollisionEffect": "hit_59_80mm_dirt_ap",
+    "ricochetEffect": "hit_59_80mm_metal_ap",
+    "waterCollisionEffect": "hit_81_105mm_water_ap",
+    "explosionPatchRadius": 3.4,
+    "maxDeltaAngle": 3.5,
+    "armorpower": {
+      "ArmorPower0m": [
+        100.0,
+        10.0
+      ],
+      "ArmorPower500m": [
+        92.0,
+        500.0
+      ],
+      "ArmorPower2000m": [
+        68.0,
+        2000.0
+      ],
+      "ArmorPower7000m": [
+        33.0,
+        7000.0
       ]
     },
-    {
-      "collisions": {
-        "steel": {
-          "fx": "hit_19_27mm_metal_he",
-          "fxScale": [4.0,4.2]
-        },
-        "armor": {
-          "fx": "hit_19_27mm_metal_he",
-          "fxScale": [4.0,4.2]
-        },
-        "buildings": {
-          "fx": "hit_59_80mm_metal_ap"
-        },
-        "wood": {
-          "fx": "hit_19_27mm_metal_he",
-          "fxScale": [4.0,4.2]
-        }
+    "hitpower": {
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower10000m": [
+        1.0,
+        10000.0
+      ]
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.2
+      ],
+      "mod2": [
+        20.0,
+        0.4
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
+      ]
+    },
+    "collisions": {
+      "steel": {
+        "fx": "hit_19_27mm_metal_he",
+        "fxScale": [
+          4.0,
+          4.2
+        ]
+      },
+      "armor": {
+        "fx": "hit_19_27mm_metal_he",
+        "fxScale": [
+          4.0,
+          4.2
+        ]
+      },
+      "buildings": {
+        "fx": "hit_59_80mm_metal_ap"
+      },
+      "wood": {
+        "fx": "hit_19_27mm_metal_he",
+        "fxScale": [
+          4.0,
+          4.2
+        ]
       }
     }
-  ]
+  }
 }

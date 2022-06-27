@@ -6,115 +6,49 @@
       "pressure": 760.0,
       "temperature": 0.0
     },
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      },
-      {
-        "wing": "t1_player17"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16"
+      ]
+    },
     "mission": {
       "level": "levels/air_race_phiphi_islands.bin",
       "type": "domination",
@@ -130,9 +64,9 @@
       "difficulty": "",
       "openDiffLevels": true
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -145,141 +79,65 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/spawn_random"
-          },
-          {
-            "spawnEffect": false
-          },
-          {
-            "isAirfield": false
-          },
-          {
-            "isUnit": false
-          },
-          {
-            "offset": [0.0,0.0,0.0]
-          },
-          {
-            "isStrictSpawn": true
-          },
-          {
-            "radius": -1.0
-          },
-          {
-            "target": "spawn01"
-          },
-          {
-            "target": "spawn02"
-          },
-          {
-            "target": "spawn03"
-          },
-          {
-            "target": "spawn04"
-          },
-          {
-            "target": "spawn05"
-          },
-          {
-            "target": "spawn06"
-          },
-          {
-            "target": "spawn07"
-          },
-          {
-            "target": "spawn08"
-          },
-          {
-            "target": "spawn10"
-          },
-          {
-            "target": "spawn11"
-          },
-          {
-            "target": "spawn09"
-          },
-          {
-            "target": "spawn12"
-          },
-          {
-            "target": "spawn13"
-          },
-          {
-            "target": "spawn14"
-          },
-          {
-            "target": "spawn15"
-          },
-          {
-            "target": "spawn16"
-          },
-          {
-            "target": "spawn17"
-          },
-          {
-            "target": "spawn18"
-          },
-          {
-            "target": "spawn19"
-          },
-          {
-            "target": "spawn20"
-          },
-          {
-            "target": "spawn21"
-          },
-          {
-            "target": "spawn22"
-          },
-          {
-            "target": "spawn23"
-          },
-          {
-            "target": "spawn24"
-          },
-          {
-            "target": "spawn25"
-          },
-          {
-            "target": "spawn26"
-          },
-          {
-            "target": "spawn27"
-          },
-          {
-            "target": "spawn28"
-          },
-          {
-            "target": "spawn29"
-          },
-          {
-            "target": "spawn30"
-          },
-          {
-            "target": "spawn31"
-          },
-          {
-            "target": "spawn32"
-          },
-          {
-            "team": "Both"
-          },
-          {
-            "tags": {
-              "tank": false,
-              "artillery": false,
-              "aaa": false
-            }
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "missions/spawn_random",
+          "spawnEffect": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "isStrictSpawn": true,
+          "radius": -1.0,
+          "target": [
+            "spawn01",
+            "spawn02",
+            "spawn03",
+            "spawn04",
+            "spawn05",
+            "spawn06",
+            "spawn07",
+            "spawn08",
+            "spawn10",
+            "spawn11",
+            "spawn09",
+            "spawn12",
+            "spawn13",
+            "spawn14",
+            "spawn15",
+            "spawn16",
+            "spawn17",
+            "spawn18",
+            "spawn19",
+            "spawn20",
+            "spawn21",
+            "spawn22",
+            "spawn23",
+            "spawn24",
+            "spawn25",
+            "spawn26",
+            "spawn27",
+            "spawn28",
+            "spawn29",
+            "spawn30",
+            "spawn31",
+            "spawn32"
+          ],
+          "team": "Both",
+          "tags": {
+            "tank": false,
+            "artillery": false,
+            "aaa": false
           }
-        ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "start_mission_straight": {
       "is_enabled": true,
@@ -328,7 +186,7 @@
           "cannotShoot": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "start_mission_inverted": {
       "is_enabled": true,
@@ -377,7 +235,7 @@
           "cannotShoot": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "a_player_is_active_requirement": {
       "is_enabled": false,
@@ -407,7 +265,7 @@
           "target": "race_start_timer"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "race_start_timer": {
       "is_enabled": false,
@@ -453,187 +311,101 @@
           "var": "start_hint_id_str"
         }
       },
-      "else_actions": [
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          }
+      "else_actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
         },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
             "object": "players_squad",
             "ignoreCollisions": true
+          },
+          {
+            "object": [
+              "t1_player01",
+              "t1_player08",
+              "t1_player15",
+              "t2_player05",
+              "t2_player12"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player02",
+              "t1_player09",
+              "t1_player16",
+              "t2_player06",
+              "t2_player13"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player03",
+              "t1_player10",
+              "t1_player17",
+              "t2_player07",
+              "t2_player14"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player04",
+              "t1_player11",
+              "t2_player01",
+              "t2_player08"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player05",
+              "t1_player12",
+              "t2_player02",
+              "t2_player09"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player06",
+              "t1_player13",
+              "t2_player03",
+              "t2_player10"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player07",
+              "t1_player14",
+              "t2_player04",
+              "t2_player11"
+            ],
+            "persistentAerobaticsSmoke": true
           }
+        ],
+        "triggerEnable": {
+          "target": "race_shooting_enabled"
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player01"
-            },
-            {
-              "object": "t1_player08"
-            },
-            {
-              "object": "t1_player15"
-            },
-            {
-              "object": "t2_player05"
-            },
-            {
-              "object": "t2_player12"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
+        "wait": {
+          "time": 3.0
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player02"
-            },
-            {
-              "object": "t1_player09"
-            },
-            {
-              "object": "t1_player16"
-            },
-            {
-              "object": "t2_player06"
-            },
-            {
-              "object": "t2_player13"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
+        "playHint": {
+          "hintType": "custom",
+          "name": "",
+          "action": "hideCur",
+          "shouldBlink": false,
+          "shouldFadeOut": false,
+          "time": -1.0
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player03"
-            },
-            {
-              "object": "t1_player10"
-            },
-            {
-              "object": "t1_player17"
-            },
-            {
-              "object": "t2_player07"
-            },
-            {
-              "object": "t2_player14"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player04"
-            },
-            {
-              "object": "t1_player11"
-            },
-            {
-              "object": "t2_player01"
-            },
-            {
-              "object": "t2_player08"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player05"
-            },
-            {
-              "object": "t1_player12"
-            },
-            {
-              "object": "t2_player02"
-            },
-            {
-              "object": "t2_player09"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player06"
-            },
-            {
-              "object": "t1_player13"
-            },
-            {
-              "object": "t2_player03"
-            },
-            {
-              "object": "t2_player10"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player07"
-            },
-            {
-              "object": "t1_player14"
-            },
-            {
-              "object": "t2_player04"
-            },
-            {
-              "object": "t2_player11"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
-            "target": "race_shooting_enabled"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "",
-            "action": "hideCur",
-            "shouldBlink": false,
-            "shouldFadeOut": false,
-            "time": -1.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "race_start_timer"
-          }
+        "triggerDisable": {
+          "target": "race_start_timer"
         }
-      ]
+      }
     },
     "race_shooting_enabled": {
       "is_enabled": false,
@@ -648,14 +420,14 @@
           "time": 10.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitSetProperties": {
           "object": "players_squad",
           "cannotShoot": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -666,10 +438,10 @@
     "start_timer_int": 20,
     "start_hint_id_str": "hints/ffa_race_starts_in_"
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": []
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {}
 }

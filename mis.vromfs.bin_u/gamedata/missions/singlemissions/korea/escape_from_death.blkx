@@ -33,50 +33,24 @@
           "map": true,
           "minTime": 4,
           "picture": "",
-          "arrow": [
-            {
-              "width": 1
-            },
-            {
-              "side": "player"
-            },
-            {
-              "point": "player_wing"
-            },
-            {
-              "point": "waypoint_04"
-            },
-            {
-              "point": "waypoint_08"
-            },
-            {
-              "point": "waypoint_12"
-            },
-            {
-              "point": "waypoint_22"
-            },
-            {
-              "point": "waypoint_26"
-            },
-            {
-              "point": "waypoint_30"
-            },
-            {
-              "point": "waypoint_34"
-            },
-            {
-              "point": "waypoint_38"
-            },
-            {
-              "point": "waypoint_42"
-            },
-            {
-              "point": "waypoint_46"
-            },
-            {
-              "point": "waypoint_46"
-            }
-          ],
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player_wing",
+              "waypoint_04",
+              "waypoint_08",
+              "waypoint_12",
+              "waypoint_22",
+              "waypoint_26",
+              "waypoint_30",
+              "waypoint_34",
+              "waypoint_38",
+              "waypoint_42",
+              "waypoint_46",
+              "waypoint_46"
+            ]
+          },
           "icon": {
             "icontype": "fighter",
             "side": "player",
@@ -96,7 +70,7 @@
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -111,27 +85,23 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "wait": {
-            "time": 2.0
-          }
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 2.0
         },
-        {
-          "missionMarkAsWaypoint": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_01"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -139,19 +109,15 @@
             "scale": 0.6,
             "target": "waypoint_02"
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "escape_from_death_main"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "escape_from_death_main"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object": "air_def_squad",
-            "effShootingRate": 0.1
-          }
+        "unitSetProperties": {
+          "object": "air_def_squad",
+          "effShootingRate": 0.1
         }
-      ]
+      }
     },
     "waypoint01_reach": {
       "is_enabled": true,
@@ -177,29 +143,25 @@
           "target": "waypoint_01"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_01"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_02"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -207,13 +169,11 @@
             "scale": 0.6,
             "target": "waypoint_03"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint02_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint02_reach"
         }
-      ]
+      }
     },
     "waypoint02_reach": {
       "is_enabled": false,
@@ -239,29 +199,25 @@
           "target": "waypoint_02"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_02"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_03"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -269,13 +225,11 @@
             "scale": 0.6,
             "target": "waypoint_04"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint03_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint03_reach"
         }
-      ]
+      }
     },
     "waypoint03_reach": {
       "is_enabled": false,
@@ -301,29 +255,25 @@
           "target": "waypoint_03"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_03"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_04"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -331,13 +281,11 @@
             "scale": 0.6,
             "target": "waypoint_05"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint04_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint04_reach"
         }
-      ]
+      }
     },
     "waypoint04_reach": {
       "is_enabled": false,
@@ -363,29 +311,25 @@
           "target": "waypoint_04"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_04"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_05"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -393,13 +337,11 @@
             "scale": 0.6,
             "target": "waypoint_06"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint05_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint05_reach"
         }
-      ]
+      }
     },
     "waypoint05_reach": {
       "is_enabled": false,
@@ -425,29 +367,25 @@
           "target": "waypoint_05"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_05"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_06"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -455,13 +393,11 @@
             "scale": 0.6,
             "target": "waypoint_07"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint06_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint06_reach"
         }
-      ]
+      }
     },
     "waypoint06_reach": {
       "is_enabled": false,
@@ -487,29 +423,25 @@
           "target": "waypoint_06"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_06"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_07"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -517,13 +449,11 @@
             "scale": 0.6,
             "target": "waypoint_08"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint07_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint07_reach"
         }
-      ]
+      }
     },
     "waypoint07_reach": {
       "is_enabled": false,
@@ -549,29 +479,25 @@
           "target": "waypoint_07"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_07"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_08"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -579,13 +505,11 @@
             "scale": 0.6,
             "target": "waypoint_09"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint08_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint08_reach"
         }
-      ]
+      }
     },
     "waypoint08_reach": {
       "is_enabled": false,
@@ -611,29 +535,25 @@
           "target": "waypoint_08"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_08"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_09"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -641,13 +561,11 @@
             "scale": 0.6,
             "target": "waypoint_10"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint09_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint09_reach"
         }
-      ]
+      }
     },
     "waypoint09_reach": {
       "is_enabled": false,
@@ -673,29 +591,25 @@
           "target": "waypoint_09"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_09"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_10"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -703,13 +617,11 @@
             "scale": 0.6,
             "target": "waypoint_11"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint10_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint10_reach"
         }
-      ]
+      }
     },
     "waypoint10_reach": {
       "is_enabled": false,
@@ -735,29 +647,25 @@
           "target": "waypoint_10"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_10"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_11"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -765,13 +673,11 @@
             "scale": 0.6,
             "target": "waypoint_12"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint11_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint11_reach"
         }
-      ]
+      }
     },
     "waypoint11_reach": {
       "is_enabled": false,
@@ -797,29 +703,25 @@
           "target": "waypoint_11"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_11"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_12"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -827,13 +729,11 @@
             "scale": 0.6,
             "target": "waypoint_13"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint12_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint12_reach"
         }
-      ]
+      }
     },
     "waypoint12_reach": {
       "is_enabled": false,
@@ -859,29 +759,25 @@
           "target": "waypoint_12"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_12"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_13"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -889,13 +785,11 @@
             "scale": 0.6,
             "target": "waypoint_14"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint13_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint13_reach"
         }
-      ]
+      }
     },
     "waypoint13_reach": {
       "is_enabled": false,
@@ -921,29 +815,25 @@
           "target": "waypoint_13"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_13"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_14"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -951,13 +841,11 @@
             "scale": 0.6,
             "target": "waypoint_15"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint14_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint14_reach"
         }
-      ]
+      }
     },
     "waypoint14_reach": {
       "is_enabled": false,
@@ -983,29 +871,25 @@
           "target": "waypoint_14"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_14"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_15"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1013,13 +897,11 @@
             "scale": 0.6,
             "target": "waypoint_16"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint15_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint15_reach"
         }
-      ]
+      }
     },
     "waypoint15_reach": {
       "is_enabled": false,
@@ -1045,29 +927,25 @@
           "target": "waypoint_15"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_15"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_16"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1075,13 +953,11 @@
             "scale": 0.6,
             "target": "waypoint_17"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint16_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint16_reach"
         }
-      ]
+      }
     },
     "waypoint16_reach": {
       "is_enabled": false,
@@ -1107,29 +983,25 @@
           "target": "waypoint_16"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_16"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_17"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1137,13 +1009,11 @@
             "scale": 0.6,
             "target": "waypoint_18"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint17_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint17_reach"
         }
-      ]
+      }
     },
     "waypoint17_reach": {
       "is_enabled": false,
@@ -1169,29 +1039,25 @@
           "target": "waypoint_17"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_17"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_18"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1199,13 +1065,11 @@
             "scale": 0.6,
             "target": "waypoint_19"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint18_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint18_reach"
         }
-      ]
+      }
     },
     "waypoint18_reach": {
       "is_enabled": false,
@@ -1231,29 +1095,25 @@
           "target": "waypoint_18"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_18"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_19"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1261,13 +1121,11 @@
             "scale": 0.6,
             "target": "waypoint_20"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint19_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint19_reach"
         }
-      ]
+      }
     },
     "waypoint19_reach": {
       "is_enabled": false,
@@ -1293,29 +1151,25 @@
           "target": "waypoint_19"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_19"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_20"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1323,13 +1177,11 @@
             "scale": 0.6,
             "target": "waypoint_21"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint20_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint20_reach"
         }
-      ]
+      }
     },
     "waypoint20_reach": {
       "is_enabled": false,
@@ -1355,29 +1207,25 @@
           "target": "waypoint_20"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_20"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_21"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1385,13 +1233,11 @@
             "scale": 0.6,
             "target": "waypoint_22"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint21_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint21_reach"
         }
-      ]
+      }
     },
     "waypoint21_reach": {
       "is_enabled": false,
@@ -1417,29 +1263,25 @@
           "target": "waypoint_21"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_21"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_22"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1447,13 +1289,11 @@
             "scale": 0.6,
             "target": "waypoint_23"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint22_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint22_reach"
         }
-      ]
+      }
     },
     "waypoint22_reach": {
       "is_enabled": false,
@@ -1479,29 +1319,25 @@
           "target": "waypoint_22"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_22"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_23"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1509,13 +1345,11 @@
             "scale": 0.6,
             "target": "waypoint_24"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint23_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint23_reach"
         }
-      ]
+      }
     },
     "waypoint23_reach": {
       "is_enabled": false,
@@ -1541,29 +1375,25 @@
           "target": "waypoint_23"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_23"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_24"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1571,13 +1401,11 @@
             "scale": 0.6,
             "target": "waypoint_25"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint24_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint24_reach"
         }
-      ]
+      }
     },
     "waypoint24_reach": {
       "is_enabled": false,
@@ -1603,29 +1431,25 @@
           "target": "waypoint_24"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_24"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_25"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1633,13 +1457,11 @@
             "scale": 0.6,
             "target": "waypoint_26"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint25_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint25_reach"
         }
-      ]
+      }
     },
     "waypoint25_reach": {
       "is_enabled": false,
@@ -1665,29 +1487,25 @@
           "target": "waypoint_25"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_25"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_26"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1695,13 +1513,11 @@
             "scale": 0.6,
             "target": "waypoint_27"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint26_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint26_reach"
         }
-      ]
+      }
     },
     "waypoint26_reach": {
       "is_enabled": false,
@@ -1727,29 +1543,25 @@
           "target": "waypoint_26"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_26"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_27"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1757,13 +1569,11 @@
             "scale": 0.6,
             "target": "waypoint_28"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint27_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint27_reach"
         }
-      ]
+      }
     },
     "waypoint27_reach": {
       "is_enabled": false,
@@ -1789,29 +1599,25 @@
           "target": "waypoint_27"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_27"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_28"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1819,13 +1625,11 @@
             "scale": 0.6,
             "target": "waypoint_29"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint28_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint28_reach"
         }
-      ]
+      }
     },
     "waypoint28_reach": {
       "is_enabled": false,
@@ -1851,29 +1655,25 @@
           "target": "waypoint_28"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_28"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_29"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1881,13 +1681,11 @@
             "scale": 0.6,
             "target": "waypoint_30"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint29_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint29_reach"
         }
-      ]
+      }
     },
     "waypoint29_reach": {
       "is_enabled": false,
@@ -1913,29 +1711,25 @@
           "target": "waypoint_29"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_29"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_30"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -1943,13 +1737,11 @@
             "scale": 0.6,
             "target": "waypoint_31"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint30_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint30_reach"
         }
-      ]
+      }
     },
     "waypoint30_reach": {
       "is_enabled": false,
@@ -1975,29 +1767,25 @@
           "target": "waypoint_30"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_30"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_31"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2005,13 +1793,11 @@
             "scale": 0.6,
             "target": "waypoint_32"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint31_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint31_reach"
         }
-      ]
+      }
     },
     "waypoint31_reach": {
       "is_enabled": false,
@@ -2037,29 +1823,25 @@
           "target": "waypoint_31"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_31"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_32"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2067,13 +1849,11 @@
             "scale": 0.6,
             "target": "waypoint_33"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint32_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint32_reach"
         }
-      ]
+      }
     },
     "waypoint32_reach": {
       "is_enabled": false,
@@ -2099,29 +1879,25 @@
           "target": "waypoint_32"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_32"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_33"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2129,13 +1905,11 @@
             "scale": 0.6,
             "target": "waypoint_34"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint33_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint33_reach"
         }
-      ]
+      }
     },
     "waypoint33_reach": {
       "is_enabled": false,
@@ -2161,29 +1935,25 @@
           "target": "waypoint_33"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_33"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_34"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2191,13 +1961,11 @@
             "scale": 0.6,
             "target": "waypoint_35"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint34_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint34_reach"
         }
-      ]
+      }
     },
     "waypoint34_reach": {
       "is_enabled": false,
@@ -2223,29 +1991,25 @@
           "target": "waypoint_34"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_34"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_35"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2253,13 +2017,11 @@
             "scale": 0.6,
             "target": "waypoint_36"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint35_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint35_reach"
         }
-      ]
+      }
     },
     "waypoint35_reach": {
       "is_enabled": false,
@@ -2285,29 +2047,25 @@
           "target": "waypoint_35"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_35"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_36"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2315,13 +2073,11 @@
             "scale": 0.6,
             "target": "waypoint_37"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint36_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint36_reach"
         }
-      ]
+      }
     },
     "waypoint36_reach": {
       "is_enabled": false,
@@ -2347,29 +2103,25 @@
           "target": "waypoint_36"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_36"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_37"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2377,13 +2129,11 @@
             "scale": 0.6,
             "target": "waypoint_38"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint37_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint37_reach"
         }
-      ]
+      }
     },
     "waypoint37_reach": {
       "is_enabled": false,
@@ -2409,29 +2159,25 @@
           "target": "waypoint_37"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_37"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_38"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2439,13 +2185,11 @@
             "scale": 0.6,
             "target": "waypoint_39"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint38_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint38_reach"
         }
-      ]
+      }
     },
     "waypoint38_reach": {
       "is_enabled": false,
@@ -2471,29 +2215,25 @@
           "target": "waypoint_38"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_38"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_39"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2501,13 +2241,11 @@
             "scale": 0.6,
             "target": "waypoint_40"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint39_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint39_reach"
         }
-      ]
+      }
     },
     "waypoint39_reach": {
       "is_enabled": false,
@@ -2533,29 +2271,25 @@
           "target": "waypoint_39"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_39"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_40"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2563,13 +2297,11 @@
             "scale": 0.6,
             "target": "waypoint_41"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint40_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint40_reach"
         }
-      ]
+      }
     },
     "waypoint40_reach": {
       "is_enabled": false,
@@ -2595,29 +2327,25 @@
           "target": "waypoint_40"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_40"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_41"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2625,13 +2353,11 @@
             "scale": 0.6,
             "target": "waypoint_42"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint41_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint41_reach"
         }
-      ]
+      }
     },
     "waypoint41_reach": {
       "is_enabled": false,
@@ -2657,29 +2383,25 @@
           "target": "waypoint_41"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_41"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_42"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2687,13 +2409,11 @@
             "scale": 0.6,
             "target": "waypoint_43"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint42_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint42_reach"
         }
-      ]
+      }
     },
     "waypoint42_reach": {
       "is_enabled": false,
@@ -2719,29 +2439,25 @@
           "target": "waypoint_42"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_42"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_43"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2749,13 +2465,11 @@
             "scale": 0.6,
             "target": "waypoint_44"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint43_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint43_reach"
         }
-      ]
+      }
     },
     "waypoint43_reach": {
       "is_enabled": false,
@@ -2781,29 +2495,25 @@
           "target": "waypoint_43"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_43"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_44"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2811,13 +2521,11 @@
             "scale": 0.6,
             "target": "waypoint_45"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint44_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint44_reach"
         }
-      ]
+      }
     },
     "waypoint44_reach": {
       "is_enabled": false,
@@ -2843,29 +2551,25 @@
           "target": "waypoint_44"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_44"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_45"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2873,13 +2577,11 @@
             "scale": 0.6,
             "target": "waypoint_46"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint45_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint45_reach"
         }
-      ]
+      }
     },
     "waypoint45_reach": {
       "is_enabled": false,
@@ -2905,29 +2607,25 @@
           "target": "waypoint_45"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_45"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_46"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2935,13 +2633,11 @@
             "scale": 0.6,
             "target": "waypoint_47"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint46_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint46_reach"
         }
-      ]
+      }
     },
     "waypoint46_reach": {
       "is_enabled": false,
@@ -2967,29 +2663,25 @@
           "target": "waypoint_46"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_46"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_47"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": false,
             "oriented": false,
@@ -2997,13 +2689,11 @@
             "scale": 0.6,
             "target": "waypoint_48"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint47_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint47_reach"
         }
-      ]
+      }
     },
     "waypoint47_reach": {
       "is_enabled": false,
@@ -3029,19 +2719,17 @@
           "target": "waypoint_47"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_47"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
@@ -3049,13 +2737,11 @@
             "scale": 0.6,
             "target": "waypoint_48"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint48_reach"
-          }
+        ],
+        "triggerEnable": {
+          "target": "waypoint48_reach"
         }
-      ]
+      }
     },
     "waypoint48_reach": {
       "is_enabled": false,
@@ -3116,58 +2802,88 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
-        "name": "player_wing",
-        "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [454.15,509.1,-5716.35]
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": {
+      "name": "player_wing",
+      "tm": [
+        [
+          0.906308,
+          0.0,
+          0.422618
         ],
-        "closed_waypoints": false,
-        "unit_class": "mig-15",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.422618,
+          0.0,
+          0.906308
+        ],
+        [
+          454.15,
+          509.1,
+          -5716.35
+        ]
+      ],
+      "closed_waypoints": false,
+      "unit_class": "mig-15",
+      "weapons": "",
+      "props": {
+        "army": 1,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
     },
-    {
-      "air_defence": {
+    "air_defence": [
+      {
         "name": "air_defence_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6454.7,68.8,-6892.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6454.7,
+            68.8,
+            -6892.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3177,23 +2893,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6969.4,68.8,-7552.05]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6969.4,
+            68.8,
+            -7552.05
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3203,23 +2939,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7103.75,68.8,-7197.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            7103.75,
+            68.8,
+            -7197.35
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3229,23 +2985,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6088.8,68.8,-7679.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6088.8,
+            68.8,
+            -7679.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3255,23 +3031,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7988.65,68.8,-8569.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            7988.65,
+            68.8,
+            -8569.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3281,23 +3077,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9318.25,68.8,-9155.45]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            9318.25,
+            68.8,
+            -9155.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3307,23 +3123,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9334.05,14.9344,-8150.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            9334.05,
+            14.9344,
+            -8150.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3333,23 +3169,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10363.0,35.5479,-8146.85]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            10363.0,
+            35.5479,
+            -8146.85
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3359,23 +3215,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14763.7,78.65,-7306.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            14763.7,
+            78.65,
+            -7306.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3385,23 +3261,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14977.5,93.6086,-7028.55]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            14977.5,
+            93.6086,
+            -7028.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3411,23 +3307,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_11",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20668.2,138.9,-10795.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20668.2,
+            138.9,
+            -10795.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3437,22 +3353,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_12",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20860.5,171.55,-11013.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20860.5,
+            171.55,
+            -11013.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_40mm_bofors",
@@ -3462,22 +3398,44 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "wheeled_vehicles": {
+    ],
+    "wheeled_vehicles": [
+      {
         "name": "wheeled_vehicles_01",
         "tm": [
-          [-0.737277,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,-0.737277],
-          [7276.9,51.65,-4897.2]
+          [
+            -0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            7276.9,
+            51.65,
+            -4897.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_cargo_truck",
@@ -3487,8 +3445,14 @@
           "count": 6,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
@@ -3497,10 +3461,26 @@
           "wheeled_vehicles_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7220.95,51.05,-4948.35]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                7220.95,
+                51.05,
+                -4948.35
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3510,10 +3490,26 @@
           "wheeled_vehicles_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7098.55,56.8,-5105.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                7098.55,
+                56.8,
+                -5105.4
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3523,10 +3519,26 @@
           "wheeled_vehicles_01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7066.85,59.15,-5173.15]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                7066.85,
+                59.15,
+                -5173.15
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3536,10 +3548,26 @@
           "wheeled_vehicles_01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7067.9,60.8,-5228.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                7067.9,
+                60.8,
+                -5228.05
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3549,10 +3577,26 @@
           "wheeled_vehicles_01_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7105.2,62.75,-5300.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                7105.2,
+                62.75,
+                -5300.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3562,10 +3606,26 @@
           "wheeled_vehicles_01_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7099.35,64.05,-5341.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                7099.35,
+                64.05,
+                -5341.4
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3575,10 +3635,26 @@
           "wheeled_vehicles_01_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7022.6,66.75,-5409.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                7022.6,
+                66.75,
+                -5409.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3588,10 +3664,26 @@
           "wheeled_vehicles_01_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [6969.45,67.85,-5432.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                6969.45,
+                67.85,
+                -5432.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3601,10 +3693,26 @@
           "wheeled_vehicles_01_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [6896.3,70.3,-5495.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                6896.3,
+                70.3,
+                -5495.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3614,10 +3722,26 @@
           "wheeled_vehicles_01_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [6813.05,71.9,-5526.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                6813.05,
+                71.9,
+                -5526.4
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3627,10 +3751,26 @@
           "wheeled_vehicles_01_wp_11": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [6742.45,74.1,-5581.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                6742.45,
+                74.1,
+                -5581.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3638,16 +3778,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "wheeled_vehicles_02",
         "tm": [
-          [0.976296,0.0,-0.21644],
-          [0.0,1.0,0.0],
-          [0.21644,0.0,0.976296],
-          [10451.7,8.3,-8624.0]
+          [
+            0.976296,
+            0.0,
+            -0.21644
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.21644,
+            0.0,
+            0.976296
+          ],
+          [
+            10451.7,
+            8.3,
+            -8624.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_cargo_truck",
@@ -3657,8 +3811,14 @@
           "count": 10,
           "formation_type": "rows",
           "formation_div": 10,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 2500.0
@@ -3667,10 +3827,26 @@
           "wheeled_vehicles_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10677.0,13.05,-8670.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10677.0,
+                13.05,
+                -8670.05
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3680,10 +3856,26 @@
           "wheeled_vehicles_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10895.0,14.55,-8715.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10895.0,
+                14.55,
+                -8715.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3693,10 +3885,26 @@
           "wheeled_vehicles_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11176.0,12.95,-8778.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11176.0,
+                12.95,
+                -8778.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3706,10 +3914,26 @@
           "wheeled_vehicles_02_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11244.5,13.3,-8785.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11244.5,
+                13.3,
+                -8785.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3719,10 +3943,26 @@
           "wheeled_vehicles_02_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11327.2,12.1,-8778.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11327.2,
+                12.1,
+                -8778.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3732,10 +3972,26 @@
           "wheeled_vehicles_02_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11383.8,12.95,-8762.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11383.8,
+                12.95,
+                -8762.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3745,10 +4001,26 @@
           "wheeled_vehicles_02_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11389.3,8.45,-8783.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11389.3,
+                8.45,
+                -8783.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3758,10 +4030,26 @@
           "wheeled_vehicles_02_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11399.8,0.0,-8843.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11399.8,
+                0.0,
+                -8843.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3771,10 +4059,26 @@
           "wheeled_vehicles_02_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11409.8,0.0,-8903.35]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11409.8,
+                0.0,
+                -8903.35
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3784,10 +4088,26 @@
           "wheeled_vehicles_02_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11432.9,-24.3,-9033.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11432.9,
+                -24.3,
+                -9033.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3797,10 +4117,26 @@
           "wheeled_vehicles_02_wp_11": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11441.1,0.0,-9073.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11441.1,
+                0.0,
+                -9073.8
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3810,10 +4146,26 @@
           "wheeled_vehicles_02_wp_12": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11452.9,11.45,-9139.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11452.9,
+                11.45,
+                -9139.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3823,10 +4175,26 @@
           "wheeled_vehicles_02_wp_13": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11494.0,16.4,-9149.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11494.0,
+                16.4,
+                -9149.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3836,10 +4204,26 @@
           "wheeled_vehicles_02_wp_14": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11606.5,11.35,-9127.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11606.5,
+                11.35,
+                -9127.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3849,10 +4233,26 @@
           "wheeled_vehicles_02_wp_15": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11677.3,6.45,-9100.55]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11677.3,
+                6.45,
+                -9100.55
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3862,10 +4262,26 @@
           "wheeled_vehicles_02_wp_16": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11792.0,4.6,-9062.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11792.0,
+                4.6,
+                -9062.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3873,16 +4289,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "wheeled_vehicles_03",
         "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [11069.8,12.0,-6576.25]
+          [
+            -0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            11069.8,
+            12.0,
+            -6576.25
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_cargo_truck",
@@ -3892,8 +4322,14 @@
           "count": 6,
           "formation_type": "rows",
           "formation_div": 6,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3901,10 +4337,26 @@
           "wheeled_vehicles_03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11021.9,18.95,-6401.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11021.9,
+                18.95,
+                -6401.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3914,10 +4366,26 @@
           "wheeled_vehicles_03_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10999.0,11.95,-6289.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10999.0,
+                11.95,
+                -6289.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3927,10 +4395,26 @@
           "wheeled_vehicles_03_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11014.8,24.25,-6009.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11014.8,
+                24.25,
+                -6009.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3940,10 +4424,26 @@
           "wheeled_vehicles_03_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11040.9,15.95,-5897.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11040.9,
+                15.95,
+                -5897.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3953,10 +4453,26 @@
           "wheeled_vehicles_03_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11090.3,16.6,-5800.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11090.3,
+                16.6,
+                -5800.05
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3966,10 +4482,26 @@
           "wheeled_vehicles_03_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11146.3,13.95,-5746.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11146.3,
+                13.95,
+                -5746.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3979,10 +4511,26 @@
           "wheeled_vehicles_03_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11227.8,12.5,-5723.65]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11227.8,
+                12.5,
+                -5723.65
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3992,10 +4540,26 @@
           "wheeled_vehicles_03_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11429.9,8.3,-5709.15]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11429.9,
+                8.3,
+                -5709.15
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4005,10 +4569,26 @@
           "wheeled_vehicles_03_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11713.4,9.85,-5696.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                11713.4,
+                9.85,
+                -5696.05
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4018,10 +4598,26 @@
           "wheeled_vehicles_03_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12022.0,19.85,-5714.35]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                12022.0,
+                19.85,
+                -5714.35
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4031,10 +4627,26 @@
           "wheeled_vehicles_03_wp_11": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12350.7,13.75,-5710.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                12350.7,
+                13.75,
+                -5710.4
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4044,10 +4656,26 @@
           "wheeled_vehicles_03_wp_12": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12585.3,10.9,-5694.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                12585.3,
+                10.9,
+                -5694.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4057,10 +4685,26 @@
           "wheeled_vehicles_03_wp_13": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12808.3,18.65,-5706.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                12808.3,
+                18.65,
+                -5706.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4070,10 +4714,26 @@
           "wheeled_vehicles_03_wp_14": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12926.9,9.65,-5721.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                12926.9,
+                9.65,
+                -5721.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4083,10 +4743,26 @@
           "wheeled_vehicles_03_wp_15": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13268.3,14.2,-5728.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                13268.3,
+                14.2,
+                -5728.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4096,10 +4772,26 @@
           "wheeled_vehicles_03_wp_16": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13547.5,21.7,-5722.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                13547.5,
+                21.7,
+                -5722.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4109,10 +4801,26 @@
           "wheeled_vehicles_03_wp_17": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13619.4,19.05,-5741.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                13619.4,
+                19.05,
+                -5741.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4122,10 +4830,26 @@
           "wheeled_vehicles_03_wp_18": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13728.9,20.65,-5814.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                13728.9,
+                20.65,
+                -5814.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4135,10 +4859,26 @@
           "wheeled_vehicles_03_wp_19": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13814.6,16.75,-5830.65]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                13814.6,
+                16.75,
+                -5830.65
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4148,10 +4888,26 @@
           "wheeled_vehicles_03_wp_20": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14221.3,23.9,-5758.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14221.3,
+                23.9,
+                -5758.8
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4161,10 +4917,26 @@
           "wheeled_vehicles_03_wp_21": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14330.5,20.4,-5727.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14330.5,
+                20.4,
+                -5727.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4174,10 +4946,26 @@
           "wheeled_vehicles_03_wp_22": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14378.3,9.05,-5738.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14378.3,
+                9.05,
+                -5738.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4187,10 +4975,26 @@
           "wheeled_vehicles_03_wp_23": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14413.8,0.0,-5824.85]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14413.8,
+                0.0,
+                -5824.85
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4200,10 +5004,26 @@
           "wheeled_vehicles_03_wp_24": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14451.8,-0.95,-5929.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14451.8,
+                -0.95,
+                -5929.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4213,10 +5033,26 @@
           "wheeled_vehicles_03_wp_25": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14469.5,3.4,-5978.85]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14469.5,
+                3.4,
+                -5978.85
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4226,10 +5062,26 @@
           "wheeled_vehicles_03_wp_26": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14540.0,9.35,-6037.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14540.0,
+                9.35,
+                -6037.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4239,10 +5091,26 @@
           "wheeled_vehicles_03_wp_27": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14496.5,35.85,-6163.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14496.5,
+                35.85,
+                -6163.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4252,10 +5120,26 @@
           "wheeled_vehicles_03_wp_28": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14496.5,56.1,-6291.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14496.5,
+                56.1,
+                -6291.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4265,10 +5149,26 @@
           "wheeled_vehicles_03_wp_29": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14488.4,65.65,-6386.55]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14488.4,
+                65.65,
+                -6386.55
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4276,16 +5176,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "wheeled_vehicles_04",
         "tm": [
-          [0.173648,0.0,0.984808],
-          [0.0,1.0,0.0],
-          [-0.984808,0.0,0.173648],
-          [20763.2,150.6,-10866.6]
+          [
+            0.173648,
+            0.0,
+            0.984808
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.984808,
+            0.0,
+            0.173648
+          ],
+          [
+            20763.2,
+            150.6,
+            -10866.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_cargo_truck",
@@ -4295,22 +5209,44 @@
           "count": 6,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [5.0,3.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            5.0,
+            3.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "tracked_vehicles": {
+    ],
+    "tracked_vehicles": [
+      {
         "name": "tracked_vehicles_01",
         "tm": [
-          [-0.573576,0.0,0.819152],
-          [0.0,1.0,0.0],
-          [-0.819152,0.0,-0.573576],
-          [15493.2,160.9,-8546.15]
+          [
+            -0.573576,
+            0.0,
+            0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.819152,
+            0.0,
+            -0.573576
+          ],
+          [
+            15493.2,
+            160.9,
+            -8546.15
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_m5a1_stuart6",
@@ -4320,8 +5256,14 @@
           "count": 9,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [5.0,2.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            5.0,
+            2.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -4329,10 +5271,26 @@
           "tracked_vehicles_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15484.9,106.35,-8503.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15484.9,
+                106.35,
+                -8503.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4342,10 +5300,26 @@
           "tracked_vehicles_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15433.2,116.5,-8471.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15433.2,
+                116.5,
+                -8471.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4355,10 +5329,26 @@
           "tracked_vehicles_01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15413.1,96.1,-8394.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15413.1,
+                96.1,
+                -8394.4
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4368,10 +5358,26 @@
           "tracked_vehicles_01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15328.8,95.5,-8338.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15328.8,
+                95.5,
+                -8338.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4381,10 +5387,26 @@
           "tracked_vehicles_01_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15289.9,94.5,-8259.55]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15289.9,
+                94.5,
+                -8259.55
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4394,10 +5416,26 @@
           "tracked_vehicles_01_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15236.1,99.0,-8228.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15236.1,
+                99.0,
+                -8228.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4407,10 +5445,26 @@
           "tracked_vehicles_01_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15180.5,104.55,-8125.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15180.5,
+                104.55,
+                -8125.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4420,10 +5474,26 @@
           "tracked_vehicles_01_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15099.0,91.7,-8005.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15099.0,
+                91.7,
+                -8005.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4433,10 +5503,26 @@
           "tracked_vehicles_01_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14997.1,85.0,-7907.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14997.1,
+                85.0,
+                -7907.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4446,10 +5532,26 @@
           "tracked_vehicles_01_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14952.3,82.8,-7833.35]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14952.3,
+                82.8,
+                -7833.35
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4459,10 +5561,26 @@
           "tracked_vehicles_01_wp_11": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14952.3,82.55,-7714.35]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14952.3,
+                82.55,
+                -7714.35
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4472,10 +5590,26 @@
           "tracked_vehicles_01_wp_12": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14918.4,80.8,-7597.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14918.4,
+                80.8,
+                -7597.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4485,10 +5619,26 @@
           "tracked_vehicles_01_wp_13": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14887.5,79.3,-7564.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14887.5,
+                79.3,
+                -7564.45
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4498,10 +5648,26 @@
           "tracked_vehicles_01_wp_14": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14834.3,76.8,-7556.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14834.3,
+                76.8,
+                -7556.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4511,10 +5677,26 @@
           "tracked_vehicles_01_wp_15": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14775.7,73.7,-7476.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14775.7,
+                73.7,
+                -7476.2
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4524,10 +5706,26 @@
           "tracked_vehicles_01_wp_16": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14724.7,72.85,-7399.15]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14724.7,
+                72.85,
+                -7399.15
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4537,10 +5735,26 @@
           "tracked_vehicles_01_wp_17": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14705.3,74.2,-7306.15]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14705.3,
+                74.2,
+                -7306.15
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4550,10 +5764,26 @@
           "tracked_vehicles_01_wp_18": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14667.2,76.25,-7211.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14667.2,
+                76.25,
+                -7211.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4563,10 +5793,26 @@
           "tracked_vehicles_01_wp_19": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14689.1,78.3,-7175.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14689.1,
+                78.3,
+                -7175.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4576,10 +5822,26 @@
           "tracked_vehicles_01_wp_20": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14642.0,78.8,-7111.15]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14642.0,
+                78.8,
+                -7111.15
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4589,10 +5851,26 @@
           "tracked_vehicles_01_wp_21": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14658.9,81.1,-7062.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14658.9,
+                81.1,
+                -7062.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4602,10 +5880,26 @@
           "tracked_vehicles_01_wp_22": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14685.2,83.0,-7033.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14685.2,
+                83.0,
+                -7033.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4615,10 +5909,26 @@
           "tracked_vehicles_01_wp_23": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14685.8,84.6,-6967.15]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14685.8,
+                84.6,
+                -6967.15
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4628,10 +5938,26 @@
           "tracked_vehicles_01_wp_24": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14751.8,82.4,-6894.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14751.8,
+                82.4,
+                -6894.8
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4641,10 +5967,26 @@
           "tracked_vehicles_01_wp_25": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14809.4,75.25,-6759.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14809.4,
+                75.25,
+                -6759.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4654,10 +5996,26 @@
           "tracked_vehicles_01_wp_26": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14711.8,67.9,-6722.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14711.8,
+                67.9,
+                -6722.45
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4667,10 +6025,26 @@
           "tracked_vehicles_01_wp_27": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14629.2,63.65,-6717.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14629.2,
+                63.65,
+                -6717.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4680,10 +6054,26 @@
           "tracked_vehicles_01_wp_28": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14536.0,54.7,-6647.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14536.0,
+                54.7,
+                -6647.6
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4693,10 +6083,26 @@
           "tracked_vehicles_01_wp_29": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14466.5,66.8,-6608.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14466.5,
+                66.8,
+                -6608.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4706,10 +6112,26 @@
           "tracked_vehicles_01_wp_30": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14436.8,73.5,-6486.3]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                14436.8,
+                73.5,
+                -6486.3
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4717,16 +6139,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "tracked_vehicles_02",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [20857.7,168.65,-10571.0]
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            20857.7,
+            168.65,
+            -10571.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "us_m5a1_stuart6",
@@ -4736,588 +6172,1418 @@
           "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [5.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            5.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
-        "name": "air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5061.55,112.25,-5625.95]
+    ],
+    "squad": {
+      "name": "air_def_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "air_defence_01"
-          },
-          {
-            "squad_members": "air_defence_02"
-          },
-          {
-            "squad_members": "air_defence_03"
-          },
-          {
-            "squad_members": "air_defence_04"
-          },
-          {
-            "squad_members": "air_defence_05"
-          },
-          {
-            "squad_members": "air_defence_06"
-          },
-          {
-            "squad_members": "air_defence_07"
-          },
-          {
-            "squad_members": "air_defence_08"
-          },
-          {
-            "squad_members": "air_defence_09"
-          },
-          {
-            "squad_members": "air_defence_10"
-          },
-          {
-            "squad_members": "air_defence_11"
-          },
-          {
-            "squad_members": "air_defence_12"
-          }
+        [
+          0.0,
+          1.0,
+          0.0
         ],
-        "way": []
-      }
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5061.55,
+          112.25,
+          -5625.95
+        ]
+      ],
+      "closed_waypoints": false,
+      "unit_class": "",
+      "weapons": "",
+      "props": {
+        "squad_members": [
+          "air_defence_01",
+          "air_defence_02",
+          "air_defence_03",
+          "air_defence_04",
+          "air_defence_05",
+          "air_defence_06",
+          "air_defence_07",
+          "air_defence_08",
+          "air_defence_09",
+          "air_defence_10",
+          "air_defence_11",
+          "air_defence_12"
+        ]
+      },
+      "way": {}
     }
-  ],
+  },
   "areas": {
     "waypoint_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1708.0,527.05,-5116.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1708.0,
+          527.05,
+          -5116.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2801.95,84.75,-4747.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2801.95,
+          84.75,
+          -4747.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [3418.8,290.75,-4458.25]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3418.8,
+          290.75,
+          -4458.25
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [3958.3,127.7,-4625.1]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3958.3,
+          127.7,
+          -4625.1
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_05": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [4386.1,162.5,-4420.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          4386.1,
+          162.5,
+          -4420.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_06": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [4884.55,164.0,-4539.75]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          4884.55,
+          164.0,
+          -4539.75
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_07": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [5564.65,251.1,-4363.35]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5564.65,
+          251.1,
+          -4363.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_08": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [6339.8,64.65,-4324.45]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          6339.8,
+          64.65,
+          -4324.45
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_09": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [6779.8,195.15,-4785.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          6779.8,
+          195.15,
+          -4785.8
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_10": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [7203.35,158.6,-5364.95]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          7203.35,
+          158.6,
+          -5364.95
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_11": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [7601.9,258.65,-6089.45]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          7601.9,
+          258.65,
+          -6089.45
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_12": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [7867.55,403.85,-6900.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          7867.55,
+          403.85,
+          -6900.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_13": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [8113.1,637.0,-7661.1]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          8113.1,
+          637.0,
+          -7661.1
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_14": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [8520.5,826.1,-8066.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          8520.5,
+          826.1,
+          -8066.15
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_15": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [8996.7,967.8,-8321.05]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          8996.7,
+          967.8,
+          -8321.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_16": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [9458.65,878.4,-8584.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          9458.65,
+          878.4,
+          -8584.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_17": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [9947.15,494.5,-8919.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          9947.15,
+          494.5,
+          -8919.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_18": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [10567.1,307.3,-9057.25]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          10567.1,
+          307.3,
+          -9057.25
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_19": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11019.3,96.05,-8883.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11019.3,
+          96.05,
+          -8883.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_20": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11423.2,45.75,-8950.05]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11423.2,
+          45.75,
+          -8950.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_21": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11921.6,273.2,-8710.2]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11921.6,
+          273.2,
+          -8710.2
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_22": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11279.4,388.95,-7884.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11279.4,
+          388.95,
+          -7884.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_23": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11511.5,503.8,-7164.35]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11511.5,
+          503.8,
+          -7164.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_24": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11190.0,374.25,-6215.85]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11190.0,
+          374.25,
+          -6215.85
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_25": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11824.1,67.6,-5929.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11824.1,
+          67.6,
+          -5929.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_26": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [12551.6,43.15,-5779.4]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          12551.6,
+          43.15,
+          -5779.4
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_27": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [13319.7,227.0,-6003.75]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          13319.7,
+          227.0,
+          -6003.75
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_28": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [14374.0,142.6,-5880.85]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          14374.0,
+          142.6,
+          -5880.85
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_29": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [14513.1,383.95,-6692.9]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          14513.1,
+          383.95,
+          -6692.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_30": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [15116.5,335.2,-7957.95]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          15116.5,
+          335.2,
+          -7957.95
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_31": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [15671.5,229.4,-9113.25]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          15671.5,
+          229.4,
+          -9113.25
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_32": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [16644.6,269.65,-10462.7]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          16644.6,
+          269.65,
+          -10462.7
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_33": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [18289.5,718.2,-11198.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          18289.5,
+          718.2,
+          -11198.8
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_34": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [20382.3,276.85,-11121.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          20382.3,
+          276.85,
+          -11121.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_35": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22158.1,348.85,-11996.1]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22158.1,
+          348.85,
+          -11996.1
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_36": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [24151.8,754.4,-11941.7]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          24151.8,
+          754.4,
+          -11941.7
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_37": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [25334.7,335.4,-10934.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          25334.7,
+          335.4,
+          -10934.8
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_38": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [25732.8,264.6,-9801.35]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          25732.8,
+          264.6,
+          -9801.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_39": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [24896.4,210.95,-8512.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          24896.4,
+          210.95,
+          -8512.5
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_40": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [23949.5,80.4,-7553.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          23949.5,
+          80.4,
+          -7553.15
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_41": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22963.2,309.2,-7127.05]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22963.2,
+          309.2,
+          -7127.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_42": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [23032.8,92.95,-5833.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          23032.8,
+          92.95,
+          -5833.8
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_43": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22467.5,85.85,-5168.65]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22467.5,
+          85.85,
+          -5168.65
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "scene_waypoint_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [11439.5,20.05,-8954.95]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11439.5,
+          20.05,
+          -8954.95
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_44": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22844.1,202.85,-4537.05]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22844.1,
+          202.85,
+          -4537.05
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_45": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22561.4,66.35,-4030.35]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22561.4,
+          66.35,
+          -4030.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_46": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22053.6,96.85,-3961.25]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22053.6,
+          96.85,
+          -3961.25
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "scene_waypoint_05": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [21467.7,1800.6,-2652.95]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          21467.7,
+          1800.6,
+          -2652.95
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "scene_waypoint_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22982.6,56.9,-4745.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22982.6,
+          56.9,
+          -4745.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "scene_waypoint_04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [21542.2,56.9,-3622.4]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          21542.2,
+          56.9,
+          -3622.4
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_47": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [21090.8,526.8,-2015.45]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          21090.8,
+          526.8,
+          -2015.45
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint_48": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [20369.6,847.65,-1194.2]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          20369.6,
+          847.65,
+          -1194.2
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

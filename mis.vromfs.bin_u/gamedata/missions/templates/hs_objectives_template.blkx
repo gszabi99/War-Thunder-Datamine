@@ -17,9 +17,9 @@
       "environment": "Day",
       "weather": "hazy"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -32,52 +32,40 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "wait": {
+      "conditions": {},
+      "actions": {
+        "wait": [
+          {
             "time": 5.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 10.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        },
-        {
-          "moAddMissionObjective": {
+        ],
+        "moAddMissionObjective": [
+          {
             "target": "t1_arcade_destroy_land_units"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "t2_arcade_destroy_land_units"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "arcade_destroy_helicopters"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_objective_complete"
-            },
-            {
-              "target": "t2_objective_complete"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "t1_objective_complete",
+            "t2_objective_complete"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_objective_complete": {
       "is_enabled": false,
@@ -111,7 +99,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_objective_complete": {
       "is_enabled": false,
@@ -145,7 +133,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -162,8 +150,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "t2_arcade_destroy_land_units": {
       "is_enabled": false,
@@ -176,8 +164,8 @@
         "scoreTime": 400,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "arcade_destroy_helicopters": {
       "is_enabled": false,
@@ -189,32 +177,28 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
+        "enabled": false
+      },
+      {
         "enabled": false
       }
-    },
-    {
-      "layer": {
-        "enabled": false
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

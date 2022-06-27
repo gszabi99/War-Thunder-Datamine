@@ -1,19 +1,11 @@
 {
-  "tdiv": [
-    {
-      "id": "item_desc"
-    },
-    {
-      "size": "pw, ph"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "scrollbarShortcuts": "yes"
-    },
-    {
-      "tdiv": {
+  "tdiv": {
+    "id": "item_desc",
+    "size": "pw, ph",
+    "flow": "vertical",
+    "scrollbarShortcuts": "yes",
+    "tdiv": [
+      {
         "size": "pw, ph",
         "position": "absolute",
         "wwBattleBackgroundBlock": {
@@ -21,70 +13,46 @@
             "id": "operation_background"
           }
         },
-        "tdiv": [
-          {
-            "size": "pw, ph"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "wwBattleBackgroundShadow": {
+        "tdiv": {
+          "size": "pw, ph",
+          "position": "absolute",
+          "wwBattleBackgroundShadow": [
+            {
               "type": "left"
-            }
-          },
-          {
-            "wwBattleBackgroundShadow": {
+            },
+            {
               "type": "right"
-            }
-          },
-          {
-            "wwBattleBackgroundShadow": {
+            },
+            {
               "type": "top"
-            }
-          },
-          {
-            "wwBattleBackgroundShadow": {
+            },
+            {
               "type": "bottom",
               "top": "ph-h"
             }
-          }
-        ]
-      }
-    },
-    {
-      "tdiv": [
-        {
-          "size": "pw, fh"
+          ]
+        }
+      },
+      {
+        "size": "pw, fh",
+        "margin": "1@blockInterval, 1@blockInterval, 0, 1@blockInterval",
+        "flow": "vertical",
+        "textareaNoTab": {
+          "id": "item_desc",
+          "max-width": "80%pw",
+          "pos": "50%(pw-w), 0",
+          "position": "relative",
+          "margin-bottom": "@blockInterval",
+          "text-align": "center",
+          "hideEmptyText": "yes",
+          "text": ""
         },
-        {
-          "margin": "1@blockInterval, 1@blockInterval, 0, 1@blockInterval"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "textareaNoTab": {
-            "id": "item_desc",
-            "max-width": "80%pw",
-            "pos": "50%(pw-w), 0",
-            "position": "relative",
+        "tdiv": [
+          {
+            "width": "pw",
             "margin-bottom": "@blockInterval",
-            "text-align": "center",
-            "hideEmptyText": "yes",
-            "text": ""
-          }
-        },
-        {
-          "tdiv": [
-            {
-              "width": "pw"
-            },
-            {
-              "margin-bottom": "@blockInterval"
-            },
-            {
-              "tdiv": {
+            "tdiv": [
+              {
                 "size": "25%pw, ph",
                 "flow": "vertical",
                 "tdiv": {
@@ -97,10 +65,8 @@
                   "padding": "@wwWindowListBackgroundPadding",
                   "type": "left"
                 }
-              }
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "size": "25%pw, ph",
                 "pos": "pw-w, 0",
                 "position": "absolute",
@@ -118,27 +84,19 @@
                   "type": "right"
                 }
               }
-            }
-          ]
-        },
-        {
-          "tdiv": [
-            {
-              "size": "pw, fh"
-            },
-            {
-              "margin-bottom": "1@sf/@pf_outdated"
-            },
-            {
-              "wwWindowListBackground": {
+            ]
+          },
+          {
+            "size": "pw, fh",
+            "margin-bottom": "1@sf/@pf_outdated",
+            "wwWindowListBackground": [
+              {
                 "id": "team_SIDE_1_unit_info",
                 "size": "25%pw, ph",
                 "padding": "@wwWindowListBackgroundPadding",
                 "type": "left"
-              }
-            },
-            {
-              "wwWindowListBackground": {
+              },
+              {
                 "id": "team_SIDE_2_unit_info",
                 "size": "25%pw, ph",
                 "pos": "pw-2w, 0",
@@ -146,63 +104,47 @@
                 "padding": "@wwWindowListBackgroundPadding",
                 "type": "right"
               }
-            }
-          ]
-        },
-        {
-          "tdiv": [
-            {
-              "id": "map_nest_obj"
-            },
-            {
-              "pos": "50%pw-50%w, 50%ph-50%h"
-            },
-            {
-              "position": "absolute"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "ShadowPlate": {
-                "id": "world_war_map_block",
+            ]
+          },
+          {
+            "id": "map_nest_obj",
+            "pos": "50%pw-50%w, 50%ph-50%h",
+            "position": "absolute",
+            "flow": "vertical",
+            "ShadowPlate": {
+              "id": "world_war_map_block",
+              "size": "pw, pw",
+              "min-height": "@wwOperationMapMinSize",
+              "min-width": "@wwOperationMapMinSize",
+              "pos": "50%pw-50%w, 0",
+              "position": "relative",
+              "padding": "0.01@scrn_tgt, 0, 0.01@scrn_tgt, 0.012@scrn_tgt",
+              "worldWarMap": {
+                "id": "map_image",
+                "behaviour": "worldWarMapRender",
                 "size": "pw, pw",
-                "min-height": "@wwOperationMapMinSize",
-                "min-width": "@wwOperationMapMinSize",
-                "pos": "50%pw-50%w, 0",
-                "position": "relative",
-                "padding": "0.01@scrn_tgt, 0, 0.01@scrn_tgt, 0.012@scrn_tgt",
-                "worldWarMap": {
-                  "id": "map_image",
-                  "behaviour": "worldWarMapRender",
-                  "size": "pw, pw",
-                  "border": "yes",
-                  "border-color": "@commonMenuButtonColor"
-                }
+                "border": "yes",
+                "border-color": "@commonMenuButtonColor"
               }
             },
-            {
-              "textareaNoTab": {
+            "textareaNoTab": [
+              {
                 "id": "operation_start_date",
                 "pos": "50%pw-50%w, 0",
                 "position": "relative",
                 "text": ""
-              }
-            },
-            {
-              "textareaNoTab": {
+              },
+              {
                 "id": "operation_short_info_text",
                 "pos": "50%pw-50%w, 0",
                 "position": "relative",
                 "text": ""
               }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "tdiv": {
+            ]
+          }
+        ]
+      },
+      {
         "width": "pw",
         "Button_text": {
           "id": "btn_collapsed_chapter",
@@ -211,23 +153,15 @@
           "display": "hide",
           "enable": "no",
           "_on_click": "onCollapsedChapter",
-          "ButtonImg": []
+          "ButtonImg": {}
         }
-      }
-    },
-    {
-      "tdiv": [
-        {
-          "id": "operation_join_block"
-        },
-        {
-          "width": "pw"
-        },
-        {
-          "margin-left": "1@blockInterval"
-        },
-        {
-          "Button_text": {
+      },
+      {
+        "id": "operation_join_block",
+        "width": "pw",
+        "margin-left": "1@blockInterval",
+        "Button_text": [
+          {
             "id": "btn_join_SIDE_1",
             "width": "1@bigButtonWidth",
             "class": "battle",
@@ -236,12 +170,12 @@
             "btnName": "X",
             "hasConsoleImage": "yes",
             "_on_click": "onJoinOperationSide1",
-            "pattern": [],
+            "pattern": {},
             "buttonWink": {
               "_transp-timer": "0"
             },
-            "buttonGlance": [],
-            "ButtonImg": [],
+            "buttonGlance": {},
+            "ButtonImg": {},
             "btnContent": {
               "cardImg": {
                 "id": "is_clan_participate_img",
@@ -259,10 +193,8 @@
                 "position": "relative"
               }
             }
-          }
-        },
-        {
-          "Button_text": {
+          },
+          {
             "id": "btn_join_SIDE_2",
             "width": "1@bigButtonWidth",
             "class": "battle",
@@ -271,12 +203,12 @@
             "btnName": "A",
             "hasConsoleImage": "yes",
             "_on_click": "onJoinOperationSide2",
-            "pattern": [],
+            "pattern": {},
             "buttonWink": {
               "_transp-timer": "0"
             },
-            "buttonGlance": [],
-            "ButtonImg": [],
+            "buttonGlance": {},
+            "ButtonImg": {},
             "btnContent": {
               "cardImg": {
                 "id": "is_clan_participate_img",
@@ -295,17 +227,15 @@
               }
             }
           }
-        },
-        {
-          "textareaNoTab": {
-            "id": "is_clan_participate_text",
-            "width": "fw",
-            "padding": "1@blockInterval, 0",
-            "pos": "0, 50%ph-50%h",
-            "position": "relative"
-          }
+        ],
+        "textareaNoTab": {
+          "id": "is_clan_participate_text",
+          "width": "fw",
+          "padding": "1@blockInterval, 0",
+          "pos": "0, 50%ph-50%h",
+          "position": "relative"
         }
-      ]
-    }
-  ]
+      }
+    ]
+  }
 }

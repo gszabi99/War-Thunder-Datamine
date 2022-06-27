@@ -2,7 +2,11 @@
   "cannon": false,
   "weaponType": 3,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -31,17 +35,30 @@
     "bulletType": "he_at_grenade",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "explosiveType": "rdx_tnt",
     "explosiveMass": 0.032,
     "hitPowerMult": 1.0,
     "effectiveDistance": 700.0,
-    "relativeVelHitShift": [300.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.1,
     "explodeHitPower": 3.0,
     "explodeArmorPower": 3.0,
-    "explodeRadius": [0.058,0.58],
+    "explodeRadius": [
+      0.058,
+      0.58
+    ],
     "fuseDelayDist": 0.02,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
@@ -54,22 +71,58 @@
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.0],
-      "mod2": [20.0,1.0]
+      "mod1": [
+        0.0,
+        0.0
+      ],
+      "mod2": [
+        20.0,
+        1.0
+      ]
     },
     "hitpower": {
-      "HitPower10m": [1.0,50.0],
-      "HitPower1000m": [0.85,1000.0],
-      "HitPower1500m": [0.75,1500.0],
-      "HitPower2000m": [0.3,2000.0]
+      "HitPower10m": [
+        1.0,
+        50.0
+      ],
+      "HitPower1000m": [
+        0.85,
+        1000.0
+      ],
+      "HitPower1500m": [
+        0.75,
+        1500.0
+      ],
+      "HitPower2000m": [
+        0.3,
+        2000.0
+      ]
     },
     "armorpower": {
-      "ArmorPower0m": [2.0,10.0],
-      "ArmorPower100m": [2.0,100.0],
-      "ArmorPower500m": [1.5,500.0],
-      "ArmorPower1000m": [1.0,1000.0],
-      "ArmorPower1450m": [0.5,1450.0],
-      "ArmorPower1500m": [0.0,1500.0]
+      "ArmorPower0m": [
+        2.0,
+        10.0
+      ],
+      "ArmorPower100m": [
+        2.0,
+        100.0
+      ],
+      "ArmorPower500m": [
+        1.5,
+        500.0
+      ],
+      "ArmorPower1000m": [
+        1.0,
+        1000.0
+      ],
+      "ArmorPower1450m": [
+        0.5,
+        1450.0
+      ],
+      "ArmorPower1500m": [
+        0.0,
+        1500.0
+      ]
     },
     "cumulativeDamage": {
       "armorPower": 76.0,
@@ -78,7 +131,10 @@
       "onHitChanceMultFire": 15.0
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "noColor",
       "trail": "smallTrail"
@@ -253,23 +309,31 @@
     "cockpit": "m129_launcher_inside",
     "ai": "m129_launcher_ai"
   },
-  "overheat": [
-    {
-      "overheat": [25.0,0.0]
-    },
-    {
-      "overheat": [35.0,0.05]
-    }
-  ],
+  "overheat": {
+    "overheat": [
+      [
+        25.0,
+        0.0
+      ],
+      [
+        35.0,
+        0.05
+      ]
+    ]
+  },
   "grenade_launcher_M129_new_gun": {
     "maxDeltaAngle": 0.35,
-    "overheat": [
-      {
-        "overheat": [15.0,0.0]
-      },
-      {
-        "overheat": [20.0,0.05]
-      }
-    ]
+    "overheat": {
+      "overheat": [
+        [
+          15.0,
+          0.0
+        ],
+        [
+          20.0,
+          0.05
+        ]
+      ]
+    }
   }
 }

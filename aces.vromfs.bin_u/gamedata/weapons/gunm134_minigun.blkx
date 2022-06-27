@@ -1,77 +1,35 @@
-[
-  {
-    "cannon": false
-  },
-  {
-    "weaponType": 3
-  },
-  {
-    "bUseHookAsRel": true
-  },
-  {
-    "emitColor": [1.0,1.0,0.0]
-  },
-  {
-    "emitI": 10.0
-  },
-  {
-    "emitR": 3.0
-  },
-  {
-    "emitTime": 0.03
-  },
-  {
-    "aimMinDist": 10.0
-  },
-  {
-    "aimMaxDist": 1000.0
-  },
-  {
-    "maxDeltaAngle": 0.15
-  },
-  {
-    "shotFreq": 66.66
-  },
-  {
-    "alternativeShotFreq": 33.33
-  },
-  {
-    "traceFreq": 4
-  },
-  {
-    "bEnablePause": false
-  },
-  {
-    "bullets": 150
-  },
-  {
-    "bulletsCluster": 1
-  },
-  {
-    "shootingCharge": 5.5
-  },
-  {
-    "preset_cost": 50
-  },
-  {
-    "mass": 100.0
-  },
-  {
-    "shouldCollideWithRendinsts": true
-  },
-  {
-    "fxType": "muzzle_air_8mm"
-  },
-  {
-    "fxMultipleSpawn": true
-  },
-  {
-    "iconType": "multibarrel_box"
-  },
-  {
-    "bullet": {
+{
+  "cannon": false,
+  "weaponType": 3,
+  "bUseHookAsRel": true,
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 10.0,
+  "aimMaxDist": 1000.0,
+  "maxDeltaAngle": 0.15,
+  "shotFreq": 66.66,
+  "alternativeShotFreq": 33.33,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": 150,
+  "bulletsCluster": 1,
+  "shootingCharge": 5.5,
+  "preset_cost": 50,
+  "mass": 100.0,
+  "shouldCollideWithRendinsts": true,
+  "fxType": "muzzle_air_8mm",
+  "fxMultipleSpawn": true,
+  "iconType": "multibarrel_box",
+  "bullet": [
+    {
       "mass": 0.0108,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -85,44 +43,98 @@
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [10.0,10.0],
-        "ArmorPower100m": [9.0,100.0],
-        "ArmorPower500m": [7.0,500.0],
-        "ArmorPower1000m": [4.0,1000.0],
-        "ArmorPower1450m": [1.0,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          10.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          9.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          7.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          4.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          1.0,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0]
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ]
       },
       "collisions": {
         "default": {
@@ -204,12 +216,10 @@
           "fx": "hit_8_11mm_snow_ap"
         }
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.0108,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -223,44 +233,98 @@
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [10.0,10.0],
-        "ArmorPower100m": [9.0,100.0],
-        "ArmorPower500m": [7.0,500.0],
-        "ArmorPower1000m": [4.0,1000.0],
-        "ArmorPower1450m": [1.0,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          10.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          9.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          7.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          4.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          1.0,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0]
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ]
       },
       "collisions": {
         "default": {
@@ -342,12 +406,10 @@
           "fx": "hit_8_11mm_snow_ap"
         }
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.0108,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -361,44 +423,98 @@
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [10.0,10.0],
-        "ArmorPower100m": [9.0,100.0],
-        "ArmorPower500m": [7.0,500.0],
-        "ArmorPower1000m": [4.0,1000.0],
-        "ArmorPower1450m": [1.0,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          10.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          9.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          7.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          4.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          1.0,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0]
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ]
       },
       "collisions": {
         "default": {
@@ -480,12 +596,10 @@
           "fx": "hit_8_11mm_snow_ap"
         }
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.0108,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -499,44 +613,98 @@
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [10.0,10.0],
-        "ArmorPower100m": [9.0,100.0],
-        "ArmorPower500m": [7.0,500.0],
-        "ArmorPower1000m": [4.0,1000.0],
-        "ArmorPower1450m": [1.0,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          10.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          9.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          7.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          4.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          1.0,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0]
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ]
       },
       "collisions": {
         "default": {
@@ -618,12 +786,10 @@
           "fx": "hit_8_11mm_snow_ap"
         }
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.0108,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -637,44 +803,98 @@
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [10.0,10.0],
-        "ArmorPower100m": [9.0,100.0],
-        "ArmorPower500m": [7.0,500.0],
-        "ArmorPower1000m": [4.0,1000.0],
-        "ArmorPower1450m": [1.0,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          10.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          9.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          7.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          4.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          1.0,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0]
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ]
       },
       "collisions": {
         "default": {
@@ -756,12 +976,10 @@
           "fx": "hit_8_11mm_snow_ap"
         }
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.0108,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -775,44 +993,98 @@
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [10.0,10.0],
-        "ArmorPower100m": [9.0,100.0],
-        "ArmorPower500m": [7.0,500.0],
-        "ArmorPower1000m": [4.0,1000.0],
-        "ArmorPower1450m": [1.0,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          10.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          9.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          7.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          4.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          1.0,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0]
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ]
       },
       "collisions": {
         "default": {
@@ -894,12 +1166,10 @@
           "fx": "hit_8_11mm_snow_ap"
         }
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.0095,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 835.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -915,44 +1185,98 @@
       "hitPowerMult": 2.9,
       "onHitChanceMultFire": 1.5,
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [5.0,5.0],
-        "ArmorPower100m": [4.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0],
-        "ArmorPower1450m": [0.1,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          5.0,
+          5.0
+        ],
+        "ArmorPower100m": [
+          4.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          0.1,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "7mmRed",
         "trail": "noTrail"
@@ -1038,39 +1362,41 @@
         }
       }
     }
+  ],
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m134_gun_outside",
+    "cockpit": "m134_gun_inside",
+    "charge": "m134_rotor_outside",
+    "charge_inside": "m134_rotor_inside",
+    "ai": "m134_gun_ai"
   },
-  {
-    "gunSound": {
-      "path": "sounds/guns",
-      "pathStudio": "aircraft/weapon",
-      "outside": "m134_gun_outside",
-      "cockpit": "m134_gun_inside",
-      "charge": "m134_rotor_outside",
-      "charge_inside": "m134_rotor_inside",
-      "ai": "m134_gun_ai"
-    }
-  },
-  {
+  "overheat": {
     "overheat": [
-      {
-        "overheat": [40.0,0.0]
-      },
-      {
-        "overheat": [60.0,0.05]
-      }
+      [
+        40.0,
+        0.0
+      ],
+      [
+        60.0,
+        0.05
+      ]
     ]
   },
-  {
-    "M163_Minigun_new_gun": {
-      "maxDeltaAngle": 0.35,
+  "M163_Minigun_new_gun": {
+    "maxDeltaAngle": 0.35,
+    "overheat": {
       "overheat": [
-        {
-          "overheat": [35.0,0.0]
-        },
-        {
-          "overheat": [45.0,0.05]
-        }
+        [
+          35.0,
+          0.0
+        ],
+        [
+          45.0,
+          0.05
+        ]
       ]
     }
   }
-]
+}

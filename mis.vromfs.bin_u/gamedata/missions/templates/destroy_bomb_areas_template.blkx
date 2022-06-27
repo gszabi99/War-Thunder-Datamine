@@ -17,9 +17,9 @@
       "environment": "Day",
       "weather": "hazy"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -32,9 +32,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionGetBalanceLevel": {
           "input_var": "bomb_areas_balance_level"
@@ -46,25 +46,17 @@
         "comment": {
           "value": "vystavlyaem HP zony v zavisimosti ot urovnya balansirovki"
         },
-        "triggerEnable": [
-          {
-            "target": "bomb_areas_0_3_check"
-          },
-          {
-            "target": "bomb_areas_4_7_check"
-          },
-          {
-            "target": "bomb_areas_8_11_check"
-          },
-          {
-            "target": "bomb_areas_12_16_check"
-          },
-          {
-            "target": "bomb_areas_17_20_check"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_0_3_check",
+            "bomb_areas_4_7_check",
+            "bomb_areas_8_11_check",
+            "bomb_areas_12_16_check",
+            "bomb_areas_17_20_check"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bomb_areas_0_3_check": {
       "is_enabled": false,
@@ -86,63 +78,45 @@
           "comparasion_func": "less"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bomb_areas_4_7_check"
-            },
-            {
-              "target": "bomb_areas_8_11_check"
-            },
-            {
-              "target": "bomb_areas_12_16_check"
-            },
-            {
-              "target": "bomb_areas_17_20_check"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bomb_areas_4_7_check",
+            "bomb_areas_8_11_check",
+            "bomb_areas_12_16_check",
+            "bomb_areas_17_20_check"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "6000 dlya istorii, 15000 dlya arkady"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim chto dlya etih rangov 3 zony"
           }
-        },
-        {
-          "varSetReal": {
+        ],
+        "varSetReal": [
+          {
             "value": 6000.0,
             "var": "baseHP"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 2.5,
             "var": "arcade_HP_mul"
           }
+        ],
+        "__varSetInt": {
+          "value": 3,
+          "var": "max_bomb_areas"
         },
-        {
-          "__varSetInt": {
-            "value": 3,
-            "var": "max_bomb_areas"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bomb_areas_arcade_check"
-            },
-            {
-              "target": "bomb_areas_regular_check"
-            }
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_arcade_check",
+            "bomb_areas_regular_check"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bomb_areas_4_7_check": {
       "is_enabled": false,
@@ -157,79 +131,59 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "bomb_areas_balance_level",
             "value": 3,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "bomb_areas_balance_level",
             "value": 8,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bomb_areas_0_3_check"
-            },
-            {
-              "target": "bomb_areas_8_11_check"
-            },
-            {
-              "target": "bomb_areas_12_16_check"
-            },
-            {
-              "target": "bomb_areas_17_20_check"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bomb_areas_0_3_check",
+            "bomb_areas_8_11_check",
+            "bomb_areas_12_16_check",
+            "bomb_areas_17_20_check"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "8000 dlya istorii, 25600 dlya arkady"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim chto dlya etih rangov 3 zony"
           }
-        },
-        {
-          "varSetReal": {
+        ],
+        "varSetReal": [
+          {
             "value": 8000.0,
             "var": "baseHP"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 3.2,
             "var": "arcade_HP_mul"
           }
+        ],
+        "__varSetInt": {
+          "value": 3,
+          "var": "max_bomb_areas"
         },
-        {
-          "__varSetInt": {
-            "value": 3,
-            "var": "max_bomb_areas"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bomb_areas_arcade_check"
-            },
-            {
-              "target": "bomb_areas_regular_check"
-            }
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_arcade_check",
+            "bomb_areas_regular_check"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bomb_areas_8_11_check": {
       "is_enabled": false,
@@ -244,79 +198,59 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "bomb_areas_balance_level",
             "value": 7,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "bomb_areas_balance_level",
             "value": 12,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bomb_areas_0_3_check"
-            },
-            {
-              "target": "bomb_areas_4_7_check"
-            },
-            {
-              "target": "bomb_areas_12_16_check"
-            },
-            {
-              "target": "bomb_areas_17_20_check"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bomb_areas_0_3_check",
+            "bomb_areas_4_7_check",
+            "bomb_areas_12_16_check",
+            "bomb_areas_17_20_check"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "10000 dlya istorii, 32000 dlya arkady"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim chto dlya etih rangov 3 zony"
           }
-        },
-        {
-          "varSetReal": {
+        ],
+        "varSetReal": [
+          {
             "value": 10000.0,
             "var": "baseHP"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 3.2,
             "var": "arcade_HP_mul"
           }
+        ],
+        "__varSetInt": {
+          "value": 3,
+          "var": "max_bomb_areas"
         },
-        {
-          "__varSetInt": {
-            "value": 3,
-            "var": "max_bomb_areas"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bomb_areas_arcade_check"
-            },
-            {
-              "target": "bomb_areas_regular_check"
-            }
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_arcade_check",
+            "bomb_areas_regular_check"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bomb_areas_12_16_check": {
       "is_enabled": false,
@@ -331,79 +265,59 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "bomb_areas_balance_level",
             "value": 11,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "bomb_areas_balance_level",
             "value": 17,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bomb_areas_0_3_check"
-            },
-            {
-              "target": "bomb_areas_4_7_check"
-            },
-            {
-              "target": "bomb_areas_8_11_check"
-            },
-            {
-              "target": "bomb_areas_17_20_check"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bomb_areas_0_3_check",
+            "bomb_areas_4_7_check",
+            "bomb_areas_8_11_check",
+            "bomb_areas_17_20_check"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "12000 dlya istorii, 50400 dlya arkady"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim chto dlya etih rangov 4 zony"
           }
-        },
-        {
-          "varSetReal": {
+        ],
+        "varSetReal": [
+          {
             "value": 12000.0,
             "var": "baseHP"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 4.2,
             "var": "arcade_HP_mul"
           }
+        ],
+        "__varSetInt": {
+          "value": 4,
+          "var": "max_bomb_areas"
         },
-        {
-          "__varSetInt": {
-            "value": 4,
-            "var": "max_bomb_areas"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bomb_areas_arcade_check"
-            },
-            {
-              "target": "bomb_areas_regular_check"
-            }
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_arcade_check",
+            "bomb_areas_regular_check"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bomb_areas_17_20_check": {
       "is_enabled": false,
@@ -425,63 +339,45 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bomb_areas_0_3_check"
-            },
-            {
-              "target": "bomb_areas_4_7_check"
-            },
-            {
-              "target": "bomb_areas_8_11_check"
-            },
-            {
-              "target": "bomb_areas_12_16_check"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bomb_areas_0_3_check",
+            "bomb_areas_4_7_check",
+            "bomb_areas_8_11_check",
+            "bomb_areas_12_16_check"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "12000 dlya istorii, 50400 dlya arkady"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim chto dlya etih rangov 4 zony"
           }
-        },
-        {
-          "varSetReal": {
+        ],
+        "varSetReal": [
+          {
             "value": 12000.0,
             "var": "baseHP"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 4.2,
             "var": "arcade_HP_mul"
           }
+        ],
+        "__varSetInt": {
+          "value": 4,
+          "var": "max_bomb_areas"
         },
-        {
-          "__varSetInt": {
-            "value": 4,
-            "var": "max_bomb_areas"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bomb_areas_arcade_check"
-            },
-            {
-              "target": "bomb_areas_regular_check"
-            }
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_arcade_check",
+            "bomb_areas_regular_check"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bomb_areas_arcade_check": {
       "is_enabled": false,
@@ -522,7 +418,7 @@
           "target": "bomb_areas_set"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bomb_areas_regular_check": {
       "is_enabled": false,
@@ -548,41 +444,31 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "bomb_areas_arcade_check"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "bomb_areas_arcade_check"
         },
-        {
-          "varModify": {
-            "operator": "mul",
-            "value": 1.0,
-            "var": "baseHP"
-          }
+        "varModify": {
+          "operator": "mul",
+          "value": 1.0,
+          "var": "baseHP"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "poluchaem kolichestvo spavnov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem kolichestvo spavnov"
           }
+        ],
+        "missionGetMaxRespawns": {
+          "input_var": "bomb_areas_spawns_count"
         },
-        {
-          "missionGetMaxRespawns": {
-            "input_var": "bomb_areas_spawns_count"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bomb_areas_spawns_check"
-          }
+        "triggerEnable": {
+          "target": "bomb_areas_spawns_check"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bomb_areas_spawns_check": {
       "is_enabled": false,
@@ -649,82 +535,48 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": [
-            {
-              "value": 0
-            },
-            {
-              "var": "t1_bases_counter"
-            },
-            {
-              "var": "t2_bases_counter"
-            }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": [
+            "t1_bases_counter",
+            "t2_bases_counter"
           ]
         },
-        {
-          "comment": {
-            "value": "proverili ne perebivaetsya li kolichestvo zon iz missii"
-          }
+        "comment": {
+          "value": "proverili ne perebivaetsya li kolichestvo zon iz missii"
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "bomb_areas_count_check"
+          },
+          {
+            "target": [
+              "t1_bomb_area_01_set",
+              "t1_bomb_area_02_set",
+              "t1_bomb_area_03_set",
+              "t2_bomb_area_01_set",
+              "t2_bomb_area_02_set",
+              "t2_bomb_area_03_set",
+              "t1_bomb_area_04_set",
+              "t2_bomb_area_04_set"
+            ]
+          },
+          {
+            "target": [
+              "t1_all_bases_destroyed",
+              "t2_all_bases_destroyed",
+              "t1_bomb_areas_objective",
+              "t2_bomb_areas_objective"
+            ]
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_bomb_area_01_set"
-            },
-            {
-              "target": "t1_bomb_area_02_set"
-            },
-            {
-              "target": "t1_bomb_area_03_set"
-            },
-            {
-              "target": "t2_bomb_area_01_set"
-            },
-            {
-              "target": "t2_bomb_area_02_set"
-            },
-            {
-              "target": "t2_bomb_area_03_set"
-            },
-            {
-              "target": "t1_bomb_area_04_set"
-            },
-            {
-              "target": "t2_bomb_area_04_set"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_all_bases_destroyed"
-            },
-            {
-              "target": "t2_all_bases_destroyed"
-            },
-            {
-              "target": "t1_bomb_areas_objective"
-            },
-            {
-              "target": "t2_bomb_areas_objective"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        ],
+        "wait": {
+          "time": 10.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bomb_areas_count_check": {
       "is_enabled": false,
@@ -756,7 +608,7 @@
           "input_var": "mission_assigned_max_bomb_areas"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_bomb_area_01_set": {
       "is_enabled": false,
@@ -801,16 +653,14 @@
           "value": 1.0,
           "var": "t1_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t1_bomb_areas_exist"
-          },
-          {
-            "target": "t1_bomb_area_01_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t1_bomb_areas_exist",
+            "t1_bomb_area_01_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_bomb_area_01_set": {
       "is_enabled": false,
@@ -855,16 +705,14 @@
           "value": 1.0,
           "var": "t2_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t2_bomb_areas_exist"
-          },
-          {
-            "target": "t2_bomb_area_01_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t2_bomb_areas_exist",
+            "t2_bomb_area_01_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_bomb_area_02_set": {
       "is_enabled": false,
@@ -909,16 +757,14 @@
           "value": 1.0,
           "var": "t1_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t1_bomb_areas_exist"
-          },
-          {
-            "target": "t1_bomb_area_02_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t1_bomb_areas_exist",
+            "t1_bomb_area_02_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_bomb_area_02_set": {
       "is_enabled": false,
@@ -963,16 +809,14 @@
           "value": 1.0,
           "var": "t2_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t2_bomb_areas_exist"
-          },
-          {
-            "target": "t2_bomb_area_02_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t2_bomb_areas_exist",
+            "t2_bomb_area_02_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_bomb_area_03_set": {
       "is_enabled": false,
@@ -1017,16 +861,14 @@
           "value": 1.0,
           "var": "t1_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t1_bomb_areas_exist"
-          },
-          {
-            "target": "t1_bomb_area_03_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t1_bomb_areas_exist",
+            "t1_bomb_area_03_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_bomb_area_03_set": {
       "is_enabled": false,
@@ -1071,16 +913,14 @@
           "value": 1.0,
           "var": "t2_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t2_bomb_areas_exist"
-          },
-          {
-            "target": "t2_bomb_area_03_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t2_bomb_areas_exist",
+            "t2_bomb_area_03_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_bomb_area_04_set": {
       "is_enabled": false,
@@ -1125,16 +965,14 @@
           "value": 1.0,
           "var": "t1_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t1_bomb_areas_exist"
-          },
-          {
-            "target": "t1_bomb_area_04_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t1_bomb_areas_exist",
+            "t1_bomb_area_04_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_bomb_area_04_set": {
       "is_enabled": false,
@@ -1179,16 +1017,14 @@
           "value": 1.0,
           "var": "t2_bases_counter"
         },
-        "triggerEnable": [
-          {
-            "target": "t2_bomb_areas_exist"
-          },
-          {
-            "target": "t2_bomb_area_04_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t2_bomb_areas_exist",
+            "t2_bomb_area_04_destroyed"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_all_bases_destroyed": {
       "is_enabled": false,
@@ -1228,7 +1064,7 @@
           "target": "t2_task_completed"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_all_bases_destroyed": {
       "is_enabled": false,
@@ -1268,7 +1104,7 @@
           "target": "t1_task_completed"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_bomb_areas_objective": {
       "is_enabled": false,
@@ -1284,7 +1120,7 @@
         }
       },
       "conditions": {
-        "gameWhenHintIsNotActive": [],
+        "gameWhenHintIsNotActive": {},
         "varCompareBool": {
           "var_value": "bomb_areas_t1_exist",
           "value": true,
@@ -1296,7 +1132,7 @@
           "target": "t2_destroy_bomb_areas"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_bomb_areas_objective": {
       "is_enabled": false,
@@ -1312,7 +1148,7 @@
         }
       },
       "conditions": {
-        "gameWhenHintIsNotActive": [],
+        "gameWhenHintIsNotActive": {},
         "varCompareBool": {
           "var_value": "bomb_areas_t2_exist",
           "value": true,
@@ -1324,7 +1160,7 @@
           "target": "t1_destroy_bomb_areas"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_bomb_areas_exist": {
       "is_enabled": false,
@@ -1339,14 +1175,14 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varSetBool": {
           "value": true,
           "var": "bomb_areas_t1_exist"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_bomb_areas_exist": {
       "is_enabled": false,
@@ -1361,14 +1197,14 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varSetBool": {
           "value": true,
           "var": "bomb_areas_t2_exist"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_bomb_area_01_destroyed": {
       "is_enabled": false,
@@ -1388,28 +1224,24 @@
           "target": "@t1_bomb_area_01_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t1_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t1_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t1_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t1_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t1_bomb_area_02_destroyed": {
       "is_enabled": false,
@@ -1429,28 +1261,24 @@
           "target": "@t1_bomb_area_02_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t1_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t1_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t1_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t1_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t1_bomb_area_03_destroyed": {
       "is_enabled": false,
@@ -1470,28 +1298,24 @@
           "target": "@t1_bomb_area_03_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t1_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t1_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t1_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t1_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t1_bomb_area_04_destroyed": {
       "is_enabled": false,
@@ -1511,28 +1335,24 @@
           "target": "@t1_bomb_area_04_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t1_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t1_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t1_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t1_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t1_bomb_area_destroy_reward": {
       "is_enabled": false,
@@ -1547,24 +1367,20 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "t1_bases_reward_counter"
-          }
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": -1.0,
+          "var": "t1_bases_reward_counter"
         },
-        {
-          "gameMPChangeScore": {
-            "value": -5,
-            "valueSystem": "percentage",
-            "team": "A"
-          }
+        "gameMPChangeScore": {
+          "value": -5,
+          "valueSystem": "percentage",
+          "team": "A"
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/our_base_destroyed",
             "action": "show",
@@ -1577,10 +1393,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "A"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/enemy_base_destroyed",
             "action": "show",
@@ -1593,10 +1407,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/our_base_destroyed",
             "action": "hide",
@@ -1609,10 +1421,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "A"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/enemy_base_destroyed",
             "action": "hide",
@@ -1626,22 +1436,18 @@
             "object_var_value": 0,
             "team": "B"
           }
+        ],
+        "wait": {
+          "time": 5.0
         },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "t1_bomb_area_repeat_reward_check",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
+        "triggerActivate": {
+          "target": "t1_bomb_area_repeat_reward_check",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t2_bomb_area_01_destroyed": {
       "is_enabled": false,
@@ -1661,28 +1467,24 @@
           "target": "@t2_bomb_area_01_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t2_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t2_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t2_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t2_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t2_bomb_area_02_destroyed": {
       "is_enabled": false,
@@ -1702,28 +1504,24 @@
           "target": "@t2_bomb_area_02_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t2_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t2_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t2_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t2_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t2_bomb_area_03_destroyed": {
       "is_enabled": false,
@@ -1743,28 +1541,24 @@
           "target": "@t2_bomb_area_03_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t2_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t2_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t2_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t2_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t2_bomb_area_04_destroyed": {
       "is_enabled": false,
@@ -1784,28 +1578,24 @@
           "target": "@t2_bomb_area_04_name"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "t2_bomb_area_destroy_reward"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "t2_bomb_area_destroy_reward"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t2_bases_counter"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t2_bases_reward_counter"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t2_bomb_area_destroy_reward": {
       "is_enabled": false,
@@ -1820,24 +1610,20 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "t2_bases_reward_counter"
-          }
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": -1.0,
+          "var": "t2_bases_reward_counter"
         },
-        {
-          "gameMPChangeScore": {
-            "value": -5,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
+        "gameMPChangeScore": {
+          "value": -5,
+          "valueSystem": "percentage",
+          "team": "B"
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/our_base_destroyed",
             "action": "show",
@@ -1850,10 +1636,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/enemy_base_destroyed",
             "action": "show",
@@ -1866,10 +1650,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "A"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/our_base_destroyed",
             "action": "hide",
@@ -1882,10 +1664,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/enemy_base_destroyed",
             "action": "hide",
@@ -1899,22 +1679,18 @@
             "object_var_value": 0,
             "team": "A"
           }
+        ],
+        "wait": {
+          "time": 5.0
         },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "t1_bomb_area_repeat_reward_check",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
+        "triggerActivate": {
+          "target": "t1_bomb_area_repeat_reward_check",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_bomb_area_repeat_reward_check": {
       "is_enabled": false,
@@ -1944,7 +1720,7 @@
           "target": "t1_bomb_area_destroy_reward"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_bomb_area_repeat_reward_check": {
       "is_enabled": false,
@@ -1974,7 +1750,7 @@
           "target": "t2_bomb_area_destroy_reward"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1991,8 +1767,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "t2_destroy_bomb_areas": {
       "is_enabled": false,
@@ -2005,8 +1781,8 @@
         "scoreTime": 400,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -2031,27 +1807,23 @@
     "mission_assigned_max_bomb_areas": 0,
     "bomb_areas_spawns_count": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

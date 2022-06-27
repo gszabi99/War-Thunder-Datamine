@@ -1,46 +1,22 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      },
-      {
-        "node": "depth_charge_07"
-      },
-      {
-        "node": "depth_charge_08"
-      },
-      {
-        "node": "depth_charge_09"
-      },
-      {
-        "node": "depth_charge_10"
-      },
-      {
-        "node": "depth_charge_11"
-      },
-      {
-        "node": "ammo_turret_03"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07",
+      "depth_charge_08",
+      "depth_charge_09",
+      "depth_charge_10",
+      "depth_charge_11",
+      "ammo_turret_03"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner5",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -48,14 +24,21 @@
       "emitter": "bone_torpedo_01",
       "bullets": 2,
       "useEmitter": true,
-      "emitterGenRange": [1.0,2.0],
+      "emitterGenRange": [
+        1,
+        2
+      ],
       "emitterGenFmt": "bone_torpedo_%02d",
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_01_dm",
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 18.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -65,13 +48,17 @@
         "gunnerDm": "tt_01_dm"
       },
       "limits": {
-        "yaw": [-1.0,1.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -1.0,
+          1.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -79,14 +66,21 @@
       "emitter": "bone_torpedo_03",
       "bullets": 2,
       "useEmitter": true,
-      "emitterGenRange": [3.0,4.0],
+      "emitterGenRange": [
+        3,
+        4
+      ],
       "emitterGenFmt": "bone_torpedo_%02d",
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_02_dm",
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 18.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -96,9 +90,15 @@
         "gunnerDm": "tt_02_dm"
       },
       "limits": {
-        "yaw": [-1.0,1.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -1.0,
+          1.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

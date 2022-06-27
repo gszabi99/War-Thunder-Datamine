@@ -1,22 +1,14 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "holder_01"
-      },
-      {
-        "node": "holder_02"
-      },
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "holder_01",
+      "holder_02",
+      "depth_charge_01",
+      "depth_charge_02"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner0",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
@@ -53,13 +45,34 @@
         "gunnerDm": "main_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-6.0,88.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -6.0,
+          88.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-140.0,25.0,88.0],
-        "lim2": [-140.0,125.0,-6.0,88.0],
-        "lim3": [125.0,180.0,25.0,88.0]
+        "lim1": [
+          -180.0,
+          -140.0,
+          25.0,
+          88.0
+        ],
+        "lim2": [
+          -140.0,
+          125.0,
+          -6.0,
+          88.0
+        ],
+        "lim3": [
+          125.0,
+          180.0,
+          25.0,
+          88.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -69,19 +82,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner1",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
@@ -118,13 +133,34 @@
         "gunnerDm": "main_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-6.0,88.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -6.0,
+          88.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-130.0,40.0,88.0],
-        "lim2": [-130.0,130.0,-6.0,88.0],
-        "lim3": [130.0,180.0,40.0,88.0]
+        "lim1": [
+          -180.0,
+          -130.0,
+          40.0,
+          88.0
+        ],
+        "lim2": [
+          -130.0,
+          130.0,
+          -6.0,
+          88.0
+        ],
+        "lim3": [
+          130.0,
+          180.0,
+          40.0,
+          88.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -134,19 +170,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner2",
       "triggerGroup": "machinegun",
       "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
@@ -182,23 +220,48 @@
         "gunnerDm": "aa_turret_01_dm",
         "linkedAnimPart": {
           "verNode": "bone_radius_pelvis_01",
-          "verLimits": [0.0,6.0],
-          "verOriginLimits": [14.0,70.0]
+          "verLimits": [
+            0.0,
+            6.0
+          ],
+          "verOriginLimits": [
+            14.0,
+            70.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-140.0,45.0,70.0],
-        "lim2": [-140.0,0.0,0.0,70.0],
-        "lim3": [0.0,180.0,-5.0,70.0]
+        "lim1": [
+          -180.0,
+          -140.0,
+          45.0,
+          70.0
+        ],
+        "lim2": [
+          -140.0,
+          0.0,
+          0.0,
+          70.0
+        ],
+        "lim3": [
+          0.0,
+          180.0,
+          -5.0,
+          70.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner2",
       "triggerGroup": "machinegun",
       "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
@@ -234,18 +297,37 @@
         "gunnerDm": "aa_turret_01_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-140.0,45.0,70.0],
-        "lim2": [-140.0,0.0,0.0,70.0],
-        "lim3": [0.0,180.0,-5.0,70.0]
+        "lim1": [
+          -180.0,
+          -140.0,
+          45.0,
+          70.0
+        ],
+        "lim2": [
+          -140.0,
+          0.0,
+          0.0,
+          70.0
+        ],
+        "lim3": [
+          0.0,
+          180.0,
+          -5.0,
+          70.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "machinegun",
       "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
@@ -281,28 +363,78 @@
         "gunnerDm": "aa_turret_02_dm",
         "linkedAnimPart": {
           "verNode": "bone_radius_pelvis_02",
-          "verLimits": [0.0,6.0],
-          "verOriginLimits": [14.0,70.0]
+          "verLimits": [
+            0.0,
+            6.0
+          ],
+          "verOriginLimits": [
+            14.0,
+            70.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-140.0,55.0,70.0],
-        "lim2": [-140.0,-110.0,0.0,70.0],
-        "lim3": [-110.0,-55.0,-5.0,70.0],
-        "lim4": [-55.0,35.0,10.0,70.0],
-        "lim5": [35.0,130.0,-5.0,70.0],
-        "lim6": [130.0,150.0,0.0,70.0],
-        "lim7": [150.0,170.0,20.0,70.0],
-        "lim8": [170.0,180.0,55.0,70.0]
+        "lim1": [
+          -180.0,
+          -140.0,
+          55.0,
+          70.0
+        ],
+        "lim2": [
+          -140.0,
+          -110.0,
+          0.0,
+          70.0
+        ],
+        "lim3": [
+          -110.0,
+          -55.0,
+          -5.0,
+          70.0
+        ],
+        "lim4": [
+          -55.0,
+          35.0,
+          10.0,
+          70.0
+        ],
+        "lim5": [
+          35.0,
+          130.0,
+          -5.0,
+          70.0
+        ],
+        "lim6": [
+          130.0,
+          150.0,
+          0.0,
+          70.0
+        ],
+        "lim7": [
+          150.0,
+          170.0,
+          20.0,
+          70.0
+        ],
+        "lim8": [
+          170.0,
+          180.0,
+          55.0,
+          70.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "machinegun",
       "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
@@ -338,23 +470,67 @@
         "gunnerDm": "aa_turret_02_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-5.0,70.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -5.0,
+          70.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-140.0,55.0,70.0],
-        "lim2": [-140.0,-110.0,0.0,70.0],
-        "lim3": [-110.0,-55.0,-5.0,70.0],
-        "lim4": [-55.0,35.0,10.0,70.0],
-        "lim5": [35.0,130.0,-5.0,70.0],
-        "lim6": [130.0,150.0,0.0,70.0],
-        "lim7": [150.0,170.0,20.0,70.0],
-        "lim8": [170.0,180.0,55.0,70.0]
+        "lim1": [
+          -180.0,
+          -140.0,
+          55.0,
+          70.0
+        ],
+        "lim2": [
+          -140.0,
+          -110.0,
+          0.0,
+          70.0
+        ],
+        "lim3": [
+          -110.0,
+          -55.0,
+          -5.0,
+          70.0
+        ],
+        "lim4": [
+          -55.0,
+          35.0,
+          10.0,
+          70.0
+        ],
+        "lim5": [
+          35.0,
+          130.0,
+          -5.0,
+          70.0
+        ],
+        "lim6": [
+          130.0,
+          150.0,
+          0.0,
+          70.0
+        ],
+        "lim7": [
+          150.0,
+          170.0,
+          20.0,
+          70.0
+        ],
+        "lim8": [
+          170.0,
+          180.0,
+          55.0,
+          70.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner4",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -366,7 +542,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_01_dm",
       "startSpeed": 2.4,
-      "startDir": [0.0,0.0,10.0],
+      "startDir": [
+        0.0,
+        0.0,
+        10.0
+      ],
       "enableCourseCorrection": true,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -376,13 +556,17 @@
         "gun": "bone_torpedo_01"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -394,7 +578,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_03_dm",
       "startSpeed": 2.4,
-      "startDir": [0.0,0.0,10.0],
+      "startDir": [
+        0.0,
+        0.0,
+        10.0
+      ],
       "enableCourseCorrection": true,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -404,13 +592,17 @@
         "gun": "bone_torpedo_03"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -422,7 +614,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_02_dm",
       "startSpeed": 2.4,
-      "startDir": [0.0,0.0,-10.0],
+      "startDir": [
+        0.0,
+        0.0,
+        -10.0
+      ],
       "enableCourseCorrection": true,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -432,13 +628,17 @@
         "gun": "bone_torpedo_02"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner7",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -450,7 +650,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_04_dm",
       "startSpeed": 2.4,
-      "startDir": [0.0,0.0,-10.0],
+      "startDir": [
+        0.0,
+        0.0,
+        -10.0
+      ],
       "enableCourseCorrection": true,
       "useStartSpeed": true,
       "allowableDelta": 180.0,
@@ -460,13 +664,17 @@
         "gun": "bone_torpedo_04"
       },
       "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner8",
       "triggerGroup": "secondary",
       "blk": "gameData/Weapons/navalModels_weapons/81mm_mk_2_mortar_naval_user_cannon.blk",
@@ -503,14 +711,26 @@
         "gunnerDm": "gauxiliary_caliber_turret_01_dm",
         "linkedAnimPart": {
           "verNode": "bone_radius_pelvis",
-          "verLimits": [0.0,4.0],
-          "verOriginLimits": [11.0,40.0]
+          "verLimits": [
+            0.0,
+            4.0
+          ],
+          "verOriginLimits": [
+            11.0,
+            40.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-20.0,168.0],
-        "pitch": [-5.0,40.0]
+        "yaw": [
+          -20.0,
+          168.0
+        ],
+        "pitch": [
+          -5.0,
+          40.0
+        ]
       }
     }
-  }
-]
+  ]
+}

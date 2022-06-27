@@ -5,10 +5,10 @@
       "text": "#mainmenu/btnUserAction",
       "btnName": "X",
       "on_click": "onUserOptions",
-      "ButtonImg": []
+      "ButtonImg": {}
     }
   },
-  "navBottomLeft": [],
+  "navBottomLeft": {},
   "navMiddle": {
     "activeText": {
       "id": "time_to_kick_alert_text",
@@ -25,9 +25,9 @@
       "_size-timer": "1"
     }
   },
-  "navRight": [
-    {
-      "Button_text": {
+  "navRight": {
+    "Button_text": [
+      {
         "id": "btn_activateorder",
         "text": "#flightmenu/btnActivateOrder",
         "display": "hide",
@@ -37,18 +37,16 @@
         "behavior": "Timer",
         "timer_handler_func": "onOrderTimerUpdate",
         "timer_interval_msec": "1000",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_back",
         "text": "#mainmenu/btnBack",
         "btnName": "B",
         "_on_click": "goBack",
         "display": "hide",
-        "ButtonImg": []
+        "ButtonImg": {}
       }
-    }
-  ]
+    ]
+  }
 }

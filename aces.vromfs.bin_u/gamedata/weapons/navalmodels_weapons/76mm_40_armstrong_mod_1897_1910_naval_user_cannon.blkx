@@ -9,7 +9,10 @@
   "shotFreq": 0.25,
   "bullets": 1,
   "recoilOffset": 0.304,
-  "recoilTimes": [0.12,0.2],
+  "recoilTimes": [
+    0.12,
+    0.2
+  ],
   "shouldCollideWithRendinsts": true,
   "fxType": "muzzle_naval_80mm",
   "fxGroundDust": "dust_ground_wave_dirt_med",
@@ -41,7 +44,7 @@
     "caliber": 0.0762,
     "speed": 690.0,
     "maxDistance": 40000.0,
-    "Cx": 1.0936,
+    "Cx": 1.09363,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
     "secondaryShattersPreset": "ap",
@@ -53,35 +56,48 @@
     "stuckingAngle": 45.0,
     "bulletType": "aphe_tank",
     "slopeEffectPreset": "ap",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "shellAnimation": "video/shells_animations/aphe.ivf",
     "bulletName": "76mm_40_gr_perf_aphe",
     "dynamicKv": true,
-    "hpThresholdForFuse": 0.0,
+    "hpThresholdForFuse": 1E-06,
     "fuseOnWater": true,
     "fuseDelay": 0.007,
     "explodeTreshold": 4.0,
-    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_59_80mm_metal_ap",
     "groundCollisionEffect": "hit_59_80mm_dirt_ap",
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 1.8,
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.2]
-      },
-      {
-        "mod2": [20.0,0.4]
-      },
-      {
-        "mod3": [30.0,0.6]
-      },
-      {
-        "mod3": [45.0,0.9]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.2
+      ],
+      "mod2": [
+        20.0,
+        0.4
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
+      ]
+    },
     "damage": {
       "kinetic": {
         "damageType": "generic",
@@ -97,20 +113,38 @@
           "radiusScale": 1.0,
           "penetrationScale": 1.0,
           "damageScale": 1.0,
-          "angles": [0.0,180.0],
+          "angles": [
+            0.0,
+            180.0
+          ],
           "countPortion": 1.0,
           "onHitChanceMultFire": 30.0
         }
       }
     },
     "hitpower": {
-      "HitPower0m": [1.0,500.0],
-      "HitPower4000m": [1.0,4000.0],
-      "HitPower7000m": [1.0,7000.0],
-      "HitPower8000m": [0.5,8000.0]
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower4000m": [
+        1.0,
+        4000.0
+      ],
+      "HitPower7000m": [
+        1.0,
+        7000.0
+      ],
+      "HitPower8000m": [
+        0.5,
+        8000.0
+      ]
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "76mmYellowShip",
       "trail": "black"
@@ -205,7 +239,7 @@
       "caliber": 0.0762,
       "speed": 690.0,
       "maxDistance": 40000.0,
-      "Cx": 1.0936,
+      "Cx": 1.09363,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
       "secondaryShattersPreset": "ap",
@@ -217,35 +251,48 @@
       "stuckingAngle": 45.0,
       "bulletType": "aphe_tank",
       "slopeEffectPreset": "ap",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "76mm_40_gr_perf_aphe",
       "dynamicKv": true,
-      "hpThresholdForFuse": 0.0,
+      "hpThresholdForFuse": 1E-06,
       "fuseOnWater": true,
       "fuseDelay": 0.007,
       "explodeTreshold": 4.0,
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_ap",
       "groundCollisionEffect": "hit_59_80mm_dirt_ap",
       "ricochetEffect": "hit_59_80mm_metal_ap",
       "waterCollisionEffect": "hit_59_80mm_water",
       "explosionPatchRadius": 1.8,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.2]
-        },
-        {
-          "mod2": [20.0,0.4]
-        },
-        {
-          "mod3": [30.0,0.6]
-        },
-        {
-          "mod3": [45.0,0.9]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.2
+        ],
+        "mod2": [
+          20.0,
+          0.4
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.6
+          ],
+          [
+            45.0,
+            0.9
+          ]
+        ]
+      },
       "damage": {
         "kinetic": {
           "damageType": "generic",
@@ -261,20 +308,38 @@
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [0.0,180.0],
+            "angles": [
+              0.0,
+              180.0
+            ],
             "countPortion": 1.0,
             "onHitChanceMultFire": 30.0
           }
         }
       },
       "hitpower": {
-        "HitPower0m": [1.0,500.0],
-        "HitPower4000m": [1.0,4000.0],
-        "HitPower7000m": [1.0,7000.0],
-        "HitPower8000m": [0.5,8000.0]
+        "HitPower0m": [
+          1.0,
+          500.0
+        ],
+        "HitPower4000m": [
+          1.0,
+          4000.0
+        ],
+        "HitPower7000m": [
+          1.0,
+          7000.0
+        ],
+        "HitPower8000m": [
+          0.5,
+          8000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "76mmYellowShip",
         "trail": "black"

@@ -20,7 +20,10 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windSpeed": [2.0,3.0],
+      "windSpeed": [
+        2.0,
+        3.0
+      ],
       "gt_cooperative": true,
       "locationName": "philippine_sea"
     },
@@ -32,122 +35,86 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "player"
-              },
-              {
-                "point": "player"
-              },
-              {
-                "point": "fleet_waypoint"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player",
+              "fleet_waypoint"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "player",
               "lookAt": "takeoff_waypoint"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "carrier",
               "side": "ally",
               "target": "ijn_carrier00"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "carrier",
               "side": "ally",
               "target": "ijn_carrier02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "carrier",
               "side": "ally",
               "target": "ijn_carrier04"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "ally",
               "target": "ijn_battleship01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "ally",
               "target": "ijn_destroyer01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "ally",
               "target": "ijn_destroyer04"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "ally",
               "target": "ijn_destroyer07"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "carrier",
               "side": "enemy",
               "target": "usn_carrier00"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "carrier",
               "side": "enemy",
               "target": "usn_carrier02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "enemy",
               "target": "usn_battleships00"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "enemy",
               "target": "usn_destroyers02"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -160,145 +127,124 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "spawnOnAirfield": {
+      "conditions": {},
+      "actions": {
+        "spawnOnAirfield": [
+          {
             "runwayName": "ijn_carrier00",
             "objects": "player"
-          }
-        },
-        {
-          "spawnOnAirfield": {
+          },
+          {
             "runwayName": "ijn_carrier01",
             "objects": "allied_fighters01"
-          }
-        },
-        {
-          "spawnOnAirfield": {
+          },
+          {
             "runwayName": "ijn_carrier02",
             "objects": "allied_fighters02"
-          }
-        },
-        {
-          "spawnOnAirfield": {
+          },
+          {
             "runwayName": "ijn_carrier03",
             "objects": "allied_fighters03"
-          }
-        },
-        {
-          "spawnOnAirfield": {
+          },
+          {
             "runwayName": "ijn_carrier04",
             "objects": "allied_fighters04"
           }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "targets_squad"
-            },
-            {
-              "object": "usn_squad"
-            },
-            {
-              "effShootingRate": 0.1
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
+            "object": [
+              "targets_squad",
+              "usn_squad"
+            ],
+            "effShootingRate": 0.1
+          },
+          {
             "object": "attack_squad",
             "effShootingRate": 0.1,
-            "plane": [
-              {
-                "targetDeviation": {
+            "plane": {
+              "targetDeviation": [
+                {
                   "trigger": "machine gun",
                   "defaultVal": 4.0,
-                  "limits": [2.0,4.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    2.0,
+                    4.0
+                  ]
+                },
+                {
                   "trigger": "cannon",
                   "defaultVal": 4.0,
-                  "limits": [2.0,4.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    2.0,
+                    4.0
+                  ]
+                },
+                {
                   "trigger": "bombs",
                   "defaultVal": 4.0,
-                  "limits": [4.0,4.0]
+                  "limits": [
+                    4.0,
+                    4.0
+                  ]
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object": "enemy_fighters_squad",
             "effShootingRate": 1.0,
-            "plane": [
-              {
-                "targetDeviation": {
+            "plane": {
+              "targetDeviation": [
+                {
                   "trigger": "machine gun",
                   "defaultVal": 0.5,
-                  "limits": [0.5,2.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.5,
+                    2.0
+                  ]
+                },
+                {
                   "trigger": "cannon",
                   "defaultVal": 1.0,
-                  "limits": [1.0,2.0]
+                  "limits": [
+                    1.0,
+                    2.0
+                  ]
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 0.0,
-            "target": "usn_squad"
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "usn_squad"
-            },
-            {
-              "target": "targets_squad"
-            },
-            {
-              "target": "attack_squad"
-            },
-            {
-              "target": "enemy_fighters_squad"
+              ]
             }
+          }
+        ],
+        "unitSetStealth": {
+          "set": true,
+          "radius": 0.0,
+          "target": "usn_squad"
+        },
+        "unitPutToSleep": {
+          "target": [
+            "usn_squad",
+            "targets_squad",
+            "attack_squad",
+            "enemy_fighters_squad"
           ]
         },
-        {
-          "unitMoveTo": {
-            "target": "teleport",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "allied_planes_squad00"
-          }
+        "unitMoveTo": {
+          "target": "teleport",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "allied_planes_squad00"
         },
-        {
-          "triggerEnable": {
-            "target": "takeoff_objective"
-          }
+        "triggerEnable": {
+          "target": "takeoff_objective"
         }
-      ]
+      }
     },
     "initial_offline": {
       "is_enabled": true,
@@ -313,21 +259,19 @@
           "time": 10.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object": "player",
             "targetableByAi": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "player_himself",
             "targetableByAi": true
           }
-        }
-      ]
+        ]
+      }
     },
     "takeoff_objective": {
       "is_enabled": false,
@@ -342,7 +286,7 @@
           "time": 0.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionMarkAsWaypoint": {
           "visible": true,
@@ -386,58 +330,52 @@
           "target": "takeoff_waypoint"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "takeoff_waypoint"
-          }
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "takeoff_waypoint"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "single_philippine_sea_m01_fly00",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "single_philippine_sea_m01_fly00",
+          "status": 2
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 8.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "missionSetFade": {
+          "mode": "fadeOut",
+          "colour": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time": 1.0,
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ]
         },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "colour": [0.0,0.0,0.0],
-            "time": 1.0,
-            "color": [0.0,0.0,0.0]
-          }
-        },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "teleport",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -449,10 +387,8 @@
             "move_type": "teleport",
             "lookat": "fleet_waypoint",
             "velocity": 300.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "fleet_waypoint",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -462,63 +398,49 @@
             "horizontalDirectionForTeleport": true,
             "object": "attack_squad"
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "ijn_squad"
-            },
-            {
-              "target": "allied_planes_squad00"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "ijn_squad",
+            "allied_planes_squad00"
           ]
         },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 0.0,
-            "target": "ijn_squad"
-          }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 0.0,
+          "target": "ijn_squad"
         },
-        {
-          "unitWakeUp": [
-            {
-              "target": "usn_squad"
-            },
-            {
-              "target": "targets_squad"
-            },
-            {
-              "target": "attack_squad"
-            }
+        "unitWakeUp": {
+          "target": [
+            "usn_squad",
+            "targets_squad",
+            "attack_squad"
           ]
         },
-        {
-          "showSmartCutscene": {
-            "sceneType": "on_the_march",
-            "startSubTypeOnTheMarch": "right",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 12.0,
-            "wait": false,
-            "changeCameras": false,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": true,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": true,
-            "fadeOut": true,
-            "allowDeadUnits": false,
-            "object": "attack_planes00"
-          }
+        "showSmartCutscene": {
+          "sceneType": "on_the_march",
+          "startSubTypeOnTheMarch": "right",
+          "startSubTypeGroundUnits": "",
+          "startSubTypeArea": "",
+          "startSubTypeUnitAttackUnit": "",
+          "startSubTypeUnitMoveToUnit": "",
+          "startSubTypeTwoUnits": "",
+          "startSubTypeTakeoff": "",
+          "startSubTypeFlyBy": "",
+          "duration": 12.0,
+          "wait": false,
+          "changeCameras": false,
+          "teleportAllAttackers": false,
+          "allowTeleportAttackers": true,
+          "inverseCameraDirection": false,
+          "delayPlayer": true,
+          "fadeIn": true,
+          "fadeOut": true,
+          "allowDeadUnits": false,
+          "object": "attack_planes00"
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -526,10 +448,8 @@
             "time": -1.0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -538,23 +458,19 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "cutscene01_skip"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "to_enemy_fleet"
           }
-        },
-        {
-          "triggerDisable": {
-            "target": "cutscene01_skip"
-          }
+        ],
+        "triggerDisable": {
+          "target": "cutscene01_skip"
         }
-      ]
+      }
     },
     "cutscene01_skip": {
       "is_enabled": false,
@@ -587,7 +503,7 @@
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
-        "missionStopCutscene": [],
+        "missionStopCutscene": {},
         "triggerEnable": {
           "target": "to_enemy_fleet"
         }
@@ -606,34 +522,22 @@
           "time": 0.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitWakeUp": {
           "target": "enemy_fighters_squad"
         },
-        "unitAttackTarget": [
-          {
-            "playerAttracted": true
-          },
-          {
-            "object": "enemy_fighters_squad"
-          },
-          {
-            "target": "attack_squad"
-          },
-          {
-            "target": "player"
-          },
-          {
-            "fireRandom": true
-          },
-          {
-            "playerAttractedCount": 3
-          },
-          {
-            "playerAttractedEffRate": 0.1
-          }
-        ],
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "enemy_fighters_squad",
+          "target": [
+            "attack_squad",
+            "player"
+          ],
+          "fireRandom": true,
+          "playerAttractedCount": 3,
+          "playerAttractedEffRate": 0.1
+        },
         "unitSetStealth": {
           "set": true,
           "radius": 0.0,
@@ -653,17 +557,13 @@
           "scale": 1.0,
           "target": "fleet_waypoint"
         },
-        "triggerEnable": [
-          {
-            "target": "near_enemy_fleet"
-          },
-          {
-            "target": "japanese_attack"
-          },
-          {
-            "target": "permanent_attack"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "near_enemy_fleet",
+            "japanese_attack",
+            "permanent_attack"
+          ]
+        }
       }
     },
     "near_enemy_fleet": {
@@ -689,76 +589,50 @@
           "target": "fleet_waypoint"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "fleet_waypoint"
-          }
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "fleet_waypoint"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "single_philippine_sea_m01_fly01",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "single_philippine_sea_m01_fly01",
+          "status": 2
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "players_count_trigger"
+          },
+          {
+            "target": [
+              "mission_failed_offline",
+              "enemy_destroyers_counter",
+              "ships_destroyed",
+              "dead_ships_counter"
+            ]
+          },
+          {
+            "target": [
+              "1player",
+              "2players",
+              "3players",
+              "4players"
+            ]
           }
+        ],
+        "wait": {
+          "time": 2.0
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "mission_failed_offline"
-            },
-            {
-              "target": "enemy_destroyers_counter"
-            },
-            {
-              "target": "ships_destroyed"
-            },
-            {
-              "target": "dead_ships_counter"
-            }
-          ]
+        "triggerDisable": {
+          "target": "players_count_trigger"
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "1player"
-            },
-            {
-              "target": "2players"
-            },
-            {
-              "target": "3players"
-            },
-            {
-              "target": "4players"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "players_count_trigger"
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "single_philippine_sea_m01_att00"
-          }
+        "moAddMissionObjective": {
+          "target": "single_philippine_sea_m01_att00"
         }
-      ]
+      }
     },
     "enemy_destroyers_counter": {
       "is_enabled": false,
@@ -773,7 +647,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -811,22 +685,20 @@
           "var": "dead_ships_var"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "var": "dead_ships_var",
             "operator": "add",
             "value": 1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "players_count_var",
             "operator": "subAB",
             "value": 1.0
           }
-        }
-      ]
+        ]
+      }
     },
     "players_count_trigger": {
       "is_enabled": false,
@@ -889,17 +761,13 @@
           "radius": 0.0,
           "target": "all_enemy_destroyers"
         },
-        "triggerDisable": [
-          {
-            "target": "mission_failed_offline"
-          },
-          {
-            "target": "enemy_destroyers_counter"
-          },
-          {
-            "target": "dead_ships_counter"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "mission_failed_offline",
+            "enemy_destroyers_counter",
+            "dead_ships_counter"
+          ]
+        },
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
           "target_marking": 0,
@@ -1005,96 +873,54 @@
           "target": "fleet_waypoint"
         }
       },
-      "actions": [
-        {
-          "unitMoveTo": {
-            "target": "takeoff_waypoint",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "attack_squad"
-          }
+      "actions": {
+        "unitMoveTo": {
+          "target": "takeoff_waypoint",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "attack_squad"
         },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "attack_squad",
             "target": "usn_squad",
             "fireRandom": true
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "usn_battleships01",
+              "targets_squad",
+              "usn_destroyers00",
+              "usn_destroyers02",
+              "usn_destroyers03",
+              "usn_carrier00",
+              "usn_carrier01",
+              "usn_carrier02"
+            ],
+            "target": "attack_squad",
+            "fireRandom": true
           }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "usn_battleships01"
-            },
-            {
-              "object": "targets_squad"
-            },
-            {
-              "object": "usn_destroyers00"
-            },
-            {
-              "object": "usn_destroyers02"
-            },
-            {
-              "object": "usn_destroyers03"
-            },
-            {
-              "object": "usn_carrier00"
-            },
-            {
-              "object": "usn_carrier01"
-            },
-            {
-              "object": "usn_carrier02"
-            },
-            {
-              "target": "attack_squad"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "usn_battleships01"
-            },
-            {
-              "object": "usn_destroyers00"
-            },
-            {
-              "object": "usn_destroyers02"
-            },
-            {
-              "object": "usn_destroyers03"
-            },
-            {
-              "object": "targets_squad"
-            },
-            {
-              "object": "usn_carrier00"
-            },
-            {
-              "object": "usn_carrier01"
-            },
-            {
-              "object": "usn_carrier02"
-            },
-            {
-              "effShootingRate": 1.0
-            }
-          ]
+        ],
+        "unitSetProperties": {
+          "object": [
+            "usn_battleships01",
+            "usn_destroyers00",
+            "usn_destroyers02",
+            "usn_destroyers03",
+            "targets_squad",
+            "usn_carrier00",
+            "usn_carrier01",
+            "usn_carrier02"
+          ],
+          "effShootingRate": 1.0
         }
-      ]
+      }
     },
     "mission_failed_offline": {
       "is_enabled": false,
@@ -1109,34 +935,30 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenCountMatches": {
+      "conditions": {
+        "unitWhenCountMatches": [
+          {
             "object_type": "canBomb",
             "object_marking": 0,
             "func": "less",
             "value": 1,
             "object": "player"
-          }
-        },
-        {
-          "unitWhenCountMatches": {
+          },
+          {
             "object_type": "isOnline",
             "object_marking": 0,
             "func": "less",
             "value": 1,
             "object": "player"
           }
-        },
-        {
-          "unitWhenStatus": {
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "check_objects": "all",
-            "object": "usn_target_destroyer00"
-          }
+        ],
+        "unitWhenStatus": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "all",
+          "object": "usn_target_destroyer00"
         }
-      ],
+      },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "single_philippine_sea_m01_att00",
@@ -1167,56 +989,32 @@
           "time": 10.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "enemy_fighters_squad"
-            },
-            {
-              "target": "attack_squad"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 3
-            },
-            {
-              "playerAttractedEffRate": 0.1
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "usn_battleships00"
-            },
-            {
-              "object": "usn_destroyers01"
-            },
-            {
-              "object": "usn_destroyers04"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "playerAttractedEffRate": 0.1
-            }
-          ]
-        }
-      ]
+      "conditions": {},
+      "actions": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": true,
+            "object": "enemy_fighters_squad",
+            "target": [
+              "attack_squad",
+              "player"
+            ],
+            "fireRandom": true,
+            "playerAttractedCount": 3,
+            "playerAttractedEffRate": 0.1
+          },
+          {
+            "playerAttracted": true,
+            "object": [
+              "usn_battleships00",
+              "usn_destroyers01",
+              "usn_destroyers04"
+            ],
+            "target": "player",
+            "playerAttractedEffRate": 0.1
+          }
+        ]
+      }
     },
     "1player": {
       "is_enabled": false,
@@ -1239,17 +1037,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "2players"
-          },
-          {
-            "target": "3players"
-          },
-          {
-            "target": "4players"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "2players",
+            "3players",
+            "4players"
+          ]
+        },
         "unitSetStealth": {
           "set": true,
           "radius": 12000.0,
@@ -1282,42 +1076,28 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "1player"
-          },
-          {
-            "target": "3players"
-          },
-          {
-            "target": "4players"
-          }
-        ],
-        "unitSetStealth": [
-          {
-            "set": true
-          },
-          {
-            "radius": 12000.0
-          },
-          {
-            "target": "usn_target_destroyer00"
-          },
-          {
-            "target": "usn_target_destroyer01"
-          }
-        ],
-        "unitSetIndication": [
-          {
-            "set": true
-          },
-          {
-            "target": "usn_target_destroyer00"
-          },
-          {
-            "target": "usn_target_destroyer01"
-          }
-        ]
+        "triggerDisable": {
+          "target": [
+            "1player",
+            "3players",
+            "4players"
+          ]
+        },
+        "unitSetStealth": {
+          "set": true,
+          "radius": 12000.0,
+          "target": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01"
+          ]
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01"
+          ]
+        }
       }
     },
     "3players": {
@@ -1341,48 +1121,30 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "2players"
-          },
-          {
-            "target": "1player"
-          },
-          {
-            "target": "4players"
-          }
-        ],
-        "unitSetStealth": [
-          {
-            "set": true
-          },
-          {
-            "radius": 12000.0
-          },
-          {
-            "target": "usn_target_destroyer00"
-          },
-          {
-            "target": "usn_target_destroyer01"
-          },
-          {
-            "target": "usn_target_destroyer02"
-          }
-        ],
-        "unitSetIndication": [
-          {
-            "set": true
-          },
-          {
-            "target": "usn_target_destroyer00"
-          },
-          {
-            "target": "usn_target_destroyer01"
-          },
-          {
-            "target": "usn_target_destroyer02"
-          }
-        ]
+        "triggerDisable": {
+          "target": [
+            "2players",
+            "1player",
+            "4players"
+          ]
+        },
+        "unitSetStealth": {
+          "set": true,
+          "radius": 12000.0,
+          "target": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01",
+            "usn_target_destroyer02"
+          ]
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01",
+            "usn_target_destroyer02"
+          ]
+        }
       }
     },
     "4players": {
@@ -1406,54 +1168,32 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "2players"
-          },
-          {
-            "target": "3players"
-          },
-          {
-            "target": "1player"
-          }
-        ],
-        "unitSetStealth": [
-          {
-            "set": true
-          },
-          {
-            "radius": 12000.0
-          },
-          {
-            "target": "usn_target_destroyer00"
-          },
-          {
-            "target": "usn_target_destroyer01"
-          },
-          {
-            "target": "usn_target_destroyer02"
-          },
-          {
-            "target": "usn_target_destroyer03"
-          }
-        ],
-        "unitSetIndication": [
-          {
-            "set": true
-          },
-          {
-            "target": "usn_target_destroyer00"
-          },
-          {
-            "target": "usn_target_destroyer01"
-          },
-          {
-            "target": "usn_target_destroyer02"
-          },
-          {
-            "target": "usn_target_destroyer03"
-          }
-        ]
+        "triggerDisable": {
+          "target": [
+            "2players",
+            "3players",
+            "1player"
+          ]
+        },
+        "unitSetStealth": {
+          "set": true,
+          "radius": 12000.0,
+          "target": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01",
+            "usn_target_destroyer02",
+            "usn_target_destroyer03"
+          ]
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01",
+            "usn_target_destroyer02",
+            "usn_target_destroyer03"
+          ]
+        }
       }
     }
   },
@@ -1470,8 +1210,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_philippine_sea_m01_fly01": {
       "is_enabled": false,
@@ -1483,8 +1223,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_philippine_sea_m01_att00": {
       "is_enabled": false,
@@ -1496,8 +1236,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_philippine_sea_m01_fly02": {
       "is_enabled": false,
@@ -1509,26 +1249,42 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "players_count_var": 1,
     "dead_ships_var": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player",
         "tm": [
-          [-0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436193],
-          [-48400.6,2513.4,-4126.25]
+          [
+            -0.0436193,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            -0.0436193
+          ],
+          [
+            -48400.6,
+            2513.4,
+            -4126.25
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1554,17 +1310,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters01",
         "tm": [
-          [-0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436193],
-          [-47860.9,0.0,-2272.15]
+          [
+            -0.0436193,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            -0.0436193
+          ],
+          [
+            -47860.9,
+            0.0,
+            -2272.15
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1589,17 +1359,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters04",
         "tm": [
-          [-0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436193],
-          [-48718.3,0.0,-302.0]
+          [
+            -0.0436193,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            -0.0436193
+          ],
+          [
+            -48718.3,
+            0.0,
+            -302.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1624,17 +1408,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters02",
         "tm": [
-          [-0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436193],
-          [-48607.1,0.0,-5817.35]
+          [
+            -0.0436193,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            -0.0436193
+          ],
+          [
+            -48607.1,
+            0.0,
+            -5817.35
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1659,17 +1457,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters03",
         "tm": [
-          [-0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436193],
-          [-50163.8,0.0,-1525.55]
+          [
+            -0.0436193,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            -0.0436193
+          ],
+          [
+            -50163.8,
+            0.0,
+            -1525.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1694,17 +1506,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters00",
         "tm": [
-          [0.996194,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,0.996194],
-          [-49031.8,100.0,-1433.05]
+          [
+            0.996194,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            -49031.8,
+            100.0,
+            -1433.05
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1729,17 +1555,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters05",
         "tm": [
-          [0.996194,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,0.996194],
-          [-48944.3,100.0,-1776.9]
+          [
+            0.996194,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            -48944.3,
+            100.0,
+            -1776.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1764,17 +1604,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters06",
         "tm": [
-          [0.996194,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,0.996194],
-          [-48287.8,100.0,-1690.65]
+          [
+            0.996194,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            -48287.8,
+            100.0,
+            -1690.65
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1799,17 +1653,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters07",
         "tm": [
-          [0.996194,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,0.996194],
-          [-48100.8,100.0,-2701.6]
+          [
+            0.996194,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            -48100.8,
+            100.0,
+            -2701.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1834,17 +1702,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters08",
         "tm": [
-          [0.996194,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,0.996194],
-          [-48181.4,100.0,-3511.7]
+          [
+            0.996194,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            -48181.4,
+            100.0,
+            -3511.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1869,17 +1751,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters09",
         "tm": [
-          [0.996194,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,0.996194],
-          [-47446.1,100.0,-3442.85]
+          [
+            0.996194,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            -47446.1,
+            100.0,
+            -3442.85
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1904,17 +1800,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_fighters10",
         "tm": [
-          [0.996194,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,0.996194],
-          [-46711.6,100.0,-2739.9]
+          [
+            0.996194,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            0.996194
+          ],
+          [
+            -46711.6,
+            100.0,
+            -2739.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1939,17 +1849,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes00",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11207.3,2000.0,-3589.15]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            11207.3,
+            2000.0,
+            -3589.15
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -1975,17 +1899,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11311.7,2000.0,56.1015]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            11311.7,
+            2000.0,
+            56.1015
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -2011,17 +1949,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12069.6,2000.0,-895.548]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12069.6,
+            2000.0,
+            -895.548
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -2047,17 +1999,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10775.1,2000.0,-5017.05]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            10775.1,
+            2000.0,
+            -5017.05
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "b5n2",
@@ -2083,17 +2049,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12463.5,2000.0,-4445.45]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12463.5,
+            2000.0,
+            -4445.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -2119,17 +2099,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12790.3,2000.0,-3096.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12790.3,
+            2000.0,
+            -3096.35
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -2155,17 +2149,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11557.2,2000.0,-2112.65]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            11557.2,
+            2000.0,
+            -2112.65
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "b5n2",
@@ -2191,17 +2199,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11453.0,2000.0,-4674.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            11453.0,
+            2000.0,
+            -4674.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -2227,17 +2249,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attack_planes08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11390.0,2000.0,-5739.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            11390.0,
+            2000.0,
+            -5739.35
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "a6m5_zero",
@@ -2263,17 +2299,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters00",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37952.5,2100.0,-479.713]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37952.5,
+            2100.0,
+            -479.713
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2299,17 +2349,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters01",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37705.3,2100.0,-1093.21]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37705.3,
+            2100.0,
+            -1093.21
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2335,17 +2399,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters02",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [38387.3,2100.0,-1326.81]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            38387.3,
+            2100.0,
+            -1326.81
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2371,17 +2449,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters03",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37877.4,2100.0,-1871.06]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37877.4,
+            2100.0,
+            -1871.06
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2407,17 +2499,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters04",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37982.5,2100.0,-2181.86]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37982.5,
+            2100.0,
+            -2181.86
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2443,17 +2549,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters05",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37957.6,2100.0,-2710.11]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37957.6,
+            2100.0,
+            -2710.11
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2479,17 +2599,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters06",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37332.1,2100.0,-3062.56]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37332.1,
+            2100.0,
+            -3062.56
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2515,17 +2649,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters07",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37552.2,2100.0,-3610.66]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37552.2,
+            2100.0,
+            -3610.66
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2551,17 +2699,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters08",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [36945.9,2100.0,-2217.41]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            36945.9,
+            2100.0,
+            -2217.41
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2587,17 +2749,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters09",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37082.3,2100.0,-1597.86]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37082.3,
+            2100.0,
+            -1597.86
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2623,17 +2799,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters10",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37071.5,2100.0,-853.063]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37071.5,
+            2100.0,
+            -853.063
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2659,17 +2849,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters11",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37305.2,2100.0,-35.5634]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37305.2,
+            2100.0,
+            -35.5634
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2695,17 +2899,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters12",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [37213.1,2100.0,-4156.96]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            37213.1,
+            2100.0,
+            -4156.96
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2731,17 +2949,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters13",
         "tm": [
-          [-1.0,0.0,-1.56462e-07],
-          [0.0,1.0,0.0],
-          [1.56462e-07,0.0,-1.0],
-          [38982.8,2100.0,-1731.26]
+          [
+            -1.0,
+            0.0,
+            -1.56462E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.56462E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            38982.8,
+            2100.0,
+            -1731.26
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f6f-3",
@@ -2767,17 +2999,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "player_himself",
         "tm": [
-          [-0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436193],
-          [-42475.1,0.0,-3451.6]
+          [
+            -0.0436193,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            -0.0436193
+          ],
+          [
+            -42475.1,
+            0.0,
+            -3451.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
@@ -2786,352 +3034,336 @@
           "squad_members": "player",
           "object_type": "isPlayer"
         },
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "way": {}
+      },
+      {
         "name": "ijn_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-47041.8,0.0,-6232.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -47041.8,
+            0.0,
+            -6232.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "ijn_carrier00"
-          },
-          {
-            "squad_members": "ijn_carrier01"
-          },
-          {
-            "squad_members": "ijn_carrier02"
-          },
-          {
-            "squad_members": "ijn_carrier03"
-          },
-          {
-            "squad_members": "ijn_carrier04"
-          },
-          {
-            "squad_members": "ijn_battleship00"
-          },
-          {
-            "squad_members": "ijn_battleship01"
-          },
-          {
-            "squad_members": "ijn_battleship02"
-          },
-          {
-            "squad_members": "ijn_battleship03"
-          },
-          {
-            "squad_members": "ijn_destroyer00"
-          },
-          {
-            "squad_members": "ijn_destroyer01"
-          },
-          {
-            "squad_members": "ijn_destroyer02"
-          },
-          {
-            "squad_members": "ijn_destroyer03"
-          },
-          {
-            "squad_members": "ijn_destroyer04"
-          },
-          {
-            "squad_members": "ijn_destroyer05"
-          },
-          {
-            "squad_members": "ijn_destroyer06"
-          },
-          {
-            "squad_members": "ijn_destroyer07"
-          },
-          {
-            "squad_members": "ijn_destroyer08"
-          },
-          {
-            "squad_members": "ijn_destroyer09"
-          },
-          {
-            "squad_members": "ijn_destroyer10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ijn_carrier00",
+            "ijn_carrier01",
+            "ijn_carrier02",
+            "ijn_carrier03",
+            "ijn_carrier04",
+            "ijn_battleship00",
+            "ijn_battleship01",
+            "ijn_battleship02",
+            "ijn_battleship03",
+            "ijn_destroyer00",
+            "ijn_destroyer01",
+            "ijn_destroyer02",
+            "ijn_destroyer03",
+            "ijn_destroyer04",
+            "ijn_destroyer05",
+            "ijn_destroyer06",
+            "ijn_destroyer07",
+            "ijn_destroyer08",
+            "ijn_destroyer09",
+            "ijn_destroyer10"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "usn_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [29637.8,0.0,2040.65]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            29637.8,
+            0.0,
+            2040.65
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "usn_carrier00"
-          },
-          {
-            "squad_members": "usn_carrier01"
-          },
-          {
-            "squad_members": "usn_carrier02"
-          },
-          {
-            "squad_members": "usn_battleships00"
-          },
-          {
-            "squad_members": "usn_battleships01"
-          },
-          {
-            "squad_members": "usn_destroyers00"
-          },
-          {
-            "squad_members": "usn_destroyers01"
-          },
-          {
-            "squad_members": "usn_destroyers02"
-          },
-          {
-            "squad_members": "usn_destroyers03"
-          },
-          {
-            "squad_members": "usn_destroyers04"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "usn_carrier00",
+            "usn_carrier01",
+            "usn_carrier02",
+            "usn_battleships00",
+            "usn_battleships01",
+            "usn_destroyers00",
+            "usn_destroyers01",
+            "usn_destroyers02",
+            "usn_destroyers03",
+            "usn_destroyers04"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "targets_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [31354.7,0.0,545.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            31354.7,
+            0.0,
+            545.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "usn_target_destroyer00"
-          },
-          {
-            "squad_members": "usn_target_destroyer01"
-          },
-          {
-            "squad_members": "usn_target_destroyer02"
-          },
-          {
-            "squad_members": "usn_target_destroyer03"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01",
+            "usn_target_destroyer02",
+            "usn_target_destroyer03"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "allied_planes_squad00",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-45109.0,0.0,-2979.95]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -45109.0,
+            0.0,
+            -2979.95
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "allied_fighters01"
-          },
-          {
-            "squad_members": "allied_fighters04"
-          },
-          {
-            "squad_members": "allied_fighters02"
-          },
-          {
-            "squad_members": "allied_fighters03"
-          },
-          {
-            "squad_members": "allied_fighters00"
-          },
-          {
-            "squad_members": "allied_fighters05"
-          },
-          {
-            "squad_members": "allied_fighters06"
-          },
-          {
-            "squad_members": "allied_fighters07"
-          },
-          {
-            "squad_members": "allied_fighters08"
-          },
-          {
-            "squad_members": "allied_fighters09"
-          },
-          {
-            "squad_members": "allied_fighters10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "allied_fighters01",
+            "allied_fighters04",
+            "allied_fighters02",
+            "allied_fighters03",
+            "allied_fighters00",
+            "allied_fighters05",
+            "allied_fighters06",
+            "allied_fighters07",
+            "allied_fighters08",
+            "allied_fighters09",
+            "allied_fighters10"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "attack_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11980.9,0.0,-2995.75]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            11980.9,
+            0.0,
+            -2995.75
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "attack_planes00"
-          },
-          {
-            "squad_members": "attack_planes01"
-          },
-          {
-            "squad_members": "attack_planes02"
-          },
-          {
-            "squad_members": "attack_planes03"
-          },
-          {
-            "squad_members": "attack_planes04"
-          },
-          {
-            "squad_members": "attack_planes05"
-          },
-          {
-            "squad_members": "attack_planes06"
-          },
-          {
-            "squad_members": "attack_planes07"
-          },
-          {
-            "squad_members": "attack_planes08"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "attack_planes00",
+            "attack_planes01",
+            "attack_planes02",
+            "attack_planes03",
+            "attack_planes04",
+            "attack_planes05",
+            "attack_planes06",
+            "attack_planes07",
+            "attack_planes08"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "enemy_fighters_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [29049.6,0.0,-5054.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            29049.6,
+            0.0,
+            -5054.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "enemy_fighters00"
-          },
-          {
-            "squad_members": "enemy_fighters01"
-          },
-          {
-            "squad_members": "enemy_fighters02"
-          },
-          {
-            "squad_members": "enemy_fighters03"
-          },
-          {
-            "squad_members": "enemy_fighters04"
-          },
-          {
-            "squad_members": "enemy_fighters05"
-          },
-          {
-            "squad_members": "enemy_fighters06"
-          },
-          {
-            "squad_members": "enemy_fighters07"
-          },
-          {
-            "squad_members": "enemy_fighters08"
-          },
-          {
-            "squad_members": "enemy_fighters09"
-          },
-          {
-            "squad_members": "enemy_fighters10"
-          },
-          {
-            "squad_members": "enemy_fighters11"
-          },
-          {
-            "squad_members": "enemy_fighters12"
-          },
-          {
-            "squad_members": "enemy_fighters13"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "enemy_fighters00",
+            "enemy_fighters01",
+            "enemy_fighters02",
+            "enemy_fighters03",
+            "enemy_fighters04",
+            "enemy_fighters05",
+            "enemy_fighters06",
+            "enemy_fighters07",
+            "enemy_fighters08",
+            "enemy_fighters09",
+            "enemy_fighters10",
+            "enemy_fighters11",
+            "enemy_fighters12",
+            "enemy_fighters13"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "all_enemy_destroyers",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [27377.3,-478.499,3333.95]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            27377.3,
+            -478.499,
+            3333.95
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "usn_target_destroyer00"
-          },
-          {
-            "squad_members": "usn_target_destroyer01"
-          },
-          {
-            "squad_members": "usn_target_destroyer02"
-          },
-          {
-            "squad_members": "usn_target_destroyer03"
-          }
-        ],
-        "way": []
+        "props": {
+          "squad_members": [
+            "usn_target_destroyer00",
+            "usn_target_destroyer01",
+            "usn_target_destroyer02",
+            "usn_target_destroyer03"
+          ]
+        },
+        "way": {}
       }
-    },
-    {
-      "ships": {
+    ],
+    "ships": [
+      {
         "name": "ijn_carrier00",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-48066.2,0.0,-4101.8]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -48066.2,
+            0.0,
+            -4101.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_cv_zuikaku",
@@ -3141,22 +3373,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_carrier01",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-47592.9,0.0,-2289.83]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -47592.9,
+            0.0,
+            -2289.83
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_cv_soryu",
@@ -3166,22 +3418,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_carrier02",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-48294.3,0.0,-5838.35]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -48294.3,
+            0.0,
+            -5838.35
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_cv_zuikaku",
@@ -3191,22 +3463,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_carrier03",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-49896.5,0.0,-1513.77]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -49896.5,
+            0.0,
+            -1513.77
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_cv_soryu",
@@ -3216,22 +3508,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_carrier04",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-48261.0,0.0,-230.11]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -48261.0,
+            0.0,
+            -230.11
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_cv_akagi",
@@ -3241,22 +3553,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_battleship00",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-46969.9,0.0,-1136.45]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -46969.9,
+            0.0,
+            -1136.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_ca_myoko",
@@ -3266,22 +3598,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_battleship01",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-46350.4,0.0,-3292.75]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -46350.4,
+            0.0,
+            -3292.75
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_ca_nagara",
@@ -3291,22 +3643,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_battleship02",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-50609.0,0.0,-3517.1]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -50609.0,
+            0.0,
+            -3517.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_ca_nagara",
@@ -3316,22 +3688,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer00",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-45452.9,0.0,-5118.9]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -45452.9,
+            0.0,
+            -5118.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3341,22 +3733,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer01",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-50396.4,0.0,-174.0]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -50396.4,
+            0.0,
+            -174.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3366,22 +3778,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer02",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-49226.4,0.0,1374.55]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -49226.4,
+            0.0,
+            1374.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3391,22 +3823,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer03",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-47674.5,0.0,330.9]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -47674.5,
+            0.0,
+            330.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3416,22 +3868,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer04",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-51410.8,0.0,-2313.1]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -51410.8,
+            0.0,
+            -2313.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3441,22 +3913,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer05",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-52084.3,0.0,-3759.2]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -52084.3,
+            0.0,
+            -3759.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3466,22 +3958,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer06",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-49689.9,0.0,-4798.55]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -49689.9,
+            0.0,
+            -4798.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3491,22 +4003,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer07",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-49550.8,0.0,-7163.9]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -49550.8,
+            0.0,
+            -7163.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3516,22 +4048,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer08",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-48269.3,0.0,-7596.8]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -48269.3,
+            0.0,
+            -7596.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3541,22 +4093,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_battleship03",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-47055.8,0.0,-5166.8]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -47055.8,
+            0.0,
+            -5166.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_bb_nagato",
@@ -3566,22 +4138,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer09",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-49122.2,0.0,-3058.75]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -49122.2,
+            0.0,
+            -3058.75
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3591,22 +4183,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ijn_destroyer10",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-45486.7,0.0,-2487.95]
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            -45486.7,
+            0.0,
+            -2487.95
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
@@ -3616,22 +4228,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_carrier00",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [31906.1,0.0,-1640.55]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            31906.1,
+            0.0,
+            -1640.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_cv_enterprise",
@@ -3641,22 +4273,42 @@
           "count": 5,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [100.0,30.0],
-          "formation_noise": [0.3,-0.2],
+          "formation_step": [
+            100.0,
+            30.0
+          ],
+          "formation_noise": [
+            0.3,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_carrier01",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [35505.6,0.0,-3218.55]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            35505.6,
+            0.0,
+            -3218.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_cv_lexington",
@@ -3666,22 +4318,42 @@
           "count": 5,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [100.0,23.0],
-          "formation_noise": [1.49012e-08,-0.1],
+          "formation_step": [
+            100.0,
+            23.0
+          ],
+          "formation_noise": [
+            1.49012E-08,
+            -0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_carrier02",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [34866.7,0.0,-3171.5]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            34866.7,
+            0.0,
+            -3171.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_cv_lexington",
@@ -3691,22 +4363,42 @@
           "count": 5,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [100.0,20.0],
-          "formation_noise": [0.3,-0.3],
+          "formation_step": [
+            100.0,
+            20.0
+          ],
+          "formation_noise": [
+            0.3,
+            -0.3
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_battleships00",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [33783.5,0.0,-7757.75]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            33783.5,
+            0.0,
+            -7757.75
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
@@ -3716,22 +4408,42 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,40.0],
-          "formation_noise": [0.4,0.3],
+          "formation_step": [
+            190.0,
+            40.0
+          ],
+          "formation_noise": [
+            0.4,
+            0.3
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_battleships01",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [32897.8,0.0,-1591.95]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            32897.8,
+            0.0,
+            -1591.95
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_brooklyn",
@@ -3741,22 +4453,42 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,40.0],
-          "formation_noise": [-0.2,-0.1],
+          "formation_step": [
+            190.0,
+            40.0
+          ],
+          "formation_noise": [
+            -0.2,
+            -0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_destroyers00",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [34921.1,0.0,409.5]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            34921.1,
+            0.0,
+            409.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
@@ -3766,22 +4498,42 @@
           "count": 5,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,50.0],
-          "formation_noise": [-0.3,-0.1],
+          "formation_step": [
+            190.0,
+            50.0
+          ],
+          "formation_noise": [
+            -0.3,
+            -0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_destroyers01",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [37200.7,0.0,-6271.2]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            37200.7,
+            0.0,
+            -6271.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
@@ -3791,22 +4543,42 @@
           "count": 5,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,40.0],
-          "formation_noise": [0.4,0.4],
+          "formation_step": [
+            190.0,
+            40.0
+          ],
+          "formation_noise": [
+            0.4,
+            0.4
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_destroyers02",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [39142.4,0.0,-3535.45]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            39142.4,
+            0.0,
+            -3535.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
@@ -3816,22 +4588,42 @@
           "count": 5,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,40.0],
-          "formation_noise": [0.2,0.3],
+          "formation_step": [
+            190.0,
+            40.0
+          ],
+          "formation_noise": [
+            0.2,
+            0.3
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_destroyers03",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [37163.2,0.0,-835.7]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            37163.2,
+            0.0,
+            -835.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
@@ -3841,22 +4633,42 @@
           "count": 5,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,50.0],
-          "formation_noise": [-0.5,0.2],
+          "formation_step": [
+            190.0,
+            50.0
+          ],
+          "formation_noise": [
+            -0.5,
+            0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_destroyers04",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [31391.2,0.0,2030.0]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            31391.2,
+            0.0,
+            2030.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
@@ -3866,22 +4678,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,50.0],
-          "formation_noise": [-0.2,-0.2],
+          "formation_step": [
+            190.0,
+            50.0
+          ],
+          "formation_noise": [
+            -0.2,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_target_destroyer00",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [33097.8,0.0,200.25]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            33097.8,
+            0.0,
+            200.25
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
@@ -3891,22 +4723,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,50.0],
-          "formation_noise": [-0.2,-0.2],
+          "formation_step": [
+            190.0,
+            50.0
+          ],
+          "formation_noise": [
+            -0.2,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_target_destroyer01",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [32670.6,0.0,2843.55]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            32670.6,
+            0.0,
+            2843.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
@@ -3916,22 +4768,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,50.0],
-          "formation_noise": [-0.2,-0.2],
+          "formation_step": [
+            190.0,
+            50.0
+          ],
+          "formation_noise": [
+            -0.2,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_target_destroyer02",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [34574.2,0.0,-224.3]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            34574.2,
+            0.0,
+            -224.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
@@ -3941,22 +4813,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,50.0],
-          "formation_noise": [-0.2,-0.2],
+          "formation_step": [
+            190.0,
+            50.0
+          ],
+          "formation_noise": [
+            -0.2,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "usn_target_destroyer03",
         "tm": [
-          [-0.999048,0.0,-0.0436191],
-          [0.0,1.0,0.0],
-          [0.0436191,0.0,-0.999048],
-          [37217.7,0.0,-2300.7]
+          [
+            -0.999048,
+            0.0,
+            -0.0436191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436191,
+            0.0,
+            -0.999048
+          ],
+          [
+            37217.7,
+            0.0,
+            -2300.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
@@ -3966,55 +4858,125 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [190.0,50.0],
-          "formation_noise": [-0.2,-0.2],
+          "formation_step": [
+            190.0,
+            50.0
+          ],
+          "formation_noise": [
+            -0.2,
+            -0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "takeoff_waypoint": {
       "type": "Sphere",
       "tm": [
-        [1474.9,0.0,0.0],
-        [0.0,1474.9,0.0],
-        [0.0,0.0,1474.9],
-        [-42281.6,1000.0,-3770.4]
+        [
+          1474.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1474.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1474.9
+        ],
+        [
+          -42281.6,
+          1000.0,
+          -3770.4
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "teleport": {
       "type": "Sphere",
       "tm": [
-        [2240.7,0.0,0.0],
-        [0.0,2240.7,0.0],
-        [0.0,0.0,2240.7],
-        [11185.8,2000.0,-3523.8]
+        [
+          2240.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2240.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2240.7
+        ],
+        [
+          11185.8,
+          2000.0,
+          -3523.8
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "fleet_waypoint": {
       "type": "Sphere",
       "tm": [
-        [5601.75,0.0,0.0],
-        [0.0,5601.75,0.0],
-        [0.0,0.0,5601.75],
-        [28217.6,2000.0,-2152.9]
+        [
+          5601.75,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5601.75,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5601.75
+        ],
+        [
+          28217.6,
+          2000.0,
+          -2152.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "cutscene00_area": {
       "type": "Sphere",
       "tm": [
-        [1756.24,0.0,0.0],
-        [0.0,1756.24,0.0],
-        [0.0,0.0,1756.24],
-        [-47893.6,0.0,-1396.45]
+        [
+          1756.24,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1756.24,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1756.24
+        ],
+        [
+          -47893.6,
+          0.0,
+          -1396.45
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

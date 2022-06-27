@@ -1,26 +1,14 @@
-[
-  {
-    "flow": "vertical"
-  },
-  {
-    "padding": "2@blockInterval"
-  },
-  {
-    "tdiv": [
-      {
-        "id": "battle_pass_info"
-      },
-      {
-        "size": "pw, fh"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "overflow-y": "auto"
-      },
-      {
-        "tdiv": {
+{
+  "flow": "vertical",
+  "padding": "2@blockInterval",
+  "tdiv": [
+    {
+      "id": "battle_pass_info",
+      "size": "pw, fh",
+      "flow": "vertical",
+      "overflow-y": "auto",
+      "tdiv": [
+        {
           "id": "season_lvl",
           "behaviour": "bhvUpdateByWatched",
           "size": "pw, 1@battlePassRankInfoHeight",
@@ -61,43 +49,31 @@
               }
             }
           }
-        }
-      },
-      {
-        "tdiv": [
-          {
-            "id": "battle_tasks_info_nest"
-          },
-          {
-            "width": "pw"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "display": "hide"
-          },
-          {
-            "tdiv": {
-              "id": "task_timer_nest",
-              "width": "pw + 4@blockInterval",
-              "pos": "0.5pw-0.5w, 4@blockInterval",
+        },
+        {
+          "id": "battle_tasks_info_nest",
+          "width": "pw",
+          "flow": "vertical",
+          "display": "hide",
+          "tdiv": {
+            "id": "task_timer_nest",
+            "width": "pw + 4@blockInterval",
+            "pos": "0.5pw-0.5w, 4@blockInterval",
+            "position": "relative",
+            "padding": "2@blockInterval, 2@dp",
+            "background-color": "@separatorBlockColor",
+            "textareaNoTab": {
+              "id": "task_timer_text",
+              "behavior": "Timer",
+              "width": "pw-2@blockInterval",
+              "pos": "pw-w, 0.5ph-0.5h",
               "position": "relative",
-              "padding": "2@blockInterval, 2@dp",
-              "background-color": "@separatorBlockColor",
-              "textareaNoTab": {
-                "id": "task_timer_text",
-                "behavior": "Timer",
-                "width": "pw-2@blockInterval",
-                "pos": "pw-w, 0.5ph-0.5h",
-                "position": "relative",
-                "text": "",
-                "smallFont": "yes"
-              }
+              "text": "",
+              "smallFont": "yes"
             }
           },
-          {
-            "battlePassInfoWatch": {
+          "battlePassInfoWatch": [
+            {
               "id": "easy_daily_task_progress",
               "css-hier-invalidate": "yes",
               "img": {
@@ -107,11 +83,9 @@
               "textareaNoTab": {
                 "id": "text"
               },
-              "icon": []
-            }
-          },
-          {
-            "battlePassInfoWatch": {
+              "icon": {}
+            },
+            {
               "id": "medium_daily_task_progress",
               "css-hier-invalidate": "yes",
               "img": {
@@ -120,11 +94,9 @@
               "textareaNoTab": {
                 "id": "text"
               },
-              "icon": []
-            }
-          },
-          {
-            "battlePassInfoWatch": {
+              "icon": {}
+            },
+            {
               "id": "left_special_tasks_bought_count",
               "img": {
                 "id": "task_img"
@@ -133,35 +105,29 @@
                 "id": "text"
               }
             }
-          }
-        ]
-      },
-      {
-        "battlePassInfoWatch": {
+          ]
+        }
+      ],
+      "battlePassInfoWatch": [
+        {
           "id": "today_login_exp",
           "textareaNoTab": {
             "id": "text"
           }
-        }
-      },
-      {
-        "battlePassInfoWatch": {
+        },
+        {
           "id": "login_streak",
           "textareaNoTab": {
             "id": "text"
           }
-        }
-      },
-      {
-        "battlePassInfoWatch": {
+        },
+        {
           "id": "tomorow_login_exp",
           "textareaNoTab": {
             "id": "text"
           }
-        }
-      },
-      {
-        "battlePassInfoWatch": {
+        },
+        {
           "id": "season_tasks_progress",
           "textareaNoTab": {
             "text": "#battlePass/info/season_tasks_progress"
@@ -184,22 +150,14 @@
             }
           }
         }
-      }
-    ]
-  },
-  {
-    "tdiv": [
-      {
-        "pos": "pw-w, 0"
-      },
-      {
-        "position": "relative"
-      },
-      {
-        "padding-top": "1@blockInterval"
-      },
-      {
-        "Button_text": {
+      ]
+    },
+    {
+      "pos": "pw-w, 0",
+      "position": "relative",
+      "padding-top": "1@blockInterval",
+      "Button_text": [
+        {
           "id": "btn_warbondsShop",
           "display": "hide",
           "enable": "no",
@@ -208,9 +166,9 @@
           "visualStyle": "secondary",
           "btnName": "LT",
           "on_click": "onWarbondsShop",
-          "buttonWink": [],
-          "buttonGlance": [],
-          "ButtonImg": [],
+          "buttonWink": {},
+          "buttonGlance": {},
+          "ButtonImg": {},
           "img": {
             "size": "1@cIco, 1@cIco",
             "background-svg-size": "1@cIco, 1@cIco",
@@ -220,10 +178,8 @@
             "margin-left": "1@blockInterval",
             "text": "#mainmenu/btnOnlineShop"
           }
-        }
-      },
-      {
-        "Button_text": {
+        },
+        {
           "id": "btn_battleTask",
           "pos": "1@blockInterval, 0",
           "position": "relative",
@@ -234,11 +190,11 @@
           "on_click": "onBattleTask",
           "display": "hide",
           "enable": "no",
-          "buttonWink": [],
-          "buttonGlance": [],
-          "ButtonImg": []
+          "buttonWink": {},
+          "buttonGlance": {},
+          "ButtonImg": {}
         }
-      }
-    ]
-  }
-]
+      ]
+    }
+  ]
+}

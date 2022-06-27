@@ -45,48 +45,40 @@
             "allModifications": true
           }
         },
-        "country_germany": [
-          {
-            "germ_pzkpfw_IV_ausf_G": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
+        "country_germany": {
+          "germ_pzkpfw_IV_ausf_G": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
           },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
+          "germ_pzkpfw_IV_ausf_F2": [
+            {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            },
+            {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            },
+            {
               "crewSkillsPercent": 100,
               "crewSpecialization": 2,
               "allWeapons": true,
               "allModifications": true
             }
-          },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
-          },
-          {
-            "germ_pzkpfw_IV_ausf_F2": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
-          },
-          {
-            "germ_jgdpz_38t": {
-              "crewSkillsPercent": 100,
-              "crewSpecialization": 2,
-              "allWeapons": true,
-              "allModifications": true
-            }
+          ],
+          "germ_jgdpz_38t": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
           }
-        ],
+        },
         "country_ussr": {
           "ussr_t_34_1942": {
             "crewSkillsPercent": 100,
@@ -135,7 +127,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -146,100 +138,190 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
   "areas": {
     "conq_battle_area_hardcore": {
       "type": "Box",
       "tm": [
-        [2150.0,0.0,0.0],
-        [0.0,365.1,0.0],
-        [0.0,0.0,2150.0],
-        [-326.9,0.0,-189.65]
+        [
+          2150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          365.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2150.0
+        ],
+        [
+          -326.9,
+          0.0,
+          -189.65
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "conq_battle_area_arcade": {
       "type": "Box",
       "tm": [
-        [1400.0,0.0,0.0],
-        [0.0,365.1,0.0],
-        [0.0,0.0,1400.0],
-        [-408.533,0.0,-225.252]
+        [
+          1400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          365.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1400.0
+        ],
+        [
+          -408.533,
+          0.0,
+          -225.252
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "t1_killarea": {
       "type": "Cylinder",
       "tm": [
-        [150.0,0.0,0.0],
-        [0.0,137.548,0.0],
-        [0.0,0.0,150.0],
-        [91.6869,55.5239,-315.788]
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          137.548,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          91.6869,
+          55.5239,
+          -315.788
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t1_killarea_hardcore": {
       "type": "Cylinder",
       "tm": [
-        [150.0,0.0,0.0],
-        [0.0,137.548,0.0],
-        [0.0,0.0,150.0],
-        [607.53,55.5239,-159.935]
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          137.548,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          607.53,
+          55.5239,
+          -159.935
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_killarea_hardcore": {
       "type": "Cylinder",
       "tm": [
-        [150.0,0.0,0.0],
-        [0.0,137.548,0.0],
-        [0.0,0.0,150.0],
-        [-1320.37,55.5239,-202.887]
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          137.548,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          -1320.37,
+          55.5239,
+          -202.887
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_killarea": {
       "type": "Cylinder",
       "tm": [
-        [150.0,0.0,0.0],
-        [0.0,137.548,0.0],
-        [0.0,0.0,150.0],
-        [-909.057,55.5239,-27.4488]
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          137.548,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          -909.057,
+          55.5239,
+          -27.4488
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": false
       }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

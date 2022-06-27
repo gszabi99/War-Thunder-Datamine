@@ -1,23 +1,15 @@
 {
-  "chapterListPlace": [
-    {
-      "id": "chapter_place"
-    },
-    {
-      "height": "ph"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "tdiv": {
+  "chapterListPlace": {
+    "id": "chapter_place",
+    "height": "ph",
+    "flow": "vertical",
+    "tdiv": [
+      {
         "id": "div_before_chapters_list",
         "width": "pw",
         "display": "hide"
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "chapters_list_place",
         "size": "pw, fh",
         "flow": "vertical",
@@ -55,78 +47,52 @@
           "display": "hide"
         }
       }
-    }
-  ],
+    ]
+  },
   "chapterSeparator": {
     "margin": "1@blockInterval, 0"
   },
-  "tdiv": [
-    {
-      "id": "item_desc"
+  "tdiv": {
+    "id": "item_desc",
+    "flow": "vertical",
+    "size": "fw, ph",
+    "overflow-y": "auto",
+    "total-input-transparent": "yes",
+    "text": {
+      "left": "(pw-w)/2",
+      "id": "item_name",
+      "position": "relative",
+      "style": "font:@fontMedium;color:@titleTextColor;",
+      "textHide": "yes",
+      "text": ""
     },
-    {
-      "flow": "vertical"
-    },
-    {
-      "size": "fw, ph"
-    },
-    {
-      "overflow-y": "auto"
-    },
-    {
-      "total-input-transparent": "yes"
-    },
-    {
-      "text": {
-        "left": "(pw-w)/2",
-        "id": "item_name",
-        "position": "relative",
-        "style": "font:@fontMedium;color:@titleTextColor;",
-        "textHide": "yes",
-        "text": ""
-      }
-    },
-    {
-      "tdiv": {
+    "tdiv": [
+      {
         "id": "mission_desc",
         "size": "pw,ph",
         "position": "absolute",
         "flow": "vertical"
-      }
-    },
-    {
-      "tdiv": [
-        {
-          "id": "chapter_include_block"
+      },
+      {
+        "id": "chapter_include_block",
+        "size": "pw, fh",
+        "flow": "vertical",
+        "display": "hide",
+        "img": {
+          "id": "item_desc_header_img",
+          "width": "pw",
+          "height": "w*128/1024",
+          "background-repeat": "expand",
+          "background-image": ""
         },
-        {
-          "size": "pw, fh"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "display": "hide"
-        },
-        {
-          "img": {
-            "id": "item_desc_header_img",
-            "width": "pw",
-            "height": "w*128/1024",
-            "background-repeat": "expand",
-            "background-image": ""
-          }
-        },
-        {
-          "tdiv": {
+        "tdiv": [
+          {
             "id": "div_before_text",
             "width": "pw",
             "flow": "h-flow",
             "flow-align": "center"
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "height": "fh",
             "width": "pw",
             "overflow-y": "auto",
@@ -159,20 +125,16 @@
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "tdiv": {
+        ]
+      },
+      {
         "id": "after_desc_block",
         "width": "pw"
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "item_misc",
         "flow": "vertical"
       }
-    }
-  ]
+    ]
+  }
 }

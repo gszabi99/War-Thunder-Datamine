@@ -9,30 +9,18 @@
     "_on_select": "onThreadSelect",
     "on_cancel_edit": "goBack"
   },
-  "tdiv": [
-    {
-      "id": "threads_buttons_panel"
+  "tdiv": {
+    "id": "threads_buttons_panel",
+    "width": "pw-2@framePadding",
+    "position": "relative",
+    "padding": "-1@buttonMargin-1@dp",
+    "margin": "1@framePadding",
+    "dummy": {
+      "_on_click": "goBack",
+      "btnName": "B"
     },
-    {
-      "width": "pw-2@framePadding"
-    },
-    {
-      "position": "relative"
-    },
-    {
-      "padding": "-1@buttonMargin-1@dp"
-    },
-    {
-      "margin": "1@framePadding"
-    },
-    {
-      "dummy": {
-        "_on_click": "goBack",
-        "btnName": "B"
-      }
-    },
-    {
-      "Button_text": {
+    "Button_text": [
+      {
         "id": "threads_search_langs_btn",
         "max-width": "0.5 * (pw - 1@buttonWidth - 1@buttonHeight - 3@blockInterval)",
         "noWidth": "yes",
@@ -41,20 +29,16 @@
         "showConsoleImage": "no",
         "isColoredImg": "yes",
         "on_click": "onLangsBtn"
-      }
-    },
-    {
-      "Button_text": {
+      },
+      {
         "id": "btn_categories_filter",
         "width": "fw",
         "showConsoleImage": "no",
         "scaleble": "yes",
         "talign": "left",
         "on_click": "onCategoriesBtn"
-      }
-    },
-    {
-      "Button_text": {
+      },
+      {
         "id": "btn_refresh",
         "size": "1@buttonHeight, 1@buttonHeight",
         "_on_click": "onRefresh",
@@ -71,22 +55,18 @@
           "position": "absolute",
           "background-rotation": "0"
         }
-      }
-    },
-    {
-      "Button_text": {
+      },
+      {
         "text": "#chat/createThread",
         "on_click": "onCreateThread"
       }
-    },
-    {
-      "tdiv": {
-        "id": "buttons_separator",
-        "width": "fw",
-        "enable": "no"
-      }
+    ],
+    "tdiv": {
+      "id": "buttons_separator",
+      "width": "fw",
+      "enable": "no"
     }
-  ],
+  },
   "timer": {
     "id": "threads_list_timer",
     "timer_handler_func": "onUpdate",

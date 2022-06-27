@@ -4,21 +4,63 @@
   "hmapLodCount": 6,
   "hmapDistanceMul": 3.25,
   "mandatoryLandquality": 1,
-  "mapCoord0": [-34688.0,-36864.0],
-  "mapCoord1": [30848.0,28672.0],
-  "minAreaSize": [12000.0,12000.0],
-  "aiMapCoord0": [-32768.0,-36864.0],
-  "aiMapCoord1": [32768.0,28672.0],
+  "mapCoord0": [
+    -34688.0,
+    -36864.0
+  ],
+  "mapCoord1": [
+    30848.0,
+    28672.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "aiMapCoord0": [
+    -32768.0,
+    -36864.0
+  ],
+  "aiMapCoord1": [
+    32768.0,
+    28672.0
+  ],
   "customLevelMap": "stalingrad_w_map*",
-  "aiTanksMapCoord0": [1992.0,800.0],
-  "aiTanksMapCoord1": [4020.0,2870.0],
-  "tankMapCoord0": [0.0,0.0],
-  "tankMapCoord1": [4096.0,4096.0],
-  "gridSteps": [3250.0,3250.0],
-  "tankGridSteps": [190.0,190.0],
-  "tankGridZeroPoint": [2100.0,2800.0],
-  "tankGridSize": [1900.0,1900.0],
-  "lightprobe_xz": [3000.0,1850.0],
+  "aiTanksMapCoord0": [
+    1992.0,
+    800.0
+  ],
+  "aiTanksMapCoord1": [
+    4020.0,
+    2870.0
+  ],
+  "tankMapCoord0": [
+    0.0,
+    0.0
+  ],
+  "tankMapCoord1": [
+    4096.0,
+    4096.0
+  ],
+  "gridSteps": [
+    3250.0,
+    3250.0
+  ],
+  "tankGridSteps": [
+    190.0,
+    190.0
+  ],
+  "tankGridZeroPoint": [
+    2100.0,
+    2800.0
+  ],
+  "tankGridSize": [
+    1900.0,
+    1900.0
+  ],
+  "lightprobe_xz": [
+    3000.0,
+    1850.0
+  ],
   "lightprobe_offset": 5.0,
   "numBorderCellsXPos": 8,
   "numBorderCellsXNeg": 8,
@@ -49,11 +91,26 @@
   "layeredFogHeightOffset": -12.0,
   "layeredFogDensityMul": 0.5,
   "alternativeMapCoord": {
-    "aiTanksMapCoord0": [2470.0,1200.0],
-    "aiTanksMapCoord1": [4020.0,2870.0],
-    "tankGridSteps": [160.0,160.0],
-    "tankGridZeroPoint": [2400.0,2800.0],
-    "tankGridSize": [1600.0,1600.0]
+    "aiTanksMapCoord0": [
+      2470.0,
+      1200.0
+    ],
+    "aiTanksMapCoord1": [
+      4020.0,
+      2870.0
+    ],
+    "tankGridSteps": [
+      160.0,
+      160.0
+    ],
+    "tankGridZeroPoint": [
+      2400.0,
+      2800.0
+    ],
+    "tankGridSize": [
+      1600.0,
+      1600.0
+    ]
   },
   "terraform": {
     "diffuseTex": "underground_snow_soil_a_tex_d",
@@ -63,62 +120,32 @@
     "digGroundAlpha": 6.1,
     "digRoughness": 0.31
   },
-  "micro_details": [
-    {
-      "micro_detail": "microdetail_scan_sand_a_tex_n*"
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_scan_sand_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_snow_b_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_snow_b_tex_n*",
+      "microdetail_ice_a_tex_n*",
+      "microdetail_ice_a_tex_n*",
+      "microdetail_wood_b_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11,
+    "microdetail_sand_c_tex_n": {
+      "sparkles": 1.0
     },
-    {
-      "micro_detail": "microdetail_snow_a_tex_n*"
+    "microdetail_snow_a_tex_n": {
+      "sparkles": 1.0
     },
-    {
-      "micro_detail": "microdetail_sand_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_snow_b_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_snow_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_snow_b_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_ice_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_ice_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_wood_b_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_metal_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_snow_a_tex_n*"
-    },
-    {
-      "micro_detail": "microdetail_generic_granules_a_tex_n*"
-    },
-    {
-      "land_micro_details_uv_scale": 1.11
-    },
-    {
-      "microdetail_sand_c_tex_n": {
-        "sparkles": 1.0
-      }
-    },
-    {
-      "microdetail_snow_a_tex_n": {
-        "sparkles": 1.0
-      }
-    },
-    {
-      "microdetail_snow_b_tex_n": {
-        "sparkles": 1.0
-      }
+    "microdetail_snow_b_tex_n": {
+      "sparkles": 1.0
     }
-  ],
+  },
   "stars": {
     "latitude": 36.0,
     "longitude": 44.0,
@@ -129,25 +156,48 @@
   "shader_vars": {
     "detail_bump_scale": 0.01,
     "parallax_shadow_length": 0.0,
-    "land_smoothness_detect_color": [0.23,0.23,0.22,0.5],
+    "land_smoothness_detect_color": [
+      0.23,
+      0.23,
+      0.22,
+      0.5
+    ],
     "displacement_hardness": 0.6,
     "max_river_width": 550.0,
     "ocean_density": 4.0,
     "river_density": 6.0,
-    "ocean0": [0.11,0.25,0.12,0.0],
-    "ocean1": [0.19,0.28,0.14,0.0],
-    "river0": [0.11,0.2,0.12,0.0],
-    "river1": [0.19,0.28,0.24,0.0]
+    "ocean0": [
+      0.11,
+      0.25,
+      0.12,
+      0.0
+    ],
+    "ocean1": [
+      0.19,
+      0.28,
+      0.14,
+      0.0
+    ],
+    "river0": [
+      0.11,
+      0.2,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.19,
+      0.28,
+      0.24,
+      0.0
+    ]
   },
   "waterStub": {
     "enable": true
   },
-  "technicsSkins": [
-    {
-      "groundSkin": "winter"
-    },
-    {
-      "groundSkin": "default"
-    }
-  ]
+  "technicsSkins": {
+    "groundSkin": [
+      "winter",
+      "default"
+    ]
+  }
 }

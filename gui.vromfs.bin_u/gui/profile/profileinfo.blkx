@@ -1,21 +1,13 @@
 {
-  "tdiv": [
-    {
-      "size": "pw, fh"
-    },
-    {
-      "tdiv": [
-        {
-          "flow": "vertical"
-        },
-        {
-          "size": "0.55@scrn_tgt, ph"
-        },
-        {
-          "padding-right": "1@blockInterval"
-        },
-        {
-          "tdiv": {
+  "tdiv": {
+    "size": "pw, fh",
+    "tdiv": [
+      {
+        "flow": "vertical",
+        "size": "0.55@scrn_tgt, ph",
+        "padding-right": "1@blockInterval",
+        "tdiv": [
+          {
             "width": "pw",
             "pos": "50%pw-50%w, 0",
             "position": "relative",
@@ -31,35 +23,23 @@
                 "behavior": "bhvAvatar",
                 "isFull": "yes"
               },
-              "ButtonImg": [],
+              "ButtonImg": {},
               "unseenIcon": {
                 "id": "unseen_avatar",
                 "pos": "4@dp, 4@dp",
                 "position": "absolute",
-                "unseenText": []
+                "unseenText": {}
               }
             },
-            "tdiv": [
-              {
-                "height": "ph"
-              },
-              {
-                "pos": "0, 50%ph-50%h"
-              },
-              {
-                "position": "relative"
-              },
-              {
-                "padding": "1@blockInterval"
-              },
-              {
-                "flow": "vertical"
-              },
-              {
-                "width": "fw"
-              },
-              {
-                "tdiv": {
+            "tdiv": {
+              "height": "ph",
+              "pos": "0, 50%ph-50%h",
+              "position": "relative",
+              "padding": "1@blockInterval",
+              "flow": "vertical",
+              "width": "fw",
+              "tdiv": [
+                {
                   "textareaNoTab": {
                     "id": "profile-clanTag",
                     "max-width": "pw",
@@ -72,48 +52,36 @@
                     "talign": "left",
                     "style": "color:@mainPlayerColor"
                   }
-                }
-              },
-              {
-                "tdiv": [
-                  {
-                    "padding-top": "1@blockInterval"
-                  },
-                  {
-                    "activeText": {
+                },
+                {
+                  "padding-top": "1@blockInterval",
+                  "activeText": [
+                    {
                       "smallFont": "yes",
                       "text": "#mainmenu/rank",
                       "position": "relative",
                       "pos": "0, ph/2-h/2"
-                    }
-                  },
-                  {
-                    "activeText": {
+                    },
+                    {
                       "id": "profile-rank",
                       "smallFont": "yes",
                       "position": "relative",
                       "pos": "@blockInterval, ph/2-h/2"
-                    }
-                  },
-                  {
-                    "activeText": {
+                    },
+                    {
                       "id": "profile-prestige_title",
                       "smallFont": "yes",
                       "position": "relative",
                       "pos": "@blockInterval, ph/2-h/2"
                     }
-                  },
-                  {
-                    "cardImg": {
-                      "id": "profile-prestige",
-                      "position": "relative",
-                      "pos": "@blockInterval, ph/2-h/2"
-                    }
+                  ],
+                  "cardImg": {
+                    "id": "profile-prestige",
+                    "position": "relative",
+                    "pos": "@blockInterval, ph/2-h/2"
                   }
-                ]
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "width": "pw",
                   "expProgress": {
                     "id": "profile-rankProgress",
@@ -129,50 +97,44 @@
                     "pos": "@blockInterval, ph/2-h/2"
                   }
                 }
-              },
-              {
-                "Button_text": {
-                  "id": "profile_currentUser_btn_title",
-                  "visualStyle": "noBgr",
-                  "on_click": "openChooseTitleWnd",
-                  "width": "pw",
-                  "hideEmptyText": "yes",
-                  "css-hier-invalidate": "yes",
-                  "textareaNoTab": {
-                    "id": "profile-currentUser-title",
-                    "pos": "0, 0.5ph-0.5h",
-                    "position": "relative",
-                    "smallFont": "yes",
-                    "unseenIcon": {
-                      "id": "unseen_titles",
-                      "pos": "pw + 1@blockInterval, 50%ph-50%h",
-                      "position": "absolute",
-                      "unseenText": []
-                    }
-                  },
-                  "focus_border": [],
-                  "ButtonImg": []
-                }
-              },
-              {
+              ],
+              "Button_text": {
+                "id": "profile_currentUser_btn_title",
+                "visualStyle": "noBgr",
+                "on_click": "openChooseTitleWnd",
+                "width": "pw",
+                "hideEmptyText": "yes",
+                "css-hier-invalidate": "yes",
                 "textareaNoTab": {
+                  "id": "profile-currentUser-title",
+                  "pos": "0, 0.5ph-0.5h",
+                  "position": "relative",
+                  "smallFont": "yes",
+                  "unseenIcon": {
+                    "id": "unseen_titles",
+                    "pos": "pw + 1@blockInterval, 50%ph-50%h",
+                    "position": "absolute",
+                    "unseenText": {}
+                  }
+                },
+                "focus_border": {},
+                "ButtonImg": {}
+              },
+              "textareaNoTab": [
+                {
                   "id": "profile-currentUser-steamName",
                   "width": "pw",
                   "smallFont": "yes"
-                }
-              },
-              {
-                "textareaNoTab": {
+                },
+                {
                   "id": "profile-currentUser-facebookName",
                   "width": "pw",
                   "smallFont": "yes"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "tdiv": {
+              ]
+            }
+          },
+          {
             "id": "medals_block",
             "size": "pw, fh",
             "pos": "0, @blockInterval",
@@ -209,10 +171,8 @@
               "position": "absolute",
               "text": "#ui/empty"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "titles_block",
             "size": "pw, fh",
             "pos": "0, @blockInterval",
@@ -238,10 +198,8 @@
               "position": "absolute",
               "text": "#ui/empty"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "size": "pw, 1@usercardLeaderboardHeight",
             "flow": "vertical",
             "tdiv": {
@@ -249,22 +207,14 @@
               "width": "pw"
             }
           }
-        }
-      ]
-    },
-    {
-      "tdiv": [
-        {
-          "size": "fw, ph"
-        },
-        {
-          "padding-left": "1@blockInterval"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "tdiv": {
+        ]
+      },
+      {
+        "size": "fw, ph",
+        "padding-left": "1@blockInterval",
+        "flow": "vertical",
+        "tdiv": [
+          {
             "id": "stats-container",
             "size": "pw, fh",
             "flow": "vertical",
@@ -289,27 +239,15 @@
                 "width": "pw"
               }
             }
-          }
-        },
-        {
-          "tdiv": [
-            {
-              "width": "pw"
-            },
-            {
-              "pos": "0, 0"
-            },
-            {
-              "position": "relative"
-            },
-            {
-              "padding-top": "1@blockInterval"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "tdiv": {
+          },
+          {
+            "width": "pw",
+            "pos": "0, 0",
+            "position": "relative",
+            "padding-top": "1@blockInterval",
+            "flow": "vertical",
+            "tdiv": [
+              {
                 "width": "pw",
                 "margin-bottom": "1@blockInterval",
                 "ComboBox": {
@@ -330,13 +268,11 @@
                   "on_change_value": "onStatsTypeChange",
                   "value": "yes",
                   "btnName": "LT",
-                  "CheckBoxImg": [],
-                  "ButtonImg": []
+                  "CheckBoxImg": {},
+                  "ButtonImg": {}
                 }
-              }
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "size": "pw, 1@usercardLeaderboardHeight",
                 "table": {
                   "id": "profile_leaderboard",
@@ -345,15 +281,13 @@
                   "text-halign": "center"
                 }
               }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapterSeparator": []
-    }
-  ],
+            ]
+          }
+        ]
+      }
+    ],
+    "chapterSeparator": {}
+  },
   "animated_wait_icon": {
     "id": "profile_loading",
     "pos": "0.5(pw-w),0.4(ph-h)",

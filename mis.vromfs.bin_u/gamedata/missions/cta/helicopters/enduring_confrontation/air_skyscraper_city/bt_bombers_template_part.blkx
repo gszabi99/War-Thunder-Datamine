@@ -17,11 +17,11 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/templates/enduring_confrontation/bt_bombers_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -33,13 +33,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t1_ussr_rank_01.blk",
-        "rankRange": [0.0,3.0],
+        "rankRange": [
+          0,
+          3
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -50,13 +51,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t1_ussr_rank_02.blk",
-        "rankRange": [4.0,7.0],
+        "rankRange": [
+          4,
+          7
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -67,13 +69,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t1_ussr_rank_03.blk",
-        "rankRange": [8.0,11.0],
+        "rankRange": [
+          8,
+          11
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -84,13 +87,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t1_ussr_rank_04.blk",
-        "rankRange": [12.0,50.0],
+        "rankRange": [
+          12,
+          50
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -101,13 +105,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t2_usa_rank_01.blk",
-        "rankRange": [0.0,3.0],
+        "rankRange": [
+          0,
+          3
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -118,13 +123,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t2_usa_rank_02.blk",
-        "rankRange": [4.0,7.0],
+        "rankRange": [
+          4,
+          7
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -135,13 +141,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t2_usa_rank_03.blk",
-        "rankRange": [8.0,11.0],
+        "rankRange": [
+          8,
+          11
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -152,13 +159,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/units_sets/plane_sets_bombers/bt_t2_usa_rank_04.blk",
-        "rankRange": [12.0,50.0],
+        "rankRange": [
+          12,
+          50
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -169,10 +177,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -189,166 +197,320 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "setting pve mode on"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "disabling army swapping"
           }
-        },
-        {
-          "varSetBool": {
+        ],
+        "varSetBool": [
+          {
             "value": true,
             "var": "bt_bombers_pve_mode"
-          }
-        },
-        {
-          "varSetBool": {
+          },
+          {
             "value": false,
             "var": "bt_is_army_swapping"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
   "areas": {
     "bt_t2_bombers_spawn_01": {
       "type": "Point",
       "tm": [
-        [0.320672,0.0,-0.94719],
-        [0.0,1.0,0.0],
-        [0.94719,0.0,0.320672],
-        [-19510.0,1250.0,11536.0]
+        [
+          0.320672,
+          0.0,
+          -0.94719
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.94719,
+          0.0,
+          0.320672
+        ],
+        [
+          -19510.0,
+          1250.0,
+          11536.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t2_bombers_spawn_02": {
       "type": "Point",
       "tm": [
-        [-0.326448,0.0,-0.945215],
-        [0.0,1.0,0.0],
-        [0.945215,0.0,-0.326448],
-        [-15240.0,1250.0,11536.0]
+        [
+          -0.326448,
+          0.0,
+          -0.945215
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.945215,
+          0.0,
+          -0.326448
+        ],
+        [
+          -15240.0,
+          1250.0,
+          11536.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t2_bombers_spawn_03": {
       "type": "Point",
       "tm": [
-        [-0.394418,0.0,-0.918931],
-        [0.0,1.0,0.0],
-        [0.918931,0.0,-0.394418],
-        [-5240.0,1250.0,11536.0]
+        [
+          -0.394418,
+          0.0,
+          -0.918931
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.918931,
+          0.0,
+          -0.394418
+        ],
+        [
+          -5240.0,
+          1250.0,
+          11536.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t1_bombers_spawn_01": {
       "type": "Point",
       "tm": [
-        [-0.240551,0.0,0.970636],
-        [0.0,1.0,0.0],
-        [-0.970636,0.0,-0.240551],
-        [-19510.0,1250.0,-8464.0]
+        [
+          -0.240551,
+          0.0,
+          0.970636
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.970636,
+          0.0,
+          -0.240551
+        ],
+        [
+          -19510.0,
+          1250.0,
+          -8464.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t1_bombers_spawn_02": {
       "type": "Point",
       "tm": [
-        [0.0342156,0.0,0.999414],
-        [0.0,1.0,0.0],
-        [-0.999414,0.0,0.0342156],
-        [-15240.0,1250.0,-8464.0]
+        [
+          0.0342156,
+          0.0,
+          0.999414
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.999414,
+          0.0,
+          0.0342156
+        ],
+        [
+          -15240.0,
+          1250.0,
+          -8464.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t1_bombers_spawn_03": {
       "type": "Point",
       "tm": [
-        [-0.16983,0.0,0.985473],
-        [0.0,1.0,0.0],
-        [-0.985473,0.0,-0.16983],
-        [-5240.0,1250.0,-8464.0]
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.985473,
+          0.0,
+          -0.16983
+        ],
+        [
+          -5240.0,
+          1250.0,
+          -8464.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t2_bombers_spawn_04": {
       "type": "Point",
       "tm": [
-        [-0.394418,0.0,-0.918931],
-        [0.0,1.0,0.0],
-        [0.918931,0.0,-0.394418],
-        [-1509.96,1250.0,11536.0]
+        [
+          -0.394418,
+          0.0,
+          -0.918931
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.918931,
+          0.0,
+          -0.394418
+        ],
+        [
+          -1509.96,
+          1250.0,
+          11536.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t1_bombers_spawn_04": {
       "type": "Point",
       "tm": [
-        [-0.16983,0.0,0.985473],
-        [0.0,1.0,0.0],
-        [-0.985473,0.0,-0.16983],
-        [-1509.96,1250.0,-8464.0]
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.985473,
+          0.0,
+          -0.16983
+        ],
+        [
+          -1509.96,
+          1250.0,
+          -8464.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t1_retreat_point": {
       "type": "Point",
       "tm": [
-        [-0.16983,0.0,0.985473],
-        [0.0,1.0,0.0],
-        [-0.985473,0.0,-0.16983],
-        [-10240.0,750.0,-12464.0]
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.985473,
+          0.0,
+          -0.16983
+        ],
+        [
+          -10240.0,
+          750.0,
+          -12464.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bt_t2_retreat_point": {
       "type": "Point",
       "tm": [
-        [-0.16983,0.0,0.985473],
-        [0.0,1.0,0.0],
-        [-0.985473,0.0,-0.16983],
-        [-10240.0,750.0,15536.0]
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.985473,
+          0.0,
+          -0.16983
+        ],
+        [
+          -10240.0,
+          750.0,
+          15536.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

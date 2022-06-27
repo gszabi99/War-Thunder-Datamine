@@ -15,9 +15,9 @@
       "weather": "clear"
     }
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/templates/tank_templates/air_spawn_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -29,13 +29,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/tanks/abandoned_factory/template_abandoned_factory_heli_spawn.blk",
-        "rankRange": [20.0,50.0],
+        "rankRange": [
+          20,
+          50
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -46,13 +47,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/tanks/abandoned_factory/airfields/template_abandoned_factory_airfields_low_ranks.blk",
-        "rankRange": [0.0,5.0],
+        "rankRange": [
+          0,
+          5
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -63,13 +65,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/tanks/abandoned_factory/airfields/template_abandoned_factory_airfields_mid_ranks.blk",
-        "rankRange": [6.0,19.0],
+        "rankRange": [
+          6,
+          19
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -80,13 +83,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/tanks/abandoned_factory/airfields/template_abandoned_factory_airfields_high_ranks.blk",
-        "rankRange": [20.0,50.0],
+        "rankRange": [
+          20,
+          50
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -97,10 +101,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -109,260 +113,526 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "structures": {
-        "name": "dummy",
-        "tm": [
-          [-1.04308e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.04308e-07],
-          [40630.6,-433.727,18117.1]
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "structures": {
+      "name": "dummy",
+      "tm": [
+        [
+          -1.04308E-07,
+          0.0,
+          -1.0
         ],
-        "unit_class": "dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          -1.04308E-07
+        ],
+        [
+          40630.6,
+          -433.727,
+          18117.1
+        ]
+      ],
+      "unit_class": "dummy",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
     },
-    {
-      "squad": {
+    "squad": [
+      {
         "name": "t1_aaa_squad",
         "tm": [
-          [-1.04308e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.04308e-07],
-          [40510.6,-433.727,18025.6]
+          [
+            -1.04308E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.04308E-07
+          ],
+          [
+            40510.6,
+            -433.727,
+            18025.6
+          ]
         ],
         "props": {
           "object_marking": 0,
           "squad_members": "dummy"
         }
-      }
-    },
-    {
-      "squad": {
+      },
+      {
         "name": "t2_aaa_squad",
         "tm": [
-          [-1.04308e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.04308e-07],
-          [40457.7,-433.727,18023.0]
+          [
+            -1.04308E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.04308E-07
+          ],
+          [
+            40457.7,
+            -433.727,
+            18023.0
+          ]
         ],
         "props": {
           "object_marking": 0,
           "squad_members": "dummy"
         }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "fighters_arcade_area": {
       "type": "Sphere",
       "tm": [
-        [12950.5,0.0,1133.02],
-        [0.0,13000.0,0.0],
-        [-1133.02,0.0,12950.5],
-        [2355.66,1000.0,991.328]
+        [
+          12950.5,
+          0.0,
+          1133.02
+        ],
+        [
+          0.0,
+          13000.0,
+          0.0
+        ],
+        [
+          -1133.02,
+          0.0,
+          12950.5
+        ],
+        [
+          2355.66,
+          1000.0,
+          991.328
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "t1_air_spawn_arcade": {
       "type": "Sphere",
       "tm": [
-        [-300.0,0.0,1.52588e-05],
-        [0.0,300.0,0.0],
-        [-1.52588e-05,0.0,-300.0],
-        [8861.19,1000.0,995.058]
+        [
+          -300.0,
+          0.0,
+          1.52588E-05
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -1.52588E-05,
+          0.0,
+          -300.0
+        ],
+        [
+          8861.19,
+          1000.0,
+          995.058
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_air_spawn_arcade": {
       "type": "Sphere",
       "tm": [
-        [300.0,0.0,-1.52588e-05],
-        [0.0,300.0,0.0],
-        [1.52588e-05,0.0,300.0],
-        [-4142.62,1000.0,991.818]
+        [
+          300.0,
+          0.0,
+          -1.52588E-05
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          1.52588E-05,
+          0.0,
+          300.0
+        ],
+        [
+          -4142.62,
+          1000.0,
+          991.818
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "bombers_arcade_area": {
       "type": "Sphere",
       "tm": [
-        [15000.0,0.0,-0.0166016],
-        [0.0,15000.0,0.0],
-        [0.0166016,0.0,15000.0],
-        [2355.66,1500.0,991.328]
+        [
+          15000.0,
+          0.0,
+          -0.0166016
+        ],
+        [
+          0.0,
+          15000.0,
+          0.0
+        ],
+        [
+          0.0166016,
+          0.0,
+          15000.0
+        ],
+        [
+          2355.66,
+          1500.0,
+          991.328
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "t1_bombers_spawn_arcade": {
       "type": "Sphere",
       "tm": [
-        [-300.0,0.0,1.52588e-05],
-        [0.0,300.0,0.0],
-        [-1.52588e-05,0.0,-300.0],
-        [9863.33,1500.0,994.958]
+        [
+          -300.0,
+          0.0,
+          1.52588E-05
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -1.52588E-05,
+          0.0,
+          -300.0
+        ],
+        [
+          9863.33,
+          1500.0,
+          994.958
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_bombers_spawn_arcade": {
       "type": "Sphere",
       "tm": [
-        [300.0,0.0,-1.52588e-05],
-        [0.0,300.0,0.0],
-        [1.52588e-05,0.0,300.0],
-        [-5138.31,1500.0,991.918]
+        [
+          300.0,
+          0.0,
+          -1.52588E-05
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          1.52588E-05,
+          0.0,
+          300.0
+        ],
+        [
+          -5138.31,
+          1500.0,
+          991.918
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "airfields_area": {
       "type": "Sphere",
       "tm": [
-        [30000.0,0.0,-0.00195313],
-        [0.0,30000.0,0.0],
-        [0.00195313,0.0,30000.0],
-        [2355.66,2000.0,991.328]
+        [
+          30000.0,
+          0.0,
+          -0.00195313
+        ],
+        [
+          0.0,
+          30000.0,
+          0.0
+        ],
+        [
+          0.00195313,
+          0.0,
+          30000.0
+        ],
+        [
+          2355.66,
+          2000.0,
+          991.328
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "t1_air_spawn_hardcore": {
       "type": "Sphere",
       "tm": [
-        [-300.0,0.0,1.52588e-05],
-        [0.0,300.0,0.0],
-        [-1.52588e-05,0.0,-300.0],
-        [17376.3,2000.0,995.218]
+        [
+          -300.0,
+          0.0,
+          1.52588E-05
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -1.52588E-05,
+          0.0,
+          -300.0
+        ],
+        [
+          17376.3,
+          2000.0,
+          995.218
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_air_spawn_hardcore": {
       "type": "Sphere",
       "tm": [
-        [300.0,0.0,-1.52588e-05],
-        [0.0,300.0,0.0],
-        [1.52588e-05,0.0,300.0],
-        [-12642.8,2000.0,992.248]
+        [
+          300.0,
+          0.0,
+          -1.52588E-05
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          1.52588E-05,
+          0.0,
+          300.0
+        ],
+        [
+          -12642.8,
+          2000.0,
+          992.248
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_plane_exit_zone": {
       "type": "Cylinder",
       "tm": [
-        [-1000.0,0.0,-0.000549316],
-        [0.0,5000.0,0.0],
-        [0.000549316,0.0,-1000.0],
-        [-416.615,0.0,-4849.55]
+        [
+          -1000.0,
+          0.0,
+          -0.000549316
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          0.000549316,
+          0.0,
+          -1000.0
+        ],
+        [
+          -416.615,
+          0.0,
+          -4849.55
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     },
     "t1_plane_exit_zone": {
       "type": "Cylinder",
       "tm": [
-        [-1000.0,0.0,-0.000549316],
-        [0.0,5000.0,0.0],
-        [0.000549316,0.0,-1000.0],
-        [5097.11,0.0,6821.32]
+        [
+          -1000.0,
+          0.0,
+          -0.000549316
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          0.000549316,
+          0.0,
+          -1000.0
+        ],
+        [
+          5097.11,
+          0.0,
+          6821.32
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t1_heli_spawn_arcade": {
       "type": "Sphere",
       "tm": [
-        [-268.2,0.0,-3.8147e-05],
-        [0.0,268.2,0.0],
-        [3.8147e-05,0.0,-268.2],
-        [7047.7,307.229,2297.27]
+        [
+          -268.2,
+          0.0,
+          -3.8147E-05
+        ],
+        [
+          0.0,
+          268.2,
+          0.0
+        ],
+        [
+          3.8147E-05,
+          0.0,
+          -268.2
+        ],
+        [
+          7047.7,
+          307.229,
+          2297.27
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_heli_spawn_arcade": {
       "type": "Sphere",
       "tm": [
-        [268.2,0.0,1.52588e-05],
-        [0.0,268.2,0.0],
-        [-1.52588e-05,0.0,268.2],
-        [-2953.55,300.0,2297.27]
+        [
+          268.2,
+          0.0,
+          1.52588E-05
+        ],
+        [
+          0.0,
+          268.2,
+          0.0
+        ],
+        [
+          -1.52588E-05,
+          0.0,
+          268.2
+        ],
+        [
+          -2953.55,
+          300.0,
+          2297.27
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "heli_5000": {
       "type": "Sphere",
       "tm": [
-        [-9995.07,0.0,314.124],
-        [0.0,10000.0,0.0],
-        [-314.124,0.0,-9995.07],
-        [2048.0,300.0,2299.17]
+        [
+          -9995.07,
+          0.0,
+          314.124
+        ],
+        [
+          0.0,
+          10000.0,
+          0.0
+        ],
+        [
+          -314.124,
+          0.0,
+          -9995.07
+        ],
+        [
+          2048.0,
+          300.0,
+          2299.17
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

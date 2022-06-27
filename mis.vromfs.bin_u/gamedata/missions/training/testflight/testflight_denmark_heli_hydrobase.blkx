@@ -14,12 +14,16 @@
       "type": "testFlight",
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "locName": "missions/testFlight",
       "restoreType": "manual",
       "optionalTakeOff": false
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -27,7 +31,7 @@
       "music": "action_01"
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -40,9 +44,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "addAirfield": {
           "runwayStart": "airfield00",
@@ -66,19 +70,15 @@
           "attack_type": "dont_aim",
           "accuracy": 0.01
         },
-        "unitPutToSleep": [
-          {
-            "target": "ai_squad"
-          },
-          {
-            "target": "helipad_usa"
-          },
-          {
-            "target": "helipad_ussr"
-          }
-        ]
+        "unitPutToSleep": {
+          "target": [
+            "ai_squad",
+            "helipad_usa",
+            "helipad_ussr"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "end": {
       "is_enabled": true,
@@ -108,7 +108,7 @@
           "objects": "armada_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "if_player_us": {
       "is_enabled": true,
@@ -123,80 +123,62 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "unitCheckTag": {
+      "conditions": {
+        "unitCheckTag": [
+          {
             "target": "armada_01",
             "tags": {
               "country_japan": true
             }
-          }
-        },
-        {
-          "unitCheckTag": {
+          },
+          {
             "target": "armada_01",
             "tags": {
               "country_germany": true
             }
-          }
-        },
-        {
-          "unitCheckTag": {
+          },
+          {
             "target": "armada_01",
             "tags": {
               "country_usa": true
             }
-          }
-        },
-        {
-          "unitCheckTag": {
+          },
+          {
             "target": "armada_01",
             "tags": {
               "country_britain": true
             }
-          }
-        },
-        {
-          "unitCheckTag": {
+          },
+          {
             "target": "armada_01",
             "tags": {
               "country_france": true
             }
-          }
-        },
-        {
-          "unitCheckTag": {
+          },
+          {
             "target": "armada_01",
             "tags": {
               "country_italy": true
             }
-          }
-        },
-        {
-          "unitCheckTag": {
+          },
+          {
             "target": "armada_01",
-            "tags": []
+            "tags": {}
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "unitPutToSleep": {
           "target": "helipad_ussr"
         },
-        "unitWakeUp": [
-          {
-            "target": "ussr_tank_squad"
-          },
-          {
-            "target": "ussr_truck_squad"
-          },
-          {
-            "target": "helipad_usa"
-          },
-          {
-            "target": "ussr_ai_plane"
-          }
-        ],
+        "unitWakeUp": {
+          "target": [
+            "ussr_tank_squad",
+            "ussr_truck_squad",
+            "helipad_usa",
+            "ussr_ai_plane"
+          ]
+        },
         "spawnOnAirfield": {
           "runwayName": "airfield00",
           "objects": "armada_01"
@@ -218,13 +200,17 @@
         },
         "unitRespawn": {
           "delay": 0.0,
-          "offset": [0.0,0.0,0.0],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
           "object": "ussr_tank_05",
           "target": "spawn_shtora_tank",
           "randomObjectsCount": 1
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "if_player_ussr": {
       "is_enabled": true,
@@ -239,42 +225,34 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "unitCheckTag": {
+      "conditions": {
+        "unitCheckTag": [
+          {
             "target": "armada_01",
             "tags": {
               "country_ussr": true
             }
-          }
-        },
-        {
-          "unitCheckTag": {
+          },
+          {
             "target": "armada_01",
             "tags": {
               "country_china": true
             }
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "unitPutToSleep": {
           "target": "helipad_usa"
         },
-        "unitWakeUp": [
-          {
-            "target": "us_truck_squad"
-          },
-          {
-            "target": "us_tank_squad"
-          },
-          {
-            "target": "helipad_ussr"
-          },
-          {
-            "target": "us_ai_plane"
-          }
-        ],
+        "unitWakeUp": {
+          "target": [
+            "us_truck_squad",
+            "us_tank_squad",
+            "helipad_ussr",
+            "us_ai_plane"
+          ]
+        },
         "spawnOnAirfield": {
           "runwayName": "airfield00",
           "objects": "armada_01"
@@ -295,7 +273,7 @@
           "useSearchRadar": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "decoration": {
       "is_enabled": true,
@@ -306,12 +284,12 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -324,10 +302,8 @@
             "aiEnabled": false,
             "enginesEnabled": false,
             "stayOnGround": true
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -341,14 +317,12 @@
             "enginesEnabled": false,
             "stayOnGround": true
           }
+        ],
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -367,10 +341,8 @@
             "horizontalDirectionForTeleport": true,
             "object": "heli_decor_01",
             "move_type": "teleport"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -390,28 +362,44 @@
             "object": "heli_decor_02",
             "move_type": "teleport"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "armada_01",
         "tm": [
-          [0.721089,0.0,0.692844],
-          [0.0,1.0,0.0],
-          [-0.692844,0.0,0.721089],
-          [1020.45,-46.25,-10049.0]
+          [
+            0.721089,
+            0.0,
+            0.692844
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.692844,
+            0.0,
+            0.721089
+          ],
+          [
+            1020.45,
+            -46.25,
+            -10049.0
+          ]
         ],
         "unit_class": "hkp2",
         "closed_waypoints": false,
@@ -449,17 +437,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "us_ai_plane",
         "tm": [
-          [-0.980876,0.0,0.194634],
-          [0.0,1.0,0.0],
-          [-0.194634,0.0,-0.980876],
-          [4592.94,400.0,-7044.42]
+          [
+            -0.980876,
+            0.0,
+            0.194634
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.194634,
+            0.0,
+            -0.980876
+          ],
+          [
+            4592.94,
+            400.0,
+            -7044.42
+          ]
         ],
         "unit_class": "f-86a-5",
         "objLayer": 1,
@@ -504,10 +506,26 @@
           "armada_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2986.42,400.0,-6855.87]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2986.42,
+                400.0,
+                -6855.87
+              ]
             ],
             "props": {
               "speed": 500.0,
@@ -520,10 +538,26 @@
           "armada_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4683.53,800.0,-7495.06]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4683.53,
+                800.0,
+                -7495.06
+              ]
             ],
             "props": {
               "speed": 500.0,
@@ -536,10 +570,26 @@
           "armada_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4184.91,800.0,-2720.89]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4184.91,
+                800.0,
+                -2720.89
+              ]
             ],
             "props": {
               "speed": 500.0,
@@ -550,16 +600,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "ussr_ai_plane",
         "tm": [
-          [-0.980876,0.0,0.194634],
-          [0.0,1.0,0.0],
-          [-0.194634,0.0,-0.980876],
-          [4592.94,400.0,-7044.42]
+          [
+            -0.980876,
+            0.0,
+            0.194634
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.194634,
+            0.0,
+            -0.980876
+          ],
+          [
+            4592.94,
+            400.0,
+            -7044.42
+          ]
         ],
         "unit_class": "mig-15",
         "objLayer": 1,
@@ -604,10 +668,26 @@
           "armada_03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2986.42,400.0,-6855.87]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2986.42,
+                400.0,
+                -6855.87
+              ]
             ],
             "props": {
               "speed": 500.0,
@@ -620,10 +700,26 @@
           "armada_03_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4683.53,800.0,-7495.06]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4683.53,
+                800.0,
+                -7495.06
+              ]
             ],
             "props": {
               "speed": 500.0,
@@ -636,10 +732,26 @@
           "armada_03_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4184.91,800.0,-2720.89]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4184.91,
+                800.0,
+                -2720.89
+              ]
             ],
             "props": {
               "speed": 500.0,
@@ -650,16 +762,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "armada_decor_01",
         "tm": [
-          [-0.287361,0.0,-0.957824],
-          [0.0,1.0,0.0],
-          [0.957824,0.0,-0.287361],
-          [163.3,65.7,-12612.0]
+          [
+            -0.287361,
+            0.0,
+            -0.957824
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.957824,
+            0.0,
+            -0.287361
+          ],
+          [
+            163.3,
+            65.7,
+            -12612.0
+          ]
         ],
         "unit_class": "saab_105g",
         "closed_waypoints": false,
@@ -697,17 +823,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "armada_decor_02",
         "tm": [
-          [0.287361,0.0,0.957824],
-          [0.0,1.0,0.0],
-          [-0.957824,0.0,0.287361],
-          [260.15,65.7,-12772.5]
+          [
+            0.287361,
+            0.0,
+            0.957824
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.957824,
+            0.0,
+            0.287361
+          ],
+          [
+            260.15,
+            65.7,
+            -12772.5
+          ]
         ],
         "unit_class": "saab_105g",
         "closed_waypoints": false,
@@ -745,17 +885,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "armada_decor_03",
         "tm": [
-          [0.287361,0.0,0.957823],
-          [0.0,1.0,0.0],
-          [-0.957823,0.0,0.287361],
-          [396.45,65.7,-12812.2]
+          [
+            0.287361,
+            0.0,
+            0.957823
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.957823,
+            0.0,
+            0.287361
+          ],
+          [
+            396.45,
+            65.7,
+            -12812.2
+          ]
         ],
         "unit_class": "saab_ja37",
         "closed_waypoints": false,
@@ -793,17 +947,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "heli_decor_01",
         "tm": [
-          [0.957824,0.0,-0.287361],
-          [0.0,1.0,0.0],
-          [0.287361,0.0,0.957824],
-          [2393.69,100.5,-8865.33]
+          [
+            0.957824,
+            0.0,
+            -0.287361
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.287361,
+            0.0,
+            0.957824
+          ],
+          [
+            2393.69,
+            100.5,
+            -8865.33
+          ]
         ],
         "unit_class": "hkp9a_cb2",
         "closed_waypoints": false,
@@ -841,17 +1009,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "heli_decor_02",
         "tm": [
-          [0.957824,0.0,-0.287361],
-          [0.0,1.0,0.0],
-          [0.287361,0.0,0.957824],
-          [2330.07,100.588,-8842.5]
+          [
+            0.957824,
+            0.0,
+            -0.287361
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.287361,
+            0.0,
+            0.957824
+          ],
+          [
+            2330.07,
+            100.588,
+            -8842.5
+          ]
         ],
         "unit_class": "hkp9a_cb2",
         "closed_waypoints": false,
@@ -889,17 +1071,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "armada_decor_04",
         "tm": [
-          [0.287361,0.0,0.957824],
-          [0.0,1.0,0.0],
-          [-0.957824,0.0,0.287361],
-          [647.6,100.6,-12870.4]
+          [
+            0.287361,
+            0.0,
+            0.957824
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.957824,
+            0.0,
+            0.287361
+          ],
+          [
+            647.6,
+            100.6,
+            -12870.4
+          ]
         ],
         "unit_class": "hkp9a_cb2",
         "closed_waypoints": false,
@@ -937,17 +1133,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "armada_decor_05",
         "tm": [
-          [0.287361,0.0,0.957824],
-          [0.0,1.0,0.0],
-          [-0.957824,0.0,0.287361],
-          [688.3,100.6,-12883.4]
+          [
+            0.287361,
+            0.0,
+            0.957824
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.957824,
+            0.0,
+            0.287361
+          ],
+          [
+            688.3,
+            100.6,
+            -12883.4
+          ]
         ],
         "unit_class": "hkp9a_cb2",
         "closed_waypoints": false,
@@ -985,17 +1195,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "tankModels": {
+    ],
+    "tankModels": [
+      {
         "name": "ussr_tank_01",
         "tm": [
-          [-0.999781,0.0,0.0209948],
-          [0.0,1.0,0.0],
-          [-0.0209948,0.0,-0.999781],
-          [4096.15,79.4,-9329.8]
+          [
+            -0.999781,
+            0.0,
+            0.0209948
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0209948,
+            0.0,
+            -0.999781
+          ],
+          [
+            4096.15,
+            79.4,
+            -9329.8
+          ]
         ],
         "unit_class": "ussr_t_64_b_1984",
         "objLayer": 1,
@@ -1019,22 +1245,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_tank_01",
         "tm": [
-          [-0.999871,0.0,0.0159755],
-          [0.0,1.0,0.0],
-          [-0.0159755,0.0,-0.999871],
-          [4094.23,79.427,-9323.67]
+          [
+            -0.999871,
+            0.0,
+            0.0159755
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0159755,
+            0.0,
+            -0.999871
+          ],
+          [
+            4094.23,
+            79.427,
+            -9323.67
+          ]
         ],
         "unit_class": "us_m1_abrams",
         "objLayer": 1,
@@ -1058,22 +1304,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_tank_02",
         "tm": [
-          [-0.988078,0.0,-0.153958],
-          [0.0,1.0,0.0],
-          [0.153958,0.0,-0.988078],
-          [4153.9,78.103,-9037.78]
+          [
+            -0.988078,
+            0.0,
+            -0.153958
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.153958,
+            0.0,
+            -0.988078
+          ],
+          [
+            4153.9,
+            78.103,
+            -9037.78
+          ]
         ],
         "unit_class": "ussr_zsu_37",
         "objLayer": 1,
@@ -1096,22 +1362,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_tank_02",
         "tm": [
-          [-0.984511,0.0,-0.175322],
-          [0.0,1.0,0.0],
-          [0.175322,0.0,-0.984511],
-          [4154.04,78.086,-9026.85]
+          [
+            -0.984511,
+            0.0,
+            -0.175322
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.175322,
+            0.0,
+            -0.984511
+          ],
+          [
+            4154.04,
+            78.086,
+            -9026.85
+          ]
         ],
         "unit_class": "us_m163_vulcan",
         "objLayer": 1,
@@ -1134,22 +1420,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_truck_06",
         "tm": [
-          [-0.986279,0.0,0.165084],
-          [0.0,1.0,0.0],
-          [-0.165084,0.0,-0.986279],
-          [4115.7,40.75,-9456.55]
+          [
+            -0.986279,
+            0.0,
+            0.165084
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.165084,
+            0.0,
+            -0.986279
+          ],
+          [
+            4115.7,
+            40.75,
+            -9456.55
+          ]
         ],
         "unit_class": "germ_apc_m113",
         "objLayer": 1,
@@ -1172,22 +1478,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_truck_05",
         "tm": [
-          [-0.987874,0.0,0.155254],
-          [0.0,1.0,0.0],
-          [-0.155254,0.0,-0.987874],
-          [4090.15,41.65,-9450.05]
+          [
+            -0.987874,
+            0.0,
+            0.155254
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.155254,
+            0.0,
+            -0.987874
+          ],
+          [
+            4090.15,
+            41.65,
+            -9450.05
+          ]
         ],
         "unit_class": "germ_apc_m113",
         "objLayer": 1,
@@ -1210,22 +1536,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_truck_04",
         "tm": [
-          [-0.970589,0.0,0.240739],
-          [0.0,1.0,0.0],
-          [-0.240739,0.0,-0.970589],
-          [4063.8,41.75,-9444.5]
+          [
+            -0.970589,
+            0.0,
+            0.240739
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.240739,
+            0.0,
+            -0.970589
+          ],
+          [
+            4063.8,
+            41.75,
+            -9444.5
+          ]
         ],
         "unit_class": "germ_apc_m113",
         "objLayer": 1,
@@ -1248,22 +1594,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_truck_03",
         "tm": [
-          [-0.991878,0.0,0.127192],
-          [0.0,1.0,0.0],
-          [-0.127192,0.0,-0.991878],
-          [4037.9,40.5,-9439.6]
+          [
+            -0.991878,
+            0.0,
+            0.127192
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.127192,
+            0.0,
+            -0.991878
+          ],
+          [
+            4037.9,
+            40.5,
+            -9439.6
+          ]
         ],
         "unit_class": "germ_apc_m113",
         "objLayer": 1,
@@ -1286,22 +1652,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_truck_02",
         "tm": [
-          [-0.937787,0.0,0.34721],
-          [0.0,1.0,0.0],
-          [-0.34721,0.0,-0.937787],
-          [4010.4,42.25,-9432.9]
+          [
+            -0.937787,
+            0.0,
+            0.34721
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.34721,
+            0.0,
+            -0.937787
+          ],
+          [
+            4010.4,
+            42.25,
+            -9432.9
+          ]
         ],
         "unit_class": "germ_apc_m113",
         "objLayer": 1,
@@ -1324,22 +1710,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_truck_01",
         "tm": [
-          [-0.95962,0.0,0.281296],
-          [0.0,1.0,0.0],
-          [-0.281296,0.0,-0.95962],
-          [3985.7,43.05,-9426.55]
+          [
+            -0.95962,
+            0.0,
+            0.281296
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.281296,
+            0.0,
+            -0.95962
+          ],
+          [
+            3985.7,
+            43.05,
+            -9426.55
+          ]
         ],
         "unit_class": "germ_apc_m113",
         "objLayer": 1,
@@ -1362,22 +1768,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_truck_01",
         "tm": [
-          [-0.99152,0.0,0.12996],
-          [0.0,1.0,0.0],
-          [-0.12996,0.0,-0.99152],
-          [4074.75,42.15,-9446.45]
+          [
+            -0.99152,
+            0.0,
+            0.12996
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.12996,
+            0.0,
+            -0.99152
+          ],
+          [
+            4074.75,
+            42.15,
+            -9446.45
+          ]
         ],
         "unit_class": "ussr_apc_btr_152",
         "objLayer": 1,
@@ -1400,22 +1826,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_truck_02",
         "tm": [
-          [-0.978944,0.0,0.204125],
-          [0.0,1.0,0.0],
-          [-0.204125,0.0,-0.978944],
-          [3972.4,41.9,-9423.8]
+          [
+            -0.978944,
+            0.0,
+            0.204125
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.204125,
+            0.0,
+            -0.978944
+          ],
+          [
+            3972.4,
+            41.9,
+            -9423.8
+          ]
         ],
         "unit_class": "ussr_apc_btr_152",
         "objLayer": 1,
@@ -1438,22 +1884,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_truck_03",
         "tm": [
-          [-0.982775,0.0,0.184813],
-          [0.0,1.0,0.0],
-          [-0.184813,0.0,-0.982775],
-          [3996.05,45.2,-9429.1]
+          [
+            -0.982775,
+            0.0,
+            0.184813
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.184813,
+            0.0,
+            -0.982775
+          ],
+          [
+            3996.05,
+            45.2,
+            -9429.1
+          ]
         ],
         "unit_class": "ussr_apc_btr_152",
         "objLayer": 1,
@@ -1476,22 +1942,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_truck_04",
         "tm": [
-          [-0.982775,0.0,0.184813],
-          [0.0,1.0,0.0],
-          [-0.184813,0.0,-0.982775],
-          [4102.45,42.55,-9451.9]
+          [
+            -0.982775,
+            0.0,
+            0.184813
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.184813,
+            0.0,
+            -0.982775
+          ],
+          [
+            4102.45,
+            42.55,
+            -9451.9
+          ]
         ],
         "unit_class": "ussr_apc_btr_152",
         "objLayer": 1,
@@ -1514,22 +2000,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_truck_05",
         "tm": [
-          [-0.99328,0.0,0.115731],
-          [0.0,1.0,0.0],
-          [-0.115731,0.0,-0.99328],
-          [4048.2,44.35,-9440.6]
+          [
+            -0.99328,
+            0.0,
+            0.115731
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.115731,
+            0.0,
+            -0.99328
+          ],
+          [
+            4048.2,
+            44.35,
+            -9440.6
+          ]
         ],
         "unit_class": "ussr_apc_btr_152",
         "objLayer": 1,
@@ -1552,22 +2058,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_truck_06",
         "tm": [
-          [-0.973797,0.0,0.22742],
-          [0.0,1.0,0.0],
-          [-0.22742,0.0,-0.973797],
-          [4023.35,43.35,-9435.75]
+          [
+            -0.973797,
+            0.0,
+            0.22742
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.22742,
+            0.0,
+            -0.973797
+          ],
+          [
+            4023.35,
+            43.35,
+            -9435.75
+          ]
         ],
         "unit_class": "ussr_apc_btr_152",
         "objLayer": 1,
@@ -1590,22 +2116,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "us_tank_03",
         "tm": [
-          [-0.999871,0.0,0.0159755],
-          [0.0,1.0,0.0],
-          [-0.0159755,0.0,-0.999871],
-          [3994.99,69.381,-9293.13]
+          [
+            -0.999871,
+            0.0,
+            0.0159755
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0159755,
+            0.0,
+            -0.999871
+          ],
+          [
+            3994.99,
+            69.381,
+            -9293.13
+          ]
         ],
         "unit_class": "us_m60a1_rise_passive_era",
         "objLayer": 1,
@@ -1629,22 +2175,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_tank_03",
         "tm": [
-          [-0.999781,0.0,0.0209948],
-          [0.0,1.0,0.0],
-          [-0.0209948,0.0,-0.999781],
-          [3994.84,69.598,-9300.71]
+          [
+            -0.999781,
+            0.0,
+            0.0209948
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0209948,
+            0.0,
+            -0.999781
+          ],
+          [
+            3994.84,
+            69.598,
+            -9300.71
+          ]
         ],
         "unit_class": "ussr_t_62",
         "objLayer": 1,
@@ -1668,106 +2234,104 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "tankModels": [
-        {
-          "name": "us_tank_04"
-        },
-        {
-          "tm": [
-            [0.170831,0.0,-0.9853],
-            [0.0,1.0,0.0],
-            [0.9853,0.0,0.170831],
-            [3921.2,61.1,-8408.35]
+        "way": {}
+      },
+      {
+        "name": "us_tank_04",
+        "tm": [
+          [
+            0.170831,
+            0.0,
+            -0.9853
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.9853,
+            0.0,
+            0.170831
+          ],
+          [
+            3921.2,
+            61.1,
+            -8408.35
           ]
+        ],
+        "unit_class": "us_adats_bradley",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "manual_extinguisher",
+          "tank_tool_kit"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
         },
-        {
-          "unit_class": "us_adats_bradley"
-        },
-        {
-          "objLayer": 1
-        },
-        {
-          "closed_waypoints": true
-        },
-        {
-          "isShipSpline": false
-        },
-        {
-          "shipTurnRadius": 100.0
-        },
-        {
-          "weapons": ""
-        },
-        {
-          "bullets0": ""
-        },
-        {
-          "bullets1": ""
-        },
-        {
-          "bullets2": ""
-        },
-        {
-          "bullets3": ""
-        },
-        {
-          "bulletsCount0": 1000
-        },
-        {
-          "bulletsCount1": 0
-        },
-        {
-          "bulletsCount2": 0
-        },
-        {
-          "bulletsCount3": 0
-        },
-        {
-          "modification": "manual_extinguisher"
-        },
-        {
-          "modification": "tank_tool_kit"
-        },
-        {
-          "crewSkillK": 0.0
-        },
-        {
-          "applyAllMods": false
-        },
-        {
-          "props": {
-            "army": 2,
-            "count": 1,
-            "formation_type": "rows",
-            "formation_div": 3,
-            "formation_step": [2.5,2.0],
-            "formation_noise": [0.1,0.1],
-            "uniqueName": "",
-            "attack_type": "hold_fire"
-          }
-        },
-        {
-          "way": []
-        }
-      ]
-    },
-    {
-      "tankModels": {
+        "way": {}
+      },
+      {
         "name": "ussr_tank_05",
         "tm": [
-          [-0.992826,0.0,0.119575],
-          [0.0,1.0,0.0],
-          [-0.119575,0.0,-0.992826],
-          [4135.27,40.9879,-9680.91]
+          [
+            -0.992826,
+            0.0,
+            0.119575
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.119575,
+            0.0,
+            -0.992826
+          ],
+          [
+            4135.27,
+            40.9879,
+            -9680.91
+          ]
         ],
         "unit_class": "ussr_t_90a",
         "objLayer": 1,
@@ -1791,8 +2355,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -1801,10 +2371,26 @@
           "ussr_tank_04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3940.2,51.15,-8608.3]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3940.2,
+                51.15,
+                -8608.3
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1817,10 +2403,26 @@
           "ussr_tank_04_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3238.8,46.6,-8027.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3238.8,
+                46.6,
+                -8027.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1833,10 +2435,26 @@
           "ussr_tank_04_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2678.05,39.7,-6941.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2678.05,
+                39.7,
+                -6941.45
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1849,10 +2467,217 @@
           "ussr_tank_04_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3080.8,47.0,-7667.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3080.8,
+                47.0,
+                -7667.5
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "ussr_tank_04",
+        "tm": [
+          [
+            0.19036,
+            0.0,
+            -0.981714
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.981714,
+            0.0,
+            0.19036
+          ],
+          [
+            3923.7,
+            57.0,
+            -8406.8
+          ]
+        ],
+        "unit_class": "ussr_zprk_2s6",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "manual_extinguisher",
+          "tank_tool_kit"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {
+          "ussr_tank_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3940.2,
+                51.15,
+                -8608.3
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ussr_tank_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3238.8,
+                46.6,
+                -8027.25
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ussr_tank_04_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                2678.05,
+                39.7,
+                -6941.45
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ussr_tank_04_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3080.8,
+                47.0,
+                -7667.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1864,378 +2689,277 @@
           }
         }
       }
-    },
-    {
-      "tankModels": [
-        {
-          "name": "ussr_tank_04"
-        },
-        {
-          "tm": [
-            [0.19036,0.0,-0.981714],
-            [0.0,1.0,0.0],
-            [0.981714,0.0,0.19036],
-            [3923.7,57.0,-8406.8]
-          ]
-        },
-        {
-          "unit_class": "ussr_zprk_2s6"
-        },
-        {
-          "objLayer": 1
-        },
-        {
-          "closed_waypoints": true
-        },
-        {
-          "isShipSpline": false
-        },
-        {
-          "shipTurnRadius": 100.0
-        },
-        {
-          "weapons": ""
-        },
-        {
-          "bullets0": ""
-        },
-        {
-          "bullets1": ""
-        },
-        {
-          "bullets2": ""
-        },
-        {
-          "bullets3": ""
-        },
-        {
-          "bulletsCount0": 1000
-        },
-        {
-          "bulletsCount1": 0
-        },
-        {
-          "bulletsCount2": 0
-        },
-        {
-          "bulletsCount3": 0
-        },
-        {
-          "modification": "manual_extinguisher"
-        },
-        {
-          "modification": "tank_tool_kit"
-        },
-        {
-          "crewSkillK": 0.0
-        },
-        {
-          "applyAllMods": false
-        },
-        {
-          "props": {
-            "army": 2,
-            "count": 1,
-            "formation_type": "rows",
-            "formation_div": 3,
-            "formation_step": [2.5,2.0],
-            "formation_noise": [0.1,0.1],
-            "uniqueName": "",
-            "attack_type": "hold_fire"
-          }
-        },
-        {
-          "way": {
-            "ussr_tank_04_wp_01": {
-              "type": "normal",
-              "tm": [
-                [1.0,0.0,0.0],
-                [0.0,1.0,0.0],
-                [0.0,0.0,1.0],
-                [3940.2,51.15,-8608.3]
-              ],
-              "props": {
-                "speed": 300.0,
-                "tas": false,
-                "moveType": "USE_SPLINES",
-                "shouldKeepFormation": false,
-                "canUsePathFinder": false
-              }
-            },
-            "ussr_tank_04_wp_02": {
-              "type": "normal",
-              "tm": [
-                [1.0,0.0,0.0],
-                [0.0,1.0,0.0],
-                [0.0,0.0,1.0],
-                [3238.8,46.6,-8027.25]
-              ],
-              "props": {
-                "speed": 300.0,
-                "tas": false,
-                "moveType": "USE_SPLINES",
-                "shouldKeepFormation": false,
-                "canUsePathFinder": false
-              }
-            },
-            "ussr_tank_04_wp_03": {
-              "type": "normal",
-              "tm": [
-                [1.0,0.0,0.0],
-                [0.0,1.0,0.0],
-                [0.0,0.0,1.0],
-                [2678.05,39.7,-6941.45]
-              ],
-              "props": {
-                "speed": 300.0,
-                "tas": false,
-                "moveType": "USE_SPLINES",
-                "shouldKeepFormation": false,
-                "canUsePathFinder": false
-              }
-            },
-            "ussr_tank_04_wp_04": {
-              "type": "normal",
-              "tm": [
-                [1.0,0.0,0.0],
-                [0.0,1.0,0.0],
-                [0.0,0.0,1.0],
-                [3080.8,47.0,-7667.5]
-              ],
-              "props": {
-                "speed": 300.0,
-                "tas": false,
-                "moveType": "USE_SPLINES",
-                "shouldKeepFormation": false,
-                "canUsePathFinder": false
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "ai_squad",
         "tm": [
-          [-0.0693086,0.0,0.997596],
-          [0.0,1.0,0.0],
-          [-0.997596,0.0,-0.0693086],
-          [4170.21,41.2379,-9839.93]
+          [
+            -0.0693086,
+            0.0,
+            0.997596
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.997596,
+            0.0,
+            -0.0693086
+          ],
+          [
+            4170.21,
+            41.2379,
+            -9839.93
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "us_truck_squad"
-          },
-          {
-            "squad_members": "ussr_truck_squad"
-          },
-          {
-            "squad_members": "us_tank_squad"
-          },
-          {
-            "squad_members": "ussr_tank_squad"
-          },
-          {
-            "squad_members": "us_ai_plane"
-          },
-          {
-            "squad_members": "ussr_ai_plane"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "us_truck_squad",
+            "ussr_truck_squad",
+            "us_tank_squad",
+            "ussr_tank_squad",
+            "us_ai_plane",
+            "ussr_ai_plane"
+          ]
+        }
+      },
+      {
         "name": "us_truck_squad",
         "tm": [
-          [-0.654257,0.0,-0.756272],
-          [0.0,1.0,0.0],
-          [0.756272,0.0,-0.654257],
-          [4116.4,43.5,-9464.6]
+          [
+            -0.654257,
+            0.0,
+            -0.756272
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.756272,
+            0.0,
+            -0.654257
+          ],
+          [
+            4116.4,
+            43.5,
+            -9464.6
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "us_truck_06"
-          },
-          {
-            "squad_members": "us_truck_05"
-          },
-          {
-            "squad_members": "us_truck_04"
-          },
-          {
-            "squad_members": "us_truck_03"
-          },
-          {
-            "squad_members": "us_truck_02"
-          },
-          {
-            "squad_members": "us_truck_01"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "us_truck_06",
+            "us_truck_05",
+            "us_truck_04",
+            "us_truck_03",
+            "us_truck_02",
+            "us_truck_01"
+          ]
+        }
+      },
+      {
         "name": "ussr_truck_squad",
         "tm": [
-          [-0.868614,0.0,0.495489],
-          [0.0,1.0,0.0],
-          [-0.495489,0.0,-0.868614],
-          [3988.5,61.0,-9493.0]
+          [
+            -0.868614,
+            0.0,
+            0.495489
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.495489,
+            0.0,
+            -0.868614
+          ],
+          [
+            3988.5,
+            61.0,
+            -9493.0
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ussr_truck_01"
-          },
-          {
-            "squad_members": "ussr_truck_02"
-          },
-          {
-            "squad_members": "ussr_truck_03"
-          },
-          {
-            "squad_members": "ussr_truck_04"
-          },
-          {
-            "squad_members": "ussr_truck_05"
-          },
-          {
-            "squad_members": "ussr_truck_06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "ussr_truck_01",
+            "ussr_truck_02",
+            "ussr_truck_03",
+            "ussr_truck_04",
+            "ussr_truck_05",
+            "ussr_truck_06"
+          ]
+        }
+      },
+      {
         "name": "us_tank_squad",
         "tm": [
-          [0.841259,0.0,-0.540632],
-          [0.0,1.0,0.0],
-          [0.540632,0.0,0.841259],
-          [4236.14,99.154,-9179.02]
+          [
+            0.841259,
+            0.0,
+            -0.540632
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.540632,
+            0.0,
+            0.841259
+          ],
+          [
+            4236.14,
+            99.154,
+            -9179.02
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "us_tank_01"
-          },
-          {
-            "squad_members": "us_tank_02"
-          },
-          {
-            "squad_members": "us_tank_03"
-          },
-          {
-            "squad_members": "us_tank_04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "us_tank_01",
+            "us_tank_02",
+            "us_tank_03",
+            "us_tank_04"
+          ]
+        }
+      },
+      {
         "name": "ussr_tank_squad",
         "tm": [
-          [0.841259,0.0,-0.540632],
-          [0.0,1.0,0.0],
-          [0.540632,0.0,0.841259],
-          [4197.62,94.621,-9238.96]
+          [
+            0.841259,
+            0.0,
+            -0.540632
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.540632,
+            0.0,
+            0.841259
+          ],
+          [
+            4197.62,
+            94.621,
+            -9238.96
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ussr_tank_01"
-          },
-          {
-            "squad_members": "ussr_tank_02"
-          },
-          {
-            "squad_members": "ussr_tank_03"
-          },
-          {
-            "squad_members": "ussr_tank_04"
-          },
-          {
-            "squad_members": "ussr_tank_05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "ussr_tank_01",
+            "ussr_tank_02",
+            "ussr_tank_03",
+            "ussr_tank_04",
+            "ussr_tank_05"
+          ]
+        }
+      },
+      {
         "name": "armada_decor_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-773.685,65.6949,-12458.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -773.685,
+            65.6949,
+            -12458.0
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "armada_decor_01"
-          },
-          {
-            "squad_members": "armada_decor_02"
-          },
-          {
-            "squad_members": "armada_decor_03"
-          },
-          {
-            "squad_members": "armada_decor_05"
-          },
-          {
-            "squad_members": "armada_decor_04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "armada_decor_01",
+            "armada_decor_02",
+            "armada_decor_03",
+            "armada_decor_05",
+            "armada_decor_04"
+          ]
+        }
+      },
+      {
         "name": "heli_decor_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2516.76,65.83,-8952.04]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2516.76,
+            65.83,
+            -8952.04
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "heli_decor_02"
-          },
-          {
-            "squad_members": "heli_decor_01"
-          }
-        ]
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "heli_decor_02",
+            "heli_decor_01"
+          ]
+        }
       }
-    },
-    {
-      "objectGroups": {
+    ],
+    "objectGroups": [
+      {
         "name": "helipad_usa",
         "tm": [
-          [0.94317,0.0,-0.332312],
-          [0.0,1.0,0.0],
-          [0.332312,0.0,0.94317],
-          [2569.85,59.881,-8468.65]
+          [
+            0.94317,
+            0.0,
+            -0.332312
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.332312,
+            0.0,
+            0.94317
+          ],
+          [
+            2569.85,
+            59.881,
+            -8468.65
+          ]
         ],
         "unit_class": "dynHelipad_beton_b_usa",
         "objLayer": 2,
@@ -2243,16 +2967,30 @@
           "army": 1,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "helipad_ussr",
         "tm": [
-          [0.94317,0.0,-0.332312],
-          [0.0,1.0,0.0],
-          [0.332312,0.0,0.94317],
-          [2569.85,59.85,-8468.65]
+          [
+            0.94317,
+            0.0,
+            -0.332312
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.332312,
+            0.0,
+            0.94317
+          ],
+          [
+            2569.85,
+            59.85,
+            -8468.65
+          ]
         ],
         "unit_class": "dynHelipad_beton_b_ussr",
         "objLayer": 2,
@@ -2260,16 +2998,30 @@
           "army": 1,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "airfield_decoration",
         "tm": [
-          [0.957941,0.000776405,-0.286966],
-          [-0.000104749,0.999997,0.00235589],
-          [0.286967,-0.00222675,0.957938],
-          [610.813,59.8999,-12828.8]
+          [
+            0.957941,
+            0.000776405,
+            -0.286966
+          ],
+          [
+            -0.000104749,
+            0.999997,
+            0.00235589
+          ],
+          [
+            0.286967,
+            -0.00222675,
+            0.957938
+          ],
+          [
+            610.813,
+            59.8999,
+            -12828.8
+          ]
         ],
         "unit_class": "dynaf_universal_1line_3000_a",
         "objLayer": 2,
@@ -2278,113 +3030,215 @@
           "active": true
         }
       }
-    },
-    {
-      "area_squad": {
-        "name": "helipad_spwn_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2548.43,36.0333,-8915.11]
+    ],
+    "area_squad": {
+      "name": "helipad_spwn_sq",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": [
-          {
-            "squad_members": "helipad_spwn_01"
-          },
-          {
-            "squad_members": "helipad_spwn_02"
-          }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2548.43,
+          36.0333,
+          -8915.11
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "helipad_spwn_01",
+          "helipad_spwn_02"
         ]
       }
     }
-  ],
+  },
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [160.579,0.0,165.082],
-        [0.0,230.3,0.0],
-        [-165.082,0.0,160.579],
-        [1059.39,-46.25,-10134.9]
+        [
+          160.579,
+          0.0,
+          165.082
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -165.082,
+          0.0,
+          160.579
+        ],
+        [
+          1059.39,
+          -46.25,
+          -10134.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [71.1684,0.0,219.027],
-        [0.0,230.3,0.0],
-        [-219.027,0.0,71.1684],
-        [1136.87,-46.25,-10027.3]
+        [
+          71.1684,
+          0.0,
+          219.027
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -219.027,
+          0.0,
+          71.1684
+        ],
+        [
+          1136.87,
+          -46.25,
+          -10027.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [-46.9424,0.0,-60.4042],
-        [0.0,76.5,0.0],
-        [60.4042,0.0,-46.9424],
-        [1113.12,-46.219,-9978.99]
+        [
+          -46.9424,
+          0.0,
+          -60.4042
+        ],
+        [
+          0.0,
+          76.5,
+          0.0
+        ],
+        [
+          60.4042,
+          0.0,
+          -46.9424
+        ],
+        [
+          1113.12,
+          -46.219,
+          -9978.99
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawn_shtora_tank": {
       "type": "Sphere",
       "tm": [
-        [-12.4091,0.0,1.5047],
-        [0.0,12.5,0.0],
-        [-1.5047,0.0,-12.4091],
-        [4135.2,40.9,-9680.9]
+        [
+          -12.4091,
+          0.0,
+          1.5047
+        ],
+        [
+          0.0,
+          12.5,
+          0.0
+        ],
+        [
+          -1.5047,
+          0.0,
+          -12.4091
+        ],
+        [
+          4135.2,
+          40.9,
+          -9680.9
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "helipad_spwn_01": {
       "type": "Sphere",
       "tm": [
-        [69.6375,0.0,-24.3824],
-        [0.0,73.7826,0.0],
-        [24.3824,0.0,69.6375],
-        [2497.6,62.2029,-8417.83]
+        [
+          69.6375,
+          0.0,
+          -24.3824
+        ],
+        [
+          0.0,
+          73.7826,
+          0.0
+        ],
+        [
+          24.3824,
+          0.0,
+          69.6375
+        ],
+        [
+          2497.6,
+          62.2029,
+          -8417.83
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "helipad_spwn_02": {
       "type": "Sphere",
       "tm": [
-        [69.6375,0.0,-24.3824],
-        [0.0,73.7826,0.0],
-        [24.3824,0.0,69.6375],
-        [2429.01,62.2029,-8394.06]
+        [
+          69.6375,
+          0.0,
+          -24.3824
+        ],
+        [
+          0.0,
+          73.7826,
+          0.0
+        ],
+        [
+          24.3824,
+          0.0,
+          69.6375
+        ],
+        [
+          2429.01,
+          62.2029,
+          -8394.06
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

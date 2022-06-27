@@ -18,9 +18,9 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -37,24 +37,20 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "varSetInt": [
-          {
-            "value": 0
-          },
-          {
-            "var": "to_randomizer"
-          },
-          {
-            "var": "to_prev_template"
-          }
-        ],
+        "varSetInt": {
+          "value": 0,
+          "var": [
+            "to_randomizer",
+            "to_prev_template"
+          ]
+        },
         "triggerEnable": {
           "target": "to_template_delay_start"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "to_template_delay_start": {
       "is_enabled": false,
@@ -69,13 +65,13 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "triggerEnable": {
           "target": "to_template_choosing"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "to_template_choosing": {
       "is_enabled": false,
@@ -98,64 +94,52 @@
           "var_value_other": "to_max_templates_to_launch"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "choosing random event"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "storing choosen template"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "starting templates"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "to_randomizer",
+          "from": 1,
+          "to_not_including": 10,
+          "var_to_not_including": "to_templates_quantity",
+          "check_prev_value": "to_prev_template"
         },
-        {
-          "varSetRandomInt": {
-            "var": "to_randomizer",
-            "from": 1,
-            "to_not_including": 10,
-            "var_to_not_including": "to_templates_quantity",
-            "check_prev_value": "to_prev_template"
-          }
+        "varSetInt": {
+          "value": 5,
+          "var": "to_prev_template",
+          "input_var": "to_randomizer"
         },
-        {
-          "varSetInt": {
-            "value": 5,
-            "var": "to_prev_template",
-            "input_var": "to_randomizer"
-          }
-        },
-        {
-          "triggerActivate": {
+        "triggerActivate": [
+          {
             "target": "to_template_01_lpt_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "to_template_02_bt_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "to_template_03_at_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "01 - lookup_plane": {
       "isCategory": true,
@@ -173,59 +157,47 @@
             "time": 5.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
-              "var_value": "to_randomizer",
-              "value": 1,
-              "comparasion_func": "equal"
-            }
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "to_randomizer",
+            "value": 1,
+            "comparasion_func": "equal"
           },
-          {
-            "varCompareBool": {
+          "varCompareBool": [
+            {
               "var_value": "lpt_is_launch_alowed",
               "value": true,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "lpt_is_template_active",
               "value": false,
               "comparasion_func": "equal"
             }
-          },
-          {
-            "triggerStatus": {
-              "status": "disabled",
-              "target": "to_template_01_lpt_end"
-            }
+          ],
+          "triggerStatus": {
+            "status": "disabled",
+            "target": "to_template_01_lpt_end"
           }
-        ],
-        "actions": [
-          {
-            "comment": {
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "naznachaem armiyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskaem starter shablona"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "lpt_army_both_zero"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lpt_army_both_zero"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "to_template_01_lpt_choose"
-            }
+          "triggerEnable": {
+            "target": "to_template_01_lpt_choose"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "to_template_01_lpt_choose": {
         "is_enabled": false,
@@ -240,50 +212,38 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "to_cur_launched_templates"
-            }
+        "conditions": {},
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "to_cur_launched_templates"
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "stavim flag, chto shablon zapustilsya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zadaem sluchajnoe vremya starta"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskaem sobytie"
             }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "lpt_is_template_active"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "lpt_is_template_active"
-            }
+          "varSetRandomInt": {
+            "var": "lpt_delay_timer",
+            "from": 10,
+            "to_not_including": 30
           },
-          {
-            "varSetRandomInt": {
-              "var": "lpt_delay_timer",
-              "from": 10,
-              "to_not_including": 30
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "lpt_start"
-            }
+          "triggerEnable": {
+            "target": "lpt_start"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "to_template_01_lpt_run": {
         "is_enabled": false,
@@ -298,7 +258,7 @@
             "time": 1.0
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "comment": {
             "value": "vklyuchaem proverku vyklyucheniya shablona"
@@ -307,7 +267,7 @@
             "target": "to_template_01_lpt_end"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "to_template_01_lpt_end": {
         "is_enabled": false,
@@ -339,7 +299,7 @@
             "var": "to_cur_launched_templates"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "02 - boombers": {
@@ -358,35 +318,29 @@
             "time": 5.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
-              "var_value": "to_randomizer",
-              "value": 2,
-              "comparasion_func": "equal"
-            }
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "to_randomizer",
+            "value": 2,
+            "comparasion_func": "equal"
           },
-          {
-            "varCompareBool": {
+          "varCompareBool": [
+            {
               "var_value": "bt_is_launch_alowed",
               "value": true,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "bt_is_template_active",
               "value": false,
               "comparasion_func": "equal"
             }
-          },
-          {
-            "triggerStatus": {
-              "status": "disabled",
-              "target": "to_template_02_bt_end"
-            }
+          ],
+          "triggerStatus": {
+            "status": "disabled",
+            "target": "to_template_02_bt_end"
           }
-        ],
+        },
         "actions": {
           "comment": {
             "value": "launching bombers template for both armies"
@@ -399,7 +353,7 @@
             "target": "to_template_02_bt_choose"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "to_template_02_bt_choose": {
         "is_enabled": false,
@@ -414,50 +368,38 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "to_cur_launched_templates"
-            }
+        "conditions": {},
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "to_cur_launched_templates"
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "setting flag that template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "setting random delay"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "start event"
             }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "bt_is_template_active"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "bt_is_template_active"
-            }
+          "varSetRandomInt": {
+            "var": "bt_delay_timer",
+            "from": 10,
+            "to_not_including": 30
           },
-          {
-            "varSetRandomInt": {
-              "var": "bt_delay_timer",
-              "from": 10,
-              "to_not_including": 30
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "bt_start"
-            }
+          "triggerEnable": {
+            "target": "bt_start"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "to_template_02_bt_run": {
         "is_enabled": false,
@@ -472,13 +414,13 @@
             "time": 1.0
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "triggerEnable": {
             "target": "to_template_02_bt_end"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "to_template_02_bt_end": {
         "is_enabled": false,
@@ -507,7 +449,7 @@
             "var": "to_cur_launched_templates"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "03 - assaults": {
@@ -526,35 +468,29 @@
             "time": 5.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
-              "var_value": "to_randomizer",
-              "value": 3,
-              "comparasion_func": "equal"
-            }
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "to_randomizer",
+            "value": 3,
+            "comparasion_func": "equal"
           },
-          {
-            "varCompareBool": {
+          "varCompareBool": [
+            {
               "var_value": "at_is_launch_alowed",
               "value": true,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "at_is_template_active",
               "value": false,
               "comparasion_func": "equal"
             }
-          },
-          {
-            "triggerStatus": {
-              "status": "disabled",
-              "target": "to_template_03_at_end"
-            }
+          ],
+          "triggerStatus": {
+            "status": "disabled",
+            "target": "to_template_03_at_end"
           }
-        ],
+        },
         "actions": {
           "comment": {
             "value": "launching assaults template for both armies"
@@ -567,7 +503,7 @@
             "target": "to_template_03_at_choose"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "to_template_03_at_choose": {
         "is_enabled": false,
@@ -582,50 +518,38 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "to_cur_launched_templates"
-            }
+        "conditions": {},
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "to_cur_launched_templates"
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "setting flag that template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "setting random delay"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "start event"
             }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "at_is_template_active"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "at_is_template_active"
-            }
+          "varSetRandomInt": {
+            "var": "at_assaults_delay_timer",
+            "from": 10,
+            "to_not_including": 30
           },
-          {
-            "varSetRandomInt": {
-              "var": "at_assaults_delay_timer",
-              "from": 10,
-              "to_not_including": 30
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "to_template_03_at_run"
-            }
+          "triggerEnable": {
+            "target": "to_template_03_at_run"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "to_template_03_at_run": {
         "is_enabled": false,
@@ -640,36 +564,28 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "setting game type"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "starting event"
             }
+          ],
+          "varSetString": {
+            "value": "jip",
+            "var": "at_assault_game_type"
           },
-          {
-            "varSetString": {
-              "value": "jip",
-              "var": "at_assault_game_type"
-            }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "at_start"
-              },
-              {
-                "target": "to_template_03_at_end"
-              }
+          "triggerEnable": {
+            "target": [
+              "at_start",
+              "to_template_03_at_end"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "to_template_03_at_end": {
         "is_enabled": false,
@@ -698,7 +614,7 @@
             "var": "to_cur_launched_templates"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     }
   },
@@ -722,32 +638,26 @@
     "to_delay_timer": 30,
     "to_prev_template": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

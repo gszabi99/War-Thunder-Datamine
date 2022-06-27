@@ -1,22 +1,20 @@
-[
-  {
-    "EditBox": {
-      "id": "search_edit_box",
-      "width": "fw",
-      "noMargin": "yes",
-      "edit-hint": "#contacts/search_placeholder",
-      "max-len": "40",
-      "text": "",
-      "on_activate": "onSearchEditBoxActivate",
-      "on_cancel_edit": "onSearchEditBoxCancelEdit",
-      "on_change_value": "onSearchEditBoxChangeValue",
-      "on_set_focus": "onSearchEditBoxFocusChanged",
-      "on_mouse_enter": "onSearchEditBoxMouseChanged",
-      "on_mouse_leave": "onSearchEditBoxMouseChanged"
-    }
+{
+  "EditBox": {
+    "id": "search_edit_box",
+    "width": "fw",
+    "noMargin": "yes",
+    "edit-hint": "#contacts/search_placeholder",
+    "max-len": "40",
+    "text": "",
+    "on_activate": "onSearchEditBoxActivate",
+    "on_cancel_edit": "onSearchEditBoxCancelEdit",
+    "on_change_value": "onSearchEditBoxChangeValue",
+    "on_set_focus": "onSearchEditBoxFocusChanged",
+    "on_mouse_enter": "onSearchEditBoxMouseChanged",
+    "on_mouse_leave": "onSearchEditBoxMouseChanged"
   },
-  {
-    "tdiv": {
+  "tdiv": [
+    {
       "id": "search_box_result",
       "min-width": "pw",
       "position": "absolute",
@@ -32,24 +30,14 @@
         "tinyFont": "yes",
         "text": "#shop/search/hint"
       }
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "id": "search_buttons"
-      },
-      {
-        "pos": "0, ph/2-h/2"
-      },
-      {
-        "position": "relative"
-      },
-      {
-        "display": "hide"
-      },
-      {
-        "Button_text": {
+    },
+    {
+      "id": "search_buttons",
+      "pos": "0, ph/2-h/2",
+      "position": "relative",
+      "display": "hide",
+      "Button_text": [
+        {
           "id": "search_btn_close",
           "pos": "0, ph/2-h/2",
           "position": "relative",
@@ -62,10 +50,8 @@
           "img": {
             "background-image": "#ui/gameuiskin#btn_close.svg"
           }
-        }
-      },
-      {
-        "Button_text": {
+        },
+        {
           "id": "search_btn_start",
           "pos": "0, ph/2-h/2",
           "position": "relative",
@@ -79,21 +65,17 @@
             "background-image": "#ui/gameuiskin#btn_search.svg"
           }
         }
-      }
-    ]
-  },
-  {
-    "dummy": {
-      "on_click": "onAccesskeyActivateSearch",
-      "behaviour": "accesskey",
-      "accessKey": "Ctrl F"
+      ]
     }
+  ],
+  "dummy": {
+    "on_click": "onAccesskeyActivateSearch",
+    "behaviour": "accesskey",
+    "accessKey": "Ctrl F"
   },
-  {
-    "timer": {
-      "id": "search_update_timer",
-      "timer_handler_func": "onTimer",
-      "timer_interval_msec": "100"
-    }
+  "timer": {
+    "id": "search_update_timer",
+    "timer_handler_func": "onTimer",
+    "timer_interval_msec": "100"
   }
-]
+}

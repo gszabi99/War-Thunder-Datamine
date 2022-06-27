@@ -6,7 +6,7 @@
     "position": "root",
     "btnName": "B",
     "on_click": "goBack",
-    "blur": [],
+    "blur": {},
     "blur_foreground": {
       "isRoot": "yes"
     }
@@ -47,42 +47,32 @@
         "on_hold_stop": "::gcb.delayedTooltipListHoldStop"
       }
     },
-    "frame": [
-      {
-        "id": "choose_popup_menu"
+    "frame": {
+      "id": "choose_popup_menu",
+      "position": "relative",
+      "activeText": {
+        "id": "choose_options_header",
+        "width": "pw",
+        "text": "#filter_option/choose_units_filter_title",
+        "position": "relative",
+        "pos": "50%pw-50%w, 0",
+        "margin": "5*@sf/@pf_outdated"
       },
-      {
-        "position": "relative"
+      "div": {
+        "id": "choose_options_nest",
+        "flow": "vertical",
+        "margin-bottom": "0.5@slotBtnIco"
       },
-      {
-        "activeText": {
-          "id": "choose_options_header",
-          "width": "pw",
-          "text": "#filter_option/choose_units_filter_title",
-          "position": "relative",
-          "pos": "50%pw-50%w, 0",
-          "margin": "5*@sf/@pf_outdated"
-        }
-      },
-      {
-        "div": {
-          "id": "choose_options_nest",
-          "flow": "vertical",
-          "margin-bottom": "0.5@slotBtnIco"
-        }
-      },
-      {
-        "textareaNoTab": {
+      "textareaNoTab": [
+        {
           "id": "filtered_units_text",
           "position": "relative",
           "pos": "pw-w, 0",
           "margin": "0, 0.5@slotBtnIco",
           "smallFont": "yes",
           "display": "hide"
-        }
-      },
-      {
-        "textareaNoTab": {
+        },
+        {
           "id": "units_group_text",
           "position": "relative",
           "pos": "pw-w, 0",
@@ -90,27 +80,23 @@
           "smallFont": "yes",
           "display": "hide"
         }
+      ],
+      "tdiv": {
+        "id": "legend_nest",
+        "margin": "0, 0.5@slotBtnIco",
+        "display": "hide"
       },
-      {
-        "tdiv": {
-          "id": "legend_nest",
-          "margin": "0, 0.5@slotBtnIco",
-          "display": "hide"
-        }
-      },
-      {
-        "Button_text": {
-          "id": "btn_emptyCrew",
-          "position": "relative",
-          "pos": "pw-w, 0",
-          "text": "#shop/emptyCrew",
-          "_on_click": "onEmptyCrew",
-          "btnName": "Y",
-          "enable": "no",
-          "display": "hide",
-          "ButtonImg": []
-        }
+      "Button_text": {
+        "id": "btn_emptyCrew",
+        "position": "relative",
+        "pos": "pw-w, 0",
+        "text": "#shop/emptyCrew",
+        "_on_click": "onEmptyCrew",
+        "btnName": "Y",
+        "enable": "no",
+        "display": "hide",
+        "ButtonImg": {}
       }
-    ]
+    }
   }
 }

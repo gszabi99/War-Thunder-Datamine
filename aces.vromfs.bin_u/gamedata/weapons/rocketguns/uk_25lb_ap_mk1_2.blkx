@@ -24,7 +24,11 @@
     "spawnExplosionWreckage": false,
     "distanceFuse": false,
     "distFromCmToStab": 0.01,
-    "WdK": [0.1,0.1,0.1],
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
     "dragCx": 0.016,
     "CxK": 1.2,
     "useStartSpeed": true,
@@ -48,7 +52,11 @@
     "stuckingAngle": 45.0,
     "bulletType": "ap_tank",
     "slopeEffectPreset": "ap",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "shellAnimation": "video/shells_animations/aphe.ivf",
     "fireEffect": "rocket_fire_light_multiple",
     "smokeEffect": "",
@@ -61,44 +69,77 @@
     "explosionPatchRadius": 3.4,
     "maxDeltaAngle": 3.5,
     "armorpower": {
-      "ArmorPower0m": [100.0,10.0],
-      "ArmorPower500m": [92.0,500.0],
-      "ArmorPower2000m": [68.0,2000.0],
-      "ArmorPower7000m": [33.0,7000.0]
+      "ArmorPower0m": [
+        100.0,
+        10.0
+      ],
+      "ArmorPower500m": [
+        92.0,
+        500.0
+      ],
+      "ArmorPower2000m": [
+        68.0,
+        2000.0
+      ],
+      "ArmorPower7000m": [
+        33.0,
+        7000.0
+      ]
     },
     "hitpower": {
-      "HitPower0m": [1.0,500.0],
-      "HitPower10000m": [1.0,10000.0]
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower10000m": [
+        1.0,
+        10000.0
+      ]
     },
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.2]
-      },
-      {
-        "mod2": [20.0,0.4]
-      },
-      {
-        "mod3": [30.0,0.6]
-      },
-      {
-        "mod3": [45.0,0.9]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.2
+      ],
+      "mod2": [
+        20.0,
+        0.4
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
+      ]
+    },
     "collisions": {
       "steel": {
         "fx": "hit_19_27mm_metal_he",
-        "fxScale": [4.0,4.2]
+        "fxScale": [
+          4.0,
+          4.2
+        ]
       },
       "armor": {
         "fx": "hit_19_27mm_metal_he",
-        "fxScale": [4.0,4.2]
+        "fxScale": [
+          4.0,
+          4.2
+        ]
       },
       "buildings": {
         "fx": "hit_59_80mm_metal_ap"
       },
       "wood": {
         "fx": "hit_19_27mm_metal_he",
-        "fxScale": [4.0,4.2]
+        "fxScale": [
+          4.0,
+          4.2
+        ]
       }
     }
   }

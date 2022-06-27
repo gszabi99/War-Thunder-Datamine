@@ -30,34 +30,26 @@
     "input-transparent": "yes",
     "padding": "20",
     "size": "sw, 0.4*@scrn_tgt",
-    "tdiv": [
-      {
-        "pos": "50%pw-50%w, 50%ph-50%h"
-      },
-      {
-        "position": "absolute"
-      },
-      {
-        "activeText": {
+    "tdiv": {
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "position": "absolute",
+      "activeText": [
+        {
           "id": "press_key",
           "left": "(sw)/2",
           "style": "font:@fontMedium;",
           "text": "#hotkeys/msg/press_a_key"
-        }
-      },
-      {
-        "activeText": {
+        },
+        {
           "id": "txt_current_button",
           "left": "50%pw-50%w",
           "position": "relative",
           "style": "font:@fontMedium;",
           "text": "?"
         }
-      },
-      {
-        "_newline": []
-      }
-    ]
+      ],
+      "_newline": {}
+    }
   },
   "navBar": {
     "navRight": {
@@ -66,7 +58,7 @@
         "text": "#msgbox/btn_cancel",
         "_on_click": "onCancelButtonInput",
         "btnName": "start",
-        "ButtonImg": []
+        "ButtonImg": {}
       }
     }
   }

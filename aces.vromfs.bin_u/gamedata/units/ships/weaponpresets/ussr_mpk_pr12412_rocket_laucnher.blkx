@@ -1,77 +1,40 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      },
-      {
-        "node": "depth_charge_07"
-      },
-      {
-        "node": "depth_charge_08"
-      },
-      {
-        "node": "depth_charge_09"
-      },
-      {
-        "node": "depth_charge_10"
-      },
-      {
-        "node": "depth_charge_11"
-      },
-      {
-        "node": "depth_charge_12"
-      },
-      {
-        "node": "torpedo_01"
-      },
-      {
-        "node": "torpedo_02"
-      },
-      {
-        "node": "torpedo_03"
-      },
-      {
-        "node": "torpedo_04"
-      },
-      {
-        "node": "ammo_turret_02"
-      },
-      {
-        "node": "ammo_turret_03"
-      },
-      {
-        "node": "ammo_turret_04"
-      },
-      {
-        "node": "ammo_turret_15"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07",
+      "depth_charge_08",
+      "depth_charge_09",
+      "depth_charge_10",
+      "depth_charge_11",
+      "depth_charge_12",
+      "torpedo_01",
+      "torpedo_02",
+      "torpedo_03",
+      "torpedo_04",
+      "ammo_turret_02",
+      "ammo_turret_03",
+      "ammo_turret_04",
+      "ammo_turret_15"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner2",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb12.blk",
       "weaponType": "rockets",
       "useEmitter": true,
       "emitter": "bone_rocket_10",
-      "emitterGenRange": [10.0,14.0],
+      "emitterGenRange": [
+        10,
+        14
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "barrelDP": "auxiliary_caliber_gun_01_dm",
       "breechDP": "auxiliary_caliber_gun_01_dm",
@@ -102,26 +65,53 @@
         "gunnerDm": "auxiliary_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [-180.0,33.0],
-        "pitch": [-0.0,51.0]
+        "yaw": [
+          -180.0,
+          33.0
+        ],
+        "pitch": [
+          -0.0,
+          51.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-160.0,5.0,51.0],
-        "lim2": [-160.0,-20.0,0.0,51.0],
-        "lim3": [-20.0,12.0,5.0,51.0],
-        "lim4": [12.0,33.0,25.0,51.0]
+        "lim1": [
+          -180.0,
+          -160.0,
+          5.0,
+          51.0
+        ],
+        "lim2": [
+          -160.0,
+          -20.0,
+          0.0,
+          51.0
+        ],
+        "lim3": [
+          -20.0,
+          12.0,
+          5.0,
+          51.0
+        ],
+        "lim4": [
+          12.0,
+          33.0,
+          25.0,
+          51.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb12.blk",
       "weaponType": "rockets",
       "useEmitter": true,
       "emitter": "bone_rocket_05",
-      "emitterGenRange": [5.0,9.0],
+      "emitterGenRange": [
+        5,
+        9
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "barrelDP": "auxiliary_caliber_gun_02_dm",
       "breechDP": "auxiliary_caliber_gun_02_dm",
@@ -152,15 +142,41 @@
         "gunnerDm": "auxiliary_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-33.0,180.0],
-        "pitch": [-0.0,51.0]
+        "yaw": [
+          -33.0,
+          180.0
+        ],
+        "pitch": [
+          -0.0,
+          51.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-33.0,-12.0,25.0,51.0],
-        "lim2": [-12.0,20.0,5.0,51.0],
-        "lim3": [20.0,160.0,0.0,51.0],
-        "lim4": [160.0,180.0,5.0,51.0]
+        "lim1": [
+          -33.0,
+          -12.0,
+          25.0,
+          51.0
+        ],
+        "lim2": [
+          -12.0,
+          20.0,
+          5.0,
+          51.0
+        ],
+        "lim3": [
+          20.0,
+          160.0,
+          0.0,
+          51.0
+        ],
+        "lim4": [
+          160.0,
+          180.0,
+          5.0,
+          51.0
+        ]
       }
     }
-  }
-]
+  ]
+}

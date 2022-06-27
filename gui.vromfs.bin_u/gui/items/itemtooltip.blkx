@@ -1,64 +1,52 @@
 {
-  "tdiv": [
-    {
-      "width": "@itemInfoWidth"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "tdiv": {
-        "width": "pw",
-        "textAreaCentered": {
-          "id": "item_name",
-          "max-width": "pw",
-          "overlayTextColor": "active",
-          "pos": "50%pw-50%w, 50%ph-50%h",
-          "position": "relative"
-        },
-        "cardImg": {
-          "id": "item_type_help",
-          "margin-left": "5@dp",
-          "type": "tiny",
-          "background-image": "#ui/gameuiskin#btn_help.svg",
-          "tooltip": "",
-          "display": "hide"
-        }
-      }
-    },
-    {
+  "tdiv": {
+    "width": "@itemInfoWidth",
+    "flow": "vertical",
+    "tdiv": {
+      "width": "pw",
       "textAreaCentered": {
-        "id": "item_desc_under_title",
+        "id": "item_name",
         "max-width": "pw",
         "overlayTextColor": "active",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "padding-bottom": "1@blockInterval"
+        "pos": "50%pw-50%w, 50%ph-50%h",
+        "position": "relative"
+      },
+      "cardImg": {
+        "id": "item_type_help",
+        "margin-left": "5@dp",
+        "type": "tiny",
+        "background-image": "#ui/gameuiskin#btn_help.svg",
+        "tooltip": "",
+        "display": "hide"
       }
     },
-    {
-      "itemIconBlock": {
-        "id": "item_icon",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "doubleSize": "yes",
-        "wideSize": "no",
-        "overflow": "hidden",
-        "margin-bottom": "1@blockInterval"
-      }
+    "textAreaCentered": {
+      "id": "item_desc_under_title",
+      "max-width": "pw",
+      "overlayTextColor": "active",
+      "pos": "50%pw-50%w, 0",
+      "position": "relative",
+      "padding-bottom": "1@blockInterval"
     },
-    {
-      "textareaNoTab": {
+    "itemIconBlock": {
+      "id": "item_icon",
+      "pos": "50%pw-50%w, 0",
+      "position": "relative",
+      "doubleSize": "yes",
+      "wideSize": "no",
+      "overflow": "hidden",
+      "margin-bottom": "1@blockInterval"
+    },
+    "textareaNoTab": [
+      {
         "id": "item_desc",
         "position": "relative",
         "width": "pw",
         "font-bold": "@fontMedium",
         "text": "",
         "hideEmptyText": "yes"
-      }
-    },
-    {
-      "textareaNoTab": {
+      },
+      {
         "id": "item_desc_under_div",
         "pos": "50%pw-50%w, 12@sf/@pf",
         "position": "relative",
@@ -66,64 +54,44 @@
         "smallFont": "yes",
         "hideEmptyText": "yes"
       }
-    },
-    {
-      "div": {
+    ],
+    "div": [
+      {
         "id": "item_desc_div",
         "width": "pw",
         "flow": "vertical"
-      }
-    },
-    {
-      "div": [
-        {
-          "id": "item_additional_desc_table"
-        },
-        {
-          "width": "pw"
-        },
-        {
-          "pos": "50%pw-50%w, 0"
-        },
-        {
-          "position": "relative"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "margin-top": "0.01@scrn_tgt"
-        },
-        {
-          "textareaNoTab": {
+      },
+      {
+        "id": "item_additional_desc_table",
+        "width": "pw",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "flow": "vertical",
+        "margin-top": "0.01@scrn_tgt",
+        "textareaNoTab": [
+          {
             "id": "item_desc_above_table",
             "width": "pw",
             "margin-bottom": "0.005*@scrn_tgt",
             "text": ""
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "id": "item_desc_under_table",
             "width": "pw",
             "font-bold": "@fontMedium",
             "text": ""
           }
-        },
-        {
-          "div": {
-            "id": "item_table_container",
-            "width": "pw"
-          }
+        ],
+        "div": {
+          "id": "item_table_container",
+          "width": "pw"
         }
-      ]
-    },
-    {
-      "timer": {
-        "id": "update_timer",
-        "timer_handler_func": "onTimer",
-        "timer_interval_msec": "1000"
       }
+    ],
+    "timer": {
+      "id": "update_timer",
+      "timer_handler_func": "onTimer",
+      "timer_interval_msec": "1000"
     }
-  ]
+  }
 }

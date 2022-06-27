@@ -18,87 +18,61 @@
     }
   },
   "scanPatterns": {
-    "lock": [
-      {
-        "type": "cone"
-      },
-      {
-        "period": 0.2
-      },
-      {
-        "width": 0.01
-      },
-      {
-        "azimuthLimits": [-115.0,115.0]
-      },
-      {
-        "elevationLimits": [-50.0,25.0]
-      },
-      {
-        "yawStabLimit": 180.0
-      },
-      {
-        "pitchStabLimit": 60.0
-      },
-      {
-        "rollStabLimit": 45.0
-      },
-      {
-        "rollStabLimit": 45.0
-      }
-    ],
-    "losLock": [
-      {
-        "type": "cone"
-      },
-      {
-        "period": 0.2
-      },
-      {
-        "width": 0.01
-      },
-      {
-        "azimuthLimits": [-115.0,115.0]
-      },
-      {
-        "elevationLimits": [-50.0,25.0]
-      },
-      {
-        "yawStabLimit": 180.0
-      },
-      {
-        "pitchStabLimit": 60.0
-      },
-      {
-        "rollStabLimit": 45.0
-      },
-      {
-        "rollStabLimit": 45.0
-      }
-    ],
-    "track": [
-      {
-        "type": "no"
-      },
-      {
-        "azimuthLimits": [-115.0,115.0]
-      },
-      {
-        "elevationLimits": [-50.0,25.0]
-      },
-      {
-        "yawStabLimit": 180.0
-      },
-      {
-        "pitchStabLimit": 60.0
-      },
-      {
-        "rollStabLimit": 45.0
-      },
-      {
-        "rollStabLimit": 45.0
-      }
-    ]
+    "lock": {
+      "type": "cone",
+      "period": 0.2,
+      "width": 0.01,
+      "azimuthLimits": [
+        -115.0,
+        115.0
+      ],
+      "elevationLimits": [
+        -50.0,
+        25.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "rollStabLimit": [
+        45.0,
+        45.0
+      ]
+    },
+    "losLock": {
+      "type": "cone",
+      "period": 0.2,
+      "width": 0.01,
+      "azimuthLimits": [
+        -115.0,
+        115.0
+      ],
+      "elevationLimits": [
+        -50.0,
+        25.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "rollStabLimit": [
+        45.0,
+        45.0
+      ]
+    },
+    "track": {
+      "type": "no",
+      "azimuthLimits": [
+        -115.0,
+        115.0
+      ],
+      "elevationLimits": [
+        -50.0,
+        25.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "rollStabLimit": [
+        45.0,
+        45.0
+      ]
+    }
   },
   "signals": {
     "track": {
@@ -122,71 +96,60 @@
     "main": {
       "stateInit": "init",
       "actionsTemplates": {
-        "init": [
-          {
-            "setEnabled": {
-              "value": false
-            }
+        "init": {
+          "setEnabled": {
+            "value": false
           },
-          {
-            "setTargetDesignationRange": []
-          },
-          {
-            "setTargetDesignationRange": {
-              "azimuthRange": [-115.0,115.0],
-              "elevationRange": [-50.0,25.0],
-              "distanceRange": [0.0,15000.0]
+          "setTargetDesignationRange": [
+            {},
+            {
+              "azimuthRange": [
+                -115.0,
+                115.0
+              ],
+              "elevationRange": [
+                -50.0,
+                25.0
+              ],
+              "distanceRange": [
+                0.0,
+                15000.0
+              ]
             }
+          ],
+          "setTransiver": {
+            "transiver": "track"
           },
-          {
-            "setTransiver": {
-              "transiver": "track"
-            }
-          },
-          {
-            "setSignal": {
-              "signal": "track"
-            }
+          "setSignal": {
+            "signal": "track"
           }
-        ],
-        "setStandbyMode": [
-          {
-            "setModeName": {
-              "name": "standby"
-            }
+        },
+        "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
           },
-          {
-            "setEnabled": {
-              "value": false
-            }
+          "setEnabled": {
+            "value": false
           },
-          {
-            "setScanPattern": {
-              "scanPattern": "lock"
-            }
+          "setScanPattern": {
+            "scanPattern": "lock"
           },
-          {
-            "setCenterAzimuth": {
-              "source": "constant",
-              "value": 0.0
-            }
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
           },
-          {
-            "clearTargetsOfInterest": []
-          },
-          {
-            "setFsmActive": {
+          "clearTargetsOfInterest": {},
+          "setFsmActive": [
+            {
               "fsm": "lock",
               "active": false
-            }
-          },
-          {
-            "setFsmActive": {
+            },
+            {
               "fsm": "track",
               "active": false
             }
-          }
-        ],
+          ]
+        },
         "setLockMode": {
           "setModeName": {
             "name": "acquisition"
@@ -201,11 +164,11 @@
           "setScanPattern": {
             "scanPattern": "lock"
           },
-          "resetScanPhase": [],
+          "resetScanPhase": {},
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
-          "clearTargetsOfInterest": [],
+          "clearTargetsOfInterest": {},
           "setFsmActive": {
             "fsm": "lock",
             "active": true
@@ -225,8 +188,8 @@
           "setScanPattern": {
             "scanPattern": "losLock"
           },
-          "resetScanPhase": [],
-          "clearTargetsOfInterest": [],
+          "resetScanPhase": {},
+          "clearTargetsOfInterest": {},
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
@@ -284,10 +247,10 @@
           "setScanPattern": {
             "scanPattern": "track"
           },
-          "clearTargetsOfInterest": [],
-          "addTargetOfInterest": [],
-          "setLastTargetOfInterestActive": [],
-          "updateActiveTargetOfInterest": [],
+          "clearTargetsOfInterest": {},
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -314,8 +277,8 @@
           "event": "init",
           "stateTo": "standby",
           "actions": {
-            "init": [],
-            "setStandbyMode": []
+            "init": {},
+            "setStandbyMode": {}
           }
         },
         "checkLockType0": {
@@ -333,7 +296,7 @@
           "event": "designationTypeEquals",
           "stateTo": "lock",
           "actions": {
-            "setLockMode": []
+            "setLockMode": {}
           }
         },
         "checkLockType1": {
@@ -351,8 +314,8 @@
           "event": "designationTypeEquals",
           "stateTo": "losLock",
           "actions": {
-            "setLosVisualPreLockMode": [],
-            "setLosLockMode": []
+            "setLosVisualPreLockMode": {},
+            "setLosLockMode": {}
           }
         },
         "checkLockType2": {
@@ -370,8 +333,8 @@
           "event": "designationTypeEquals",
           "stateTo": "visualLock",
           "actions": {
-            "setLosVisualPreLockMode": [],
-            "setVisualLockMode": []
+            "setLosVisualPreLockMode": {},
+            "setVisualLockMode": {}
           }
         },
         "finishLockTypeCheck": {
@@ -379,65 +342,45 @@
           "event": "designationTypeNotEquals",
           "stateTo": "standby"
         },
-        "track": [
-          {
-            "stateFrom": "lock"
-          },
-          {
-            "stateFrom": "losLock"
-          },
-          {
-            "stateFrom": "visualLock"
-          },
-          {
-            "event": "targetDetected"
-          },
-          {
-            "stateTo": "track"
-          },
-          {
-            "actions": {
-              "setTrackMode": [],
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              }
+        "track": {
+          "stateFrom": [
+            "lock",
+            "losLock",
+            "visualLock"
+          ],
+          "event": "targetDetected",
+          "stateTo": "track",
+          "actions": {
+            "setTrackMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
             }
           }
-        ],
-        "failedLock": [
-          {
-            "stateFrom": "lock"
-          },
-          {
-            "stateFrom": "losLock"
-          },
-          {
-            "stateFrom": "visualLock"
-          },
-          {
-            "event": "scanFinished"
-          },
-          {
-            "stateTo": "standby"
-          },
-          {
-            "actions": {
-              "setStandbyMode": [],
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              }
+        },
+        "failedLock": {
+          "stateFrom": [
+            "lock",
+            "losLock",
+            "visualLock"
+          ],
+          "event": "scanFinished",
+          "stateTo": "standby",
+          "actions": {
+            "setStandbyMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
             }
           }
-        ],
+        },
         "finishedTrack": {
           "stateFrom": "track",
           "event": "targetsOfInterestCleanup",
           "stateTo": "standby",
           "command": "designateTarget",
           "actions": {
-            "setStandbyMode": [],
+            "setStandbyMode": {},
             "setFsmActive": {
               "fsm": "track",
               "active": false
@@ -452,13 +395,13 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": []
+            "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         }
       }
@@ -469,13 +412,13 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         },
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": [],
+            "updateActiveTargetOfInterest": {},
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -495,7 +438,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
+            "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 1.0
             },

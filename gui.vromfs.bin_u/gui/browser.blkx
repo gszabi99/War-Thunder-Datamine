@@ -1,8 +1,8 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "id": "wnd_frame",
       "size": "1@rw, 1@rh",
@@ -44,88 +44,76 @@
             "text": "#browser/open_external",
             "_on_click": "browserForceExternal",
             "btnName": "LB",
-            "ButtonImg": []
+            "ButtonImg": {}
           }
         },
-        "navRight": [
-          {
-            "Button_text": {
+        "navRight": {
+          "Button_text": [
+            {
               "id": "btn_browser_back",
               "text": "#mainmenu/btnBack",
               "_on_click": "browserGoBack",
               "btnName": "X",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "btn_browser_reload",
               "text": "#mainmenu/btnRefresh",
               "_on_click": "onBrowserBtnReload",
               "btnName": "Y",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "btn_back",
               "text": "#mainmenu/btnQuit",
               "style": "_on_click='browserCloseAndUpdateEntitlements'",
               "btnName": "B",
-              "ButtonImg": []
+              "ButtonImg": {}
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
   "tdiv": {
     "position": "root",
     "pos": "@bw +1@framePadding, sh-h -1@blockInterval -@bh -1@frameFooterHeight",
-    "voiceChatWidgetNest": [
-      {
-        "isClanOnly": "no"
-      },
-      {
-        "blockSeparator": {
+    "voiceChatWidgetNest": {
+      "isClanOnly": "no",
+      "blockSeparator": [
+        {
+          "display": "hide"
+        },
+        {
           "display": "hide"
         }
-      },
-      {
-        "blockSeparator": {
-          "display": "hide"
-        }
-      },
-      {
-        "emptyVoiceChat": {
-          "tooltip": "#clan/voice_chat/widget",
-          "usertalk": {
-            "id": "voice_chat_no_activity",
-            "type": "noTalk",
-            "fade": "in",
-            "height-end": "1",
-            "_size-timer": "0",
-            "img": {
-              "color-factor": "255",
-              "inacive": "yes",
-              "position": "relative"
-            },
-            "activeText": {
-              "text": "...",
-              "color-factor": "255",
-              "position": "relative"
-            }
+      ],
+      "emptyVoiceChat": {
+        "tooltip": "#clan/voice_chat/widget",
+        "usertalk": {
+          "id": "voice_chat_no_activity",
+          "type": "noTalk",
+          "fade": "in",
+          "height-end": "1",
+          "_size-timer": "0",
+          "img": {
+            "color-factor": "255",
+            "inacive": "yes",
+            "position": "relative"
+          },
+          "activeText": {
+            "text": "...",
+            "color-factor": "255",
+            "position": "relative"
           }
         }
       },
-      {
-        "voiceChatWidgetContainer": {
-          "isSmall": "no",
-          "voiceChatWidget": {
-            "value": "{\"viewId\": \"VOICE_CHAT\"}"
-          }
+      "voiceChatWidgetContainer": {
+        "isSmall": "no",
+        "voiceChatWidget": {
+          "value": "{\"viewId\": \"VOICE_CHAT\"}"
         }
       }
-    ]
+    }
   }
 }

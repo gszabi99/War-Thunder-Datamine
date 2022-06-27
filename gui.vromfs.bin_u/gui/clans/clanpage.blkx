@@ -1,20 +1,14 @@
-[
-  {
-    "id": "clan_container"
-  },
-  {
-    "flow": "h-flow"
-  },
-  {
-    "tdiv": {
+{
+  "id": "clan_container",
+  "flow": "h-flow",
+  "tdiv": [
+    {
       "width": "pw",
       "flow": "h-flow",
-      "tdiv": [
-        {
-          "width": "pw"
-        },
-        {
-          "tdiv": {
+      "tdiv": {
+        "width": "pw",
+        "tdiv": [
+          {
             "width": "0.55pw",
             "padding": "1@blockInterval",
             "margin-right": "1@blockInterval",
@@ -31,74 +25,62 @@
             "tdiv": {
               "width": "fw",
               "flow": "h-flow",
-              "tdiv": [
-                {
-                  "padding": "1@blockInterval, 0"
-                },
-                {
-                  "width": "pw"
-                },
-                {
-                  "flow": "vertical"
-                },
-                {
+              "tdiv": {
+                "padding": "1@blockInterval, 0",
+                "width": "pw",
+                "flow": "vertical",
+                "tdiv": {
+                  "width": "pw",
                   "tdiv": {
-                    "width": "pw",
-                    "tdiv": {
-                      "id": "nest_lock_clan_req",
-                      "pos": "0, ph/2-h/2",
-                      "position": "relative",
-                      "clan_locked": "no",
-                      "Button_text": {
-                        "id": "btn_lock_clan_req",
-                        "class": "image",
-                        "tooltip": "#clan/open_close_new_req",
-                        "display": "hide",
-                        "on_click": "onLockNewReqests",
-                        "btnName": "L3",
-                        "img": [],
-                        "ButtonImg": []
-                      },
-                      "img": {
-                        "id": "img_lock_clan_req",
-                        "size": "@unlockStageIconSize, @unlockStageIconSize",
-                        "background-svg-size": "@unlockStageIconSize, @unlockStageIconSize",
-                        "background-color": "@white",
-                        "display": "hide",
-                        "tooltip": "#clan/closed_for_new_req"
-                      }
+                    "id": "nest_lock_clan_req",
+                    "pos": "0, ph/2-h/2",
+                    "position": "relative",
+                    "clan_locked": "no",
+                    "Button_text": {
+                      "id": "btn_lock_clan_req",
+                      "class": "image",
+                      "tooltip": "#clan/open_close_new_req",
+                      "display": "hide",
+                      "on_click": "onLockNewReqests",
+                      "btnName": "L3",
+                      "img": {},
+                      "ButtonImg": {}
                     },
-                    "textareaNoTab": {
-                      "id": "clan-title",
-                      "pos": "0, ph/2-h/2",
-                      "position": "relative",
-                      "overlayTextColor": "active",
-                      "mediumFont": "yes",
-                      "text": "",
-                      "hideEmptyText": "yes",
-                      "overflow-y": "none",
-                      "pare-text": "yes",
-                      "max-width": "pw",
-                      "max-height": "0.2@sf"
+                    "img": {
+                      "id": "img_lock_clan_req",
+                      "size": "@unlockStageIconSize, @unlockStageIconSize",
+                      "background-svg-size": "@unlockStageIconSize, @unlockStageIconSize",
+                      "background-color": "@white",
+                      "display": "hide",
+                      "tooltip": "#clan/closed_for_new_req"
                     }
+                  },
+                  "textareaNoTab": {
+                    "id": "clan-title",
+                    "pos": "0, ph/2-h/2",
+                    "position": "relative",
+                    "overlayTextColor": "active",
+                    "mediumFont": "yes",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "overflow-y": "none",
+                    "pare-text": "yes",
+                    "max-width": "pw",
+                    "max-height": "0.2@sf"
                   }
                 },
-                {
-                  "textareaNoTab": {
+                "textareaNoTab": [
+                  {
                     "id": "clan-memberCount-date",
                     "text": ""
-                  }
-                },
-                {
-                  "textareaNoTab": {
+                  },
+                  {
                     "id": "clan-prevChanges",
                     "smallFont": "yes",
                     "hideEmptyText": "yes",
                     "text": ""
-                  }
-                },
-                {
-                  "textareaNoTab": {
+                  },
+                  {
                     "id": "clan-region",
                     "smallFont": "yes",
                     "width": "pw",
@@ -106,22 +88,18 @@
                     "overflow-y": "auto",
                     "hideEmptyText": "yes",
                     "text": ""
-                  }
-                },
-                {
-                  "textareaNoTab": {
+                  },
+                  {
                     "id": "clan-membershipReq",
                     "smallFont": "yes",
                     "hideEmptyText": "yes",
                     "text": ""
                   }
-                }
-              ]
+                ]
+              }
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "clan_main_stats",
             "width": "fw",
             "flow": "h-flow",
@@ -140,8 +118,8 @@
               "class": "schemeTable"
             }
           }
-        }
-      ],
+        ]
+      },
       "textareaNoTab": {
         "id": "clan-motto",
         "width": "pw",
@@ -164,17 +142,13 @@
         "overflow-y": "auto",
         "text": ""
       }
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "size": "pw, @clanMedalSizeMin + 2@buttonMargin",
-      "tdiv": [
-        {
-          "position": "absolute"
-        },
-        {
-          "div": {
+      "tdiv": {
+        "position": "absolute",
+        "div": [
+          {
             "total-input-transparent": "yes",
             "tooltip": "#clan/squadron_rating",
             "cardImg": {
@@ -192,10 +166,8 @@
               "removeParagraphIndent": "yes",
               "input-transparent": "yes"
             }
-          }
-        },
-        {
-          "div": {
+          },
+          {
             "total-input-transparent": "yes",
             "tooltip": "#clan/squadron_activity",
             "cardImg": {
@@ -215,8 +187,8 @@
               "display": "hide"
             }
           }
-        }
-      ],
+        ]
+      },
       "HorizontalListBox": {
         "id": "modes_list",
         "type": "transparent",
@@ -239,251 +211,191 @@
         "skip-navigation": "yes",
         "display": "hide"
       }
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "id": "lb_table_nest",
       "size": "pw, fh",
       "padding-top": "1@blockInterval"
     }
+  ],
+  "table": {
+    "id": "clan_members_list",
+    "size": "pw, fh",
+    "padding-top": "1@blockInterval",
+    "class": "lbTable",
+    "useNavigatorOrInteractiveCells": "yes",
+    "text-valign": "center",
+    "text-halign": "center",
+    "navigatorShortcuts": "yes",
+    "selfFocusBorder": "yes",
+    "on_select": "onSelectUser",
+    "on_r_click": "onUserRClick",
+    "on_dbl_click": "onUserCard",
+    "on_set_focus": "onMembersListFocus",
+    "overflow-y": "auto"
   },
-  {
-    "table": {
-      "id": "clan_members_list",
-      "size": "pw, fh",
-      "padding-top": "1@blockInterval",
-      "class": "lbTable",
-      "useNavigatorOrInteractiveCells": "yes",
-      "text-valign": "center",
-      "text-halign": "center",
-      "navigatorShortcuts": "yes",
-      "selfFocusBorder": "yes",
-      "on_select": "onSelectUser",
-      "on_r_click": "onUserRClick",
-      "on_dbl_click": "onUserCard",
-      "on_set_focus": "onMembersListFocus",
-      "overflow-y": "auto"
-    }
+  "animated_wait_icon": {
+    "id": "clan_loading",
+    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+    "position": "absolute",
+    "background-rotation": "0"
   },
-  {
-    "animated_wait_icon": {
-      "id": "clan_loading",
-      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-      "position": "absolute",
-      "background-rotation": "0"
-    }
+  "textareaNoTab": {
+    "id": "season_over_notice",
+    "position": "relative",
+    "padding": "0, 1@blockInterval",
+    "pos": "50%pw-50%w, 0",
+    "smallFont": "yes",
+    "text": "#worldwar/seasonIsOverNotice",
+    "display": "hide"
   },
-  {
-    "textareaNoTab": {
-      "id": "season_over_notice",
-      "position": "relative",
-      "padding": "0, 1@blockInterval",
-      "pos": "50%pw-50%w, 0",
-      "smallFont": "yes",
-      "text": "#worldwar/seasonIsOverNotice",
-      "display": "hide"
-    }
-  },
-  {
-    "inlineHolder": [
+  "inlineHolder": {
+    "id": "clan_actions",
+    "position": "relative",
+    "width": "pw",
+    "flow": "h-flow",
+    "flow-align": "center",
+    "css-hier-invalidate": "yes",
+    "display": "hide",
+    "enable": "no",
+    "bgcolor": "@evenTrColor",
+    "re-type": "9rect",
+    "foreground-color": "@frameBorderColor",
+    "foreground-position": "0, 0, 0, h-1@dp",
+    "Button_text": [
       {
-        "id": "clan_actions"
+        "id": "btn_showRequests",
+        "text": "#clan/btnShowRequests",
+        "wink": "no",
+        "display": "hide",
+        "on_click": "onShowRequests",
+        "visualStyle": "secondary",
+        "buttonWink": {}
       },
       {
-        "position": "relative"
+        "id": "btn_clanActivity",
+        "text": "#clan/activity",
+        "display": "hide",
+        "on_click": "onClanAverageActivity",
+        "visualStyle": "noFrame",
+        "showConsoleImage": "no"
       },
       {
-        "width": "pw"
+        "id": "btn_clanVehicles",
+        "text": "#clan/vehicles",
+        "display": "hide",
+        "on_click": "onClanVehicles",
+        "visualStyle": "noFrame",
+        "showConsoleImage": "no"
       },
       {
-        "flow": "h-flow"
+        "id": "btn_clanSquads",
+        "text": "#clan/clan_squads",
+        "display": "hide",
+        "on_click": "onClanSquads",
+        "visualStyle": "noFrame",
+        "showConsoleImage": "no"
       },
       {
-        "flow-align": "center"
-      },
-      {
-        "css-hier-invalidate": "yes"
-      },
-      {
-        "display": "hide"
-      },
-      {
-        "enable": "no"
-      },
-      {
-        "bgcolor": "@evenTrColor"
-      },
-      {
-        "re-type": "9rect"
-      },
-      {
-        "foreground-color": "@frameBorderColor"
-      },
-      {
-        "foreground-position": "0, 0, 0, h-1@dp"
-      },
-      {
-        "Button_text": {
-          "id": "btn_showRequests",
-          "text": "#clan/btnShowRequests",
-          "wink": "no",
-          "display": "hide",
-          "on_click": "onShowRequests",
-          "visualStyle": "secondary",
-          "buttonWink": []
-        }
-      },
-      {
-        "Button_text": {
-          "id": "btn_clanActivity",
-          "text": "#clan/activity",
-          "display": "hide",
-          "on_click": "onClanAverageActivity",
-          "visualStyle": "noFrame",
-          "showConsoleImage": "no"
-        }
-      },
-      {
-        "Button_text": {
-          "id": "btn_clanVehicles",
-          "text": "#clan/vehicles",
-          "display": "hide",
-          "on_click": "onClanVehicles",
-          "visualStyle": "noFrame",
-          "showConsoleImage": "no"
-        }
-      },
-      {
-        "Button_text": {
-          "id": "btn_clanSquads",
-          "text": "#clan/clan_squads",
-          "display": "hide",
-          "on_click": "onClanSquads",
-          "visualStyle": "noFrame",
-          "showConsoleImage": "no"
-        }
-      },
-      {
-        "Button_text": {
-          "id": "btn_log",
-          "text": "#clan/clan_log",
-          "display": "hide",
-          "on_click": "onClanLog",
-          "visualStyle": "noFrame",
-          "showConsoleImage": "no"
-        }
+        "id": "btn_log",
+        "text": "#clan/clan_log",
+        "display": "hide",
+        "on_click": "onClanLog",
+        "visualStyle": "noFrame",
+        "showConsoleImage": "no"
       }
     ]
   },
-  {
-    "navBar": {
-      "class": "embedded",
-      "navLeft": [
+  "navBar": {
+    "class": "embedded",
+    "navLeft": {
+      "Button_text": [
         {
-          "Button_text": {
-            "id": "btn_complain",
-            "text": "#mainmenu/btnComplain",
-            "display": "hide",
-            "on_click": "onClanComplain",
-            "btnName": "LT",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_membership_req",
-            "text": "#clan/btn_membership_req",
-            "display": "hide",
-            "on_click": "onMembershipReq",
-            "visualStyle": "secondary",
-            "btnName": "LT",
-            "ButtonImg": [],
-            "buttonWink": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_leaveClan",
-            "text": "#clan/btnLeaveClan",
-            "display": "hide",
-            "on_click": "onLeaveClan"
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_edit_clan_info",
-            "text": "#msgbox/btn_edit",
-            "display": "hide",
-            "on_click": "onEditClanInfo",
-            "btnName": "LB",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_clan_membership_req_edit",
-            "text": "#clan/btnChangeMembershipRequirements",
-            "display": "hide",
-            "_on_click": "onChangeMembershipRequirementsWnd",
-            "btnName": "RB",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_showBlacklist",
-            "text": "#clan/blacklist",
-            "display": "hide",
-            "on_click": "onOpenClanBlacklist",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_upgrade_clan",
-            "text": "#clan/clan_upgrade",
-            "display": "hide",
-            "on_click": "onUpgradeClan",
-            "visualStyle": "secondary",
-            "btnName": "R3",
-            "buttonWink": [],
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_usercard",
-            "text": "#mainmenu/btnUserCard",
-            "btnName": "A",
-            "on_click": "onUserCard",
-            "skip-navigation": "yes",
-            "display": "hide",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_user_options",
-            "text": "#mainmenu/btnUserAction",
-            "btnName": "X",
-            "_on_click": "onUserOption",
-            "skip-navigation": "yes",
-            "display": "hide",
-            "ButtonImg": []
-          }
-        }
-      ],
-      "navRight": {
-        "Button_text": {
-          "id": "btn_season_reward_log",
-          "text": "#profile/awards",
+          "id": "btn_complain",
+          "text": "#mainmenu/btnComplain",
           "display": "hide",
-          "on_click": "onClanSeasonRewardLog",
-          "btnName": "Y",
-          "ButtonImg": []
+          "on_click": "onClanComplain",
+          "btnName": "LT",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_membership_req",
+          "text": "#clan/btn_membership_req",
+          "display": "hide",
+          "on_click": "onMembershipReq",
+          "visualStyle": "secondary",
+          "btnName": "LT",
+          "ButtonImg": {},
+          "buttonWink": {}
+        },
+        {
+          "id": "btn_leaveClan",
+          "text": "#clan/btnLeaveClan",
+          "display": "hide",
+          "on_click": "onLeaveClan"
+        },
+        {
+          "id": "btn_edit_clan_info",
+          "text": "#msgbox/btn_edit",
+          "display": "hide",
+          "on_click": "onEditClanInfo",
+          "btnName": "LB",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_clan_membership_req_edit",
+          "text": "#clan/btnChangeMembershipRequirements",
+          "display": "hide",
+          "_on_click": "onChangeMembershipRequirementsWnd",
+          "btnName": "RB",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_showBlacklist",
+          "text": "#clan/blacklist",
+          "display": "hide",
+          "on_click": "onOpenClanBlacklist",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_upgrade_clan",
+          "text": "#clan/clan_upgrade",
+          "display": "hide",
+          "on_click": "onUpgradeClan",
+          "visualStyle": "secondary",
+          "btnName": "R3",
+          "buttonWink": {},
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_usercard",
+          "text": "#mainmenu/btnUserCard",
+          "btnName": "A",
+          "on_click": "onUserCard",
+          "skip-navigation": "yes",
+          "display": "hide",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_user_options",
+          "text": "#mainmenu/btnUserAction",
+          "btnName": "X",
+          "_on_click": "onUserOption",
+          "skip-navigation": "yes",
+          "display": "hide",
+          "ButtonImg": {}
         }
+      ]
+    },
+    "navRight": {
+      "Button_text": {
+        "id": "btn_season_reward_log",
+        "text": "#profile/awards",
+        "display": "hide",
+        "on_click": "onClanSeasonRewardLog",
+        "btnName": "Y",
+        "ButtonImg": {}
       }
     }
   }
-]
+}

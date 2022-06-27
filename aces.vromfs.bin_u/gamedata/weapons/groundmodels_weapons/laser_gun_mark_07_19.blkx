@@ -22,23 +22,35 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "frag_i_t",
     "shellAnimation": "video/shells_animations/he.ivf",
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.05
+      ],
+      "mod2": [
+        20.0,
+        0.1
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.2
+        ],
+        [
+          45.0,
+          0.3
+        ]
+      ]
+    },
     "hitpower": {
-      "HitPower0m": [1.0,1000.0],
-      "HitPower10000m": [0.8,10000.0]
+      "HitPower0m": [
+        1.0,
+        1000.0
+      ],
+      "HitPower10000m": [
+        0.8,
+        10000.0
+      ]
     },
     "damage": {
       "beam": {
@@ -49,7 +61,10 @@
       }
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "noColor"
     }
@@ -61,12 +76,16 @@
     "cockpit": "ufo_laser_gun",
     "ai": "ufo_laser_gun_ai"
   },
-  "overheat": [
-    {
-      "overheat": [1000.0,0.0]
-    },
-    {
-      "overheat": [10000.0,0.1]
-    }
-  ]
+  "overheat": {
+    "overheat": [
+      [
+        1000.0,
+        0.0
+      ],
+      [
+        10000.0,
+        0.1
+      ]
+    ]
+  }
 }

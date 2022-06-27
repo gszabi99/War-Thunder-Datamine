@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -37,17 +41,45 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_i_mine",
     "slopeEffectPreset": "ap",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "explodeOnRendinst": true,
     "hitPowerMult": 20.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,300.0],
-    "farHitPower": [0.8,700.0],
-    "endHitPower": [0.7,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [100.0,100.0],
-    "midArmorPower": [90.0,400.0],
-    "farArmorPower": [80.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      300.0
+    ],
+    "farHitPower": [
+      0.8,
+      700.0
+    ],
+    "endHitPower": [
+      0.7,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      100.0,
+      100.0
+    ],
+    "midArmorPower": [
+      90.0,
+      400.0
+    ],
+    "farArmorPower": [
+      80.0,
+      1000.0
+    ],
     "collisions": {
       "default": {
         "fx": "hit_19_27mm_dirt_he"
@@ -128,25 +160,34 @@
         "fx": "hit_19_27mm_snow_he"
       }
     },
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.05
+      ],
+      "mod2": [
+        20.0,
+        0.1
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.2
+        ],
+        [
+          45.0,
+          0.3
+        ]
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "20mmWhite",
       "trail": "black_rpg"

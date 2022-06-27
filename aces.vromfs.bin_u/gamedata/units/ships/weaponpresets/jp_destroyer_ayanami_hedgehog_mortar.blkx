@@ -1,172 +1,64 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_49"
-      },
-      {
-        "node": "depth_charge_50"
-      },
-      {
-        "node": "depth_charge_51"
-      },
-      {
-        "node": "depth_charge_52"
-      },
-      {
-        "node": "depth_charge_53"
-      },
-      {
-        "node": "depth_charge_54"
-      },
-      {
-        "node": "depth_charge_55"
-      },
-      {
-        "node": "depth_charge_56"
-      },
-      {
-        "node": "depth_charge_57"
-      },
-      {
-        "node": "depth_charge_58"
-      },
-      {
-        "node": "depth_charge_59"
-      },
-      {
-        "node": "depth_charge_60"
-      },
-      {
-        "node": "depth_charge_61"
-      },
-      {
-        "node": "depth_charge_62"
-      },
-      {
-        "node": "depth_charge_63"
-      },
-      {
-        "node": "depth_charge_64"
-      },
-      {
-        "node": "depth_charge_65"
-      },
-      {
-        "node": "depth_charge_66"
-      },
-      {
-        "node": "depth_charge_67"
-      },
-      {
-        "node": "depth_charge_68"
-      },
-      {
-        "node": "depth_charge_69"
-      },
-      {
-        "node": "depth_charge_70"
-      },
-      {
-        "node": "depth_charge_71"
-      },
-      {
-        "node": "depth_charge_72"
-      },
-      {
-        "node": "depth_charge_73"
-      },
-      {
-        "node": "depth_charge_74"
-      },
-      {
-        "node": "depth_charge_75"
-      },
-      {
-        "node": "depth_charge_76"
-      },
-      {
-        "node": "depth_charge_77"
-      },
-      {
-        "node": "depth_charge_78"
-      },
-      {
-        "node": "depth_charge_79"
-      },
-      {
-        "node": "depth_charge_80"
-      },
-      {
-        "node": "depth_charge_81"
-      },
-      {
-        "node": "depth_charge_82"
-      },
-      {
-        "node": "depth_charge_83"
-      },
-      {
-        "node": "depth_charge_84"
-      },
-      {
-        "node": "depth_charge_85"
-      },
-      {
-        "node": "depth_charge_86"
-      },
-      {
-        "node": "depth_charge_87"
-      },
-      {
-        "node": "depth_charge_88"
-      },
-      {
-        "node": "depth_charge_89"
-      },
-      {
-        "node": "depth_charge_90"
-      },
-      {
-        "node": "depth_charge_91"
-      },
-      {
-        "node": "depth_charge_92"
-      },
-      {
-        "node": "torpedo_01"
-      },
-      {
-        "node": "torpedo_02"
-      },
-      {
-        "node": "torpedo_03"
-      },
-      {
-        "node": "torpedo_04"
-      },
-      {
-        "node": "torpedo_05"
-      },
-      {
-        "node": "torpedo_06"
-      },
-      {
-        "node": "torpedo_07"
-      },
-      {
-        "node": "torpedo_08"
-      },
-      {
-        "node": "ammunition_storage_aux_01"
-      },
-      {
-        "node": "ammunition_storage_aux_02"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_49",
+      "depth_charge_50",
+      "depth_charge_51",
+      "depth_charge_52",
+      "depth_charge_53",
+      "depth_charge_54",
+      "depth_charge_55",
+      "depth_charge_56",
+      "depth_charge_57",
+      "depth_charge_58",
+      "depth_charge_59",
+      "depth_charge_60",
+      "depth_charge_61",
+      "depth_charge_62",
+      "depth_charge_63",
+      "depth_charge_64",
+      "depth_charge_65",
+      "depth_charge_66",
+      "depth_charge_67",
+      "depth_charge_68",
+      "depth_charge_69",
+      "depth_charge_70",
+      "depth_charge_71",
+      "depth_charge_72",
+      "depth_charge_73",
+      "depth_charge_74",
+      "depth_charge_75",
+      "depth_charge_76",
+      "depth_charge_77",
+      "depth_charge_78",
+      "depth_charge_79",
+      "depth_charge_80",
+      "depth_charge_81",
+      "depth_charge_82",
+      "depth_charge_83",
+      "depth_charge_84",
+      "depth_charge_85",
+      "depth_charge_86",
+      "depth_charge_87",
+      "depth_charge_88",
+      "depth_charge_89",
+      "depth_charge_90",
+      "depth_charge_91",
+      "depth_charge_92",
+      "torpedo_01",
+      "torpedo_02",
+      "torpedo_03",
+      "torpedo_04",
+      "torpedo_05",
+      "torpedo_06",
+      "torpedo_07",
+      "torpedo_08",
+      "ammunition_storage_aux_01",
+      "ammunition_storage_aux_02"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner4",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -176,7 +68,10 @@
       "external": true,
       "dropSpeed": 55.0,
       "useEmitter": true,
-      "emitterGenRange": [1.0,24.0],
+      "emitterGenRange": [
+        1,
+        24
+      ],
       "emitterGenFmt": "bone_bomb_%02d",
       "ammoDpGenFmt": "depth_charge_%02d_dm",
       "barrelDP": "depth_charge_mount_02_dm",
@@ -187,13 +82,17 @@
         "gun": "depth_charge_mount_02"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -203,7 +102,10 @@
       "external": true,
       "dropSpeed": 55.0,
       "useEmitter": true,
-      "emitterGenRange": [25.0,48.0],
+      "emitterGenRange": [
+        25,
+        48
+      ],
       "emitterGenFmt": "bone_bomb_%02d",
       "ammoDpGenFmt": "depth_charge_%02d_dm",
       "barrelDP": "depth_charge_mount_01_dm",
@@ -214,9 +116,15 @@
         "gun": "depth_charge_mount_01"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

@@ -22,9 +22,9 @@
       "country_axis": "germany",
       "country_allies": "ussr"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -42,7 +42,7 @@
           "var": "ad_delay_timer"
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "comment": {
           "value": "srabatyvaet raz v 3 minuty"
@@ -53,7 +53,7 @@
           "var": "ad_mp_cost"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "ad_t1_have_zone": {
       "is_enabled": true,
@@ -82,7 +82,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "ad_t2_have_zone": {
       "is_enabled": true,
@@ -111,7 +111,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "arcade_zone_init": {
       "is_enabled": true,
@@ -122,32 +122,24 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionGetBalanceLevel": {
           "input_var": "ad_zone_matcher"
         },
-        "triggerEnable": [
-          {
-            "target": "arcade_zone_near"
-          },
-          {
-            "target": "arcade_zone_middle"
-          },
-          {
-            "target": "arcade_zone_far"
-          },
-          {
-            "target": "arcade_zone_huge"
-          },
-          {
-            "target": "no_balance_zone_found"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "arcade_zone_near",
+            "arcade_zone_middle",
+            "arcade_zone_far",
+            "arcade_zone_huge",
+            "no_balance_zone_found"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "arcade_zone_near": {
       "is_enabled": false,
@@ -158,7 +150,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -192,23 +184,19 @@
           "captureNoPenalty": true,
           "playAirfieldSound": false
         },
-        "triggerDisable": [
-          {
-            "target": "arcade_zone_middle"
-          },
-          {
-            "target": "arcade_zone_far"
-          },
-          {
-            "target": "arcade_zone_huge"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "arcade_zone_middle",
+            "arcade_zone_far",
+            "arcade_zone_huge"
+          ]
+        },
         "varSetBool": {
           "value": true,
           "var": "isZoneSuccess"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "arcade_zone_middle": {
       "is_enabled": false,
@@ -219,30 +207,26 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "ad_zone_matcher",
             "value": 7,
             "comparasion_func": "less"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "ad_zone_matcher",
             "value": 3,
             "comparasion_func": "more"
           }
-        },
-        {
-          "objectExists": {
-            "target": "capture_area_middle",
-            "type": "area"
-          }
+        ],
+        "objectExists": {
+          "target": "capture_area_middle",
+          "type": "area"
         }
-      ],
+      },
       "actions": {
         "comment": {
           "value": "rang 4-6"
@@ -263,23 +247,19 @@
           "onlyPlayersCanCapture": false,
           "captureNoPenalty": true
         },
-        "triggerDisable": [
-          {
-            "target": "arcade_zone_near"
-          },
-          {
-            "target": "arcade_zone_far"
-          },
-          {
-            "target": "arcade_zone_huge"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "arcade_zone_near",
+            "arcade_zone_far",
+            "arcade_zone_huge"
+          ]
+        },
         "varSetBool": {
           "value": true,
           "var": "isZoneSuccess"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "arcade_zone_far": {
       "is_enabled": false,
@@ -290,30 +270,26 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "ad_zone_matcher",
             "value": 15,
             "comparasion_func": "less"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "ad_zone_matcher",
             "value": 6,
             "comparasion_func": "more"
           }
-        },
-        {
-          "objectExists": {
-            "target": "capture_area_far",
-            "type": "area"
-          }
+        ],
+        "objectExists": {
+          "target": "capture_area_far",
+          "type": "area"
         }
-      ],
+      },
       "actions": {
         "comment": {
           "value": "rang 7-14"
@@ -334,23 +310,19 @@
           "onlyPlayersCanCapture": false,
           "captureNoPenalty": true
         },
-        "triggerDisable": [
-          {
-            "target": "arcade_zone_near"
-          },
-          {
-            "target": "arcade_zone_middle"
-          },
-          {
-            "target": "arcade_zone_huge"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "arcade_zone_near",
+            "arcade_zone_middle",
+            "arcade_zone_huge"
+          ]
+        },
         "varSetBool": {
           "value": true,
           "var": "isZoneSuccess"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "arcade_zone_huge": {
       "is_enabled": false,
@@ -361,7 +333,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -394,23 +366,19 @@
           "onlyPlayersCanCapture": false,
           "captureNoPenalty": true
         },
-        "triggerDisable": [
-          {
-            "target": "arcade_zone_near"
-          },
-          {
-            "target": "arcade_zone_middle"
-          },
-          {
-            "target": "arcade_zone_far"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "arcade_zone_near",
+            "arcade_zone_middle",
+            "arcade_zone_far"
+          ]
+        },
         "varSetBool": {
           "value": true,
           "var": "isZoneSuccess"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "no_balance_zone_found": {
       "is_enabled": false,
@@ -454,7 +422,7 @@
           "captureNoPenalty": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -468,32 +436,26 @@
     "ad_zone_matcher": 0,
     "capture_area_name": "capture_area"
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

@@ -20,7 +20,11 @@
       "optionalTakeOff": false,
       "environment": "Morning",
       "weather": "hazy",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "gt_cooperative": true,
       "gt_reload_explosives": true,
       "country_axis": "germany",
@@ -34,130 +38,86 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "allied_savers"
-              },
-              {
-                "point": "defend_point"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "enemy"
-              },
-              {
-                "point": "enemy_vehicle_01"
-              },
-              {
-                "point": "defend_point"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "enemy"
-              },
-              {
-                "point": "enemy_vehicle_02"
-              },
-              {
-                "point": "defend_point"
-              }
-            ]
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": [
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "allied_savers",
+                "defend_point"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "enemy_vehicle_01",
+                "defend_point"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "enemy_vehicle_02",
+                "defend_point"
+              ]
+            }
+          ],
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "player",
               "lookAt": "allied_daimler"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "building",
               "side": "ally",
               "target": "defend_point"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "truck",
               "side": "ally",
               "target": "allied_daimler"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "ally",
               "target": "allied_savers",
               "lookAt": "defend_point"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "truck",
               "side": "enemy",
               "target": "enemy_vehicle_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "truck",
               "side": "enemy",
               "target": "enemy_vehicle_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "mark",
               "side": "enemy",
               "target": "enemy_armada_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "mark",
               "side": "enemy",
               "target": "enemy_armada_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "mark",
               "side": "enemy",
               "target": "enemy_vehicle_03"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -170,7 +130,7 @@
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -201,20 +161,14 @@
           }
         },
         "actions": {
-          "triggerEnable": [
-            {
-              "target": "moved_1st_wave"
-            },
-            {
-              "target": "moved_2nd_wave"
-            },
-            {
-              "target": "moved_3rd_wave"
-            },
-            {
-              "target": "mission_failed"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "moved_1st_wave",
+              "moved_2nd_wave",
+              "moved_3rd_wave",
+              "mission_failed"
+            ]
+          }
         }
       },
       "moved_1st_wave": {
@@ -301,57 +255,31 @@
           }
         },
         "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "2D"
-            },
-            {
-              "object_type": "isAlive"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "enemy_vehicle_03"
-            },
-            {
-              "object": "enemy_vehicles_03_2"
-            },
-            {
-              "target": "defend_square"
-            }
-          ]
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "check_objects": "any",
+            "object": [
+              "enemy_vehicle_03",
+              "enemy_vehicles_03_2"
+            ],
+            "target": "defend_square"
+          }
         },
         "actions": {
-          "unitMoveTo": [
-            {
-              "target": "defend_point"
-            },
-            {
-              "follow_target": false
-            },
-            {
-              "teleportHeightType": "absolute"
-            },
-            {
-              "useUnitHeightForTele": true
-            },
-            {
-              "shouldKeepFormation": false
-            },
-            {
-              "teleportHeightValue": 1000.0
-            },
-            {
-              "object": "enemy_vehicle_03"
-            },
-            {
-              "object": "enemy_vehicles_03_2"
-            }
-          ]
+          "unitMoveTo": {
+            "target": "defend_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object": [
+              "enemy_vehicle_03",
+              "enemy_vehicles_03_2"
+            ]
+          }
         }
       },
       "mission_failed": {
@@ -368,73 +296,43 @@
           }
         },
         "conditions": {
-          "unitDistanceBetween": [
-            {
-              "value": 100.0
-            },
-            {
-              "math": "2D"
-            },
-            {
-              "object_type": "isAlive"
-            },
-            {
-              "target_type": "any"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "check_targets": "any"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object": "enemy_vehicle_01"
-            },
-            {
-              "object": "enemy_vehicle_02"
-            },
-            {
-              "object": "enemy_vehicle_03"
-            },
-            {
-              "object": "enemy_vehicles_03_2"
-            },
-            {
-              "target": "defend_point"
-            }
-          ]
+          "unitDistanceBetween": {
+            "value": 100.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "target_type": "any",
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_marking": 0,
+            "object": [
+              "enemy_vehicle_01",
+              "enemy_vehicle_02",
+              "enemy_vehicle_03",
+              "enemy_vehicles_03_2"
+            ],
+            "target": "defend_point"
+          }
         },
-        "actions": [
-          {
-            "triggerDisable": {
+        "actions": {
+          "triggerDisable": [
+            {
               "target": "mission_complete"
-            }
-          },
-          {
-            "triggerDisable": {
+            },
+            {
               "target": "timer_update"
             }
+          ],
+          "moSetObjectiveStatus": {
+            "target": "single_ruhr_defend_structures",
+            "status": 3
           },
-          {
-            "moSetObjectiveStatus": {
-              "target": "single_ruhr_defend_structures",
-              "status": 3
-            }
+          "wait": {
+            "time": 2.0
           },
-          {
-            "wait": {
-              "time": 2.0
-            }
-          },
-          {
-            "missionFailed": {
-              "timer": false
-            }
+          "missionFailed": {
+            "timer": false
           }
-        ]
+        }
       },
       "mission_complete": {
         "is_enabled": true,
@@ -456,58 +354,42 @@
             "comparasion_func": "notMore"
           }
         },
-        "actions": [
-          {
-            "triggerDisable": [
-              {
-                "target": "mission_failed"
-              },
-              {
-                "target": "timer_update"
-              }
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "mission_failed",
+              "timer_update"
             ]
           },
-          {
-            "missionSetTargetsIndicator": {
-              "target_type": "isAlive",
-              "target_marking": 0,
-              "delta": 0,
-              "icon": "tank",
-              "icon army": 1,
-              "set": false,
-              "target": "allied_daimler"
-            }
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 1,
+            "set": false,
+            "target": "allied_daimler"
           },
-          {
-            "wait": {
+          "wait": [
+            {
               "time": 2.0
-            }
-          },
-          {
-            "wait": {
+            },
+            {
               "time": 2.0
-            }
-          },
-          {
-            "wait": {
+            },
+            {
               "time": 5.0
             }
+          ],
+          "moSetObjectiveStatus": {
+            "target": "single_ruhr_defend_structures",
+            "status": 2
           },
-          {
-            "moSetObjectiveStatus": {
-              "target": "single_ruhr_defend_structures",
-              "status": 2
-            }
+          "missionCompleted": {
+            "timer": false
           },
-          {
-            "missionCompleted": {
-              "timer": false
-            }
-          },
-          {
-            "missionDebriefing": []
-          }
-        ]
+          "missionDebriefing": {}
+        }
       }
     },
     "init": {
@@ -519,111 +401,75 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object": "wave_02"
-            },
-            {
-              "object": "wave_03"
-            },
-            {
-              "object": "allied_savers"
-            },
-            {
-              "isDelayed": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "enemy_aaa_01"
-            },
-            {
-              "object": "enemy_aaa_02"
-            },
-            {
-              "object": "enemy_aaa_03"
-            },
-            {
-              "effShootingRate": 0.3
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": [
+              "wave_02",
+              "wave_03",
+              "allied_savers"
+            ],
+            "isDelayed": true
+          },
+          {
+            "object": [
+              "enemy_aaa_01",
+              "enemy_aaa_02",
+              "enemy_aaa_03"
+            ],
+            "effShootingRate": 0.3
+          },
+          {
             "object": "allied_daimler",
             "effShootingRate": 0.3
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "enemy_vehicle_01"
-            },
-            {
-              "object": "enemy_vehicle_02"
-            },
-            {
-              "object": "enemy_vehicle_03"
-            },
-            {
-              "object": "enemy_vehicles_03_2"
-            },
-            {
-              "effShootingRate": 0.05
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
+            "object": [
+              "enemy_vehicle_01",
+              "enemy_vehicle_02",
+              "enemy_vehicle_03",
+              "enemy_vehicles_03_2"
+            ],
+            "effShootingRate": 0.05
+          },
+          {
             "object": "allied_savers",
             "isDelayed": false
           }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target": "enemy_vehicle_01"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "enemy_vehicle_01"
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
+            "time": 60.0
+          },
+          {
+            "time": 60.0
+          },
+          {
             "time": 60.0
           }
-        },
-        {
-          "wait": {
-            "time": 60.0
-          }
-        },
-        {
-          "wait": {
-            "time": 60.0
-          }
-        },
-        {
-          "triggerActivate": {
+        ],
+        "triggerActivate": [
+          {
             "target": "select_2nd_wave",
             "activate_type": "ignoreConditions",
             "check_trigger_status": true,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "select_3rd_wave",
             "activate_type": "ignoreConditions",
             "check_trigger_status": true,
             "after_activation": "disable"
           }
-        }
-      ]
+        ]
+      }
     },
     "timer_update": {
       "is_enabled": true,
@@ -638,7 +484,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "var": "time_remains",
@@ -715,43 +561,29 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "equal"
-          },
-          {
-            "value": 0
-          },
-          {
-            "object": "wave_02"
-          },
-          {
-            "object": "wave_01"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "equal",
+          "value": 0,
+          "object": [
+            "wave_02",
+            "wave_01"
+          ]
+        }
       },
       "actions": {
         "unitSetProperties": {
           "object": "enemy_vehicle_03",
           "isDelayed": false
         },
-        "unitSetIndication": [
-          {
-            "set": true
-          },
-          {
-            "target": "enemy_vehicles_03_2"
-          },
-          {
-            "target": "enemy_vehicle_03"
-          }
-        ],
+        "unitSetIndication": {
+          "set": true,
+          "target": [
+            "enemy_vehicles_03_2",
+            "enemy_vehicle_03"
+          ]
+        },
         "wait": {
           "time": 2.0
         },
@@ -777,25 +609,41 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "time_remains": 300
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player",
         "tm": [
-          [0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,0.5],
-          [-3039.5,300.0,21733.5]
+          [
+            0.5,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            -3039.5,
+            300.0,
+            21733.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "tempest_mkv",
@@ -821,17 +669,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_armada_01",
         "tm": [
-          [-0.67559,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,-0.67559],
-          [803.95,400.0,19445.8]
+          [
+            -0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            803.95,
+            400.0,
+            19445.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109g-6",
@@ -857,17 +719,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allied_savers",
         "tm": [
-          [0.608761,0.0,0.793353],
-          [0.0,1.0,0.0],
-          [-0.793353,0.0,0.608761],
-          [-9029.0,500.0,13349.6]
+          [
+            0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            -9029.0,
+            500.0,
+            13349.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "p-47d",
@@ -898,10 +774,26 @@
           "allied_savers_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-5054.45,36.75,19096.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -5054.45,
+                36.75,
+                19096.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -911,10 +803,26 @@
           "allied_savers_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2213.65,49.25,22804.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2213.65,
+                49.25,
+                22804.0
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -922,16 +830,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "enemy_armada_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9131.85,400.0,21754.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -9131.85,
+            400.0,
+            21754.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109g-6",
@@ -958,17 +880,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "wheeled_vehicles": {
+    ],
+    "wheeled_vehicles": [
+      {
         "name": "allied_daimler",
         "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-2126.15,28.2,22916.1]
+          [
+            0.92388,
+            0.0,
+            0.382683
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.382683,
+            0.0,
+            0.92388
+          ],
+          [
+            -2126.15,
+            28.2,
+            22916.1
+          ]
         ],
         "closed_waypoints": true,
         "unit_class": "uk_daimler_mk1",
@@ -978,8 +916,14 @@
           "count": 10,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -987,10 +931,26 @@
           "allied_daimler_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2131.95,27.05,22987.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2131.95,
+                27.05,
+                22987.1
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1000,10 +960,26 @@
           "allied_daimler_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2271.35,28.15,22918.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2271.35,
+                28.15,
+                22918.5
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1013,10 +989,26 @@
           "allied_daimler_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2229.75,30.0,22788.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2229.75,
+                30.0,
+                22788.6
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1026,10 +1018,26 @@
           "allied_daimler_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2102.3,28.45,22803.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2102.3,
+                28.45,
+                22803.2
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1037,16 +1045,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "enemy_vehicle_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1726.5,24.8,23744.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1726.5,
+            24.8,
+            23744.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_kubelwagen",
@@ -1056,8 +1078,14 @@
           "count": 9,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1065,10 +1093,26 @@
           "enemy_track_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1712.7,27.05,23684.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1712.7,
+                27.05,
+                23684.7
+              ]
             ],
             "props": {
               "speed": 100.0,
@@ -1078,10 +1122,26 @@
           "enemy_track_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1874.75,38.9,23162.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1874.75,
+                38.9,
+                23162.5
+              ]
             ],
             "props": {
               "speed": 100.0,
@@ -1091,10 +1151,26 @@
           "enemy_track_01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1989.85,32.15,23133.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1989.85,
+                32.15,
+                23133.8
+              ]
             ],
             "props": {
               "speed": 100.0,
@@ -1104,10 +1180,26 @@
           "enemy_track_01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2088.65,26.75,23056.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2088.65,
+                26.75,
+                23056.6
+              ]
             ],
             "props": {
               "speed": 100.0,
@@ -1115,16 +1207,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "enemy_vehicle_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1387.9,17.65,22026.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1387.9,
+            17.65,
+            22026.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_kubelwagen",
@@ -1134,8 +1240,14 @@
           "count": 15,
           "formation_type": "rows",
           "formation_div": 5,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -1144,10 +1256,26 @@
           "enemy_vehicle_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1539.35,27.8,22203.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1539.35,
+                27.8,
+                22203.7
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1157,10 +1285,26 @@
           "enemy_vehicle_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1687.3,27.2,22502.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1687.3,
+                27.2,
+                22502.2
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1170,10 +1314,26 @@
           "enemy_vehicle_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1925.4,38.15,22925.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1925.4,
+                38.15,
+                22925.5
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1183,10 +1343,26 @@
           "enemy_vehicle_02_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1970.1,28.5,22826.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1970.1,
+                28.5,
+                22826.9
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1194,16 +1370,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "enemy_vehicle_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3220.5,24.25,22185.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3220.5,
+            24.25,
+            22185.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_kubelwagen",
@@ -1213,8 +1403,14 @@
           "count": 12,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1222,10 +1418,26 @@
           "enemy_vehicle_03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3187.0,25.25,22194.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3187.0,
+                25.25,
+                22194.1
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1235,10 +1447,26 @@
           "enemy_vehicle_03_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3177.2,25.35,22194.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3177.2,
+                25.35,
+                22194.5
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1248,10 +1476,26 @@
           "enemy_vehicle_03_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3020.85,30.15,22249.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3020.85,
+                30.15,
+                22249.8
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1261,10 +1505,26 @@
           "enemy_vehicle_03_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2633.65,32.6,22600.3]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2633.65,
+                32.6,
+                22600.3
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1274,10 +1534,26 @@
           "enemy_vehicle_03_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2140.9,35.1,22580.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2140.9,
+                35.1,
+                22580.8
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1287,10 +1563,26 @@
           "enemy_vehicle_03_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2044.5,29.7,22705.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2044.5,
+                29.7,
+                22705.8
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1298,16 +1590,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "enemy_vehicles_03_2",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1342.3,29.25,22596.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1342.3,
+            29.25,
+            22596.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_kubelwagen",
@@ -1317,8 +1623,14 @@
           "count": 9,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1326,10 +1638,26 @@
           "enemy_vehicles_03_2_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1698.2,27.75,22503.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1698.2,
+                27.75,
+                22503.8
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1339,10 +1667,26 @@
           "enemy_vehicles_03_2_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1935.9,32.1,22947.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1935.9,
+                32.1,
+                22947.5
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1352,10 +1696,26 @@
           "enemy_vehicles_03_2_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2016.45,28.5,22919.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2016.45,
+                28.5,
+                22919.4
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1364,15 +1724,31 @@
           }
         }
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "enemy_aaa_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1730.15,23.1,23750.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1730.15,
+            23.1,
+            23750.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_sdkfz71_20mm",
@@ -1382,8 +1758,14 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1391,10 +1773,26 @@
           "enemy_aaa_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1720.05,31.4,23665.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1720.05,
+                31.4,
+                23665.8
+              ]
             ],
             "props": {
               "speed": 100.0,
@@ -1404,10 +1802,26 @@
           "enemy_aaa_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1782.7,40.35,23473.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1782.7,
+                40.35,
+                23473.2
+              ]
             ],
             "props": {
               "speed": 100.0,
@@ -1415,16 +1829,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
+      },
+      {
         "name": "enemy_aaa_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1462.3,17.7,22048.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1462.3,
+            17.7,
+            22048.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_sdkfz71_20mm",
@@ -1434,8 +1862,14 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1443,10 +1877,26 @@
           "enemy_aaa_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1515.4,18.65,22156.3]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1515.4,
+                18.65,
+                22156.3
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1456,10 +1906,26 @@
           "enemy_aaa_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1574.8,28.7,22234.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1574.8,
+                28.7,
+                22234.2
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1469,10 +1935,26 @@
           "enemy_aaa_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1675.5,27.6,22482.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1675.5,
+                27.6,
+                22482.4
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1480,16 +1962,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
+      },
+      {
         "name": "enemy_aaa_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3205.85,24.6,22204.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3205.85,
+            24.6,
+            22204.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_sdkfz71_20mm",
@@ -1499,8 +1995,14 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1508,10 +2010,26 @@
           "enemy_aaa_03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3168.1,25.3,22217.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3168.1,
+                25.3,
+                22217.5
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1521,10 +2039,26 @@
           "enemy_aaa_03_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3162.3,25.1,22209.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3162.3,
+                25.1,
+                22209.0
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1534,10 +2068,26 @@
           "enemy_aaa_03_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3039.95,29.7,22245.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3039.95,
+                29.7,
+                22245.6
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1547,10 +2097,26 @@
           "enemy_aaa_03_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2688.8,32.05,22341.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2688.8,
+                32.05,
+                22341.8
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1560,10 +2126,26 @@
           "enemy_aaa_03_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2685.6,34.4,22503.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2685.6,
+                34.4,
+                22503.1
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1571,16 +2153,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
+      },
+      {
         "name": "enemy_aaa_03_2",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1318.7,29.3,22602.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1318.7,
+            29.3,
+            22602.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_sdkfz71_20mm",
@@ -1590,8 +2186,14 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1599,10 +2201,26 @@
           "enemy_aaa_03_2_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1701.65,27.65,22510.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1701.65,
+                27.65,
+                22510.0
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1612,10 +2230,26 @@
           "enemy_aaa_03_2_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1831.7,28.05,22754.8]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1831.7,
+                28.05,
+                22754.8
+              ]
             ],
             "props": {
               "speed": 150.0,
@@ -1624,109 +2258,171 @@
           }
         }
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "wave_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3039.45,34.9,22719.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3039.45,
+            34.9,
+            22719.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "enemy_vehicle_01"
-          },
-          {
-            "squad_members": "enemy_aaa_01"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "enemy_vehicle_01",
+            "enemy_aaa_01"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "wave_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3303.45,33.2,22715.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3303.45,
+            33.2,
+            22715.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "enemy_vehicle_02"
-          },
-          {
-            "squad_members": "enemy_aaa_02"
-          },
-          {
-            "squad_members": "enemy_armada_01"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "enemy_vehicle_02",
+            "enemy_aaa_02",
+            "enemy_armada_01"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "wave_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3549.4,31.45,22683.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3549.4,
+            31.45,
+            22683.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "enemy_aaa_03"
-          },
-          {
-            "squad_members": "enemy_vehicle_03"
-          },
-          {
-            "squad_members": "enemy_armada_02"
-          },
-          {
-            "squad_members": "enemy_vehicles_03_2"
-          },
-          {
-            "squad_members": "enemy_aaa_03_2"
-          }
-        ],
-        "way": []
+        "props": {
+          "squad_members": [
+            "enemy_aaa_03",
+            "enemy_vehicle_03",
+            "enemy_armada_02",
+            "enemy_vehicles_03_2",
+            "enemy_aaa_03_2"
+          ]
+        },
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "defend_point": {
       "type": "Point",
       "tm": [
-        [200.0,0.0,0.0],
-        [0.0,200.0,0.0],
-        [0.0,0.0,200.0],
-        [-2130.55,28.65,22878.2]
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          -2130.55,
+          28.65,
+          22878.2
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "defend_square": {
       "type": "Box",
       "tm": [
-        [-407.7,0.0,0.0],
-        [0.0,86.7,0.0],
-        [0.0,0.0,-472.701],
-        [-2049.85,27.9,22898.0]
+        [
+          -407.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          86.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -472.701
+        ],
+        [
+          -2049.85,
+          27.9,
+          22898.0
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

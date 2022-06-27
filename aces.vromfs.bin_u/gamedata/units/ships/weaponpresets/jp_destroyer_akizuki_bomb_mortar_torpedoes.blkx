@@ -1,129 +1,80 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "holder_01"
-      },
-      {
-        "node": "holder_02"
-      },
-      {
-        "node": "holder_03"
-      },
-      {
-        "node": "holder_04"
-      },
-      {
-        "node": "holder_05"
-      },
-      {
-        "node": "holder_06"
-      },
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "holder_01",
+      "holder_02",
+      "holder_03",
+      "holder_04",
+      "holder_05",
+      "holder_06",
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06"
     ]
   },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner29"
+  "Weapon": [
+    {
+      "trigger": "gunner29",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/jp_610mm_type93_model_3_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 8,
+      "useEmitter": true,
+      "emitterGenRange": [
+        1,
+        4
+      ],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": [
+        "tt_01_dm",
+        "tt_01_dm"
+      ],
+      "brokenBarrelAllowShoot": [
+        false,
+        false
+      ],
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_01",
+        "gun": "tt_01",
+        "gunnerDm": "tt_01_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
+      "limits": {
+        "yaw": [
+          -130.0,
+          130.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/jp_610mm_type93_model_3_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_01"
-      },
-      {
-        "bullets": 8
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitterGenRange": [1.0,4.0]
-      },
-      {
-        "emitterGenFmt": "bone_torpedo_%02d"
-      },
-      {
-        "ammoDpGenFmt": "torpedo_%02d_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [4.0,0.0,0.0]
-      },
-      {
-        "startSpeed": 18.0
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 40.0
-      },
-      {
-        "turret": {
-          "head": "tt_head_01",
-          "gun": "tt_01",
-          "gunnerDm": "tt_01_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [-130.0,130.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-55.0,70.0],
-          "pitch": [0.0,0.0]
-        }
+      "limitsDeadzone": {
+        "yaw": [
+          -55.0,
+          70.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner30",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -142,13 +93,17 @@
         "gun": "gun_08"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner31",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -167,13 +122,17 @@
         "gun": "gun_09"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner32",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -192,13 +151,17 @@
         "gun": "gun_10"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner33",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -217,9 +180,15 @@
         "gun": "gun_11"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

@@ -2,100 +2,44 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": ""
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
     "mission": {
       "level": "levels/berlin.bin",
       "type": "domination",
@@ -110,9 +54,9 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -128,85 +72,63 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_assault_spawn",
               "var": "t1_assault_spawn_default"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_assault_high_spawn",
               "var": "t1_assault_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_assault_mid_spawn",
               "var": "t1_assault_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_assault_low_spawn",
               "var": "t1_assault_spawn_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_assault_spawn",
               "var": "t2_assault_spawn_default"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_assault_high_spawn",
               "var": "t2_assault_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_assault_mid_spawn",
               "var": "t2_assault_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_assault_low_spawn",
               "var": "t2_assault_spawn_low_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_assault_spawn_default"
-              },
-              {
-                "target": "t2_assault_spawn_default"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_assault_spawn_default",
+              "t2_assault_spawn_default"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_assault_spawn_default": {
         "is_enabled": false,
@@ -217,7 +139,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -269,7 +191,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -321,7 +243,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -373,7 +295,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -425,7 +347,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -477,7 +399,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -529,7 +451,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -566,7 +488,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_assault_spawn_low": {
         "is_enabled": false,
@@ -577,7 +499,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -614,7 +536,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "interceptors": {
@@ -629,85 +551,63 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_interceptor_spawn",
               "var": "t1_interceptor_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_interceptor_high_spawn",
               "var": "t1_interceptor_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_interceptor_mid_spawn",
               "var": "t1_interceptor_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_interceptor_low_spawn",
               "var": "t1_interceptor_spawn_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_interceptor_spawn",
               "var": "t2_interceptor_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_interceptor_high_spawn",
               "var": "t2_interceptor_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_interceptor_mid_spawn",
               "var": "t2_interceptor_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_interceptor_low_spawn",
               "var": "t2_interceptor_spawn_low_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_interceptor_spawn_default"
-              },
-              {
-                "target": "t2_interceptor_spawn_default"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_interceptor_spawn_default",
+              "t2_interceptor_spawn_default"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_interceptor_spawn_default": {
         "is_enabled": false,
@@ -718,7 +618,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -770,7 +670,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -822,7 +722,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -874,7 +774,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -926,7 +826,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -978,7 +878,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1030,7 +930,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1067,7 +967,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_interceptor_spawn_low": {
         "is_enabled": false,
@@ -1078,7 +978,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1115,7 +1015,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "aaa_fighters": {
@@ -1130,85 +1030,63 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_aaa_fighter_spawn",
               "var": "t1_aaa_fighters_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_aaa_fighter_high_spawn",
               "var": "t1_aaa_fighters_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_aaa_fighter_mid_spawn",
               "var": "t1_aaa_fighters_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_aaa_fighter_low_spawn",
               "var": "t1_aaa_fighters_spawn_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_aaa_fighter_spawn",
               "var": "t2_aaa_fighters_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_aaa_fighter_high_spawn",
               "var": "t2_aaa_fighters_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_aaa_fighter_mid_spawn",
               "var": "t2_aaa_fighters_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_aaa_fighter_low_spawn",
               "var": "t2_aaa_fighters_spawn_low_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_aaa_fighters_spawn_default"
-              },
-              {
-                "target": "t2_aaa_fighters_spawn_default"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_aaa_fighters_spawn_default",
+              "t2_aaa_fighters_spawn_default"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_aaa_fighters_spawn_default": {
         "is_enabled": false,
@@ -1219,7 +1097,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1271,7 +1149,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1323,7 +1201,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1375,7 +1253,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1427,7 +1305,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1479,7 +1357,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1531,7 +1409,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1568,7 +1446,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_aaa_fighters_spawn_low": {
         "is_enabled": false,
@@ -1579,7 +1457,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1616,7 +1494,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "main_bombers": {
@@ -1631,85 +1509,63 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_main_bomber_spawn",
               "var": "t1_main_bomber_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_main_bomber_high_spawn",
               "var": "t1_main_bomber_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_main_bomber_mid_spawn",
               "var": "t1_main_bomber_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_main_bomber_low_spawn",
               "var": "t1_main_bomber_spawn_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_main_bomber_spawn",
               "var": "t2_main_bomber_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_main_bomber_high_spawn",
               "var": "t2_main_bomber_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_main_bomber_mid_spawn",
               "var": "t2_main_bomber_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_main_bomber_low_spawn",
               "var": "t2_main_bomber_spawn_low_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_main_bombers_spawn_default"
-              },
-              {
-                "target": "t2_main_bombers_spawn_default"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_main_bombers_spawn_default",
+              "t2_main_bombers_spawn_default"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_main_bombers_spawn_default": {
         "is_enabled": false,
@@ -1720,7 +1576,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1773,7 +1629,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1826,7 +1682,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1879,7 +1735,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1932,7 +1788,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -1985,7 +1841,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2038,7 +1894,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2076,7 +1932,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_main_bombers_spawn_low": {
         "is_enabled": false,
@@ -2087,7 +1943,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2125,7 +1981,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "far_bombers": {
@@ -2140,85 +1996,63 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_far_bomber_spawn",
               "var": "t1_far_bomber_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_far_bomber_high_spawn",
               "var": "t1_far_bomber_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_far_bomber_mid_spawn",
               "var": "t1_far_bomber_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_far_bomber_low_spawn",
               "var": "t1_far_bomber_spawn_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_far_bomber_spawn",
               "var": "t2_far_bomber_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_far_bomber_high_spawn",
               "var": "t2_far_bomber_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_far_bomber_mid_spawn",
               "var": "t2_far_bomber_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_far_bomber_low_spawn",
               "var": "t2_far_bomber_spawn_low_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_far_bombers_spawn_default"
-              },
-              {
-                "target": "t2_far_bombers_spawn_default"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_far_bombers_spawn_default",
+              "t2_far_bombers_spawn_default"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_far_bombers_spawn_default": {
         "is_enabled": false,
@@ -2229,7 +2063,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2281,7 +2115,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2333,7 +2167,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2385,7 +2219,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2437,7 +2271,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2489,7 +2323,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2541,7 +2375,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2578,7 +2412,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_far_bombers_spawn_low": {
         "is_enabled": false,
@@ -2589,7 +2423,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2626,7 +2460,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "common_fighters": {
@@ -2641,7 +2475,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "varCompareBool": {
@@ -2650,82 +2484,60 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_common_fighters_spawn",
               "var": "t1_common_fighter_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_common_fighters_high_spawn",
               "var": "t1_common_fighter_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_common_fighters_mid_spawn",
               "var": "t1_common_fighter_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_common_fighters_low_spawn",
               "var": "t1_common_fighter_spawn_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_spawn",
               "var": "t2_common_fighter_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_high_spawn",
               "var": "t2_common_fighter_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_mid_spawn",
               "var": "t2_common_fighter_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_low_spawn",
               "var": "t2_common_fighter_spawn_low_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_common_fighter_spawn_default"
-              },
-              {
-                "target": "t2_common_fighter_spawn_default"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_common_fighter_spawn_default",
+              "t2_common_fighter_spawn_default"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_common_fighter_spawn_default": {
         "is_enabled": false,
@@ -2736,7 +2548,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2787,7 +2599,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2838,7 +2650,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2889,7 +2701,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2940,7 +2752,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -2991,7 +2803,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -3042,7 +2854,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -3078,7 +2890,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_common_fighter_spawn_low": {
         "is_enabled": false,
@@ -3089,7 +2901,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -3125,7 +2937,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "airfields": {
@@ -3140,80 +2952,60 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "t1 team"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_airfield",
               "var": "t1_airfield_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_airfield_high",
               "var": "t1_airfield_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_airfield_mid",
               "var": "t1_airfield_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_airfield_low",
               "var": "t1_airfield_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_airfield",
               "var": "t2_airfield_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_airfield_high",
               "var": "t2_airfield_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_airfield_mid",
               "var": "t2_airfield_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_airfield_low",
               "var": "t2_airfield_low_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "airfields_force_air_spawns_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "airfields_force_air_spawns_check"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "airfields_force_air_spawns_check": {
         "is_enabled": false,
@@ -3224,7 +3016,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "varCompareBool": {
@@ -3259,22 +3051,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t1_airfield_default_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t1_airfield_default_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3331,22 +3121,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t2_airfield_default_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t2_airfield_default_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3403,22 +3191,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t1_airfield_high_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t1_airfield_high_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3475,22 +3261,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t2_airfield_high_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t2_airfield_high_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3547,22 +3331,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t1_airfield_mid_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t1_airfield_mid_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3619,22 +3401,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t2_airfield_mid_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t2_airfield_mid_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3691,7 +3471,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "varCompareBool": {
@@ -3723,22 +3503,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t1_airfield_low_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t1_airfield_low_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3795,7 +3573,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "varCompareBool": {
@@ -3827,22 +3605,20 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@t2_airfield_low_name",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@t2_airfield_low_name",
               "type": "objectGroup"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "airfields exists"
@@ -3899,7 +3675,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "varCompareBool": {
@@ -3916,7 +3692,7 @@
             "target": "create_special_spawn_name"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "rearm_areas": {
@@ -3935,32 +3711,26 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varSetString": {
+        "conditions": {},
+        "actions": {
+          "varSetString": [
+            {
               "value": "t1_bombers_rearm_area",
               "var": "t1_bombers_rearm_area_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_bombers_rearm_area",
               "var": "t2_bombers_rearm_area_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_bombers_rearm_area_check"
-              },
-              {
-                "target": "t2_bombers_rearm_area_check"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_bombers_rearm_area_check",
+              "t2_bombers_rearm_area_check"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_bombers_rearm_area_check": {
         "is_enabled": false,
@@ -3992,7 +3762,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_bombers_rearm_area_check": {
         "is_enabled": false,
@@ -4024,7 +3794,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "special_spawn": {
@@ -4039,85 +3809,63 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "t1"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "t2"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "t1_common_fighters_spawn",
               "var": "t1_special_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_common_fighters_high_spawn",
               "var": "t1_special_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_common_fighters_mid_spawn",
               "var": "t1_special_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t1_common_fighters_low_spawn",
               "var": "t1_special_spawn_low_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_spawn",
               "var": "t2_special_spawn_default_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_high_spawn",
               "var": "t2_special_spawn_high_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_mid_spawn",
               "var": "t2_special_spawn_mid_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_common_fighters_low_spawn",
               "var": "t2_special_spawn_low_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_special_spawn_default"
-              },
-              {
-                "target": "t2_special_spawn_default"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_special_spawn_default",
+              "t2_special_spawn_default"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_special_spawn_default": {
         "is_enabled": false,
@@ -4128,24 +3876,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t1_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4169,7 +3915,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4200,7 +3946,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t1_special_spawn_default_name",
             "team": "A",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4224,24 +3974,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t2_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4265,7 +4013,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4296,7 +4044,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t2_special_spawn_default_name",
             "team": "B",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4320,24 +4072,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t1_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4361,7 +4111,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4392,7 +4142,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t1_special_spawn_high_name",
             "team": "A",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4416,24 +4170,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t2_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4457,7 +4209,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4488,7 +4240,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t2_special_spawn_high_name",
             "team": "B",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4512,24 +4268,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t1_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4553,7 +4307,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4584,7 +4338,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t1_special_spawn_mid_name",
             "team": "A",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4605,24 +4363,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t2_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4646,7 +4402,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4677,7 +4433,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t2_special_spawn_mid_name",
             "team": "B",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4701,24 +4461,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t1_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4727,7 +4485,7 @@
             "target": "t1_special_spawn_low_exist"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t1_special_spawn_low_exist": {
         "is_enabled": false,
@@ -4738,7 +4496,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4769,7 +4527,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t1_special_spawn_low_name",
             "team": "A",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4793,24 +4555,22 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
-        "conditions": [
-          {
-            "varCompareBool": {
+        "conditions": {
+          "varCompareBool": [
+            {
               "var_value": "t2_airfield_exist",
               "value": false,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "force_air_spawn",
               "value": true,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "special spawns exists"
@@ -4819,7 +4579,7 @@
             "target": "t2_special_spawn_low_exist"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_special_spawn_low_exist": {
         "is_enabled": false,
@@ -4830,7 +4590,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "objectExists": {
@@ -4861,7 +4621,11 @@
             "ignoreTeamsOnReuse": false,
             "target": "@t2_special_spawn_low_name",
             "team": "B",
-            "spawnOffset": [0.0,100.0,0.0],
+            "spawnOffset": [
+              0.0,
+              100.0,
+              0.0
+            ],
             "tags": {
               "airfield_take_off_air_rb": true
             }
@@ -4885,7 +4649,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "initMission": {}
         },
         "conditions": {
           "varCompareBool": {
@@ -4902,7 +4666,7 @@
             "target": "t1_airfields_spawn_default"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     }
   },
@@ -4981,11 +4745,11 @@
     "t1_special_spawn_low_name": "",
     "t2_special_spawn_low_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [],
-  "wayPoints": []
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {},
+  "wayPoints": {}
 }

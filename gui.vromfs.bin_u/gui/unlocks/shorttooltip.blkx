@@ -1,29 +1,21 @@
 {
-  "tdiv": [
-    {
-      "flow": "vertical"
+  "tdiv": {
+    "flow": "vertical",
+    "smallFont": "yes",
+    "textAreaSmall": {
+      "id": "header",
+      "text": "",
+      "max-width": "0.6@sf",
+      "overlayTextColor": "unlockHeader"
     },
-    {
-      "smallFont": "yes"
-    },
-    {
-      "textAreaSmall": {
-        "id": "header",
-        "text": "",
-        "max-width": "0.6@sf",
-        "overlayTextColor": "unlockHeader"
-      }
-    },
-    {
-      "textarea": {
+    "textarea": [
+      {
         "id": "decal_description",
         "text": "",
         "display": "hide",
         "max-width": "0.6@sf"
-      }
-    },
-    {
-      "textarea": {
+      },
+      {
         "id": "reward",
         "text": "",
         "smallFont": "yes",
@@ -31,35 +23,31 @@
         "style": "wrap-indent: 0; paragraph-indent: 0;",
         "display": "hide"
       }
-    },
-    {
-      "div": {
-        "flow": "horizontal",
-        "width": "pw",
-        "cardImg": {
-          "id": "challenge_complete",
-          "display": "hide",
-          "size": "@unlockIconSize, @unlockIconSize",
-          "re-type": "9rect",
-          "background-repeat": "expand",
-          "background-image": "#ui/gameuiskin#favorite.png"
-        },
-        "textareaNoTab": {
-          "id": "description",
-          "margin-left": "5",
-          "max-width": "0.6@sf - 1@unlockIconSize",
-          "text": ""
-        }
-      }
-    },
-    {
-      "challengeDescriptionProgress": {
+    ],
+    "div": {
+      "flow": "horizontal",
+      "width": "pw",
+      "cardImg": {
+        "id": "challenge_complete",
         "display": "hide",
+        "size": "@unlockIconSize, @unlockIconSize",
+        "re-type": "9rect",
+        "background-repeat": "expand",
+        "background-image": "#ui/gameuiskin#favorite.png"
+      },
+      "textareaNoTab": {
+        "id": "description",
         "margin-left": "5",
-        "margin-bottom": "5",
-        "id": "progress",
-        "value": ""
+        "max-width": "0.6@sf - 1@unlockIconSize",
+        "text": ""
       }
+    },
+    "challengeDescriptionProgress": {
+      "display": "hide",
+      "margin-left": "5",
+      "margin-bottom": "5",
+      "id": "progress",
+      "value": ""
     }
-  ]
+  }
 }

@@ -1,6 +1,6 @@
-[
-  {
-    "Weapon": {
+{
+  "Weapon": [
+    {
       "trigger": "gunner0",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/navalModels_weapons/127mm_45_skc_34_naval_user_cannon.blk",
@@ -41,20 +41,57 @@
         "gunnerDm": "main_caliber_turret_01_dm",
         "linkedAnimPart": {
           "verNode": "optic_turret_01",
-          "verLimits": [-10.0,30.0],
-          "verOriginLimits": [-10.0,30.0]
+          "verLimits": [
+            -10.0,
+            30.0
+          ],
+          "verOriginLimits": [
+            -10.0,
+            30.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-150.0,150.0],
-        "pitch": [-10.0,30.0]
+        "yaw": [
+          -150.0,
+          150.0
+        ],
+        "pitch": [
+          -10.0,
+          30.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-150.0,-135.0,-7.0,10.0],
-        "lim2": [-135.0,-40.0,-10.0,30.0],
-        "lim3": [-40.0,40.0,-5.0,30.0],
-        "lim4": [40.0,135.0,-10.0,30.0],
-        "lim5": [135.0,150.0,-7.0,10.0]
+        "lim1": [
+          -150.0,
+          -135.0,
+          -7.0,
+          10.0
+        ],
+        "lim2": [
+          -135.0,
+          -40.0,
+          -10.0,
+          30.0
+        ],
+        "lim3": [
+          -40.0,
+          40.0,
+          -5.0,
+          30.0
+        ],
+        "lim4": [
+          40.0,
+          135.0,
+          -10.0,
+          30.0
+        ],
+        "lim5": [
+          135.0,
+          150.0,
+          -7.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -64,19 +101,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner1",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/navalModels_weapons/127mm_45_skc_34_naval_user_cannon.blk",
@@ -110,37 +149,45 @@
       "errMeasureVelDir": 3.0,
       "errTargetting": 3.0,
       "errExplTime": 0.0,
-      "turret": [
-        {
-          "head": "main_caliber_turret_02"
-        },
-        {
-          "gun": "main_caliber_gun_02"
-        },
-        {
-          "barrel": "gun_barrel_02"
-        },
-        {
-          "gunnerDm": "main_caliber_turret_02_dm"
-        },
-        {
-          "linkedAnimPart": {
+      "turret": {
+        "head": "main_caliber_turret_02",
+        "gun": "main_caliber_gun_02",
+        "barrel": "gun_barrel_02",
+        "gunnerDm": "main_caliber_turret_02_dm",
+        "linkedAnimPart": [
+          {
             "verNode": "optic_turret_02",
-            "verLimits": [-10.0,30.0],
-            "verOriginLimits": [-10.0,30.0]
-          }
-        },
-        {
-          "linkedAnimPart": {
+            "verLimits": [
+              -10.0,
+              30.0
+            ],
+            "verOriginLimits": [
+              -10.0,
+              30.0
+            ]
+          },
+          {
             "horNode": "ex_decor_05",
-            "horLimits": [-142.0,142.0],
-            "horOriginLimits": [-142.0,142.0]
+            "horLimits": [
+              -142.0,
+              142.0
+            ],
+            "horOriginLimits": [
+              -142.0,
+              142.0
+            ]
           }
-        }
-      ],
+        ]
+      },
       "limits": {
-        "yaw": [-142.0,142.0],
-        "pitch": [-10.0,30.0]
+        "yaw": [
+          -142.0,
+          142.0
+        ],
+        "pitch": [
+          -10.0,
+          30.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -150,19 +197,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner2",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/navalModels_weapons/127mm_45_skc_34_naval_user_cannon.blk",
@@ -203,18 +252,45 @@
         "gunnerDm": "main_caliber_turret_03_dm",
         "linkedAnimPart": {
           "verNode": "optic_turret_05",
-          "verLimits": [-10.0,30.0],
-          "verOriginLimits": [-10.0,30.0]
+          "verLimits": [
+            -10.0,
+            30.0
+          ],
+          "verOriginLimits": [
+            -10.0,
+            30.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-155.0,155.0],
-        "pitch": [-10.0,30.0]
+        "yaw": [
+          -155.0,
+          155.0
+        ],
+        "pitch": [
+          -10.0,
+          30.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-155.0,-23.0,-5.0,30.0],
-        "lim2": [-23.0,23.0,20.0,30.0],
-        "lim3": [23.0,155.0,-5.0,30.0]
+        "lim1": [
+          -155.0,
+          -23.0,
+          -5.0,
+          30.0
+        ],
+        "lim2": [
+          -23.0,
+          23.0,
+          20.0,
+          30.0
+        ],
+        "lim3": [
+          23.0,
+          155.0,
+          -5.0,
+          30.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -224,19 +300,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/navalModels_weapons/127mm_45_skc_34_naval_user_cannon.blk",
@@ -277,13 +355,25 @@
         "gunnerDm": "main_caliber_turret_04_dm",
         "linkedAnimPart": {
           "verNode": "optic_turret_07",
-          "verLimits": [-10.0,30.0],
-          "verOriginLimits": [-10.0,30.0]
+          "verLimits": [
+            -10.0,
+            30.0
+          ],
+          "verOriginLimits": [
+            -10.0,
+            30.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-155.0,155.0],
-        "pitch": [-10.0,30.0]
+        "yaw": [
+          -155.0,
+          155.0
+        ],
+        "pitch": [
+          -10.0,
+          30.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -293,19 +383,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner4",
       "triggerGroup": "primary",
       "blk": "gameData/Weapons/navalModels_weapons/127mm_45_skc_34_naval_user_cannon.blk",
@@ -346,20 +438,57 @@
         "gunnerDm": "main_caliber_turret_05_dm",
         "linkedAnimPart": {
           "verNode": "optic_turret_08",
-          "verLimits": [-10.0,30.0],
-          "verOriginLimits": [-10.0,30.0]
+          "verLimits": [
+            -10.0,
+            30.0
+          ],
+          "verOriginLimits": [
+            -10.0,
+            30.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-154.0,154.0],
-        "pitch": [-10.0,30.0]
+        "yaw": [
+          -154.0,
+          154.0
+        ],
+        "pitch": [
+          -10.0,
+          30.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-154.0,-147.0,-7.0,10.0],
-        "lim2": [-147.0,-37.0,-10.0,30.0],
-        "lim3": [-37.0,37.0,-5.0,30.0],
-        "lim4": [37.0,147.0,-10.0,30.0],
-        "lim5": [147.0,150.0,-7.0,10.0]
+        "lim1": [
+          -154.0,
+          -147.0,
+          -7.0,
+          10.0
+        ],
+        "lim2": [
+          -147.0,
+          -37.0,
+          -10.0,
+          30.0
+        ],
+        "lim3": [
+          -37.0,
+          37.0,
+          -5.0,
+          30.0
+        ],
+        "lim4": [
+          37.0,
+          147.0,
+          -10.0,
+          30.0
+        ],
+        "lim5": [
+          147.0,
+          150.0,
+          -7.0,
+          10.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -369,19 +498,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "secondary",
       "blk": "gameData/Weapons/navalModels_weapons/37mm_83_skc30_naval_user_cannon.blk",
@@ -421,20 +552,57 @@
         "gunnerDm": "auxiliary_caliber_turret_01_dm",
         "linkedAnimPart": {
           "verNode": "optic_turret_03",
-          "verLimits": [-10.0,85.0],
-          "verOriginLimits": [-10.0,85.0]
+          "verLimits": [
+            -10.0,
+            85.0
+          ],
+          "verOriginLimits": [
+            -10.0,
+            85.0
+          ]
         }
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-10.0,85.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -10.0,
+          85.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-170.0,0.0,85.0],
-        "lim2": [-170.0,-10.0,-10.0,85.0],
-        "lim3": [-10.0,45.0,25.0,85.0],
-        "lim4": [45.0,155.0,60.0,85.0],
-        "lim5": [155.0,180.0,10.0,85.0]
+        "lim1": [
+          -180.0,
+          -170.0,
+          0.0,
+          85.0
+        ],
+        "lim2": [
+          -170.0,
+          -10.0,
+          -10.0,
+          85.0
+        ],
+        "lim3": [
+          -10.0,
+          45.0,
+          25.0,
+          85.0
+        ],
+        "lim4": [
+          45.0,
+          155.0,
+          60.0,
+          85.0
+        ],
+        "lim5": [
+          155.0,
+          180.0,
+          10.0,
+          85.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -444,19 +612,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "secondary",
       "blk": "gameData/Weapons/navalModels_weapons/37mm_83_skc30_naval_user_cannon.blk",
@@ -496,15 +666,46 @@
         "gunnerDm": "auxiliary_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-10.0,85.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -10.0,
+          85.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-155.0,10.0,85.0],
-        "lim2": [-155.0,-45.0,60.0,85.0],
-        "lim3": [-45.0,10.0,25.0,85.0],
-        "lim4": [10.0,170.0,-10.0,85.0],
-        "lim5": [170.0,180.0,0.0,85.0]
+        "lim1": [
+          -180.0,
+          -155.0,
+          10.0,
+          85.0
+        ],
+        "lim2": [
+          -155.0,
+          -45.0,
+          60.0,
+          85.0
+        ],
+        "lim3": [
+          -45.0,
+          10.0,
+          25.0,
+          85.0
+        ],
+        "lim4": [
+          10.0,
+          170.0,
+          -10.0,
+          85.0
+        ],
+        "lim5": [
+          170.0,
+          180.0,
+          0.0,
+          85.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -514,15 +715,19 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
     }
-  }
-]
+  ]
+}

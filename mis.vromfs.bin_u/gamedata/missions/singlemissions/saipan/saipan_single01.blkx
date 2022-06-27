@@ -21,9 +21,12 @@
       "environment": "Evening",
       "weather": "hazy",
       "gt_cooperative": true,
-      "windSpeed": [5.0,6.0]
+      "windSpeed": [
+        5.0,
+        6.0
+      ]
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -33,55 +36,37 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "player"
-              },
-              {
-                "point": "player"
-              },
-              {
-                "point": "waypoint00"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player",
+              "waypoint00"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "player",
               "lookAt": "waypoint00"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "mark",
               "side": "player",
               "target": "waypoint00"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -94,9 +79,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionMarkAsWaypoint": {
           "visible": true,
@@ -123,61 +108,45 @@
           "horizontalDirectionForTeleport": true,
           "object": "friendly_fighters01"
         },
-        "unitSetProperties": [
-          {
-            "object_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "friendly_fighters01"
-          },
-          {
-            "object": "friendly_scouts00"
-          },
-          {
-            "object": "enemy_fighters00"
-          },
-          {
-            "object": "enemy_fighters01"
-          },
-          {
-            "plane": [
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "friendly_fighters01",
+            "friendly_scouts00",
+            "enemy_fighters00",
+            "enemy_fighters01"
+          ],
+          "plane": {
+            "targetDeviation": [
               {
-                "targetDeviation": {
-                  "trigger": "machine gun",
-                  "defaultVal": 0.9,
-                  "limits": [0.0,1.0]
-                }
+                "trigger": "machine gun",
+                "defaultVal": 0.9,
+                "limits": [
+                  0.0,
+                  1.0
+                ]
               },
               {
-                "targetDeviation": {
-                  "trigger": "cannon",
-                  "defaultVal": 0.9,
-                  "limits": [0.1,1.0]
-                }
+                "trigger": "cannon",
+                "defaultVal": 0.9,
+                "limits": [
+                  0.1,
+                  1.0
+                ]
               }
             ]
           }
-        ],
-        "unitPutToSleep": [
-          {
-            "target": "friendly_scouts00"
-          },
-          {
-            "target": "enemy_fighters00"
-          },
-          {
-            "target": "enemy_fighters01"
-          }
-        ],
+        },
+        "unitPutToSleep": {
+          "target": [
+            "friendly_scouts00",
+            "enemy_fighters00",
+            "enemy_fighters01"
+          ]
+        },
         "wait": {
           "time": 2.0
         },
@@ -185,7 +154,7 @@
           "target": "single_saipan_m01_fly00"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "initial_offline": {
       "is_enabled": true,
@@ -200,20 +169,18 @@
           "time": 10.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "player",
             "targetableByAi": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -221,14 +188,12 @@
             "object": "player_himself",
             "targetableByAi": true
           }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
+        ],
+        "wait": {
+          "time": 1.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "waypoint01": {
       "is_enabled": true,
@@ -256,19 +221,17 @@
           "target": "waypoint00"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "waypoint00"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
@@ -276,19 +239,15 @@
             "scale": 0.5,
             "target": "waypoint01"
           }
+        ],
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint02"
-          }
+        "triggerEnable": {
+          "target": "waypoint02"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "waypoint02": {
       "is_enabled": false,
@@ -316,19 +275,17 @@
           "target": "waypoint01"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "waypoint01"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
@@ -336,19 +293,15 @@
             "scale": 0.5,
             "target": "waypoint02"
           }
+        ],
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "waypoint03"
-          }
+        "triggerEnable": {
+          "target": "waypoint03"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "waypoint03": {
       "is_enabled": false,
@@ -376,19 +329,17 @@
           "target": "waypoint02"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "waypoint02"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
@@ -396,19 +347,15 @@
             "scale": 0.5,
             "target": "waypoint03"
           }
+        ],
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "defend_allies_objective"
-          }
+        "triggerEnable": {
+          "target": "defend_allies_objective"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "defend_allies_objective": {
       "is_enabled": false,
@@ -440,108 +387,78 @@
           "target": "waypoint03"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "waypoint03"
-          }
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "waypoint03"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "single_saipan_m01_fly00",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "single_saipan_m01_fly00",
+          "status": 2
         },
-        {
-          "unitWakeUp": [
-            {
-              "target": "friendly_scouts00"
-            },
-            {
-              "target": "enemy_fighters00"
-            }
+        "unitWakeUp": {
+          "target": [
+            "friendly_scouts00",
+            "enemy_fighters00"
           ]
         },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
             "playerAttracted": true,
             "object": "enemy_fighters00",
             "target": "friendly_scouts00",
             "fireRandom": true,
             "playerAttractedCount": 1,
             "fightInArea": "where_to_fight"
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "friendly_scouts00",
             "target": "enemy_fighters00",
             "fireRandom": true,
             "fightInArea": "where_to_fight"
+          },
+          {
+            "playerAttracted": false,
+            "object": "friendly_fighters01",
+            "target": [
+              "enemy_fighters00",
+              "enemy_fighters01"
+            ]
           }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "friendly_fighters01"
-            },
-            {
-              "target": "enemy_fighters00"
-            },
-            {
-              "target": "enemy_fighters01"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "more_players_more_planes"
+          },
+          {
+            "target": [
+              "enemy_fighters_indicator",
+              "45_percent_killed",
+              "75_percent_killed"
+            ]
+          },
+          {
+            "target": [
+              "friendly_scouts_indicator",
+              "defence_failed"
+            ]
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "enemy_fighters_indicator"
-            },
-            {
-              "target": "45_percent_killed"
-            },
-            {
-              "target": "75_percent_killed"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "friendly_scouts_indicator"
-            },
-            {
-              "target": "defence_failed"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "friendly_scouts00",
             "isImmortal": true
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -549,59 +466,39 @@
             "object": "friendly_scouts00",
             "isImmortal": false
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
+            "time": 2.0
+          },
+          {
             "time": 2.0
           }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
+        ],
+        "moAddMissionObjective": [
+          {
             "target": "single_saipan_m01_att00"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "single_saipan_m01_def00"
           }
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "enemy_fighters00"
-            },
-            {
-              "target": "enemy_fighters01"
-            }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "enemy_fighters00",
+            "enemy_fighters01"
           ]
         },
-        {
-          "triggerDisable": {
-            "target": "more_players_more_planes"
-          }
+        "triggerDisable": {
+          "target": "more_players_more_planes"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "more_players_more_planes": {
       "is_enabled": false,
@@ -641,7 +538,7 @@
           "fightInArea": "where_to_fight"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "friendly_scouts_indicator": {
       "is_enabled": false,
@@ -656,7 +553,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -671,7 +568,7 @@
           "target": "friendly_scouts00"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "enemy_fighters_indicator": {
       "is_enabled": false,
@@ -686,45 +583,25 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "missionSetTargetsIndicator": [
-          {
-            "target_type": "isActive"
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "delta": 0
-          },
-          {
-            "icon": "air"
-          },
-          {
-            "icon army": 2
-          },
-          {
-            "set": true
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "target": "enemy_fighters00"
-          },
-          {
-            "target": "enemy_fighters01"
-          }
-        ]
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "enemy_fighters00",
+            "enemy_fighters01"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "defence_failed": {
       "is_enabled": false,
@@ -752,14 +629,12 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "friendly_scouts_indicator"
-          },
-          {
-            "target": "defence_succeed"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "friendly_scouts_indicator",
+            "defence_succeed"
+          ]
+        },
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
           "target_marking": 0,
@@ -794,7 +669,7 @@
           "object": "friendly_scouts00"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "defence_succeed": {
       "is_enabled": false,
@@ -822,14 +697,12 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "friendly_scouts_indicator"
-          },
-          {
-            "target": "defence_failed"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "friendly_scouts_indicator",
+            "defence_failed"
+          ]
+        },
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
           "target_marking": 0,
@@ -847,7 +720,7 @@
           "status": 2
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "45_percent_killed": {
       "is_enabled": false,
@@ -863,53 +736,33 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 11
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "enemy_fighters00"
-          },
-          {
-            "object": "enemy_fighters01"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 11,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "enemy_fighters00",
+            "enemy_fighters01"
+          ]
+        }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "defence_succeed"
-          },
-          {
-            "target": "scouts_disappear"
-          }
-        ],
-        "triggerDisable": [
-          {
-            "target": "defence_failed"
-          },
-          {
-            "target": "friendly_scouts_indicator"
-          }
-        ],
+        "triggerEnable": {
+          "target": [
+            "defence_succeed",
+            "scouts_disappear"
+          ]
+        },
+        "triggerDisable": {
+          "target": [
+            "defence_failed",
+            "friendly_scouts_indicator"
+          ]
+        },
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
           "target_marking": 0,
@@ -939,25 +792,17 @@
           "horizontalDirectionForTeleport": true,
           "object": "friendly_scouts00"
         },
-        "unitAttackTarget": [
-          {
-            "playerAttracted": true
-          },
-          {
-            "object": "enemy_fighters00"
-          },
-          {
-            "target": "player"
-          },
-          {
-            "target": "friendly_fighters01"
-          },
-          {
-            "playerAttractedCount": 1
-          }
-        ]
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "enemy_fighters00",
+          "target": [
+            "player",
+            "friendly_fighters01"
+          ],
+          "playerAttractedCount": 1
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "75_percent_killed": {
       "is_enabled": false,
@@ -973,83 +818,49 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 4
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "enemy_fighters00"
-          },
-          {
-            "object": "enemy_fighters01"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "enemy_fighters00",
+            "enemy_fighters01"
+          ]
+        }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "enemy_fighters_indicator"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "enemy_fighters_indicator"
         },
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isActive",
-            "target_marking": 0,
-            "delta": 0,
-            "icon": "air",
-            "icon army": 2,
-            "set": false,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "enemy_fighters00"
-          }
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "enemy_fighters00"
         },
-        {
-          "unitSetIndication": [
-            {
-              "set": false
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "enemy_fighters00"
-            },
-            {
-              "target": "enemy_fighters01"
-            }
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "enemy_fighters00",
+            "enemy_fighters01"
           ]
         },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "where_hellcats_fly",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1065,10 +876,8 @@
             "recalculatePathDist": -1.0,
             "horizontalDirectionForTeleport": true,
             "object": "enemy_fighters00"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "player",
             "follow_target": true,
             "teleportHeightType": "absolute",
@@ -1085,45 +894,33 @@
             "horizontalDirectionForTeleport": true,
             "object": "friendly_fighters01"
           }
+        ],
+        "moSetObjectiveStatus": {
+          "target": "single_saipan_m01_att00",
+          "status": 2
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "single_saipan_m01_att00",
-            "status": 2
-          }
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 0.5,
+          "target": "waypoint05"
         },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.5,
-            "target": "waypoint05"
-          }
+        "wait": {
+          "time": 2.0
         },
-        {
-          "wait": {
-            "time": 2.0
-          }
+        "moAddMissionObjective": {
+          "target": "single_saipan_m01_fly01"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "single_saipan_m01_fly01"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "waypoint06"
-            },
-            {
-              "target": "enemy_disappear"
-            }
+        "triggerEnable": {
+          "target": [
+            "waypoint06",
+            "enemy_disappear"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "waypoint06": {
       "is_enabled": false,
@@ -1151,19 +948,17 @@
           "target": "waypoint05"
         }
       },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
             "visible": false,
             "primary": true,
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.5,
             "target": "waypoint05"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
+          },
+          {
             "visible": true,
             "primary": true,
             "oriented": false,
@@ -1171,19 +966,15 @@
             "scale": 0.5,
             "target": "waypoint06"
           }
+        ],
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "mission_completed"
-          }
+        "triggerEnable": {
+          "target": "mission_completed"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "mission_completed": {
       "is_enabled": false,
@@ -1232,7 +1023,7 @@
           "debriefingTimer": 2
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "scouts_disappear": {
       "is_enabled": false,
@@ -1269,7 +1060,7 @@
           "target": "friendly_scouts00"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "enemy_disappear": {
       "is_enabled": false,
@@ -1306,7 +1097,7 @@
           "target": "enemy_fighters00"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1322,8 +1113,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_saipan_m01_att00": {
       "is_enabled": false,
@@ -1335,8 +1126,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_saipan_m01_def00": {
       "is_enabled": false,
@@ -1348,8 +1139,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "single_saipan_m01_fly01": {
       "is_enabled": false,
@@ -1361,23 +1152,39 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player",
         "tm": [
-          [-0.939693,0.0,-0.34202],
-          [0.0,1.0,0.0],
-          [0.34202,0.0,-0.939693],
-          [-80.55,6000.0,6127.0]
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            -0.939693
+          ],
+          [
+            -80.55,
+            6000.0,
+            6127.0
+          ]
         ],
         "unit_class": "a6m5_zero",
         "closed_waypoints": false,
@@ -1412,17 +1219,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "friendly_fighters01",
         "tm": [
-          [-0.939693,0.0,-0.34202],
-          [0.0,1.0,0.0],
-          [0.34202,0.0,-0.939693],
-          [25.1998,6000.0,6799.3]
+          [
+            -0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            -0.939693
+          ],
+          [
+            25.1998,
+            6000.0,
+            6799.3
+          ]
         ],
         "unit_class": "a6m5_zero",
         "closed_waypoints": false,
@@ -1457,17 +1278,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "friendly_scouts00",
         "tm": [
-          [-1.0,0.0,-5.96046e-08],
-          [0.0,1.0,0.0],
-          [5.96046e-08,0.0,-1.0],
-          [-23418.2,5271.85,13973.3]
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            -23418.2,
+            5271.85,
+            13973.3
+          ]
         ],
         "unit_class": "a6m2_n_zero",
         "closed_waypoints": false,
@@ -1503,17 +1338,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters00",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-28191.9,4021.9,15868.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -28191.9,
+            4021.9,
+            15868.3
+          ]
         ],
         "unit_class": "f6f-3",
         "closed_waypoints": false,
@@ -1549,17 +1398,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_fighters01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-32614.9,4021.9,19582.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -32614.9,
+            4021.9,
+            19582.4
+          ]
         ],
         "unit_class": "f6f-3",
         "closed_waypoints": false,
@@ -1595,127 +1458,301 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
-        "name": "player_himself",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-16311.4,-21.9,-6793.35]
+    ],
+    "squad": {
+      "name": "player_himself",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": {
-          "squad_members": "player",
-          "object_type": "isPlayer"
-        }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -16311.4,
+          -21.9,
+          -6793.35
+        ]
+      ],
+      "props": {
+        "squad_members": "player",
+        "object_type": "isPlayer"
       }
     }
-  ],
+  },
   "areas": {
     "waypoint00": {
       "type": "Sphere",
       "tm": [
-        [587.7,0.0,0.0],
-        [0.0,587.7,0.0],
-        [0.0,0.0,587.7],
-        [-7157.4,6000.0,4193.0]
+        [
+          587.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          587.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          587.7
+        ],
+        [
+          -7157.4,
+          6000.0,
+          4193.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint01": {
       "type": "Sphere",
       "tm": [
-        [587.7,0.0,0.0],
-        [0.0,587.7,0.0],
-        [0.0,0.0,587.7],
-        [-13403.7,6000.0,3461.25]
+        [
+          587.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          587.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          587.7
+        ],
+        [
+          -13403.7,
+          6000.0,
+          3461.25
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint02": {
       "type": "Sphere",
       "tm": [
-        [587.7,0.0,0.0],
-        [0.0,587.7,0.0],
-        [0.0,0.0,587.7],
-        [-19728.9,6000.0,4294.75]
+        [
+          587.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          587.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          587.7
+        ],
+        [
+          -19728.9,
+          6000.0,
+          4294.75
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint03": {
       "type": "Sphere",
       "tm": [
-        [587.7,0.0,0.0],
-        [0.0,587.7,0.0],
-        [0.0,0.0,587.7],
-        [-25418.8,6000.0,7857.45]
+        [
+          587.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          587.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          587.7
+        ],
+        [
+          -25418.8,
+          6000.0,
+          7857.45
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "point_for_retreat": {
       "type": "Sphere",
       "tm": [
-        [830.2,0.0,0.0],
-        [0.0,830.2,0.0],
-        [0.0,0.0,830.2],
-        [-8397.9,1116.3,208.0]
+        [
+          830.2,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          830.2,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          830.2
+        ],
+        [
+          -8397.9,
+          1116.3,
+          208.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "where_hellcats_fly": {
       "type": "Sphere",
       "tm": [
-        [2297.5,0.0,0.0],
-        [0.0,2297.5,0.0],
-        [0.0,0.0,2297.5],
-        [-49891.4,3105.65,6909.0]
+        [
+          2297.5,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2297.5,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2297.5
+        ],
+        [
+          -49891.4,
+          3105.65,
+          6909.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint04": {
       "type": "Sphere",
       "tm": [
-        [587.7,0.0,0.0],
-        [0.0,587.7,0.0],
-        [0.0,0.0,587.7],
-        [-20922.3,1000.0,13453.7]
+        [
+          587.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          587.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          587.7
+        ],
+        [
+          -20922.3,
+          1000.0,
+          13453.7
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint05": {
       "type": "Sphere",
       "tm": [
-        [587.7,0.0,0.0],
-        [0.0,587.7,0.0],
-        [0.0,0.0,587.7],
-        [-15169.9,1500.0,16152.3]
+        [
+          587.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          587.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          587.7
+        ],
+        [
+          -15169.9,
+          1500.0,
+          16152.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "waypoint06": {
       "type": "Sphere",
       "tm": [
-        [587.7,0.0,0.0],
-        [0.0,587.7,0.0],
-        [0.0,0.0,587.7],
-        [-8928.0,1500.0,16854.3]
+        [
+          587.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          587.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          587.7
+        ],
+        [
+          -8928.0,
+          1500.0,
+          16854.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "where_to_fight": {
       "type": "Sphere",
       "tm": [
-        [20013.3,0.0,0.0],
-        [0.0,20013.3,0.0],
-        [0.0,0.0,20013.3],
-        [-21793.7,3638.6,12748.5]
+        [
+          20013.3,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20013.3,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20013.3
+        ],
+        [
+          -21793.7,
+          3638.6,
+          12748.5
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [],
-  "wayPoints": []
+  "objLayers": {},
+  "wayPoints": {}
 }

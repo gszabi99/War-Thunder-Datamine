@@ -1,49 +1,39 @@
 {
   "gridSize": 128,
-  "ineffectiveColor": "#40404000",
-  "chanceColor": "#ffff0000",
-  "effectiveColor": "#00ff00ff",
+  "ineffectiveColor": "QEBAAA==",
+  "chanceColor": "//8AAA==",
+  "effectiveColor": "AP8A/w==",
   "yNulling": false,
   "updateTime": 0.1,
-  "order": [
-    {
-      "pass1": {
-        "downscale": 8,
-        "lowerPenetration": []
-      }
+  "order": {
+    "pass1": {
+      "downscale": 8,
+      "lowerPenetration": {}
     },
-    {
-      "pass2": {
+    "pass2": [
+      {
         "downscale": 4,
-        "lowerPenetration": []
-      }
-    },
-    {
-      "pass2": {
+        "lowerPenetration": {}
+      },
+      {
         "downscale": 2,
-        "lowerPenetration": []
+        "lowerPenetration": {}
       }
+    ],
+    "pass3": {
+      "lowerPenetration": {}
     },
-    {
-      "pass3": {
-        "lowerPenetration": []
-      }
+    "pass4": {
+      "upperPenetration": {}
     },
-    {
-      "pass4": {
-        "upperPenetration": []
-      }
-    },
-    {
-      "pass5": {
-        "lowerPenetration": {
-          "secondary": true,
-          "explosion": true
-        },
-        "upperPenetration": {
-          "secondary": true
-        }
+    "pass5": {
+      "lowerPenetration": {
+        "secondary": true,
+        "explosion": true
+      },
+      "upperPenetration": {
+        "secondary": true
       }
     }
-  ]
+  }
 }

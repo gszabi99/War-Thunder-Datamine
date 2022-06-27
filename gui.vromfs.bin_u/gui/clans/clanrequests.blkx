@@ -1,8 +1,8 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "size": "0.8*@scrn_tgt, 0.5@scrn_tgt",
       "flow": "vertical",
@@ -34,53 +34,49 @@
         "on_dbl_click": "onUserCard"
       },
       "navBar": {
-        "navLeft": [
-          {
-            "Button_text": {
+        "navLeft": {
+          "Button_text": [
+            {
               "id": "btn_reject",
               "text": "#clan/requestReject",
               "display": "hide",
               "_on_click": "onRequestReject",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "btn_user_options",
               "text": "#mainmenu/btnUserAction",
               "btnName": "X",
               "display": "hide",
               "_on_click": "onUserAction",
-              "ButtonImg": []
+              "ButtonImg": {}
             }
-          }
-        ],
+          ]
+        },
         "navMiddle": {
           "id": "paginator_place"
         },
-        "navRight": [
-          {
-            "Button_text": {
+        "navRight": {
+          "Button_text": [
+            {
               "id": "btn_removeBlacklist",
               "text": "#msgbox/btn_delete",
               "_on_click": "onDeleteFromBlacklist",
               "display": "hide",
               "btnName": "A",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "btn_approve",
               "visualStyle": "secondary",
               "text": "#clan/requestApprove",
               "display": "hide",
               "_on_click": "onRequestApprove",
-              "ButtonImg": [],
-              "buttonWink": []
+              "ButtonImg": {},
+              "buttonWink": {}
             }
-          }
-        ]
+          ]
+        }
       }
     }
   }

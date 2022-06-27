@@ -1,62 +1,30 @@
-[
-  {
-    "weaponType": 1
-  },
-  {
-    "bUseHookAsRel": true
-  },
-  {
-    "emitColor": [1.0,1.0,0.0]
-  },
-  {
-    "emitI": 10.0
-  },
-  {
-    "emitR": 3.0
-  },
-  {
-    "emitTime": 0.03
-  },
-  {
-    "aimMinDist": 10.0
-  },
-  {
-    "aimMaxDist": 1000.0
-  },
-  {
-    "maxDeltaAngle": 0.44
-  },
-  {
-    "shotFreq": 18.0
-  },
-  {
-    "traceFreq": 3
-  },
-  {
-    "bEnablePause": false
-  },
-  {
-    "bullets": 500
-  },
-  {
-    "bulletsCluster": 2
-  },
-  {
-    "preset_cost": 50
-  },
-  {
-    "shouldCollideWithRendinsts": true
-  },
-  {
-    "fxType": "muzzle_8mm_cartoon"
-  },
-  {
-    "fxMultipleSpawn": true
-  },
-  {
-    "bullet": {
-      "mass": 0.0091,
-      "caliber": 0.0076,
+{
+  "weaponType": 1,
+  "bUseHookAsRel": true,
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 10.0,
+  "aimMaxDist": 1000.0,
+  "maxDeltaAngle": 0.44,
+  "shotFreq": 18.0,
+  "traceFreq": 3,
+  "bEnablePause": false,
+  "bullets": 500,
+  "bulletsCluster": 2,
+  "preset_cost": 50,
+  "shouldCollideWithRendinsts": true,
+  "fxType": "muzzle_8mm_cartoon",
+  "fxMultipleSpawn": true,
+  "bullet": [
+    {
+      "mass": 0.00907,
+      "caliber": 0.00762,
       "speed": 920.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -74,49 +42,109 @@
       "hitPowerMult": 2.5,
       "onHitChanceMultFire": 6.0,
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
       "explodeTreshold": 3.0,
       "explodeHitPower": 5.5,
       "explodeArmorPower": 2.5,
-      "explodeRadius": [0.03,0.035],
+      "explodeRadius": [
+        0.03,
+        0.035
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "armorpower": {
-        "ArmorPower0m": [15.0,10.0],
-        "ArmorPower100m": [14.0,100.0],
-        "ArmorPower500m": [12.0,500.0],
-        "ArmorPower1000m": [10.0,1000.0],
-        "ArmorPower1500m": [9.0,1500.0],
-        "ArmorPower2000m": [6.0,2000.0],
-        "ArmorPower2450m": [3.0,2450.0],
-        "ArmorPower2500m": [0.0,2500.0]
+        "ArmorPower0m": [
+          15.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          14.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          12.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          10.0,
+          1000.0
+        ],
+        "ArmorPower1500m": [
+          9.0,
+          1500.0
+        ],
+        "ArmorPower2000m": [
+          6.0,
+          2000.0
+        ],
+        "ArmorPower2450m": [
+          3.0,
+          2450.0
+        ],
+        "ArmorPower2500m": [
+          0.0,
+          2500.0
+        ]
       },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "7mmGold",
         "trail": "noTrail"
@@ -201,12 +229,10 @@
           "fx": "hit_8_11mm_snow_he"
         }
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.0108,
-      "caliber": 0.0076,
+      "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.15,
       "maxDistance": 2000.0,
@@ -219,48 +245,106 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_frag_i",
       "slopeEffectPreset": "ap",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "effectiveDistance": 400.0,
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "hitpower": {
-        "HitPower10m": [1.45,10.0],
-        "HitPower100m": [1.43,100.0],
-        "HitPower200m": [1.37,300.0],
-        "HitPower400m": [1.2,400.0],
-        "HitPower600m": [1.1,600.0],
-        "HitPower1000m": [0.2,1000.0],
-        "HitPower1500m": [0.01,1500.0]
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
+        ],
+        "HitPower1000m": [
+          0.2,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.01,
+          1500.0
+        ]
       },
       "armorpower": {
-        "ArmorPower0m": [5.0,5.0],
-        "ArmorPower100m": [4.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0],
-        "ArmorPower1450m": [0.1,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+        "ArmorPower0m": [
+          5.0,
+          5.0
+        ],
+        "ArmorPower100m": [
+          4.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          0.1,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "noColor"
       },
@@ -345,14 +429,12 @@
         }
       }
     }
-  },
-  {
-    "gunSound": {
-      "path": "sounds/guns",
-      "pathStudio": "toon/weapon",
-      "outside": "valiant_gun_outside",
-      "cockpit": "valiant_gun_inside",
-      "ai": "valiant_gun_ai"
-    }
+  ],
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "toon/weapon",
+    "outside": "valiant_gun_outside",
+    "cockpit": "valiant_gun_inside",
+    "ai": "valiant_gun_ai"
   }
-]
+}

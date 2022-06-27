@@ -20,12 +20,16 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "gt_cooperative": false,
       "gt_reload_explosives": true,
       "locationName": "water_east_china_sea"
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -35,55 +39,37 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "player"
-              },
-              {
-                "point": "player"
-              },
-              {
-                "point": "jpn_battleship_yamato"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player",
+              "jpn_battleship_yamato"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "bomber",
               "side": "player",
               "target": "player",
               "lookAt": "jpn_battleship_yamato"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "enemy",
               "target": "jpn_battleship_yamato"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -96,35 +82,33 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitMoveTo": {
-            "target": "ijn_fleet_waypoint",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object": "jpn_navy",
-            "move_type": "zigzag_move",
-            "zzPeriod": 5.0,
-            "zzAmp": 200.0,
-            "speed": 100.0
-          }
+      "conditions": {},
+      "actions": {
+        "unitMoveTo": {
+          "target": "ijn_fleet_waypoint",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object": "jpn_navy",
+          "move_type": "zigzag_move",
+          "zzPeriod": 5.0,
+          "zzAmp": 200.0,
+          "speed": 100.0
         },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -132,240 +116,159 @@
             "object": "jpn_navy",
             "effShootingRate": 0.2,
             "speed": 300.0
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "armada",
             "effShootingRate": 0.5,
-            "plane": [
-              {
-                "targetDeviation": {
+            "plane": {
+              "targetDeviation": [
+                {
                   "trigger": "machine gun",
                   "defaultVal": 1.0,
-                  "limits": [0.5,4.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.5,
+                    4.0
+                  ]
+                },
+                {
                   "trigger": "cannon",
                   "defaultVal": 3.0,
-                  "limits": [1.0,4.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    1.0,
+                    4.0
+                  ]
+                },
+                {
                   "trigger": "gunner",
                   "defaultVal": 3.0,
-                  "limits": [0.5,4.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.5,
+                    4.0
+                  ]
+                },
+                {
                   "trigger": "torpedoes",
                   "defaultVal": 3.0,
-                  "limits": [0.5,4.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.5,
+                    4.0
+                  ]
+                },
+                {
                   "trigger": "bombs",
                   "defaultVal": 1.0,
-                  "limits": [0.5,4.0]
+                  "limits": [
+                    0.5,
+                    4.0
+                  ]
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "bombers00"
-            },
-            {
-              "object": "bombers01"
-            },
-            {
-              "effShootingRate": 0.0
+              ]
             }
-          ]
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
+          },
+          {
+            "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "jpn_battleship_yamato"
+            "object": [
+              "bombers00",
+              "bombers01"
+            ],
+            "effShootingRate": 0.0
           }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "jpn_battleship_yamato"
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "jpn_navy"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "target": "attackers01"
-            },
-            {
-              "target": "attackers02"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "jp_fighters00"
-            },
-            {
-              "object": "jp_fighters01"
-            },
-            {
-              "target": "fighters00"
-            },
-            {
-              "target": "fighters01"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 2
-            },
-            {
-              "playerAttractedEffRate": 0.2
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "fighters00"
-            },
-            {
-              "object": "fighters01"
-            },
-            {
-              "target": "jp_fighters00"
-            },
-            {
-              "target": "jp_fighters01"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "attackers01"
-            },
-            {
-              "object": "attackers02"
-            },
-            {
-              "target": "jpn_destroyer00"
-            },
-            {
-              "target": "jpn_destroyer01"
-            },
-            {
-              "target": "jpn_destroyer02"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "bombers00"
-            },
-            {
-              "object": "bombers01"
-            },
-            {
-              "target": "jpn_battleship_yamato"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "bombers02"
-            },
-            {
-              "object": "bombers03"
-            },
-            {
-              "target": "jpn_cruiser_yahagi"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "attackers03"
-            },
-            {
-              "object": "attackers04"
-            },
-            {
-              "target": "jpn_destroyer04"
-            },
-            {
-              "target": "jpn_destroyer05"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
+        "unitAttackTarget": [
+          {
+            "playerAttracted": true,
+            "object": "jpn_navy",
+            "target": [
+              "player",
+              "attackers01",
+              "attackers02"
+            ],
+            "fireRandom": true
+          },
+          {
+            "playerAttracted": true,
+            "object": [
+              "jp_fighters00",
+              "jp_fighters01"
+            ],
+            "target": [
+              "fighters00",
+              "fighters01",
+              "player"
+            ],
+            "fireRandom": true,
+            "playerAttractedCount": 2,
+            "playerAttractedEffRate": 0.2
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "fighters00",
+              "fighters01"
+            ],
+            "target": [
+              "jp_fighters00",
+              "jp_fighters01"
+            ],
+            "fireRandom": true
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "attackers01",
+              "attackers02"
+            ],
+            "target": [
+              "jpn_destroyer00",
+              "jpn_destroyer01",
+              "jpn_destroyer02"
+            ]
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "bombers00",
+              "bombers01"
+            ],
+            "target": "jpn_battleship_yamato"
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "bombers02",
+              "bombers03"
+            ],
+            "target": "jpn_cruiser_yahagi"
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "attackers03",
+              "attackers04"
+            ],
+            "target": [
+              "jpn_destroyer04",
+              "jpn_destroyer05"
+            ]
+          }
+        ]
+      },
+      "else_actions": {}
     },
     "initial_offline": {
       "is_enabled": true,
@@ -380,20 +283,18 @@
           "time": 10.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "player",
             "targetableByAi": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -401,14 +302,12 @@
             "object": "player_himself",
             "targetableByAi": true
           }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
+        ],
+        "wait": {
+          "time": 1.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "damage_yamato": {
       "is_enabled": false,
@@ -446,13 +345,23 @@
           "power": 0.86,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "jpn_battleship_yamato"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_completed": {
       "is_enabled": true,
@@ -468,140 +377,120 @@
         }
       },
       "conditions": {
-        "unitWhenPartHp": [
-          {
-            "func": "less"
-          },
-          {
-            "check_objects": "all"
-          },
-          {
-            "check_parts": "any"
-          },
-          {
-            "value": 0.9
-          },
-          {
-            "object": "jpn_battleship_yamato"
-          },
-          {
-            "partNo": 0
-          },
-          {
-            "partNo": 1
-          },
-          {
-            "partNo": 2
-          },
-          {
-            "partNo": 3
-          },
-          {
-            "partNo": 4
-          },
-          {
-            "partNo": 5
-          },
-          {
-            "partNo": 6
-          }
-        ]
+        "unitWhenPartHp": {
+          "func": "less",
+          "check_objects": "all",
+          "check_parts": "any",
+          "value": 0.9,
+          "object": "jpn_battleship_yamato",
+          "partNo": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "single_east_china_m01_att00",
-            "status": 2
-          }
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "single_east_china_m01_att00",
+          "status": 2
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
+        ],
+        "unitLoadBehTree": {
+          "name": "instructorBeh",
+          "objects": "player",
+          "loadType": "tree"
         },
-        {
-          "unitLoadBehTree": {
-            "name": "instructorBeh",
-            "objects": "player",
-            "loadType": "tree"
-          }
+        "showSmartCutscene": {
+          "sceneType": "two_units",
+          "startSubTypeOnTheMarch": "",
+          "startSubTypeGroundUnits": "",
+          "startSubTypeArea": "",
+          "startSubTypeUnitAttackUnit": "",
+          "startSubTypeUnitMoveToUnit": "",
+          "startSubTypeTwoUnits": "object",
+          "duration": 10.0,
+          "changeCameras": false,
+          "teleportAllAttackers": false,
+          "allowTeleportAttackers": false,
+          "inverseCameraDirection": false,
+          "delayPlayer": false,
+          "fadeIn": false,
+          "fadeOut": false,
+          "allowDeadUnits": true,
+          "startSubTypeTakeoff": "",
+          "startSubTypeFlyBy": "",
+          "wait": false,
+          "object": "player_himself",
+          "target": "jpn_battleship_yamato"
         },
-        {
-          "showSmartCutscene": {
-            "sceneType": "two_units",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "object",
-            "duration": 10.0,
-            "changeCameras": false,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": false,
-            "inverseCameraDirection": false,
-            "delayPlayer": false,
-            "fadeIn": false,
-            "fadeOut": false,
-            "allowDeadUnits": true,
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "wait": false,
-            "object": "player_himself",
-            "target": "jpn_battleship_yamato"
-          }
+        "unitDamage": {
+          "part": 0,
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "jpn_battleship_yamato",
+          "doExplosion": true
         },
-        {
-          "unitDamage": {
-            "part": 0,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "jpn_battleship_yamato",
-            "doExplosion": true
-          }
+        "unitPlayEffect": {
+          "effect": "ship_model_expl",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "show": true,
+          "loop": false,
+          "scale": 3.0,
+          "effect_type": "specify",
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "attach": false,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "jpn_battleship_yamato"
         },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 3.0,
-            "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "jpn_battleship_yamato"
-          }
-        },
-        {
-          "missionCompleted": {
-            "timer": false,
-            "debriefingTimer": 1
-          }
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 1
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "permanent_attack": {
       "is_enabled": true,
@@ -616,39 +505,25 @@
           "time": 10.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "unitAttackTarget": [
-          {
-            "playerAttracted": true
-          },
-          {
-            "object": "jp_fighters00"
-          },
-          {
-            "object": "jp_fighters01"
-          },
-          {
-            "target": "fighters00"
-          },
-          {
-            "target": "fighters01"
-          },
-          {
-            "target": "player"
-          },
-          {
-            "fireRandom": true
-          },
-          {
-            "playerAttractedCount": 2
-          },
-          {
-            "playerAttractedEffRate": 0.2
-          }
-        ]
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": [
+            "jp_fighters00",
+            "jp_fighters01"
+          ],
+          "target": [
+            "fighters00",
+            "fighters01",
+            "player"
+          ],
+          "fireRandom": true,
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 0.2
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "fire_effective": {
       "is_enabled": true,
@@ -694,7 +569,7 @@
           "fireRandom": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "fire_not_effective": {
       "is_enabled": false,
@@ -735,7 +610,7 @@
           "effShootingRate": 0.5
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -751,23 +626,39 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37235.7,1064.85,-8280.95]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37235.7,
+            1064.85,
+            -8280.95
+          ]
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
@@ -804,17 +695,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attackers01",
         "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [-37223.9,329.1,-13747.8]
+          [
+            0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            0.906308
+          ],
+          [
+            -37223.9,
+            329.1,
+            -13747.8
+          ]
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
@@ -850,17 +755,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attackers02",
         "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [-34695.1,329.1,-14353.4]
+          [
+            0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            0.906308
+          ],
+          [
+            -34695.1,
+            329.1,
+            -14353.4
+          ]
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
@@ -896,17 +815,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bombers00",
         "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [-28825.9,2706.0,-8502.15]
+          [
+            0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            0.906308
+          ],
+          [
+            -28825.9,
+            2706.0,
+            -8502.15
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -942,17 +875,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bombers01",
         "tm": [
-          [0.258819,0.0,-0.965926],
-          [0.0,1.0,0.0],
-          [0.965926,0.0,0.258819],
-          [-28124.1,2706.0,-6810.7]
+          [
+            0.258819,
+            0.0,
+            -0.965926
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.965926,
+            0.0,
+            0.258819
+          ],
+          [
+            -28124.1,
+            2706.0,
+            -6810.7
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -988,17 +935,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bombers02",
         "tm": [
-          [0.0436194,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,0.0436194],
-          [-32762.8,2706.0,-31630.4]
+          [
+            0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            0.0436194
+          ],
+          [
+            -32762.8,
+            2706.0,
+            -31630.4
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -1034,17 +995,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bombers03",
         "tm": [
-          [0.0436194,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,0.0436194],
-          [-33120.6,2706.0,-32908.5]
+          [
+            0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            0.0436194
+          ],
+          [
+            -33120.6,
+            2706.0,
+            -32908.5
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -1080,17 +1055,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attackers03",
         "tm": [
-          [0.999048,0.0,-0.0436194],
-          [0.0,1.0,0.0],
-          [0.0436194,0.0,0.999048],
-          [-53422.1,329.1,2152.24]
+          [
+            0.999048,
+            0.0,
+            -0.0436194
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            -53422.1,
+            329.1,
+            2152.24
+          ]
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
@@ -1126,17 +1115,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "attackers04",
         "tm": [
-          [0.999048,0.0,-0.0436194],
-          [0.0,1.0,0.0],
-          [0.0436194,0.0,0.999048],
-          [-51567.0,329.1,1866.5]
+          [
+            0.999048,
+            0.0,
+            -0.0436194
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            -51567.0,
+            329.1,
+            1866.5
+          ]
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
@@ -1172,17 +1175,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "fighters00",
         "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [-28757.6,1508.35,-11658.8]
+          [
+            0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            0.906308
+          ],
+          [
+            -28757.6,
+            1508.35,
+            -11658.8
+          ]
         ],
         "unit_class": "f4u-1d",
         "closed_waypoints": false,
@@ -1218,17 +1235,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "fighters01",
         "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [-29716.9,1508.35,-13340.2]
+          [
+            0.906308,
+            0.0,
+            0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.422618,
+            0.0,
+            0.906308
+          ],
+          [
+            -29716.9,
+            1508.35,
+            -13340.2
+          ]
         ],
         "unit_class": "f4u-1d",
         "closed_waypoints": false,
@@ -1264,17 +1295,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "jp_fighters00",
         "tm": [
-          [-0.965926,0.0,0.258819],
-          [0.0,1.0,0.0],
-          [-0.258819,0.0,-0.965926],
-          [-26118.3,1508.35,-13033.2]
+          [
+            -0.965926,
+            0.0,
+            0.258819
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.258819,
+            0.0,
+            -0.965926
+          ],
+          [
+            -26118.3,
+            1508.35,
+            -13033.2
+          ]
         ],
         "unit_class": "a6m5_zero",
         "closed_waypoints": false,
@@ -1310,17 +1355,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "jp_fighters01",
         "tm": [
-          [-0.965926,0.0,0.258819],
-          [0.0,1.0,0.0],
-          [-0.258819,0.0,-0.965926],
-          [-25858.7,1508.35,-11229.1]
+          [
+            -0.965926,
+            0.0,
+            0.258819
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.258819,
+            0.0,
+            -0.965926
+          ],
+          [
+            -25858.7,
+            1508.35,
+            -11229.1
+          ]
         ],
         "unit_class": "a6m5_zero",
         "closed_waypoints": false,
@@ -1356,17 +1415,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "ships": {
+    ],
+    "ships": [
+      {
         "name": "jpn_battleship_yamato",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27944.3,0.0,-10373.5]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -27944.3,
+            0.0,
+            -10373.5
+          ]
         ],
         "unit_class": "ijn_bb_yamato",
         "closed_waypoints": false,
@@ -1386,22 +1461,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_cruiser_yahagi",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-26492.9,0.0,-8529.4]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -26492.9,
+            0.0,
+            -8529.4
+          ]
         ],
         "unit_class": "ijn_ca_nagara",
         "closed_waypoints": false,
@@ -1421,22 +1516,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer00",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27467.1,0.0,-9425.65]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -27467.1,
+            0.0,
+            -9425.65
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1456,22 +1571,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer01",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-28825.8,0.0,-9058.4]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -28825.8,
+            0.0,
+            -9058.4
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1491,22 +1626,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer02",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27987.5,0.0,-12964.9]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -27987.5,
+            0.0,
+            -12964.9
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1526,22 +1681,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer03",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27292.9,0.0,-12700.4]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -27292.9,
+            0.0,
+            -12700.4
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1561,22 +1736,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer04",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-28799.9,0.0,-12568.5]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -28799.9,
+            0.0,
+            -12568.5
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1596,22 +1791,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer05",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27191.8,0.0,-11178.3]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -27191.8,
+            0.0,
+            -11178.3
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1631,22 +1846,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer06",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-28289.0,0.0,-8059.0]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -28289.0,
+            0.0,
+            -8059.0
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1666,22 +1901,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "jpn_destroyer07",
         "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-29987.0,0.0,-9884.1]
+          [
+            7.54979E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            7.54979E-08
+          ],
+          [
+            -29987.0,
+            0.0,
+            -9884.1
+          ]
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
@@ -1701,192 +1956,212 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "jpn_navy",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-25016.2,0.0,-10119.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -25016.2,
+            0.0,
+            -10119.4
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "jpn_battleship_yamato"
-          },
-          {
-            "squad_members": "jpn_cruiser_yahagi"
-          },
-          {
-            "squad_members": "jpn_destroyer00"
-          },
-          {
-            "squad_members": "jpn_destroyer01"
-          },
-          {
-            "squad_members": "jpn_destroyer02"
-          },
-          {
-            "squad_members": "jpn_destroyer03"
-          },
-          {
-            "squad_members": "jpn_destroyer04"
-          },
-          {
-            "squad_members": "jpn_destroyer05"
-          },
-          {
-            "squad_members": "jpn_destroyer06"
-          },
-          {
-            "squad_members": "jpn_destroyer07"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "jpn_battleship_yamato",
+            "jpn_cruiser_yahagi",
+            "jpn_destroyer00",
+            "jpn_destroyer01",
+            "jpn_destroyer02",
+            "jpn_destroyer03",
+            "jpn_destroyer04",
+            "jpn_destroyer05",
+            "jpn_destroyer06",
+            "jpn_destroyer07"
+          ]
+        }
+      },
+      {
         "name": "armada",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-31349.8,0.0,-12543.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -31349.8,
+            0.0,
+            -12543.8
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "attackers01"
-          },
-          {
-            "squad_members": "attackers02"
-          },
-          {
-            "squad_members": "bombers00"
-          },
-          {
-            "squad_members": "bombers01"
-          },
-          {
-            "squad_members": "bombers02"
-          },
-          {
-            "squad_members": "attackers03"
-          },
-          {
-            "squad_members": "attackers04"
-          },
-          {
-            "squad_members": "fighters00"
-          },
-          {
-            "squad_members": "fighters01"
-          },
-          {
-            "squad_members": "jp_fighters00"
-          },
-          {
-            "squad_members": "jp_fighters01"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "attackers01",
+            "attackers02",
+            "bombers00",
+            "bombers01",
+            "bombers02",
+            "attackers03",
+            "attackers04",
+            "fighters00",
+            "fighters01",
+            "jp_fighters00",
+            "jp_fighters01"
+          ]
+        }
+      },
+      {
         "name": "player_himself",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-36591.0,0.0,-4054.75]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -36591.0,
+            0.0,
+            -4054.75
+          ]
         ],
         "props": {
           "squad_members": "player",
           "object_type": "isPlayer"
         }
-      }
-    },
-    {
-      "squad": {
+      },
+      {
         "name": "fr_armada",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-31092.8,0.0,-13571.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -31092.8,
+            0.0,
+            -13571.0
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "attackers01"
-          },
-          {
-            "squad_members": "attackers02"
-          },
-          {
-            "squad_members": "bombers00"
-          },
-          {
-            "squad_members": "bombers01"
-          },
-          {
-            "squad_members": "bombers02"
-          },
-          {
-            "squad_members": "attackers03"
-          },
-          {
-            "squad_members": "attackers04"
-          },
-          {
-            "squad_members": "fighters00"
-          },
-          {
-            "squad_members": "fighters01"
-          }
-        ]
+        "props": {
+          "squad_members": [
+            "attackers01",
+            "attackers02",
+            "bombers00",
+            "bombers01",
+            "bombers02",
+            "attackers03",
+            "attackers04",
+            "fighters00",
+            "fighters01"
+          ]
+        }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "ijn_fleet_waypoint": {
       "type": "Sphere",
       "tm": [
-        [4498.4,0.0,0.0],
-        [0.0,4498.4,0.0],
-        [0.0,0.0,4498.4],
-        [-56524.2,0.0,89624.4]
+        [
+          4498.4,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4498.4,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4498.4
+        ],
+        [
+          -56524.2,
+          0.0,
+          89624.4
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

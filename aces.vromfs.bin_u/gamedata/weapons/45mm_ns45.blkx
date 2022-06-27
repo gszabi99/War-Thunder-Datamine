@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -32,25 +36,59 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_frag_i_t",
     "slopeEffectPreset": "ap",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/he.ivf",
     "hitPowerMult": 3.0,
     "onHitChanceMultFire": 3.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,300.0],
-    "farHitPower": [0.1,700.0],
-    "endHitPower": [0.008,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [4.0,150.0],
-    "midArmorPower": [4.0,600.0],
-    "farArmorPower": [4.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      300.0
+    ],
+    "farHitPower": [
+      0.1,
+      700.0
+    ],
+    "endHitPower": [
+      0.008,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      4.0,
+      150.0
+    ],
+    "midArmorPower": [
+      4.0,
+      600.0
+    ],
+    "farArmorPower": [
+      4.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "fuseDelayDist": 0.3,
     "explodeTreshold": 0.1,
     "explodeHitPower": 45.0,
     "explodeArmorPower": 8.6,
-    "explodeRadius": [0.22,1.24],
+    "explodeRadius": [
+      0.22,
+      1.24
+    ],
     "shutterDamage": true,
     "shutterDamageRadius": 5.0,
     "shutterAmount": 80,
@@ -62,22 +100,31 @@
     "ricochetEffect": "hit_28_38mm_metal_ap",
     "waterCollisionEffect": "hit_28_38mm_water",
     "explosionPatchRadius": 1.0,
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.05
+      ],
+      "mod2": [
+        20.0,
+        0.1
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.2
+        ],
+        [
+          45.0,
+          0.3
+        ]
+      ]
+    },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "37mmLightRed",
       "trail": "black"

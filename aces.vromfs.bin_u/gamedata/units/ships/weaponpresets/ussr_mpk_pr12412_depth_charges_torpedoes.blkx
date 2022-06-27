@@ -1,348 +1,192 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "auxiliary_caliber_gun_01"
-      },
-      {
-        "node": "auxiliary_caliber_turret_01"
-      },
-      {
-        "node": "auxiliary_caliber_gun_02"
-      },
-      {
-        "node": "auxiliary_caliber_turret_02"
-      },
-      {
-        "node": "ammo_turret_05"
-      },
-      {
-        "node": "ammo_turret_06"
-      },
-      {
-        "node": "ammo_turret_07"
-      },
-      {
-        "node": "ammo_turret_08"
-      },
-      {
-        "node": "ammo_turret_09"
-      },
-      {
-        "node": "ammo_turret_10"
-      },
-      {
-        "node": "ammo_turret_11"
-      },
-      {
-        "node": "ammo_turret_12"
-      },
-      {
-        "node": "ammo_turret_13"
-      },
-      {
-        "node": "ammo_turret_14"
-      },
-      {
-        "node": "ammo_turret_02"
-      },
-      {
-        "node": "ammo_turret_03"
-      },
-      {
-        "node": "ammo_turret_04"
-      },
-      {
-        "node": "ammo_turret_15"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "auxiliary_caliber_gun_01",
+      "auxiliary_caliber_turret_01",
+      "auxiliary_caliber_gun_02",
+      "auxiliary_caliber_turret_02",
+      "ammo_turret_05",
+      "ammo_turret_06",
+      "ammo_turret_07",
+      "ammo_turret_08",
+      "ammo_turret_09",
+      "ammo_turret_10",
+      "ammo_turret_11",
+      "ammo_turret_12",
+      "ammo_turret_13",
+      "ammo_turret_14",
+      "ammo_turret_02",
+      "ammo_turret_03",
+      "ammo_turret_04",
+      "ammo_turret_15"
     ]
   },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner4"
+  "Weapon": [
+    {
+      "trigger": "gunner4",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 1,
+      "startSpeed": 20.0,
+      "enableCourseCorrection": [
+        false,
+        false
+      ],
+      "useStartSpeed": true,
+      "armDistance": 50.0,
+      "barrelDP": "tt_01_dm",
+      "breechDP": "torpedo_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_01_dm",
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        3.0,
+        0.0,
+        0.0
+      ],
+      "allowableDelta": 180.0,
+      "turret": {
+        "head": "bone_torpedo_01",
+        "gun": "bone_torpedo_01",
+        "gunnerDm": "bridge_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
-      },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_01"
-      },
-      {
-        "bullets": 1
-      },
-      {
-        "startSpeed": 20.0
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "armDistance": 50.0
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "breechDP": "torpedo_01_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "ammoDP": "torpedo_01_dm"
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [3.0,0.0,0.0]
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "turret": {
-          "head": "bone_torpedo_01",
-          "gun": "bone_torpedo_01",
-          "gunnerDm": "bridge_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limits": {
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner5"
+    },
+    {
+      "trigger": "gunner5",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk",
+      "emitter": "bone_torpedo_03",
+      "bullets": 1,
+      "startSpeed": 20.0,
+      "enableCourseCorrection": [
+        false,
+        false
+      ],
+      "useStartSpeed": true,
+      "armDistance": 50.0,
+      "barrelDP": "tt_03_dm",
+      "breechDP": "torpedo_03_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_03_dm",
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        3.0,
+        0.0,
+        0.0
+      ],
+      "allowableDelta": 180.0,
+      "turret": {
+        "head": "bone_torpedo_03",
+        "gun": "bone_torpedo_03",
+        "gunnerDm": "bridge_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
-      },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_03"
-      },
-      {
-        "bullets": 1
-      },
-      {
-        "startSpeed": 20.0
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "armDistance": 50.0
-      },
-      {
-        "barrelDP": "tt_03_dm"
-      },
-      {
-        "breechDP": "torpedo_03_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "ammoDP": "torpedo_03_dm"
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [3.0,0.0,0.0]
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "turret": {
-          "head": "bone_torpedo_03",
-          "gun": "bone_torpedo_03",
-          "gunnerDm": "bridge_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limits": {
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner6"
+    },
+    {
+      "trigger": "gunner6",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk",
+      "emitter": "bone_torpedo_02",
+      "bullets": 1,
+      "startSpeed": 20.0,
+      "enableCourseCorrection": [
+        false,
+        false
+      ],
+      "useStartSpeed": true,
+      "armDistance": 50.0,
+      "barrelDP": "tt_02_dm",
+      "breechDP": "torpedo_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_02_dm",
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        3.0,
+        0.0,
+        0.0
+      ],
+      "allowableDelta": 180.0,
+      "turret": {
+        "head": "bone_torpedo_02",
+        "gun": "bone_torpedo_02",
+        "gunnerDm": "bridge_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
-      },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_02"
-      },
-      {
-        "bullets": 1
-      },
-      {
-        "startSpeed": 20.0
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "armDistance": 50.0
-      },
-      {
-        "barrelDP": "tt_02_dm"
-      },
-      {
-        "breechDP": "torpedo_02_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "ammoDP": "torpedo_02_dm"
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [3.0,0.0,0.0]
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "turret": {
-          "head": "bone_torpedo_02",
-          "gun": "bone_torpedo_02",
-          "gunnerDm": "bridge_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limits": {
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner7"
+    },
+    {
+      "trigger": "gunner7",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk",
+      "emitter": "bone_torpedo_04",
+      "bullets": 1,
+      "startSpeed": 20.0,
+      "enableCourseCorrection": [
+        false,
+        false
+      ],
+      "useStartSpeed": true,
+      "armDistance": 50.0,
+      "barrelDP": "tt_04_dm",
+      "breechDP": "torpedo_04_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_04_dm",
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        3.0,
+        0.0,
+        0.0
+      ],
+      "allowableDelta": 180.0,
+      "turret": {
+        "head": "bone_torpedo_04",
+        "gun": "bone_torpedo_04",
+        "gunnerDm": "bridge_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
-      },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_04"
-      },
-      {
-        "bullets": 1
-      },
-      {
-        "startSpeed": 20.0
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "armDistance": 50.0
-      },
-      {
-        "barrelDP": "tt_04_dm"
-      },
-      {
-        "breechDP": "torpedo_04_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "ammoDP": "torpedo_04_dm"
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [3.0,0.0,0.0]
-      },
-      {
-        "allowableDelta": 180.0
-      },
-      {
-        "turret": {
-          "head": "bone_torpedo_04",
-          "gun": "bone_torpedo_04",
-          "gunnerDm": "bridge_dm"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [0.0,0.0],
-          "pitch": [0.0,0.0]
-        }
+      "limits": {
+        "yaw": [
+          0.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    ]
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -351,10 +195,8 @@
       "external": true,
       "dropSpeed": 3.0,
       "ammoDP": "depth_charge_01_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -363,10 +205,8 @@
       "external": true,
       "dropSpeed": 3.0,
       "ammoDP": "depth_charge_02_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -375,10 +215,8 @@
       "external": true,
       "dropSpeed": 5.0,
       "ammoDP": "depth_charge_03_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -387,10 +225,8 @@
       "external": true,
       "dropSpeed": 5.0,
       "ammoDP": "depth_charge_04_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -399,10 +235,8 @@
       "external": true,
       "dropSpeed": 7.0,
       "ammoDP": "depth_charge_05_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -411,10 +245,8 @@
       "external": true,
       "dropSpeed": 7.0,
       "ammoDP": "depth_charge_06_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -423,10 +255,8 @@
       "external": true,
       "dropSpeed": 9.0,
       "ammoDP": "depth_charge_07_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -435,10 +265,8 @@
       "external": true,
       "dropSpeed": 9.0,
       "ammoDP": "depth_charge_08_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -447,10 +275,8 @@
       "external": true,
       "dropSpeed": 11.0,
       "ammoDP": "depth_charge_09_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -459,10 +285,8 @@
       "external": true,
       "dropSpeed": 11.0,
       "ammoDP": "depth_charge_10_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -471,10 +295,8 @@
       "external": true,
       "dropSpeed": 13.0,
       "ammoDP": "depth_charge_11_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_ussr_pr_183.blk",
@@ -484,5 +306,5 @@
       "dropSpeed": 13.0,
       "ammoDP": "depth_charge_12_dm"
     }
-  }
-]
+  ]
+}

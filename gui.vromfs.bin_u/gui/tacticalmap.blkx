@@ -14,35 +14,19 @@
     "id": "menu-title",
     "type": "big"
   },
-  "optionlist_container": [
-    {
-      "id": "flight_menu_bgd"
-    },
-    {
-      "type": "big"
-    },
-    {
-      "style": "padding:10@sf/@pf;"
-    },
-    {
-      "tdiv": [
-        {
-          "id": "objectives_panel"
-        },
-        {
-          "size": "50%pw, ph"
-        },
-        {
-          "max-width": "pw-ph"
-        },
-        {
-          "overflow": "hidden"
-        },
-        {
-          "display": "hide"
-        },
-        {
-          "optionlist_line_left": {
+  "optionlist_container": {
+    "id": "flight_menu_bgd",
+    "type": "big",
+    "style": "padding:10@sf/@pf;",
+    "tdiv": [
+      {
+        "id": "objectives_panel",
+        "size": "50%pw, ph",
+        "max-width": "pw-ph",
+        "overflow": "hidden",
+        "display": "hide",
+        "optionlist_line_left": [
+          {
             "size": "pw,5*@scrn_tgt/100.0",
             "pos": "0,-0.3*@scrn_tgt/100.0",
             "position": "relative",
@@ -53,10 +37,8 @@
               "width": "pw",
               "style": "text-align:right;"
             }
-          }
-        },
-        {
-          "optionlist_line_left": {
+          },
+          {
             "size": "pw,5*@scrn_tgt/100.0",
             "activeText": {
               "text": "#map/secondary_objectives",
@@ -66,18 +48,14 @@
               "style": "text-align:right;"
             }
           }
-        },
-        {
-          "_newline": []
-        },
-        {
-          "_newline": []
-        },
-        {
-          "_newline": []
-        },
-        {
-          "div": {
+        ],
+        "_newline": [
+          {},
+          {},
+          {}
+        ],
+        "div": [
+          {
             "width": "pw",
             "height": "53%ph",
             "overflow": "hidden",
@@ -90,10 +68,8 @@
               "flow": "vertical",
               "id": "primary_tasks_list"
             }
-          }
-        },
-        {
-          "div": {
+          },
+          {
             "width": "pw",
             "height": "fh",
             "overflow": "hidden",
@@ -107,11 +83,9 @@
               "flow": "vertical"
             }
           }
-        }
-      ]
-    },
-    {
-      "tdiv": {
+        ]
+      },
+      {
         "id": "pilots_panel",
         "size": "50%pw, ph",
         "max-width": "pw-ph",
@@ -124,7 +98,7 @@
             "tdalign": "right"
           }
         },
-        "_newline": [],
+        "_newline": {},
         "tdiv": {
           "size": "pw, 16@rows16height + 4",
           "overflow-y": "auto",
@@ -147,18 +121,16 @@
             "on_activate": "onPilotsSelect"
           }
         }
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "size": "ph, ph",
         "min-width": "50%pw",
         "tacticalMap": {
           "size": "ph,ph"
         }
       }
-    }
-  ],
+    ]
+  },
   "navBarStatic": {
     "navLeft": {
       "activeText": {
@@ -169,29 +141,27 @@
     }
   },
   "navBar": {
-    "navRight": [
-      {
-        "Button_text": {
+    "navRight": {
+      "Button_text": [
+        {
           "id": "btn_select",
           "text": "#mainmenu/btnSelect",
           "btnName": "A",
           "on_click": "onStart",
           "skip-navigation": "yes",
-          "ButtonImg": []
-        }
-      },
-      {
-        "Button_text": {
+          "ButtonImg": {}
+        },
+        {
           "id": "btn_back",
           "text": "#mainmenu/btnBack",
           "btnName": "B",
           "_on_click": "goBack",
           "display": "hide",
           "skip-navigation": "yes",
-          "ButtonImg": []
+          "ButtonImg": {}
         }
-      }
-    ]
+      ]
+    }
   },
   "root_button": {
     "id": "screen_button_back",

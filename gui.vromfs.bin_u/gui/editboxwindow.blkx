@@ -1,7 +1,7 @@
 {
   "root": {
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "width": "50*@scrn_tgt/100.0",
       "pos": "50%pw-50%w, 40%ph-40%h",
@@ -36,18 +36,12 @@
         "padding": "0.025@scrn_tgt, 0",
         "display": "hide"
       },
-      "tdiv": [
-        {
-          "width": "45*@scrn_tgt/100.0"
-        },
-        {
-          "pos": "50%pw-50%w, 3*@scrn_tgt/100.0"
-        },
-        {
-          "position": "relative"
-        },
-        {
-          "EditBox": {
+      "tdiv": {
+        "width": "45*@scrn_tgt/100.0",
+        "pos": "50%pw-50%w, 3*@scrn_tgt/100.0",
+        "position": "relative",
+        "EditBox": [
+          {
             "id": "edit_box_window_text",
             "width": "pw",
             "display": "hide",
@@ -55,10 +49,8 @@
             "on_activate": "onOk",
             "_on_cancel_edit": "goBack",
             "on_change_value": "onChangeValue"
-          }
-        },
-        {
-          "EditBox": {
+          },
+          {
             "id": "edit_box_window_text_multiline",
             "size": "pw, 4@buttonHeight",
             "multiline": "yes",
@@ -67,8 +59,8 @@
             "_on_cancel_edit": "goBack",
             "on_change_value": "onChangeValue"
           }
-        }
-      ],
+        ]
+      },
       "div": {
         "pos": "50%pw-50%w, 0.03@scrn_tgt",
         "position": "relative",
@@ -77,7 +69,7 @@
           "text": "#msgbox/btn_ok",
           "on_click": "onOk",
           "btnName": "X",
-          "ButtonImg": [],
+          "ButtonImg": {},
           "textarea": {
             "id": "btn_ok_text",
             "class": "buttonText",

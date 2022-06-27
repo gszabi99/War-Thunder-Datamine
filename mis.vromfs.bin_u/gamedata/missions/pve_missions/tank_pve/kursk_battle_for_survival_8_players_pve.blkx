@@ -2,107 +2,43 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "player_tank01"
-      },
-      {
-        "wing": "player_tank02"
-      },
-      {
-        "wing": "player_tank03"
-      },
-      {
-        "wing": "player_tank04"
-      },
-      {
-        "wing": "player_tank05"
-      },
-      {
-        "wing": "player_tank06"
-      },
-      {
-        "wing": "player_tank07"
-      },
-      {
-        "wing": "player_tank08"
-      },
-      {
-        "wing": "player_tank09"
-      },
-      {
-        "wing": "player_tank10"
-      },
-      {
-        "wing": "player_tank11"
-      },
-      {
-        "wing": "player_tank12"
-      },
-      {
-        "wing": "player_tank13"
-      },
-      {
-        "wing": "player_tank14"
-      },
-      {
-        "wing": "player_tank15"
-      },
-      {
-        "wing": "player_tank16"
-      },
-      {
-        "wing": "player_tank17"
-      },
-      {
-        "wing": "player_tank18"
-      },
-      {
-        "wing": "player_tank19"
-      },
-      {
-        "wing": "player_tank20"
-      },
-      {
-        "wing": "player_tank21"
-      },
-      {
-        "wing": "player_tank22"
-      },
-      {
-        "wing": "player_tank23"
-      },
-      {
-        "wing": "player_tank24"
-      },
-      {
-        "wing": "player_tank25"
-      },
-      {
-        "wing": "player_tank26"
-      },
-      {
-        "wing": "player_tank27"
-      },
-      {
-        "wing": "player_tank28"
-      },
-      {
-        "wing": "player_tank29"
-      },
-      {
-        "wing": "player_tank30"
-      },
-      {
-        "wing": "player_tank31"
-      },
-      {
-        "wing": "player_tank32"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "player_tank01",
+        "player_tank02",
+        "player_tank03",
+        "player_tank04",
+        "player_tank05",
+        "player_tank06",
+        "player_tank07",
+        "player_tank08",
+        "player_tank09",
+        "player_tank10",
+        "player_tank11",
+        "player_tank12",
+        "player_tank13",
+        "player_tank14",
+        "player_tank15",
+        "player_tank16",
+        "player_tank17",
+        "player_tank18",
+        "player_tank19",
+        "player_tank20",
+        "player_tank21",
+        "player_tank22",
+        "player_tank23",
+        "player_tank24",
+        "player_tank25",
+        "player_tank26",
+        "player_tank27",
+        "player_tank28",
+        "player_tank29",
+        "player_tank30",
+        "player_tank31",
+        "player_tank32"
+      ]
+    },
     "player_teamB": {
       "army": 2
     },
@@ -129,7 +65,7 @@
       "country_axis": "germany",
       "country_allies": "ussr"
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -138,201 +74,126 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "neutral"
-              },
-              {
-                "point": "briefing_enemy_01"
-              },
-              {
-                "point": "briefing_ally_base"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "neutral"
-              },
-              {
-                "point": "briefing_enemy_02"
-              },
-              {
-                "point": "briefing_ally_base"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "neutral"
-              },
-              {
-                "point": "briefing_enemy_03"
-              },
-              {
-                "point": "briefing_ally_base"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "neutral"
-              },
-              {
-                "point": "briefing_enemy_04"
-              },
-              {
-                "point": "briefing_ally_base"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "neutral"
-              },
-              {
-                "point": "briefing_enemy_05"
-              },
-              {
-                "point": "briefing_ally_base"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "neutral"
-              },
-              {
-                "point": "briefing_enemy_06"
-              },
-              {
-                "point": "briefing_ally_base"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "neutral"
-              },
-              {
-                "point": "briefing_enemy_07"
-              },
-              {
-                "point": "briefing_ally_base"
-              }
-            ]
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": [
+            {
+              "width": 1,
+              "side": "neutral",
+              "point": [
+                "briefing_enemy_01",
+                "briefing_ally_base"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "neutral",
+              "point": [
+                "briefing_enemy_02",
+                "briefing_ally_base"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "neutral",
+              "point": [
+                "briefing_enemy_03",
+                "briefing_ally_base"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "neutral",
+              "point": [
+                "briefing_enemy_04",
+                "briefing_ally_base"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "neutral",
+              "point": [
+                "briefing_enemy_05",
+                "briefing_ally_base"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "neutral",
+              "point": [
+                "briefing_enemy_06",
+                "briefing_ally_base"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "neutral",
+              "point": [
+                "briefing_enemy_07",
+                "briefing_ally_base"
+              ]
+            }
+          ],
+          "icon": [
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_enemy_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_enemy_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_enemy_03"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_enemy_04"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_enemy_05"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_enemy_06"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_enemy_07"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "building",
               "side": "ally",
               "target": "briefing_ally_base"
             }
-          },
-          {
-            "battleArea": {
-              "target": "briefing_battlearea"
-            }
+          ],
+          "battleArea": {
+            "target": "briefing_battlearea"
           }
-        ]
+        }
       }
     }
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/pve_missions/tank_pve/tank_presets/kursk_survival_2_4.blk",
-        "rankRange": [0.0,4.0],
+        "rankRange": [
+          0,
+          4
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -343,13 +204,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/pve_missions/tank_pve/tank_presets/kursk_survival_5_8.blk",
-        "rankRange": [5.0,8.0],
+        "rankRange": [
+          5,
+          8
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -360,13 +222,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/pve_missions/tank_pve/tank_presets/kursk_survival_9_12.blk",
-        "rankRange": [9.0,12.0],
+        "rankRange": [
+          9,
+          12
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -377,13 +240,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/pve_missions/tank_pve/tank_presets/kursk_survival_13_16.blk",
-        "rankRange": [13.0,16.0],
+        "rankRange": [
+          13,
+          16
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -394,13 +258,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/pve_missions/tank_pve/tank_presets/kursk_survival_17_19.blk",
-        "rankRange": [17.0,21.0],
+        "rankRange": [
+          17,
+          21
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -411,13 +276,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/pve_missions/tank_pve/tank_presets/kursk_survival_20_25.blk",
-        "rankRange": [22.0,50.0],
+        "rankRange": [
+          22,
+          50
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -428,11 +294,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/pve_missions/tank_pve/templates/pve_logic_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -444,11 +308,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/pve_missions/tank_pve/templates/kursk_waypoints_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -460,10 +322,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -472,18 +334,34 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "objectGroups": {
       "name": "restoration_zone_circle",
       "tm": [
-        [0.774692,0.0,0.293374],
-        [0.0,0.828382,0.0],
-        [-0.293374,0.0,0.774692],
-        [1911.29,71.112,2142.87]
+        [
+          0.774692,
+          0.0,
+          0.293374
+        ],
+        [
+          0.0,
+          0.828382,
+          0.0
+        ],
+        [
+          -0.293374,
+          0.0,
+          0.774692
+        ],
+        [
+          1911.29,
+          71.112,
+          2142.87
+        ]
       ],
       "unit_class": "capture_zone_circle",
       "objLayer": 2,
@@ -495,10 +373,26 @@
     "squad": {
       "name": "active_enemies_squad",
       "tm": [
-        [0.935187,0.0,0.354153],
-        [0.0,1.0,0.0],
-        [-0.354153,0.0,0.935187],
-        [2374.74,40.0556,2548.88]
+        [
+          0.935187,
+          0.0,
+          0.354153
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.354153,
+          0.0,
+          0.935187
+        ],
+        [
+          2374.74,
+          40.0556,
+          2548.88
+        ]
       ],
       "props": {
         "squad_members": "all_enemy_units",
@@ -508,304 +402,636 @@
     "area_squad": {
       "name": "pickups_area_squad",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1949.2,71.1128,2236.01]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1949.2,
+          71.1128,
+          2236.01
+        ]
       ],
-      "props": [
-        {
-          "squad_members": "pickup_area_01"
-        },
-        {
-          "squad_members": "pickup_area_02"
-        },
-        {
-          "squad_members": "pickup_area_03"
-        },
-        {
-          "squad_members": "pickup_area_04"
-        },
-        {
-          "squad_members": "pickup_area_05"
-        },
-        {
-          "squad_members": "pickup_area_06"
-        },
-        {
-          "squad_members": "pickup_area_07"
-        },
-        {
-          "squad_members": "pickup_area_08"
-        },
-        {
-          "squad_members": "pickup_area_09"
-        },
-        {
-          "squad_members": "pickup_area_10"
-        }
-      ]
+      "props": {
+        "squad_members": [
+          "pickup_area_01",
+          "pickup_area_02",
+          "pickup_area_03",
+          "pickup_area_04",
+          "pickup_area_05",
+          "pickup_area_06",
+          "pickup_area_07",
+          "pickup_area_08",
+          "pickup_area_09",
+          "pickup_area_10"
+        ]
+      }
     }
   },
   "areas": {
     "spawnpoint01": {
       "type": "Sphere",
       "tm": [
-        [-15.2626,0.0,-12.9248],
-        [0.0,20.0,0.0],
-        [12.9248,0.0,-15.2626],
-        [1948.09,71.1138,2196.36]
+        [
+          -15.2626,
+          0.0,
+          -12.9248
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          12.9248,
+          0.0,
+          -15.2626
+        ],
+        [
+          1948.09,
+          71.1138,
+          2196.36
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawnpoint02": {
       "type": "Sphere",
       "tm": [
-        [-16.6141,0.0,-11.1342],
-        [0.0,20.0,0.0],
-        [11.1342,0.0,-16.6141],
-        [1977.95,71.0555,2175.15]
+        [
+          -16.6141,
+          0.0,
+          -11.1342
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          11.1342,
+          0.0,
+          -16.6141
+        ],
+        [
+          1977.95,
+          71.0555,
+          2175.15
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawnpoint03": {
       "type": "Sphere",
       "tm": [
-        [-13.1256,0.0,-15.0904],
-        [0.0,20.0,0.0],
-        [15.0904,0.0,-13.1256],
-        [2059.0,71.05,2147.5]
+        [
+          -13.1256,
+          0.0,
+          -15.0904
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          15.0904,
+          0.0,
+          -13.1256
+        ],
+        [
+          2059.0,
+          71.05,
+          2147.5
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawnpoint04": {
       "type": "Sphere",
       "tm": [
-        [-19.9327,0.0,-1.6399],
-        [0.0,20.0,0.0],
-        [1.6399,0.0,-19.9327],
-        [1967.85,71.3,2212.65]
+        [
+          -19.9327,
+          0.0,
+          -1.6399
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          1.6399,
+          0.0,
+          -19.9327
+        ],
+        [
+          1967.85,
+          71.3,
+          2212.65
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "restoration_zone": {
       "type": "Sphere",
       "tm": [
-        [39.8236,0.0,15.0811],
-        [0.0,42.5835,0.0],
-        [-15.0811,0.0,39.8236],
-        [1911.05,81.7,2143.35]
+        [
+          39.8236,
+          0.0,
+          15.0811
+        ],
+        [
+          0.0,
+          42.5835,
+          0.0
+        ],
+        [
+          -15.0811,
+          0.0,
+          39.8236
+        ],
+        [
+          1911.05,
+          81.7,
+          2143.35
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawnpoint05": {
       "type": "Sphere",
       "tm": [
-        [-17.3671,0.0,9.91886],
-        [0.0,20.0,0.0],
-        [-9.91886,0.0,-17.3671],
-        [1938.9,71.45,2231.75]
+        [
+          -17.3671,
+          0.0,
+          9.91886
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          -9.91886,
+          0.0,
+          -17.3671
+        ],
+        [
+          1938.9,
+          71.45,
+          2231.75
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawnpoint06": {
       "type": "Sphere",
       "tm": [
-        [-17.5164,0.0,-9.65275],
-        [0.0,20.0,0.0],
-        [9.65275,0.0,-17.5164],
-        [2015.6,71.05,2173.7]
+        [
+          -17.5164,
+          0.0,
+          -9.65275
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          9.65275,
+          0.0,
+          -17.5164
+        ],
+        [
+          2015.6,
+          71.05,
+          2173.7
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawnpoint07": {
       "type": "Sphere",
       "tm": [
-        [-8.21388,0.0,-18.2354],
-        [0.0,20.0,0.0],
-        [18.2354,0.0,-8.21388],
-        [2045.45,70.95,2122.95]
+        [
+          -8.21388,
+          0.0,
+          -18.2354
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          18.2354,
+          0.0,
+          -8.21388
+        ],
+        [
+          2045.45,
+          70.95,
+          2122.95
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawnpoint08": {
       "type": "Sphere",
       "tm": [
-        [-1.94001,0.0,-19.9056],
-        [0.0,20.0,0.0],
-        [19.9056,0.0,-1.94001],
-        [1931.6,70.95,2254.45]
+        [
+          -1.94001,
+          0.0,
+          -19.9056
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          19.9056,
+          0.0,
+          -1.94001
+        ],
+        [
+          1931.6,
+          70.95,
+          2254.45
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_battlearea": {
       "type": "Box",
       "tm": [
-        [2300.0,0.0,0.0],
-        [0.0,555.788,0.0],
-        [0.0,0.0,2300.0],
-        [1667.28,63.062,2123.16]
+        [
+          2300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          555.788,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2300.0
+        ],
+        [
+          1667.28,
+          63.062,
+          2123.16
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "pickup_area_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1836.7,60.2821,1858.42]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1836.7,
+          60.2821,
+          1858.42
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1734.02,59.6125,1916.27]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1734.02,
+          59.6125,
+          1916.27
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1652.57,60.7566,2015.57]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1652.57,
+          60.7566,
+          2015.57
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1617.1,61.9718,2142.6]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1617.1,
+          61.9718,
+          2142.6
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_05": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1629.58,65.1857,2256.35]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1629.58,
+          65.1857,
+          2256.35
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_06": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1702.07,71.8515,2386.27]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1702.07,
+          71.8515,
+          2386.27
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickups_radius_area": {
       "type": "Sphere",
       "tm": [
-        [660.0,0.0,0.0],
-        [0.0,660.0,0.0],
-        [0.0,0.0,660.0],
-        [1941.68,71.3018,2168.69]
+        [
+          660.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          660.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          660.0
+        ],
+        [
+          1941.68,
+          71.3018,
+          2168.69
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_07": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2233.79,63.7297,2015.28]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2233.79,
+          63.7297,
+          2015.28
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_08": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2166.28,67.5722,1932.53]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2166.28,
+          67.5722,
+          1932.53
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_09": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2080.98,66.858,1873.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2080.98,
+          66.858,
+          1873.15
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "pickup_area_10": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1973.61,62.4133,1843.43]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1973.61,
+          62.4133,
+          1843.43
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": [],
+    ]
+  },
+  "wayPoints": {},
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [1849.06,54.9734,2155.02],
+      "pos": [
+        1849.06,
+        54.9734,
+        2155.02
+      ],
       "ht": 1.5
     }
   }

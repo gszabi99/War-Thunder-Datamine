@@ -2,38 +2,20 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "player_tank01"
-      },
-      {
-        "wing": "player_tank02"
-      },
-      {
-        "wing": "player_tank03"
-      },
-      {
-        "wing": "player_tank04"
-      },
-      {
-        "wing": "player_tank05"
-      },
-      {
-        "wing": "player_tank06"
-      },
-      {
-        "wing": "player_tank07"
-      },
-      {
-        "wing": "player_tank08"
-      },
-      {
-        "wing": "player_tank09"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "player_tank01",
+        "player_tank02",
+        "player_tank03",
+        "player_tank04",
+        "player_tank05",
+        "player_tank06",
+        "player_tank07",
+        "player_tank08",
+        "player_tank09"
+      ]
+    },
     "player_teamB": {
       "army": 2
     },
@@ -57,7 +39,7 @@
       "country_axis": "germany",
       "country_allies": "ussr"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
   "imports": {
     "import_record": {
@@ -72,7 +54,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -83,401 +65,333 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "tankModels": [
-        {
-          "name": "enemy_med_heavy_tanks"
-        },
-        {
-          "tm": [
-            [0.881457,0.0,-0.472265],
-            [0.0,1.0,0.0],
-            [0.472265,0.0,0.881457],
-            [-1937.65,49.85,2937.1]
-          ]
-        },
-        {
-          "unit_class": "fr_m4a1_sherman"
-        },
-        {
-          "objLayer": 1
-        },
-        {
-          "closed_waypoints": false
-        },
-        {
-          "isShipSpline": false
-        },
-        {
-          "shipTurnRadius": 100.0
-        },
-        {
-          "wayPoints": "direction04_01"
-        },
-        {
-          "weapons": "us_m4a1_1942_sherman_default"
-        },
-        {
-          "bullets0": "75mm_usa_APCBC"
-        },
-        {
-          "bullets1": ""
-        },
-        {
-          "bullets2": ""
-        },
-        {
-          "bullets3": ""
-        },
-        {
-          "bulletsCount0": 100
-        },
-        {
-          "bulletsCount1": 0
-        },
-        {
-          "bulletsCount2": 0
-        },
-        {
-          "bulletsCount3": 0
-        },
-        {
-          "modification": "tank_tool_kit"
-        },
-        {
-          "modification": "manual_extinguisher"
-        },
-        {
-          "props": {
-            "army": 2,
-            "count": 50,
-            "formation_type": "rows",
-            "formation_div": 2,
-            "formation_step": [3.0,3.0],
-            "formation_noise": [-0.5,-0.3],
-            "uniqueName": "",
-            "attack_type": "fire_at_will"
-          }
-        },
-        {
-          "way": []
-        }
-      ]
-    },
-    {
-      "tankModels": [
-        {
-          "name": "enemy_heavy_tanks"
-        },
-        {
-          "tm": [
-            [0.00240484,0.0,-0.999997],
-            [0.0,1.0,0.0],
-            [0.999997,0.0,0.00240484],
-            [-1871.5,1.9,2695.05]
-          ]
-        },
-        {
-          "unit_class": "fr_arl_44_acl1"
-        },
-        {
-          "objLayer": 1
-        },
-        {
-          "closed_waypoints": false
-        },
-        {
-          "isShipSpline": false
-        },
-        {
-          "shipTurnRadius": 100.0
-        },
-        {
-          "wayPoints": "direction02_01"
-        },
-        {
-          "weapons": "fr_arl_44_acl1_default"
-        },
-        {
-          "bullets0": "75mm_SA46_APC"
-        },
-        {
-          "bullets1": ""
-        },
-        {
-          "bullets2": ""
-        },
-        {
-          "bullets3": ""
-        },
-        {
-          "bulletsCount0": 100
-        },
-        {
-          "bulletsCount1": 0
-        },
-        {
-          "bulletsCount2": 0
-        },
-        {
-          "bulletsCount3": 0
-        },
-        {
-          "modification": "tank_tool_kit"
-        },
-        {
-          "modification": "manual_extinguisher"
-        },
-        {
-          "props": {
-            "army": 2,
-            "count": 50,
-            "formation_type": "rows",
-            "formation_div": 2,
-            "formation_step": [3.0,3.0],
-            "formation_noise": [-0.5,-0.3],
-            "uniqueName": "",
-            "attack_type": "fire_at_will"
-          }
-        },
-        {
-          "way": []
-        }
-      ]
-    },
-    {
-      "tankModels": [
-        {
-          "name": "enemy_med_tanks"
-        },
-        {
-          "tm": [
-            [0.771025,0.0,-0.636806],
-            [0.0,1.0,0.0],
-            [0.636806,0.0,0.771025],
-            [-1942.45,31.9,3072.85]
-          ]
-        },
-        {
-          "unit_class": "fr_m10"
-        },
-        {
-          "objLayer": 1
-        },
-        {
-          "closed_waypoints": false
-        },
-        {
-          "isShipSpline": false
-        },
-        {
-          "shipTurnRadius": 100.0
-        },
-        {
-          "wayPoints": "direction04_01"
-        },
-        {
-          "weapons": "us_m10_default"
-        },
-        {
-          "bullets0": "76mm_usa_M79_AP"
-        },
-        {
-          "bullets1": ""
-        },
-        {
-          "bullets2": ""
-        },
-        {
-          "bullets3": ""
-        },
-        {
-          "bulletsCount0": 100
-        },
-        {
-          "bulletsCount1": 0
-        },
-        {
-          "bulletsCount2": 0
-        },
-        {
-          "bulletsCount3": 0
-        },
-        {
-          "modification": "tank_tool_kit"
-        },
-        {
-          "modification": "manual_extinguisher"
-        },
-        {
-          "props": {
-            "army": 2,
-            "count": 50,
-            "formation_type": "rows",
-            "formation_div": 2,
-            "formation_step": [3.0,3.0],
-            "formation_noise": [-0.5,-0.3],
-            "uniqueName": "",
-            "attack_type": "fire_at_will"
-          }
-        },
-        {
-          "way": []
-        }
-      ]
-    },
-    {
-      "tankModels": [
-        {
-          "name": "enemy_light_tanks"
-        },
-        {
-          "tm": [
-            [0.149723,0.0,-0.988728],
-            [0.0,1.0,0.0],
-            [0.988728,0.0,0.149723],
-            [-1933.45,23.05,3279.5]
-          ]
-        },
-        {
-          "unit_class": "fr_amx_13_fl_11"
-        },
-        {
-          "objLayer": 1
-        },
-        {
-          "closed_waypoints": false
-        },
-        {
-          "isShipSpline": false
-        },
-        {
-          "shipTurnRadius": 100.0
-        },
-        {
-          "weapons": "fr_amx_13_fl_11_default"
-        },
-        {
-          "bullets0": "75mm_usa_AP"
-        },
-        {
-          "bullets1": ""
-        },
-        {
-          "bullets2": ""
-        },
-        {
-          "bullets3": ""
-        },
-        {
-          "bulletsCount0": 100
-        },
-        {
-          "bulletsCount1": 0
-        },
-        {
-          "bulletsCount2": 0
-        },
-        {
-          "bulletsCount3": 0
-        },
-        {
-          "modification": "tank_tool_kit"
-        },
-        {
-          "modification": "manual_extinguisher"
-        },
-        {
-          "props": {
-            "army": 2,
-            "count": 50,
-            "formation_type": "rows",
-            "formation_div": 2,
-            "formation_step": [3.0,3.0],
-            "formation_noise": [0.5,0.3],
-            "uniqueName": "",
-            "attack_type": "fire_at_will"
-          }
-        },
-        {
-          "way": []
-        }
-      ]
-    },
-    {
-      "armada": {
-        "name": "enemy_air_assaults",
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "enemy_med_heavy_tanks",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1471.9,509.7,3665.15]
+          [
+            0.881457,
+            0.0,
+            -0.472265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.472265,
+            0.0,
+            0.881457
+          ],
+          [
+            -1937.65,
+            49.85,
+            2937.1
+          ]
         ],
-        "unit_class": "a-35b",
+        "unit_class": "fr_m4a1_sherman",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "a_35b_1000lbs",
-        "bullets0": "",
+        "wayPoints": "direction04_01",
+        "weapons": "us_m4a1_1942_sherman_default",
+        "bullets0": "75mm_usa_APCBC",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
-        "bulletsCount0": 0,
+        "bulletsCount0": 100,
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
         "props": {
           "army": 2,
-          "count": 66,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "count": 50,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            -0.5,
+            -0.3
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
+      },
+      {
+        "name": "enemy_heavy_tanks",
+        "tm": [
+          [
+            0.00240484,
+            0.0,
+            -0.999997
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999997,
+            0.0,
+            0.00240484
+          ],
+          [
+            -1871.5,
+            1.9,
+            2695.05
+          ]
+        ],
+        "unit_class": "fr_arl_44_acl1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "wayPoints": "direction02_01",
+        "weapons": "fr_arl_44_acl1_default",
+        "bullets0": "75mm_SA46_APC",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "props": {
+          "army": 2,
+          "count": 50,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            -0.5,
+            -0.3
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_med_tanks",
+        "tm": [
+          [
+            0.771025,
+            0.0,
+            -0.636806
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.636806,
+            0.0,
+            0.771025
+          ],
+          [
+            -1942.45,
+            31.9,
+            3072.85
+          ]
+        ],
+        "unit_class": "fr_m10",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "wayPoints": "direction04_01",
+        "weapons": "us_m10_default",
+        "bullets0": "76mm_usa_M79_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "props": {
+          "army": 2,
+          "count": 50,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            -0.5,
+            -0.3
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_light_tanks",
+        "tm": [
+          [
+            0.149723,
+            0.0,
+            -0.988728
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.988728,
+            0.0,
+            0.149723
+          ],
+          [
+            -1933.45,
+            23.05,
+            3279.5
+          ]
+        ],
+        "unit_class": "fr_amx_13_fl_11",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "fr_amx_13_fl_11_default",
+        "bullets0": "75mm_usa_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "props": {
+          "army": 2,
+          "count": 50,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            0.5,
+            0.3
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
       }
+    ],
+    "armada": {
+      "name": "enemy_air_assaults",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1471.9,
+          509.7,
+          3665.15
+        ]
+      ],
+      "unit_class": "a-35b",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "a_35b_1000lbs",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "props": {
+        "army": 2,
+        "count": 66,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
     }
-  ],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  },
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

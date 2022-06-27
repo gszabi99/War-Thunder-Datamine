@@ -16,9 +16,9 @@
       "environment": "Day",
       "weather": "hazy"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -31,109 +31,77 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetString": {
+      "conditions": {},
+      "actions": {
+        "varSetString": [
+          {
             "value": "t1_bto_spawn_01",
             "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_spawn_01",
             "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "bto_battle_area",
             "var": "battle_area_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_circle_01",
             "var": "t1_circle_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_effect_01",
             "var": "t1_effect_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_capture_zone_01",
             "var": "t1_capture_area_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_circle_01",
             "var": "t2_circle_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_effect_01",
             "var": "t2_effect_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_capture_zone_01",
             "var": "t2_capture_area_name"
           }
-        },
-        {
-          "comment": {
+        ],
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "t1_bto_cur_zone_num"
-            },
-            {
-              "var": "t2_bto_cur_zone_num"
-            }
+        ],
+        "varSetInt": {
+          "value": 1,
+          "var": [
+            "t1_bto_cur_zone_num",
+            "t2_bto_cur_zone_num"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "bto_start"
-          }
+        "triggerEnable": {
+          "target": "bto_start"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_start": {
       "is_enabled": false,
@@ -144,17 +112,21 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionMarkAsRespawnPoint": {
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
             "loc_name": "missions/spawn_01",
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -167,15 +139,17 @@
             "tags": {
               "tank": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/spawn_01",
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "radius": -1.0,
             "isStrictSpawn": false,
             "useExisting": false,
@@ -189,42 +163,32 @@
               "tank": true
             }
           }
-        },
-        {
-          "comment": {
+        ],
+        "comment": [
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "moAddMissionObjective": {
+        ],
+        "moAddMissionObjective": [
+          {
             "target": "avg_Bto_objective_01"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "avg_Bto_objective_02"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "battle_area_check"
-            },
-            {
-              "target": "bto_t1_fill_names"
-            },
-            {
-              "target": "bto_t2_fill_names"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "battle_area_check",
+            "bto_t1_fill_names",
+            "bto_t2_fill_names"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "battle_area_check": {
       "is_enabled": false,
@@ -235,7 +199,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "objectExists": {
@@ -253,7 +217,7 @@
           "area": "@battle_area_name"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bto_t1_draw_lines_start": {
       "is_enabled": false,
@@ -268,82 +232,66 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t1_bto_draw_line_idx"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t1_bto_draw_next_line_idx"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "t1_bto_draw_next_line_idx",
+          "input_var": "t1_bto_draw_line_idx"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "t1_bto_draw_next_line_idx",
-            "input_var": "t1_bto_draw_line_idx"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "t1_bto_effect_",
             "var": "t1_bto_line_start_point"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_effect_",
             "var": "t1_bto_line_end_point"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@t1_bto_draw_line_idx",
             "digits": 2,
             "var": "t1_bto_line_start_point"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t1_bto_draw_next_line_idx",
             "digits": 2,
             "var": "t1_bto_line_end_point"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t1_draw_line_drawing"
-          }
+        ],
+        "triggerEnable": {
+          "target": "bto_t1_draw_line_drawing"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t2_draw_lines_start": {
       "is_enabled": false,
@@ -358,77 +306,63 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t2_bto_draw_line_idx"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "t2_bto_draw_next_line_idx"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "t2_bto_draw_next_line_idx",
+          "input_var": "t2_bto_draw_line_idx"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "t2_bto_draw_next_line_idx",
-            "input_var": "t2_bto_draw_line_idx"
-          }
-        },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "t2_bto_effect_",
             "var": "t2_bto_line_start_point"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_effect_",
             "var": "t2_bto_line_end_point"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@t2_bto_draw_line_idx",
             "digits": 2,
             "var": "t2_bto_line_start_point"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t2_bto_draw_next_line_idx",
             "digits": 2,
             "var": "t2_bto_line_end_point"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t2_draw_line_drawing"
-          }
+        ],
+        "triggerEnable": {
+          "target": "bto_t2_draw_line_drawing"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t1_draw_line_drawing": {
       "is_enabled": false,
@@ -443,56 +377,48 @@
           "time": 0.1
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t1_bto_line_start_point",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t1_bto_line_end_point",
             "type": "area"
           }
-        }
-      ],
-      "actions": [
-        {
-          "missionShowMapLine": {
-            "areaNameFrom": "@t1_bto_line_start_point",
-            "areaNameTo": "@t1_bto_line_end_point",
-            "show": true,
-            "team": "Both",
-            "colorCode": "Team A",
-            "scale": 0.5
-          }
+        ]
+      },
+      "actions": {
+        "missionShowMapLine": {
+          "areaNameFrom": "@t1_bto_line_start_point",
+          "areaNameTo": "@t1_bto_line_end_point",
+          "show": true,
+          "team": "Both",
+          "colorCode": "Team A",
+          "scale": 0.5
         },
-        {
-          "missionShowMapIcon": {
+        "missionShowMapIcon": [
+          {
             "areaName": "@t1_bto_line_start_point",
             "show": true,
             "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
             "colorCode": "Team A",
             "scale": 0.75
-          }
-        },
-        {
-          "missionShowMapIcon": {
+          },
+          {
             "areaName": "@t1_bto_line_end_point",
             "show": true,
             "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
             "colorCode": "Team A",
             "scale": 0.75
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t1_draw_lines_start"
-          }
+        ],
+        "triggerEnable": {
+          "target": "bto_t1_draw_lines_start"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t2_draw_line_drawing": {
       "is_enabled": false,
@@ -507,56 +433,48 @@
           "time": 0.1
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t2_bto_line_start_point",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t2_bto_line_end_point",
             "type": "area"
           }
-        }
-      ],
-      "actions": [
-        {
-          "missionShowMapLine": {
-            "areaNameFrom": "@t2_bto_line_start_point",
-            "areaNameTo": "@t2_bto_line_end_point",
-            "show": true,
-            "team": "Both",
-            "colorCode": "Team B",
-            "scale": 0.5
-          }
+        ]
+      },
+      "actions": {
+        "missionShowMapLine": {
+          "areaNameFrom": "@t2_bto_line_start_point",
+          "areaNameTo": "@t2_bto_line_end_point",
+          "show": true,
+          "team": "Both",
+          "colorCode": "Team B",
+          "scale": 0.5
         },
-        {
-          "missionShowMapIcon": {
+        "missionShowMapIcon": [
+          {
             "areaName": "@t2_bto_line_start_point",
             "show": true,
             "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
             "colorCode": "Team B",
             "scale": 0.75
-          }
-        },
-        {
-          "missionShowMapIcon": {
+          },
+          {
             "areaName": "@t2_bto_line_end_point",
             "show": true,
             "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
             "colorCode": "Team B",
             "scale": 0.75
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t2_draw_lines_start"
-          }
+        ],
+        "triggerEnable": {
+          "target": "bto_t2_draw_lines_start"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t1_activate_next_zone": {
       "is_enabled": false,
@@ -577,68 +495,64 @@
           "type": "area"
         }
       },
-      "actions": [
-        {
-          "unitWakeUp": {
-            "target": "@t1_circle_name"
-          }
+      "actions": {
+        "unitWakeUp": {
+          "target": "@t1_circle_name"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": true,
-            "attach": true,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@t1_effect_name"
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": true,
+          "attach": true,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@t1_effect_name"
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 1,
-            "name_for_respawn_base": "",
-            "timeMultiplier": 1.5,
-            "disableZone": false,
-            "target": "@t1_capture_area_name",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": false,
-            "canCaptureByGM": true,
-            "captureNoPenalty": true
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 1,
+          "name_for_respawn_base": "",
+          "timeMultiplier": 1.5,
+          "disableZone": false,
+          "target": "@t1_capture_area_name",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "captureNoPenalty": true
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem novyj spavn protivopolozhnjo komandy"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bto_t1_draw_lines_start"
-            },
-            {
-              "target": "bto_t2_draw_lines_start"
-            },
-            {
-              "target": "bto_t1_zone_captured"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "bto_t1_draw_lines_start",
+              "bto_t2_draw_lines_start",
+              "bto_t1_zone_captured"
+            ]
+          },
+          {
             "target": "bto_t2_check_new_spawn"
           }
-        }
-      ],
+        ]
+      },
       "else_actions": {
         "comment": {
           "value": "zahvachena final'naya zona"
@@ -667,68 +581,64 @@
           "type": "area"
         }
       },
-      "actions": [
-        {
-          "unitWakeUp": {
-            "target": "@t2_circle_name"
-          }
+      "actions": {
+        "unitWakeUp": {
+          "target": "@t2_circle_name"
         },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
-            "show": true,
-            "attach": true,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "@t2_effect_name"
-          }
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "pv_point_smoke_blue",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
+          ],
+          "show": true,
+          "attach": true,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "@t2_effect_name"
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 2,
-            "name_for_respawn_base": "",
-            "timeMultiplier": 1.5,
-            "disableZone": false,
-            "target": "@t2_capture_area_name",
-            "canCaptureOnGround": false,
-            "canCaptureInAir": false,
-            "canCaptureByGM": true,
-            "captureNoPenalty": true
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 2,
+          "name_for_respawn_base": "",
+          "timeMultiplier": 1.5,
+          "disableZone": false,
+          "target": "@t2_capture_area_name",
+          "canCaptureOnGround": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "captureNoPenalty": true
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem novyj spavn protivopolozhnjo komandy"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bto_t1_draw_lines_start"
-            },
-            {
-              "target": "bto_t2_draw_lines_start"
-            },
-            {
-              "target": "bto_t2_zone_captured"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "bto_t1_draw_lines_start",
+              "bto_t2_draw_lines_start",
+              "bto_t2_zone_captured"
+            ]
+          },
+          {
             "target": "bto_t1_check_new_spawn"
           }
-        }
-      ],
+        ]
+      },
       "else_actions": {
         "comment": {
           "value": "zahvachena final'naya zona"
@@ -762,58 +672,52 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "na spavn 1 nichego ne delaem"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dobavlyaem indeks zony protivopolozhnoj komandy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "varSetString": {
+          "value": "missions/spawn_",
+          "var": "t1_spawn_loc_name"
         },
-        {
-          "varSetString": {
-            "value": "missions/spawn_",
-            "var": "t1_spawn_loc_name"
+        "varAddString": {
+          "value": "@t2_bto_cur_zone_num",
+          "digits": 2,
+          "var": "t1_spawn_loc_name"
+        },
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "@t1_spawn_loc_name",
+          "spawnEffect": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radius": -1.0,
+          "isStrictSpawn": false,
+          "useExisting": false,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "isIndividual": true,
+          "target": "@t1_spawn_01_name",
+          "team": "A",
+          "tags": {
+            "tank": true
           }
         },
-        {
-          "varAddString": {
-            "value": "@t2_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t1_spawn_loc_name"
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "@t1_spawn_loc_name",
-            "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "offset": [0.0,0.0,0.0],
-            "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": true,
-            "target": "@t1_spawn_01_name",
-            "team": "A",
-            "tags": {
-              "tank": true
-            }
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/new_respawn_point",
             "action": "show",
@@ -821,10 +725,8 @@
             "time": 10.0,
             "priority": 0,
             "team": "A"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/new_respawn_point",
             "action": "hide",
@@ -833,14 +735,12 @@
             "priority": 0,
             "team": "A"
           }
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        ],
+        "wait": {
+          "time": 10.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t2_check_new_spawn": {
       "is_enabled": false,
@@ -866,53 +766,49 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "na spavn 1 nichego ne delaem"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dobavlyaem indeks zony protivopolozhnoj komandy"
           }
+        ],
+        "varSetString": {
+          "value": "missions/spawn_",
+          "var": "t2_spawn_loc_name"
         },
-        {
-          "varSetString": {
-            "value": "missions/spawn_",
-            "var": "t2_spawn_loc_name"
+        "varAddString": {
+          "value": "@t1_bto_cur_zone_num",
+          "digits": 2,
+          "var": "t2_spawn_loc_name"
+        },
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "@t2_spawn_loc_name",
+          "spawnEffect": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radius": -1.0,
+          "isStrictSpawn": false,
+          "useExisting": false,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "isIndividual": true,
+          "target": "@t2_spawn_01_name",
+          "team": "B",
+          "tags": {
+            "tank": true
           }
         },
-        {
-          "varAddString": {
-            "value": "@t1_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t2_spawn_loc_name"
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "@t2_spawn_loc_name",
-            "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "offset": [0.0,0.0,0.0],
-            "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": true,
-            "target": "@t2_spawn_01_name",
-            "team": "B",
-            "tags": {
-              "tank": true
-            }
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/new_respawn_point",
             "action": "show",
@@ -920,10 +816,8 @@
             "time": 10.0,
             "priority": 0,
             "team": "B"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/new_respawn_point",
             "action": "hide",
@@ -932,14 +826,12 @@
             "priority": 0,
             "team": "B"
           }
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        ],
+        "wait": {
+          "time": 10.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t1_zone_captured": {
       "is_enabled": false,
@@ -960,83 +852,63 @@
           "army": 2
         }
       },
-      "actions": [
-        {
-          "unitPutToSleep": {
-            "target": "@t1_circle_name"
-          }
+      "actions": {
+        "unitPutToSleep": {
+          "target": "@t1_circle_name"
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
+        ],
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "target": "@t1_capture_area_name"
         },
-        {
-          "comment": {
-            "value": ""
-          }
+        "missionShowMapLine": {
+          "areaNameFrom": "@t1_bto_line_start_point",
+          "areaNameTo": "@t1_bto_line_end_point",
+          "show": false,
+          "team": "Both",
+          "colorCode": "Team A",
+          "scale": 0.75,
+          "clear": true
         },
-        {
-          "comment": {
-            "value": ""
-          }
+        "varSetString": {
+          "value": "t1_bto_effect_",
+          "var": "t1_bto_line_start_point"
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.0,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "target": "@t1_capture_area_name"
-          }
+        "varAddString": {
+          "value": "@t1_bto_cur_zone_num",
+          "digits": 2,
+          "var": "t1_bto_line_start_point"
         },
-        {
-          "missionShowMapLine": {
-            "areaNameFrom": "@t1_bto_line_start_point",
-            "areaNameTo": "@t1_bto_line_end_point",
-            "show": false,
-            "team": "Both",
-            "colorCode": "Team A",
-            "scale": 0.75,
-            "clear": true
-          }
+        "missionShowMapIcon": {
+          "areaName": "@t1_bto_line_start_point",
+          "show": false,
+          "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
+          "colorCode": "Team A",
+          "scale": 0.75
         },
-        {
-          "varSetString": {
-            "value": "t1_bto_effect_",
-            "var": "t1_bto_line_start_point"
-          }
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "t1_bto_cur_zone_num"
         },
-        {
-          "varAddString": {
-            "value": "@t1_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t1_bto_line_start_point"
-          }
-        },
-        {
-          "missionShowMapIcon": {
-            "areaName": "@t1_bto_line_start_point",
-            "show": false,
-            "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
-            "colorCode": "Team A",
-            "scale": 0.75
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "t1_bto_cur_zone_num"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t1_fill_names"
-          }
+        "triggerEnable": {
+          "target": "bto_t1_fill_names"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t2_zone_captured": {
       "is_enabled": false,
@@ -1057,83 +929,63 @@
           "army": 1
         }
       },
-      "actions": [
-        {
-          "unitPutToSleep": {
-            "target": "@t2_circle_name"
-          }
+      "actions": {
+        "unitPutToSleep": {
+          "target": "@t2_circle_name"
         },
-        {
-          "comment": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
+        ],
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "target": "@t2_capture_area_name"
         },
-        {
-          "comment": {
-            "value": ""
-          }
+        "missionShowMapLine": {
+          "areaNameFrom": "@t2_bto_line_start_point",
+          "areaNameTo": "@t2_bto_line_end_point",
+          "show": false,
+          "team": "Both",
+          "colorCode": "Team B",
+          "scale": 0.75,
+          "clear": true
         },
-        {
-          "comment": {
-            "value": ""
-          }
+        "varSetString": {
+          "value": "t2_bto_effect_",
+          "var": "t2_bto_line_start_point"
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 0,
-            "timeMultiplier": 1.0,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "target": "@t2_capture_area_name"
-          }
+        "varAddString": {
+          "value": "@t2_bto_cur_zone_num",
+          "digits": 2,
+          "var": "t2_bto_line_start_point"
         },
-        {
-          "missionShowMapLine": {
-            "areaNameFrom": "@t2_bto_line_start_point",
-            "areaNameTo": "@t2_bto_line_end_point",
-            "show": false,
-            "team": "Both",
-            "colorCode": "Team B",
-            "scale": 0.75,
-            "clear": true
-          }
+        "missionShowMapIcon": {
+          "areaName": "@t2_bto_line_start_point",
+          "show": false,
+          "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
+          "colorCode": "Team B",
+          "scale": 0.75
         },
-        {
-          "varSetString": {
-            "value": "t2_bto_effect_",
-            "var": "t2_bto_line_start_point"
-          }
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "t2_bto_cur_zone_num"
         },
-        {
-          "varAddString": {
-            "value": "@t2_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t2_bto_line_start_point"
-          }
-        },
-        {
-          "missionShowMapIcon": {
-            "areaName": "@t2_bto_line_start_point",
-            "show": false,
-            "iconName": "ui/gameuiskin#objective_captureZone_next_default.svg",
-            "colorCode": "Team B",
-            "scale": 0.75
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "t2_bto_cur_zone_num"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t2_fill_names"
-          }
+        "triggerEnable": {
+          "target": "bto_t2_fill_names"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t1_fill_names": {
       "is_enabled": false,
@@ -1148,138 +1000,106 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetString": {
+      "conditions": {},
+      "actions": {
+        "varSetString": [
+          {
             "value": "t1_bto_spawn_",
             "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_circle_",
             "var": "t1_circle_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_effect_",
             "var": "t1_effect_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_capture_zone_",
             "var": "t1_capture_area_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_spawn_",
             "var": "t2_spawn_01_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@t1_bto_cur_zone_num",
             "digits": 2,
             "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t1_bto_cur_zone_num",
             "digits": 2,
             "var": "t1_circle_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t1_bto_cur_zone_num",
             "digits": 2,
             "var": "t1_effect_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t1_bto_cur_zone_num",
             "digits": 2,
             "var": "t1_capture_area_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t1_bto_cur_zone_num",
             "digits": 2,
             "var": "t2_spawn_01_name"
           }
-        },
-        {
-          "comment": {
+        ],
+        "comment": [
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem spavn protivopolozhnoj komandy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "t1_bto_draw_line_idx",
             "input_var": "t1_bto_cur_zone_num"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "t2_bto_draw_line_idx",
             "input_var": "t2_bto_cur_zone_num"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t1_bto_draw_line_idx"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t2_bto_draw_line_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t1_activate_next_zone"
-          }
+        ],
+        "triggerEnable": {
+          "target": "bto_t1_activate_next_zone"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t2_fill_names": {
       "is_enabled": false,
@@ -1294,138 +1114,106 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetString": {
+      "conditions": {},
+      "actions": {
+        "varSetString": [
+          {
             "value": "t2_bto_spawn_",
             "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_circle_",
             "var": "t2_circle_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_effect_",
             "var": "t2_effect_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_bto_capture_zone_",
             "var": "t2_capture_area_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_bto_spawn_",
             "var": "t1_spawn_01_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@t2_bto_cur_zone_num",
             "digits": 2,
             "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t2_bto_cur_zone_num",
             "digits": 2,
             "var": "t2_circle_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t2_bto_cur_zone_num",
             "digits": 2,
             "var": "t2_effect_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t2_bto_cur_zone_num",
             "digits": 2,
             "var": "t2_capture_area_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@t2_bto_cur_zone_num",
             "digits": 2,
             "var": "t1_spawn_01_name"
           }
-        },
-        {
-          "comment": {
+        ],
+        "comment": [
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapolnyaem spavn protivopolozhnoj komandy"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "t1_bto_draw_line_idx",
             "input_var": "t1_bto_cur_zone_num"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "t2_bto_draw_line_idx",
             "input_var": "t2_bto_cur_zone_num"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t1_bto_draw_line_idx"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": -1.0,
             "var": "t2_bto_draw_line_idx"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "bto_t2_activate_next_zone"
-          }
+        ],
+        "triggerEnable": {
+          "target": "bto_t2_activate_next_zone"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bto_t1_win": {
       "is_enabled": false,
@@ -1440,7 +1228,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "gameMPChangeScore": {
           "value": -2,
@@ -1448,7 +1236,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bto_t2_win": {
       "is_enabled": false,
@@ -1463,7 +1251,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "gameMPChangeScore": {
           "value": -2,
@@ -1471,7 +1259,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1486,8 +1274,8 @@
         "timeLimit": 3600,
         "team": "Both"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avg_Bto_objective_02": {
       "is_enabled": false,
@@ -1498,8 +1286,8 @@
         "timeLimit": 3600,
         "team": "Both"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -1526,37 +1314,29 @@
     "t1_spawn_loc_name": "",
     "t2_spawn_loc_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

@@ -15,9 +15,9 @@
       "weather": "hazy"
     }
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/cta/tanks/rheinland/mainareas/template_rhainland_areas.blk",
         "importAreas": true,
         "importUnits": true,
@@ -29,11 +29,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/tanks/rheinland/mainareas/template_rhainland_bttl_areas.blk",
         "importAreas": true,
         "importUnits": true,
@@ -45,10 +43,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -57,157 +55,305 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "area_squad": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
         "name": "t2_killarea",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3792.94,1.31006,1471.12]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3792.94,
+            1.31006,
+            1471.12
+          ]
         ],
         "props": {
           "squad_members": "t2_killarea_block01"
         }
-      }
-    },
-    {
-      "area_squad": {
+      },
+      {
         "name": "t1_killarea",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3727.94,9.83197,1411.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3727.94,
+            9.83197,
+            1411.4
+          ]
         ],
         "props": {
           "squad_members": "t1_killarea_block01"
         }
-      }
-    },
-    {
-      "area_squad": {
+      },
+      {
         "name": "t1_killarea_hardcore",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3727.94,9.8327,1470.42]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3727.94,
+            9.8327,
+            1470.42
+          ]
         ],
         "props": {
           "squad_members": "t1_killarea_block01"
         }
-      }
-    },
-    {
-      "area_squad": {
+      },
+      {
         "name": "t2_killarea_hardcore",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3792.94,1.31067,1407.57]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3792.94,
+            1.31067,
+            1407.57
+          ]
         ],
         "props": {
           "squad_members": "t2_killarea_block01"
         }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "t1_killarea_block01": {
       "type": "Cylinder",
       "tm": [
-        [100.0,0.0,0.0],
-        [0.0,86.4802,0.0],
-        [0.0,0.0,100.0],
-        [3494.25,9.82581,1660.67]
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          86.4802,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          3494.25,
+          9.82581,
+          1660.67
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_killarea_block01": {
       "type": "Cylinder",
       "tm": [
-        [100.0,0.0,0.0],
-        [0.0,86.4802,0.0],
-        [0.0,0.0,100.0],
-        [3673.9,9.82581,2544.64]
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          86.4802,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          3673.9,
+          9.82581,
+          2544.64
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bttl_battle_area_arcade": {
       "type": "Box",
       "tm": [
-        [-1054.0,0.0,0.0],
-        [0.0,233.989,0.0],
-        [0.0,0.0,-1054.0],
-        [3567.0,8.78809,2118.0]
+        [
+          -1054.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          233.989,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1054.0
+        ],
+        [
+          3567.0,
+          8.78809,
+          2118.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "bttl_battle_area_hardcore": {
       "type": "Box",
       "tm": [
-        [-1054.0,0.0,0.0],
-        [0.0,233.989,0.0],
-        [0.0,0.0,-1054.0],
-        [3567.0,8.78809,2118.0]
+        [
+          -1054.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          233.989,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1054.0
+        ],
+        [
+          3567.0,
+          8.78809,
+          2118.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "conq_battle_area_arcade": {
       "type": "Box",
       "tm": [
-        [-1054.0,0.0,0.0],
-        [0.0,233.989,0.0],
-        [0.0,0.0,-1054.0],
-        [3567.0,8.78809,2118.0]
+        [
+          -1054.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          233.989,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1054.0
+        ],
+        [
+          3567.0,
+          8.78809,
+          2118.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "conq_battle_area_hardcore": {
       "type": "Box",
       "tm": [
-        [-1054.0,0.0,0.0],
-        [0.0,233.989,0.0],
-        [0.0,0.0,-1054.0],
-        [3567.0,8.78809,2118.0]
+        [
+          -1054.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          233.989,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1054.0
+        ],
+        [
+          3567.0,
+          8.78809,
+          2118.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

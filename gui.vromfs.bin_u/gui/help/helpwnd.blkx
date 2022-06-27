@@ -1,64 +1,48 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
-    "frame": [
-      {
-        "width": "0.99sw $min 1.7sh"
-      },
-      {
-        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
-      },
-      {
-        "position": "absolute"
-      },
-      {
-        "class": "wnd"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "frame_header": {
-          "flow": "vertical",
-          "height": "2@frameHeaderHeight",
-          "HorizontalListBox": {
-            "id": "tabs_list",
-            "height": "1@frameHeaderHeight",
-            "class": "header",
-            "normalFont": "yes",
-            "withImages": "no",
-            "activeAccesskeys": "RS",
-            "on_select": "onHelpSheetChange"
-          },
-          "Button_close": []
-        }
-      },
-      {
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "width": "0.99sw $min 1.7sh",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "absolute",
+      "class": "wnd",
+      "flow": "vertical",
+      "frame_header": {
+        "flow": "vertical",
+        "height": "2@frameHeaderHeight",
         "HorizontalListBox": {
-          "id": "sub_tabs_list",
+          "id": "tabs_list",
+          "height": "1@frameHeaderHeight",
+          "class": "header",
           "normalFont": "yes",
           "withImages": "no",
-          "navigatorShortcuts": "yes",
-          "on_select": "onHelpSubSheetChange"
-        }
+          "activeAccesskeys": "RS",
+          "on_select": "onHelpSheetChange"
+        },
+        "Button_close": {}
       },
-      {
-        "tdiv": {
+      "HorizontalListBox": {
+        "id": "sub_tabs_list",
+        "normalFont": "yes",
+        "withImages": "no",
+        "navigatorShortcuts": "yes",
+        "on_select": "onHelpSubSheetChange"
+      },
+      "tdiv": [
+        {
           "id": "help_sheet",
           "size": "pw, ph"
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "id": "link_lines_block",
           "size": "pw, ph",
           "position": "root",
           "total-input-transparent": "yes",
           "display": "hide"
         }
-      }
-    ]
+      ]
+    }
   }
 }

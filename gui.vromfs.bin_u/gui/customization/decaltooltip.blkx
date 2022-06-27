@@ -1,56 +1,46 @@
 {
-  "tdiv": [
-    {
-      "padding": "1@blockInterval"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "tdiv": {
-        "height": "@decalIconHeight",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "display": "hide",
-        "img": {
-          "id": "image",
-          "size": "pw, ph",
-          "background-svg-size": "pw, ph",
-          "background-repeat": "aspect-ratio"
-        }
+  "tdiv": {
+    "padding": "1@blockInterval",
+    "flow": "vertical",
+    "tdiv": {
+      "height": "@decalIconHeight",
+      "pos": "50%pw-50%w, 0",
+      "position": "relative",
+      "display": "hide",
+      "img": {
+        "id": "image",
+        "size": "pw, ph",
+        "background-svg-size": "pw, ph",
+        "background-repeat": "aspect-ratio"
       }
     },
-    {
-      "textAreaSmall": {
+    "textAreaSmall": [
+      {
         "id": "header",
         "text": "",
         "max-width": "6@decalIconHeight",
         "margin": "0, 1@blockInterval",
         "hideEmptyText": "yes",
         "overlayTextColor": "unlockHeader"
-      }
-    },
-    {
-      "textAreaSmall": {
+      },
+      {
         "id": "price",
         "display": "hide",
         "max-width": "6@decalIconHeight",
         "text": "",
         "hideEmptyText": "yes"
       }
+    ],
+    "textareaNoTab": {
+      "id": "description",
+      "text": "",
+      "margin": "0, 1@blockInterval",
+      "hideEmptyText": "yes",
+      "max-width": "6@decalIconHeight",
+      "smallFont": "yes"
     },
-    {
-      "textareaNoTab": {
-        "id": "description",
-        "text": "",
-        "margin": "0, 1@blockInterval",
-        "hideEmptyText": "yes",
-        "max-width": "6@decalIconHeight",
-        "smallFont": "yes"
-      }
-    },
-    {
-      "div": {
+    "div": [
+      {
         "id": "conditions",
         "margin": "0, 2@blockInterval",
         "flow": "horizontal",
@@ -81,16 +71,14 @@
             "value": ""
           }
         }
-      }
-    },
-    {
-      "div": {
+      },
+      {
         "id": "additional_description",
         "margin": "0, 1@blockInterval",
         "flow": "horizontal",
         "max-width": "1@decorationInfoMaxWidth",
         "display": "hide"
       }
-    }
-  ]
+    ]
+  }
 }

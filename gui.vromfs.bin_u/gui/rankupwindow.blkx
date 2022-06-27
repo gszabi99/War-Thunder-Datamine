@@ -1,7 +1,7 @@
 {
   "root": {
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "width": "4@slot_width+2@slot_interval + 20",
       "max-height": "ph",
@@ -30,15 +30,11 @@
         "background-image": "",
         "overflow": "hidden"
       },
-      "tdiv": [
-        {
-          "width": "pw"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "tdiv": {
+      "tdiv": {
+        "width": "pw",
+        "flow": "vertical",
+        "tdiv": [
+          {
             "pos": "50%pw-50%w, 0.015@scrn_tgt",
             "position": "relative",
             "cardImg": {
@@ -54,10 +50,8 @@
               "padding-top": "-0.01@sf",
               "caption": "yes"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "rankup_aircraft_holder",
             "width": "pw",
             "max-height": "4(1@slot_height+2@slot_vert_pad)",
@@ -73,41 +67,35 @@
               "holdTooltipChildren": "yes"
             }
           }
+        ],
+        "textarea": {
+          "id": "availableNewAirText",
+          "max-width": "pw",
+          "pos": "0.5pw-0.5w",
+          "position": "relative",
+          "padding": "0, 0.005@sf",
+          "text-align": "center",
+          "text": ""
         },
-        {
-          "textarea": {
-            "id": "availableNewAirText",
-            "max-width": "pw",
-            "pos": "0.5pw-0.5w",
-            "position": "relative",
-            "padding": "0, 0.005@sf",
-            "text-align": "center",
-            "text": ""
-          }
-        },
-        {
-          "textAreaCentered": {
-            "id": "next_award",
-            "width": "pw",
-            "pos": "50%pw-50%w, 0.01@sf",
-            "position": "relative",
-            "text": ""
-          }
+        "textAreaCentered": {
+          "id": "next_award",
+          "width": "pw",
+          "pos": "50%pw-50%w, 0.01@sf",
+          "position": "relative",
+          "text": ""
         }
-      ],
+      },
       "navBar": {
-        "navMiddle": [
-          {
-            "Button_text": {
+        "navMiddle": {
+          "Button_text": [
+            {
               "id": "btn_close",
               "text": "#mainmenu/btnOk",
               "btnName": "A",
               "_on_click": "goBack",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "btn_upload_facebook_scrn",
               "pressAction": "share",
               "on_click": "onFacebookLoginAndPostScrnshot",
@@ -125,8 +113,8 @@
                 "input-transparent": "yes"
               }
             }
-          }
-        ]
+          ]
+        }
       }
     }
   }

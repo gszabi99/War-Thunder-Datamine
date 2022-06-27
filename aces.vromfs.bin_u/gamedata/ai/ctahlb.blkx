@@ -1,41 +1,29 @@
 {
-  "selector": [
-    {
-      "name": "HLBCapture"
-    },
-    {
-      "selectStrategy": "ordered"
-    },
-    {
-      "sequencer": [
-        {
-          "listCleaner": {
+  "selector": {
+    "name": "HLBCapture",
+    "selectStrategy": "ordered",
+    "sequencer": [
+      {
+        "listCleaner": [
+          {
             "originalList": "unsortedPlanes",
             "fromList": "assaultPlanes"
-          }
-        },
-        {
-          "listCleaner": {
+          },
+          {
             "originalList": "unsortedPlanes",
             "fromList": "capturePlanes"
-          }
-        },
-        {
-          "listCleaner": {
+          },
+          {
             "originalList": "unsortedPlanes",
             "fromList": "fightingPlanes"
-          }
-        },
-        {
-          "listCleaner": {
+          },
+          {
             "originalList": "unsortedPlanes",
             "fromList": "otherPlanes"
           }
-        }
-      ]
-    },
-    {
-      "sequencer": {
+        ]
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "unsortedPlanes",
@@ -54,10 +42,8 @@
           "planeName": "assaulter",
           "behaviour": "assaultBot"
         }
-      }
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "unsortedPlanes",
@@ -76,10 +62,8 @@
           "planeName": "assaulter",
           "behaviour": "assaultBot"
         }
-      }
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "unsortedPlanes",
@@ -98,86 +82,70 @@
           "planeName": "assaulter",
           "behaviour": "assaultBot"
         }
-      }
-    },
-    {
-      "sequencer": [
-        {
-          "repeat": true
+      },
+      {
+        "repeat": true,
+        "findCaptureZoneHighLevel": {
+          "czName": "enemyCZ",
+          "friendly": false,
+          "afterName": "enemyCZAfter"
         },
-        {
-          "findCaptureZoneHighLevel": {
-            "czName": "enemyCZ",
-            "friendly": false,
-            "afterName": "enemyCZAfter"
-          }
-        },
-        {
-          "setVarTo": {
+        "setVarTo": [
+          {
             "varName": "capturerAfter",
             "val": -1
-          }
-        },
-        {
-          "setVarTo": {
+          },
+          {
             "varName": "alreadyCapturing",
             "val": 0
-          }
-        },
-        {
-          "setVarTo": {
+          },
+          {
             "fromVar": "enemyCZ",
             "varName": "enemyCZAfter"
           }
-        },
-        {
-          "sequencer": {
-            "repeat": true,
-            "getFromList": {
-              "listName": "capturePlanes",
-              "varName": "capturer",
-              "indexType": "first",
-              "afterName": "capturerAfter"
-            },
-            "getVarIndex": {
-              "listName": "capturePlanes",
-              "varName": "capturer",
-              "toName": "capturerAfter"
-            },
-            "ifThenElse": {
-              "isBotVarEqual": {
-                "planeName": "capturer",
-                "varName": "enemyCZ",
-                "botVarName": "zoneToCapture"
-              },
-              "not": {
-                "setVarTo": {
-                  "varName": "alreadyCapturing",
-                  "val": 1
-                }
-              },
-              "continue": []
-            }
-          }
-        },
-        {
+        ],
+        "sequencer": {
+          "repeat": true,
+          "getFromList": {
+            "listName": "capturePlanes",
+            "varName": "capturer",
+            "indexType": "first",
+            "afterName": "capturerAfter"
+          },
+          "getVarIndex": {
+            "listName": "capturePlanes",
+            "varName": "capturer",
+            "toName": "capturerAfter"
+          },
           "ifThenElse": {
-            "compareVar": {
-              "varName": "alreadyCapturing",
-              "value": 0,
-              "op": "equal"
+            "isBotVarEqual": {
+              "planeName": "capturer",
+              "varName": "enemyCZ",
+              "botVarName": "zoneToCapture"
             },
-            "addToList": {
-              "listName": "zonesToCapture",
-              "varName": "enemyCZ"
+            "not": {
+              "setVarTo": {
+                "varName": "alreadyCapturing",
+                "val": 1
+              }
             },
-            "continue": []
+            "continue": {}
           }
+        },
+        "ifThenElse": {
+          "compareVar": {
+            "varName": "alreadyCapturing",
+            "value": 0,
+            "op": "equal"
+          },
+          "addToList": {
+            "listName": "zonesToCapture",
+            "varName": "enemyCZ"
+          },
+          "continue": {}
         }
-      ]
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "findCaptureZoneHighLevel": {
           "czName": "friendlyCZ",
@@ -192,10 +160,8 @@
           "fromVar": "friendlyCZ",
           "varName": "friendlyCZAfter"
         }
-      }
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "unsortedPlanes",
@@ -210,10 +176,8 @@
           "listName": "unsortedPlanes",
           "varName": "fighter"
         }
-      }
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "unsortedPlanes",
@@ -232,134 +196,100 @@
           "planeName": "assaulter",
           "behaviour": "assaultBot"
         }
-      }
-    },
-    {
-      "sequencer": [
-        {
-          "repeat": true
-        },
-        {
-          "getFromList": {
+      },
+      {
+        "repeat": true,
+        "getFromList": [
+          {
             "listName": "fightingPlanes",
             "varName": "capturer",
             "indexType": "random"
-          }
-        },
-        {
-          "getFromList": {
+          },
+          {
             "listName": "fightingPlanes",
             "varName": "assister",
             "indexType": "random"
           }
+        ],
+        "getClosestCZToPlane": {
+          "listName": "zonesToCapture",
+          "planeName": "capturer",
+          "varName": "closestZone"
         },
-        {
-          "getClosestCZToPlane": {
-            "listName": "zonesToCapture",
-            "planeName": "capturer",
-            "varName": "closestZone"
-          }
-        },
-        {
-          "removeFromList": {
+        "removeFromList": [
+          {
             "listName": "zonesToCapture",
             "varName": "closestZone"
-          }
-        },
-        {
-          "removeFromList": {
+          },
+          {
             "listName": "fightingPlanes",
             "varName": "capturer"
-          }
-        },
-        {
-          "removeFromList": {
+          },
+          {
             "listName": "fightingPlanes",
             "varName": "assister"
           }
+        ],
+        "addToList": {
+          "listName": "capturePlanes",
+          "varName": "capturer"
         },
-        {
-          "addToList": {
-            "listName": "capturePlanes",
-            "varName": "capturer"
-          }
-        },
-        {
-          "setBehaviourToPlane": {
+        "setBehaviourToPlane": [
+          {
             "planeName": "capturer",
             "behaviour": "captureBot"
-          }
-        },
-        {
-          "setBehaviourToPlane": {
+          },
+          {
             "planeName": "assister",
             "behaviour": "assistCaptureBot"
           }
-        },
-        {
-          "setBotVarTo": {
+        ],
+        "setBotVarTo": [
+          {
             "planeName": "capturer",
             "fromVar": "closestZone",
             "toVar": "zoneToCapture"
-          }
-        },
-        {
-          "setBotVarTo": {
+          },
+          {
             "planeName": "assister",
             "fromVar": "capturer",
             "toVar": "planeToAssist"
           }
-        }
-      ]
-    },
-    {
-      "sequencer": [
-        {
-          "repeat": true
+        ]
+      },
+      {
+        "repeat": true,
+        "getFromList": {
+          "listName": "fightingPlanes",
+          "varName": "defender",
+          "indexType": "random"
         },
-        {
-          "getFromList": {
-            "listName": "fightingPlanes",
-            "varName": "defender",
-            "indexType": "random"
-          }
+        "getClosestCZToPlane": {
+          "listName": "zonesToDefend",
+          "planeName": "defender",
+          "varName": "closestZone"
         },
-        {
-          "getClosestCZToPlane": {
-            "listName": "zonesToDefend",
-            "planeName": "defender",
-            "varName": "closestZone"
-          }
-        },
-        {
-          "removeFromList": {
+        "removeFromList": [
+          {
             "listName": "zonesToDefend",
             "varName": "closestZone"
-          }
-        },
-        {
-          "removeFromList": {
+          },
+          {
             "listName": "fightingPlanes",
             "varName": "defender"
           }
+        ],
+        "setBehaviourToPlane": {
+          "planeName": "defender",
+          "behaviour": "defenderBot"
         },
-        {
-          "setBehaviourToPlane": {
-            "planeName": "defender",
-            "behaviour": "defenderBot"
-          }
-        },
-        {
-          "setBotVarTo": {
-            "planeName": "defender",
-            "fromVar": "closestZone",
-            "toVar": "zoneToDefend"
-          }
+        "setBotVarTo": {
+          "planeName": "defender",
+          "fromVar": "closestZone",
+          "toVar": "zoneToDefend"
         }
-      ]
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "fightingPlanes",
@@ -373,31 +303,25 @@
         "setMissionRank": {
           "varName": "missionRank"
         },
-        "ifThenElse": [
-          {
-            "compareVar": {
-              "varName": "missionRank",
-              "op": "equal",
-              "value": 1
-            }
+        "ifThenElse": {
+          "compareVar": {
+            "varName": "missionRank",
+            "op": "equal",
+            "value": 1
           },
-          {
-            "setBehaviourToPlane": {
+          "setBehaviourToPlane": [
+            {
               "planeName": "seeker",
               "behaviour": "defaultCTABot"
-            }
-          },
-          {
-            "setBehaviourToPlane": {
+            },
+            {
               "planeName": "seeker",
               "behaviour": "seekerBot"
             }
-          }
-        ]
-      }
-    },
-    {
-      "sequencer": {
+          ]
+        }
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "fightingPlanes",
@@ -412,10 +336,8 @@
           "planeName": "assaulter",
           "behaviour": "assaultBot"
         }
-      }
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "findPlaneInListCapableOf": {
           "listName": "fightingPlanes",
@@ -434,10 +356,8 @@
           "planeName": "other",
           "behaviour": "rearmingBot"
         }
-      }
-    },
-    {
-      "sequencer": {
+      },
+      {
         "repeat": true,
         "getFromList": {
           "listName": "unsortedPlanes",
@@ -457,28 +377,24 @@
           "behaviour": "rearmingBot"
         }
       }
-    },
-    {
-      "clearIdList": {
+    ],
+    "clearIdList": [
+      {
         "listName": "zonesToCapture"
-      }
-    },
-    {
-      "clearIdList": {
+      },
+      {
         "listName": "zonesToDefend"
       }
-    },
-    {
-      "setVarTo": {
+    ],
+    "setVarTo": [
+      {
         "varName": "enemyCZAfter",
         "val": -1
-      }
-    },
-    {
-      "setVarTo": {
+      },
+      {
         "varName": "friendlyCZAfter",
         "val": -1
       }
-    }
-  ]
+    ]
+  }
 }

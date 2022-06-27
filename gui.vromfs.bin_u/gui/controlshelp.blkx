@@ -8,126 +8,84 @@
   },
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "menutitle": {
       "id": "msgbox-title"
     },
-    "optionlist_container": [
-      {
-        "pos": "0.5(sw-w), 0.5(sh-h)"
+    "optionlist_container": {
+      "pos": "0.5(sw-w), 0.5(sh-h)",
+      "position": "absolute",
+      "id": "msg_box",
+      "padding": "5*@scrn_tgt/100.0",
+      "height": "60*@scrn_tgt/100.0",
+      "flow": "vertical",
+      "textarea": {
+        "id": "textHelp",
+        "width": "90%pw",
+        "max-height": "ph",
+        "pos": "50%pw-55%w, 40%ph-40%h",
+        "position": "relative",
+        "padding": "1*@scrn_tgt/100.0",
+        "display": "hide",
+        "overflow-y": "auto"
       },
-      {
-        "position": "absolute"
-      },
-      {
-        "id": "msg_box"
-      },
-      {
-        "padding": "5*@scrn_tgt/100.0"
-      },
-      {
-        "height": "60*@scrn_tgt/100.0"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "textarea": {
-          "id": "textHelp",
-          "width": "90%pw",
-          "max-height": "ph",
-          "pos": "50%pw-55%w, 40%ph-40%h",
-          "position": "relative",
-          "padding": "1*@scrn_tgt/100.0",
-          "display": "hide",
-          "overflow-y": "auto"
-        }
-      },
-      {
-        "tdiv": [
-          {
-            "width": "@srw"
-          },
-          {
-            "pos": "50%pw-50%w, 1*@scrn_tgt/100.0"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "ButtonsLine": [
-              {
-                "id": "line_combo_airBrakes"
-              },
-              {
-                "ButtonImg": {
+      "tdiv": [
+        {
+          "width": "@srw",
+          "pos": "50%pw-50%w, 1*@scrn_tgt/100.0",
+          "position": "absolute",
+          "flow": "vertical",
+          "ButtonsLine": [
+            {
+              "id": "line_combo_airBrakes",
+              "ButtonImg": [
+                {
                   "btnName": "DpadLeft"
-                }
-              },
-              {
-                "ButtonImg": {
+                },
+                {
                   "btnName": "R3"
                 }
-              },
-              {
-                "text": {
+              ],
+              "text": [
+                {
                   "text": "+"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "text": " = "
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "combo_airBrakes",
                   "text": "#controls/combo_airBrakes"
                 }
-              }
-            ]
-          },
-          {
-            "ButtonsLine": [
-              {
-                "id": "line_combo_resetTrim"
-              },
-              {
-                "ButtonImg": {
+              ]
+            },
+            {
+              "id": "line_combo_resetTrim",
+              "ButtonImg": [
+                {
                   "btnName": "DpadRight"
-                }
-              },
-              {
-                "ButtonImg": {
+                },
+                {
                   "btnName": "X"
                 }
-              },
-              {
-                "text": {
+              ],
+              "text": [
+                {
                   "text": "+"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "text": " = "
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "combo_resetTrim",
                   "text": "#controls/combo_resetTrim_2"
                 }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tdiv": {
+              ]
+            }
+          ]
+        },
+        {
           "id": "pictureHelp",
           "size": "2.0ph, 0.9ph",
           "max-width": "(0.6 + 0.4@isWide) * @rw",
@@ -135,239 +93,177 @@
           "overflow": "visible",
           "pos": "50%pw-50%w, 50%ph-50%h",
           "position": "absolute",
-          "img": [
-            {
-              "id": "stick-help"
-            },
-            {
-              "background-image": "ui/controller"
-            },
-            {
-              "size": "512/720*@scrn_tgt, 256/720*@scrn_tgt"
-            },
-            {
-              "pos": "50%pw-50%w, 50%ph-50%h"
-            },
-            {
-              "position": "absolute"
-            },
-            {
-              "textButtonHint": {
+          "img": {
+            "id": "stick-help",
+            "background-image": "ui/controller",
+            "size": "512/720*@scrn_tgt, 256/720*@scrn_tgt",
+            "pos": "50%pw-50%w, 50%ph-50%h",
+            "position": "absolute",
+            "textButtonHint": [
+              {
                 "id": "start",
                 "pos": "0.61pw, 0.085ph-h",
                 "text": "#controls/start",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "cross",
                 "pos": "0.86pw, 0.69ph-3.7*@scrn_tgt/100.0",
                 "text": "#controls/cross",
                 "position": "absolute",
                 "style": "behavior:textArea; re-type:textarea;",
                 "min-width": "27%sw"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "triangle",
                 "pos": "0.84pw, 0.375ph-h",
                 "text": "#controls/triangle",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "R3",
                 "pos": "0.74pw, 0.99ph",
                 "text": "#controls/R3",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "R1",
                 "pos": "0.84pw, 0.25ph-h",
                 "text": "#controls/R1",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "R2",
                 "pos": "0.84pw, 0.16ph-h",
                 "text": "#controls/R2",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "RS",
                 "pos": "0.69pw, 1.0ph-h",
                 "text": "#controls/RS",
                 "position": "absolute",
                 "style": "behavior:textArea; re-type:textarea;",
                 "min-width": "30%sw"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "select",
                 "pos": "0.41pw-w, 0.085ph-h",
                 "text": "#controls/select",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "L1",
                 "pos": "0.18pw-w, 0.25ph-h",
                 "text": "#controls/L1",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "L2",
                 "pos": "0.18pw-w, 0.16ph-h",
                 "text": "#controls/L2",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "square",
                 "pos": "0.84pw, 0.60ph-h",
                 "text": "#controls/square",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "circle",
                 "pos": "0.84pw, 0.49ph-h",
                 "text": "#controls/circle",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "L3",
                 "pos": "0.15pw-w, 0.40ph",
                 "text": "#controls/L3",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "LS",
                 "pos": "0.15pw-w, 0.40ph-h",
                 "text": "#controls/LS",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "dpad_up",
                 "pos": "0.15pw-w, 0.63ph-h",
                 "text": "#controls/dpad_up",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "dpad_left",
                 "pos": "0.15pw-w, 0.75ph-h",
                 "text": "#controls/dpad_left",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "dpad_right",
                 "pos": "0.15pw-w, 0.88ph-h",
                 "text": "#controls/dpad_right",
                 "position": "absolute"
-              }
-            },
-            {
-              "textButtonHint": {
+              },
+              {
                 "id": "dpad_down",
                 "pos": "0.32pw-w, 1.0ph-h",
                 "text": "#controls/dpad_down",
                 "position": "absolute"
               }
-            }
-          ]
+            ]
+          }
         }
-      },
-      {
-        "table": {
-          "size": "pw",
-          "pos": "50%pw-50%w, ph-h-1*@scrn_tgt/100.0",
-          "position": "absolute",
-          "class": "optionsTable",
-          "baseRow": "yes",
-          "behavior": "PosOptionsNavigator",
-          "tr": [
+      ],
+      "table": {
+        "size": "pw",
+        "pos": "50%pw-50%w, ph-h-1*@scrn_tgt/100.0",
+        "position": "absolute",
+        "class": "optionsTable",
+        "baseRow": "yes",
+        "behavior": "PosOptionsNavigator",
+        "tr": {
+          "width": "pw",
+          "css-hier-invalidate": "all",
+          "td": [
             {
-              "width": "pw"
-            },
-            {
-              "css-hier-invalidate": "all"
-            },
-            {
-              "td": {
-                "cellType": "left",
-                "width": "50%pw",
-                "overflow-x": "hidden",
-                "optiontext": {
-                  "text": "#difficulty_name"
-                }
+              "cellType": "left",
+              "width": "50%pw",
+              "overflow-x": "hidden",
+              "optiontext": {
+                "text": "#difficulty_name"
               }
             },
             {
-              "td": {
-                "cellType": "right",
-                "width": "50%pw",
-                "padding-left": "@optPad",
-                "spinnerListBox": [
+              "cellType": "right",
+              "width": "50%pw",
+              "padding-left": "@optPad",
+              "spinnerListBox": {
+                "id": "controls_difficulty",
+                "size": "pw, ph",
+                "on_select": "onControlsDifficulty",
+                "option": [
                   {
-                    "id": "controls_difficulty"
-                  },
-                  {
-                    "size": "pw, ph"
-                  },
-                  {
-                    "on_select": "onControlsDifficulty"
-                  },
-                  {
-                    "option": {
-                      "max-width": "p.p.w-5*@scrn_tgt/100.0",
-                      "pare-text": "yes",
-                      "selected": "yes",
-                      "optiontext": {
-                        "text": "#difficulty0"
-                      }
+                    "max-width": "p.p.w-5*@scrn_tgt/100.0",
+                    "pare-text": "yes",
+                    "selected": "yes",
+                    "optiontext": {
+                      "text": "#difficulty0"
                     }
                   },
                   {
-                    "option": {
-                      "max-width": "p.p.w-5*@scrn_tgt/100.0",
-                      "pare-text": "yes",
-                      "optiontext": {
-                        "text": "#difficulty1"
-                      }
+                    "max-width": "p.p.w-5*@scrn_tgt/100.0",
+                    "pare-text": "yes",
+                    "optiontext": {
+                      "text": "#difficulty1"
                     }
                   },
                   {
-                    "option": {
-                      "max-width": "p.p.w-5*@scrn_tgt/100.0",
-                      "pare-text": "yes",
-                      "optiontext": {
-                        "text": "#difficulty2"
-                      }
+                    "max-width": "p.p.w-5*@scrn_tgt/100.0",
+                    "pare-text": "yes",
+                    "optiontext": {
+                      "text": "#difficulty2"
                     }
                   }
                 ]
@@ -376,6 +272,6 @@
           ]
         }
       }
-    ]
+    }
   }
 }

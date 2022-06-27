@@ -16,12 +16,16 @@
       "restoreType": "manual",
       "optionalTakeOff": false,
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "environment": "Day"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -34,9 +38,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "addAirfield": {
           "runwayStart": "airfield00",
@@ -50,7 +54,7 @@
           "objects": "armada_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "end": {
       "is_enabled": true,
@@ -80,25 +84,41 @@
           "objects": "armada_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "armada": {
       "name": "armada_01",
       "tm": [
-        [0.25882,0.0,0.965926],
-        [0.0,1.0,0.0],
-        [-0.965926,0.0,0.25882],
-        [-56173.3,-51.95,-38160.9]
+        [
+          0.25882,
+          0.0,
+          0.965926
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.965926,
+          0.0,
+          0.25882
+        ],
+        [
+          -56173.3,
+          -51.95,
+          -38160.9
+        ]
       ],
       "closed_waypoints": false,
       "unit_class": "bf-109g-2",
@@ -131,61 +151,103 @@
           "task": "FLY_WAYPOINT"
         }
       },
-      "way": []
+      "way": {}
     }
   },
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [-216.411,0.0,-78.7672],
-        [0.0,230.3,0.0],
-        [78.7672,0.0,-216.411],
-        [-56115.9,8.15,-38281.3]
+        [
+          -216.411,
+          0.0,
+          -78.7672
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          78.7672,
+          0.0,
+          -216.411
+        ],
+        [
+          -56115.9,
+          8.15,
+          -38281.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [59.606,0.0,222.453],
-        [0.0,230.3,0.0],
-        [-222.453,0.0,59.606],
-        [-55314.1,8.15,-38055.4]
+        [
+          59.606,
+          0.0,
+          222.453
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -222.453,
+          0.0,
+          59.606
+        ],
+        [
+          -55314.1,
+          8.15,
+          -38055.4
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [-71.8865,0.0,-26.1645],
-        [0.0,76.5,0.0],
-        [26.1645,0.0,-71.8865],
-        [-56094.7,8.15,-38274.8]
+        [
+          -71.8865,
+          0.0,
+          -26.1645
+        ],
+        [
+          0.0,
+          76.5,
+          0.0
+        ],
+        [
+          26.1645,
+          0.0,
+          -71.8865
+        ],
+        [
+          -56094.7,
+          8.15,
+          -38274.8
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ]
+    ]
+  }
 }

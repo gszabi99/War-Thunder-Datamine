@@ -1,11 +1,11 @@
 {
   "hintDiv": {
     "modalPos": "left",
-    "hintText": []
+    "hintText": {}
   },
-  "navLeft": [
-    {
-      "Button_text": {
+  "navLeft": {
+    "Button_text": [
+      {
         "id": "web_ui_button",
         "text": "#mainmenu/webui_map",
         "hideText": "yes",
@@ -14,40 +14,36 @@
         "enable": "no",
         "externalLink": "yes",
         "btnName": "Y",
-        "ButtonImg": [],
+        "ButtonImg": {},
         "activeText": {
           "text": "#mainmenu/webui_map",
           "pos": "0, 50%ph-50%h",
           "position": "relative",
-          "underline": []
+          "underline": {}
         }
-      }
-    },
-    {
-      "Button_text": {
+      },
+      {
         "id": "btn_gpu_benchmark",
         "text": "#gpuBenchmark/title",
         "_on_click": "onOpenGpuBenchmark",
         "display": "hide",
         "enable": "no",
         "btnName": "X",
-        "ButtonImg": []
+        "ButtonImg": {}
       }
-    }
-  ],
-  "navRight": [
-    {
-      "text": {
+    ]
+  },
+  "navRight": {
+    "text": [
+      {
         "id": "restart_suggestion",
         "position": "relative",
         "pos": "0, 50%ph-50%h",
         "padding-right": "5*@sf/@pf_outdated",
         "text": "#msgbox/client_restart_pending",
         "display": "hide"
-      }
-    },
-    {
-      "text": {
+      },
+      {
         "id": "filter_notify",
         "position": "relative",
         "pos": "0, 50%ph-50%h",
@@ -55,9 +51,9 @@
         "text": "",
         "display": "hide"
       }
-    },
-    {
-      "Button_text": {
+    ],
+    "Button_text": [
+      {
         "id": "btn_restart",
         "btnName": "L3",
         "text": "#msgbox/btn_restart",
@@ -66,36 +62,32 @@
         "navButtonFont": "yes",
         "css-hier-invalidate": "yes",
         "display": "hide",
-        "pattern": [],
+        "pattern": {},
         "buttonWink": {
           "_transp-timer": "0"
         },
-        "buttonGlance": [],
+        "buttonGlance": {},
         "btnText": {
           "id": "btn_restart_text",
           "text": "#msgbox/btn_restart"
         },
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_reset",
         "text": "#mainmenu/btnReset",
         "btnName": "R3",
         "_on_click": "onSystemOptionsReset",
         "display": "hide",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_apply",
         "text": "#mainmenu/btnClose",
         "btnName": "B",
         "_on_click": "onApply",
-        "ButtonImg": []
+        "ButtonImg": {}
       }
-    }
-  ]
+    ]
+  }
 }

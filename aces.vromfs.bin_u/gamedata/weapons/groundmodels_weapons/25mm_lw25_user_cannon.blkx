@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": 3,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -28,17 +32,22 @@
   "soundLoop": false,
   "sfxReloadBullet": "grd_cannon_belt_reload",
   "isBulletBelt": false,
-  "overheat": [
-    {
-      "overheat": [5.0,0.0]
-    },
-    {
-      "overheat": [7.0,0.1]
-    },
-    {
-      "overheat": [9.0,0.5]
-    }
-  ],
+  "overheat": {
+    "overheat": [
+      [
+        5.0,
+        0.0
+      ],
+      [
+        7.0,
+        0.1
+      ],
+      [
+        9.0,
+        0.5
+      ]
+    ]
+  },
   "bullet": {
     "mass": 0.141,
     "explosiveType": "pbxn_5",
@@ -56,12 +65,22 @@
     "bulletType": "he_dp",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "shellAnimation": "video/shells_animations/heat.ivf",
     "bulletName": "25mm_hedp",
     "onHitChanceMultExplFuel": 0.3,
-    "relativeVelHitShift": [300.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "hitPower": 260.0,
     "fuseDelayDist": 0.05,
     "explodeTreshold": 0.1,
@@ -71,19 +90,46 @@
     "ricochetEffect": "hit_19_27mm_metal_ap",
     "waterCollisionEffect": "hit_19_27mm_water",
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.0],
-      "mod2": [20.0,1.0]
+      "mod1": [
+        0.0,
+        0.0
+      ],
+      "mod2": [
+        20.0,
+        1.0
+      ]
     },
     "hitpower": {
-      "HitPower0m": [1.0,500.0],
-      "HitPower1000m": [0.9,1000.0],
-      "HitPower1500m": [0.65,1500.0],
-      "HitPower2500m": [0.5,2500.0],
-      "HitPower7000m": [0.0,7000.0]
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower1000m": [
+        0.9,
+        1000.0
+      ],
+      "HitPower1500m": [
+        0.65,
+        1500.0
+      ],
+      "HitPower2500m": [
+        0.5,
+        2500.0
+      ],
+      "HitPower7000m": [
+        0.0,
+        7000.0
+      ]
     },
     "armorpower": {
-      "ArmorPower0m": [5.0,10.0],
-      "ArmorPower10000m": [4.0,10000.0]
+      "ArmorPower0m": [
+        5.0,
+        10.0
+      ],
+      "ArmorPower10000m": [
+        4.0,
+        10000.0
+      ]
     },
     "cumulativeDamage": {
       "armorPower": 35.5,
@@ -102,13 +148,19 @@
           "radiusScale": 1.0,
           "penetrationScale": 1.0,
           "damageScale": 1.0,
-          "angles": [0.0,180.0],
+          "angles": [
+            0.0,
+            180.0
+          ],
           "countPortion": 1.0
         }
       }
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "20mmRed",
       "trail": "noTrail"

@@ -9,42 +9,24 @@
     "tdiv": {
       "size": "pw, ph",
       "overflow": "hidden",
-      "blur": [],
-      "blur_foreground": []
+      "blur": {},
+      "blur_foreground": {}
     },
-    "blockSeparator": [],
-    "slotbarTop": [
-      {
-        "id": "slotbar_buttons_place"
-      },
-      {
-        "size": "pw, 1@slotbarTop"
-      },
-      {
-        "pos": "0,-h"
-      },
-      {
-        "position": "absolute"
-      },
-      {
-        "display": "hide"
-      },
-      {
-        "behavior": "Timer"
-      },
-      {
-        "tdiv": [
-          {
-            "id": "header_countries_nest"
-          },
-          {
-            "height": "ph"
-          },
-          {
-            "css-hier-invalidate": "yes"
-          },
-          {
-            "DummyButton": {
+    "blockSeparator": {},
+    "slotbarTop": {
+      "id": "slotbar_buttons_place",
+      "size": "pw, 1@slotbarTop",
+      "pos": "0,-h",
+      "position": "absolute",
+      "display": "hide",
+      "behavior": "Timer",
+      "tdiv": [
+        {
+          "id": "header_countries_nest",
+          "height": "ph",
+          "css-hier-invalidate": "yes",
+          "DummyButton": [
+            {
               "id": "prev_country_btn",
               "padding": "1@blockInterval, 0",
               "btnName": "LB",
@@ -53,10 +35,8 @@
                 "class": "independent",
                 "fullSizeIcons": "yes"
               }
-            }
-          },
-          {
-            "DummyButton": {
+            },
+            {
               "id": "next_country_btn",
               "padding": "1@blockInterval, 0",
               "btnName": "RB",
@@ -66,45 +46,29 @@
                 "fullSizeIcons": "yes"
               }
             }
-          },
-          {
-            "activateSelect": {
-              "id": "header_countries",
-              "height": "ph",
-              "class": "slotsHeader",
-              "normalFont": "yes",
-              "isShort": "no",
-              "css-hier-invalidate": "yes",
-              "total-input-transparent": "yes",
-              "navigatorShortcuts": "yes",
-              "on_select": "onHeaderCountry",
-              "on_dbl_click": "onCountriesListDblClick"
-            }
+          ],
+          "activateSelect": {
+            "id": "header_countries",
+            "height": "ph",
+            "class": "slotsHeader",
+            "normalFont": "yes",
+            "isShort": "no",
+            "css-hier-invalidate": "yes",
+            "total-input-transparent": "yes",
+            "navigatorShortcuts": "yes",
+            "on_select": "onHeaderCountry",
+            "on_dbl_click": "onCountriesListDblClick"
           }
-        ]
-      },
-      {
-        "tdiv": [
-          {
-            "id": "autorefill-settings"
-          },
-          {
-            "left": "pw-w"
-          },
-          {
-            "top": "50%(ph-h)"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "padding-left": "3@dp"
-          },
-          {
-            "display": "hide"
-          },
-          {
-            "CheckBox": {
+        },
+        {
+          "id": "autorefill-settings",
+          "left": "pw-w",
+          "top": "50%(ph-h)",
+          "position": "absolute",
+          "padding-left": "3@dp",
+          "display": "hide",
+          "CheckBox": [
+            {
               "id": "slots-autorepair",
               "margin-right": "0.5h",
               "class": "with_image",
@@ -113,11 +77,9 @@
               "infoImg": {
                 "background-image": "#ui/gameuiskin#slot_repair.svg"
               },
-              "CheckBoxImg": []
-            }
-          },
-          {
-            "CheckBox": {
+              "CheckBoxImg": {}
+            },
+            {
               "id": "slots-autoweapon",
               "margin-right": "0.5h",
               "class": "with_image",
@@ -126,12 +88,12 @@
               "infoImg": {
                 "background-image": "#ui/gameuiskin#btn_weapons.svg"
               },
-              "CheckBoxImg": []
+              "CheckBoxImg": {}
             }
-          }
-        ]
-      }
-    ]
+          ]
+        }
+      ]
+    }
   },
   "CountriesCrews": {
     "id": "countries_crews"

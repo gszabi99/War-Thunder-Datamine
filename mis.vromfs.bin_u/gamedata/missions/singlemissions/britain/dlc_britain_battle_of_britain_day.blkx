@@ -20,8 +20,14 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "windSpeed": [4.0,6.0],
-      "windDirectionDeg": [175.0,195.0],
+      "windSpeed": [
+        4.0,
+        6.0
+      ],
+      "windDirectionDeg": [
+        175.0,
+        195.0
+      ],
       "gt_cooperative": true,
       "country_axis": "germany",
       "country_allies": "britain",
@@ -40,55 +46,37 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "enemy"
-              },
-              {
-                "point": "bf_109_02"
-              },
-              {
-                "point": "point_of_battle"
-              },
-              {
-                "point": "point_of_battle"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 1,
+            "side": "enemy",
+            "point": [
+              "bf_109_02",
+              "point_of_battle",
+              "point_of_battle"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "player_wing"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "enemy",
               "target": "bf_109_02",
               "lookAt": "point_of_battle"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -101,12 +89,12 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object": "bf_109_01",
             "effShootingRate": 1.0,
             "plane": {
@@ -114,13 +102,14 @@
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 0.0,
-                "limits": [0.0,3.0]
+                "limits": [
+                  0.0,
+                  3.0
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "bf_109_02",
             "effShootingRate": 1.0,
             "plane": {
@@ -128,13 +117,14 @@
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 0.0,
-                "limits": [0.0,2.5]
+                "limits": [
+                  0.0,
+                  2.5
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "bf_109_03",
             "effShootingRate": 1.0,
             "plane": {
@@ -142,90 +132,66 @@
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 0.0,
-                "limits": [0.0,2.0]
+                "limits": [
+                  0.0,
+                  2.0
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "air_defence_01"
-            },
-            {
-              "object": "air_defence_02"
-            },
-            {
-              "object": "air_defence_03"
-            },
-            {
-              "object": "air_defence_04"
-            },
-            {
-              "object": "air_defence_05"
-            },
-            {
-              "object": "air_defence_06"
-            },
-            {
-              "effShootingRate": 0.1
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
+            "object": [
+              "air_defence_01",
+              "air_defence_02",
+              "air_defence_03",
+              "air_defence_04",
+              "air_defence_05",
+              "air_defence_06"
+            ],
+            "effShootingRate": 0.1
+          },
+          {
             "object": "ally_spitfire_01",
             "effShootingRate": 1.0,
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 4.5,
-                "limits": [0.3,4.5]
+                "limits": [
+                  0.3,
+                  4.5
+                ]
               }
             }
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "bf_109_02"
-            },
-            {
-              "target": "bf_109_03"
-            },
-            {
-              "target": "ally_spitfire_01"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "bf_109_02",
+            "bf_109_03",
+            "ally_spitfire_01"
           ]
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "wait": {
+          "time": 3.0
         },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_britain_battle_of_britain_day_main"
-          }
+        "moAddMissionObjective": {
+          "target": "dlc_britain_battle_of_britain_day_main"
         },
-        {
-          "unitMoveTo": {
-            "target": "point_of_battle",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object": "bf_109_01",
-            "speed": 600.0
-          }
+        "unitMoveTo": {
+          "target": "point_of_battle",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "bf_109_01",
+          "speed": 600.0
         },
-        {
-          "triggerEnable": {
-            "target": "update_timer_indicator"
-          }
+        "triggerEnable": {
+          "target": "update_timer_indicator"
         }
-      ]
+      }
     },
     "update_timer_indicator": {
       "is_enabled": false,
@@ -240,7 +206,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "var": "timer",
@@ -265,37 +231,21 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "missionSetTargetsIndicator": [
-          {
-            "target_type": "isMarked"
-          },
-          {
-            "target_marking": 1
-          },
-          {
-            "delta": 0
-          },
-          {
-            "icon": "air"
-          },
-          {
-            "icon army": 2
-          },
-          {
-            "set": true
-          },
-          {
-            "target": "bf_109_01"
-          },
-          {
-            "target": "bf_109_02"
-          },
-          {
-            "target": "bf_109_03"
-          }
-        ]
+        "missionSetTargetsIndicator": {
+          "target_type": "isMarked",
+          "target_marking": 1,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": true,
+          "target": [
+            "bf_109_01",
+            "bf_109_02",
+            "bf_109_03"
+          ]
+        }
       }
     },
     "bf_109_01_near_player": {
@@ -427,20 +377,14 @@
         }
       },
       "actions": {
-        "unitPutToSleep": [
-          {
-            "target": "bf_109_01"
-          },
-          {
-            "target": "bf_109_02"
-          },
-          {
-            "target": "bf_109_03"
-          },
-          {
-            "useForTriggerFiltered": true
-          }
-        ]
+        "unitPutToSleep": {
+          "target": [
+            "bf_109_01",
+            "bf_109_02",
+            "bf_109_03"
+          ],
+          "useForTriggerFiltered": true
+        }
       }
     },
     "bf_109_02_wake_up": {
@@ -456,57 +400,45 @@
           "time": 30.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitMark": {
+      "conditions": {},
+      "actions": {
+        "unitMark": [
+          {
             "target_marking": 2,
             "target": "bf_109_01"
-          }
-        },
-        {
-          "unitMark": {
+          },
+          {
             "target_marking": 1,
             "target": "bf_109_02"
           }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "bf_109_02"
-            },
-            {
-              "target": "ally_spitfire_01"
-            }
+        ],
+        "unitWakeUp": {
+          "target": [
+            "bf_109_02",
+            "ally_spitfire_01"
           ]
         },
-        {
-          "unitMoveTo": {
-            "target": "point_of_battle",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object": "bf_109_02",
-            "speed": 600.0
-          }
+        "unitMoveTo": {
+          "target": "point_of_battle",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "bf_109_02",
+          "speed": 600.0
         },
-        {
-          "triggerEnable": {
-            "target": "bf_109_02_near_player"
-          }
+        "triggerEnable": {
+          "target": "bf_109_02_near_player"
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "ally_spitfire_01",
-            "target": "bf_109_02",
-            "fireRandom": true,
-            "fightInArea": "battle_zone"
-          }
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "ally_spitfire_01",
+          "target": "bf_109_02",
+          "fireRandom": true,
+          "fightInArea": "battle_zone"
         }
-      ]
+      }
     },
     "bf_109_02_near_player": {
       "is_enabled": false,
@@ -522,110 +454,62 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 3500.0
-          },
-          {
-            "math": "2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "object": "bf_109_02"
-          },
-          {
-            "target": "ally_spitfire_01"
-          },
-          {
-            "target": "player_wing"
-          },
-          {
-            "target": "point_of_battle"
-          }
-        ]
-      },
-      "actions": [
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "bf_109_02"
-            },
-            {
-              "target": "player_wing"
-            },
-            {
-              "target": "ally_spitfire_01"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 3
-            },
-            {
-              "playerAttractedEffRate": 1.0
-            },
-            {
-              "fightInArea": "battle_zone"
-            },
-            {
-              "fightAreaRadius": 2500.0
-            },
-            {
-              "fightAreaOuterRadius": 5000.0
-            }
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "object": "bf_109_02",
+          "target": [
+            "ally_spitfire_01",
+            "player_wing",
+            "point_of_battle"
           ]
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "bf_109_02"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/dlc_britain_battle_of_britain_day_hint",
-            "action": "hide",
-            "shouldFadeOut": true
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/dlc_britain_battle_of_britain_day_hint",
-            "action": "hide",
-            "shouldFadeOut": true
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bf_109_02_fly_away"
-          }
         }
-      ]
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "bf_109_02",
+          "target": [
+            "player_wing",
+            "ally_spitfire_01"
+          ],
+          "fireRandom": true,
+          "playerAttractedCount": 3,
+          "playerAttractedEffRate": 1.0,
+          "fightInArea": "battle_zone",
+          "fightAreaRadius": 2500.0,
+          "fightAreaOuterRadius": 5000.0
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": "bf_109_02"
+        },
+        "playHint": [
+          {
+            "hintType": "custom",
+            "name": "hints/dlc_britain_battle_of_britain_day_hint",
+            "action": "hide",
+            "shouldFadeOut": true
+          },
+          {
+            "hintType": "custom",
+            "name": "hints/dlc_britain_battle_of_britain_day_hint",
+            "action": "hide",
+            "shouldFadeOut": true
+          }
+        ],
+        "wait": {
+          "time": 5.0
+        },
+        "triggerEnable": {
+          "target": "bf_109_02_fly_away"
+        }
+      }
     },
     "bf_109_02_fly_away": {
       "is_enabled": false,
@@ -694,43 +578,35 @@
           "time": 30.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitMark": {
+      "conditions": {},
+      "actions": {
+        "unitMark": [
+          {
             "target_marking": 2,
             "target": "bf_109_02"
-          }
-        },
-        {
-          "unitMark": {
+          },
+          {
             "target_marking": 1,
             "target": "bf_109_03"
           }
+        ],
+        "unitWakeUp": {
+          "target": "bf_109_03"
         },
-        {
-          "unitWakeUp": {
-            "target": "bf_109_03"
-          }
+        "unitMoveTo": {
+          "target": "point_of_battle",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "bf_109_03",
+          "speed": 600.0
         },
-        {
-          "unitMoveTo": {
-            "target": "point_of_battle",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object": "bf_109_03",
-            "speed": 600.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bf_109_03_near_player"
-          }
+        "triggerEnable": {
+          "target": "bf_109_03_near_player"
         }
-      ]
+      }
     },
     "bf_109_03_near_player": {
       "is_enabled": false,
@@ -756,49 +632,27 @@
           "target": "bf_109_03"
         }
       },
-      "actions": [
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "bf_109_03"
-          }
+      "actions": {
+        "unitSetIndication": {
+          "set": true,
+          "target": "bf_109_03"
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "bf_109_03"
-            },
-            {
-              "target": "player_wing"
-            },
-            {
-              "target": "ally_spitfire_01"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 3
-            },
-            {
-              "playerAttractedEffRate": 1.0
-            },
-            {
-              "fightInArea": "battle_zone"
-            },
-            {
-              "fightAreaRadius": 2500.0
-            },
-            {
-              "fightAreaOuterRadius": 5000.0
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": true,
+            "object": "bf_109_03",
+            "target": [
+              "player_wing",
+              "ally_spitfire_01"
+            ],
+            "fireRandom": true,
+            "playerAttractedCount": 3,
+            "playerAttractedEffRate": 1.0,
+            "fightInArea": "battle_zone",
+            "fightAreaRadius": 2500.0,
+            "fightAreaOuterRadius": 5000.0
+          },
+          {
             "playerAttracted": false,
             "object": "ally_spitfire_01",
             "target": "bf_109_03",
@@ -807,39 +661,31 @@
             "fightAreaRadius": 2500.0,
             "fightAreaOuterRadius": 5000.0
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "show",
             "shouldFadeOut": true
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "hide",
             "shouldFadeOut": true
           }
+        ],
+        "wait": {
+          "time": 5.0
         },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bf_109_03_fly_away"
-            },
-            {
-              "target": "bf_109_03_start_add"
-            }
+        "triggerEnable": {
+          "target": [
+            "bf_109_03_fly_away",
+            "bf_109_03_start_add"
           ]
         }
-      ]
+      }
     },
     "bf_109_03_fly_away": {
       "is_enabled": false,
@@ -1021,7 +867,7 @@
         "wait": {
           "time": 3.0
         },
-        "missionFailed": []
+        "missionFailed": {}
       }
     },
     "mission_success": {
@@ -1051,32 +897,24 @@
           "object": "bf_109_03"
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_britain_battle_of_britain_day_main",
-            "status": 2
-          }
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "dlc_britain_battle_of_britain_day_main",
+          "status": 2
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 7.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
+        ],
+        "missionCompleted": {
+          "timer": false
         },
-        {
-          "missionCompleted": {
-            "timer": false
-          }
-        },
-        {
-          "missionDebriefing": []
-        }
-      ]
+        "missionDebriefing": {}
+      }
     },
     "player_out_of_zone": {
       "is_enabled": true,
@@ -1098,38 +936,32 @@
           "check_players": "all",
           "target": "battle_zone_for_player"
         },
-        "gameWhenHintIsNotActive": []
+        "gameWhenHintIsNotActive": {}
       },
-      "actions": [
-        {
-          "playHint": {
+      "actions": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_area_hint",
             "action": "show",
             "shouldFadeOut": true
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_area_hint",
             "action": "hide",
             "shouldFadeOut": true
           }
+        ],
+        "wait": {
+          "time": 5.0
         },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "varModify": {
-            "var": "loose_timer",
-            "operator": "add",
-            "value": 15.0
-          }
+        "varModify": {
+          "var": "loose_timer",
+          "operator": "add",
+          "value": 15.0
         }
-      ]
+      }
     },
     "erase_loose_timer": {
       "is_enabled": true,
@@ -1173,45 +1005,27 @@
         }
       },
       "conditions": {
-        "unitWhenStatus": [
-          {
-            "object_type": "isKilled"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "object": "bf_109_01"
-          },
-          {
-            "object": "bf_109_02"
-          },
-          {
-            "object": "bf_109_03"
-          }
-        ]
+        "unitWhenStatus": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": [
+            "bf_109_01",
+            "bf_109_02",
+            "bf_109_03"
+          ]
+        }
       },
       "actions": {
-        "unitMark": [
-          {
-            "target_marking": 0
-          },
-          {
-            "target": "bf_109_01"
-          },
-          {
-            "target": "bf_109_02"
-          },
-          {
-            "target": "bf_109_03"
-          },
-          {
-            "useForTriggerFiltered": true
-          }
-        ]
+        "unitMark": {
+          "target_marking": 0,
+          "target": [
+            "bf_109_01",
+            "bf_109_02",
+            "bf_109_03"
+          ],
+          "useForTriggerFiltered": true
+        }
       }
     }
   },
@@ -1228,8 +1042,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_britain_battle_of_britain_day_add": {
       "is_enabled": false,
@@ -1241,26 +1055,42 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "timer": 900,
     "loose_timer": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player_wing",
         "tm": [
-          [0.573576,0.0,-0.819152],
-          [0.0,1.0,0.0],
-          [0.819152,0.0,0.573576],
-          [11622.9,755.6,-5314.85]
+          [
+            0.573576,
+            0.0,
+            -0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.819152,
+            0.0,
+            0.573576
+          ],
+          [
+            11622.9,
+            755.6,
+            -5314.85
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "spitfiremkii",
@@ -1286,17 +1116,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf_109_01",
         "tm": [
-          [-0.5373,0.0,0.843391],
-          [0.0,1.0,0.0],
-          [-0.843391,0.0,-0.5373],
-          [14385.6,599.0,-10495.2]
+          [
+            -0.5373,
+            0.0,
+            0.843391
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.843391,
+            0.0,
+            -0.5373
+          ],
+          [
+            14385.6,
+            599.0,
+            -10495.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109e-3",
@@ -1322,17 +1166,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf_109_02",
         "tm": [
-          [-0.0436194,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436194],
-          [10192.0,1399.0,-11308.6]
+          [
+            -0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999048,
+            0.0,
+            -0.0436194
+          ],
+          [
+            10192.0,
+            1399.0,
+            -11308.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109e-3",
@@ -1358,17 +1216,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf_109_03",
         "tm": [
-          [-0.996195,0.0,0.0871557],
-          [0.0,1.0,0.0],
-          [-0.0871557,0.0,-0.996195],
-          [16560.5,2399.0,-6176.05]
+          [
+            -0.996195,
+            0.0,
+            0.0871557
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871557,
+            0.0,
+            -0.996195
+          ],
+          [
+            16560.5,
+            2399.0,
+            -6176.05
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109e-3",
@@ -1394,17 +1266,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ally_spitfire_01",
         "tm": [
-          [0.573576,0.0,-0.819152],
-          [0.0,1.0,0.0],
-          [0.819152,0.0,0.573576],
-          [9637.55,1458.1,-1857.45]
+          [
+            0.573576,
+            0.0,
+            -0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.819152,
+            0.0,
+            0.573576
+          ],
+          [
+            9637.55,
+            1458.1,
+            -1857.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "spitfire_mk1",
@@ -1430,17 +1316,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "air_defence_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11806.8,60.3,-5453.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            11806.8,
+            60.3,
+            -5453.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
@@ -1450,22 +1352,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12536.3,60.3,-5170.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12536.3,
+            60.3,
+            -5170.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
@@ -1475,22 +1397,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13071.5,60.3,-5292.15]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            13071.5,
+            60.3,
+            -5292.15
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
@@ -1500,22 +1442,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13295.3,60.3,-6084.05]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            13295.3,
+            60.3,
+            -6084.05
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
@@ -1525,22 +1487,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12132.4,60.3,-4984.05]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12132.4,
+            60.3,
+            -4984.05
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
@@ -1550,22 +1532,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10811.6,60.3,-5828.15]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            10811.6,
+            60.3,
+            -5828.15
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
@@ -1575,55 +1577,125 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "battle_zone": {
       "type": "Sphere",
       "tm": [
-        [9000.0,0.0,0.0],
-        [0.0,9000.0,0.0],
-        [0.0,0.0,9000.0],
-        [11970.0,63.75,-5713.35]
+        [
+          9000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          9000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          9000.0
+        ],
+        [
+          11970.0,
+          63.75,
+          -5713.35
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "evacuate_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [39608.6,750.0,-30626.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          39608.6,
+          750.0,
+          -30626.8
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "point_of_battle": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [12109.8,1342.6,-5776.2]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          12109.8,
+          1342.6,
+          -5776.2
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "battle_zone_for_player": {
       "type": "Sphere",
       "tm": [
-        [10000.0,0.0,0.0],
-        [0.0,10000.0,0.0],
-        [0.0,0.0,10000.0],
-        [11970.0,63.75,-5713.35]
+        [
+          10000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10000.0
+        ],
+        [
+          11970.0,
+          63.75,
+          -5713.35
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

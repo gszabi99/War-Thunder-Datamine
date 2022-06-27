@@ -1,182 +1,112 @@
-[
-  {
-    "expClass": "exp_ship"
-  },
-  {
-    "timeToFire": 60.0
-  },
-  {
-    "timeToSmoke": 600.0
-  },
-  {
-    "hasExpl": true
-  },
-  {
-    "model": "destroyer_anderson_a"
-  },
-  {
-    "subclass": "warShip"
-  },
-  {
-    "dustFx": "water_units_dust"
-  },
-  {
-    "dynCollisionGeom": true
-  },
-  {
-    "damageableByGun": false
-  },
-  {
-    "moveType": "ship"
-  },
-  {
-    "maxFwdSpeed": 55.0
-  },
-  {
-    "maxRevSpeed": 5.0
-  },
-  {
-    "maxAngSpeed": 1.0
-  },
-  {
-    "maxAccel": 0.5
-  },
-  {
-    "maxDecel": 0.5
-  },
-  {
-    "maxAngAccel": 0.7
-  },
-  {
-    "maxAngAccel0": 0.0
-  },
-  {
-    "maxAngAccelV": 0.01
-  },
-  {
-    "groundNormSmoothViscosity": 4.5
-  },
-  {
-    "customUpdateDiv": 5
-  },
-  {
-    "drownGFactor": 0.0
-  },
-  {
-    "drownRollSpeed": 0.01
-  },
-  {
-    "SoundMove": "models.Ship"
-  },
-  {
-    "tailStartOffset": 0.0
-  },
-  {
-    "DamageParts": {
-      "steel": {
-        "gun0_dm": {
-          "hp": 2.0
-        },
-        "gun5_dm": {
-          "hp": 2.0
-        },
-        "gun6_dm": {
-          "hp": 2.0
-        },
-        "gun7_dm": {
-          "hp": 2.0
-        },
-        "gun8_dm": {
-          "hp": 2.0
-        }
+{
+  "expClass": "exp_ship",
+  "timeToFire": 60.0,
+  "timeToSmoke": 600.0,
+  "hasExpl": true,
+  "model": "destroyer_anderson_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "dynCollisionGeom": true,
+  "damageableByGun": false,
+  "moveType": "ship",
+  "maxFwdSpeed": 55.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 1.0,
+  "maxAccel": 0.5,
+  "maxDecel": 0.5,
+  "maxAngAccel": 0.7,
+  "maxAngAccel0": 1E-05,
+  "maxAngAccelV": 0.01,
+  "groundNormSmoothViscosity": 4.5,
+  "customUpdateDiv": 5,
+  "drownGFactor": 1E-05,
+  "drownRollSpeed": 0.01,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 0.0,
+  "DamageParts": {
+    "steel": {
+      "gun0_dm": {
+        "hp": 2.0
       },
-      "armor40": {
-        "engine_dm": {
-          "hp": 800.0
-        },
-        "body_dm": {
-          "hp": 800.0
-        },
-        "bodypart1_dm": {
-          "hp": 800.0
-        },
-        "gun1_dm": {
-          "hp": 50.0
-        },
-        "gun2_dm": {
-          "hp": 50.0
-        },
-        "gun3_dm": {
-          "hp": 50.0
-        },
-        "gun4_dm": {
-          "hp": 50.0
-        }
+      "gun5_dm": {
+        "hp": 2.0
+      },
+      "gun6_dm": {
+        "hp": 2.0
+      },
+      "gun7_dm": {
+        "hp": 2.0
+      },
+      "gun8_dm": {
+        "hp": 2.0
+      }
+    },
+    "armor40": {
+      "engine_dm": {
+        "hp": 800.0
+      },
+      "body_dm": {
+        "hp": 800.0
+      },
+      "bodypart1_dm": {
+        "hp": 800.0
+      },
+      "gun1_dm": {
+        "hp": 50.0
+      },
+      "gun2_dm": {
+        "hp": 50.0
+      },
+      "gun3_dm": {
+        "hp": 50.0
+      },
+      "gun4_dm": {
+        "hp": 50.0
       }
     }
   },
-  {
-    "DamageEffects": [
+  "DamageEffects": {
+    "part": [
       {
-        "part": {
-          "name": "body_dm",
-          "onHit": {
-            "smoke": 0.01,
-            "fire": 0.01
-          },
-          "onKill": {
-            "expl": 1.0
-          }
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
         }
       },
       {
-        "part": [
-          {
-            "name": "engine_dm"
-          },
-          {
-            "name": "bodypart1_dm"
-          },
-          {
-            "onHit": {
-              "smoke": 0.1,
-              "fire": 0.01
-            }
-          },
-          {
-            "onKill": {
-              "body_dm": 1.0
-            }
-          }
-        ]
+        "name": [
+          "engine_dm",
+          "bodypart1_dm"
+        ],
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
+        },
+        "onKill": {
+          "body_dm": 1.0
+        }
       }
     ]
   },
-  {
-    "class_tags": []
+  "class_tags": {},
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
   },
-  {
-    "sound": {
-      "path": "sounds/engines",
-      "pathStudio": "aircraft/engines",
-      "engine": "boat"
-    }
-  },
-  {
-    "hideNodes": [
-      {
-        "node": "flame3"
-      },
-      {
-        "node": "flame5"
-      },
-      {
-        "node": "flame7"
-      }
+  "hideNodes": {
+    "node": [
+      "flame3",
+      "flame5",
+      "flame7"
     ]
   },
-  {
-    "weapon": {
+  "weapon": [
+    {
       "trigger": "gunner0",
       "blk": "gameData/weapons/groundModels_weapons/common_AAgun127mm.blk",
       "dm": "gun0_dm",
@@ -207,13 +137,17 @@
         "gun": "gun0"
       },
       "limits": {
-        "yaw": [-150.0,150.0],
-        "pitch": [-10.0,80.0]
+        "yaw": [
+          -150.0,
+          150.0
+        ],
+        "pitch": [
+          -10.0,
+          80.0
+        ]
       }
-    }
-  },
-  {
-    "weapon": {
+    },
+    {
       "trigger": "gunner1",
       "blk": "gameData/weapons/groundModels_weapons/common_AAgun127mm.blk",
       "dm": "gun1_dm",
@@ -244,13 +178,17 @@
         "gun": "gun1"
       },
       "limits": {
-        "yaw": [-150.0,150.0],
-        "pitch": [-10.0,80.0]
+        "yaw": [
+          -150.0,
+          150.0
+        ],
+        "pitch": [
+          -10.0,
+          80.0
+        ]
       }
-    }
-  },
-  {
-    "weapon": {
+    },
+    {
       "trigger": "gunner2",
       "blk": "gameData/weapons/groundModels_weapons/common_AAgun127mm.blk",
       "dm": "gun2_dm",
@@ -281,13 +219,17 @@
         "gun": "gun2"
       },
       "limits": {
-        "yaw": [-150.0,150.0],
-        "pitch": [-10.0,80.0]
+        "yaw": [
+          -150.0,
+          150.0
+        ],
+        "pitch": [
+          -10.0,
+          80.0
+        ]
       }
-    }
-  },
-  {
-    "weapon": {
+    },
+    {
       "trigger": "gunner3",
       "blk": "gameData/weapons/groundModels_weapons/common_AAgun40mm.blk",
       "dm": "gun4_dm",
@@ -318,13 +260,17 @@
         "gun": "gun4"
       },
       "limits": {
-        "yaw": [-100.0,100.0],
-        "pitch": [-10.0,89.0]
+        "yaw": [
+          -100.0,
+          100.0
+        ],
+        "pitch": [
+          -10.0,
+          89.0
+        ]
       }
-    }
-  },
-  {
-    "weapon": {
+    },
+    {
       "trigger": "gunner4",
       "blk": "gameData/weapons/groundModels_weapons/common_mGun12mm.blk",
       "dm": "gun6_dm",
@@ -356,13 +302,17 @@
         "gun": "gun6"
       },
       "limits": {
-        "yaw": [-100.0,100.0],
-        "pitch": [-10.0,89.0]
+        "yaw": [
+          -100.0,
+          100.0
+        ],
+        "pitch": [
+          -10.0,
+          89.0
+        ]
       }
-    }
-  },
-  {
-    "weapon": {
+    },
+    {
       "trigger": "gunner5",
       "blk": "gameData/weapons/groundModels_weapons/searchLight_ship_gun.blk",
       "dm": "gun8_dm",
@@ -375,13 +325,17 @@
         "gun": "gun8"
       },
       "limits": {
-        "yaw": [-90.0,90.0],
-        "pitch": [10.0,90.0]
+        "yaw": [
+          -90.0,
+          90.0
+        ],
+        "pitch": [
+          10.0,
+          90.0
+        ]
       }
-    }
-  },
-  {
-    "weapon": {
+    },
+    {
       "trigger": "gunner6",
       "blk": "gameData/weapons/groundModels_weapons/searchLight_ship_gun.blk",
       "dm": "gun9_dm",
@@ -394,9 +348,15 @@
         "gun": "gun9"
       },
       "limits": {
-        "yaw": [-90.0,90.0],
-        "pitch": [10.0,90.0]
+        "yaw": [
+          -90.0,
+          90.0
+        ],
+        "pitch": [
+          10.0,
+          90.0
+        ]
       }
     }
-  }
-]
+  ]
+}

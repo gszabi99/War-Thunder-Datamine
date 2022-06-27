@@ -18,9 +18,9 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -37,24 +37,20 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "varSetInt": [
-          {
-            "value": 0
-          },
-          {
-            "var": "to_randomizer"
-          },
-          {
-            "var": "to_last_randomizer"
-          }
-        ],
+        "varSetInt": {
+          "value": 0,
+          "var": [
+            "to_randomizer",
+            "to_last_randomizer"
+          ]
+        },
         "triggerEnable": {
           "target": "to_template_delay_start"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "to_template_delay_start": {
       "is_enabled": false,
@@ -70,13 +66,13 @@
           "var": "to_delay_timer"
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "triggerEnable": {
           "target": "to_template_choosing"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "to_template_choosing": {
       "is_enabled": false,
@@ -99,43 +95,33 @@
           "var_value_other": "to_max_templates_to_launch"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "vybiraem sluchajnoe sobytie"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "there is only one real template"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem net li forsirovaniya shablona"
           }
+        ],
+        "__varSetRandomInt": {
+          "var": "to_randomizer",
+          "from": 1,
+          "to_not_including": 10,
+          "var_to_not_including": "to_templates_quantity"
         },
-        {
-          "__varSetRandomInt": {
-            "var": "to_randomizer",
-            "from": 1,
-            "to_not_including": 10,
-            "var_to_not_including": "to_templates_quantity"
-          }
+        "varSetInt": {
+          "value": 1,
+          "var": "to_randomizer"
         },
-        {
-          "varSetInt": {
-            "value": 1,
-            "var": "to_randomizer"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "to_check_force_template"
-          }
+        "triggerEnable": {
+          "target": "to_check_force_template"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "to_check_force_template": {
       "is_enabled": false,
@@ -157,58 +143,44 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "prinuditel'nyj vyzov shablona "
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "skipaem proverku predydushchego shablona"
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "to_randomizer",
+          "input_var": "to_force_template_idx"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "to_randomizer",
-            "input_var": "to_force_template_idx"
-          }
+        "__comment": {
+          "value": "obnulyaem forsirovanie"
         },
-        {
-          "__comment": {
-            "value": "obnulyaem forsirovanie"
-          }
+        "__varSetInt": {
+          "value": 0,
+          "var": "to_force_template_idx"
         },
-        {
-          "__varSetInt": {
-            "value": 0,
-            "var": "to_force_template_idx"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "to_template_fill_army"
-          }
+        "triggerEnable": {
+          "target": "to_template_fill_army"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "net prinuditel'nogo vyzova shablona"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "idem dal'she po logike - zapolnyaem armiyu (nuzhna nekotorym shablonam)"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "to_check_prev_template"
-          }
+        ],
+        "triggerEnable": {
+          "target": "to_check_prev_template"
         }
-      ]
+      }
     },
     "to_check_prev_template": {
       "is_enabled": false,
@@ -223,23 +195,21 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "to_randomizer",
             "value": 0,
             "comparasion_func": "equal",
             "var_value_other": "to_last_randomizer"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "to_randomizer",
             "value": 5,
             "comparasion_func": "notEqual"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "tekushchij shabon vypal takoj-zhe kak predydushchij i eto ne zona zahvata"
@@ -275,7 +245,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "comment": {
           "value": "zadaem armiyu dlya sobytiya 1 i 2 - sootvetsvuyushchie armii"
@@ -289,7 +259,7 @@
           "target": "to_template_check_army"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "to_template_check_army": {
       "is_enabled": false,
@@ -312,43 +282,33 @@
           "var_value_other": "to_last_army"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "armiya ne sovpala edinozhdy zapuskaem proverki vseh sobytij"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapominaem poslednyuyu armiyu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem trigger aktivacii sleduyushchego zadaniya"
           }
+        ],
+        "triggerActivate": {
+          "target": "to_template_07_sbt_check",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         },
-        {
-          "triggerActivate": {
-            "target": "to_template_07_sbt_check",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
+        "varSetInt": {
+          "value": 0,
+          "var": "to_last_army",
+          "input_var": "to_army"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "to_last_army",
-            "input_var": "to_army"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "to_template_choosing"
-          }
+        "triggerEnable": {
+          "target": "to_template_choosing"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "armiya sovpala"
@@ -374,42 +334,36 @@
             "time": 5.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "to_randomizer",
               "value": 1,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "to_force_template_idx",
               "value": 0,
               "comparasion_func": "equal"
             }
-          },
-          {
-            "varCompareBool": {
+          ],
+          "varCompareBool": [
+            {
               "var_value": "sbt_is_launch_alowed",
               "value": true,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
+            },
+            {
               "var_value": "sbt_is_template_active",
               "value": false,
               "comparasion_func": "equal"
             }
-          },
-          {
-            "triggerStatus": {
-              "status": "disabled",
-              "target": "to_template_07_sbt_end"
-            }
+          ],
+          "triggerStatus": {
+            "status": "disabled",
+            "target": "to_template_07_sbt_end"
           }
-        ],
+        },
         "actions": {
           "comment": {
             "value": "proveryaem vypalo li sobytie esli da - zapuskaem dal'nejshuyu proverku"
@@ -423,7 +377,7 @@
             "target": "to_template_07_sbt_choose"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "to_template_07_sbt_choose": {
         "is_enabled": false,
@@ -438,59 +392,45 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "to_cur_launched_templates"
-            }
+        "conditions": {},
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "to_cur_launched_templates"
           },
-          {
-            "comment": {
+          "comment": [
+            {
               "value": "stavim flag, chto shablon zapustilsya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zadaem sluchajnoe vremya starta"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskaem sobytie"
             }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "sbt_is_template_active"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "sbt_is_template_active"
-            }
+          "varSetRandomInt": {
+            "var": "sbt_delay_timer",
+            "from": 10,
+            "to_not_including": 30
           },
-          {
-            "varSetRandomInt": {
-              "var": "sbt_delay_timer",
-              "from": 10,
-              "to_not_including": 30
-            }
-          },
-          {
-            "triggerEnable": {
+          "triggerEnable": [
+            {
               "target": "sbt_start"
-            }
-          },
-          {
-            "triggerEnable": {
+            },
+            {
               "target": "to_template_07_sbt_run"
             }
-          },
-          {
-            "wait": {
-              "time": 10.0
-            }
+          ],
+          "wait": {
+            "time": 10.0
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "sobytie uzhe zapushcheno - avtomatom sgeneritsya novoe"
@@ -510,7 +450,7 @@
             "time": 1.0
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "comment": {
             "value": "zapuskaem starter shablona, govorim, chto shablon zapushchen"
@@ -519,7 +459,7 @@
             "target": "to_template_07_sbt_end"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "to_template_07_sbt_end": {
         "is_enabled": false,
@@ -548,7 +488,7 @@
             "var": "to_cur_launched_templates"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     }
   },
@@ -575,32 +515,26 @@
     "to_last_randomizer": 0,
     "to_delay_timer": 240
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

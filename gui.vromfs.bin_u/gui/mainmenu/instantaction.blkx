@@ -1,30 +1,16 @@
 {
-  "root": [
-    {
-      "tdiv": [
-        {
-          "id": "promo_mainmenu_place"
-        },
-        {
-          "pos": "sw - w - 1@bw, 1@titleLogoPlateHeight + 1@bh + 0.02@sf"
-        },
-        {
-          "position": "relative"
-        },
-        {
-          "padding-right": "1@blockInterval"
-        },
-        {
-          "height": "fh - 1@wndWithSlotbarBottomOffset"
-        },
-        {
-          "width": "1@maxPromoButtonWidth"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "tdiv": {
+  "root": {
+    "tdiv": [
+      {
+        "id": "promo_mainmenu_place",
+        "pos": "sw - w - 1@bw, 1@titleLogoPlateHeight + 1@bh + 0.02@sf",
+        "position": "relative",
+        "padding-right": "1@blockInterval",
+        "height": "fh - 1@wndWithSlotbarBottomOffset",
+        "width": "1@maxPromoButtonWidth",
+        "flow": "vertical",
+        "tdiv": [
+          {
             "id": "promo_mainmenu_place_top",
             "position": "relative",
             "pos": "pw-w, 0",
@@ -35,66 +21,52 @@
             "overflow-y": "auto",
             "behavior": "PosOptionsNavigator",
             "navigatorShortcuts": "yes"
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "promo_mainmenu_place_bottom",
             "position": "relative",
             "pos": "pw-w, 0.01@scrn_tgt",
             "flow": "vertical"
           }
-        }
-      ]
-    },
-    {
-      "tdiv": [
-        {
-          "pos": "0.5sw-0.5w, 2@topBarHeight + 0.018@sf - @bh"
-        },
-        {
-          "position": "absolute"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "advertDiv": {
-            "id": "topmenu_advert",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "width": "0.55sw",
-            "padding": "10, 5, 10, 10",
-            "display": "hide",
-            "css-hier-invalidate": "yes",
-            "behavior": "Timer",
-            "textAreaCentered": {
-              "id": "topmenu_advert_text",
-              "pos": "50%pw-50%w, 50%ph-50%h",
-              "position": "relative",
-              "width": "0.45sw",
-              "input-transparent": "yes",
-              "text": "",
-              "textHide": "yes",
-              "on_link_click": "onAdvertLinkClick",
-              "bqKey": "mainmenu_block_advert"
-            }
-          }
-        },
-        {
+        ]
+      },
+      {
+        "pos": "0.5sw-0.5w, 2@topBarHeight + 0.018@sf - @bh",
+        "position": "absolute",
+        "flow": "vertical",
+        "advertDiv": {
+          "id": "topmenu_advert",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "width": "0.55sw",
+          "padding": "10, 5, 10, 10",
+          "display": "hide",
+          "css-hier-invalidate": "yes",
+          "behavior": "Timer",
           "textAreaCentered": {
-            "id": "update_avail",
-            "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
-            "pos": "0.5pw-0.5w, 0",
+            "id": "topmenu_advert_text",
+            "pos": "50%pw-50%w, 50%ph-50%h",
             "position": "relative",
-            "text": "#mainmenu/update_avail_popup_title",
-            "tooltip": "#mainmenu/update_avail_popup_text",
+            "width": "0.45sw",
             "input-transparent": "yes",
-            "display": "hide"
+            "text": "",
+            "textHide": "yes",
+            "on_link_click": "onAdvertLinkClick",
+            "bqKey": "mainmenu_block_advert"
           }
         },
-        {
-          "Button_text": {
+        "textAreaCentered": {
+          "id": "update_avail",
+          "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
+          "pos": "0.5pw-0.5w, 0",
+          "position": "relative",
+          "text": "#mainmenu/update_avail_popup_title",
+          "tooltip": "#mainmenu/update_avail_popup_text",
+          "input-transparent": "yes",
+          "display": "hide"
+        },
+        "Button_text": [
+          {
             "id": "btn_main_menu_showRequests",
             "position": "relative",
             "pos": "0.5pw-0.5w, 0",
@@ -102,11 +74,9 @@
             "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
             "display": "hide",
             "on_click": "on_show_clan_requests",
-            "focus_border": []
-          }
-        },
-        {
-          "Button_text": {
+            "focus_border": {}
+          },
+          {
             "id": "game_mode_notice",
             "position": "relative",
             "pos": "0.5pw-0.5w, 0",
@@ -115,77 +85,67 @@
             "display": "hide",
             "btnName": "R3",
             "on_click": "onGMNoticeClick",
-            "focus_border": [],
-            "ButtonImg": []
+            "focus_border": {},
+            "ButtonImg": {}
           }
-        }
-      ]
-    },
-    {
-      "tdiv": [
-        {
-          "pos": "50%pw-50%w, @battleBtnBottomOffset-1.5@battleButtonHeight-h"
-        },
-        {
-          "position": "absolute"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "animWaitMsg": {
-            "behavior": "bhvUpdater",
-            "pos": "50%pw-50%w, 0",
+        ]
+      },
+      {
+        "pos": "50%pw-50%w, @battleBtnBottomOffset-1.5@battleButtonHeight-h",
+        "position": "absolute",
+        "flow": "vertical",
+        "animWaitMsg": {
+          "behavior": "bhvUpdater",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "value": "{\"viewId\": \"DL_DATA_WAIT_MSG\"}",
+          "css-hier-invalidate": "yes",
+          "fade": "out",
+          "tdiv": {
+            "flow": "vertical",
+            "pos": "0,50%ph-50%h",
             "position": "relative",
-            "value": "{\"viewId\": \"DL_DATA_WAIT_MSG\"}",
             "css-hier-invalidate": "yes",
-            "fade": "out",
-            "tdiv": {
-              "flow": "vertical",
-              "pos": "0,50%ph-50%h",
+            "animText": {
+              "id": "msgText",
+              "pos": "50%pw-50%w, 0",
               "position": "relative",
-              "css-hier-invalidate": "yes",
-              "animText": {
-                "id": "msgText",
-                "pos": "50%pw-50%w, 0",
+              "font": "@fontNormal",
+              "textShade": "yes",
+              "overlayTextColor": "active",
+              "text": "#loading/skin",
+              "color-factor": "0",
+              "fade": "out"
+            },
+            "tdiv": {
+              "pos": "50%pw-50%w, 0",
+              "position": "relative",
+              "dlDataStat": {
+                "behavior": "bhvUpdater",
+                "pos": "50%pw-50%w,0",
                 "position": "relative",
-                "font": "@fontNormal",
-                "textShade": "yes",
-                "overlayTextColor": "active",
-                "text": "#loading/skin",
-                "color-factor": "0",
-                "fade": "out"
-              },
-              "tdiv": {
-                "pos": "50%pw-50%w, 0",
-                "position": "relative",
-                "dlDataStat": {
-                  "behavior": "bhvUpdater",
-                  "pos": "50%pw-50%w,0",
-                  "position": "relative",
-                  "value": "{\"viewId\": \"DL_DATA_STATE_TEXT\"}",
-                  "css-hier-invalidate": "yes",
-                  "animText": {
-                    "text": "",
-                    "font": "@fontTiny",
-                    "color-factor": "0",
-                    "fade": "out"
-                  }
+                "value": "{\"viewId\": \"DL_DATA_STATE_TEXT\"}",
+                "css-hier-invalidate": "yes",
+                "animText": {
+                  "text": "",
+                  "font": "@fontTiny",
+                  "color-factor": "0",
+                  "fade": "out"
                 }
               }
-            },
-            "animated_wait_icon": {
-              "pos": "0,50%ph-50%h",
-              "position": "relative",
-              "background-rotation": "0",
-              "color-factor": "0",
-              "fade": "out",
-              "_transp-timer": "0"
             }
+          },
+          "animated_wait_icon": {
+            "pos": "0,50%ph-50%h",
+            "position": "relative",
+            "background-rotation": "0",
+            "color-factor": "0",
+            "fade": "out",
+            "_transp-timer": "0"
           }
         },
-        {
-          "tdiv": {
+        "tdiv": [
+          {
             "id": "low-quality-model-warning",
             "pos": "pw/2-w/2, -h",
             "position": "relative",
@@ -209,12 +169,10 @@
               "tfont": "small",
               "talign": "left",
               "_on_click": "onLoadModels",
-              "underline": []
+              "underline": {}
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "unit_has_no_armoring",
             "pos": "50%pw-50%w,0",
             "position": "relative",
@@ -226,43 +184,25 @@
               "pos": "50%pw-50%w,0",
               "input-transparent": "yes"
             }
-          }
-        },
-        {
-          "tdiv": [
-            {
-              "id": "crew-notready-topmenu"
-            },
-            {
-              "pos": "50%pw-50%w,0"
-            },
-            {
-              "position": "relative"
-            },
-            {
-              "behavior": "Timer"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "tooltip": ""
-            },
-            {
-              "display": "hide"
-            },
-            {
-              "activeText": {
+          },
+          {
+            "id": "crew-notready-topmenu",
+            "pos": "50%pw-50%w,0",
+            "position": "relative",
+            "behavior": "Timer",
+            "flow": "vertical",
+            "tooltip": "",
+            "display": "hide",
+            "activeText": [
+              {
                 "titleFont": "yes",
                 "overlayTextColor": "bad",
                 "text": "#mainmenu/crewLockLeft",
                 "pos": "50%pw-50%w,0",
                 "position": "relative",
                 "input-transparent": "yes"
-              }
-            },
-            {
-              "activeText": {
+              },
+              {
                 "id": "time",
                 "titleFont": "yes",
                 "text": "adfa sdf af",
@@ -271,54 +211,42 @@
                 "position": "relative",
                 "input-transparent": "yes"
               }
-            },
-            {
-              "tdiv": [
+            ],
+            "tdiv": {
+              "id": "crew_unlock_buttons",
+              "position": "relative",
+              "pos": "50%pw-50%w, 0",
+              "Button_text": [
                 {
-                  "id": "crew_unlock_buttons"
-                },
-                {
-                  "position": "relative"
-                },
-                {
-                  "pos": "50%pw-50%w, 0"
-                },
-                {
-                  "Button_text": {
-                    "id": "btn_unlock_crew",
-                    "on_click": "onUnlockCrew",
-                    "hideText": "yes",
-                    "css-hier-invalidate": "yes",
-                    "visualStyle": "purchase",
-                    "buttonWink": [],
-                    "buttonGlance": [],
-                    "textarea": {
-                      "id": "btn_unlock_crew_text",
-                      "class": "buttonText"
-                    }
+                  "id": "btn_unlock_crew",
+                  "on_click": "onUnlockCrew",
+                  "hideText": "yes",
+                  "css-hier-invalidate": "yes",
+                  "visualStyle": "purchase",
+                  "buttonWink": {},
+                  "buttonGlance": {},
+                  "textarea": {
+                    "id": "btn_unlock_crew_text",
+                    "class": "buttonText"
                   }
                 },
                 {
-                  "Button_text": {
-                    "id": "btn_unlock_crew_gold",
-                    "on_click": "onUnlockCrew",
-                    "hideText": "yes",
-                    "css-hier-invalidate": "yes",
-                    "visualStyle": "purchase",
-                    "buttonWink": [],
-                    "buttonGlance": [],
-                    "textarea": {
-                      "id": "btn_unlock_crew_gold_text",
-                      "class": "buttonText"
-                    }
+                  "id": "btn_unlock_crew_gold",
+                  "on_click": "onUnlockCrew",
+                  "hideText": "yes",
+                  "css-hier-invalidate": "yes",
+                  "visualStyle": "purchase",
+                  "buttonWink": {},
+                  "buttonGlance": {},
+                  "textarea": {
+                    "id": "btn_unlock_crew_gold_text",
+                    "class": "buttonText"
                   }
                 }
               ]
             }
-          ]
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "rented_unit_info",
             "activeText": {
               "id": "rented_unit_info_text",
@@ -331,10 +259,8 @@
               "text": "",
               "input-transparent": "yes"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "id": "suggested_skin",
             "flow": "vertical",
             "pos": "50%(pw-w), 0",
@@ -362,29 +288,25 @@
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "timer": {
+        ]
+      }
+    ],
+    "timer": [
+      {
         "id": "promo_blocks_timer_slow",
         "timer_handler_func": "onPromoBlocksUpdate",
         "timer_interval_msec": "5000"
-      }
-    },
-    {
-      "timer": {
+      },
+      {
         "id": "promo_blocks_timer_fast",
         "timer_handler_func": "onPromoBlocksTimer",
         "timer_interval_msec": "1000"
       }
-    },
-    {
-      "airInfoBlock": {
-        "id": "slot_info"
-      }
+    ],
+    "airInfoBlock": {
+      "id": "slot_info"
     }
-  ],
+  },
   "smallHint": {
     "id": "background_model_hint",
     "behavior": "Timer",

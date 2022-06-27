@@ -94,20 +94,16 @@
       "superiorityBattlesThreshold": 20
     }
   },
-  "eventLeaderboardPlatforms": [
-    {
-      "ps4": 7
-    },
-    {
-      "ps4": 15
-    },
-    {
-      "xboxone": 11
-    },
-    {
-      "xboxone": 12
-    }
-  ],
+  "eventLeaderboardPlatforms": {
+    "ps4": [
+      7,
+      15
+    ],
+    "xboxone": [
+      11,
+      12
+    ]
+  },
   "tribunal": {
     "minComplaintCount": 10,
     "maxComplaintCount": 10,
@@ -209,57 +205,49 @@
     "7": "ship_event_historical",
     "8": "ship_event_simulator"
   },
-  "newPlayersBattles": [
-    {
-      "aircraft": {
+  "newPlayersBattles": {
+    "aircraft": [
+      {
         "event": "aircraft_new_players_battle_single",
         "kills": 1,
         "timePlayed": 150
-      }
-    },
-    {
-      "aircraft": {
+      },
+      {
         "event": "aircraft_new_players_battle_coop",
         "kills": 3,
         "timePlayed": 450
       }
-    },
-    {
-      "tank": {
+    ],
+    "tank": [
+      {
         "event": "tank_new_players_battle_single",
         "kills": 1,
         "timePlayed": 150
-      }
-    },
-    {
-      "tank": {
+      },
+      {
         "event": "tank_new_players_battle_coop",
         "kills": 3,
         "timePlayed": 450
       }
-    },
-    {
-      "ship": {
+    ],
+    "ship": [
+      {
         "event": "ship_new_players_battle_single",
         "kills": 1,
         "timePlayed": 150
-      }
-    },
-    {
-      "ship": {
+      },
+      {
         "event": "ship_new_players_battle_coop",
         "kills": 3,
         "timePlayed": 450
       }
-    },
-    {
-      "additionalUnitTypes": {
-        "ship": {
-          "type": "boat"
-        }
+    ],
+    "additionalUnitTypes": {
+      "ship": {
+        "type": "boat"
       }
     }
-  ],
+  },
   "newPlayersBattlesExp": {
     "battle_mod": 2,
     "battle_unit": 3,
@@ -388,304 +376,224 @@
           "ussr_bt_5": {
             "name": "mainmenu/type_light_medium_tank",
             "defaultUnit": "ussr_bt_5",
-            "unitList": [
-              {
-                "unit": "ussr_bt_5"
-              },
-              {
-                "unit": "ussr_bt_7_1937"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_bt_5",
+                "ussr_bt_7_1937"
+              ]
+            }
           },
           "ussr_t_34_1941": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "ussr_t_34_1941_l_11",
-            "unitList": [
-              {
-                "unit": "ussr_t_34_1941_l_11"
-              },
-              {
-                "unit": "ussr_t_34_1941"
-              },
-              {
-                "unit": "ussr_t_34_1941_cast_turret"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_t_34_1941_l_11",
+                "ussr_t_34_1941",
+                "ussr_t_34_1941_cast_turret"
+              ]
+            }
           },
           "ussr_kv_1_L_11": {
             "name": "worldwar/group/breakthrough_tank",
             "defaultUnit": "ussr_t_28",
-            "unitList": [
-              {
-                "unit": "ussr_t_28"
-              },
-              {
-                "unit": "ussr_t_28E"
-              },
-              {
-                "unit": "ussr_kv_1_L_11"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_t_28",
+                "ussr_t_28E",
+                "ussr_kv_1_L_11"
+              ]
+            }
           },
           "ussr_gaz_mm_72k": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "ussr_gaz_4m",
-            "unitList": [
-              {
-                "unit": "ussr_gaz_4m"
-              },
-              {
-                "unit": "ussr_gaz_dshk"
-              },
-              {
-                "unit": "ussr_gaz_mm_72k"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_gaz_4m",
+                "ussr_gaz_dshk",
+                "ussr_gaz_mm_72k"
+              ]
+            }
           },
           "ussr_g5_mtb": {
             "name": "mainmenu/type_torpedo_boat",
             "defaultUnit": "ussr_g5_mtb",
-            "unitList": [
-              {
-                "unit": "ussr_g5_mtb"
-              },
-              {
-                "unit": "ussr_d3"
-              },
-              {
-                "unit": "ussr_pr_123bis"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_g5_mtb",
+                "ussr_d3",
+                "ussr_pr_123bis"
+              ]
+            }
           },
           "ussr_destroyer_pr20_tashkent": {
             "name": "mainmenu/type_destroyer",
             "defaultUnit": "ussr_destroyer_frunze",
-            "unitList": [
-              {
-                "unit": "ussr_destroyer_frunze"
-              },
-              {
-                "unit": "ussr_destroyer_pr20_tashkent"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_destroyer_frunze",
+                "ussr_destroyer_pr20_tashkent"
+              ]
+            }
           },
           "ussr_cruiser_krasnyi_krim": {
             "name": "mainmenu/type_cruiser",
             "defaultUnit": "ussr_cruiser_krasnyi_kavkaz",
-            "unitList": [
-              {
-                "unit": "ussr_cruiser_krasnyi_kavkaz"
-              },
-              {
-                "unit": "ussr_cruiser_krasnyi_krim"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_cruiser_krasnyi_kavkaz",
+                "ussr_cruiser_krasnyi_krim"
+              ]
+            }
           },
           "la-5fn": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "la-5_type37_early",
-            "unitList": [
-              {
-                "unit": "la-5_type37_early"
-              },
-              {
-                "unit": "la-5_type39"
-              },
-              {
-                "unit": "la-5fn"
-              },
-              {
-                "unit": "yak-9t"
-              },
-              {
-                "unit": "yak-9k"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "la-5_type37_early",
+                "la-5_type39",
+                "la-5fn",
+                "yak-9t",
+                "yak-9k"
+              ]
+            }
           },
           "il-2m": {
             "name": "mainmenu/type_common_assault",
             "defaultUnit": "il_2_1941",
-            "unitList": [
-              {
-                "unit": "il_2_1941"
-              },
-              {
-                "unit": "il-2i"
-              },
-              {
-                "unit": "il-2m"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "il_2_1941",
+                "il-2i",
+                "il-2m"
+              ]
+            }
           },
           "mi_4av": {
             "name": "mainmenu/type_helicopter",
             "defaultUnit": "mi_4av",
-            "unitList": [
-              {
-                "unit": "mi_4av"
-              },
-              {
-                "unit": "mi_24a"
-              },
-              {
-                "unit": "mi_24v"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "mi_4av",
+                "mi_24a",
+                "mi_24v"
+              ]
+            }
           }
         },
         "country_germany": {
           "germ_pzkpfw_35t": {
             "name": "mainmenu/type_light_medium_tank",
             "defaultUnit": "germ_pzkpfw_35t",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_35t"
-              },
-              {
-                "unit": "germ_pzkpfw_38t_ausf_A"
-              },
-              {
-                "unit": "germ_pzkpfw_38t_ausf_F"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_35t",
+                "germ_pzkpfw_38t_ausf_A",
+                "germ_pzkpfw_38t_ausf_F"
+              ]
+            }
           },
           "germ_pzkpfw_III_ausf_M": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "germ_pzkpfw_III_ausf_F",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_III_ausf_F"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_J"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_L"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_M"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_III_ausf_F",
+                "germ_pzkpfw_III_ausf_J",
+                "germ_pzkpfw_III_ausf_L",
+                "germ_pzkpfw_III_ausf_M"
+              ]
+            }
           },
           "germ_pzkpfw_VI_ausf_h1_tiger": {
             "name": "mainmenu/type_heavy_tank",
             "defaultUnit": "germ_pzkpfw_VI_ausf_h1_tiger",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_VI_ausf_h1_tiger"
-              },
-              {
-                "unit": "germ_pzkpfw_VI_ausf_e_tiger"
-              },
-              {
-                "unit": "germ_panzerbefelhswagen_VI_P"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_VI_ausf_h1_tiger",
+                "germ_pzkpfw_VI_ausf_e_tiger",
+                "germ_panzerbefelhswagen_VI_P"
+              ]
+            }
           },
           "germ_sdkfz_6_2_flak36": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "germ_flakpanzer_I_ausf_A",
-            "unitList": [
-              {
-                "unit": "germ_flakpanzer_I_ausf_A"
-              },
-              {
-                "unit": "germ_flakpanzer_38t_Gepard"
-              },
-              {
-                "unit": "germ_sdkfz_6_2_flak36"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_flakpanzer_I_ausf_A",
+                "germ_flakpanzer_38t_Gepard",
+                "germ_sdkfz_6_2_flak36"
+              ]
+            }
           },
           "germ_ls_class": {
             "name": "mainmenu/type_torpedo_boat",
             "defaultUnit": "germ_ls_class",
-            "unitList": [
-              {
-                "unit": "germ_ls_class"
-              },
-              {
-                "unit": "germ_s38"
-              },
-              {
-                "unit": "germ_s38b"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_ls_class",
+                "germ_s38",
+                "germ_s38b"
+              ]
+            }
           },
           "germ_destroyer_class1936a_mob_z32": {
             "name": "mainmenu/type_destroyer",
             "defaultUnit": "germ_destroyer_class1924_leopard1932",
-            "unitList": [
-              {
-                "unit": "germ_destroyer_class1924_leopard1932"
-              },
-              {
-                "unit": "germ_destroyer_class1936a_mob_z32"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_destroyer_class1924_leopard1932",
+                "germ_destroyer_class1936a_mob_z32"
+              ]
+            }
           },
           "germ_cruiser_koln": {
             "name": "mainmenu/type_cruiser",
             "defaultUnit": "germ_cruiser_emden_1944",
-            "unitList": [
-              {
-                "unit": "germ_cruiser_emden_1944"
-              },
-              {
-                "unit": "germ_cruiser_koln"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_cruiser_emden_1944",
+                "germ_cruiser_koln"
+              ]
+            }
           },
           "fw-190a-4": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "fw-190a-1",
-            "unitList": [
-              {
-                "unit": "fw-190a-1"
-              },
-              {
-                "unit": "fw-190a-4"
-              },
-              {
-                "unit": "fw-190a-5_cannons"
-              },
-              {
-                "unit": "bf-109f-2"
-              },
-              {
-                "unit": "bf-109g-2"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "fw-190a-1",
+                "fw-190a-4",
+                "fw-190a-5_cannons",
+                "bf-109f-2",
+                "bf-109g-2"
+              ]
+            }
           },
           "ju-87d-5": {
             "name": "mainmenu/type_common_bomber",
             "defaultUnit": "ju-87r-2",
-            "unitList": [
-              {
-                "unit": "ju-87r-2"
-              },
-              {
-                "unit": "ju-87d-3"
-              },
-              {
-                "unit": "ju-87d-5"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ju-87r-2",
+                "ju-87d-3",
+                "ju-87d-5"
+              ]
+            }
           },
           "sa_313b": {
             "name": "mainmenu/type_helicopter",
             "defaultUnit": "sa_313b",
-            "unitList": [
-              {
-                "unit": "sa_313b"
-              },
-              {
-                "unit": "uh_1d"
-              },
-              {
-                "unit": "bo_105pah1"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "sa_313b",
+                "uh_1d",
+                "bo_105pah1"
+              ]
+            }
           }
         }
       },
@@ -694,313 +602,215 @@
           "uk_sherman_II": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "uk_sherman_II",
-            "unitList": [
-              {
-                "unit": "uk_sherman_II"
-              },
-              {
-                "unit": "uk_sherman_vc_firefly"
-              },
-              {
-                "unit": "uk_sherman_ic_firefly"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "uk_sherman_II",
+                "uk_sherman_vc_firefly",
+                "uk_sherman_ic_firefly"
+              ]
+            }
           },
           "uk_valentine_mk_11": {
             "name": "worldwar/group/infantry_tank",
             "defaultUnit": "uk_valentine_mk_9",
-            "unitList": [
-              {
-                "unit": "uk_valentine_mk_9"
-              },
-              {
-                "unit": "uk_a_22b_mk_3_churchill_1942"
-              },
-              {
-                "unit": "uk_a_22f_mk_7_churchill_1944"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "uk_valentine_mk_9",
+                "uk_a_22b_mk_3_churchill_1942",
+                "uk_a_22f_mk_7_churchill_1944"
+              ]
+            }
           },
           "uk_a27m_cromwell_5": {
             "name": "worldwar/group/cruiser_tank",
             "defaultUnit": "uk_a27m_cromwell_5",
-            "unitList": [
-              {
-                "unit": "uk_a27m_cromwell_5"
-              },
-              {
-                "unit": "uk_a27m_cromwell_1"
-              },
-              {
-                "unit": "uk_a27m_cromwell_5_rp3"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "uk_a27m_cromwell_5",
+                "uk_a27m_cromwell_1",
+                "uk_a27m_cromwell_5_rp3"
+              ]
+            }
           },
           "uk_17_pdr_m10_achilles": {
             "name": "mainmenu/type_tank_destroyer",
             "defaultUnit": "uk_17_pdr_m10_achilles",
-            "unitList": [
-              {
-                "unit": "uk_17_pdr_m10_achilles"
-              },
-              {
-                "unit": "uk_a30_challenger"
-              },
-              {
-                "unit": "uk_17_pdr_m10_achilles_norfolk_yeomanry"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "uk_17_pdr_m10_achilles",
+                "uk_a30_challenger",
+                "uk_17_pdr_m10_achilles_norfolk_yeomanry"
+              ]
+            }
           },
           "uk_crusader_aa_mk_2": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "uk_crusader_aa_mk_2",
-            "unitList": [
-              {
-                "unit": "uk_crusader_aa_mk_2"
-              },
-              {
-                "unit": "uk_crusader_aa_mk_1"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "uk_crusader_aa_mk_2",
+                "uk_crusader_aa_mk_1"
+              ]
+            }
           },
           "spitfire_ix_early": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "spitfire_ix_early",
-            "unitList": [
-              {
-                "unit": "spitfire_ix_early"
-              },
-              {
-                "unit": "spitfire_mk5c_notrop"
-              },
-              {
-                "unit": "spitfire_xvi"
-              },
-              {
-                "unit": "spitfire_ix"
-              },
-              {
-                "unit": "spitfire_mk14e"
-              },
-              {
-                "unit": "spitfire_mk9c_4cannons"
-              },
-              {
-                "unit": "spitfire_ix_plagis"
-              },
-              {
-                "unit": "spitfire_mk14c"
-              },
-              {
-                "unit": "spitfire_fr_mk14e"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "spitfire_ix_early",
+                "spitfire_mk5c_notrop",
+                "spitfire_xvi",
+                "spitfire_ix",
+                "spitfire_mk14e",
+                "spitfire_mk9c_4cannons",
+                "spitfire_ix_plagis",
+                "spitfire_mk14c",
+                "spitfire_fr_mk14e"
+              ]
+            }
           },
           "typhoon_mk1b_late": {
             "name": "mainmenu/type_strike_fighter",
             "defaultUnit": "typhoon_mk1b_late",
-            "unitList": [
-              {
-                "unit": "typhoon_mk1b_late"
-              },
-              {
-                "unit": "typhoon_mk1b"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "typhoon_mk1b_late",
+                "typhoon_mk1b"
+              ]
+            }
           },
           "mosquito_fb_mk6": {
             "name": "mainmenu/type_heavy_fighter",
             "defaultUnit": "beaufighter_mkx",
-            "unitList": [
-              {
-                "unit": "beaufighter_mkx"
-              },
-              {
-                "unit": "whirlwind_mk1"
-              },
-              {
-                "unit": "mosquito_fb_mk6"
-              },
-              {
-                "unit": "mosquito_fb_mk18"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "beaufighter_mkx",
+                "whirlwind_mk1",
+                "mosquito_fb_mk6",
+                "mosquito_fb_mk18"
+              ]
+            }
           }
         },
         "country_germany": {
           "germ_pzkpfw_IV_ausf_H": {
             "name": "worldwar/group/germ_pzkpfw_IV",
             "defaultUnit": "germ_pzkpfw_IV_ausf_F2",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_IV_ausf_F2"
-              },
-              {
-                "unit": "germ_pzkpfw_IV_ausf_G"
-              },
-              {
-                "unit": "germ_pzkpfw_IV_ausf_H"
-              },
-              {
-                "unit": "germ_pzkpfw_IV_ausf_J"
-              },
-              {
-                "unit": "germ_panzerbefelhswagen_IV_ausf_J"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_IV_ausf_F2",
+                "germ_pzkpfw_IV_ausf_G",
+                "germ_pzkpfw_IV_ausf_H",
+                "germ_pzkpfw_IV_ausf_J",
+                "germ_panzerbefelhswagen_IV_ausf_J"
+              ]
+            }
           },
           "germ_pzkpfw_V_ausf_g_panther": {
             "name": "worldwar/group/germ_pzkpfw_V_panther",
             "defaultUnit": "germ_pzkpfw_V_ausf_d_panther",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_V_ausf_d_panther"
-              },
-              {
-                "unit": "germ_pzkpfw_V_ausf_a_panther"
-              },
-              {
-                "unit": "germ_pzkpfw_V_ausf_g_panther"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_V_ausf_d_panther",
+                "germ_pzkpfw_V_ausf_a_panther",
+                "germ_pzkpfw_V_ausf_g_panther"
+              ]
+            }
           },
           "germ_pzkpfw_VI_ausf_h1_tiger": {
             "name": "worldwar/group/germ_pzkpfw_VI_tiger",
             "defaultUnit": "germ_pzkpfw_VI_ausf_h1_tiger",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_VI_ausf_h1_tiger"
-              },
-              {
-                "unit": "germ_pzkpfw_VI_ausf_e_tiger"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_VI_ausf_h1_tiger",
+                "germ_pzkpfw_VI_ausf_e_tiger"
+              ]
+            }
           },
           "germ_sdkfz_9_flak37": {
             "name": "worldwar/group/light_tank_destroyer",
             "defaultUnit": "germ_pzkpfw_38t_Marder_III",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_38t_Marder_III"
-              },
-              {
-                "unit": "germ_pzkpfw_38t_Marder_III_ausf_H"
-              },
-              {
-                "unit": "germ_sdkfz_9_flak37"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_38t_Marder_III",
+                "germ_pzkpfw_38t_Marder_III_ausf_H",
+                "germ_sdkfz_9_flak37"
+              ]
+            }
           },
           "germ_stug_III_ausf_G": {
             "name": "worldwar/group/medium_tank_destroyer",
             "defaultUnit": "germ_stug_III_ausf_G",
-            "unitList": [
-              {
-                "unit": "germ_stug_III_ausf_G"
-              },
-              {
-                "unit": "germ_jgdpz_38t"
-              },
-              {
-                "unit": "germ_jgdpz_IV_L48"
-              },
-              {
-                "unit": "germ_pz_IV_L70"
-              },
-              {
-                "unit": "germ_pz_IV_L70_A"
-              },
-              {
-                "unit": "germ_sturmpanzer_IV_brummbar"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_stug_III_ausf_G",
+                "germ_jgdpz_38t",
+                "germ_jgdpz_IV_L48",
+                "germ_pz_IV_L70",
+                "germ_pz_IV_L70_A",
+                "germ_sturmpanzer_IV_brummbar"
+              ]
+            }
           },
           "germ_panzerjager_panther": {
             "name": "worldwar/group/heavy_tank_destroyer",
             "defaultUnit": "germ_panzerjager_panther",
-            "unitList": [
-              {
-                "unit": "germ_panzerjager_panther"
-              },
-              {
-                "unit": "germ_panzerbefelhswagen_jagdpanther"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_panzerjager_panther",
+                "germ_panzerbefelhswagen_jagdpanther"
+              ]
+            }
           },
           "germ_sdkfz_6_2_flak36": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "germ_flakpanzer_38t_Gepard",
-            "unitList": [
-              {
-                "unit": "germ_flakpanzer_38t_Gepard"
-              },
-              {
-                "unit": "germ_sdkfz_6_2_flak36"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_flakpanzer_38t_Gepard",
+                "germ_sdkfz_6_2_flak36"
+              ]
+            }
           },
           "fw-190a-8": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "fw-190a-5_cannons",
-            "unitList": [
-              {
-                "unit": "fw-190a-5_cannons"
-              },
-              {
-                "unit": "fw-190a-5"
-              },
-              {
-                "unit": "fw-190a-8"
-              },
-              {
-                "unit": "bf-109g-6"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "fw-190a-5_cannons",
+                "fw-190a-5",
+                "fw-190a-8",
+                "bf-109g-6"
+              ]
+            }
           },
           "fw-190f-8": {
             "name": "mainmenu/type_strike_fighter",
             "defaultUnit": "fw-190a-5_u2",
-            "unitList": [
-              {
-                "unit": "fw-190a-5_u2"
-              },
-              {
-                "unit": "fw-190f-8"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "fw-190a-5_u2",
+                "fw-190f-8"
+              ]
+            }
           },
           "me-410a-1": {
             "name": "mainmenu/type_heavy_fighter",
             "defaultUnit": "me-410a-1",
-            "unitList": [
-              {
-                "unit": "me-410a-1"
-              },
-              {
-                "unit": "me-410a-1_u2"
-              },
-              {
-                "unit": "me-410b-1"
-              },
-              {
-                "unit": "me-410b-1_u2"
-              },
-              {
-                "unit": "me-410b-6_r3"
-              },
-              {
-                "unit": "me-410b-2_u4"
-              },
-              {
-                "unit": "me-410a-1_u4"
-              },
-              {
-                "unit": "he_219a_7"
-              },
-              {
-                "unit": "ta_154a_1"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "me-410a-1",
+                "me-410a-1_u2",
+                "me-410b-1",
+                "me-410b-1_u2",
+                "me-410b-6_r3",
+                "me-410b-2_u4",
+                "me-410a-1_u4",
+                "he_219a_7",
+                "ta_154a_1"
+              ]
+            }
           }
         }
       },
@@ -1009,442 +819,270 @@
           "ussr_t_60_1941": {
             "name": "mainmenu/type_light_medium_tank",
             "defaultUnit": "ussr_t_60_1941",
-            "unitList": [
-              {
-                "unit": "ussr_t_60_1941"
-              },
-              {
-                "unit": "ussr_t_70_1942"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_t_60_1941",
+                "ussr_t_70_1942"
+              ]
+            }
           },
           "ussr_su_76m_1943": {
             "name": "mainmenu/type_tank_destroyer",
             "defaultUnit": "ussr_su_76m_1943",
-            "unitList": [
-              {
-                "unit": "ussr_su_76m_1943"
-              },
-              {
-                "unit": "ussr_su_122"
-              },
-              {
-                "unit": "ussr_su_76m_5st_kav_corps"
-              },
-              {
-                "unit": "ussr_m3c"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_su_76m_1943",
+                "ussr_su_122",
+                "ussr_su_76m_5st_kav_corps",
+                "ussr_m3c"
+              ]
+            }
           },
           "ussr_t_34_1941_l_11": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "ussr_t_34_1941_l_11",
-            "unitList": [
-              {
-                "unit": "ussr_t_34_1941_l_11"
-              },
-              {
-                "unit": "ussr_t_34_1941"
-              },
-              {
-                "unit": "ussr_t_34E_STZ"
-              },
-              {
-                "unit": "ussr_t_34_1942"
-              },
-              {
-                "unit": "ussr_t_34_1940_l_11"
-              },
-              {
-                "unit": "ussr_t_34E"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_t_34_1941_l_11",
+                "ussr_t_34_1941",
+                "ussr_t_34E_STZ",
+                "ussr_t_34_1942",
+                "ussr_t_34_1940_l_11",
+                "ussr_t_34E"
+              ]
+            }
           },
           "ussr_kv_1_L_11": {
             "name": "mainmenu/type_heavy_tank",
             "defaultUnit": "ussr_kv_1_L_11",
-            "unitList": [
-              {
-                "unit": "ussr_kv_1_L_11"
-              },
-              {
-                "unit": "ussr_kv_1s"
-              },
-              {
-                "unit": "ussr_kv_1_zis_5"
-              },
-              {
-                "unit": "ussr_kv_1e"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_kv_1_L_11",
+                "ussr_kv_1s",
+                "ussr_kv_1_zis_5",
+                "ussr_kv_1e"
+              ]
+            }
           },
           "ussr_gaz_4m": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "ussr_gaz_4m",
-            "unitList": [
-              {
-                "unit": "ussr_gaz_4m"
-              },
-              {
-                "unit": "ussr_gaz_dshk"
-              },
-              {
-                "unit": "ussr_gaz_mm_72k"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_gaz_4m",
+                "ussr_gaz_dshk",
+                "ussr_gaz_mm_72k"
+              ]
+            }
           },
           "ussr_g5_mtb": {
             "name": "mainmenu/type_torpedo_boat",
             "defaultUnit": "ussr_g5_mtb",
-            "unitList": [
-              {
-                "unit": "ussr_g5_mtb"
-              },
-              {
-                "unit": "ussr_d3"
-              },
-              {
-                "unit": "ussr_pr_123bis"
-              },
-              {
-                "unit": "ussr_g5_mtb_shvak"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_g5_mtb",
+                "ussr_d3",
+                "ussr_pr_123bis",
+                "ussr_g5_mtb_shvak"
+              ]
+            }
           },
           "ussr_mo_4": {
             "name": "mainmenu/type_gun_boat",
             "defaultUnit": "ussr_od_200",
-            "unitList": [
-              {
-                "unit": "ussr_od_200"
-              },
-              {
-                "unit": "ussr_mo_4"
-              },
-              {
-                "unit": "ussr_1124_art"
-              },
-              {
-                "unit": "ussr_1124_rct"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_od_200",
+                "ussr_mo_4",
+                "ussr_1124_art",
+                "ussr_1124_rct"
+              ]
+            }
           },
           "la-5_type37_early": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "la-5_type37_early",
-            "unitList": [
-              {
-                "unit": "la-5_type37_early"
-              },
-              {
-                "unit": "lagg-3-66"
-              },
-              {
-                "unit": "la-5_type39"
-              },
-              {
-                "unit": "la-5fn"
-              },
-              {
-                "unit": "yak-7b"
-              },
-              {
-                "unit": "yak-1b"
-              },
-              {
-                "unit": "yak-9"
-              },
-              {
-                "unit": "yak-9t"
-              },
-              {
-                "unit": "p-40e_ussr"
-              },
-              {
-                "unit": "p-39k_1"
-              },
-              {
-                "unit": "i-16_type28"
-              },
-              {
-                "unit": "i-153p"
-              },
-              {
-                "unit": "p-39n_su"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "la-5_type37_early",
+                "lagg-3-66",
+                "la-5_type39",
+                "la-5fn",
+                "yak-7b",
+                "yak-1b",
+                "yak-9",
+                "yak-9t",
+                "p-40e_ussr",
+                "p-39k_1",
+                "i-16_type28",
+                "i-153p",
+                "p-39n_su"
+              ]
+            }
           },
           "su-2_mv5": {
             "name": "mainmenu/type_common_assault",
             "defaultUnit": "su-2_mv5",
-            "unitList": [
-              {
-                "unit": "su-2_mv5"
-              },
-              {
-                "unit": "su-2_m82"
-              },
-              {
-                "unit": "il_2_1941"
-              },
-              {
-                "unit": "il-2i"
-              },
-              {
-                "unit": "il_2_37_1943"
-              },
-              {
-                "unit": "il_2m_1943"
-              },
-              {
-                "unit": "il-2m"
-              },
-              {
-                "unit": "il-2m_mstitel"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "su-2_mv5",
+                "su-2_m82",
+                "il_2_1941",
+                "il-2i",
+                "il_2_37_1943",
+                "il_2m_1943",
+                "il-2m",
+                "il-2m_mstitel"
+              ]
+            }
           },
           "sb_2m_100": {
             "name": "mainmenu/type_common_bomber",
             "defaultUnit": "sb_2m_100",
-            "unitList": [
-              {
-                "unit": "sb_2m_100"
-              },
-              {
-                "unit": "sb_2m_103c"
-              },
-              {
-                "unit": "sb_2m_103u_mv3"
-              },
-              {
-                "unit": "sb_2m_103u"
-              },
-              {
-                "unit": "sb_2m_103_mv3"
-              },
-              {
-                "unit": "pe-2-1"
-              },
-              {
-                "unit": "pe-2-31"
-              },
-              {
-                "unit": "pe-2-83"
-              },
-              {
-                "unit": "pe-2-110"
-              },
-              {
-                "unit": "mbr-2"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "sb_2m_100",
+                "sb_2m_103c",
+                "sb_2m_103u_mv3",
+                "sb_2m_103u",
+                "sb_2m_103_mv3",
+                "pe-2-1",
+                "pe-2-31",
+                "pe-2-83",
+                "pe-2-110",
+                "mbr-2"
+              ]
+            }
           }
         },
         "country_germany": {
           "germ_pzkpfw_35t": {
             "name": "mainmenu/type_light_medium_tank",
             "defaultUnit": "germ_pzkpfw_35t",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_35t"
-              },
-              {
-                "unit": "germ_pzkpfw_38t_ausf_A"
-              },
-              {
-                "unit": "germ_pzkpfw_38t_ausf_F"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_35t",
+                "germ_pzkpfw_38t_ausf_A",
+                "germ_pzkpfw_38t_ausf_F"
+              ]
+            }
           },
           "germ_stug_III_ausf_A": {
             "name": "mainmenu/type_tank_destroyer",
             "defaultUnit": "germ_stug_III_ausf_A",
-            "unitList": [
-              {
-                "unit": "germ_stug_III_ausf_A"
-              },
-              {
-                "unit": "germ_stug_III_ausf_F"
-              },
-              {
-                "unit": "germ_stuh_III_ausf_G"
-              },
-              {
-                "unit": "germ_stug_III_ausf_G"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_stug_III_ausf_A",
+                "germ_stug_III_ausf_F",
+                "germ_stuh_III_ausf_G",
+                "germ_stug_III_ausf_G"
+              ]
+            }
           },
           "germ_pzkpfw_III_ausf_F": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "germ_pzkpfw_III_ausf_F",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_III_ausf_F"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_J_L42"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_J"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_L"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_M"
-              },
-              {
-                "unit": "germ_pzkpfw_IV_ausf_E"
-              },
-              {
-                "unit": "germ_pzkpfw_IV_ausf_F"
-              },
-              {
-                "unit": "germ_pzkpfw_III_ausf_N"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_III_ausf_F",
+                "germ_pzkpfw_III_ausf_J_L42",
+                "germ_pzkpfw_III_ausf_J",
+                "germ_pzkpfw_III_ausf_L",
+                "germ_pzkpfw_III_ausf_M",
+                "germ_pzkpfw_IV_ausf_E",
+                "germ_pzkpfw_IV_ausf_F",
+                "germ_pzkpfw_III_ausf_N"
+              ]
+            }
           },
           "germ_flakpanzer_I_ausf_A": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "germ_flakpanzer_I_ausf_A",
-            "unitList": [
-              {
-                "unit": "germ_flakpanzer_I_ausf_A"
-              },
-              {
-                "unit": "germ_sdkfz_6_2_flak36"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_flakpanzer_I_ausf_A",
+                "germ_sdkfz_6_2_flak36"
+              ]
+            }
           },
           "germ_s38": {
             "name": "mainmenu/type_boat",
             "defaultUnit": "germ_ls_class",
-            "unitList": [
-              {
-                "unit": "germ_ls_class"
-              },
-              {
-                "unit": "germ_ls4_class"
-              },
-              {
-                "unit": "germ_s38"
-              },
-              {
-                "unit": "germ_s38b"
-              },
-              {
-                "unit": "germ_rboot_r41"
-              },
-              {
-                "unit": "germ_rboot_r130"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_ls_class",
+                "germ_ls4_class",
+                "germ_s38",
+                "germ_s38b",
+                "germ_rboot_r41",
+                "germ_rboot_r130"
+              ]
+            }
           },
           "germ_artilleriefahrprahm_typ_d1": {
             "name": "mainmenu/type_naval_ferry_barge",
             "defaultUnit": "germ_artilleriefahrprahm_typ_d1",
-            "unitList": [
-              {
-                "unit": "germ_artilleriefahrprahm_typ_d1"
-              },
-              {
-                "unit": "germ_artilleriefahrprahm_typ_d3"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_artilleriefahrprahm_typ_d1",
+                "germ_artilleriefahrprahm_typ_d3"
+              ]
+            }
           },
           "bf-109g-6": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "bf-109e-3",
-            "unitList": [
-              {
-                "unit": "bf-109e-3"
-              },
-              {
-                "unit": "bf-109e-4"
-              },
-              {
-                "unit": "bf-109e-7"
-              },
-              {
-                "unit": "bf-109f-1"
-              },
-              {
-                "unit": "bf-109f-2"
-              },
-              {
-                "unit": "bf-109f-4"
-              },
-              {
-                "unit": "bf-109g-2"
-              },
-              {
-                "unit": "bf-109g-2_romania"
-              },
-              {
-                "unit": "bf-109g-6"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "bf-109e-3",
+                "bf-109e-4",
+                "bf-109e-7",
+                "bf-109f-1",
+                "bf-109f-2",
+                "bf-109f-4",
+                "bf-109g-2",
+                "bf-109g-2_romania",
+                "bf-109g-6"
+              ]
+            }
           },
           "ju-88c-6": {
             "name": "mainmenu/type_strike_fighter",
             "defaultUnit": "ju-88c-6",
-            "unitList": [
-              {
-                "unit": "ju-88c-6"
-              },
-              {
-                "unit": "bf-110c-4"
-              },
-              {
-                "unit": "bf-110f-2"
-              },
-              {
-                "unit": "bf-110g-2"
-              },
-              {
-                "unit": "bf-110c-6"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ju-88c-6",
+                "bf-110c-4",
+                "bf-110f-2",
+                "bf-110g-2",
+                "bf-110c-6"
+              ]
+            }
           },
           "ju-87d-3": {
             "name": "mainmenu/type_dive_bomber",
             "defaultUnit": "ju-87b-2",
-            "unitList": [
-              {
-                "unit": "ju-87b-2"
-              },
-              {
-                "unit": "ju-87r-2"
-              },
-              {
-                "unit": "ju-87d-3"
-              },
-              {
-                "unit": "ju-87d-5"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ju-87b-2",
+                "ju-87r-2",
+                "ju-87d-3",
+                "ju-87d-5"
+              ]
+            }
           },
           "he-111h-2": {
             "name": "mainmenu/type_medium_bomber",
             "defaultUnit": "he-111h-2",
-            "unitList": [
-              {
-                "unit": "he-111h-2"
-              },
-              {
-                "unit": "fw-189a-1"
-              },
-              {
-                "unit": "ju-88a-1"
-              },
-              {
-                "unit": "ju-88a-4"
-              },
-              {
-                "unit": "sm_79_iar"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "he-111h-2",
+                "fw-189a-1",
+                "ju-88a-1",
+                "ju-88a-4",
+                "sm_79_iar"
+              ]
+            }
           }
         }
       },
@@ -1453,298 +1091,204 @@
           "us_m2a4": {
             "name": "mainmenu/type_light_medium_tank",
             "defaultUnit": "us_m2a4",
-            "unitList": [
-              {
-                "unit": "us_m2a4"
-              },
-              {
-                "unit": "us_m3_stuart"
-              },
-              {
-                "unit": "us_m2a4_1st_armor_div"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_m2a4",
+                "us_m3_stuart",
+                "us_m2a4_1st_armor_div"
+              ]
+            }
           },
           "us_halftrack_m3_75mm_gmc": {
             "name": "mainmenu/type_tank_destroyer",
             "defaultUnit": "us_halftrack_m3_75mm_gmc",
-            "unitList": [
-              {
-                "unit": "us_halftrack_m3_75mm_gmc"
-              },
-              {
-                "unit": "us_m8_scott"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_halftrack_m3_75mm_gmc",
+                "us_m8_scott"
+              ]
+            }
           },
           "us_halftrack_m13": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "us_halftrack_m13",
-            "unitList": [
-              {
-                "unit": "us_halftrack_m13"
-              },
-              {
-                "unit": "us_halftrack_m16"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_halftrack_m13",
+                "us_halftrack_m16"
+              ]
+            }
           },
           "us_pt6": {
             "name": "mainmenu/type_boat",
             "defaultUnit": "us_pt6",
-            "unitList": [
-              {
-                "unit": "us_pt6"
-              },
-              {
-                "unit": "us_elco_77ft_pt20"
-              },
-              {
-                "unit": "us_elco_80ft_pt_boat"
-              },
-              {
-                "unit": "us_elco_80ft_pt109_boat"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_pt6",
+                "us_elco_77ft_pt20",
+                "us_elco_80ft_pt_boat",
+                "us_elco_80ft_pt109_boat"
+              ]
+            }
           },
           "us_destroyer_clemson_litchfield": {
             "name": "mainmenu/type_destroyer",
             "defaultUnit": "us_destroyer_clemson_litchfield",
-            "unitList": [
-              {
-                "unit": "us_destroyer_clemson_litchfield"
-              },
-              {
-                "unit": "us_destroyer_clemson_barker"
-              },
-              {
-                "unit": "us_destroyer_farragut_1942"
-              },
-              {
-                "unit": "us_destroyer_porter_1941"
-              },
-              {
-                "unit": "us_destroyer_somers"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_destroyer_clemson_litchfield",
+                "us_destroyer_clemson_barker",
+                "us_destroyer_farragut_1942",
+                "us_destroyer_porter_1941",
+                "us_destroyer_somers"
+              ]
+            }
           },
           "us_cruiser_omaha_class_trenton": {
             "name": "mainmenu/type_cruiser",
             "defaultUnit": "us_cruiser_omaha_class_trenton",
-            "unitList": [
-              {
-                "unit": "us_cruiser_omaha_class_trenton"
-              },
-              {
-                "unit": "us_cruiser_omaha_class_raleigh"
-              },
-              {
-                "unit": "us_cruiser_brooklyn_class_brooklyn"
-              },
-              {
-                "unit": "us_cruiser_pensacola_class"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_cruiser_omaha_class_trenton",
+                "us_cruiser_omaha_class_raleigh",
+                "us_cruiser_brooklyn_class_brooklyn",
+                "us_cruiser_pensacola_class"
+              ]
+            }
           },
           "p-26a_34_m2": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "p-26a_34_m2",
-            "unitList": [
-              {
-                "unit": "p-26a_34_m2"
-              },
-              {
-                "unit": "p-26a_33"
-              },
-              {
-                "unit": "p-26b_35"
-              },
-              {
-                "unit": "p-26a_34"
-              },
-              {
-                "unit": "p-40e"
-              },
-              {
-                "unit": "p-40f_10"
-              },
-              {
-                "unit": "p-40c"
-              },
-              {
-                "unit": "f2a-1"
-              },
-              {
-                "unit": "f2a-3"
-              },
-              {
-                "unit": "f2a-1_thach"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "p-26a_34_m2",
+                "p-26a_33",
+                "p-26b_35",
+                "p-26a_34",
+                "p-40e",
+                "p-40f_10",
+                "p-40c",
+                "f2a-1",
+                "f2a-3",
+                "f2a-1_thach"
+              ]
+            }
           },
           "b_18a": {
             "name": "mainmenu/type_common_bomber",
             "defaultUnit": "b_18a",
-            "unitList": [
-              {
-                "unit": "b_18a"
-              },
-              {
-                "unit": "b_34"
-              },
-              {
-                "unit": "b_10b"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "b_18a",
+                "b_34",
+                "b_10b"
+              ]
+            }
           }
         },
         "country_japan": {
           "jp_type_89b_i_go_otsu": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "jp_type_97_chi_ha",
-            "unitList": [
-              {
-                "unit": "jp_type_97_chi_ha"
-              },
-              {
-                "unit": "jp_type_97_kai"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "jp_type_97_chi_ha",
+                "jp_type_97_kai"
+              ]
+            }
           },
           "jp_type_4_ho_ro": {
             "name": "mainmenu/type_tank_destroyer",
             "defaultUnit": "jp_type_4_ho_ro",
-            "unitList": [
-              {
-                "unit": "jp_type_4_ho_ro"
-              },
-              {
-                "unit": "jp_type_3_ho_ni_I"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "jp_type_4_ho_ro",
+                "jp_type_3_ho_ni_I"
+              ]
+            }
           },
           "jp_type_94": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "jp_type_94",
-            "unitList": [
-              {
-                "unit": "jp_type_94"
-              },
-              {
-                "unit": "jp_type_98_ta_se"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "jp_type_94",
+                "jp_type_98_ta_se"
+              ]
+            }
           },
           "jp_type_t1_1941": {
             "name": "mainmenu/type_boat",
             "defaultUnit": "jp_type_t1_1941",
-            "unitList": [
-              {
-                "unit": "jp_type_t1_1941"
-              },
-              {
-                "unit": "jp_type38_1944"
-              },
-              {
-                "unit": "jp_t51b"
-              },
-              {
-                "unit": "jp_t14_class_mod01"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "jp_type_t1_1941",
+                "jp_type38_1944",
+                "jp_t51b",
+                "jp_t14_class_mod01"
+              ]
+            }
           },
           "jp_destroyer_mutsuki": {
             "name": "mainmenu/type_destroyer",
             "defaultUnit": "jp_destroyer_mutsuki",
-            "unitList": [
-              {
-                "unit": "jp_destroyer_mutsuki"
-              },
-              {
-                "unit": "jp_destroyer_fubuki"
-              },
-              {
-                "unit": "jp_destroyer_yugumo"
-              },
-              {
-                "unit": "jp_destroyer_yuudachi"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "jp_destroyer_mutsuki",
+                "jp_destroyer_fubuki",
+                "jp_destroyer_yugumo",
+                "jp_destroyer_yuudachi"
+              ]
+            }
           },
           "jp_cruiser_kuma": {
             "name": "mainmenu/type_cruiser",
             "defaultUnit": "jp_cruiser_kuma",
-            "unitList": [
-              {
-                "unit": "jp_cruiser_kuma"
-              },
-              {
-                "unit": "jp_cruiser_kako"
-              },
-              {
-                "unit": "jp_cruiser_furutaka"
-              },
-              {
-                "unit": "jp_cruiser_mogami_suzuya"
-              },
-              {
-                "unit": "jp_cruiser_mogami"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "jp_cruiser_kuma",
+                "jp_cruiser_kako",
+                "jp_cruiser_furutaka",
+                "jp_cruiser_mogami_suzuya",
+                "jp_cruiser_mogami"
+              ]
+            }
           },
           "a5m4": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "a5m4",
-            "unitList": [
-              {
-                "unit": "a5m4"
-              },
-              {
-                "unit": "a5m4_hagiri"
-              },
-              {
-                "unit": "a6m2_mod11"
-              },
-              {
-                "unit": "a6m2_zero"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "a5m4",
+                "a5m4_hagiri",
+                "a6m2_mod11",
+                "a6m2_zero"
+              ]
+            }
           },
           "d3a1": {
             "name": "mainmenu/type_common_bomber",
             "defaultUnit": "d3a1",
-            "unitList": [
-              {
-                "unit": "d3a1"
-              },
-              {
-                "unit": "b5n2"
-              },
-              {
-                "unit": "ki_21_1ko"
-              },
-              {
-                "unit": "ki_21_1hei"
-              },
-              {
-                "unit": "g4m1"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "d3a1",
+                "b5n2",
+                "ki_21_1ko",
+                "ki_21_1hei",
+                "g4m1"
+              ]
+            }
           },
           "h6k4": {
             "name": "mainmenu/type_flying_boat",
             "defaultUnit": "h6k4",
-            "unitList": [
-              {
-                "unit": "h6k4"
-              },
-              {
-                "unit": "h8k2"
-              },
-              {
-                "unit": "h8k3"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "h6k4",
+                "h8k2",
+                "h8k3"
+              ]
+            }
           }
         }
       },
@@ -1753,247 +1297,169 @@
           "us_m4a2_76w_sherman": {
             "name": "worldwar/group/us_m4_sherman_76mm",
             "defaultUnit": "us_m4a1_76w_sherman",
-            "unitList": [
-              {
-                "unit": "us_m4a1_76w_sherman"
-              },
-              {
-                "unit": "us_m4a2_76w_sherman"
-              },
-              {
-                "unit": "us_m4a3e8_76w_sherman"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_m4a1_76w_sherman",
+                "us_m4a2_76w_sherman",
+                "us_m4a3e8_76w_sherman"
+              ]
+            }
           },
           "us_m4a2_sherman": {
             "name": "worldwar/group/us_m4_sherman_75mm",
             "defaultUnit": "us_m4a2_sherman",
-            "unitList": [
-              {
-                "unit": "us_m4a2_sherman"
-              },
-              {
-                "unit": "us_m4a3e2_sherman_jumbo"
-              },
-              {
-                "unit": "us_m4a3e2_sherman_jumbo_cobra_king"
-              },
-              {
-                "unit": "us_m4_sherman_calliope"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_m4a2_sherman",
+                "us_m4a3e2_sherman_jumbo",
+                "us_m4a3e2_sherman_jumbo_cobra_king",
+                "us_m4_sherman_calliope"
+              ]
+            }
           },
           "us_m10": {
             "name": "mainmenu/type_tank_destroyer",
             "defaultUnit": "us_m10",
-            "unitList": [
-              {
-                "unit": "us_m10"
-              },
-              {
-                "unit": "us_m18_hellcat"
-              },
-              {
-                "unit": "us_m36"
-              },
-              {
-                "unit": "us_m18_hellcat_black_cat"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_m10",
+                "us_m18_hellcat",
+                "us_m36",
+                "us_m18_hellcat_black_cat"
+              ]
+            }
           },
           "us_halftrack_m15": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "us_halftrack_m16",
-            "unitList": [
-              {
-                "unit": "us_halftrack_m16"
-              },
-              {
-                "unit": "us_halftrack_m15"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_halftrack_m16",
+                "us_halftrack_m15"
+              ]
+            }
           },
           "p-51d-30_usaaf_korea": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "p-47d",
-            "unitList": [
-              {
-                "unit": "p-47d"
-              },
-              {
-                "unit": "p-47d-28"
-              },
-              {
-                "unit": "p-47n-15"
-              },
-              {
-                "unit": "p-51d-5"
-              },
-              {
-                "unit": "p-51d-30_usaaf_korea"
-              },
-              {
-                "unit": "p-51d-10"
-              },
-              {
-                "unit": "p-51d-20-na"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "p-47d",
+                "p-47d-28",
+                "p-47n-15",
+                "p-51d-5",
+                "p-51d-30_usaaf_korea",
+                "p-51d-10",
+                "p-51d-20-na"
+              ]
+            }
           },
           "a-26b": {
             "name": "mainmenu/type_common_assault",
             "defaultUnit": "a-26b_10",
-            "unitList": [
-              {
-                "unit": "a-26b_10"
-              },
-              {
-                "unit": "a-26b"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "a-26b_10",
+                "a-26b"
+              ]
+            }
           }
         },
         "country_germany": {
           "germ_pzkpfw_IV_ausf_G": {
             "name": "worldwar/group/germ_pzkpfw_IV",
             "defaultUnit": "germ_pzkpfw_IV_ausf_G",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_IV_ausf_G"
-              },
-              {
-                "unit": "germ_pzkpfw_IV_ausf_H"
-              },
-              {
-                "unit": "germ_pzkpfw_IV_ausf_J"
-              },
-              {
-                "unit": "germ_panzerbefelhswagen_IV_ausf_J"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_IV_ausf_G",
+                "germ_pzkpfw_IV_ausf_H",
+                "germ_pzkpfw_IV_ausf_J",
+                "germ_panzerbefelhswagen_IV_ausf_J"
+              ]
+            }
           },
           "germ_pzkpfw_V_ausf_g_panther": {
             "name": "worldwar/group/germ_pzkpfw_V_panther",
             "defaultUnit": "germ_pzkpfw_V_ausf_d_panther",
-            "unitList": [
-              {
-                "unit": "germ_pzkpfw_V_ausf_d_panther"
-              },
-              {
-                "unit": "germ_pzkpfw_V_ausf_a_panther"
-              },
-              {
-                "unit": "germ_pzkpfw_V_ausf_g_panther"
-              },
-              {
-                "unit": "germ_pzkpfw_V_ersatz_m10"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_pzkpfw_V_ausf_d_panther",
+                "germ_pzkpfw_V_ausf_a_panther",
+                "germ_pzkpfw_V_ausf_g_panther",
+                "germ_pzkpfw_V_ersatz_m10"
+              ]
+            }
           },
           "germ_panzerjager_nashorn": {
             "name": "worldwar/group/light_tank_destroyer",
             "defaultUnit": "germ_sdkfz_9_flak37",
-            "unitList": [
-              {
-                "unit": "germ_sdkfz_9_flak37"
-              },
-              {
-                "unit": "germ_panzerjager_nashorn"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_sdkfz_9_flak37",
+                "germ_panzerjager_nashorn"
+              ]
+            }
           },
           "germ_stug_III_ausf_G": {
             "name": "worldwar/group/medium_tank_destroyer",
             "defaultUnit": "germ_stug_III_ausf_G",
-            "unitList": [
-              {
-                "unit": "germ_stug_III_ausf_G"
-              },
-              {
-                "unit": "germ_jgdpz_38t"
-              },
-              {
-                "unit": "germ_jgdpz_IV_L48"
-              },
-              {
-                "unit": "germ_pz_IV_L70"
-              },
-              {
-                "unit": "germ_pz_IV_L70_A"
-              },
-              {
-                "unit": "germ_sturmpanzer_IV_brummbar"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_stug_III_ausf_G",
+                "germ_jgdpz_38t",
+                "germ_jgdpz_IV_L48",
+                "germ_pz_IV_L70",
+                "germ_pz_IV_L70_A",
+                "germ_sturmpanzer_IV_brummbar"
+              ]
+            }
           },
           "germ_panzerjager_panther": {
             "name": "worldwar/group/heavy_tank_destroyer",
             "defaultUnit": "germ_panzerjager_panther",
-            "unitList": [
-              {
-                "unit": "germ_panzerjager_panther"
-              },
-              {
-                "unit": "germ_panzerbefelhswagen_jagdpanther"
-              },
-              {
-                "unit": "germ_panzerjager_tiger"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_panzerjager_panther",
+                "germ_panzerbefelhswagen_jagdpanther",
+                "germ_panzerjager_tiger"
+              ]
+            }
           },
           "germ_flakpanzer_38t_Gepard": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "germ_flakpanzer_38t_Gepard",
-            "unitList": [
-              {
-                "unit": "germ_flakpanzer_38t_Gepard"
-              },
-              {
-                "unit": "germ_sdkfz_6_2_flak36"
-              },
-              {
-                "unit": "germ_flakpanzer_IV_Wirbelwind"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_flakpanzer_38t_Gepard",
+                "germ_sdkfz_6_2_flak36",
+                "germ_flakpanzer_IV_Wirbelwind"
+              ]
+            }
           },
           "bf-109g-14": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "fw-190a-5_cannons",
-            "unitList": [
-              {
-                "unit": "fw-190a-5_cannons"
-              },
-              {
-                "unit": "fw-190a-5"
-              },
-              {
-                "unit": "fw-190a-8"
-              },
-              {
-                "unit": "fw-190d-9"
-              },
-              {
-                "unit": "bf-109g-6"
-              },
-              {
-                "unit": "bf-109g-14"
-              },
-              {
-                "unit": "bf-109g-10"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "fw-190a-5_cannons",
+                "fw-190a-5",
+                "fw-190a-8",
+                "fw-190d-9",
+                "bf-109g-6",
+                "bf-109g-14",
+                "bf-109g-10"
+              ]
+            }
           },
           "fw-190f-8": {
             "name": "mainmenu/type_strike_fighter",
             "defaultUnit": "fw-190a-5_u2",
-            "unitList": [
-              {
-                "unit": "fw-190a-5_u2"
-              },
-              {
-                "unit": "fw-190f-8"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "fw-190a-5_u2",
+                "fw-190f-8"
+              ]
+            }
           }
         }
       },
@@ -2002,193 +1468,127 @@
           "ussr_t_55a": {
             "name": "worldwar/group/mbt",
             "defaultUnit": "ussr_t_55a",
-            "unitList": [
-              {
-                "unit": "ussr_t_55a"
-              },
-              {
-                "unit": "ussr_t_62"
-              },
-              {
-                "unit": "ussr_t_62m1"
-              },
-              {
-                "unit": "ussr_t_64a_1971"
-              },
-              {
-                "unit": "ussr_t_64_b_1984"
-              },
-              {
-                "unit": "ussr_t_72a"
-              },
-              {
-                "unit": "ussr_t_80b"
-              },
-              {
-                "unit": "ussr_t_55_am"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_t_55a",
+                "ussr_t_62",
+                "ussr_t_62m1",
+                "ussr_t_64a_1971",
+                "ussr_t_64_b_1984",
+                "ussr_t_72a",
+                "ussr_t_80b",
+                "ussr_t_55_am"
+              ]
+            }
           },
           "ussr_bmp_1": {
             "name": "worldwar/group/afv",
             "defaultUnit": "ussr_bmp_1",
-            "unitList": [
-              {
-                "unit": "ussr_bmp_1"
-              },
-              {
-                "unit": "ussr_bmp_2"
-              },
-              {
-                "unit": "ussr_9p149"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_bmp_1",
+                "ussr_bmp_2",
+                "ussr_9p149"
+              ]
+            }
           },
           "ussr_zsu_23_4": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "ussr_zsu_23_4",
-            "unitList": [
-              {
-                "unit": "ussr_zsu_23_4"
-              },
-              {
-                "unit": "ussr_zprk_2s6"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_zsu_23_4",
+                "ussr_zprk_2s6"
+              ]
+            }
           },
           "mi_24a": {
             "name": "mainmenu/type_helicopter",
             "defaultUnit": "mi_24a",
-            "unitList": [
-              {
-                "unit": "mi_24a"
-              },
-              {
-                "unit": "mi_24v"
-              },
-              {
-                "unit": "mi_24p"
-              },
-              {
-                "unit": "mi_24d"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "mi_24a",
+                "mi_24v",
+                "mi_24p",
+                "mi_24d"
+              ]
+            }
           },
           "mig-17": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "mig-17",
-            "unitList": [
-              {
-                "unit": "mig-17"
-              },
-              {
-                "unit": "mig-19pt"
-              },
-              {
-                "unit": "mig-21_f13"
-              },
-              {
-                "unit": "mig-21_smt"
-              },
-              {
-                "unit": "su-7b"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "mig-17",
+                "mig-19pt",
+                "mig-21_f13",
+                "mig-21_smt",
+                "su-7b"
+              ]
+            }
           }
         },
         "country_germany": {
           "germ_leopard_I": {
             "name": "worldwar/group/mbt",
             "defaultUnit": "germ_mkpz_m48a2ga2",
-            "unitList": [
-              {
-                "unit": "germ_mkpz_m48a2ga2"
-              },
-              {
-                "unit": "germ_kpz_70"
-              },
-              {
-                "unit": "germ_leopard_I_a1"
-              },
-              {
-                "unit": "germ_leopard_2k"
-              },
-              {
-                "unit": "germ_leopard_2a4"
-              },
-              {
-                "unit": "germ_leopard_a1a1_120"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_mkpz_m48a2ga2",
+                "germ_kpz_70",
+                "germ_leopard_I_a1",
+                "germ_leopard_2k",
+                "germ_leopard_2a4",
+                "germ_leopard_a1a1_120"
+              ]
+            }
           },
           "germ_kanonenjagdpanzer": {
             "name": "worldwar/group/afv",
             "defaultUnit": "germ_kanonenjagdpanzer",
-            "unitList": [
-              {
-                "unit": "germ_kanonenjagdpanzer"
-              },
-              {
-                "unit": "germ_raketenjagdpanzer_2"
-              },
-              {
-                "unit": "germ_raketenjagdpanzer_2_hot"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_kanonenjagdpanzer",
+                "germ_raketenjagdpanzer_2",
+                "germ_raketenjagdpanzer_2_hot"
+              ]
+            }
           },
           "germ_flakpz_I_Gepard": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "germ_flakpz_I_Gepard",
-            "unitList": [
-              {
-                "unit": "germ_flakpz_I_Gepard"
-              },
-              {
-                "unit": "germ_flarakpz_1"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "germ_flakpz_I_Gepard",
+                "germ_flarakpz_1"
+              ]
+            }
           },
           "uh_1d": {
             "name": "mainmenu/type_helicopter",
             "defaultUnit": "uh_1d",
-            "unitList": [
-              {
-                "unit": "uh_1d"
-              },
-              {
-                "unit": "bo_105pah1"
-              },
-              {
-                "unit": "bo_105pah1_a1"
-              },
-              {
-                "unit": "bo_105cb2"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "uh_1d",
+                "bo_105pah1",
+                "bo_105pah1_a1",
+                "bo_105cb2"
+              ]
+            }
           },
           "fiat_g91_r3": {
             "name": "mainmenu/type_medium_fighter",
             "defaultUnit": "fiat_g91_r3",
-            "unitList": [
-              {
-                "unit": "fiat_g91_r3"
-              },
-              {
-                "unit": "fiat_g91_r4_german"
-              },
-              {
-                "unit": "f-86_canadair_german"
-              },
-              {
-                "unit": "f-86_cl_13b_mk6"
-              },
-              {
-                "unit": "f-86k_late_german"
-              },
-              {
-                "unit": "f-104g"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "fiat_g91_r3",
+                "fiat_g91_r4_german",
+                "f-86_canadair_german",
+                "f-86_cl_13b_mk6",
+                "f-86k_late_german",
+                "f-104g"
+              ]
+            }
           }
         }
       },
@@ -2197,74 +1597,50 @@
           "ussr_t_54_1947": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "ussr_t_54_1947",
-            "unitList": [
-              {
-                "unit": "ussr_t_54_1947"
-              },
-              {
-                "unit": "ussr_t_54_1949"
-              },
-              {
-                "unit": "ussr_t_54_1951"
-              },
-              {
-                "unit": "ussr_t_62"
-              },
-              {
-                "unit": "ussr_t_55a"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_t_54_1947",
+                "ussr_t_54_1949",
+                "ussr_t_54_1951",
+                "ussr_t_62",
+                "ussr_t_55a"
+              ]
+            }
           },
           "ussr_pt_76b": {
             "name": "mainmenu/type_light_medium_tank",
             "defaultUnit": "ussr_pt_76b",
-            "unitList": [
-              {
-                "unit": "ussr_pt_76b"
-              },
-              {
-                "unit": "ussr_bmp_1"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_pt_76b",
+                "ussr_bmp_1"
+              ]
+            }
           },
           "ussr_zsu_57_2": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "ussr_zsu_57_2",
-            "unitList": [
-              {
-                "unit": "ussr_zsu_57_2"
-              },
-              {
-                "unit": "ussr_zsu_23_4"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "ussr_zsu_57_2",
+                "ussr_zsu_23_4"
+              ]
+            }
           },
           "mig-17": {
             "name": "mainmenu/type_aircraft",
             "defaultUnit": "mig-17",
-            "unitList": [
-              {
-                "unit": "mig-17"
-              },
-              {
-                "unit": "mig-19pt"
-              },
-              {
-                "unit": "mig-21_f13"
-              },
-              {
-                "unit": "mig-21_smt"
-              },
-              {
-                "unit": "il_28"
-              },
-              {
-                "unit": "il_28sh"
-              },
-              {
-                "unit": "su-7b"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "mig-17",
+                "mig-19pt",
+                "mig-21_f13",
+                "mig-21_smt",
+                "il_28",
+                "il_28sh",
+                "su-7b"
+              ]
+            }
           },
           "mi_4av": {
             "name": "mainmenu/type_helicopter",
@@ -2278,59 +1654,45 @@
           "us_m48a1_patton_III": {
             "name": "mainmenu/type_medium_tank",
             "defaultUnit": "us_m48a1_patton_III",
-            "unitList": [
-              {
-                "unit": "us_m48a1_patton_III"
-              },
-              {
-                "unit": "us_m60"
-              },
-              {
-                "unit": "us_m60a1"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_m48a1_patton_III",
+                "us_m60",
+                "us_m60a1"
+              ]
+            }
           },
           "us_amx_13_75": {
             "name": "mainmenu/type_light_medium_tank",
             "defaultUnit": "us_amx_13_75",
-            "unitList": [
-              {
-                "unit": "us_amx_13_75"
-              },
-              {
-                "unit": "us_m551"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_amx_13_75",
+                "us_m551"
+              ]
+            }
           },
           "us_m42_duster": {
             "name": "mainmenu/type_spaa",
             "defaultUnit": "us_m42_duster",
-            "unitList": [
-              {
-                "unit": "us_m42_duster"
-              },
-              {
-                "unit": "us_m163_vulcan"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "us_m42_duster",
+                "us_m163_vulcan"
+              ]
+            }
           },
           "md_460_usa": {
             "name": "mainmenu/type_aircraft",
             "defaultUnit": "md_460_usa",
-            "unitList": [
-              {
-                "unit": "md_460_usa"
-              },
-              {
-                "unit": "a_4b"
-              },
-              {
-                "unit": "f-4c"
-              },
-              {
-                "unit": "f-4e"
-              }
-            ]
+            "unitList": {
+              "unit": [
+                "md_460_usa",
+                "a_4b",
+                "f-4c",
+                "f-4e"
+              ]
+            }
           },
           "uh_1b": {
             "name": "mainmenu/type_helicopter",
@@ -2410,8 +1772,8 @@
       "condition": "",
       "platform_lock": "ps4;ps5;android;xboxOne;xboxScarlett"
     },
-    "FacebookWallPost": [],
-    "FacebookScreenshots": [],
+    "FacebookWallPost": {},
+    "FacebookScreenshots": {},
     "Events": {
       "condition": ""
     },
@@ -2433,150 +1795,84 @@
     "Chat": {
       "condition": ""
     },
-    "ChatThreadLang": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_GM_(RO+BAN)"
-      },
-      {
-        "condition": "role_CHAT_GM_(IN-GAME)"
-      }
-    ],
+    "ChatThreadLang": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_GM_(RO+BAN)",
+        "role_CHAT_GM_(IN-GAME)"
+      ]
+    },
     "ChatThreadCategories": {
       "condition": ""
     },
-    "AerobaticTricolorSmoke": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "aerobatic_tricolor_smoke_en"
-      },
-      {
-        "condition": "gift_aerobatic_tricolor_smoke"
-      },
-      {
-        "condition": "wt_thunder_league_fan_token"
-      }
-    ],
+    "AerobaticTricolorSmoke": {
+      "condition": [
+        "role_DEVELOPER",
+        "aerobatic_tricolor_smoke_en",
+        "gift_aerobatic_tricolor_smoke",
+        "wt_thunder_league_fan_token"
+      ]
+    },
     "UserExterior": {
       "condition": ""
     },
-    "CardAirplaneWingLoadingParameter": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "CardAirplanePowerParameter": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "CardHelicopterClimbParameter": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "AnyTankEntitlements": [
-      {
-        "condition": "tank_advanced_pack_t-34_m4a2_ru"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34_m4a2_en"
-      },
-      {
-        "condition": "tank_starter_pack_t-34_ru"
-      },
-      {
-        "condition": "tank_starter_pack_m4a2_en"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34_ru"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34_en"
-      },
-      {
-        "condition": "tank_advanced_pack_m4a2_en"
-      },
-      {
-        "condition": "tank_advanced_pack_m4a2_ru"
-      },
-      {
-        "condition": "tank_starter_pack_t-34_3rdwave_ru"
-      },
-      {
-        "condition": "tank_starter_pack_m4a2_3rdwave_en"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34_3rdwave_ru"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34_3rdwave_en"
-      },
-      {
-        "condition": "tank_advanced_pack_m4a2_3rdwave_en"
-      },
-      {
-        "condition": "tank_advanced_pack_m4a2_3rdwave_ru"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34_m4a2_3rdwave_ru"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34_m4a2_3rdwave_en"
-      },
-      {
-        "condition": "tank_advanced_pack_t-26_sdkfz_140_1_ru"
-      },
-      {
-        "condition": "tank_advanced_pack_t-26_sdkfz_140_1_en"
-      },
-      {
-        "condition": "tank_pack_sdkfz_140_1_en"
-      },
-      {
-        "condition": "tank_advanced_pack_t-34e_28panfilovcev_ru"
-      }
-    ],
+    "CardAirplaneWingLoadingParameter": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "CardAirplanePowerParameter": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "CardHelicopterClimbParameter": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "AnyTankEntitlements": {
+      "condition": [
+        "tank_advanced_pack_t-34_m4a2_ru",
+        "tank_advanced_pack_t-34_m4a2_en",
+        "tank_starter_pack_t-34_ru",
+        "tank_starter_pack_m4a2_en",
+        "tank_advanced_pack_t-34_ru",
+        "tank_advanced_pack_t-34_en",
+        "tank_advanced_pack_m4a2_en",
+        "tank_advanced_pack_m4a2_ru",
+        "tank_starter_pack_t-34_3rdwave_ru",
+        "tank_starter_pack_m4a2_3rdwave_en",
+        "tank_advanced_pack_t-34_3rdwave_ru",
+        "tank_advanced_pack_t-34_3rdwave_en",
+        "tank_advanced_pack_m4a2_3rdwave_en",
+        "tank_advanced_pack_m4a2_3rdwave_ru",
+        "tank_advanced_pack_t-34_m4a2_3rdwave_ru",
+        "tank_advanced_pack_t-34_m4a2_3rdwave_en",
+        "tank_advanced_pack_t-26_sdkfz_140_1_ru",
+        "tank_advanced_pack_t-26_sdkfz_140_1_en",
+        "tank_pack_sdkfz_140_1_en",
+        "tank_advanced_pack_t-34e_28panfilovcev_ru"
+      ]
+    },
     "Ships": {
       "condition": "",
       "platform_lock": "android"
     },
-    "SpecialShips": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "SpecialShips": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "ShipsVisibleInShop": {
       "condition": ""
     },
@@ -2663,17 +1959,13 @@
     "JapanAircraftsInFirstCountryChoice": {
       "condition": ""
     },
-    "JapanTanksInFirstCountryChoice": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
+    "JapanTanksInFirstCountryChoice": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "JapanShipsInFirstCountryChoice": {
       "condition": ""
     },
@@ -2701,62 +1993,42 @@
     "FranceAircraftsInFirstCountryChoice": {
       "condition": ""
     },
-    "FranceTanksInFirstCountryChoice": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
+    "FranceTanksInFirstCountryChoice": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "SwedenAircraftsInFirstCountryChoice": {
       "condition": ""
     },
     "SwedenTanksInFirstCountryChoice": {
       "condition": ""
     },
-    "IsraelAircraftsInFirstCountryChoice": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_GAIJIN"
-      }
-    ],
-    "IsraelTanksInFirstCountryChoice": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_GAIJIN"
-      }
-    ],
-    "Helicopters": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      },
-      {
-        "condition": "helicopter_access"
-      }
-    ],
+    "IsraelAircraftsInFirstCountryChoice": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_GAIJIN"
+      ]
+    },
+    "IsraelTanksInFirstCountryChoice": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_GAIJIN"
+      ]
+    },
+    "Helicopters": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER",
+        "helicopter_access"
+      ]
+    },
     "Tribunal": {
       "condition": ""
     },
@@ -2769,9 +2041,9 @@
     "ModeDynamic": {
       "condition": ""
     },
-    "QmbCoopPc": [],
-    "QmbCoopPs4": [],
-    "QmbCoop": [],
+    "QmbCoopPc": {},
+    "QmbCoopPs4": {},
+    "QmbCoop": {},
     "DynCampaignCoopPc": {
       "condition": ""
     },
@@ -2818,31 +2090,21 @@
     "worldWarMaster": {
       "condition": "role_WW_MASTER"
     },
-    "worldWarShowTestMaps": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
-    "WorldWarReplay": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
+    "worldWarShowTestMaps": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
+    "WorldWarReplay": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "WorldWarClansQueue": {
       "condition": "WorldWar"
     },
@@ -2861,28 +2123,20 @@
     "WorldWarLeaderboards": {
       "condition": "WorldWar"
     },
-    "WorldWarCountryLeaderboard": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "WWOperationsList": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "WorldWarCountryLeaderboard": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "WWOperationsList": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "GraphicsOptions": {
       "condition": ""
     },
@@ -2892,17 +2146,13 @@
     "TouchScreen": {
       "condition": ""
     },
-    "BuyAllModifications": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "BuyAllModifications": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "Packages": {
       "condition": ""
     },
@@ -2915,43 +2165,31 @@
     "DecoratorPreview": {
       "condition": ""
     },
-    "AircraftExtinguisher": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "ShowDamageReport": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "AircraftExtinguisher": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "ShowDamageReport": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "UserSkins": {
       "condition": "",
       "platform_lock": "ps4;ps5;xboxOne;xboxScarlett"
     },
-    "SkinsPreviewOnUnboughtUnits": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "SkinsPreviewOnUnboughtUnits": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "SkinAutoSelect": {
       "condition": ""
     },
@@ -2963,20 +2201,14 @@
       "condition": "",
       "platform_lock": "ps4;ps5;xboxOne;xboxScarlett"
     },
-    "UserMissionsSkirmishByUrlCreate": [
-      {
-        "platform_lock": "ps4;ps5;xboxOne;xboxScarlett"
-      },
-      {
-        "condition": "user_mission_access_en"
-      },
-      {
-        "condition": "user_mission_access"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      }
-    ],
+    "UserMissionsSkirmishByUrlCreate": {
+      "platform_lock": "ps4;ps5;xboxOne;xboxScarlett",
+      "condition": [
+        "user_mission_access_en",
+        "user_mission_access",
+        "role_DEVELOPER"
+      ]
+    },
     "ClientReplay": {
       "condition": "",
       "platform_lock": "ps4;ps5;android;xboxOne;xboxScarlett"
@@ -2985,29 +2217,23 @@
       "condition": "",
       "platform_lock": "android"
     },
-    "Benchmark": [
-      {
-        "condition": "BenchmarkPC"
-      },
-      {
-        "condition": "BenchmarkForDevs"
-      }
-    ],
+    "Benchmark": {
+      "condition": [
+        "BenchmarkPC",
+        "BenchmarkForDevs"
+      ]
+    },
     "BenchmarkPC": {
       "condition": "",
       "platform_lock": "ps4;ps5;android;xboxOne;xboxScarlett"
     },
-    "BenchmarkForDevs": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "BenchmarkForDevs": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "DamageModelViewer": {
       "condition": ""
     },
@@ -3053,32 +2279,26 @@
     "ClanSquads": {
       "condition": "Clans"
     },
-    "ClanVehicles": [
-      {
-        "condition": "Clans"
-      },
-      {
-        "condition": "XBOXAccount"
-      }
-    ],
+    "ClanVehicles": {
+      "condition": [
+        "Clans",
+        "XBOXAccount"
+      ]
+    },
     "ClansXBOXOnPC": {
       "condition": "Clans; XBOXAccount"
     },
-    "ShowNextUnlockInfo": [],
+    "ShowNextUnlockInfo": {},
     "extendedReplayInfo": {
       "condition": ""
     },
-    "RankVersusInfo": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "RankVersusInfo": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "showAllUnitsRanks": {
       "condition": "role_DEVELOPER"
     },
@@ -3117,17 +2337,13 @@
       "condition": "",
       "platform_lock": "ps4;ps5"
     },
-    "ShowDebugInterface": [
-      {
-        "platform_lock": "ps4;ps5"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
+    "ShowDebugInterface": {
+      "platform_lock": "ps4;ps5",
+      "condition": [
+        "role_DEVELOPER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "ControlRec": {
       "condition": ""
     },
@@ -3137,29 +2353,25 @@
     "Items": {
       "condition": ""
     },
-    "ItemModUpgrade": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "ModUpgradeDifference": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "ItemModUpgrade": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "ModUpgradeDifference": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "enableApex": {
       "platform_lock": "android;iOS"
     },
     "TelescopeCamera": {
       "condition": ""
     },
-    "AdaptiveStickPusher": [],
+    "AdaptiveStickPusher": {},
     "ActiveScouting": {
       "condition": ""
     },
@@ -3172,36 +2384,26 @@
     "spring2022Craft": {
       "condition": ""
     },
-    "spring2022GoldShop": [
-      {
-        "condition": "spring2022Craft;PS4Account"
-      },
-      {
-        "condition": "spring2022Craft;XBOXAccount"
-      },
-      {
-        "condition": "spring2022Craft;DMMAccount"
-      }
-    ],
-    "EnableFmTools": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
-    "EnableGoldPurchase": [
-      {
-        "condition": ""
-      },
-      {
-        "condition": "PS4Access"
-      }
-    ],
+    "spring2022GoldShop": {
+      "condition": [
+        "spring2022Craft;PS4Account",
+        "spring2022Craft;XBOXAccount",
+        "spring2022Craft;DMMAccount"
+      ]
+    },
+    "EnableFmTools": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_ALPHA_TESTER"
+      ]
+    },
+    "EnableGoldPurchase": {
+      "condition": [
+        "",
+        "PS4Access"
+      ]
+    },
     "EnablePremiumPurchase": {
       "condition": ""
     },
@@ -3209,18 +2411,16 @@
       "condition": "",
       "platform_lock": "android"
     },
-    "ManuallyUpdateBalance": [],
+    "ManuallyUpdateBalance": {},
     "everyDayLoginAward": {
       "condition": ""
     },
-    "devItemShop": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "devItemShop": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "ItemsShopInTopMenu": {
       "condition": ""
     },
@@ -3230,17 +2430,13 @@
     "everyDayLoginAwardDebugEnable": {
       "condition": "dev_test_feature_access"
     },
-    "onceCalendarLoginAward": [
-      {
-        "condition": "PSPlusAccount"
-      },
-      {
-        "condition": "XBOXPlusAccount"
-      },
-      {
-        "platform_lock": "pc;android"
-      }
-    ],
+    "onceCalendarLoginAward": {
+      "condition": [
+        "PSPlusAccount",
+        "XBOXPlusAccount"
+      ],
+      "platform_lock": "pc;android"
+    },
     "onceCalendarLoginAwardDebug": {
       "condition": "dev_test_feature_access"
     },
@@ -3253,17 +2449,13 @@
     "debugAccessSWTrophy": {
       "condition": "sw_trophy_access"
     },
-    "ShowDebugEvents": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
+    "ShowDebugEvents": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "Wagers": {
       "condition": ""
     },
@@ -3305,34 +2497,28 @@
       "condition": "",
       "platform_lock": "android;linux64"
     },
-    "ConsolesLiveTrophy": [],
-    "ConsolesWorkshopExchange": [
-      {
-        "condition": "PS4Account"
-      },
-      {
-        "condition": "XBOXAccount"
-      }
-    ],
+    "ConsolesLiveTrophy": {},
+    "ConsolesWorkshopExchange": {
+      "condition": [
+        "PS4Account",
+        "XBOXAccount"
+      ]
+    },
     "ConsolesWorkshopUgcExchange": {
       "condition": "ConsolesWorkshopExchange;!DMMAccount"
     },
-    "ConsolesUgcTrophy": [
-      {
-        "condition": "PS4Account"
-      },
-      {
-        "condition": "XBOXAccount"
-      }
-    ],
-    "PurchaseMarketItemsForGold": [
-      {
-        "condition": "PS4Account"
-      },
-      {
-        "condition": "XBOXAccount"
-      }
-    ],
+    "ConsolesUgcTrophy": {
+      "condition": [
+        "PS4Account",
+        "XBOXAccount"
+      ]
+    },
+    "PurchaseMarketItemsForGold": {
+      "condition": [
+        "PS4Account",
+        "XBOXAccount"
+      ]
+    },
     "Orders": {
       "condition": ""
     },
@@ -3342,25 +2528,19 @@
     "BattleTasksHard": {
       "condition": ""
     },
-    "BattleTasksGeneration": [
-      {
-        "condition": "rank_2_unlocked_without_helicopters"
-      },
-      {
-        "condition": "battle_tasks_unlocked_by_rank"
-      }
-    ],
-    "PersonalUnlocks": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "BattleTasksGeneration": {
+      "condition": [
+        "rank_2_unlocked_without_helicopters",
+        "battle_tasks_unlocked_by_rank"
+      ]
+    },
+    "PersonalUnlocks": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "ExtInventory": {
       "condition": ""
     },
@@ -3372,96 +2552,60 @@
       "condition": "!PS4Account;!XBOXAccount",
       "platform_lock": "ps4;ps5;xboxOne;xboxScarlett"
     },
-    "DMMAndSCEJAccounts": [
-      {
-        "condition": "DMMAccount"
-      },
-      {
-        "condition": "scej_account"
-      }
-    ],
-    "DMMandPS4andXBOXAccount": [
-      {
-        "condition": "PS4Account"
-      },
-      {
-        "condition": "XBOXAccount"
-      },
-      {
-        "condition": "DMMAccount"
-      }
-    ],
+    "DMMAndSCEJAccounts": {
+      "condition": [
+        "DMMAccount",
+        "scej_account"
+      ]
+    },
+    "DMMandPS4andXBOXAccount": {
+      "condition": [
+        "PS4Account",
+        "XBOXAccount",
+        "DMMAccount"
+      ]
+    },
     "BulletParamsForAirs": {
       "condition": ""
     },
-    "TournamentTesters": [
-      {
-        "condition": "wt_events_tester"
-      },
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_GM_(RO+BAN)"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
-    "TournamentSuperTesters": [
-      {
-        "condition": "wt_events_supertester"
-      },
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_GRAND_CM"
-      },
-      {
-        "condition": "role_ALPHA_SUPERVISOR"
-      }
-    ],
-    "TournamentYunarmy": [
-      {
-        "condition": "wt_events_yunarmy"
-      },
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_GRAND_CM"
-      }
-    ],
+    "TournamentTesters": {
+      "condition": [
+        "wt_events_tester",
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_GM_(RO+BAN)",
+        "role_ALPHA_TESTER"
+      ]
+    },
+    "TournamentSuperTesters": {
+      "condition": [
+        "wt_events_supertester",
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_GRAND_CM",
+        "role_ALPHA_SUPERVISOR"
+      ]
+    },
+    "TournamentYunarmy": {
+      "condition": [
+        "wt_events_yunarmy",
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_GRAND_CM"
+      ]
+    },
     "TournamentSnailcup": {
       "condition": "wt_events_snailcup"
     },
-    "ESport": [
-      {
-        "condition": "wt_events_snailcup"
-      },
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      }
-    ],
+    "ESport": {
+      "condition": [
+        "wt_events_snailcup",
+        "role_GAIJIN",
+        "role_DEVELOPER"
+      ]
+    },
     "Tournaments": {
       "condition": ""
     },
@@ -3477,17 +2621,13 @@
     "PromoBlocks": {
       "condition": ""
     },
-    "ShowAllPromoBlocks": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
+    "ShowAllPromoBlocks": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "SpectatorUnitDmgIndicator": {
       "condition": ""
     },
@@ -3527,22 +2667,18 @@
     "pacific_41_43": {
       "condition": "pacific_41_43_unlock"
     },
-    "usa_pacific_41_43": [
-      {
-        "condition": "pacific_41_43_unlock"
-      },
-      {
-        "condition": "pacific_41_43_unlock_usa"
-      }
-    ],
-    "jpn_pacific_41_43": [
-      {
-        "condition": "pacific_41_43_unlock"
-      },
-      {
-        "condition": "pacific_41_43_unlock_japan"
-      }
-    ],
+    "usa_pacific_41_43": {
+      "condition": [
+        "pacific_41_43_unlock",
+        "pacific_41_43_unlock_usa"
+      ]
+    },
+    "jpn_pacific_41_43": {
+      "condition": [
+        "pacific_41_43_unlock",
+        "pacific_41_43_unlock_japan"
+      ]
+    },
     "league_fan_token": {
       "condition": "wt_thunder_league_fan_token"
     },
@@ -3555,7 +2691,7 @@
     "ItemConvertToWarbond": {
       "condition": ""
     },
-    "ItemConvertToWarbondMultiple": [],
+    "ItemConvertToWarbondMultiple": {},
     "ControllerLight": {
       "condition": ""
     },
@@ -3607,36 +2743,26 @@
     "IsraelTankUnlocked": {
       "condition": ""
     },
-    "MissionsChapterHidden": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "MissionsChapterTest": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
-    "ChinaForbidden": [],
+    "MissionsChapterHidden": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "MissionsChapterTest": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
+    "ChinaForbidden": {},
     "UnlocksUnavailableForChina": {
       "condition": ""
     },
-    "JapanTanksForbidden": [],
+    "JapanTanksForbidden": {},
     "ScriptMissionHints": {
       "condition": ""
     },
@@ -3685,40 +2811,24 @@
       "condition": "",
       "platform_unlock": "ps4;ps5"
     },
-    "ShipEventTicketAccess": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "ship_event_tiket_access"
-      },
-      {
-        "condition": "ship_event_access"
-      },
-      {
-        "condition": "ship_cbt_invite_access"
-      }
-    ],
-    "ShipEventGamescomAccess": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "ship_event_gamescom_access"
-      }
-    ],
+    "ShipEventTicketAccess": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "ship_event_tiket_access",
+        "ship_event_access",
+        "ship_cbt_invite_access"
+      ]
+    },
+    "ShipEventGamescomAccess": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "ship_event_gamescom_access"
+      ]
+    },
     "SeparateTopMenuButtons": {
       "condition": ""
     },
@@ -3728,21 +2838,17 @@
     "SCEJAccount": {
       "condition": "scej_account"
     },
-    "TencentAccount": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "TencentAccount": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "newFontsSizes": {
       "condition": ""
     },
-    "oldFontsSizes": [],
+    "oldFontsSizes": {},
     "Warbonds_2_0": {
       "condition": ""
     },
@@ -3770,18 +2876,16 @@
       "condition": "!DMMAccount",
       "platform_lock": "android"
     },
-    "Ugc": [
-      {
-        "condition": "EnableUgcSkins"
-      },
-      {
-        "condition": "EnableUgcDecals"
-      }
-    ],
+    "Ugc": {
+      "condition": [
+        "EnableUgcSkins",
+        "EnableUgcDecals"
+      ]
+    },
     "MarketplaceSkinsInCustomization": {
       "condition": ""
     },
-    "CraftAfterBattleTrophy": [],
+    "CraftAfterBattleTrophy": {},
     "UnitInfo": {
       "condition": ""
     },
@@ -3811,14 +2915,12 @@
       "condition": "",
       "platform_lock": "xboxOne;xboxScarlett"
     },
-    "ShipBenchmarkAccess": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "ShipBenchmarkAccess": {
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "EnableWipeShipsProgress": {
       "condition": ""
     },
@@ -3834,17 +2936,13 @@
     "DmViewerProtectionAnalysisAircraft": {
       "condition": ""
     },
-    "DmViewerProtectionAnalysisVisualEffect": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "DmViewerProtectionAnalysisVisualEffect": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "DmViewerExternalArmorHiding": {
       "condition": ""
     },
@@ -3863,7 +2961,7 @@
     "XboxIngameShop": {
       "condition": ""
     },
-    "forceYesterdayForEveryDayLoginAward": [],
+    "forceYesterdayForEveryDayLoginAward": {},
     "Tutorials": {
       "condition": ""
     },
@@ -3879,39 +2977,27 @@
     "Parachute": {
       "condition": ""
     },
-    "UfoControl": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "WalkerControl": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "AchievementsUrl": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "UfoControl": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "WalkerControl": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "AchievementsUrl": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "AllowXboxAccountLinking": {
       "condition": ""
     },
@@ -3950,17 +3036,13 @@
       "condition": "",
       "platform_unlock": "ps4;ps5;xboxOne;xboxScarlett"
     },
-    "ConsoleSeparateEventsLeaderboards": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "ConsoleSeparateEventsLeaderboards": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "nonPayingUser": {
       "condition": "!customerAccount"
     },
@@ -3988,17 +3070,13 @@
     "ShowDropChanceInTrophy": {
       "condition": ""
     },
-    "FpsCounterOverride": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "FpsCounterOverride": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "LoadingBackgroundFilter": {
       "condition": ""
     },
@@ -4017,98 +3095,66 @@
     "enableFollowBulletCamera": {
       "condition": ""
     },
-    "TankSupportPlane": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "TankStealth": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "DebugEnterUrl": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "TankSupportPlane": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "TankStealth": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "DebugEnterUrl": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "SteamRateGame": {
       "condition": ""
     },
-    "HolesInAircraftHull": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "reactivGuiForAircraft": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
-    "reactivGuiForArbitrer": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
+    "HolesInAircraftHull": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "reactivGuiForAircraft": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
+    "reactivGuiForArbitrer": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "tankTerraform": {
       "condition": ""
     },
     "ProtectionMap": {
       "condition": ""
     },
-    "ClusterWind": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "ClusterWind": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "BattleChatModeAll": {
       "condition": ""
     },
@@ -4121,37 +3167,29 @@
     "WeaponryCustomPresets": {
       "condition": ""
     },
-    "BattleAutoStart": [],
+    "BattleAutoStart": {},
     "TestTankActionTutorial": {
       "condition": "ab_test_tank_action_tutorial_hidden"
     },
-    "PS5HeadTracking": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "PS5HeadTracking": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "replayRewind": {
       "condition": ""
     },
     "HitCameraTargetStateIconsTank": {
       "condition": ""
     },
-    "MachineGunsAmmoIndicator": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ]
+    "MachineGunsAmmoIndicator": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    }
   }
 }

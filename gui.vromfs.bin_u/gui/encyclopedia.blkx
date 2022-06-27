@@ -5,7 +5,7 @@
     "pos": "-sw,sh-h-1@bh",
     "background-image": "#ui/gameuiskin#optionlist_background_down.png"
   },
-  "_newline": [],
+  "_newline": {},
   "root": {
     "flow": "vertical",
     "titletext": {
@@ -19,9 +19,9 @@
       "position": "absolute",
       "top": "20*@scrn_tgt/100.0",
       "left": "10%sw",
-      "tr": [
-        {
-          "td": {
+      "tr": {
+        "td": [
+          {
             "width": "10%pw",
             "pedia_navigate_bar": {
               "id": "articles_list",
@@ -32,19 +32,17 @@
               "style": "overflow-x:none;overflow-y:auto;",
               "_on_select": "onArticleSelect"
             }
-          }
-        },
-        {
-          "td": {
+          },
+          {
             "tdiv": {
               "id": "article_page",
               "width": "600",
               "height": "600"
             }
           }
-        }
-      ]
+        ]
+      }
     }
   },
-  "navBar": []
+  "navBar": {}
 }

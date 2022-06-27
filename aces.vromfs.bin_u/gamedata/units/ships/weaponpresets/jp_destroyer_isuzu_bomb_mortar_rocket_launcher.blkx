@@ -1,64 +1,28 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      },
-      {
-        "node": "depth_charge_07"
-      },
-      {
-        "node": "depth_charge_08"
-      },
-      {
-        "node": "depth_charge_09"
-      },
-      {
-        "node": "depth_charge_10"
-      },
-      {
-        "node": "depth_charge_11"
-      },
-      {
-        "node": "depth_charge_12"
-      },
-      {
-        "node": "depth_charge_13"
-      },
-      {
-        "node": "depth_charge_14"
-      },
-      {
-        "node": "torpedo_01"
-      },
-      {
-        "node": "torpedo_02"
-      },
-      {
-        "node": "torpedo_03"
-      },
-      {
-        "node": "torpedo_04"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07",
+      "depth_charge_08",
+      "depth_charge_09",
+      "depth_charge_10",
+      "depth_charge_11",
+      "depth_charge_12",
+      "depth_charge_13",
+      "depth_charge_14",
+      "torpedo_01",
+      "torpedo_02",
+      "torpedo_03",
+      "torpedo_04"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner2",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/navalModels_weapons/320mm_mk108_weapon_alfa_rocket_launcher.blk",
@@ -97,17 +61,58 @@
         "gunnerDm": "auxiliary_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [0.0,85.0]
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          0.0,
+          85.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-180.0,-164.0,43.0,85.0],
-        "lim2": [-164.0,-141.0,28.0,85.0],
-        "lim3": [-141.0,-23.0,0.0,85.0],
-        "lim4": [-23.0,23.0,22.0,85.0],
-        "lim5": [23.0,141.0,0.0,85.0],
-        "lim6": [141.0,164.0,28.0,85.0],
-        "lim7": [164.0,180.0,43.0,85.0]
+        "lim1": [
+          -180.0,
+          -164.0,
+          43.0,
+          85.0
+        ],
+        "lim2": [
+          -164.0,
+          -141.0,
+          28.0,
+          85.0
+        ],
+        "lim3": [
+          -141.0,
+          -23.0,
+          0.0,
+          85.0
+        ],
+        "lim4": [
+          -23.0,
+          23.0,
+          22.0,
+          85.0
+        ],
+        "lim5": [
+          23.0,
+          141.0,
+          0.0,
+          85.0
+        ],
+        "lim6": [
+          141.0,
+          164.0,
+          28.0,
+          85.0
+        ],
+        "lim7": [
+          164.0,
+          180.0,
+          43.0,
+          85.0
+        ]
       },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
@@ -117,19 +122,21 @@
         "hasVertical": true,
         "verticalOmegaMult": 1.0,
         "verticalSpeedLimitKPH": 80.0,
-        "errorKPHToDegrees": [
-          {
-            "row": [5.0,0.01]
-          },
-          {
-            "row": [70.0,0.05]
-          }
-        ]
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.01
+            ],
+            [
+              70.0,
+              0.05
+            ]
+          ]
+        }
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner4",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -149,13 +156,17 @@
         "gun": "gun_02"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -175,9 +186,15 @@
         "gun": "gun_01"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

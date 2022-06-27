@@ -17,11 +17,11 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/templates/enduring_confrontation/flt_frontline_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -33,11 +33,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/planes/simulator/tunisia/frontline/flt_frontline_part.blk",
         "importAreas": true,
         "importUnits": true,
@@ -49,11 +47,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/enduring_confrontation/ad_air_dom_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -65,10 +61,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -81,284 +77,176 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "ogranichivaem kolichestvo bitv"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "nastrojki frontlajna"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "obshchee kolichestvo zon"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vyschityvaem kolichestvo zon pokazyvayushchih glubinu fronta"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pomechaem zony morskimi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "pomechaem zony komand (v cikle po algoritmu)"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "risuem liniyu fronta"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 2,
             "var": "lbt_battle_max_battle_num"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 10,
             "var": "flt_big_aaa_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 10,
             "var": "flt_small_aaa_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 20,
             "var": "flt_art_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 50,
             "var": "flt_tank_weight"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 7,
             "var": "flt_zones_in_row"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 7,
             "var": "flt_zones_in_col"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "flt_total_zones"
+          },
+          {
+            "value": 0,
+            "var": [
+              "flt_area_01_state",
+              "flt_area_02_state",
+              "flt_area_03_state",
+              "flt_area_04_state",
+              "flt_area_05_state",
+              "flt_area_06_state",
+              "flt_area_07_state",
+              "flt_area_09_state",
+              "flt_area_10_state",
+              "flt_area_11_state",
+              "flt_area_12_state",
+              "flt_area_13_state",
+              "flt_area_14_state",
+              "flt_area_17_state",
+              "flt_area_18_state",
+              "flt_area_19_state"
+            ]
           }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 0
-            },
-            {
-              "var": "flt_area_01_state"
-            },
-            {
-              "var": "flt_area_02_state"
-            },
-            {
-              "var": "flt_area_03_state"
-            },
-            {
-              "var": "flt_area_04_state"
-            },
-            {
-              "var": "flt_area_05_state"
-            },
-            {
-              "var": "flt_area_06_state"
-            },
-            {
-              "var": "flt_area_07_state"
-            },
-            {
-              "var": "flt_area_09_state"
-            },
-            {
-              "var": "flt_area_10_state"
-            },
-            {
-              "var": "flt_area_11_state"
-            },
-            {
-              "var": "flt_area_12_state"
-            },
-            {
-              "var": "flt_area_13_state"
-            },
-            {
-              "var": "flt_area_14_state"
-            },
-            {
-              "var": "flt_area_17_state"
-            },
-            {
-              "var": "flt_area_18_state"
-            },
-            {
-              "var": "flt_area_19_state"
-            }
-          ]
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 0.0,
             "var": "flt_total_zones",
             "use_variable": true,
             "var_value": "flt_zones_in_row"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": 3.0,
             "var": "flt_total_zones",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
           }
-        },
-        {
-          "varSetString": [
-            {
-              "value": "sea"
-            },
-            {
-              "var": "flt_area_01_type"
-            },
-            {
-              "var": "flt_area_02_type"
-            },
-            {
-              "var": "flt_area_03_type"
-            },
-            {
-              "var": "flt_area_04_type"
-            },
-            {
-              "var": "flt_area_05_type"
-            },
-            {
-              "var": "flt_area_06_type"
-            },
-            {
-              "var": "flt_area_07_type"
-            },
-            {
-              "var": "flt_area_09_type"
-            },
-            {
-              "var": "flt_area_10_type"
-            },
-            {
-              "var": "flt_area_11_type"
-            },
-            {
-              "var": "flt_area_12_type"
-            },
-            {
-              "var": "flt_area_13_type"
-            },
-            {
-              "var": "flt_area_14_type"
-            },
-            {
-              "var": "flt_area_17_type"
-            },
-            {
-              "var": "flt_area_18_type"
-            },
-            {
-              "var": "flt_area_19_type"
-            }
+        ],
+        "varSetString": {
+          "value": "sea",
+          "var": [
+            "flt_area_01_type",
+            "flt_area_02_type",
+            "flt_area_03_type",
+            "flt_area_04_type",
+            "flt_area_05_type",
+            "flt_area_06_type",
+            "flt_area_07_type",
+            "flt_area_09_type",
+            "flt_area_10_type",
+            "flt_area_11_type",
+            "flt_area_12_type",
+            "flt_area_13_type",
+            "flt_area_14_type",
+            "flt_area_17_type",
+            "flt_area_18_type",
+            "flt_area_19_type"
           ]
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "flt_army_state_start"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "flt_draw_frontline"
           }
-        },
-        {
-          "missionBattleArea": {
-            "air": true,
-            "ground": false,
-            "mapArea": false,
-            "airMapArea": true,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": true,
-            "area": "flt_battle_area",
-            "newGridHorizontalCellCount": 7
-          }
+        ],
+        "missionBattleArea": {
+          "air": true,
+          "ground": false,
+          "mapArea": false,
+          "airMapArea": true,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "flt_battle_area",
+          "newGridHorizontalCellCount": 7
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

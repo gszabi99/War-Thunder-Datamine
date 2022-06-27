@@ -6,115 +6,49 @@
       "pressure": 760.0,
       "temperature": 0.0
     },
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
     "mission": {
       "level": "levels/guadalcanal.bin",
       "type": "domination",
@@ -124,9 +58,9 @@
       "weather": "hazy",
       "scoreLimit": 5000
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -139,72 +73,58 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionGetBalanceLevel": {
-            "input_var": "dazt_balance_level"
-          }
+      "conditions": {},
+      "actions": {
+        "missionGetBalanceLevel": {
+          "input_var": "dazt_balance_level"
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "poluchaem kolichestvo spavnov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "missionGetMaxRespawns": {
+          "input_var": "dazt_airfield_spawns_count"
         },
-        {
-          "missionGetMaxRespawns": {
-            "input_var": "dazt_airfield_spawns_count"
-          }
-        },
-        {
-          "triggerActivate": {
+        "triggerActivate": [
+          {
             "target": "dazt_airfield_0_3_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_4_7_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_8_11_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_12_16_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_17_20_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t1_airfield_destroyed": {
       "is_enabled": false,
@@ -240,7 +160,7 @@
           "endReason": "all_bases_dead"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_airfield_destroyed": {
       "is_enabled": false,
@@ -276,7 +196,7 @@
           "endReason": "all_bases_dead"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_mp_minus_for_destroyed_airfield": {
       "is_enabled": false,
@@ -305,7 +225,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_mp_minus_for_destroyed_airfield": {
       "is_enabled": false,
@@ -334,7 +254,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "check_bombing_zones_false": {
       "is_enabled": false,
@@ -356,42 +276,34 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
-            "value": "esli net bombovyh zon, to hp uvelichivaem v 1.2 raza"
-          }
+      "actions": {
+        "comment": {
+          "value": "esli net bombovyh zon, to hp uvelichivaem v 1.2 raza"
         },
-        {
-          "varModify": {
-            "operator": "mul",
-            "value": 1.2,
-            "var": "dazt_airfield_max_hp"
-          }
+        "varModify": {
+          "operator": "mul",
+          "value": 1.2,
+          "var": "dazt_airfield_max_hp"
         },
-        {
-          "triggerDisable": {
-            "target": "check_bombing_zones_true"
-          }
+        "triggerDisable": {
+          "target": "check_bombing_zones_true"
         },
-        {
-          "triggerActivate": {
+        "triggerActivate": [
+          {
             "target": "dazt_t1_airfield_start",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_t2_airfield_start",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "check_bombing_zones_true": {
       "is_enabled": false,
@@ -412,16 +324,14 @@
           "value": true,
           "comparasion_func": "equal"
         },
-        "gameWhenHintIsNotActive": []
+        "gameWhenHintIsNotActive": {}
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "check_bombing_zones_false"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "check_bombing_zones_false"
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/destoy_bases_first",
             "action": "show",
@@ -433,10 +343,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/destoy_bases_first",
             "action": "hide",
@@ -449,34 +357,26 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 5.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 10.0
           }
+        ],
+        "comment": {
+          "value": "dopolnitel'no zhdem 10 sekund"
         },
-        {
-          "comment": {
-            "value": "dopolnitel'no zhdem 10 sekund"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_check_bombing_zones_true"
-            },
-            {
-              "target": "t2_check_bombing_zones_true"
-            }
+        "triggerEnable": {
+          "target": [
+            "t1_check_bombing_zones_true",
+            "t2_check_bombing_zones_true"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_check_bombing_zones_true": {
       "is_enabled": false,
@@ -503,7 +403,7 @@
           "target": "dazt_t1_airfield_start"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_check_bombing_zones_true": {
       "is_enabled": false,
@@ -530,7 +430,7 @@
           "target": "dazt_t2_airfield_start"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dazt_t1_airfield_start": {
       "is_enabled": false,
@@ -568,7 +468,7 @@
           "airfield": "t1_airfield"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dazt_t2_airfield_start": {
       "is_enabled": false,
@@ -606,7 +506,7 @@
           "airfield": "t2_airfield"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dazt_airfield_0_3_check": {
       "is_enabled": false,
@@ -628,42 +528,36 @@
           "comparasion_func": "less"
         }
       },
-      "actions": [
-        {
-          "comment": {
-            "value": "32000 dlya istorii, 80000 dlya arkady"
-          }
+      "actions": {
+        "comment": {
+          "value": "32000 dlya istorii, 80000 dlya arkady"
         },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 32000.0,
             "var": "dazt_airfield_max_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 2.5,
             "var": "dazt_arcade_hp_mul"
           }
-        },
-        {
-          "triggerActivate": {
+        ],
+        "triggerActivate": [
+          {
             "target": "dazt_airfield_arcade_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_regular_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dazt_airfield_4_7_check": {
       "is_enabled": false,
@@ -678,58 +572,50 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "dazt_balance_level",
             "value": 3,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "dazt_balance_level",
             "value": 8,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
-            "value": "48000 dlya istorii, 168000 dlya arkady"
-          }
+        ]
+      },
+      "actions": {
+        "comment": {
+          "value": "48000 dlya istorii, 168000 dlya arkady"
         },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 48000.0,
             "var": "dazt_airfield_max_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 3.5,
             "var": "dazt_arcade_hp_mul"
           }
-        },
-        {
-          "triggerActivate": {
+        ],
+        "triggerActivate": [
+          {
             "target": "dazt_airfield_arcade_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_regular_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dazt_airfield_8_11_check": {
       "is_enabled": false,
@@ -744,58 +630,50 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "dazt_balance_level",
             "value": 7,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "dazt_balance_level",
             "value": 12,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
-            "value": "80000 dlya istorii, 360000 dlya arkady"
-          }
+        ]
+      },
+      "actions": {
+        "comment": {
+          "value": "80000 dlya istorii, 360000 dlya arkady"
         },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 80000.0,
             "var": "dazt_airfield_max_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 4.5,
             "var": "dazt_arcade_hp_mul"
           }
-        },
-        {
-          "triggerActivate": {
+        ],
+        "triggerActivate": [
+          {
             "target": "dazt_airfield_arcade_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_regular_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dazt_airfield_12_16_check": {
       "is_enabled": false,
@@ -810,58 +688,50 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "dazt_balance_level",
             "value": 11,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "dazt_balance_level",
             "value": 17,
             "comparasion_func": "less"
           }
-        }
-      ],
-      "actions": [
-        {
-          "comment": {
-            "value": "172000 dlya istorii, 550400 dlya arkady"
-          }
+        ]
+      },
+      "actions": {
+        "comment": {
+          "value": "172000 dlya istorii, 550400 dlya arkady"
         },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 172000.0,
             "var": "dazt_airfield_max_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 3.2,
             "var": "dazt_arcade_hp_mul"
           }
-        },
-        {
-          "triggerActivate": {
+        ],
+        "triggerActivate": [
+          {
             "target": "dazt_airfield_arcade_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_regular_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dazt_airfield_17_20_check": {
       "is_enabled": false,
@@ -883,42 +753,36 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "comment": {
-            "value": "184000 dlya istorii, 588800 dlya arkady"
-          }
+      "actions": {
+        "comment": {
+          "value": "184000 dlya istorii, 588800 dlya arkady"
         },
-        {
-          "varSetReal": {
+        "varSetReal": [
+          {
             "value": 184000.0,
             "var": "dazt_airfield_max_hp"
-          }
-        },
-        {
-          "varSetReal": {
+          },
+          {
             "value": 3.2,
             "var": "dazt_arcade_hp_mul"
           }
-        },
-        {
-          "triggerActivate": {
+        ],
+        "triggerActivate": [
+          {
             "target": "dazt_airfield_arcade_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "dazt_airfield_regular_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "dazt_airfield_arcade_check": {
       "is_enabled": false,
@@ -955,16 +819,14 @@
         "comment": {
           "value": ""
         },
-        "triggerEnable": [
-          {
-            "target": "check_bombing_zones_false"
-          },
-          {
-            "target": "check_bombing_zones_true"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "check_bombing_zones_false",
+            "check_bombing_zones_true"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dazt_airfield_regular_check": {
       "is_enabled": false,
@@ -1003,7 +865,7 @@
           "target": "dazt_airfield_spawns_check"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dazt_airfield_spawns_check": {
       "is_enabled": false,
@@ -1033,14 +895,12 @@
           "use_variable": true,
           "var_value": "dazt_airfield_spawns_count"
         },
-        "triggerEnable": [
-          {
-            "target": "check_bombing_zones_false"
-          },
-          {
-            "target": "check_bombing_zones_true"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "check_bombing_zones_false",
+            "check_bombing_zones_true"
+          ]
+        }
       },
       "else_actions": {
         "comment": {
@@ -1057,14 +917,12 @@
           "use_variable": true,
           "var_value": "dazt_airfield_spawns_count"
         },
-        "triggerEnable": [
-          {
-            "target": "check_bombing_zones_false"
-          },
-          {
-            "target": "check_bombing_zones_true"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "check_bombing_zones_false",
+            "check_bombing_zones_true"
+          ]
+        }
       }
     },
     "def_aaa_exist_init": {
@@ -1080,42 +938,34 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "zapolnyaem imena skvadov, zashchishchayushchih aerodrom"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem est' li takie skvady"
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "t1_def_aaa_squad",
             "var": "def_aaa_t1_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_def_aaa_squad",
             "var": "def_aaa_t2_name"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "def_aaa_exist_t1_check"
-            },
-            {
-              "target": "def_aaa_exist_t2_check"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "def_aaa_exist_t1_check",
+            "def_aaa_exist_t2_check"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "def_aaa_exist_t1_check": {
       "is_enabled": false,
@@ -1152,7 +1002,7 @@
           "targetChangeProb": 0.25
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "def_aaa_exist_t2_check": {
       "is_enabled": false,
@@ -1189,7 +1039,7 @@
           "targetChangeProb": 0.25
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1206,8 +1056,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "t2_destroy_airfield": {
       "is_enabled": false,
@@ -1220,8 +1070,8 @@
         "scoreTime": 400,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -1235,32 +1085,26 @@
     "def_aaa_t2_name": "",
     "dazt_airfield_spawns_count": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

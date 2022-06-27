@@ -23,9 +23,9 @@
       "timeLimit": 25,
       "deathPenaltyMul": 0.0
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -38,36 +38,38 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionCreateRespawnBasesByTemplate": {
-            "loc_name": "missions/spawn",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "createRandomBase": true,
-            "useExisting": false,
-            "isIndividual": true,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "offset": [0.0,0.0,0.0],
-            "radius": -1.0,
-            "target": "t2_tanks_spawn",
-            "postfix": "",
-            "maxBasesCount": 4,
-            "team": "B",
-            "tags": {
-              "tank": true
-            }
+      "conditions": {},
+      "actions": {
+        "missionCreateRespawnBasesByTemplate": {
+          "loc_name": "missions/spawn",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "createRandomBase": true,
+          "useExisting": false,
+          "isIndividual": true,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radius": -1.0,
+          "target": "t2_tanks_spawn",
+          "postfix": "",
+          "maxBasesCount": 4,
+          "team": "B",
+          "tags": {
+            "tank": true
           }
         },
-        {
-          "missionMarkAsRespawnPoint": {
+        "missionMarkAsRespawnPoint": [
+          {
             "loc_name": "missions/air_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -90,10 +92,8 @@
               "tank": false,
               "ship": false
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/air_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -117,56 +117,42 @@
               "ship": false
             }
           }
+        ],
+        "varSetString": {
+          "value": "battle_area",
+          "var": "battle_area_name"
         },
-        {
-          "varSetString": {
-            "value": "battle_area",
-            "var": "battle_area_name"
-          }
+        "wait": {
+          "time": 5.0
         },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "avg_coastdef_objective_def",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "avg_coastdef_objective_att",
             "object_var_comp_op": "equal",
             "object_var_name": ""
           }
+        ],
+        "comment": {
+          "value": ""
         },
-        {
-          "comment": {
-            "value": ""
-          }
+        "varSetInt": {
+          "value": 0,
+          "var": "coastdef_timer_from_desc",
+          "fromDescriptor": "mission_timer"
         },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "coastdef_timer_from_desc",
-            "fromDescriptor": "mission_timer"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "set_coastdef_timer"
-            },
-            {
-              "target": "coastdef_set_ticket_var"
-            }
+        "triggerEnable": {
+          "target": [
+            "set_coastdef_timer",
+            "coastdef_set_ticket_var"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "coastdef_check_battle_area_exist": {
       "is_enabled": true,
@@ -177,7 +163,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "objectExists": {
@@ -199,7 +185,7 @@
           "area": "@battle_area_name"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "coastdef_set_ticket_var": {
       "is_enabled": false,
@@ -221,32 +207,28 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "t1_tickets_for_1_sec",
-            "source_var": "mpTi1"
-          }
+      "actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "t1_tickets_for_1_sec",
+          "source_var": "mpTi1"
         },
-        {
-          "varModify": {
+        "varModify": [
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "t1_tickets_for_1_sec",
             "use_variable": true,
             "var_value": "coastdef_timer_from_desc"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": -1.0,
             "var": "t1_tickets_for_1_sec"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "set_coastdef_timer": {
       "is_enabled": false,
@@ -274,14 +256,12 @@
           "var": "coastdef_cur_timer",
           "input_var": "coastdef_timer_from_desc"
         },
-        "triggerEnable": [
-          {
-            "target": "coastdef_timer"
-          },
-          {
-            "target": "coastdef_timer_end"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "coastdef_timer",
+            "coastdef_timer_end"
+          ]
+        }
       },
       "else_actions": {
         "varSetInt": {
@@ -289,14 +269,12 @@
           "var": "coastdef_cur_timer",
           "input_var": "coastdef_timer"
         },
-        "triggerEnable": [
-          {
-            "target": "coastdef_timer"
-          },
-          {
-            "target": "coastdef_timer_end"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "coastdef_timer",
+            "coastdef_timer_end"
+          ]
+        }
       }
     },
     "coastdef_timer": {
@@ -312,7 +290,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -329,7 +307,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "coastdef_timer_end": {
       "is_enabled": false,
@@ -356,7 +334,7 @@
           "target": "coastdef_t2_win"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "coastdef_t2_win": {
       "is_enabled": false,
@@ -371,7 +349,7 @@
           "time": 0.5
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "gameMPChangeScore": {
           "value": -20,
@@ -379,7 +357,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -394,8 +372,8 @@
         "timeLimit": 3600,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "avg_coastdef_objective_att": {
       "is_enabled": false,
@@ -406,8 +384,8 @@
         "timeLimit": 3600,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -417,32 +395,26 @@
     "battle_area_name": "",
     "t1_tickets_for_1_sec": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

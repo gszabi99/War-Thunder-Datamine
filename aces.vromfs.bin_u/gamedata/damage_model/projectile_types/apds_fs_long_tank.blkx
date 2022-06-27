@@ -4,28 +4,43 @@
   "secondaryShattersPreset": "apds_fs_long",
   "bulletType": "apds_fs_long_tank",
   "slopeEffectPreset": "apds_fs_long",
-  "fresnel": [0.23,0.1,2.0],
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
   "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
   "stability": {
     "precessionDamping": 0.3,
     "ricochetAnglePrecessionFactor": 5.0,
     "ricochetAngleOmegaFactor": 0.5,
-    "slopeToOmega": [1.0,10.0,0.0,1.0],
+    "slopeToOmega": [
+      1.0,
+      10.0,
+      0.0,
+      1.0
+    ],
     "angleLossStabilizationAfterRicochet": 30.0,
-    "penetrationReduction": [
-      {
-        "pnt": [0.0,1.0]
-      },
-      {
-        "pnt": [2.0,0.95]
-      },
-      {
-        "pnt": [10.0,0.5]
-      },
-      {
-        "pnt": [21.0,0.3]
-      }
-    ]
+    "penetrationReduction": {
+      "pnt": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          2.0,
+          0.95
+        ],
+        [
+          10.0,
+          0.5
+        ],
+        [
+          21.0,
+          0.3
+        ]
+      ]
+    }
   },
   "DamageParts": {
     "body": {

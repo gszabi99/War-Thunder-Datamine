@@ -15,7 +15,7 @@
       "weather": "hazy"
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -32,18 +32,16 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "ht_t1_restart"
-          },
-          {
-            "target": "ht_t2_restart"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "ht_t1_restart",
+            "ht_t2_restart"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "ht_t1_routine": {
       "isCategory": true,
@@ -62,13 +60,13 @@
             "var": "ht_restart_delay_timer"
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "triggerEnable": {
             "target": "ht_t1_start"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ht_t1_start": {
         "is_enabled": false,
@@ -90,36 +88,26 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
+              "value": ""
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "triggerDisable": [
-              {
-                "target": "ht_t1_attack"
-              },
-              {
-                "target": "ht_t1_retreat"
-              },
-              {
-                "target": "ht_t1_retreat_restart_check"
-              }
+          ],
+          "triggerDisable": {
+            "target": [
+              "ht_t1_attack",
+              "ht_t1_retreat",
+              "ht_t1_retreat_restart_check"
             ]
           },
-          {
-            "triggerEnable": {
-              "target": "ht_t1_choose_bombers"
-            }
+          "triggerEnable": {
+            "target": "ht_t1_choose_bombers"
           }
-        ],
+        },
         "else_actions": {
           "triggerEnable": {
             "target": "ht_t1_restart"
@@ -155,35 +143,29 @@
             "object": "@ht_t1_bomber_target_name"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "bombers template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "ht_t1_bomber_target_name",
               "var": "ht_t1_cur_target_name"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "ht_t1_bomber_cover_name",
               "var": "ht_t1_cur_cover_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t1_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t1_spawn"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "bombers template is no active"
@@ -222,35 +204,29 @@
             "object": "@ht_t1_sea_bomber_target_name"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "sea bombers template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "ht_t1_sea_bomber_target_name",
               "var": "ht_t1_cur_target_name"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "ht_t1_sea_bomber_cover_name",
               "var": "ht_t1_cur_cover_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t1_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t1_spawn"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "sea bombers template is no active"
@@ -289,35 +265,29 @@
             "object": "@ht_t1_assault_target_name"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "assaults template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "ht_t1_assault_target_name",
               "var": "ht_t1_cur_target_name"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "ht_t1_assault_cover_name",
               "var": "ht_t1_cur_cover_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t1_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t1_spawn"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "assaults template is no active"
@@ -340,87 +310,77 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
               "value": ""
             }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "ht_t1_is_active"
           },
-          {
-            "comment": {
-              "value": ""
-            }
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "ht_t1_hunter",
+            "target": "ht_t1_hunter_spawn_point",
+            "isStealth": true,
+            "resetFormation": true
           },
-          {
-            "comment": {
-              "value": ""
-            }
+          "wait": {
+            "time": 1.0
           },
-          {
-            "comment": {
-              "value": ""
-            }
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@ht_t1_cur_target_name",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": true,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "object": "ht_t1_hunter",
+            "useFormationCenter": false,
+            "teleportOffset": [
+              0.0,
+              500.0,
+              0.0
+            ]
           },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "ht_t1_is_active"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "ht_t1_hunter",
-              "target": "ht_t1_hunter_spawn_point",
-              "isStealth": true,
-              "resetFormation": true
-            }
-          },
-          {
-            "wait": {
-              "time": 1.0
-            }
-          },
-          {
-            "unitMoveTo": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "target": "@ht_t1_cur_target_name",
-              "target_marking": 0,
-              "waypointReachedDist": 10.0,
-              "recalculatePathDist": -1.0,
-              "follow_target": true,
-              "fastClimb": false,
-              "destTimeMode": false,
-              "teleportHeightType": "absolute",
-              "useUnitHeightForTele": true,
-              "shouldKeepFormation": true,
-              "teleportHeightValue": 1000.0,
-              "horizontalDirectionForTeleport": true,
-              "target_var_name": "",
-              "target_var_comp_op": "equal",
-              "target_var_value": 0,
-              "object": "ht_t1_hunter",
-              "useFormationCenter": false,
-              "teleportOffset": [0.0,500.0,0.0]
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t1_attack"
-            }
+          "triggerEnable": {
+            "target": "ht_t1_attack"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "ht_t1_attack": {
         "is_enabled": false,
@@ -475,32 +435,21 @@
             "target_var_value": 0,
             "object": "ht_t1_hunter"
           },
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "ht_t1_hunter"
-            },
-            {
-              "target": "@ht_t1_cur_target_name"
-            },
-            {
-              "target": "@ht_t1_cur_cover_name"
-            },
-            {
-              "target": "t2_players_squad"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "anchorTarget": "@ht_t1_cur_target_name"
-            },
-            {
-              "targetToAnchorDist": [3500.0,5000.0]
-            }
-          ],
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "ht_t1_hunter",
+            "target": [
+              "@ht_t1_cur_target_name",
+              "@ht_t1_cur_cover_name",
+              "t2_players_squad"
+            ],
+            "fireRandom": true,
+            "anchorTarget": "@ht_t1_cur_target_name",
+            "targetToAnchorDist": [
+              3500.0,
+              5000.0
+            ]
+          },
           "comment": {
             "value": ""
           },
@@ -508,7 +457,7 @@
             "target": "ht_t1_retreat"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ht_t1_retreat": {
         "is_enabled": false,
@@ -552,7 +501,7 @@
             "target": "ht_t1_retreat_restart_check"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ht_t1_retreat_restart_check": {
         "is_enabled": false,
@@ -608,13 +557,13 @@
             "var": "ht_restart_delay_timer"
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "triggerEnable": {
             "target": "ht_t2_start"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ht_t2_start": {
         "is_enabled": false,
@@ -636,36 +585,26 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
+              "value": ""
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "triggerDisable": [
-              {
-                "target": "ht_t2_attack"
-              },
-              {
-                "target": "ht_t2_retreat"
-              },
-              {
-                "target": "ht_t2_retreat_restart_check"
-              }
+          ],
+          "triggerDisable": {
+            "target": [
+              "ht_t2_attack",
+              "ht_t2_retreat",
+              "ht_t2_retreat_restart_check"
             ]
           },
-          {
-            "triggerEnable": {
-              "target": "ht_t2_choose_bombers"
-            }
+          "triggerEnable": {
+            "target": "ht_t2_choose_bombers"
           }
-        ],
+        },
         "else_actions": {
           "triggerEnable": {
             "target": "ht_t2_restart"
@@ -701,35 +640,29 @@
             "object": "@ht_t2_bomber_target_name"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "bombers template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "ht_t2_bomber_target_name",
               "var": "ht_t2_cur_target_name"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "ht_t2_bomber_cover_name",
               "var": "ht_t2_cur_cover_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t2_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t2_spawn"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "bombers template is no active"
@@ -768,35 +701,29 @@
             "object": "@ht_t2_sea_bomber_target_name"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "sea bombers template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "ht_t2_sea_bomber_target_name",
               "var": "ht_t2_cur_target_name"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "ht_t2_sea_bomber_cover_name",
               "var": "ht_t2_cur_cover_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t2_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t2_spawn"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "sea bombers template is no active"
@@ -835,35 +762,29 @@
             "object": "@ht_t2_assault_target_name"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "assaults template is active"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "ht_t2_assault_target_name",
               "var": "ht_t2_cur_target_name"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "ht_t2_assault_cover_name",
               "var": "ht_t2_cur_cover_name"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t2_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t2_spawn"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "assaults template is no active"
@@ -886,87 +807,77 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
               "value": ""
             }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "ht_t2_is_active"
           },
-          {
-            "comment": {
-              "value": ""
-            }
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "ht_t2_hunter",
+            "target": "ht_t2_hunter_spawn_point",
+            "isStealth": true,
+            "resetFormation": true
           },
-          {
-            "comment": {
-              "value": ""
-            }
+          "wait": {
+            "time": 1.0
           },
-          {
-            "comment": {
-              "value": ""
-            }
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@ht_t2_cur_target_name",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": true,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "object": "ht_t2_hunter",
+            "useFormationCenter": false,
+            "teleportOffset": [
+              0.0,
+              500.0,
+              0.0
+            ]
           },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "ht_t2_is_active"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "ht_t2_hunter",
-              "target": "ht_t2_hunter_spawn_point",
-              "isStealth": true,
-              "resetFormation": true
-            }
-          },
-          {
-            "wait": {
-              "time": 1.0
-            }
-          },
-          {
-            "unitMoveTo": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "target": "@ht_t2_cur_target_name",
-              "target_marking": 0,
-              "waypointReachedDist": 10.0,
-              "recalculatePathDist": -1.0,
-              "follow_target": true,
-              "fastClimb": false,
-              "destTimeMode": false,
-              "teleportHeightType": "absolute",
-              "useUnitHeightForTele": true,
-              "shouldKeepFormation": true,
-              "teleportHeightValue": 1000.0,
-              "horizontalDirectionForTeleport": true,
-              "target_var_name": "",
-              "target_var_comp_op": "equal",
-              "target_var_value": 0,
-              "object": "ht_t2_hunter",
-              "useFormationCenter": false,
-              "teleportOffset": [0.0,500.0,0.0]
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "ht_t2_attack"
-            }
+          "triggerEnable": {
+            "target": "ht_t2_attack"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "ht_t2_attack": {
         "is_enabled": false,
@@ -1021,32 +932,21 @@
             "target_var_value": 0,
             "object": "ht_t2_hunter"
           },
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "ht_t2_hunter"
-            },
-            {
-              "target": "@ht_t2_cur_target_name"
-            },
-            {
-              "target": "@ht_t2_cur_cover_name"
-            },
-            {
-              "target": "t1_players_squad"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "anchorTarget": "@ht_t2_cur_target_name"
-            },
-            {
-              "targetToAnchorDist": [3500.0,5000.0]
-            }
-          ],
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "ht_t2_hunter",
+            "target": [
+              "@ht_t2_cur_target_name",
+              "@ht_t2_cur_cover_name",
+              "t1_players_squad"
+            ],
+            "fireRandom": true,
+            "anchorTarget": "@ht_t2_cur_target_name",
+            "targetToAnchorDist": [
+              3500.0,
+              5000.0
+            ]
+          },
           "comment": {
             "value": ""
           },
@@ -1054,7 +954,7 @@
             "target": "ht_t2_retreat"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ht_t2_retreat": {
         "is_enabled": false,
@@ -1098,7 +998,7 @@
             "target": "ht_t2_retreat_restart_check"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "ht_t2_retreat_restart_check": {
         "is_enabled": false,
@@ -1163,32 +1063,26 @@
     "ht_t2_cur_cover_name": "",
     "ht_restart_delay_timer": 120
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

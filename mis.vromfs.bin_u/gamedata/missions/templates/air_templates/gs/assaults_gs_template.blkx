@@ -17,7 +17,7 @@
       "optionalTakeOff": false
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -41,53 +41,41 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "vybiraem set spavnov 1 ili 2"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem imena spavnov"
           }
+        ],
+        "varSetRandomInt": {
+          "var": "at_spawn_set_idx",
+          "from": 1,
+          "to_not_including": 3
         },
-        {
-          "varSetRandomInt": {
-            "var": "at_spawn_set_idx",
-            "from": 1,
-            "to_not_including": 3
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "at_fill_spawns_name"
-          }
+        "triggerEnable": {
+          "target": "at_fill_spawns_name"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "set spavnov vsegda 1"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem imena spavnov"
           }
+        ],
+        "varSetInt": {
+          "value": 1,
+          "var": "at_spawn_set_idx"
         },
-        {
-          "varSetInt": {
-            "value": 1,
-            "var": "at_spawn_set_idx"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "at_fill_spawns_name"
-          }
+        "triggerEnable": {
+          "target": "at_fill_spawns_name"
         }
-      ]
+      }
     },
     "at_fill_spawns_name": {
       "is_enabled": true,
@@ -109,200 +97,156 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "vybiraem set spavnov 1 ili 2"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vybiraem indeksy spavnvo vnutri seta"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem imya spavna komandy A "
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem imya spavna komandy B"
           }
-        },
-        {
-          "varSetRandomInt": {
+        ],
+        "varSetRandomInt": [
+          {
             "var": "at_spawn_set_idx",
             "from": 1,
             "to_not_including": 3
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "at_t1_spawn_idx",
             "from": 1,
             "to_not_including": 3
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "at_t2_spawn_idx",
             "from": 1,
             "to_not_including": 3,
             "check_prev_value": "at_t1_spawn_idx"
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "at_t1_spawn_",
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "at_t2_spawn_",
             "var": "at_t2_spawn_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@at_spawn_set_idx",
             "digits": 2,
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_",
             "digits": 0,
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@at_t1_spawn_idx",
             "digits": 2,
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@at_spawn_set_idx",
             "digits": 2,
             "var": "at_t2_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_",
             "digits": 0,
             "var": "at_t2_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@at_t2_spawn_idx",
             "digits": 2,
             "var": "at_t2_spawn_name"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "at_spawn"
-          }
+        ],
+        "triggerEnable": {
+          "target": "at_spawn"
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "vybiraem indeksy spavnvo vnutri seta"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem imya spavna komandy A "
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sozdaem imya spavna komandy B"
           }
-        },
-        {
-          "varSetRandomInt": {
+        ],
+        "varSetRandomInt": [
+          {
             "var": "at_t1_spawn_idx",
             "from": 1,
             "to_not_including": 3
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "at_t2_spawn_idx",
             "from": 1,
             "to_not_including": 3,
             "check_prev_value": "at_t1_spawn_idx"
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "at_t1_spawn_",
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "at_t2_spawn_",
             "var": "at_t2_spawn_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@at_spawn_set_idx",
             "digits": 2,
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_",
             "digits": 0,
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@at_t1_spawn_idx",
             "digits": 2,
             "var": "at_t1_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@at_spawn_set_idx",
             "digits": 2,
             "var": "at_t2_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "_",
             "digits": 0,
             "var": "at_t2_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@at_t2_spawn_idx",
             "digits": 2,
             "var": "at_t2_spawn_name"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "at_spawn"
-          }
+        ],
+        "triggerEnable": {
+          "target": "at_spawn"
         }
-      ]
+      }
     },
     "at_spawn": {
       "is_enabled": false,
@@ -317,128 +261,95 @@
           "time": 60.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "moAddMissionObjective": {
-            "target": "at_gs_objective",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+      "conditions": {},
+      "actions": {
+        "moAddMissionObjective": {
+          "target": "at_gs_objective",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "comment": {
-            "value": ""
-          }
+        "comment": {
+          "value": ""
         },
-        {
-          "unitRespawn": {
+        "unitRespawn": [
+          {
             "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "at_t1_assault",
             "target": "@at_t1_spawn_name",
             "resetFormation": true
-          }
-        },
-        {
-          "unitRespawn": {
+          },
+          {
             "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "object": "at_t2_assault",
             "target": "@at_t2_spawn_name",
             "resetFormation": true
           }
-        },
-        {
-          "unitLoadBehTree": [
-            {
-              "name": "missionAssault"
-            },
-            {
-              "objects": "at_t1_assault"
-            },
-            {
-              "objects": "at_t2_assault"
-            }
+        ],
+        "unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": [
+            "at_t1_assault",
+            "at_t2_assault"
           ]
         },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "at_t1_assault",
             "target": "t2_quest_units_squad",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "at_t2_assault",
             "target": "t1_quest_units_squad",
             "fireRandom": true
           }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "at_t1_assault"
-            },
-            {
-              "object": "at_t2_assault"
-            },
-            {
-              "airAccuracy": 0.0
-            },
-            {
-              "airEffShootingRate": 0.0
-            },
-            {
-              "aiGunnersCanTargetGroundUnits": false
-            },
-            {
-              "aiGunnersDistance": 200.0
-            },
-            {
-              "avoidFriendlyFire": true
-            },
-            {
-              "plane": {
-                "targetDeviation": {
-                  "trigger": "gunner",
-                  "defaultVal": 25.0,
-                  "limits": [20.0,30.0]
-                }
-              }
+        ],
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "at_t1_assault",
+            "at_t2_assault"
+          ],
+          "airAccuracy": 0.0,
+          "airEffShootingRate": 0.0,
+          "aiGunnersCanTargetGroundUnits": false,
+          "aiGunnersDistance": 200.0,
+          "avoidFriendlyFire": true,
+          "plane": {
+            "targetDeviation": {
+              "trigger": "gunner",
+              "defaultVal": 25.0,
+              "limits": [
+                20.0,
+                30.0
+              ]
             }
-          ]
+          }
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "at_rearm"
-            },
-            {
-              "target": "at_t1_kill_counter"
-            },
-            {
-              "target": "at_t2_kill_counter"
-            }
+        "triggerEnable": {
+          "target": [
+            "at_rearm",
+            "at_t1_kill_counter",
+            "at_t2_kill_counter"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "at_rearm": {
       "is_enabled": false,
@@ -453,44 +364,28 @@
           "time": 240.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "unitRestore": [
-          {
-            "ressurectIfDead": false
-          },
-          {
-            "fullRestore": false
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "target": "at_t1_assault"
-          },
-          {
-            "target": "at_t2_assault"
-          },
-          {
-            "target_type": "isActive"
-          },
-          {
-            "ammoRestore": true
-          }
-        ],
-        "__unitLoadBehTree": [
-          {
-            "name": "missionAssault"
-          },
-          {
-            "objects": "at_t1_assault"
-          },
-          {
-            "objects": "at_t2_assault"
-          }
-        ]
+        "unitRestore": {
+          "ressurectIfDead": false,
+          "fullRestore": false,
+          "target_marking": 0,
+          "target": [
+            "at_t1_assault",
+            "at_t2_assault"
+          ],
+          "target_type": "isActive",
+          "ammoRestore": true
+        },
+        "__unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": [
+            "at_t1_assault",
+            "at_t2_assault"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "at_t1_kill_counter": {
       "is_enabled": false,
@@ -529,7 +424,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "at_t2_kill_counter": {
       "is_enabled": false,
@@ -568,7 +463,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -584,8 +479,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -598,11 +493,11 @@
     "at_t1_kill_count": 0,
     "at_t2_kill_count": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [],
-  "wayPoints": []
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {},
+  "wayPoints": {}
 }

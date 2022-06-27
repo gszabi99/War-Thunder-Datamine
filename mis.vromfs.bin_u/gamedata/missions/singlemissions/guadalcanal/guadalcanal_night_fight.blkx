@@ -20,7 +20,11 @@
       "optionalTakeOff": false,
       "environment": "Night",
       "weather": "hazy",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "gt_cooperative": true
     },
     "briefing": {
@@ -31,77 +35,55 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "player"
-              },
-              {
-                "point": "player_unit"
-              },
-              {
-                "point": "f4u_group01"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player_unit",
+              "f4u_group01"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "player_unit",
               "lookAt": "f4u_group01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "enemy",
               "target": "f4u_group01",
               "lookAt": "player_unit"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "ally",
               "target": "ki43_group",
               "lookAt": "f4u_group01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "enemy",
               "target": "cargo_ships01",
               "lookAt": "cargo_ships02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "destroyer",
               "side": "enemy",
               "target": "cargo_ships03",
               "lookAt": "cargo_ships02"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -118,75 +100,45 @@
           "time": 0.01
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "f4u_group01"
+      "conditions": {},
+      "actions": {
+        "unitSetIndication": {
+          "set": true,
+          "target": "f4u_group01"
+        },
+        "unitAttackTarget": [
+          {
+            "playerAttracted": true,
+            "object": "f4u_group01",
+            "target": [
+              "player_unit",
+              "ki43_group"
+            ],
+            "fireRandom": true,
+            "playerAttractedCount": 1,
+            "playerAttractedEffRate": 0.05
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "player_unit",
+              "ki43_group"
+            ],
+            "target": "f4u_group01",
+            "fireRandom": true
           }
+        ],
+        "unitSetProperties": {
+          "object": "player_himself",
+          "targetableByAi": true
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "f4u_group01"
-            },
-            {
-              "target": "player_unit"
-            },
-            {
-              "target": "ki43_group"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 1
-            },
-            {
-              "playerAttractedEffRate": 0.05
-            }
-          ]
+        "wait": {
+          "time": 2.0
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "player_unit"
-            },
-            {
-              "object": "ki43_group"
-            },
-            {
-              "target": "f4u_group01"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object": "player_himself",
-            "targetableByAi": true
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "single_guadalcanal_attack_group"
-          }
+        "moAddMissionObjective": {
+          "target": "single_guadalcanal_attack_group"
         }
-      ]
+      }
     },
     "Mission_complete": {
       "is_enabled": true,
@@ -253,7 +205,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -279,62 +231,48 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object": "f4u_group01"
-            },
-            {
-              "object": "ki43_group"
-            },
-            {
-              "plane": [
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": [
+              "f4u_group01",
+              "ki43_group"
+            ],
+            "plane": {
+              "targetDeviation": [
                 {
-                  "targetDeviation": {
-                    "trigger": "machine gun",
-                    "defaultVal": 2.0,
-                    "limits": [1.0,4.0]
-                  }
+                  "trigger": "machine gun",
+                  "defaultVal": 2.0,
+                  "limits": [
+                    1.0,
+                    4.0
+                  ]
                 },
                 {
-                  "targetDeviation": {
-                    "trigger": "cannon",
-                    "defaultVal": 3.0,
-                    "limits": [2.0,4.0]
-                  }
+                  "trigger": "cannon",
+                  "defaultVal": 3.0,
+                  "limits": [
+                    2.0,
+                    4.0
+                  ]
                 }
               ]
             }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "georgetown_ship01"
-            },
-            {
-              "object": "georgetown_ship02"
-            },
-            {
-              "object": "georgetown_ship03"
-            },
-            {
-              "object": "cargo_ships01"
-            },
-            {
-              "object": "cargo_ships02"
-            },
-            {
-              "object": "cargo_ships03"
-            },
-            {
-              "effShootingRate": 0.1
-            }
-          ]
-        }
-      ]
+          },
+          {
+            "object": [
+              "georgetown_ship01",
+              "georgetown_ship02",
+              "georgetown_ship03",
+              "cargo_ships01",
+              "cargo_ships02",
+              "cargo_ships03"
+            ],
+            "effShootingRate": 0.1
+          }
+        ]
+      }
     }
   },
   "mission_objectives": {
@@ -350,23 +288,39 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player_unit",
         "tm": [
-          [1.0,0.0,7.45058e-09],
-          [0.0,1.0,0.0],
-          [-7.45058e-09,0.0,1.0],
-          [-957.3,400.0,-12836.2]
+          [
+            1.0,
+            0.0,
+            7.45058E-09
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -7.45058E-09,
+            0.0,
+            1.0
+          ],
+          [
+            -957.3,
+            400.0,
+            -12836.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ki_43_2",
@@ -393,17 +347,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "f4u_group01",
         "tm": [
-          [-1.0,0.0,-2.23517e-08],
-          [0.0,1.0,0.0],
-          [2.23517e-08,0.0,-1.0],
-          [6515.5,400.0,-12999.6]
+          [
+            -1.0,
+            0.0,
+            -2.23517E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            2.23517E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            6515.5,
+            400.0,
+            -12999.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "f4u-1a",
@@ -429,17 +397,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ki43_group",
         "tm": [
-          [0.67559,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,0.67559],
-          [321.35,400.0,-15935.8]
+          [
+            0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            321.35,
+            400.0,
+            -15935.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ki_43_2",
@@ -464,17 +446,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "ships": {
+    ],
+    "ships": [
+      {
         "name": "cargo_ships01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1040.65,66.6,-8503.15]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1040.65,
+            66.6,
+            -8503.15
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_cargo_ship",
@@ -484,22 +482,42 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [4.0,10.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            4.0,
+            10.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "cargo_ships02",
         "tm": [
-          [0.999048,0.0,0.0436194],
-          [0.0,1.0,0.0],
-          [-0.0436194,0.0,0.999048],
-          [4166.65,66.6,-8951.0]
+          [
+            0.999048,
+            0.0,
+            0.0436194
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            4166.65,
+            66.6,
+            -8951.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_cargo_ship",
@@ -509,22 +527,42 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [4.0,10.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            4.0,
+            10.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "cargo_ships03",
         "tm": [
-          [0.906308,0.0,-0.422618],
-          [0.0,1.0,0.0],
-          [0.422618,0.0,0.906308],
-          [9081.75,66.6,-10398.0]
+          [
+            0.906308,
+            0.0,
+            -0.422618
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.422618,
+            0.0,
+            0.906308
+          ],
+          [
+            9081.75,
+            66.6,
+            -10398.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_cargo_ship",
@@ -534,22 +572,42 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [4.0,10.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            4.0,
+            10.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "georgetown_ship01",
         "tm": [
-          [0.999048,0.0,0.0436194],
-          [0.0,1.0,0.0],
-          [-0.0436194,0.0,0.999048],
-          [1266.55,66.6,-10161.1]
+          [
+            0.999048,
+            0.0,
+            0.0436194
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            1266.55,
+            66.6,
+            -10161.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
@@ -559,22 +617,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [4.0,10.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            4.0,
+            10.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "georgetown_ship02",
         "tm": [
-          [0.939693,0.0,-0.34202],
-          [0.0,1.0,0.0],
-          [0.34202,0.0,0.939693],
-          [5545.55,66.6,-10991.7]
+          [
+            0.939693,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            0.939693
+          ],
+          [
+            5545.55,
+            66.6,
+            -10991.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
@@ -584,22 +662,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [4.0,10.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            4.0,
+            10.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "georgetown_ship03",
         "tm": [
-          [0.999048,0.0,-0.0436194],
-          [0.0,1.0,0.0],
-          [0.0436194,0.0,0.999048],
-          [8944.85,66.6,-11876.2]
+          [
+            0.999048,
+            0.0,
+            -0.0436194
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            8944.85,
+            66.6,
+            -11876.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
@@ -609,22 +707,44 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [4.0,10.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            4.0,
+            10.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "searchlight03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1228.4,30.3,-12637.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1228.4,
+            30.3,
+            -12637.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -634,22 +754,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3568.2,30.3,-12906.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3568.2,
+            30.3,
+            -12906.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -659,22 +799,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5073.05,30.3,-13345.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            5073.05,
+            30.3,
+            -13345.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -684,22 +844,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1863.4,10.4657,-13632.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1863.4,
+            10.4657,
+            -13632.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -709,22 +889,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1480.05,9.03019,-11623.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1480.05,
+            9.03019,
+            -11623.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -734,22 +934,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight00",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [419.15,24.2788,-12671.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            419.15,
+            24.2788,
+            -12671.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -759,22 +979,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2844.1,24.3,-12636.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2844.1,
+            24.3,
+            -12636.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -784,22 +1024,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4006.55,19.1726,-11878.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4006.55,
+            19.1726,
+            -11878.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -809,22 +1069,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3052.95,23.9071,-14101.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3052.95,
+            23.9071,
+            -14101.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -834,22 +1114,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4746.75,5.75867,-13812.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4746.75,
+            5.75867,
+            -13812.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -859,22 +1159,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "searchlight10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4777.55,0.0,-12794.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4777.55,
+            0.0,
+            -12794.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "searchLight",
@@ -884,33 +1204,53 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
-        "name": "player_himself",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5687.05,-7.15,-15443.3]
+    ],
+    "squad": {
+      "name": "player_himself",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": {
-          "squad_members": "player_unit",
-          "object_type": "isPlayer"
-        },
-        "way": []
-      }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5687.05,
+          -7.15,
+          -15443.3
+        ]
+      ],
+      "closed_waypoints": false,
+      "unit_class": "",
+      "weapons": "",
+      "props": {
+        "squad_members": "player_unit",
+        "object_type": "isPlayer"
+      },
+      "way": {}
     }
-  ],
-  "areas": []
+  },
+  "areas": {}
 }

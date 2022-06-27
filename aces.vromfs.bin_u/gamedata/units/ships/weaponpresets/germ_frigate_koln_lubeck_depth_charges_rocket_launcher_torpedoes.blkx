@@ -1,282 +1,208 @@
-[
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner6"
+{
+  "Weapon": [
+    {
+      "trigger": "gunner6",
+      "triggerGroup": "rockets",
+      "blk": "gameData/Weapons/bombguns/bomb_de_375mm_erika.blk",
+      "weaponType": "rockets",
+      "useEmitter": true,
+      "emitter": "bone_rocket_01",
+      "emitterGenRange": [
+        1,
+        4
+      ],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "barrelDP": "auxiliary_caliber_gun_01_dm",
+      "breechDP": "auxiliary_caliber_gun_01_dm",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 18.0,
+      "speedPitch": 18.0,
+      "bullets": 48,
+      "allowableDelta": 2.0,
+      "ChainfireTime": 60.0,
+      "DelayAfterShoot": 0.0,
+      "aimMinDist": 20.0,
+      "aimMaxDist": 4500.0,
+      "randomAngle": 0.0,
+      "accuracyBotMultAir": 0.55,
+      "accuracyAir": 1.0,
+      "accuracyGnd": 0.8,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 0.5,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 3.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "auxiliary_caliber_turret_01",
+        "gun": "auxiliary_caliber_gun_01",
+        "gunnerDm": "auxiliary_caliber_turret_01_dm"
       },
-      {
-        "triggerGroup": "rockets"
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          0.0,
+          60.0
+        ]
       },
-      {
-        "blk": "gameData/Weapons/bombguns/bomb_de_375mm_erika.blk"
-      },
-      {
-        "weaponType": "rockets"
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitter": "bone_rocket_01"
-      },
-      {
-        "emitterGenRange": [1.0,4.0]
-      },
-      {
-        "emitterGenFmt": "bone_rocket_%02d"
-      },
-      {
-        "barrelDP": "auxiliary_caliber_gun_01_dm"
-      },
-      {
-        "breechDP": "auxiliary_caliber_gun_01_dm"
-      },
-      {
-        "defaultYaw": 0.0
-      },
-      {
-        "defaultPitch": 0.0
-      },
-      {
-        "speedYaw": 18.0
-      },
-      {
-        "speedPitch": 18.0
-      },
-      {
-        "bullets": 48
-      },
-      {
-        "allowableDelta": 2.0
-      },
-      {
-        "ChainfireTime": 60.0
-      },
-      {
-        "DelayAfterShoot": 0.0
-      },
-      {
-        "aimMinDist": 20.0
-      },
-      {
-        "aimMaxDist": 4500.0
-      },
-      {
-        "randomAngle": 0.0
-      },
-      {
-        "accuracyBotMultAir": 0.55
-      },
-      {
-        "accuracyAir": 1.0
-      },
-      {
-        "accuracyGnd": 0.8
-      },
-      {
-        "errMeasureVel": 0.0
-      },
-      {
-        "errTargettingOn100kmph": 0.0
-      },
-      {
-        "errMeasureVelFast": 100.0
-      },
-      {
-        "errMeasureVelFwdShift": 0.5
-      },
-      {
-        "errMeasureVelDir": 3.0
-      },
-      {
-        "errTargetting": 3.0
-      },
-      {
-        "errExplTime": 0.0
-      },
-      {
-        "turret": {
-          "head": "auxiliary_caliber_turret_01",
-          "gun": "auxiliary_caliber_gun_01",
-          "gunnerDm": "auxiliary_caliber_turret_01_dm"
+      "limitsDeadzone": [
+        {
+          "yaw": [
+            -180.0,
+            -125.0
+          ],
+          "pitch": [
+            0.0,
+            60.0
+          ]
+        },
+        {
+          "yaw": [
+            90.0,
+            180.0
+          ],
+          "pitch": [
+            0.0,
+            60.0
+          ]
         }
-      },
-      {
-        "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [0.0,60.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-180.0,-125.0],
-          "pitch": [0.0,60.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [90.0,180.0],
-          "pitch": [0.0,60.0]
-        }
-      },
-      {
-        "limitsTable": [
-          {
-            "lim1": [-180.0,-125.0,10.0,60.0]
-          },
-          {
-            "lim1": [-125.0,-45.0,0.0,60.0]
-          },
-          {
-            "lim1": [-45.0,0.0,10.0,60.0]
-          },
-          {
-            "lim1": [0.0,180.0,10.0,60.0]
-          }
+      ],
+      "limitsTable": {
+        "lim1": [
+          [
+            -180.0,
+            -125.0,
+            10.0,
+            60.0
+          ],
+          [
+            -125.0,
+            -45.0,
+            0.0,
+            60.0
+          ],
+          [
+            -45.0,
+            0.0,
+            10.0,
+            60.0
+          ],
+          [
+            0.0,
+            180.0,
+            10.0,
+            60.0
+          ]
         ]
       }
-    ]
-  },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner7"
+    },
+    {
+      "trigger": "gunner7",
+      "triggerGroup": "rockets",
+      "blk": "gameData/Weapons/bombguns/bomb_de_375mm_erika.blk",
+      "weaponType": "rockets",
+      "useEmitter": true,
+      "emitter": "bone_rocket_05",
+      "emitterGenRange": [
+        5,
+        8
+      ],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "barrelDP": "auxiliary_caliber_gun_02_dm",
+      "breechDP": "auxiliary_caliber_gun_02_dm",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 18.0,
+      "speedPitch": 18.0,
+      "bullets": 48,
+      "allowableDelta": 2.0,
+      "ChainfireTime": 60.0,
+      "DelayAfterShoot": 0.0,
+      "aimMinDist": 20.0,
+      "aimMaxDist": 4500.0,
+      "randomAngle": 0.0,
+      "accuracyBotMultAir": 0.55,
+      "accuracyAir": 1.0,
+      "accuracyGnd": 0.8,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 0.5,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 3.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "auxiliary_caliber_turret_02",
+        "gun": "auxiliary_caliber_gun_02",
+        "gunnerDm": "auxiliary_caliber_turret_02_dm"
       },
-      {
-        "triggerGroup": "rockets"
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          0.0,
+          60.0
+        ]
       },
-      {
-        "blk": "gameData/Weapons/bombguns/bomb_de_375mm_erika.blk"
-      },
-      {
-        "weaponType": "rockets"
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitter": "bone_rocket_05"
-      },
-      {
-        "emitterGenRange": [5.0,8.0]
-      },
-      {
-        "emitterGenFmt": "bone_rocket_%02d"
-      },
-      {
-        "barrelDP": "auxiliary_caliber_gun_02_dm"
-      },
-      {
-        "breechDP": "auxiliary_caliber_gun_02_dm"
-      },
-      {
-        "defaultYaw": 0.0
-      },
-      {
-        "defaultPitch": 0.0
-      },
-      {
-        "speedYaw": 18.0
-      },
-      {
-        "speedPitch": 18.0
-      },
-      {
-        "bullets": 48
-      },
-      {
-        "allowableDelta": 2.0
-      },
-      {
-        "ChainfireTime": 60.0
-      },
-      {
-        "DelayAfterShoot": 0.0
-      },
-      {
-        "aimMinDist": 20.0
-      },
-      {
-        "aimMaxDist": 4500.0
-      },
-      {
-        "randomAngle": 0.0
-      },
-      {
-        "accuracyBotMultAir": 0.55
-      },
-      {
-        "accuracyAir": 1.0
-      },
-      {
-        "accuracyGnd": 0.8
-      },
-      {
-        "errMeasureVel": 0.0
-      },
-      {
-        "errTargettingOn100kmph": 0.0
-      },
-      {
-        "errMeasureVelFast": 100.0
-      },
-      {
-        "errMeasureVelFwdShift": 0.5
-      },
-      {
-        "errMeasureVelDir": 3.0
-      },
-      {
-        "errTargetting": 3.0
-      },
-      {
-        "errExplTime": 0.0
-      },
-      {
-        "turret": {
-          "head": "auxiliary_caliber_turret_02",
-          "gun": "auxiliary_caliber_gun_02",
-          "gunnerDm": "auxiliary_caliber_turret_02_dm"
+      "limitsDeadzone": [
+        {
+          "yaw": [
+            -180.0,
+            -90.0
+          ],
+          "pitch": [
+            0.0,
+            60.0
+          ]
+        },
+        {
+          "yaw": [
+            125.0,
+            180.0
+          ],
+          "pitch": [
+            0.0,
+            60.0
+          ]
         }
-      },
-      {
-        "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [0.0,60.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-180.0,-90.0],
-          "pitch": [0.0,60.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [125.0,180.0],
-          "pitch": [0.0,60.0]
-        }
-      },
-      {
-        "limitsTable": [
-          {
-            "lim1": [-180.0,-0.0,10.0,60.0]
-          },
-          {
-            "lim1": [0.0,45.0,10.0,60.0]
-          },
-          {
-            "lim1": [45.0,125.0,0.0,60.0]
-          },
-          {
-            "lim1": [125.0,180.0,10.0,60.0]
-          }
+      ],
+      "limitsTable": {
+        "lim1": [
+          [
+            -180.0,
+            -0.0,
+            10.0,
+            60.0
+          ],
+          [
+            0.0,
+            45.0,
+            10.0,
+            60.0
+          ],
+          [
+            45.0,
+            125.0,
+            0.0,
+            60.0
+          ],
+          [
+            125.0,
+            180.0,
+            10.0,
+            60.0
+          ]
         ]
       }
-    ]
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner8",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -288,7 +214,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_01_dm",
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 20.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -299,17 +229,27 @@
         "gunnerDm": "tt_01_dm"
       },
       "limits": {
-        "yaw": [-20.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -20.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
       "limitsDeadzone": {
-        "yaw": [-11.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -11.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner9",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -321,7 +261,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_02_dm",
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 20.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -332,17 +276,27 @@
         "gunnerDm": "tt_02_dm"
       },
       "limits": {
-        "yaw": [0.0,20.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          20.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
       "limitsDeadzone": {
-        "yaw": [0.0,11.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          11.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner10",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -354,7 +308,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_03_dm",
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 20.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -365,17 +323,27 @@
         "gunnerDm": "tt_03_dm"
       },
       "limits": {
-        "yaw": [-20.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -20.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
       "limitsDeadzone": {
-        "yaw": [-11.0,0.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -11.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner11",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -387,7 +355,11 @@
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_04_dm",
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 20.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -398,17 +370,27 @@
         "gunnerDm": "tt_04_dm"
       },
       "limits": {
-        "yaw": [0.0,20.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          20.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
       "limitsDeadzone": {
-        "yaw": [0.0,11.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          0.0,
+          11.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -417,10 +399,8 @@
       "external": true,
       "dropSpeed": 4.4,
       "ammoDP": "depth_charge_05_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -429,10 +409,8 @@
       "external": true,
       "dropSpeed": 3.7,
       "ammoDP": "depth_charge_04_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -441,10 +419,8 @@
       "external": true,
       "dropSpeed": 3.7,
       "ammoDP": "depth_charge_03_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -453,10 +429,8 @@
       "external": true,
       "dropSpeed": 3.0,
       "ammoDP": "depth_charge_02_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -465,10 +439,8 @@
       "external": true,
       "dropSpeed": 3.0,
       "ammoDP": "depth_charge_01_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -477,10 +449,8 @@
       "external": true,
       "dropSpeed": 5.8,
       "ammoDP": "depth_charge_10_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -489,10 +459,8 @@
       "external": true,
       "dropSpeed": 5.8,
       "ammoDP": "depth_charge_09_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -501,10 +469,8 @@
       "external": true,
       "dropSpeed": 5.1,
       "ammoDP": "depth_charge_08_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -513,10 +479,8 @@
       "external": true,
       "dropSpeed": 5.1,
       "ammoDP": "depth_charge_07_dm"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "triggerGroup": "depth_charge",
       "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -526,5 +490,5 @@
       "dropSpeed": 4.4,
       "ammoDP": "depth_charge_06_dm"
     }
-  }
-]
+  ]
+}

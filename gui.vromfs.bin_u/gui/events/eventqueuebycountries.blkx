@@ -1,50 +1,30 @@
 {
-  "div": [
-    {
-      "id": "queue_box"
+  "div": {
+    "id": "queue_box",
+    "size": "pw, ph",
+    "position": "relative",
+    "padding": "4*@sf/@pf_outdated",
+    "flow": "vertical",
+    "overflow-y": "auto",
+    "behavior": "Timer",
+    "timer_interval_msec": "1000",
+    "HorizontalListBox": {
+      "id": "clusters_list",
+      "width": "pw",
+      "min-height": "1@buttonHeight",
+      "smallFont": "yes",
+      "class": "tabs",
+      "flow": "h-flow",
+      "on_select": "onClusterChange"
     },
-    {
-      "size": "pw, ph"
+    "table": {
+      "id": "stats_table",
+      "width": "pw",
+      "position": "relative",
+      "text-halign": "center"
     },
-    {
-      "position": "relative"
-    },
-    {
-      "padding": "4*@sf/@pf_outdated"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "overflow-y": "auto"
-    },
-    {
-      "behavior": "Timer"
-    },
-    {
-      "timer_interval_msec": "1000"
-    },
-    {
-      "HorizontalListBox": {
-        "id": "clusters_list",
-        "width": "pw",
-        "min-height": "1@buttonHeight",
-        "smallFont": "yes",
-        "class": "tabs",
-        "flow": "h-flow",
-        "on_select": "onClusterChange"
-      }
-    },
-    {
-      "table": {
-        "id": "stats_table",
-        "width": "pw",
-        "position": "relative",
-        "text-halign": "center"
-      }
-    },
-    {
-      "tdiv": {
+    "tdiv": [
+      {
         "id": "wait_time_block",
         "padding": "10*@sf/@pf_outdated, 5*@sf/@pf_outdated",
         "size": "pw, 80*@sf/@pf_outdated",
@@ -67,17 +47,13 @@
             "background-rotation": "0"
           }
         }
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "countries_sets",
         "width": "pw",
         "flow": "vertical"
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "halign": "center",
         "dummy": {
           "_on_click": "leaveQueue",
@@ -93,24 +69,22 @@
           "display": "hide",
           "enable": "no",
           "SwitchSliderBg": {
-            "SwitchSliderBgOn": [],
-            "SwitchSlider": []
+            "SwitchSliderBgOn": {},
+            "SwitchSlider": {}
           }
         }
       }
-    },
-    {
-      "text": {
+    ],
+    "text": [
+      {
         "id": "countries_sets_header",
         "pos": "50%pw - 50%w, 1@blockInterval",
         "position": "relative",
         "text": "#multiplayer/countriesSets",
         "text-align": "center",
         "display": "hide"
-      }
-    },
-    {
-      "text": {
+      },
+      {
         "id": "custom_mode_header",
         "pos": "50%pw - 50%w, 1@blockInterval",
         "position": "relative",
@@ -119,6 +93,6 @@
         "text-align": "center",
         "display": "hide"
       }
-    }
-  ]
+    ]
+  }
 }

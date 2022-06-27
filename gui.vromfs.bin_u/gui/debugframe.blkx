@@ -1,38 +1,28 @@
 {
-  "root": [
-    {
-      "background-color": "@modalShadeColor"
+  "root": {
+    "background-color": "@modalShadeColor",
+    "on_click": "goBack",
+    "Button_close": {
+      "_on_click": "goBack"
     },
-    {
-      "on_click": "goBack"
-    },
-    {
-      "Button_close": {
-        "_on_click": "goBack"
-      }
-    },
-    {
-      "tdiv": {
+    "tdiv": [
+      {
         "id": "debug_savearea_box",
         "size": "@rw,@rh",
         "pos": "50%sw-50%w, 50%sh-50%h",
         "position": "absolute",
         "border": "yes",
         "border-color": "@red"
-      }
-    },
-    {
-      "tdiv": {
+      },
+      {
         "id": "debug_wnd_content_box",
         "size": "sw, sh",
         "position": "root"
       }
-    },
-    {
-      "timer": {
-        "id": "debug_wnd_update",
-        "timer_handler_func": "onUpdate"
-      }
+    ],
+    "timer": {
+      "id": "debug_wnd_update",
+      "timer_handler_func": "onUpdate"
     }
-  ]
+  }
 }

@@ -122,7 +122,7 @@
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -131,19 +131,35 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "objectGroups": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
         "name": "t1_airfield",
         "tm": [
-          [0.882308,0.0,0.470671],
-          [0.0,1.0,0.0],
-          [-0.470671,0.0,0.882308],
-          [3612.0,488.862,8207.85]
+          [
+            0.882308,
+            0.0,
+            0.470671
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.470671,
+            0.0,
+            0.882308
+          ],
+          [
+            3612.0,
+            488.862,
+            8207.85
+          ]
         ],
         "unit_class": "dynAF_kh_gol_airfield_gumrak_small",
         "objLayer": 2,
@@ -151,16 +167,30 @@
           "army": 1,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "t2_airfield",
         "tm": [
-          [0.944949,0.0,0.327218],
-          [0.0,1.0,0.0],
-          [-0.327218,0.0,0.944949],
-          [8543.32,460.49,-1162.26]
+          [
+            0.944949,
+            0.0,
+            0.327218
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.327218,
+            0.0,
+            0.944949
+          ],
+          [
+            8543.32,
+            460.49,
+            -1162.26
+          ]
         ],
         "unit_class": "dynAF_kh_gol_airfield_gumrak_small",
         "objLayer": 2,
@@ -169,64 +199,94 @@
           "active": true
         }
       }
-    },
-    {
-      "armada": {
-        "name": "t1_player01",
-        "tm": [
-          [-0.958368,0.0,-0.285533],
-          [0.0,1.0,0.0],
-          [0.285533,0.0,-0.958368],
-          [8876.21,473.611,-1093.2]
+    ],
+    "armada": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          -0.958368,
+          0.0,
+          -0.285533
         ],
-        "unit_class": "a-20g",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.285533,
+          0.0,
+          -0.958368
+        ],
+        [
+          8876.21,
+          473.611,
+          -1093.2
+        ]
+      ],
+      "unit_class": "a-20g",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "speed": 0.0,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
     },
-    {
-      "air_defence": {
+    "air_defence": [
+      {
         "name": "t1_airfield_aaa_small_01",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [3471.19,497.648,7927.44]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            3471.19,
+            497.648,
+            7927.44
+          ]
         ],
         "unit_class": "ussr_37mm_61k_airfield",
         "objLayer": 1,
@@ -249,22 +309,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_small_02",
         "tm": [
-          [0.213044,0.0,-0.977043],
-          [0.0,1.0,0.0],
-          [0.977043,0.0,0.213044],
-          [3950.09,496.89,8631.85]
+          [
+            0.213044,
+            0.0,
+            -0.977043
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.977043,
+            0.0,
+            0.213044
+          ],
+          [
+            3950.09,
+            496.89,
+            8631.85
+          ]
         ],
         "unit_class": "ussr_37mm_61k_airfield",
         "objLayer": 1,
@@ -287,22 +367,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_small_03",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [3088.04,489.007,8271.74]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            3088.04,
+            489.007,
+            8271.74
+          ]
         ],
         "unit_class": "ussr_37mm_61k_airfield",
         "objLayer": 1,
@@ -325,22 +425,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_small_04",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [4219.58,493.674,8337.26]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            4219.58,
+            493.674,
+            8337.26
+          ]
         ],
         "unit_class": "ussr_37mm_61k_airfield",
         "objLayer": 1,
@@ -363,22 +483,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_small_05",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [3036.78,512.326,8134.23]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            3036.78,
+            512.326,
+            8134.23
+          ]
         ],
         "unit_class": "ussr_37mm_61k_airfield",
         "objLayer": 1,
@@ -401,22 +541,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_small_06",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [3643.57,496.505,8007.31]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            3643.57,
+            496.505,
+            8007.31
+          ]
         ],
         "unit_class": "ussr_37mm_61k_airfield",
         "objLayer": 1,
@@ -439,22 +599,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_big_01",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [3296.83,483.265,8462.68]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            3296.83,
+            483.265,
+            8462.68
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -477,22 +657,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_big_02",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [4089.99,493.587,8728.25]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            4089.99,
+            493.587,
+            8728.25
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -515,22 +715,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_big_03",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [2723.01,480.914,7796.35]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            2723.01,
+            480.914,
+            7796.35
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -553,22 +773,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_airfield_aaa_big_04",
         "tm": [
-          [0.0971992,0.0,-0.995265],
-          [0.0,1.0,0.0],
-          [0.995265,0.0,0.0971992],
-          [4024.19,493.685,8149.05]
+          [
+            0.0971992,
+            0.0,
+            -0.995265
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995265,
+            0.0,
+            0.0971992
+          ],
+          [
+            4024.19,
+            493.685,
+            8149.05
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -591,22 +831,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_small_01",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8597.06,502.147,-1392.18]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8597.06,
+            502.147,
+            -1392.18
+          ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
@@ -629,22 +889,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_small_03",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [9050.1,502.876,-1243.1]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            9050.1,
+            502.876,
+            -1243.1
+          ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
@@ -667,22 +947,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_small_04",
         "tm": [
-          [-0.710526,0.0,-0.703671],
-          [0.0,1.0,0.0],
-          [0.703671,0.0,-0.710526],
-          [8635.09,495.373,-1005.32]
+          [
+            -0.710526,
+            0.0,
+            -0.703671
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.703671,
+            0.0,
+            -0.710526
+          ],
+          [
+            8635.09,
+            495.373,
+            -1005.32
+          ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
@@ -705,22 +1005,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_small_05",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8095.57,503.523,-1223.33]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8095.57,
+            503.523,
+            -1223.33
+          ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
@@ -743,22 +1063,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_small_06",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8829.73,507.311,-945.09]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8829.73,
+            507.311,
+            -945.09
+          ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
@@ -781,22 +1121,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_big_01",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8467.63,482.203,-1393.94]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8467.63,
+            482.203,
+            -1393.94
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -819,22 +1179,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_big_02",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8480.55,481.565,-1114.0]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8480.55,
+            481.565,
+            -1114.0
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -857,22 +1237,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_big_03",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8166.63,489.421,-1535.29]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8166.63,
+            489.421,
+            -1535.29
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -895,22 +1295,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_big_04",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8912.76,479.044,-1292.36]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8912.76,
+            479.044,
+            -1292.36
+          ]
         ],
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
@@ -933,22 +1353,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_airfield_aaa_small_02",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [8281.35,480.805,-1132.56]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            8281.35,
+            480.805,
+            -1132.56
+          ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
@@ -971,129 +1411,119 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "t1_airfield_aaa_squad",
         "tm": [
-          [-0.623263,0.0,-0.782012],
-          [0.0,1.0,0.0],
-          [0.782012,0.0,-0.623263],
-          [1602.4,838.567,6704.52]
+          [
+            -0.623263,
+            0.0,
+            -0.782012
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.782012,
+            0.0,
+            -0.623263
+          ],
+          [
+            1602.4,
+            838.567,
+            6704.52
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_airfield_aaa_small_01"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_small_02"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_small_03"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_small_04"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_small_05"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_small_06"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_big_01"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_big_02"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_big_03"
-          },
-          {
-            "squad_members": "t1_airfield_aaa_big_04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "t1_airfield_aaa_small_01",
+            "t1_airfield_aaa_small_02",
+            "t1_airfield_aaa_small_03",
+            "t1_airfield_aaa_small_04",
+            "t1_airfield_aaa_small_05",
+            "t1_airfield_aaa_small_06",
+            "t1_airfield_aaa_big_01",
+            "t1_airfield_aaa_big_02",
+            "t1_airfield_aaa_big_03",
+            "t1_airfield_aaa_big_04"
+          ]
+        }
+      },
+      {
         "name": "t2_airfield_aaa_squad",
         "tm": [
-          [-0.945829,0.0,-0.324663],
-          [0.0,1.0,0.0],
-          [0.324663,0.0,-0.945829],
-          [7546.44,623.914,-1830.88]
+          [
+            -0.945829,
+            0.0,
+            -0.324663
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.324663,
+            0.0,
+            -0.945829
+          ],
+          [
+            7546.44,
+            623.914,
+            -1830.88
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_airfield_aaa_small_01"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_small_02"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_small_03"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_small_04"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_small_05"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_small_06"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_big_01"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_big_02"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_big_03"
-          },
-          {
-            "squad_members": "t2_airfield_aaa_big_04"
-          }
-        ]
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "t2_airfield_aaa_small_01",
+            "t2_airfield_aaa_small_02",
+            "t2_airfield_aaa_small_03",
+            "t2_airfield_aaa_small_04",
+            "t2_airfield_aaa_small_05",
+            "t2_airfield_aaa_small_06",
+            "t2_airfield_aaa_big_01",
+            "t2_airfield_aaa_big_02",
+            "t2_airfield_aaa_big_03",
+            "t2_airfield_aaa_big_04"
+          ]
+        }
       }
-    }
-  ],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+    ]
+  },
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

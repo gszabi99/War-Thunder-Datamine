@@ -15,11 +15,11 @@
   "maxAccel": 0.5,
   "maxDecel": 0.5,
   "maxAngAccel": 0.7,
-  "maxAngAccel0": 0.0,
+  "maxAngAccel0": 1E-05,
   "maxAngAccelV": 0.01,
   "groundNormSmoothViscosity": 4.5,
   "customUpdateDiv": 5,
-  "drownGFactor": 0.0,
+  "drownGFactor": 1E-05,
   "drownRollSpeed": 0.01,
   "SoundMove": "models.Ship",
   "tailStartOffset": -10.0,
@@ -49,9 +49,9 @@
     "year1944": true,
     "year1945": true
   },
-  "DamageEffects": [
-    {
-      "part": {
+  "DamageEffects": {
+    "part": [
+      {
         "name": "body_dm",
         "onHit": {
           "smoke": 0.01,
@@ -60,10 +60,8 @@
         "onKill": {
           "expl": 1.0
         }
-      }
-    },
-    {
-      "part": {
+      },
+      {
         "name": "engine_dm",
         "onHit": {
           "smoke": 0.1,
@@ -73,8 +71,8 @@
           "body_dm": 1.0
         }
       }
-    }
-  ],
+    ]
+  },
   "attach": {
     "flag_front": "flag_brtn",
     "flag_middle": "flag_brtn",

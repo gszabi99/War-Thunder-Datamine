@@ -16,9 +16,9 @@
       "environment": "Day",
       "weather": "hazy"
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -31,51 +31,35 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetString": [
-            {
-              "value": "t1_battlearea"
-            },
-            {
-              "var": "t1_battlearea"
-            },
-            {
-              "var": "t1_battlearea_temp"
-            }
-          ]
-        },
-        {
-          "varSetString": [
-            {
-              "value": "t2_battlearea"
-            },
-            {
-              "var": "t2_battlearea"
-            },
-            {
-              "var": "t2_battlearea_temp"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "team_battleareas_check_arcade"
-            },
-            {
-              "target": "team_battleareas_check_realistic"
-            },
-            {
-              "target": "team_battleareas_check_hardcore"
-            }
+      "conditions": {},
+      "actions": {
+        "varSetString": [
+          {
+            "value": "t1_battlearea",
+            "var": [
+              "t1_battlearea",
+              "t1_battlearea_temp"
+            ]
+          },
+          {
+            "value": "t2_battlearea",
+            "var": [
+              "t2_battlearea",
+              "t2_battlearea_temp"
+            ]
+          }
+        ],
+        "triggerEnable": {
+          "target": [
+            "team_battleareas_check_arcade",
+            "team_battleareas_check_realistic",
+            "team_battleareas_check_hardcore"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "team_battleareas_check_arcade": {
       "is_enabled": false,
@@ -86,7 +70,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "gameWhenDifficulty": {
@@ -95,16 +79,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "t1_battleareas_init"
-          },
-          {
-            "target": "t2_battleareas_init"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t1_battleareas_init",
+            "t2_battleareas_init"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "team_battleareas_check_realistic": {
       "is_enabled": false,
@@ -115,7 +97,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "gameWhenDifficulty": {
@@ -124,25 +106,19 @@
         }
       },
       "actions": {
-        "varAddString": [
-          {
-            "value": "_realistic"
-          },
-          {
-            "digits": 0
-          },
-          {
-            "var": "t1_battlearea_temp"
-          },
-          {
-            "var": "t2_battlearea_temp"
-          }
-        ],
+        "varAddString": {
+          "value": "_realistic",
+          "digits": 0,
+          "var": [
+            "t1_battlearea_temp",
+            "t2_battlearea_temp"
+          ]
+        },
         "triggerEnable": {
           "target": "team_battleareas_check_realistic_t1_exist"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "team_battleareas_check_realistic_t1_exist": {
       "is_enabled": false,
@@ -153,36 +129,32 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t1_battlearea_temp",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t1_battlearea_temp",
             "type": "squad"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "triggerEnable": {
           "target": "team_battleareas_check_realistic_t2_exist"
         }
       },
       "else_actions": {
-        "triggerEnable": [
-          {
-            "target": "t1_battleareas_init"
-          },
-          {
-            "target": "t2_battleareas_init"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t1_battleareas_init",
+            "t2_battleareas_init"
+          ]
+        }
       }
     },
     "team_battleareas_check_realistic_t2_exist": {
@@ -194,55 +166,43 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t2_battlearea_temp",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t2_battlearea_temp",
             "type": "squad"
           }
-        }
-      ],
-      "actions": {
-        "varAddString": [
-          {
-            "value": "_realistic"
-          },
-          {
-            "digits": 0
-          },
-          {
-            "var": "t1_battlearea"
-          },
-          {
-            "var": "t2_battlearea"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "t1_battleareas_init"
-          },
-          {
-            "target": "t2_battleareas_init"
-          }
         ]
       },
+      "actions": {
+        "varAddString": {
+          "value": "_realistic",
+          "digits": 0,
+          "var": [
+            "t1_battlearea",
+            "t2_battlearea"
+          ]
+        },
+        "triggerEnable": {
+          "target": [
+            "t1_battleareas_init",
+            "t2_battleareas_init"
+          ]
+        }
+      },
       "else_actions": {
-        "triggerEnable": [
-          {
-            "target": "t1_battleareas_init"
-          },
-          {
-            "target": "t2_battleareas_init"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "t1_battleareas_init",
+            "t2_battleareas_init"
+          ]
+        }
       }
     },
     "team_battleareas_check_hardcore": {
@@ -254,7 +214,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "gameWhenDifficulty": {
@@ -263,30 +223,22 @@
         }
       },
       "actions": {
-        "varAddString": [
-          {
-            "value": "_hardcore"
-          },
-          {
-            "digits": 0
-          },
-          {
-            "var": "t1_battlearea"
-          },
-          {
-            "var": "t2_battlearea"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "t1_battleareas_init"
-          },
-          {
-            "target": "t2_battleareas_init"
-          }
-        ]
+        "varAddString": {
+          "value": "_hardcore",
+          "digits": 0,
+          "var": [
+            "t1_battlearea",
+            "t2_battlearea"
+          ]
+        },
+        "triggerEnable": {
+          "target": [
+            "t1_battleareas_init",
+            "t2_battleareas_init"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_battleareas_init": {
       "is_enabled": false,
@@ -297,22 +249,20 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t1_battlearea",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t1_battlearea",
             "type": "squad"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "missionBattleArea": {
           "air": false,
@@ -328,7 +278,7 @@
           "target": "team_killareas_init"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_battleareas_init": {
       "is_enabled": false,
@@ -339,22 +289,20 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "@t2_battlearea",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "@t2_battlearea",
             "type": "squad"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "missionBattleArea": {
           "air": false,
@@ -370,7 +318,7 @@
           "target": "team_killareas_init"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -383,32 +331,26 @@
     "t2_battlearea": "",
     "t2_battlearea_temp": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

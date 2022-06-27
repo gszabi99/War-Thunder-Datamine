@@ -24,9 +24,9 @@
       "pressure": 760.0,
       "temperature": 30.0
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -39,113 +39,75 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t1_zoneDef_sq",
             "type": "squad"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t2_zoneDef_sq",
             "type": "squad"
           }
-        }
-      ],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "t1_zoneDef_sq"
-            },
-            {
-              "object": "t2_zoneDef_sq"
-            },
-            {
-              "accuracy": 0.5
-            },
-            {
-              "checkVisibilityTarget": true
-            },
-            {
-              "visibilityTreeTransparencyThreshold": 0.01
-            }
+        ]
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "t1_zoneDef_sq",
+            "t2_zoneDef_sq"
+          ],
+          "accuracy": 0.5,
+          "checkVisibilityTarget": true,
+          "visibilityTreeTransparencyThreshold": 0.01
+        },
+        "unitPutToSleep": {
+          "target": [
+            "t1_zoneDef_sq",
+            "t2_zoneDef_sq",
+            "t1_trench_sq",
+            "t2_trench_sq"
           ]
         },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "t1_zoneDef_sq"
-            },
-            {
-              "target": "t2_zoneDef_sq"
-            },
-            {
-              "target": "t1_trench_sq"
-            },
-            {
-              "target": "t2_trench_sq"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "teamA_antiTankGun_count",
             "fromDescriptor": "teamA_antiTankGun_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "teamB_antiTankGun_count",
             "fromDescriptor": "teamB_antiTankGun_count"
           }
-        },
-        {
-          "varSetBool": {
+        ],
+        "varSetBool": [
+          {
             "value": false,
             "var": "isAADef",
             "fromDescriptor": "isAADef"
-          }
-        },
-        {
-          "varSetBool": {
+          },
+          {
             "value": false,
             "var": "antiTankGunMissionTarget",
             "fromDescriptor": "antiTankGunMissionTarget"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "antiTankGun_AADef"
-            },
-            {
-              "target": "teamA_antiTankGun_needToSpawn"
-            },
-            {
-              "target": "teamB_antiTankGun_needToSpawn"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "antiTankGun_AADef",
+            "teamA_antiTankGun_needToSpawn",
+            "teamB_antiTankGun_needToSpawn"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "antiTankGun_AADef": {
       "is_enabled": false,
@@ -156,7 +118,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -166,34 +128,20 @@
         }
       },
       "actions": {
-        "unitSetProperties": [
-          {
-            "object_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "t1_zoneDef_sq"
-          },
-          {
-            "object": "t2_zoneDef_sq"
-          },
-          {
-            "accuracy": 0.7
-          },
-          {
-            "checkVisibilityTarget": true
-          }
-        ]
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "t1_zoneDef_sq",
+            "t2_zoneDef_sq"
+          ],
+          "accuracy": 0.7,
+          "checkVisibilityTarget": true
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamA_antiTankGun_needToSpawn": {
       "is_enabled": false,
@@ -204,7 +152,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "objectExists": {
@@ -223,7 +171,7 @@
           "target": "teamA_antiTankGun_setLimit"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamB_antiTankGun_needToSpawn": {
       "is_enabled": false,
@@ -234,7 +182,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "objectExists": {
@@ -253,7 +201,7 @@
           "target": "teamB_antiTankGun_setLimit"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamA_antiTankGun_setLimit": {
       "is_enabled": false,
@@ -264,7 +212,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -297,7 +245,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -330,7 +278,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -339,26 +287,22 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "unitWakeUp": {
+      "actions": {
+        "unitWakeUp": [
+          {
             "target": "t1_zoneDef_sq",
             "varNameNumToWakeUp": "teamA_antiTankGun_count",
             "order": "random"
-          }
-        },
-        {
-          "unitWakeUp": {
+          },
+          {
             "target": "t1_trench_sq"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "antiTankGun_missionType_check"
-          }
+        ],
+        "triggerEnable": {
+          "target": "antiTankGun_missionType_check"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "teamB_antiTankGun_spawn": {
       "is_enabled": false,
@@ -369,7 +313,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -378,26 +322,22 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "unitWakeUp": {
+      "actions": {
+        "unitWakeUp": [
+          {
             "target": "t2_zoneDef_sq",
             "varNameNumToWakeUp": "teamB_antiTankGun_count",
             "order": "random"
-          }
-        },
-        {
-          "unitWakeUp": {
+          },
+          {
             "target": "t2_trench_sq"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "antiTankGun_missionType_check"
-          }
+        ],
+        "triggerEnable": {
+          "target": "antiTankGun_missionType_check"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "antiTankGun_missionType_check": {
       "is_enabled": false,
@@ -408,7 +348,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -417,70 +357,46 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "teamA_totalAICount",
             "use_variable": true,
             "var_value": "teamA_antiTankGun_count"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "teamB_totalAICount",
             "use_variable": true,
             "var_value": "teamB_antiTankGun_count"
           }
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "t1_zoneDef_sq"
-            },
-            {
-              "target": "t2_zoneDef_sq"
-            }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "t1_zoneDef_sq",
+            "t2_zoneDef_sq"
           ]
         },
-        {
-          "unitMark": [
-            {
-              "target_marking": 2
-            },
-            {
-              "target": "t1_zoneDef_sq"
-            },
-            {
-              "target": "t2_zoneDef_sq"
-            }
+        "unitMark": {
+          "target_marking": 2,
+          "target": [
+            "t1_zoneDef_sq",
+            "t2_zoneDef_sq"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "antiTankGun_counter"
-          }
+        "triggerEnable": {
+          "target": "antiTankGun_counter"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "antiTankGun_counter": {
       "is_enabled": false,
@@ -495,10 +411,10 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetTargetsIndicator": {
+      "conditions": {},
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
             "target_type": "isActive",
             "target_marking": 0,
             "delta": 0,
@@ -509,10 +425,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t1_zoneDef_sq"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isActive",
             "target_marking": 0,
             "delta": 0,
@@ -524,9 +438,9 @@
             "object_var_value": 0,
             "target": "t2_zoneDef_sq"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "artillery_init": {
       "is_enabled": true,
@@ -537,88 +451,62 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t1_artillery_sq",
             "type": "squad"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t2_artillery_sq",
             "type": "squad"
           }
-        }
-      ],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "t1_artillery_sq"
-            },
-            {
-              "object": "t2_artillery_sq"
-            }
+        ]
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "t1_artillery_sq",
+            "t2_artillery_sq"
           ]
         },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "t1_artillery_sq"
-            },
-            {
-              "target": "t2_artillery_sq"
-            }
+        "unitPutToSleep": {
+          "target": [
+            "t1_artillery_sq",
+            "t2_artillery_sq"
           ]
         },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "teamA_artillery_count",
             "fromDescriptor": "teamA_artillery_count"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "teamB_artillery_count",
             "fromDescriptor": "teamB_artillery_count"
           }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "artilleryMissionTarget",
+          "fromDescriptor": "artilleryMissionTarget"
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "artilleryMissionTarget",
-            "fromDescriptor": "artilleryMissionTarget"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "teamA_artillery_spawn"
-            },
-            {
-              "target": "teamB_artillery_spawn"
-            }
+        "triggerEnable": {
+          "target": [
+            "teamA_artillery_spawn",
+            "teamB_artillery_spawn"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "teamA_artillery_spawn": {
       "is_enabled": false,
@@ -629,7 +517,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -648,7 +536,7 @@
           "target": "artillery_missionType_check"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamB_artillery_spawn": {
       "is_enabled": false,
@@ -659,7 +547,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -678,7 +566,7 @@
           "target": "artillery_missionType_check"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "artillery_missionType_check": {
       "is_enabled": false,
@@ -689,7 +577,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -698,70 +586,46 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "teamA_totalAICount",
             "use_variable": true,
             "var_value": "teamA_artillery_count"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "teamB_totalAICount",
             "use_variable": true,
             "var_value": "teamB_artillery_count"
           }
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "t1_artillery_sq"
-            },
-            {
-              "target": "t2_artillery_sq"
-            }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "t1_artillery_sq",
+            "t2_artillery_sq"
           ]
         },
-        {
-          "unitMark": [
-            {
-              "target_marking": 2
-            },
-            {
-              "target": "t1_artillery_sq"
-            },
-            {
-              "target": "t2_artillery_sq"
-            }
+        "unitMark": {
+          "target_marking": 2,
+          "target": [
+            "t1_artillery_sq",
+            "t2_artillery_sq"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "artillery_counter"
-          }
+        "triggerEnable": {
+          "target": "artillery_counter"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "artillery_counter": {
       "is_enabled": false,
@@ -776,10 +640,10 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetTargetsIndicator": {
+      "conditions": {},
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
             "target_type": "isActive",
             "target_marking": 0,
             "delta": 0,
@@ -790,10 +654,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t1_artillery_sq"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isActive",
             "target_marking": 0,
             "delta": 0,
@@ -805,9 +667,9 @@
             "object_var_value": 0,
             "target": "t2_artillery_sq"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "tank_init": {
       "is_enabled": true,
@@ -818,94 +680,64 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t1_ai_tank_sq",
             "type": "squad"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t2_ai_tank_sq",
             "type": "squad"
           }
-        }
-      ],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "t1_ai_tank_sq"
-            },
-            {
-              "object": "t2_ai_tank_sq"
-            },
-            {
-              "accuracy": 0.3
-            },
-            {
-              "checkVisibilityTarget": true
-            }
+        ]
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "t1_ai_tank_sq",
+            "t2_ai_tank_sq"
+          ],
+          "accuracy": 0.3,
+          "checkVisibilityTarget": true
+        },
+        "unitPutToSleep": {
+          "target": [
+            "t1_ai_tank_sq",
+            "t2_ai_tank_sq"
           ]
         },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "t1_ai_tank_sq"
-            },
-            {
-              "target": "t2_ai_tank_sq"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "teamA_tanks_count",
             "fromDescriptor": "aiTargetCount_teamA"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "teamB_tanks_count",
             "fromDescriptor": "aiTargetCount_teamB"
           }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "tankMissionTarget",
+          "fromDescriptor": "tankMissionTarget"
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "tankMissionTarget",
-            "fromDescriptor": "tankMissionTarget"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "teamA_tanks_spawn"
-            },
-            {
-              "target": "teamB_tanks_spawn"
-            }
+        "triggerEnable": {
+          "target": [
+            "teamA_tanks_spawn",
+            "teamB_tanks_spawn"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "teamA_tanks_spawn": {
       "is_enabled": false,
@@ -916,7 +748,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -935,7 +767,7 @@
           "target": "tank_missionType_check"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamB_tanks_spawn": {
       "is_enabled": false,
@@ -946,7 +778,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareInt": {
@@ -965,7 +797,7 @@
           "target": "tank_missionType_check"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tank_missionType_check": {
       "is_enabled": false,
@@ -976,7 +808,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -985,70 +817,46 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "operator": "add",
             "value": 1.0,
             "var": "teamA_totalAICount",
             "use_variable": true,
             "var_value": "teamA_tanks_count"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 1.0,
             "var": "teamB_totalAICount",
             "use_variable": true,
             "var_value": "teamB_tanks_count"
           }
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "t1_ai_tank_sq"
-            },
-            {
-              "target": "t2_ai_tank_sq"
-            }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "t1_ai_tank_sq",
+            "t2_ai_tank_sq"
           ]
         },
-        {
-          "unitMark": [
-            {
-              "target_marking": 2
-            },
-            {
-              "target": "t1_ai_tank_sq"
-            },
-            {
-              "target": "t2_ai_tank_sq"
-            }
+        "unitMark": {
+          "target_marking": 2,
+          "target": [
+            "t1_ai_tank_sq",
+            "t2_ai_tank_sq"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "tanks_counter"
-          }
+        "triggerEnable": {
+          "target": "tanks_counter"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "tanks_counter": {
       "is_enabled": false,
@@ -1063,25 +871,23 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "teamA_tanks_count",
             "value": 0,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "teamB_tanks_count",
             "value": 0,
             "comparasion_func": "more"
           }
-        }
-      ],
-      "actions": [
-        {
-          "missionSetTargetsIndicator": {
+        ]
+      },
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
             "target_type": "isActive",
             "target_marking": 0,
             "delta": 0,
@@ -1092,10 +898,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t1_ai_tank_sq"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isActive",
             "target_marking": 0,
             "delta": 0,
@@ -1107,9 +911,9 @@
             "object_var_value": 0,
             "target": "t2_ai_tank_sq"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "common_init": {
       "is_enabled": true,
@@ -1124,77 +928,63 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "t1_allActive_ai_zoneDef_sq",
+            "type": "squad"
+          },
+          {
             "target": "t1_allActive_ai_zoneDef_sq",
             "type": "squad"
           }
-        },
-        {
-          "objectExists": {
-            "target": "t1_allActive_ai_zoneDef_sq",
-            "type": "squad"
-          }
-        }
-      ],
-      "actions": [
-        {
-          "varSetInt": {
+        ]
+      },
+      "actions": {
+        "varSetInt": [
+          {
             "value": 0,
             "var": "kill_penalty",
             "fromDescriptor": "aiKillPenaltyPercent"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "tickets_count",
             "source_var": "mpTi1"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "teamA_ai_dies_penalty",
             "input_var": "kill_penalty"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "teamB_ai_dies_penalty",
             "input_var": "kill_penalty"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "mul",
             "value": 1.0,
             "var": "kill_penalty",
             "use_variable": true,
             "var_value": "tickets_count"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 100.0,
             "var": "kill_penalty"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_check_kill_penalty"
-            },
-            {
-              "target": "t2_check_kill_penalty"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "t1_check_kill_penalty",
+            "t2_check_kill_penalty"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_check_kill_penalty": {
       "is_enabled": false,
@@ -1209,57 +999,45 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "teamA_ai_dies_penalty",
             "value": 0,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "teamA_totalAICount",
             "value": 0,
             "comparasion_func": "more"
           }
-        }
-      ],
-      "actions": [
-        {
-          "varModify": {
+        ]
+      },
+      "actions": {
+        "varModify": [
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "teamA_ai_dies_penalty",
             "use_variable": true,
             "var_value": "teamA_totalAICount"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": -1.0,
             "var": "teamA_ai_dies_penalty"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "teamA_ai_dies"
-            },
-            {
-              "target": "teamA_all_ai_dead"
-            },
-            {
-              "target": "teamB_attack_timeIsUp"
-            },
-            {
-              "target": "t1_add_objectives"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "teamA_ai_dies",
+            "teamA_all_ai_dead",
+            "teamB_attack_timeIsUp",
+            "t1_add_objectives"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t2_check_kill_penalty": {
       "is_enabled": false,
@@ -1274,57 +1052,45 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "teamB_ai_dies_penalty",
             "value": 0,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "teamB_totalAICount",
             "value": 0,
             "comparasion_func": "more"
           }
-        }
-      ],
-      "actions": [
-        {
-          "varModify": {
+        ]
+      },
+      "actions": {
+        "varModify": [
+          {
             "operator": "divAB",
             "value": 1.0,
             "var": "teamB_ai_dies_penalty",
             "use_variable": true,
             "var_value": "teamB_totalAICount"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "mul",
             "value": -1.0,
             "var": "teamB_ai_dies_penalty"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "teamB_ai_dies"
-            },
-            {
-              "target": "teamB_all_ai_dead"
-            },
-            {
-              "target": "teamA_attack_timeIsUp"
-            },
-            {
-              "target": "t2_add_objectives"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "teamB_ai_dies",
+            "teamB_all_ai_dead",
+            "teamA_attack_timeIsUp",
+            "t2_add_objectives"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_add_objectives": {
       "is_enabled": false,
@@ -1344,28 +1110,24 @@
           "postfix": "_DBttlA"
         }
       },
-      "actions": [
-        {
-          "wait": {
-            "time": 3.0
-          }
+      "actions": {
+        "wait": {
+          "time": 3.0
         },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "t1_ai_base_defend",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "t2_ai_base_defend",
             "object_var_comp_op": "equal",
             "object_var_name": ""
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "t2_add_objectives": {
       "is_enabled": false,
@@ -1385,28 +1147,24 @@
           "postfix": "_DBttlB"
         }
       },
-      "actions": [
-        {
-          "wait": {
-            "time": 3.0
-          }
+      "actions": {
+        "wait": {
+          "time": 3.0
         },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "t2_ai_base_defend",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "t1_ai_base_attack",
             "object_var_comp_op": "equal",
             "object_var_name": ""
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "teamA_ai_dies": {
       "is_enabled": false,
@@ -1448,7 +1206,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamB_ai_dies": {
       "is_enabled": false,
@@ -1490,7 +1248,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamA_all_ai_dead": {
       "is_enabled": false,
@@ -1517,34 +1275,30 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "t1_ai_base_defend",
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "t2_ai_base_attack",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -100,
-            "valueSystem": "percentage",
-            "team": "A"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "A"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "teamB_all_ai_dead": {
       "is_enabled": false,
@@ -1571,34 +1325,30 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "t2_ai_base_defend",
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "t1_ai_base_attack",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -100,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "B"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "teamA_attack_timeIsUp": {
       "is_enabled": false,
@@ -1624,27 +1374,25 @@
           "comparasion_func": "less"
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "t2_ai_base_defend",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "t1_ai_base_attack",
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "teamB_attack_timeIsUp": {
       "is_enabled": false,
@@ -1670,27 +1418,25 @@
           "comparasion_func": "less"
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "t1_ai_base_defend",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "t2_ai_base_attack",
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1705,8 +1451,8 @@
         "timeLimit": 1800,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "t2_ai_base_defend": {
       "is_enabled": false,
@@ -1717,8 +1463,8 @@
         "timeLimit": 1800,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "t1_ai_base_attack": {
       "is_enabled": false,
@@ -1729,8 +1475,8 @@
         "timeLimit": 1800,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "t2_ai_base_attack": {
       "is_enabled": false,
@@ -1741,8 +1487,8 @@
         "timeLimit": 1800,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -1764,32 +1510,26 @@
     "artilleryMissionTarget": false,
     "tankMissionTarget": false
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

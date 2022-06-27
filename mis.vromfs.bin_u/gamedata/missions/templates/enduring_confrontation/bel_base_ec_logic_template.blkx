@@ -2,115 +2,49 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
     "mission": {
       "level": "levels/sicily.bin",
       "type": "domination",
@@ -128,7 +62,7 @@
       "pressure": 760.0,
       "temperature": 20.0
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -146,7 +80,7 @@
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -163,52 +97,46 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "vyschityvaem ochki komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vyschityvaem ochki komandy B"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "team1_score",
             "source_var": "mpTeamScore1"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "team2_score",
             "source_var": "mpTeamScore2"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 0.0,
             "var": "team1_score",
             "use_variable": true,
             "var_value": "team1_quest_score"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 0.0,
             "var": "team2_score",
             "use_variable": true,
             "var_value": "team2_quest_score"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "teamA_win": {
       "is_enabled": true,
@@ -238,7 +166,7 @@
           "team": "B"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "teamB_win": {
       "is_enabled": true,
@@ -268,7 +196,7 @@
           "team": "A"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_major_task_completed": {
       "is_enabled": false,
@@ -283,7 +211,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -291,7 +219,7 @@
           "var": "team1_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_major_task_completed": {
       "is_enabled": false,
@@ -306,7 +234,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -314,7 +242,7 @@
           "var": "team2_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_moderate_task_completed": {
       "is_enabled": false,
@@ -329,7 +257,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -337,7 +265,7 @@
           "var": "team1_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_moderate_task_completed": {
       "is_enabled": false,
@@ -352,7 +280,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -360,7 +288,7 @@
           "var": "team2_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_minor_task_completed": {
       "is_enabled": false,
@@ -375,7 +303,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -383,7 +311,7 @@
           "var": "team1_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_minor_task_completed": {
       "is_enabled": false,
@@ -398,7 +326,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -406,7 +334,7 @@
           "var": "team2_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_tiny_task_completed": {
       "is_enabled": false,
@@ -421,7 +349,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -429,7 +357,7 @@
           "var": "team1_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_tiny_task_completed": {
       "is_enabled": false,
@@ -444,7 +372,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -452,7 +380,7 @@
           "var": "team2_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_gain_score": {
       "is_enabled": true,
@@ -475,83 +403,67 @@
           "var_value_other": "team1_old_score"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "skore izmenilos'. nado pereschitat' ochki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "uznaem raznicu ochkov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "delim raznicu na 10 chtoby popast' v diapazon tiketov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sranivaem ochki"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "team1_cur_tickets"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "team1_old_score"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 0.0,
             "var": "team1_cur_tickets",
             "use_variable": true,
             "var_value": "team1_old_score"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "team1_cur_tickets",
             "use_variable": true,
             "var_value": "team1_score"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 10.0,
             "var": "team1_cur_tickets"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 0.0,
             "var": "team1_old_score",
             "use_variable": true,
             "var_value": "team1_score"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "team1_cur_tickets",
-            "team": "B"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": 0,
+          "valueSystem": "amount",
+          "var": "team1_cur_tickets",
+          "team": "B"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t2_gain_score": {
       "is_enabled": true,
@@ -574,83 +486,67 @@
           "var_value_other": "team2_old_score"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "skore izmenilos'. nado pereschitat' ochki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "uznaem raznicu ochkov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "delim raznicu na 10 chtoby popast' v diapazon tiketov"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "sranivaem ochki"
           }
-        },
-        {
-          "varSetInt": {
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "team2_cur_tickets"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "team2_old_score"
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 0.0,
             "var": "team2_cur_tickets",
             "use_variable": true,
             "var_value": "team2_old_score"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "subAB",
             "value": 0.0,
             "var": "team2_cur_tickets",
             "use_variable": true,
             "var_value": "team2_score"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "divAB",
             "value": 10.0,
             "var": "team2_cur_tickets"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 0.0,
             "var": "team2_old_score",
             "use_variable": true,
             "var_value": "team2_score"
           }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "team2_cur_tickets",
-            "team": "A"
-          }
+        ],
+        "gameMPChangeScore": {
+          "value": 0,
+          "valueSystem": "amount",
+          "var": "team2_cur_tickets",
+          "team": "A"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_detection_task_completed": {
       "is_enabled": false,
@@ -665,17 +561,15 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1000.0,
-            "var": "team1_quest_score"
-          }
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1000.0,
+          "var": "team1_quest_score"
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "bottom",
             "name": "hints/players_found_new_task",
             "action": "show",
@@ -688,10 +582,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "A"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "bottom",
             "name": "hints/players_found_new_task",
             "action": "hide",
@@ -705,14 +597,12 @@
             "object_var_value": 0,
             "team": "A"
           }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        ],
+        "wait": {
+          "time": 3.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t2_detection_task_completed": {
       "is_enabled": false,
@@ -727,17 +617,15 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1000.0,
-            "var": "team2_quest_score"
-          }
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1000.0,
+          "var": "team2_quest_score"
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "bottom",
             "name": "hints/players_found_new_task",
             "action": "show",
@@ -750,10 +638,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "bottom",
             "name": "hints/players_found_new_task",
             "action": "hide",
@@ -767,14 +653,12 @@
             "object_var_value": 0,
             "team": "B"
           }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        ],
+        "wait": {
+          "time": 3.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "kill_reward_check": {
       "is_enabled": true,
@@ -797,16 +681,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "kill_reward_for_t1"
-          },
-          {
-            "target": "kill_reward_for_t2"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "kill_reward_for_t1",
+            "kill_reward_for_t2"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "kill_reward_for_t1": {
       "is_enabled": false,
@@ -834,7 +716,7 @@
           "var": "team1_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "kill_reward_for_t2": {
       "is_enabled": false,
@@ -862,7 +744,7 @@
           "var": "team2_quest_score"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -881,22 +763,20 @@
     "team2_quest_score": 0,
     "kill_reward": false
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

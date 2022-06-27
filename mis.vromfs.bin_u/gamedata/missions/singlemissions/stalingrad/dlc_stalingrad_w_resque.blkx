@@ -20,7 +20,10 @@
       "optionalTakeOff": false,
       "environment": "Evening",
       "weather": "hazy",
-      "windSpeed": [10.0,12.0],
+      "windSpeed": [
+        10.0,
+        12.0
+      ],
       "gt_cooperative": true,
       "stars": {
         "latitude": 48.0,
@@ -39,65 +42,41 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "ally_transport"
-              },
-              {
-                "point": "halfway_point"
-              },
-              {
-                "point": "landing_point"
-              },
-              {
-                "point": "airfield_point"
-              },
-              {
-                "point": "airfield_point"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 1,
+            "side": "ally",
+            "point": [
+              "ally_transport",
+              "halfway_point",
+              "landing_point",
+              "airfield_point",
+              "airfield_point"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "bomber",
               "side": "ally",
               "target": "ally_transport",
               "lookAt": "halfway_point"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "infantry",
               "side": "ally",
               "target": "ussr_soldiers"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "player_wing",
               "lookAt": "halfway_point"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -110,7 +89,7 @@
       "showAreas": false,
       "showUnits": true,
       "showTriggers": false,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -125,130 +104,93 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object": "bf-109_01"
-            },
-            {
-              "object": "bf-109_02"
-            },
-            {
-              "object": "bf-109_03"
-            },
-            {
-              "object": "enemy_hunters_01"
-            },
-            {
-              "object": "enemy_hunters_02"
-            },
-            {
-              "effShootingRate": 0.5
-            },
-            {
-              "plane": [
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": [
+              "bf-109_01",
+              "bf-109_02",
+              "bf-109_03",
+              "enemy_hunters_01",
+              "enemy_hunters_02"
+            ],
+            "effShootingRate": 0.5,
+            "plane": {
+              "targetDeviation": [
                 {
-                  "targetDeviation": {
-                    "trigger": "machine gun",
-                    "defaultVal": 3.0,
-                    "limits": [1.0,4.0]
-                  }
+                  "trigger": "machine gun",
+                  "defaultVal": 3.0,
+                  "limits": [
+                    1.0,
+                    4.0
+                  ]
                 },
                 {
-                  "targetDeviation": {
-                    "trigger": "cannon",
-                    "defaultVal": 3.0,
-                    "limits": [2.0,4.0]
-                  }
+                  "trigger": "cannon",
+                  "defaultVal": 3.0,
+                  "limits": [
+                    2.0,
+                    4.0
+                  ]
                 }
               ]
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "ally_transport",
             "plane": {
               "targetDeviation": {
                 "trigger": "gunner",
                 "defaultVal": 1.6,
-                "limits": [0.2,2.5]
+                "limits": [
+                  0.2,
+                  2.5
+                ]
               }
             }
+          },
+          {
+            "object": [
+              "air_def_squad",
+              "additional_air_def_squad"
+            ],
+            "effShootingRate": 0.3
           }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "airfield_01",
+          "objects": "ally_transport"
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "air_def_squad"
-            },
-            {
-              "object": "additional_air_def_squad"
-            },
-            {
-              "effShootingRate": 0.3
-            }
+        "unitPutToSleep": {
+          "target": [
+            "ussr_soldiers",
+            "bf-109_01",
+            "bf-109_02",
+            "additional_air_def_squad",
+            "enemy_hunters_01",
+            "enemy_hunters_02"
           ]
         },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "airfield_01",
-            "objects": "ally_transport"
-          }
+        "wait": {
+          "time": 3.0
         },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "ussr_soldiers"
-            },
-            {
-              "target": "bf-109_01"
-            },
-            {
-              "target": "bf-109_02"
-            },
-            {
-              "target": "additional_air_def_squad"
-            },
-            {
-              "target": "enemy_hunters_01"
-            },
-            {
-              "target": "enemy_hunters_02"
-            }
-          ]
+        "moAddMissionObjective": {
+          "target": "dlc_stalingrad_w_resque_to_the_ice"
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target": "ally_transport"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_stalingrad_w_resque_to_the_ice"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "ally_transport"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "update_indicator"
-            },
-            {
-              "target": "li2_in_air"
-            }
+        "triggerEnable": {
+          "target": [
+            "update_indicator",
+            "li2_in_air"
           ]
         }
-      ]
+      }
     },
     "li2_killed": {
       "is_enabled": true,
@@ -272,7 +214,7 @@
         }
       },
       "actions": {
-        "missionFailed": []
+        "missionFailed": {}
       }
     },
     "check_for_coop": {
@@ -395,7 +337,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -449,23 +391,15 @@
           "horizontalDirectionForTeleport": true,
           "object": "ally_transport"
         },
-        "unitAttackTarget": [
-          {
-            "playerAttracted": false
-          },
-          {
-            "object": "air_def_squad"
-          },
-          {
-            "object": "additional_air_def_squad"
-          },
-          {
-            "target": "player_wing"
-          },
-          {
-            "fireRandom": true
-          }
-        ],
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": [
+            "air_def_squad",
+            "additional_air_def_squad"
+          ],
+          "target": "player_wing",
+          "fireRandom": true
+        },
         "wait": {
           "time": 10.0
         },
@@ -476,23 +410,15 @@
           "set": true,
           "target": "air_def_squad"
         },
-        "triggerEnable": [
-          {
-            "target": "update_air_def_indicator"
-          },
-          {
-            "target": "li2_near_landing_point"
-          },
-          {
-            "target": "enemy_hunters_activated"
-          },
-          {
-            "target": "air_def_destroyed"
-          },
-          {
-            "target": "air_def_not_destroyed"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "update_air_def_indicator",
+            "li2_near_landing_point",
+            "enemy_hunters_activated",
+            "air_def_destroyed",
+            "air_def_not_destroyed"
+          ]
+        }
       }
     },
     "li2_near_landing_point": {
@@ -561,26 +487,16 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object": "air_def_squad"
-          },
-          {
-            "object": "additional_air_def_squad"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": [
+            "air_def_squad",
+            "additional_air_def_squad"
+          ]
+        }
       },
       "actions": {
         "triggerDisable": {
@@ -642,34 +558,20 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "missionSetTargetsIndicator": [
-          {
-            "target_type": "isActive"
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "delta": 0
-          },
-          {
-            "icon": "aa"
-          },
-          {
-            "icon army": 2
-          },
-          {
-            "set": true
-          },
-          {
-            "target": "air_def_squad"
-          },
-          {
-            "target": "additional_air_def_squad"
-          }
-        ]
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "aa",
+          "icon army": 2,
+          "set": true,
+          "target": [
+            "air_def_squad",
+            "additional_air_def_squad"
+          ]
+        }
       }
     },
     "li2_landed": {
@@ -695,64 +597,48 @@
           "target": "airfield_03"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "li2_killed"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "li2_killed"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_stalingrad_w_resque_to_the_ice",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "dlc_stalingrad_w_resque_to_the_ice",
+          "status": 2
         },
-        {
-          "unitRestore": {
+        "unitRestore": [
+          {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target": "ally_transport"
+          },
+          {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target": "ally_transport"
           }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": true,
-            "fullRestore": true,
-            "target": "ally_transport"
-          }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "airfield_03",
+          "objects": "ally_transport"
         },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "airfield_03",
-            "objects": "ally_transport"
-          }
+        "moAddMissionObjective": {
+          "target": "dlc_stalingrad_w_resque_return"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_stalingrad_w_resque_return"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "li2_in_air_return"
-            },
-            {
-              "target": "li2_ressurect"
-            }
+        "triggerEnable": {
+          "target": [
+            "li2_in_air_return",
+            "li2_ressurect"
           ]
         }
-      ]
+      }
     },
     "li2_in_air_return": {
       "is_enabled": false,
@@ -775,40 +661,32 @@
           "object": "ally_transport"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
+      "actions": {
+        "triggerEnable": [
+          {
             "target": "li2_killed"
+          },
+          {
+            "target": [
+              "mission_success",
+              "enemies_attack"
+            ]
           }
+        ],
+        "triggerDisable": {
+          "target": "li2_ressurect"
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "mission_success"
-            },
-            {
-              "target": "enemies_attack"
-            }
-          ]
-        },
-        {
-          "triggerDisable": {
-            "target": "li2_ressurect"
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "airfield_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "ally_transport"
-          }
+        "unitMoveTo": {
+          "target": "airfield_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "ally_transport"
         }
-      ]
+      }
     },
     "mission_success": {
       "is_enabled": false,
@@ -837,39 +715,29 @@
           "target": "airfield_point"
         }
       },
-      "actions": [
-        {
-          "unitLandOnAirfield": {
-            "onWater": false,
-            "runwayName": "airfield_01",
-            "objects": "ally_transport"
-          }
+      "actions": {
+        "unitLandOnAirfield": {
+          "onWater": false,
+          "runwayName": "airfield_01",
+          "objects": "ally_transport"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_stalingrad_w_resque_return",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "dlc_stalingrad_w_resque_return",
+          "status": 2
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "missionCompleted": {
+          "timer": false
         },
-        {
-          "missionCompleted": {
-            "timer": false
-          }
-        },
-        {
-          "missionDebriefing": []
-        }
-      ]
+        "missionDebriefing": {}
+      }
     },
     "enemies_attack": {
       "is_enabled": false,
@@ -884,68 +752,44 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitWakeUp": [
-            {
-              "target": "bf-109_01"
-            },
-            {
-              "target": "bf-109_02"
-            },
-            {
-              "target": "bf-109_03"
-            }
+      "conditions": {},
+      "actions": {
+        "unitWakeUp": {
+          "target": [
+            "bf-109_01",
+            "bf-109_02",
+            "bf-109_03"
           ]
         },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "bf-109_01",
             "target": "ally_transport",
             "fireRandom": true
+          },
+          {
+            "playerAttracted": true,
+            "object": [
+              "bf-109_02",
+              "bf-109_03"
+            ],
+            "target": "player_wing",
+            "fireRandom": true,
+            "playerAttractedCount": 2,
+            "playerAttractedEffRate": 1.0
           }
+        ],
+        "triggerEnable": {
+          "target": "enemies_return_to_base"
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "bf-109_02"
-            },
-            {
-              "object": "bf-109_03"
-            },
-            {
-              "target": "player_wing"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 2
-            },
-            {
-              "playerAttractedEffRate": 1.0
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
-            "target": "enemies_return_to_base"
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "check_for_simulator_for_enemies",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": true,
-            "after_activation": "disable"
-          }
+        "triggerActivate": {
+          "target": "check_for_simulator_for_enemies",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": true,
+          "after_activation": "disable"
         }
-      ]
+      }
     },
     "enemies_return_to_base": {
       "is_enabled": false,
@@ -978,41 +822,21 @@
         "triggerDisable": {
           "target": "enemies_repeat_attacks"
         },
-        "unitMoveTo": [
-          {
-            "target": "evacuate_point"
-          },
-          {
-            "follow_target": false
-          },
-          {
-            "teleportHeightType": "absolute"
-          },
-          {
-            "useUnitHeightForTele": true
-          },
-          {
-            "shouldKeepFormation": false
-          },
-          {
-            "teleportHeightValue": 1000.0
-          },
-          {
-            "horizontalDirectionForTeleport": true
-          },
-          {
-            "object": "bf-109_01"
-          },
-          {
-            "object": "bf-109_02"
-          },
-          {
-            "object": "bf-109_03"
-          },
-          {
-            "speed": 600.0
-          }
-        ]
+        "unitMoveTo": {
+          "target": "evacuate_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": [
+            "bf-109_01",
+            "bf-109_02",
+            "bf-109_03"
+          ],
+          "speed": 600.0
+        }
       }
     },
     "player_too_far_at_the_begining": {
@@ -1070,14 +894,12 @@
         }
       },
       "actions": {
-        "unitWakeUp": [
-          {
-            "target": "enemy_hunters_01"
-          },
-          {
-            "target": "enemy_hunters_02"
-          }
-        ],
+        "unitWakeUp": {
+          "target": [
+            "enemy_hunters_01",
+            "enemy_hunters_02"
+          ]
+        },
         "triggerEnable": {
           "target": "hunters_repeat_attacks"
         },
@@ -1090,38 +912,20 @@
         "wait": {
           "time": 240.0
         },
-        "unitMoveTo": [
-          {
-            "target": "evacuate_point"
-          },
-          {
-            "follow_target": false
-          },
-          {
-            "teleportHeightType": "absolute"
-          },
-          {
-            "useUnitHeightForTele": true
-          },
-          {
-            "shouldKeepFormation": false
-          },
-          {
-            "teleportHeightValue": 1000.0
-          },
-          {
-            "horizontalDirectionForTeleport": true
-          },
-          {
-            "object": "enemy_hunters_01"
-          },
-          {
-            "object": "enemy_hunters_02"
-          },
-          {
-            "speed": 600.0
-          }
-        ],
+        "unitMoveTo": {
+          "target": "evacuate_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": [
+            "enemy_hunters_01",
+            "enemy_hunters_02"
+          ],
+          "speed": 600.0
+        },
         "triggerDisable": {
           "target": "hunters_repeat_attacks"
         }
@@ -1140,31 +944,19 @@
           "time": 5.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "unitAttackTarget": [
-          {
-            "playerAttracted": true
-          },
-          {
-            "object": "enemy_hunters_01"
-          },
-          {
-            "object": "enemy_hunters_02"
-          },
-          {
-            "target": "player_wing"
-          },
-          {
-            "fireRandom": true
-          },
-          {
-            "playerAttractedCount": 2
-          },
-          {
-            "playerAttractedEffRate": 1.0
-          }
-        ]
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": [
+            "enemy_hunters_01",
+            "enemy_hunters_02"
+          ],
+          "target": "player_wing",
+          "fireRandom": true,
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 1.0
+        }
       }
     },
     "enemies_repeat_attacks": {
@@ -1180,7 +972,7 @@
           "time": 5.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitAttackTarget": {
           "playerAttracted": true,
@@ -1294,8 +1086,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_stalingrad_w_resque_air_def": {
       "is_enabled": false,
@@ -1307,8 +1099,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_stalingrad_w_resque_return": {
       "is_enabled": false,
@@ -1320,23 +1112,39 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "objectGroups": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
         "name": "airfield_01",
         "tm": [
-          [0.953717,0.0,0.300706],
-          [0.0,1.0,0.0],
-          [-0.300706,0.0,0.953717],
-          [10269.0,1.11499,-15239.4]
+          [
+            0.953717,
+            0.0,
+            0.300706
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.300706,
+            0.0,
+            0.953717
+          ],
+          [
+            10269.0,
+            1.11499,
+            -15239.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "dynAF_stalingrad_winter_grd_ally",
@@ -1345,17 +1153,31 @@
           "army": 1,
           "active": true
         },
-        "way": []
-      }
-    },
-    {
-      "objectGroups": {
+        "way": {}
+      },
+      {
         "name": "airfield_03",
         "tm": [
-          [0.866025,0.0,0.5],
-          [0.0,1.0,0.0],
-          [-0.5,0.0,0.866025],
-          [-14265.7,152.531,-21098.9]
+          [
+            0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5,
+            0.0,
+            0.866025
+          ],
+          [
+            -14265.7,
+            152.531,
+            -21098.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "dynAF_stalingrad_winter_grd_ally",
@@ -1364,17 +1186,33 @@
           "army": 1,
           "active": true
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "armada": {
+    ],
+    "armada": [
+      {
         "name": "player_wing",
         "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [12654.4,500.001,-14932.6]
+          [
+            -0.766044,
+            0.0,
+            -0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.642788,
+            0.0,
+            -0.766044
+          ],
+          [
+            12654.4,
+            500.001,
+            -14932.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "lagg-3-35",
@@ -1400,17 +1238,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ally_transport",
         "tm": [
-          [-0.737277,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,-0.737277],
-          [9953.64,350.0,-15418.6]
+          [
+            -0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            9953.64,
+            350.0,
+            -15418.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "li-2",
@@ -1435,17 +1287,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf-109_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11064.3,2500.0,-11749.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -11064.3,
+            2500.0,
+            -11749.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-110c-4",
@@ -1471,17 +1337,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf-109_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11005.2,2500.0,-11419.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -11005.2,
+            2500.0,
+            -11419.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-110c-4",
@@ -1507,17 +1387,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_hunters_01",
         "tm": [
-          [0.976296,0.0,0.21644],
-          [0.0,1.0,0.0],
-          [-0.21644,0.0,0.976296],
-          [-14279.5,2500.0,-19042.5]
+          [
+            0.976296,
+            0.0,
+            0.21644
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.21644,
+            0.0,
+            0.976296
+          ],
+          [
+            -14279.5,
+            2500.0,
+            -19042.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109e-3",
@@ -1544,17 +1438,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_hunters_02",
         "tm": [
-          [0.976296,0.0,0.21644],
-          [0.0,1.0,0.0],
-          [-0.21644,0.0,0.976296],
-          [-15727.4,2500.0,-19042.5]
+          [
+            0.976296,
+            0.0,
+            0.21644
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.21644,
+            0.0,
+            0.976296
+          ],
+          [
+            -15727.4,
+            2500.0,
+            -19042.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109e-3",
@@ -1581,17 +1489,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf-109_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11005.2,2500.0,-11110.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -11005.2,
+            2500.0,
+            -11110.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-110c-4",
@@ -1617,17 +1539,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "air_defence_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-12219.9,-5.25275,-19106.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -12219.9,
+            -5.25275,
+            -19106.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1637,22 +1575,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-10292.4,-4.63184,-18301.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -10292.4,
+            -4.63184,
+            -18301.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1662,22 +1620,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-10216.7,7.84375,-18984.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -10216.7,
+            7.84375,
+            -18984.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1687,22 +1665,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-12432.3,-6.669,-18681.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -12432.3,
+            -6.669,
+            -18681.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1712,22 +1710,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "ussr_air_def_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10097.3,0.966125,-15850.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            10097.3,
+            0.966125,
+            -15850.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_37mm_61k_noground",
@@ -1737,22 +1755,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "ussr_air_def_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9644.77,0.966309,-15149.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            9644.77,
+            0.966309,
+            -15149.7
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_37mm_61k_noground",
@@ -1762,22 +1800,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "ussr_air_def_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10458.1,0.966309,-14726.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            10458.1,
+            0.966309,
+            -14726.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_37mm_61k_noground",
@@ -1787,22 +1845,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "ussr_air_def_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10979.6,0.966492,-15364.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            10979.6,
+            0.966492,
+            -15364.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_37mm_61k_noground",
@@ -1812,22 +1890,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-514.427,-4.63184,-16547.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -514.427,
+            -4.63184,
+            -16547.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1837,22 +1935,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1112.55,-4.63177,-17662.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1112.55,
+            -4.63177,
+            -17662.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1862,22 +1980,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-10107.8,-4.63147,-17152.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -10107.8,
+            -4.63147,
+            -17152.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1887,22 +2025,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-10718.0,-4.63159,-16950.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -10718.0,
+            -4.63159,
+            -16950.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1912,22 +2070,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11928.9,49.1302,-17330.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -11928.9,
+            49.1302,
+            -17330.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1937,22 +2115,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-10928.6,13.875,-19691.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -10928.6,
+            13.875,
+            -19691.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -1962,173 +2160,299 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "air_def_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-13428.4,-0.473633,-18200.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -13428.4,
+            -0.473633,
+            -18200.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "air_defence_01"
-          },
-          {
-            "squad_members": "air_defence_02"
-          },
-          {
-            "squad_members": "air_defence_03"
-          },
-          {
-            "squad_members": "air_defence_04"
-          },
-          {
-            "squad_members": "air_defence_05"
-          },
-          {
-            "squad_members": "air_defence_06"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "player_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-76.1104,2.11743,-17413.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "player_wing"
-          },
-          {
-            "squad_members": "ally_transport"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "additional_air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-12891.7,40.51,-19579.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "air_defence_07"
-          },
-          {
-            "squad_members": "air_defence_08"
-          },
-          {
-            "squad_members": "air_defence_09"
-          },
-          {
-            "squad_members": "air_defence_10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "infantry": {
-        "name": "ussr_soldiers",
-        "tm": [
-          [-0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707107],
-          [-14211.5,135.85,-21409.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "rifle_infantry",
         "weapons": "",
         "props": {
-          "army": 1,
-          "attack_type": "fire_at_will",
-          "count": 4,
-          "skin": "ussr"
+          "squad_members": [
+            "air_defence_01",
+            "air_defence_02",
+            "air_defence_03",
+            "air_defence_04",
+            "air_defence_05",
+            "air_defence_06"
+          ]
         },
-        "way": []
+        "way": {}
+      },
+      {
+        "name": "player_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -76.1104,
+            2.11743,
+            -17413.9
+          ]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": {
+          "squad_members": [
+            "player_wing",
+            "ally_transport"
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "additional_air_def_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -12891.7,
+            40.51,
+            -19579.2
+          ]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": {
+          "squad_members": [
+            "air_defence_07",
+            "air_defence_08",
+            "air_defence_09",
+            "air_defence_10"
+          ]
+        },
+        "way": {}
       }
+    ],
+    "infantry": {
+      "name": "ussr_soldiers",
+      "tm": [
+        [
+          -0.707107,
+          0.0,
+          0.707107
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.707107,
+          0.0,
+          -0.707107
+        ],
+        [
+          -14211.5,
+          135.85,
+          -21409.7
+        ]
+      ],
+      "closed_waypoints": false,
+      "unit_class": "rifle_infantry",
+      "weapons": "",
+      "props": {
+        "army": 1,
+        "attack_type": "fire_at_will",
+        "count": 4,
+        "skin": "ussr"
+      },
+      "way": {}
     }
-  ],
+  },
   "areas": {
     "landing_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-12292.3,500.0,-19982.9]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -12292.3,
+          500.0,
+          -19982.9
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "halfway_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2989.4,750.0,-18604.7]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2989.4,
+          750.0,
+          -18604.7
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [9704.45,634.15,-13559.2]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          9704.45,
+          634.15,
+          -13559.2
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "evacuate_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-23070.2,1200.0,-4808.83]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -23070.2,
+          1200.0,
+          -4808.83
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "li2_begin_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [8149.97,750.0,-17164.6]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          8149.97,
+          750.0,
+          -17164.6
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

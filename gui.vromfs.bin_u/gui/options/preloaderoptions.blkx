@@ -1,56 +1,42 @@
-[
-  {
-    "tdiv": {
+{
+  "tdiv": [
+    {
       "id": "bg_picture_container",
       "size": "sw, sh",
       "position": "root",
       "background-color": "@black",
-      "tdiv": [
-        {
-          "pos": "50%sw-50%w,50%sh-50%h"
-        },
-        {
-          "position": "absolute"
-        },
-        {
-          "size": "2.333sh, sh"
-        },
-        {
-          "overflow": "hidden"
-        },
-        {
-          "tdiv": {
+      "tdiv": {
+        "pos": "50%sw-50%w,50%sh-50%h",
+        "position": "absolute",
+        "size": "2.333sh, sh",
+        "overflow": "hidden",
+        "tdiv": [
+          {
             "id": "animated_bg_picture",
             "pos": "pw/2-w/2, ph/2-h/2",
             "position": "absolute",
             "size": "2.5sh, sh",
             "behaviour": "multiLayerImage",
             "blend-time": "500"
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "size": "0.333sh, sh",
             "pos": "-w/2, 0",
             "position": "absolute",
             "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss.png",
             "background-color": "@black"
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "size": "0.333sh, sh",
             "pos": "pw -w/2, 0",
             "position": "absolute",
             "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss.png",
             "background-color": "@black"
           }
-        }
-      ]
-    }
-  },
-  {
-    "tdiv": {
+        ]
+      }
+    },
+    {
       "width": "0.67@rw $min 2@rh",
       "pos": "50%pw-50%w,sh-1@bh-h-20@dp",
       "position": "absolute",
@@ -64,10 +50,8 @@
         "position": "relative",
         "width": "pw"
       }
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "pos": "@bw+30@dp,@bh+30@dp",
       "size": "sw,sh",
       "frame": {
@@ -80,32 +64,24 @@
             "text": "#preloaderSettings/title",
             "caption": "yes"
           },
-          "Button_close": []
+          "Button_close": {}
         },
         "div": {
           "size": "pw,fh",
           "tdiv": {
             "size": "pw,ph",
             "mislist": "yes",
-            "chapterListPlace": [
-              {
-                "id": "chapter_place"
-              },
-              {
-                "height": "ph"
-              },
-              {
-                "flow": "vertical"
-              },
-              {
-                "tdiv": {
+            "chapterListPlace": {
+              "id": "chapter_place",
+              "height": "ph",
+              "flow": "vertical",
+              "tdiv": [
+                {
                   "id": "div_before_chapters_list",
                   "width": "pw",
                   "display": "hide"
-                }
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "id": "chapters_list_place",
                   "size": "pw, fh",
                   "flow": "vertical",
@@ -143,41 +119,37 @@
                     "display": "hide"
                   }
                 }
-              }
-            ]
+              ]
+            }
           }
         },
         "navBar": {
-          "navRight": [
-            {
-              "Button_text": {
+          "navRight": {
+            "Button_text": [
+              {
                 "id": "btn_select",
                 "text": "#mainmenu/btnSelect",
                 "btnName": "A",
-                "ButtonImg": []
-              }
-            },
-            {
-              "Button_text": {
+                "ButtonImg": {}
+              },
+              {
                 "id": "btn_ban",
                 "text": "#maps/preferences/ban",
                 "btnName": "X",
                 "_on_click": "toggleBan",
-                "ButtonImg": []
-              }
-            },
-            {
-              "Button_text": {
+                "ButtonImg": {}
+              },
+              {
                 "id": "btn_fav",
                 "text": "#preloaderSettings/trackProgress",
                 "btnName": "X",
                 "_on_click": "toggleFav",
-                "ButtonImg": []
+                "ButtonImg": {}
               }
-            }
-          ]
+            ]
+          }
         }
       }
     }
-  }
-]
+  ]
+}

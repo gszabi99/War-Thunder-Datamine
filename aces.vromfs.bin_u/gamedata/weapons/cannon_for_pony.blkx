@@ -1,60 +1,28 @@
-[
-  {
-    "cannon": false
-  },
-  {
-    "weaponType": 3
-  },
-  {
-    "bUseHookAsRel": true
-  },
-  {
-    "emitColor": [1.0,1.0,0.0]
-  },
-  {
-    "emitI": 10.0
-  },
-  {
-    "emitR": 3.0
-  },
-  {
-    "emitTime": 0.03
-  },
-  {
-    "aimMinDist": 10.0
-  },
-  {
-    "aimMaxDist": 1000.0
-  },
-  {
-    "maxDeltaAngle": 0.24
-  },
-  {
-    "shotFreq": 15.0
-  },
-  {
-    "shotFreqRndK": 0.0
-  },
-  {
-    "traceFreq": 4
-  },
-  {
-    "bEnablePause": false
-  },
-  {
-    "bullets": 250
-  },
-  {
-    "bulletsCluster": 1
-  },
-  {
-    "fxType": "muzzle_air_20mm"
-  },
-  {
-    "fxMultipleSpawn": true
-  },
-  {
-    "bullet": {
+{
+  "cannon": false,
+  "weaponType": 3,
+  "bUseHookAsRel": true,
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 10.0,
+  "aimMaxDist": 1000.0,
+  "maxDeltaAngle": 0.24,
+  "shotFreq": 15.0,
+  "shotFreqRndK": 0.0,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": 250,
+  "bulletsCluster": 1,
+  "fxType": "muzzle_air_20mm",
+  "fxMultipleSpawn": true,
+  "bullet": [
+    {
       "mass": 0.092,
       "caliber": 0.02,
       "speed": 785.0,
@@ -73,20 +41,45 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_i_mine",
       "slopeEffectPreset": "ap",
-      "fresnel": [0.23,0.1,2.0],
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
       "explodeOnRendinst": true,
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.4,
       "explodeHitPower": 13.0,
       "explodeArmorPower": 3.0,
-      "explodeRadius": [0.05,0.5],
+      "explodeRadius": [
+        0.05,
+        0.5
+      ],
       "shutterDamage": true,
       "shutterDamageRadius": 1.7,
       "shutterAmount": 12,
@@ -172,39 +165,58 @@
           "fx": "hit_19_27mm_snow_ap"
         }
       },
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
       "pressureDamage": {
         "damageType": "pressure"
       },
       "armorpower": {
-        "ArmorPower0m": [4.0,10.0],
-        "ArmorPower100m": [3.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0]
+        "ArmorPower0m": [
+          4.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          3.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "50mmRed",
         "trail": "smallTrail"
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.092,
       "caliber": 0.02,
       "speed": 785.0,
@@ -217,16 +229,37 @@
       "bulletType": "he_i_mine",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.4,
       "explodeHitPower": 13.0,
       "explodeArmorPower": 3.0,
-      "explodeRadius": [0.05,0.5],
+      "explodeRadius": [
+        0.05,
+        0.5
+      ],
       "shutterDamage": true,
       "shutterDamageRadius": 1.7,
       "shutterAmount": 12,
@@ -313,21 +346,34 @@
         }
       },
       "armorpower": {
-        "ArmorPower0m": [4.0,10.0],
-        "ArmorPower100m": [3.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0]
+        "ArmorPower0m": [
+          4.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          3.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "50mmOrange",
         "trail": "smallTrail"
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.092,
       "caliber": 0.02,
       "speed": 785.0,
@@ -340,16 +386,37 @@
       "bulletType": "he_i_mine",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.4,
       "explodeHitPower": 13.0,
       "explodeArmorPower": 3.0,
-      "explodeRadius": [0.05,0.5],
+      "explodeRadius": [
+        0.05,
+        0.5
+      ],
       "shutterDamage": true,
       "shutterDamageRadius": 1.7,
       "shutterAmount": 12,
@@ -436,21 +503,34 @@
         }
       },
       "armorpower": {
-        "ArmorPower0m": [4.0,10.0],
-        "ArmorPower100m": [3.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0]
+        "ArmorPower0m": [
+          4.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          3.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "50mmYellow",
         "trail": "smallTrail"
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.092,
       "caliber": 0.02,
       "speed": 785.0,
@@ -463,16 +543,37 @@
       "bulletType": "he_i_mine",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.4,
       "explodeHitPower": 13.0,
       "explodeArmorPower": 3.0,
-      "explodeRadius": [0.05,0.5],
+      "explodeRadius": [
+        0.05,
+        0.5
+      ],
       "shutterDamage": true,
       "shutterDamageRadius": 1.7,
       "shutterAmount": 12,
@@ -559,21 +660,34 @@
         }
       },
       "armorpower": {
-        "ArmorPower0m": [4.0,10.0],
-        "ArmorPower100m": [3.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0]
+        "ArmorPower0m": [
+          4.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          3.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "50mmGreen",
         "trail": "smallTrail"
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.092,
       "caliber": 0.02,
       "speed": 785.0,
@@ -586,16 +700,37 @@
       "bulletType": "he_i_mine",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.4,
       "explodeHitPower": 13.0,
       "explodeArmorPower": 3.0,
-      "explodeRadius": [0.05,0.5],
+      "explodeRadius": [
+        0.05,
+        0.5
+      ],
       "shutterDamage": true,
       "shutterDamageRadius": 1.7,
       "shutterAmount": 12,
@@ -682,21 +817,34 @@
         }
       },
       "armorpower": {
-        "ArmorPower0m": [4.0,10.0],
-        "ArmorPower100m": [3.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0]
+        "ArmorPower0m": [
+          4.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          3.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "50mmBlue",
         "trail": "smallTrail"
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.092,
       "caliber": 0.02,
       "speed": 785.0,
@@ -709,16 +857,37 @@
       "bulletType": "he_i_mine",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.4,
       "explodeHitPower": 13.0,
       "explodeArmorPower": 3.0,
-      "explodeRadius": [0.05,0.5],
+      "explodeRadius": [
+        0.05,
+        0.5
+      ],
       "shutterDamage": true,
       "shutterDamageRadius": 1.7,
       "shutterAmount": 12,
@@ -805,21 +974,34 @@
         }
       },
       "armorpower": {
-        "ArmorPower0m": [4.0,10.0],
-        "ArmorPower100m": [3.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0]
+        "ArmorPower0m": [
+          4.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          3.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "50mmDark_Blue",
         "trail": "smallTrail"
       }
-    }
-  },
-  {
-    "bullet": {
+    },
+    {
       "mass": 0.092,
       "caliber": 0.02,
       "speed": 785.0,
@@ -832,16 +1014,37 @@
       "bulletType": "he_i_mine",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 2.5,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
       "explodeTreshold": 0.4,
       "explodeHitPower": 13.0,
       "explodeArmorPower": 3.0,
-      "explodeRadius": [0.05,0.5],
+      "explodeRadius": [
+        0.05,
+        0.5
+      ],
       "shutterDamage": true,
       "shutterDamageRadius": 1.7,
       "shutterAmount": 12,
@@ -928,26 +1131,39 @@
         }
       },
       "armorpower": {
-        "ArmorPower0m": [4.0,10.0],
-        "ArmorPower100m": [3.0,100.0],
-        "ArmorPower500m": [2.0,500.0],
-        "ArmorPower1000m": [1.0,1000.0]
+        "ArmorPower0m": [
+          4.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          3.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          2.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
+        ]
       },
       "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
         "traceFreq": 1,
         "tracer": "50mmPink",
         "trail": "smallTrail"
       }
     }
-  },
-  {
-    "gunSound": {
-      "path": "sounds/guns",
-      "pathStudio": "aircraft/weapon",
-      "outside": "pony_gun_outside",
-      "cockpit": "pony_gun_inside",
-      "ai": "pony_gun_ai"
-    }
+  ],
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "pony_gun_outside",
+    "cockpit": "pony_gun_inside",
+    "ai": "pony_gun_ai"
   }
-]
+}

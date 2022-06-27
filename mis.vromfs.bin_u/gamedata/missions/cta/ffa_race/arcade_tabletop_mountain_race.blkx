@@ -6,115 +6,49 @@
       "pressure": 760.0,
       "temperature": 0.0
     },
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      },
-      {
-        "wing": "t1_player17"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16"
+      ]
+    },
     "mission": {
       "level": "levels/arcade_tabletop_mountain.bin",
       "type": "domination",
@@ -162,9 +96,9 @@
         "_ArtDB": false
       }
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -177,152 +111,66 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
-        "missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/spawn_random"
-          },
-          {
-            "spawnEffect": false
-          },
-          {
-            "isAirfield": false
-          },
-          {
-            "isUnit": false
-          },
-          {
-            "offset": [0.0,0.0,0.0]
-          },
-          {
-            "isStrictSpawn": true
-          },
-          {
-            "radius": -1.0
-          },
-          {
-            "useExisting": false
-          },
-          {
-            "isIndividual": false
-          },
-          {
-            "removeAreas": false
-          },
-          {
-            "canSpawnOnNeutral": false
-          },
-          {
-            "showOnMap": true
-          },
-          {
-            "target": "spawn01"
-          },
-          {
-            "target": "spawn02"
-          },
-          {
-            "target": "spawn03"
-          },
-          {
-            "target": "spawn04"
-          },
-          {
-            "target": "spawn05"
-          },
-          {
-            "target": "spawn06"
-          },
-          {
-            "target": "spawn07"
-          },
-          {
-            "target": "spawn08"
-          },
-          {
-            "target": "spawn10"
-          },
-          {
-            "target": "spawn11"
-          },
-          {
-            "target": "spawn09"
-          },
-          {
-            "target": "spawn12"
-          },
-          {
-            "target": "spawn13"
-          },
-          {
-            "target": "spawn14"
-          },
-          {
-            "target": "spawn15"
-          },
-          {
-            "target": "spawn16"
-          },
-          {
-            "target": "spawn17"
-          },
-          {
-            "target": "spawn18"
-          },
-          {
-            "target": "spawn19"
-          },
-          {
-            "target": "spawn20"
-          },
-          {
-            "target": "spawn21"
-          },
-          {
-            "target": "spawn22"
-          },
-          {
-            "target": "spawn23"
-          },
-          {
-            "target": "spawn24"
-          },
-          {
-            "target": "spawn25"
-          },
-          {
-            "target": "spawn26"
-          },
-          {
-            "target": "spawn27"
-          },
-          {
-            "target": "spawn28"
-          },
-          {
-            "target": "spawn29"
-          },
-          {
-            "target": "spawn30"
-          },
-          {
-            "target": "spawn31"
-          },
-          {
-            "target": "spawn32"
-          },
-          {
-            "team": "Both"
-          },
-          {
-            "tags": {
-              "air": true
-            }
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "missions/spawn_random",
+          "spawnEffect": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "isStrictSpawn": true,
+          "radius": -1.0,
+          "useExisting": false,
+          "isIndividual": false,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "target": [
+            "spawn01",
+            "spawn02",
+            "spawn03",
+            "spawn04",
+            "spawn05",
+            "spawn06",
+            "spawn07",
+            "spawn08",
+            "spawn10",
+            "spawn11",
+            "spawn09",
+            "spawn12",
+            "spawn13",
+            "spawn14",
+            "spawn15",
+            "spawn16",
+            "spawn17",
+            "spawn18",
+            "spawn19",
+            "spawn20",
+            "spawn21",
+            "spawn22",
+            "spawn23",
+            "spawn24",
+            "spawn25",
+            "spawn26",
+            "spawn27",
+            "spawn28",
+            "spawn29",
+            "spawn30",
+            "spawn31",
+            "spawn32"
+          ],
+          "team": "Both",
+          "tags": {
+            "air": true
           }
-        ],
+        },
         "missionBattleArea": {
           "air": true,
           "ground": false,
@@ -331,7 +179,7 @@
           "area": "battle_zone"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "start_mission_straight": {
       "is_enabled": true,
@@ -346,7 +194,7 @@
           "time": 0.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTimeSpeed": {
           "speed": 0.01,
@@ -376,7 +224,7 @@
           "cannotShoot": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "a_player_is_active_requirement": {
       "is_enabled": false,
@@ -406,7 +254,7 @@
           "target": "race_start_timer"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "race_start_timer": {
       "is_enabled": false,
@@ -453,183 +301,99 @@
           "var": "start_hint_id_str"
         }
       },
-      "else_actions": [
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          }
+      "else_actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
         },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
             "object": "players_squad",
             "ignoreCollisions": true
+          },
+          {
+            "object": [
+              "t1_player01",
+              "t1_player08",
+              "t1_player15",
+              "t2_player05",
+              "t2_player12"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player02",
+              "t1_player09",
+              "t1_player16",
+              "t2_player06",
+              "t2_player13"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player03",
+              "t1_player10",
+              "t1_player17",
+              "t2_player07",
+              "t2_player14"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player04",
+              "t1_player11",
+              "t2_player01",
+              "t2_player08"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player05",
+              "t1_player12",
+              "t2_player02",
+              "t2_player09"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player06",
+              "t1_player13",
+              "t2_player03",
+              "t2_player10"
+            ],
+            "persistentAerobaticsSmoke": true
+          },
+          {
+            "object": [
+              "t1_player07",
+              "t1_player14",
+              "t2_player04",
+              "t2_player11"
+            ],
+            "persistentAerobaticsSmoke": true
           }
+        ],
+        "wait": {
+          "time": 3.0
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player01"
-            },
-            {
-              "object": "t1_player08"
-            },
-            {
-              "object": "t1_player15"
-            },
-            {
-              "object": "t2_player05"
-            },
-            {
-              "object": "t2_player12"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
+        "playHint": {
+          "hintType": "custom",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "shouldBlink": false
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player02"
-            },
-            {
-              "object": "t1_player09"
-            },
-            {
-              "object": "t1_player16"
-            },
-            {
-              "object": "t2_player06"
-            },
-            {
-              "object": "t2_player13"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player03"
-            },
-            {
-              "object": "t1_player10"
-            },
-            {
-              "object": "t1_player17"
-            },
-            {
-              "object": "t2_player07"
-            },
-            {
-              "object": "t2_player14"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player04"
-            },
-            {
-              "object": "t1_player11"
-            },
-            {
-              "object": "t2_player01"
-            },
-            {
-              "object": "t2_player08"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player05"
-            },
-            {
-              "object": "t1_player12"
-            },
-            {
-              "object": "t2_player02"
-            },
-            {
-              "object": "t2_player09"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player06"
-            },
-            {
-              "object": "t1_player13"
-            },
-            {
-              "object": "t2_player03"
-            },
-            {
-              "object": "t2_player10"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "t1_player07"
-            },
-            {
-              "object": "t1_player14"
-            },
-            {
-              "object": "t2_player04"
-            },
-            {
-              "object": "t2_player11"
-            },
-            {
-              "persistentAerobaticsSmoke": true
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "race_start_timer"
-          }
+        "triggerDisable": {
+          "target": "race_start_timer"
         }
-      ]
+      }
     },
     "race_shooting_enabled": {
       "is_enabled": false,
@@ -644,14 +408,14 @@
           "time": 10.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitSetProperties": {
           "object": "players_squad",
           "cannotShoot": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -668,26 +432,42 @@
         "scoreTime": 400,
         "team": "Both"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "start_timer_int": 20,
     "start_hint_id_str": "hints/ffa_race_starts_in_"
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "t1_player01",
         "tm": [
-          [-0.160525,0.0,-0.987033],
-          [0.0,1.0,0.0],
-          [0.987033,0.0,-0.160525],
-          [1782.2,6.5,1629.85]
+          [
+            -0.160525,
+            0.0,
+            -0.987033
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.987033,
+            0.0,
+            -0.160525
+          ],
+          [
+            1782.2,
+            6.5,
+            1629.85
+          ]
         ],
         "unit_class": "a-20g",
         "closed_waypoints": false,
@@ -720,17 +500,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player02",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5724.86,8811.1,5155.61]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5724.86,
+            8811.1,
+            5155.61
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -765,17 +559,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player03",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5725.1,8811.1,5144.65]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5725.1,
+            8811.1,
+            5144.65
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -810,17 +618,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player04",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5725.34,8811.1,5133.69]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5725.34,
+            8811.1,
+            5133.69
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -855,17 +677,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player05",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5725.57,8811.1,5122.73]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5725.57,
+            8811.1,
+            5122.73
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -898,17 +734,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player06",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5725.81,8811.09,5111.77]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5725.81,
+            8811.09,
+            5111.77
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -941,17 +791,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player07",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5726.05,8811.09,5100.81]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5726.05,
+            8811.09,
+            5100.81
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -984,17 +848,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player08",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5726.29,8811.09,5089.85]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5726.29,
+            8811.09,
+            5089.85
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1027,17 +905,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player09",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5726.52,8811.09,5078.89]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5726.52,
+            8811.09,
+            5078.89
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1070,17 +962,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player10",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5726.76,8811.09,5067.93]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5726.76,
+            8811.09,
+            5067.93
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1113,17 +1019,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player11",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5727.0,8811.08,5056.97]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5727.0,
+            8811.08,
+            5056.97
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1156,17 +1076,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player12",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5727.24,8811.08,5046.01]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5727.24,
+            8811.08,
+            5046.01
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1199,17 +1133,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player13",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5727.47,8811.08,5035.06]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5727.47,
+            8811.08,
+            5035.06
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1242,17 +1190,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player14",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5727.71,8811.08,5024.1]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5727.71,
+            8811.08,
+            5024.1
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1285,17 +1247,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player15",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5727.95,8811.08,5013.14]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5727.95,
+            8811.08,
+            5013.14
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1328,17 +1304,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player16",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5728.19,8811.08,5002.18]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5728.19,
+            8811.08,
+            5002.18
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1371,17 +1361,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t1_player17",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5728.42,8811.07,4991.22]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5728.42,
+            8811.07,
+            4991.22
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1414,17 +1418,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player01",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5739.3,8811.1,5158.4]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5739.3,
+            8811.1,
+            5158.4
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1459,17 +1477,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player02",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5741.5,8811.1,5150.6]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5741.5,
+            8811.1,
+            5150.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1504,17 +1536,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player03",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5743.7,8811.1,5142.8]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5743.7,
+            8811.1,
+            5142.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1549,17 +1595,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player04",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5745.9,8811.1,5135.0]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5745.9,
+            8811.1,
+            5135.0
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1592,17 +1652,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player05",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5748.1,8811.1,5127.2]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5748.1,
+            8811.1,
+            5127.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1635,17 +1709,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player06",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5750.3,8811.1,5119.4]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5750.3,
+            8811.1,
+            5119.4
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1678,17 +1766,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player07",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5752.5,8811.1,5111.6]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5752.5,
+            8811.1,
+            5111.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1721,17 +1823,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player08",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5754.7,8811.1,5103.8]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5754.7,
+            8811.1,
+            5103.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1764,17 +1880,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player09",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5756.9,8811.1,5096.0]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5756.9,
+            8811.1,
+            5096.0
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1807,17 +1937,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player10",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5759.1,8811.1,5088.2]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5759.1,
+            8811.1,
+            5088.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1850,17 +1994,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player11",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5761.3,8811.1,5080.4]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5761.3,
+            8811.1,
+            5080.4
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1893,17 +2051,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player12",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5763.5,8811.1,5072.6]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5763.5,
+            8811.1,
+            5072.6
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1936,17 +2108,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player13",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5765.7,8811.1,5064.8]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5765.7,
+            8811.1,
+            5064.8
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -1979,17 +2165,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player14",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5767.9,8811.1,5057.0]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5767.9,
+            8811.1,
+            5057.0
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2022,17 +2222,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player15",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5770.1,8811.1,5049.2]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5770.1,
+            8811.1,
+            5049.2
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2065,17 +2279,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "t2_player16",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-5772.3,8811.1,5041.4]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            -5772.3,
+            8811.1,
+            5041.4
+          ]
         ],
         "unit_class": "dummy_plane",
         "closed_waypoints": false,
@@ -2108,133 +2336,97 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
-        "name": "players_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9342.0,2080.5,9153.15]
+    ],
+    "squad": {
+      "name": "players_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_player01"
-          },
-          {
-            "squad_members": "t1_player02"
-          },
-          {
-            "squad_members": "t1_player03"
-          },
-          {
-            "squad_members": "t1_player04"
-          },
-          {
-            "squad_members": "t1_player05"
-          },
-          {
-            "squad_members": "t1_player06"
-          },
-          {
-            "squad_members": "t1_player07"
-          },
-          {
-            "squad_members": "t1_player08"
-          },
-          {
-            "squad_members": "t1_player09"
-          },
-          {
-            "squad_members": "t1_player10"
-          },
-          {
-            "squad_members": "t1_player11"
-          },
-          {
-            "squad_members": "t1_player12"
-          },
-          {
-            "squad_members": "t1_player13"
-          },
-          {
-            "squad_members": "t1_player14"
-          },
-          {
-            "squad_members": "t1_player15"
-          },
-          {
-            "squad_members": "t1_player16"
-          },
-          {
-            "squad_members": "t1_player17"
-          },
-          {
-            "squad_members": "t2_player01"
-          },
-          {
-            "squad_members": "t2_player02"
-          },
-          {
-            "squad_members": "t2_player03"
-          },
-          {
-            "squad_members": "t2_player04"
-          },
-          {
-            "squad_members": "t2_player05"
-          },
-          {
-            "squad_members": "t2_player06"
-          },
-          {
-            "squad_members": "t2_player07"
-          },
-          {
-            "squad_members": "t2_player08"
-          },
-          {
-            "squad_members": "t2_player09"
-          },
-          {
-            "squad_members": "t2_player10"
-          },
-          {
-            "squad_members": "t2_player11"
-          },
-          {
-            "squad_members": "t2_player12"
-          },
-          {
-            "squad_members": "t2_player13"
-          },
-          {
-            "squad_members": "t2_player14"
-          },
-          {
-            "squad_members": "t2_player15"
-          },
-          {
-            "squad_members": "t2_player16"
-          }
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -9342.0,
+          2080.5,
+          9153.15
+        ]
+      ],
+      "props": {
+        "object_marking": 0,
+        "squad_members": [
+          "t1_player01",
+          "t1_player02",
+          "t1_player03",
+          "t1_player04",
+          "t1_player05",
+          "t1_player06",
+          "t1_player07",
+          "t1_player08",
+          "t1_player09",
+          "t1_player10",
+          "t1_player11",
+          "t1_player12",
+          "t1_player13",
+          "t1_player14",
+          "t1_player15",
+          "t1_player16",
+          "t1_player17",
+          "t2_player01",
+          "t2_player02",
+          "t2_player03",
+          "t2_player04",
+          "t2_player05",
+          "t2_player06",
+          "t2_player07",
+          "t2_player08",
+          "t2_player09",
+          "t2_player10",
+          "t2_player11",
+          "t2_player12",
+          "t2_player13",
+          "t2_player14",
+          "t2_player15",
+          "t2_player16"
         ]
       }
     }
-  ],
+  },
   "areas": {
     "spawn01": {
       "type": "Sphere",
       "tm": [
-        [-9.76296,0.0,2.16439],
-        [0.0,10.0,0.0],
-        [-2.16439,0.0,-9.76296],
-        [13554.4,5553.9,-10087.0]
+        [
+          -9.76296,
+          0.0,
+          2.16439
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -2.16439,
+          0.0,
+          -9.76296
+        ],
+        [
+          13554.4,
+          5553.9,
+          -10087.0
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2244,10 +2436,26 @@
     "spawn03": {
       "type": "Sphere",
       "tm": [
-        [-9.76296,0.0,2.16439],
-        [0.0,10.0,0.0],
-        [-2.16439,0.0,-9.76296],
-        [13558.3,5553.5,-10065.2]
+        [
+          -9.76296,
+          0.0,
+          2.16439
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -2.16439,
+          0.0,
+          -9.76296
+        ],
+        [
+          13558.3,
+          5553.5,
+          -10065.2
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2257,10 +2465,26 @@
     "spawn05": {
       "type": "Sphere",
       "tm": [
-        [-9.76296,0.0,2.16438],
-        [0.0,10.0,0.0],
-        [-2.16438,0.0,-9.76296],
-        [13550.8,5553.5,-10107.2]
+        [
+          -9.76296,
+          0.0,
+          2.16438
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -2.16438,
+          0.0,
+          -9.76296
+        ],
+        [
+          13550.8,
+          5553.5,
+          -10107.2
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2270,10 +2494,26 @@
     "spawn06": {
       "type": "Sphere",
       "tm": [
-        [-9.65926,0.0,2.58819],
-        [0.0,10.0,0.0],
-        [-2.58819,0.0,-9.65926],
-        [13547.8,5553.5,-10126.9]
+        [
+          -9.65926,
+          0.0,
+          2.58819
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -2.58819,
+          0.0,
+          -9.65926
+        ],
+        [
+          13547.8,
+          5553.5,
+          -10126.9
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2283,32 +2523,80 @@
     "spawn07": {
       "type": "Sphere",
       "tm": [
-        [-9.53717,0.0,3.00705],
-        [0.0,10.0,0.0],
-        [-3.00705,0.0,-9.53717],
-        [13543.8,5553.49,-10149.0]
+        [
+          -9.53717,
+          0.0,
+          3.00705
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -3.00705,
+          0.0,
+          -9.53717
+        ],
+        [
+          13543.8,
+          5553.49,
+          -10149.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn08": {
       "type": "Sphere",
       "tm": [
-        [-9.91445,0.0,1.30526],
-        [0.0,10.0,0.0],
-        [-1.30526,0.0,-9.91445],
-        [13570.5,5553.5,-9995.74]
+        [
+          -9.91445,
+          0.0,
+          1.30526
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.30526,
+          0.0,
+          -9.91445
+        ],
+        [
+          13570.5,
+          5553.5,
+          -9995.74
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn02": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73648],
-        [0.0,10.0,0.0],
-        [-1.73648,0.0,-9.84808],
-        [13562.5,5553.9,-10042.3]
+        [
+          -9.84808,
+          0.0,
+          1.73648
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73648,
+          0.0,
+          -9.84808
+        ],
+        [
+          13562.5,
+          5553.9,
+          -10042.3
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2318,10 +2606,26 @@
     "spawn15": {
       "type": "Sphere",
       "tm": [
-        [-9.96195,0.0,0.87156],
-        [0.0,10.0,0.0],
-        [-0.87156,0.0,-9.96195],
-        [13616.8,5553.9,-10123.7]
+        [
+          -9.96195,
+          0.0,
+          0.87156
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -0.87156,
+          0.0,
+          -9.96195
+        ],
+        [
+          13616.8,
+          5553.9,
+          -10123.7
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2331,10 +2635,26 @@
     "spawn09": {
       "type": "Sphere",
       "tm": [
-        [-9.65926,0.0,2.58818],
-        [0.0,10.0,0.0],
-        [-2.58818,0.0,-9.65926],
-        [13573.7,5553.5,-10122.9]
+        [
+          -9.65926,
+          0.0,
+          2.58818
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -2.58818,
+          0.0,
+          -9.65926
+        ],
+        [
+          13573.7,
+          5553.5,
+          -10122.9
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2344,10 +2664,26 @@
     "spawn16": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13623.8,5553.49,-10083.1]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13623.8,
+          5553.49,
+          -10083.1
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2357,10 +2693,26 @@
     "spawn10": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13592.0,5553.49,-10034.1]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13592.0,
+          5553.49,
+          -10034.1
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2370,32 +2722,80 @@
     "spawn11": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13627.9,5553.49,-10060.4]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13627.9,
+          5553.49,
+          -10060.4
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn12": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13629.9,5553.49,-10049.0]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13629.9,
+          5553.49,
+          -10049.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn13": {
       "type": "Sphere",
       "tm": [
-        [-9.96195,0.0,0.87156],
-        [0.0,10.0,0.0],
-        [-0.87156,0.0,-9.96195],
-        [13618.7,5553.9,-10114.2]
+        [
+          -9.96195,
+          0.0,
+          0.87156
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -0.87156,
+          0.0,
+          -9.96195
+        ],
+        [
+          13618.7,
+          5553.9,
+          -10114.2
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2405,10 +2805,26 @@
     "spawn04": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73648],
-        [0.0,10.0,0.0],
-        [-1.73648,0.0,-9.84808],
-        [13566.8,5553.5,-10018.8]
+        [
+          -9.84808,
+          0.0,
+          1.73648
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73648,
+          0.0,
+          -9.84808
+        ],
+        [
+          13566.8,
+          5553.5,
+          -10018.8
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2418,10 +2834,26 @@
     "spawn14": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13622.4,5553.49,-10093.7]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13622.4,
+          5553.49,
+          -10093.7
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2431,10 +2863,26 @@
     "spawn17": {
       "type": "Sphere",
       "tm": [
-        [-9.96195,0.0,0.87156],
-        [0.0,10.0,0.0],
-        [-0.87156,0.0,-9.96195],
-        [13628.7,5553.9,-10119.2]
+        [
+          -9.96195,
+          0.0,
+          0.87156
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -0.87156,
+          0.0,
+          -9.96195
+        ],
+        [
+          13628.7,
+          5553.9,
+          -10119.2
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2444,10 +2892,26 @@
     "spawn32": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13632.3,5553.49,-10099.5]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13632.3,
+          5553.49,
+          -10099.5
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2457,10 +2921,26 @@
     "spawn18": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13635.4,5553.49,-10078.5]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13635.4,
+          5553.49,
+          -10078.5
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2470,10 +2950,26 @@
     "spawn19": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13637.4,5553.49,-10067.1]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13637.4,
+          5553.49,
+          -10067.1
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2483,32 +2979,80 @@
     "spawn20": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13639.5,5553.49,-10055.7]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13639.5,
+          5553.49,
+          -10055.7
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn21": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13641.5,5553.49,-10044.3]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13641.5,
+          5553.49,
+          -10044.3
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn22": {
       "type": "Sphere",
       "tm": [
-        [-9.96195,0.0,0.87156],
-        [0.0,10.0,0.0],
-        [-0.87156,0.0,-9.96195],
-        [13630.6,5553.9,-10109.8]
+        [
+          -9.96195,
+          0.0,
+          0.87156
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -0.87156,
+          0.0,
+          -9.96195
+        ],
+        [
+          13630.6,
+          5553.9,
+          -10109.8
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2518,10 +3062,26 @@
     "spawn23": {
       "type": "Sphere",
       "tm": [
-        [-9.96195,0.0,0.87156],
-        [0.0,10.0,0.0],
-        [-0.87156,0.0,-9.96195],
-        [13638.9,5553.9,-10120.1]
+        [
+          -9.96195,
+          0.0,
+          0.87156
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -0.87156,
+          0.0,
+          -9.96195
+        ],
+        [
+          13638.9,
+          5553.9,
+          -10120.1
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2531,10 +3091,26 @@
     "spawn24": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13642.4,5553.49,-10100.3]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13642.4,
+          5553.49,
+          -10100.3
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2544,10 +3120,26 @@
     "spawn25": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13645.9,5553.49,-10079.5]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13645.9,
+          5553.49,
+          -10079.5
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2557,54 +3149,134 @@
     "spawn26": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13647.9,5553.49,-10068.2]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13647.9,
+          5553.49,
+          -10068.2
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn27": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13650.0,5553.49,-10056.8]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13650.0,
+          5553.49,
+          -10056.8
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn28": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13652.0,5553.49,-10045.4]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13652.0,
+          5553.49,
+          -10045.4
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn29": {
       "type": "Sphere",
       "tm": [
-        [-9.96195,0.0,0.87156],
-        [0.0,10.0,0.0],
-        [-0.87156,0.0,-9.96195],
-        [13640.7,5553.9,-10110.6]
+        [
+          -9.96195,
+          0.0,
+          0.87156
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -0.87156,
+          0.0,
+          -9.96195
+        ],
+        [
+          13640.7,
+          5553.9,
+          -10110.6
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "spawn30": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13634.2,5553.49,-10089.0]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13634.2,
+          5553.49,
+          -10089.0
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2614,10 +3286,26 @@
     "spawn31": {
       "type": "Sphere",
       "tm": [
-        [-9.84808,0.0,1.73647],
-        [0.0,10.0,0.0],
-        [-1.73647,0.0,-9.84808],
-        [13644.4,5553.49,-10090.1]
+        [
+          -9.84808,
+          0.0,
+          1.73647
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -1.73647,
+          0.0,
+          -9.84808
+        ],
+        [
+          13644.4,
+          5553.49,
+          -10090.1
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2627,10 +3315,26 @@
     "battle_zone": {
       "type": "Cylinder",
       "tm": [
-        [20000.0,0.0,0.0],
-        [0.0,20000.0,0.0],
-        [0.0,0.0,20000.0],
-        [3974.78,-3427.96,-1591.04]
+        [
+          20000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20000.0
+        ],
+        [
+          3974.78,
+          -3427.96,
+          -1591.04
+        ]
       ],
       "objLayer": 3,
       "props": {
@@ -2640,10 +3344,26 @@
     "race_wp_01": {
       "type": "Sphere",
       "tm": [
-        [196.962,0.0,-34.7296],
-        [0.0,200.0,0.0],
-        [34.7296,0.0,196.962],
-        [12557.5,5436.87,-9859.96]
+        [
+          196.962,
+          0.0,
+          -34.7296
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          34.7296,
+          0.0,
+          196.962
+        ],
+        [
+          12557.5,
+          5436.87,
+          -9859.96
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2653,10 +3373,26 @@
     "race_wp_02": {
       "type": "Sphere",
       "tm": [
-        [199.809,0.0,8.72381],
-        [0.0,200.0,0.0],
-        [-8.72381,0.0,199.809],
-        [12103.7,5432.31,-9647.47]
+        [
+          199.809,
+          0.0,
+          8.72381
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -8.72381,
+          0.0,
+          199.809
+        ],
+        [
+          12103.7,
+          5432.31,
+          -9647.47
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2666,10 +3402,26 @@
     "race_wp_03": {
       "type": "Sphere",
       "tm": [
-        [193.185,0.0,-51.7637],
-        [2.25791,199.81,8.42662],
-        [51.7146,-8.72388,193.001],
-        [11545.5,5454.61,-9596.82]
+        [
+          193.185,
+          0.0,
+          -51.7637
+        ],
+        [
+          2.25791,
+          199.81,
+          8.42662
+        ],
+        [
+          51.7146,
+          -8.72388,
+          193.001
+        ],
+        [
+          11545.5,
+          5454.61,
+          -9596.82
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2679,10 +3431,26 @@
     "race_wp_04": {
       "type": "Sphere",
       "tm": [
-        [163.831,0.0,-114.715],
-        [0.0,200.0,0.0],
-        [114.715,0.0,163.831],
-        [11261.2,5466.4,-9607.44]
+        [
+          163.831,
+          0.0,
+          -114.715
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          114.715,
+          0.0,
+          163.831
+        ],
+        [
+          11261.2,
+          5466.4,
+          -9607.44
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2692,10 +3460,26 @@
     "race_wp_05": {
       "type": "Sphere",
       "tm": [
-        [121.753,0.0,-158.671],
-        [-6.92112,199.81,-5.31075],
-        [158.519,8.72388,121.636],
-        [10988.7,5458.61,-9415.83]
+        [
+          121.753,
+          0.0,
+          -158.671
+        ],
+        [
+          -6.92112,
+          199.81,
+          -5.31075
+        ],
+        [
+          158.519,
+          8.72388,
+          121.636
+        ],
+        [
+          10988.7,
+          5458.61,
+          -9415.83
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2705,10 +3489,26 @@
     "race_wp_06": {
       "type": "Sphere",
       "tm": [
-        [196.961,0.0,-34.7295],
-        [0.0,200.0,0.0],
-        [34.7295,0.0,196.961],
-        [10626.9,5442.23,-9122.89]
+        [
+          196.961,
+          0.0,
+          -34.7295
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          34.7295,
+          0.0,
+          196.961
+        ],
+        [
+          10626.9,
+          5442.23,
+          -9122.89
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2718,10 +3518,26 @@
     "race_wp_07": {
       "type": "Sphere",
       "tm": [
-        [199.239,0.0,-17.4307],
-        [0.0,200.0,0.0],
-        [17.4307,0.0,199.239],
-        [9885.35,5468.8,-8870.88]
+        [
+          199.239,
+          0.0,
+          -17.4307
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          17.4307,
+          0.0,
+          199.239
+        ],
+        [
+          9885.35,
+          5468.8,
+          -8870.88
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2731,10 +3547,26 @@
     "race_wp_08": {
       "type": "Sphere",
       "tm": [
-        [193.185,0.0,-51.7637],
-        [0.0,200.0,0.0],
-        [51.7637,0.0,193.185],
-        [9385.59,5450.01,-8877.12]
+        [
+          193.185,
+          0.0,
+          -51.7637
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          51.7637,
+          0.0,
+          193.185
+        ],
+        [
+          9385.59,
+          5450.01,
+          -8877.12
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2744,10 +3576,26 @@
     "race_wp_09": {
       "type": "Sphere",
       "tm": [
-        [147.455,0.0,-135.118],
-        [0.0,200.0,0.0],
-        [135.118,0.0,147.455],
-        [8914.85,5447.02,-8463.23]
+        [
+          147.455,
+          0.0,
+          -135.118
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          135.118,
+          0.0,
+          147.455
+        ],
+        [
+          8914.85,
+          5447.02,
+          -8463.23
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2757,10 +3605,26 @@
     "race_wp_10": {
       "type": "Sphere",
       "tm": [
-        [163.83,0.0,-114.715],
-        [0.0,200.0,0.0],
-        [114.715,0.0,163.83],
-        [8304.14,5479.24,-8281.06]
+        [
+          163.83,
+          0.0,
+          -114.715
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          114.715,
+          0.0,
+          163.83
+        ],
+        [
+          8304.14,
+          5479.24,
+          -8281.06
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2770,10 +3634,26 @@
     "race_wp_11": {
       "type": "Sphere",
       "tm": [
-        [121.752,0.0,-158.671],
-        [0.0,200.0,0.0],
-        [158.671,0.0,121.752],
-        [7479.77,5519.34,-7723.24]
+        [
+          121.752,
+          0.0,
+          -158.671
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          158.671,
+          0.0,
+          121.752
+        ],
+        [
+          7479.77,
+          5519.34,
+          -7723.24
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2783,10 +3663,26 @@
     "race_wp_12": {
       "type": "Sphere",
       "tm": [
-        [158.623,7.14618,-121.604],
-        [-2.62332,199.81,8.32011],
-        [121.785,-5.0038,158.566],
-        [6966.12,5509.0,-7112.91]
+        [
+          158.623,
+          7.14618,
+          -121.604
+        ],
+        [
+          -2.62332,
+          199.81,
+          8.32011
+        ],
+        [
+          121.785,
+          -5.0038,
+          158.566
+        ],
+        [
+          6966.12,
+          5509.0,
+          -7112.91
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2796,10 +3692,26 @@
     "race_wp_13": {
       "type": "Sphere",
       "tm": [
-        [143.885,53.9024,-128.03],
-        [-53.6899,191.584,20.3209],
-        [128.119,19.7502,152.3],
-        [6037.08,5173.61,-6196.13]
+        [
+          143.885,
+          53.9024,
+          -128.03
+        ],
+        [
+          -53.6899,
+          191.584,
+          20.3209
+        ],
+        [
+          128.119,
+          19.7502,
+          152.3
+        ],
+        [
+          6037.08,
+          5173.61,
+          -6196.13
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2809,10 +3721,26 @@
     "race_wp_14": {
       "type": "Sphere",
       "tm": [
-        [76.5367,0.0,-184.776],
-        [0.0,200.0,0.0],
-        [184.776,0.0,76.5367],
-        [5560.96,5005.07,-5468.6]
+        [
+          76.5367,
+          0.0,
+          -184.776
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          184.776,
+          0.0,
+          76.5367
+        ],
+        [
+          5560.96,
+          5005.07,
+          -5468.6
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2822,10 +3750,26 @@
     "race_wp_15": {
       "type": "Sphere",
       "tm": [
-        [-8.72388,0.0,-199.81],
-        [0.0,200.0,0.0],
-        [199.81,0.0,-8.72388],
-        [5365.04,4869.36,-4408.74]
+        [
+          -8.72388,
+          0.0,
+          -199.81
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          199.81,
+          0.0,
+          -8.72388
+        ],
+        [
+          5365.04,
+          4869.36,
+          -4408.74
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2835,10 +3779,26 @@
     "race_wp_16": {
       "type": "Sphere",
       "tm": [
-        [-121.752,0.0,-158.671],
-        [0.0,200.0,0.0],
-        [158.671,0.0,-121.752],
-        [5455.07,4963.98,-3741.32]
+        [
+          -121.752,
+          0.0,
+          -158.671
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          158.671,
+          0.0,
+          -121.752
+        ],
+        [
+          5455.07,
+          4963.98,
+          -3741.32
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2848,10 +3808,26 @@
     "race_wp_17": {
       "type": "Sphere",
       "tm": [
-        [-196.962,0.0,-34.7297],
-        [0.0,200.0,0.0],
-        [34.7297,0.0,-196.962],
-        [5866.32,5030.72,-3383.72]
+        [
+          -196.962,
+          0.0,
+          -34.7297
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          34.7297,
+          0.0,
+          -196.962
+        ],
+        [
+          5866.32,
+          5030.72,
+          -3383.72
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2861,10 +3837,26 @@
     "race_wp_18": {
       "type": "Sphere",
       "tm": [
-        [-195.259,0.0,-43.2879],
-        [0.0,200.0,0.0],
-        [43.2879,0.0,-195.259],
-        [7043.4,5245.91,-3643.03]
+        [
+          -195.259,
+          0.0,
+          -43.2879
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          43.2879,
+          0.0,
+          -195.259
+        ],
+        [
+          7043.4,
+          5245.91,
+          -3643.03
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2874,10 +3866,26 @@
     "race_wp_19": {
       "type": "Sphere",
       "tm": [
-        [-270.236,0.0,-294.911],
-        [0.0,400.0,0.0],
-        [294.911,0.0,-270.236],
-        [6793.46,5367.61,-2750.72]
+        [
+          -270.236,
+          0.0,
+          -294.911
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          294.911,
+          0.0,
+          -270.236
+        ],
+        [
+          6793.46,
+          5367.61,
+          -2750.72
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2887,10 +3895,26 @@
     "race_wp_20": {
       "type": "Sphere",
       "tm": [
-        [-92.3497,0.0,-177.402],
-        [0.0,200.0,0.0],
-        [177.402,0.0,-92.3497],
-        [6600.28,5445.83,-2457.66]
+        [
+          -92.3497,
+          0.0,
+          -177.402
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          177.402,
+          0.0,
+          -92.3497
+        ],
+        [
+          6600.28,
+          5445.83,
+          -2457.66
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2900,10 +3924,26 @@
     "race_wp_21": {
       "type": "Sphere",
       "tm": [
-        [114.715,0.0,-163.83],
-        [0.0,200.0,0.0],
-        [163.83,0.0,114.715],
-        [6362.25,5419.51,-1955.73]
+        [
+          114.715,
+          0.0,
+          -163.83
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          163.83,
+          0.0,
+          114.715
+        ],
+        [
+          6362.25,
+          5419.51,
+          -1955.73
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2913,10 +3953,26 @@
     "race_wp_22": {
       "type": "Sphere",
       "tm": [
-        [60.1412,0.0,-190.743],
-        [0.0,200.0,0.0],
-        [190.743,0.0,60.1412],
-        [6470.07,5470.96,-1650.32]
+        [
+          60.1412,
+          0.0,
+          -190.743
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          190.743,
+          0.0,
+          60.1412
+        ],
+        [
+          6470.07,
+          5470.96,
+          -1650.32
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2926,10 +3982,26 @@
     "race_wp_23": {
       "type": "Sphere",
       "tm": [
-        [84.5237,0.0,-181.262],
-        [0.0,200.0,0.0],
-        [181.262,0.0,84.5237],
-        [7019.34,5492.67,-1462.34]
+        [
+          84.5237,
+          0.0,
+          -181.262
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          181.262,
+          0.0,
+          84.5237
+        ],
+        [
+          7019.34,
+          5492.67,
+          -1462.34
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2939,10 +4011,26 @@
     "race_wp_24": {
       "type": "Sphere",
       "tm": [
-        [187.938,0.0,-68.4042],
-        [0.0,200.0,0.0],
-        [68.4042,0.0,187.938],
-        [7220.59,5433.85,-1290.34]
+        [
+          187.938,
+          0.0,
+          -68.4042
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          68.4042,
+          0.0,
+          187.938
+        ],
+        [
+          7220.59,
+          5433.85,
+          -1290.34
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2952,10 +4040,26 @@
     "race_wp_25": {
       "type": "Sphere",
       "tm": [
-        [198.289,0.0,-26.1056],
-        [0.0,200.0,0.0],
-        [26.1056,0.0,198.289],
-        [7155.97,5459.02,-678.05]
+        [
+          198.289,
+          0.0,
+          -26.1056
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          26.1056,
+          0.0,
+          198.289
+        ],
+        [
+          7155.97,
+          5459.02,
+          -678.05
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2965,10 +4069,26 @@
     "race_wp_26": {
       "type": "Sphere",
       "tm": [
-        [181.262,0.0,84.5236],
-        [0.0,200.0,0.0],
-        [-84.5236,0.0,181.262],
-        [7477.19,5564.2,-44.3881]
+        [
+          181.262,
+          0.0,
+          84.5236
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -84.5236,
+          0.0,
+          181.262
+        ],
+        [
+          7477.19,
+          5564.2,
+          -44.3881
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2978,10 +4098,26 @@
     "race_wp_27": {
       "type": "Sphere",
       "tm": [
-        [107.46,0.0,168.678],
-        [0.0,200.0,0.0],
-        [-168.678,0.0,107.46],
-        [7581.32,5492.99,424.008]
+        [
+          107.46,
+          0.0,
+          168.678
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -168.678,
+          0.0,
+          107.46
+        ],
+        [
+          7581.32,
+          5492.99,
+          424.008
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -2991,10 +4127,26 @@
     "race_wp_28": {
       "type": "Sphere",
       "tm": [
-        [141.422,0.0,141.421],
-        [0.0,200.0,0.0],
-        [-141.421,0.0,141.422],
-        [7726.24,5467.57,652.627]
+        [
+          141.422,
+          0.0,
+          141.421
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -141.421,
+          0.0,
+          141.422
+        ],
+        [
+          7726.24,
+          5467.57,
+          652.627
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3004,10 +4156,26 @@
     "race_wp_29": {
       "type": "Sphere",
       "tm": [
-        [195.26,0.0,43.2877],
-        [0.0,200.0,0.0],
-        [-43.2877,0.0,195.26],
-        [7862.61,5432.17,963.331]
+        [
+          195.26,
+          0.0,
+          43.2877
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -43.2877,
+          0.0,
+          195.26
+        ],
+        [
+          7862.61,
+          5432.17,
+          963.331
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3017,10 +4185,26 @@
     "race_wp_30": {
       "type": "Sphere",
       "tm": [
-        [181.262,0.0,-84.5241],
-        [0.0,200.0,0.0],
-        [84.5241,0.0,181.262],
-        [7757.83,5412.98,1390.99]
+        [
+          181.262,
+          0.0,
+          -84.5241
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          84.5241,
+          0.0,
+          181.262
+        ],
+        [
+          7757.83,
+          5412.98,
+          1390.99
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3030,10 +4214,26 @@
     "race_wp_31": {
       "type": "Sphere",
       "tm": [
-        [128.558,0.0,-153.209],
-        [0.0,200.0,0.0],
-        [153.209,0.0,128.558],
-        [7346.63,5414.3,2007.98]
+        [
+          128.558,
+          0.0,
+          -153.209
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          153.209,
+          0.0,
+          128.558
+        ],
+        [
+          7346.63,
+          5414.3,
+          2007.98
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3043,10 +4243,26 @@
     "race_wp_32": {
       "type": "Sphere",
       "tm": [
-        [84.5236,0.0,-181.262],
-        [0.0,200.0,0.0],
-        [181.262,0.0,84.5236],
-        [7405.54,5501.05,2252.07]
+        [
+          84.5236,
+          0.0,
+          -181.262
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          181.262,
+          0.0,
+          84.5236
+        ],
+        [
+          7405.54,
+          5501.05,
+          2252.07
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3056,10 +4272,26 @@
     "race_wp_33": {
       "type": "Sphere",
       "tm": [
-        [141.421,0.0,-141.422],
-        [0.0,200.0,0.0],
-        [141.422,0.0,141.421],
-        [7448.78,5561.42,2775.84]
+        [
+          141.421,
+          0.0,
+          -141.422
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          141.422,
+          0.0,
+          141.421
+        ],
+        [
+          7448.78,
+          5561.42,
+          2775.84
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3069,10 +4301,26 @@
     "race_wp_34": {
       "type": "Sphere",
       "tm": [
-        [181.262,0.0,-84.5241],
-        [0.0,200.0,0.0],
-        [84.5241,0.0,181.262],
-        [7867.11,5393.9,3188.45]
+        [
+          181.262,
+          0.0,
+          -84.5241
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          84.5241,
+          0.0,
+          181.262
+        ],
+        [
+          7867.11,
+          5393.9,
+          3188.45
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3082,10 +4330,26 @@
     "race_wp_35": {
       "type": "Sphere",
       "tm": [
-        [181.262,0.0,-84.5241],
-        [0.0,200.0,0.0],
-        [84.5241,0.0,181.262],
-        [7912.8,5251.31,3676.33]
+        [
+          181.262,
+          0.0,
+          -84.5241
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          84.5241,
+          0.0,
+          181.262
+        ],
+        [
+          7912.8,
+          5251.31,
+          3676.33
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3095,10 +4359,26 @@
     "race_wp_36": {
       "type": "Sphere",
       "tm": [
-        [107.46,0.0,-168.679],
-        [0.0,200.0,0.0],
-        [168.679,0.0,107.46],
-        [7597.48,5180.7,3967.64]
+        [
+          107.46,
+          0.0,
+          -168.679
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          168.679,
+          0.0,
+          107.46
+        ],
+        [
+          7597.48,
+          5180.7,
+          3967.64
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3108,10 +4388,26 @@
     "race_wp_37": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [7050.18,4968.68,4139.56]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          7050.18,
+          4968.68,
+          4139.56
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3121,10 +4417,26 @@
     "race_wp_38": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [5897.38,5074.42,3986.59]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          5897.38,
+          5074.42,
+          3986.59
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3134,10 +4446,26 @@
     "race_wp_39": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [5259.47,5063.12,3818.75]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          5259.47,
+          5063.12,
+          3818.75
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3147,10 +4475,26 @@
     "race_wp_40": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [4518.45,5067.02,4131.93]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          4518.45,
+          5067.02,
+          4131.93
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3160,10 +4504,26 @@
     "race_wp_41": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [3918.89,5048.51,3801.37]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          3918.89,
+          5048.51,
+          3801.37
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3173,10 +4533,26 @@
     "race_wp_42": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [3567.04,5062.83,3469.63]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          3567.04,
+          5062.83,
+          3469.63
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3186,10 +4562,26 @@
     "race_wp_43": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [3189.13,5135.49,2816.63]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          3189.13,
+          5135.49,
+          2816.63
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3199,10 +4591,26 @@
     "race_wp_44": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [3533.24,5340.93,2069.24]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          3533.24,
+          5340.93,
+          2069.24
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3212,10 +4620,26 @@
     "race_wp_45": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [3837.45,5448.83,1630.52]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          3837.45,
+          5448.83,
+          1630.52
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3225,10 +4649,26 @@
     "race_wp_46": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [4144.45,5425.51,921.726]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          4144.45,
+          5425.51,
+          921.726
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3238,10 +4678,26 @@
     "race_wp_47": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [4514.14,5441.48,451.964]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          4514.14,
+          5441.48,
+          451.964
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3251,10 +4707,26 @@
     "race_wp_48": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [4700.29,5477.26,-85.6461]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          4700.29,
+          5477.26,
+          -85.6461
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3264,10 +4736,26 @@
     "race_wp_49": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [5366.18,5436.26,-752.963]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          5366.18,
+          5436.26,
+          -752.963
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3277,10 +4765,26 @@
     "race_wp_50": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [6052.25,5408.81,-175.891]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          6052.25,
+          5408.81,
+          -175.891
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3290,10 +4794,26 @@
     "race_wp_51": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [5568.7,5375.0,878.923]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          5568.7,
+          5375.0,
+          878.923
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3303,10 +4823,26 @@
     "race_wp_52": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [4647.23,5437.42,2003.87]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          4647.23,
+          5437.42,
+          2003.87
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3316,10 +4852,26 @@
     "race_wp_53": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [4161.36,5479.86,2883.09]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          4161.36,
+          5479.86,
+          2883.09
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3329,10 +4881,26 @@
     "race_wp_54": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [3241.49,5503.67,3757.04]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          3241.49,
+          5503.67,
+          3757.04
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3342,10 +4910,26 @@
     "race_wp_55": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [2821.66,5411.5,4280.37]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          2821.66,
+          5411.5,
+          4280.37
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3355,10 +4939,26 @@
     "race_wp_56": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [2260.31,5386.43,4430.68]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          2260.31,
+          5386.43,
+          4430.68
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3368,10 +4968,26 @@
     "race_wp_57": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [1388.73,5401.92,5111.76]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          1388.73,
+          5401.92,
+          5111.76
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3381,10 +4997,26 @@
     "race_wp_58": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [633.026,5457.09,5569.09]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          633.026,
+          5457.09,
+          5569.09
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3394,10 +5026,26 @@
     "race_wp_59": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-75.5807,5413.23,5861.79]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -75.5807,
+          5413.23,
+          5861.79
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3407,10 +5055,26 @@
     "race_wp_60": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-721.58,5413.23,5745.83]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -721.58,
+          5413.23,
+          5745.83
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3420,10 +5084,26 @@
     "race_wp_61": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-1129.41,5413.23,5658.41]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -1129.41,
+          5413.23,
+          5658.41
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3433,10 +5113,26 @@
     "race_wp_62": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-2002.78,5411.82,5819.39]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -2002.78,
+          5411.82,
+          5819.39
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3446,10 +5142,26 @@
     "race_wp_63": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-3326.28,5431.12,5630.81]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -3326.28,
+          5431.12,
+          5630.81
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3459,10 +5171,26 @@
     "race_wp_64": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-4160.28,5452.82,5234.56]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -4160.28,
+          5452.82,
+          5234.56
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3472,10 +5200,26 @@
     "race_wp_65": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-4537.4,5491.12,5274.03]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -4537.4,
+          5491.12,
+          5274.03
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3485,10 +5229,26 @@
     "race_wp_66": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-5044.56,5426.8,5483.09]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -5044.56,
+          5426.8,
+          5483.09
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3498,10 +5258,26 @@
     "race_wp_67": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-5389.24,5426.8,5626.85]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -5389.24,
+          5426.8,
+          5626.85
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3511,10 +5287,26 @@
     "race_wp_68": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-5401.48,5506.92,6005.0]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -5401.48,
+          5506.92,
+          6005.0
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3524,10 +5316,26 @@
     "race_wp_69": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-5291.69,5561.89,6635.57]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -5291.69,
+          5561.89,
+          6635.57
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3537,10 +5345,26 @@
     "race_wp_70": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-4764.09,5415.67,6906.26]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -4764.09,
+          5415.67,
+          6906.26
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3550,10 +5374,26 @@
     "race_wp_71": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-4217.65,5496.62,6998.52]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -4217.65,
+          5496.62,
+          6998.52
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3563,10 +5403,26 @@
     "race_wp_72": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-3840.11,5496.62,7141.97]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -3840.11,
+          5496.62,
+          7141.97
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3576,10 +5432,26 @@
     "race_wp_73": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-3263.41,5416.45,7024.01]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -3263.41,
+          5416.45,
+          7024.01
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3589,10 +5461,26 @@
     "race_wp_74": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-2699.96,5416.1,7069.36]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -2699.96,
+          5416.1,
+          7069.36
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3602,10 +5490,26 @@
     "race_wp_75": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-2653.13,5369.45,7525.16]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -2653.13,
+          5369.45,
+          7525.16
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3615,10 +5519,26 @@
     "race_wp_76": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-3069.67,5360.79,7989.85]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -3069.67,
+          5360.79,
+          7989.85
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3628,10 +5548,26 @@
     "race_wp_77": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-3574.85,5475.81,8171.18]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -3574.85,
+          5475.81,
+          8171.18
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3641,10 +5577,26 @@
     "race_wp_78": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-3967.23,5482.98,8263.4]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -3967.23,
+          5482.98,
+          8263.4
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3654,10 +5606,26 @@
     "race_wp_79": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-4501.12,5508.53,8450.84]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -4501.12,
+          5508.53,
+          8450.84
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3667,10 +5635,26 @@
     "race_wp_80": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-5044.37,5563.32,8394.76]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -5044.37,
+          5563.32,
+          8394.76
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3680,10 +5664,26 @@
     "race_wp_81": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-5865.57,5646.81,8063.68]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -5865.57,
+          5646.81,
+          8063.68
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3693,10 +5693,26 @@
     "race_wp_82": {
       "type": "Sphere",
       "tm": [
-        [-34.73,0.0,-196.962],
-        [0.0,200.0,0.0],
-        [196.962,0.0,-34.73],
-        [-6980.04,5592.79,7390.15]
+        [
+          -34.73,
+          0.0,
+          -196.962
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          196.962,
+          0.0,
+          -34.73
+        ],
+        [
+          -6980.04,
+          5592.79,
+          7390.15
+        ]
       ],
       "objLayer": 0,
       "props": {
@@ -3704,6 +5720,6 @@
       }
     }
   },
-  "objLayers": [],
-  "wayPoints": []
+  "objLayers": {},
+  "wayPoints": {}
 }

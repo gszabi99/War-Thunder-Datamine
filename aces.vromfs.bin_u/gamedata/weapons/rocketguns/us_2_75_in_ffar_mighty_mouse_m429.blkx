@@ -14,7 +14,7 @@
     "mass": 8.94,
     "massEnd": 5.76,
     "statType": "hydra",
-    "explodeTreshold": 0.0,
+    "explodeTreshold": 1E-05,
     "rendinstDamageRadius": 6.0,
     "hasProximityFuse": true,
     "maxDistance": 6200.0,
@@ -26,8 +26,12 @@
     "advancedMissiles": false,
     "distFromCmToStab": 0.01,
     "distanceFuse": false,
-    "WdK": [0.1,0.1,0.1],
-    "dragCx": 0.002,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "dragCx": 0.00203,
     "CxK": 1.3,
     "useStartSpeed": true,
     "startSpeed": 0.0,
@@ -47,15 +51,42 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explosionEffect": "explosion_midair_tiny",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -69,101 +100,110 @@
     "endSmokeViscosity": 0.05,
     "maxDeltaAngle": 1.3,
     "damage": {
-      "shatter": [
-        {
-          "useRealShatters": true
-        },
-        {
-          "countPortion": 0.15
-        },
-        {
-          "segment": {
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.15,
+        "segment": [
+          {
             "radiusScale": 1.0,
             "penetrationScale": 1.5,
             "damageScale": 1.5,
-            "angles": [0.0,9.0],
+            "angles": [
+              0.0,
+              9.0
+            ],
             "countPortion": 0.1
-          }
-        },
-        {
-          "segment": {
-            "angles": [10.0,29.0],
+          },
+          {
+            "angles": [
+              10.0,
+              29.0
+            ],
             "countPortion": 0.0
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [30.0,124.0],
+            "angles": [
+              30.0,
+              124.0
+            ],
             "countPortion": 0.35
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 1.0,
             "penetrationScale": 1.5,
             "damageScale": 1.5,
-            "angles": [45.0,70.0],
+            "angles": [
+              45.0,
+              70.0
+            ],
             "countPortion": 0.05
-          }
-        },
-        {
-          "segment": {
-            "angles": [125.0,169.0],
+          },
+          {
+            "angles": [
+              125.0,
+              169.0
+            ],
             "countPortion": 0.0
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [170.0,189.0],
+            "angles": [
+              170.0,
+              189.0
+            ],
             "countPortion": 0.1
-          }
-        },
-        {
-          "segment": {
-            "angles": [190.0,234.0],
+          },
+          {
+            "angles": [
+              190.0,
+              234.0
+            ],
             "countPortion": 0.0
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [235.0,329.0],
+            "angles": [
+              235.0,
+              329.0
+            ],
             "countPortion": 0.35
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 1.0,
             "penetrationScale": 1.5,
             "damageScale": 1.5,
-            "angles": [290.0,315.0],
+            "angles": [
+              290.0,
+              315.0
+            ],
             "countPortion": 0.05
-          }
-        },
-        {
-          "segment": {
-            "angles": [330.0,349.0],
+          },
+          {
+            "angles": [
+              330.0,
+              349.0
+            ],
             "countPortion": 0.0
-          }
-        },
-        {
-          "segment": {
+          },
+          {
             "radiusScale": 1.0,
             "penetrationScale": 1.5,
             "damageScale": 1.5,
-            "angles": [350.0,359.0],
+            "angles": [
+              350.0,
+              359.0
+            ],
             "countPortion": 0.1
           }
-        }
-      ],
+        ]
+      },
       "shatterDamage": {
         "breachConeAngle": 45.0
       },
@@ -180,20 +220,26 @@
       "detectGround": false,
       "detectShells": false
     },
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.05
+      ],
+      "mod2": [
+        20.0,
+        0.1
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.2
+        ],
+        [
+          45.0,
+          0.3
+        ]
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },

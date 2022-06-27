@@ -20,8 +20,14 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
-      "windSpeed": [6.0,7.0],
-      "windDirectionDeg": [238.0,242.0],
+      "windSpeed": [
+        6.0,
+        7.0
+      ],
+      "windDirectionDeg": [
+        238.0,
+        242.0
+      ],
       "stars": {
         "year": 1945,
         "month": 4,
@@ -37,58 +43,36 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "vip_person"
-              },
-              {
-                "point": "waypoint"
-              },
-              {
-                "point": "end_waypoint"
-              },
-              {
-                "point": "patrol_point"
-              },
-              {
-                "point": "patrol_point"
-              }
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": {
+            "width": 1,
+            "side": "ally",
+            "point": [
+              "vip_person",
+              "waypoint",
+              "end_waypoint",
+              "patrol_point",
+              "patrol_point"
             ]
           },
-          {
-            "icon": {
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "briefing_point",
               "lookAt": "waypoint"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "ally",
               "target": "vip_person",
               "lookAt": "waypoint"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -101,7 +85,7 @@
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -120,137 +104,112 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object": "vip_person",
             "effShootingRate": 0.4,
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 2.2,
-                "limits": [0.4,2.2]
+                "limits": [
+                  0.4,
+                  2.2
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "berlin_aaa_squad",
             "effShootingRate": 0.1
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "bf109_01"
-            },
-            {
-              "object": "bf109_02"
-            },
-            {
-              "effShootingRate": 0.8
-            },
-            {
-              "plane": {
-                "targetDeviation": {
-                  "trigger": "machine gun",
-                  "defaultVal": 0.4,
-                  "limits": [0.4,1.4]
-                }
+          },
+          {
+            "object": [
+              "bf109_01",
+              "bf109_02"
+            ],
+            "effShootingRate": 0.8,
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.4,
+                "limits": [
+                  0.4,
+                  1.4
+                ]
               }
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "ju_88_02",
             "effShootingRate": 0.2,
             "plane": {
               "targetDeviation": {
                 "trigger": "gunner",
                 "defaultVal": 0.6,
-                "limits": [0.6,1.8]
+                "limits": [
+                  0.6,
+                  1.8
+                ]
               }
             }
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "check_real"
-            },
-            {
-              "target": "check_simul"
-            }
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "check_real",
+              "check_simul"
+            ]
+          },
+          {
+            "target": [
+              "fail_mission_waypoint",
+              "to_waypoint",
+              "update_indicators"
+            ]
+          }
+        ],
+        "unitMoveTo": {
+          "target": "waypoint",
+          "follow_target": true,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "vip_person",
+          "follow_offset": [
+            -150.0,
+            20.0,
+            20.0
           ]
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "fail_mission_waypoint"
-            },
-            {
-              "target": "to_waypoint"
-            },
-            {
-              "target": "update_indicators"
-            }
+        "wait": {
+          "time": 3.0
+        },
+        "unitPutToSleep": {
+          "target": [
+            "ju_88_02",
+            "bf109_01",
+            "bf109_02"
           ]
         },
-        {
-          "unitMoveTo": {
-            "target": "waypoint",
-            "follow_target": true,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object": "vip_person",
-            "follow_offset": [-150.0,20.0,20.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "ju_88_02"
-            },
-            {
-              "target": "bf109_01"
-            },
-            {
-              "target": "bf109_02"
-            }
+        "triggerDisable": {
+          "target": [
+            "check_real",
+            "check_simul"
           ]
         },
-        {
-          "triggerDisable": [
-            {
-              "target": "check_real"
-            },
-            {
-              "target": "check_simul"
-            }
-          ]
+        "moAddMissionObjective": {
+          "target": "dlc_newbie_fight_to_waypoint"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_newbie_fight_to_waypoint"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "vip_person"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target": "vip_person"
         }
-      ]
+      }
     },
     "check_real": {
       "is_enabled": false,
@@ -271,35 +230,31 @@
           "is": "equal"
         }
       },
-      "actions": [
-        {
-          "unitDamage": {
+      "actions": {
+        "unitDamage": [
+          {
             "part": 1,
             "power": 1.0,
             "target": "ju_88_02",
             "randomTargetsCount": 10,
             "doExplosion": true
-          }
-        },
-        {
-          "unitDamage": {
+          },
+          {
             "part": 1,
             "power": 1.0,
             "target": "bf109_01",
             "randomTargetsCount": 6,
             "doExplosion": true
-          }
-        },
-        {
-          "unitDamage": {
+          },
+          {
             "part": 1,
             "power": 1.0,
             "target": "bf109_02",
             "randomTargetsCount": 6,
             "doExplosion": true
           }
-        }
-      ]
+        ]
+      }
     },
     "check_simul": {
       "is_enabled": false,
@@ -320,32 +275,28 @@
           "is": "equal"
         }
       },
-      "actions": [
-        {
-          "unitDamage": {
+      "actions": {
+        "unitDamage": [
+          {
             "part": 1,
             "power": 1.0,
             "target": "ju_88_02",
             "randomTargetsCount": 20
-          }
-        },
-        {
-          "unitDamage": {
+          },
+          {
             "part": 1,
             "power": 1.0,
             "target": "bf109_01",
             "randomTargetsCount": 8
-          }
-        },
-        {
-          "unitDamage": {
+          },
+          {
             "part": 1,
             "power": 1.0,
             "target": "bf109_02",
             "randomTargetsCount": 8
           }
-        }
-      ]
+        ]
+      }
     },
     "to_waypoint": {
       "is_enabled": false,
@@ -372,162 +323,116 @@
           "target": "waypoint"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "fail_mission_waypoint"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "fail_mission_waypoint"
         },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "waypoint"
-          }
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "waypoint"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_newbie_fight_to_waypoint",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "dlc_newbie_fight_to_waypoint",
+          "status": 2
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 10.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "unitWakeUp": {
+        ],
+        "unitWakeUp": [
+          {
             "target": "ju_88_02"
-          }
-        },
-        {
-          "unitWakeUp": {
+          },
+          {
             "target": "bf109_01"
           }
+        ],
+        "unitMoveTo": {
+          "target": "bombers_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "object": "ju_88_02",
+          "speed": 250.0
         },
-        {
-          "unitMoveTo": {
-            "target": "bombers_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "object": "ju_88_02",
-            "speed": 250.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "dlc_newbie_fight_vip"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "dlc_newbie_fight_newbie_alive"
           }
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "vip_person",
             "target": "ju_88_02",
             "fireRandom": true
+          },
+          {
+            "playerAttracted": true,
+            "object": "bf109_01",
+            "target": [
+              "vip_person",
+              "player_wing"
+            ],
+            "fireRandom": true,
+            "playerAttractedCount": 2,
+            "playerAttractedEffRate": 0.7
           }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "bf109_01"
-            },
-            {
-              "target": "vip_person"
-            },
-            {
-              "target": "player_wing"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 2
-            },
-            {
-              "playerAttractedEffRate": 0.7
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "fail_mission_ju88_02"
-            },
-            {
-              "target": "ju88_02_killed"
-            },
-            {
-              "target": "ju88_02_damaged"
-            },
-            {
-              "target": "bf_109_01_killed"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "fail_mission_ju88_02",
+              "ju88_02_killed",
+              "ju88_02_damaged",
+              "bf_109_01_killed"
+            ]
+          },
+          {
             "target": "newbie_alive_fail"
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/dlc_newbie_fight_hint",
             "action": "show",
             "shouldFadeOut": true
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/dlc_newbie_fight_hint",
             "action": "hide",
             "shouldFadeOut": true
           }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "bf109_01"
-          }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target": "bf109_01"
         }
-      ]
+      }
     },
     "update_indicators": {
       "is_enabled": false,
@@ -542,7 +447,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isActive",
@@ -584,7 +489,7 @@
         "wait": {
           "time": 3.0
         },
-        "missionFailed": []
+        "missionFailed": {}
       }
     },
     "fail_mission_ju88_02": {
@@ -616,7 +521,7 @@
         "wait": {
           "time": 3.0
         },
-        "missionFailed": []
+        "missionFailed": {}
       }
     },
     "ju88_02_killed": {
@@ -651,35 +556,27 @@
           "target": "end_waypoint"
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_newbie_fight_vip",
-            "status": 2
-          }
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "dlc_newbie_fight_vip",
+          "status": 2
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 40.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 10.0
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "dlc_newbie_fight_return"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_newbie_fight_return"
-          }
-        },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "patrol_point",
             "follow_target": true,
             "teleportHeightType": "absolute",
@@ -687,61 +584,39 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "object": "vip_person",
-            "follow_offset": [-150.0,20.0,20.0]
+            "follow_offset": [
+              -150.0,
+              20.0,
+              20.0
+            ]
+          },
+          {
+            "target": "end_waypoint",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object": [
+              "bf109_01",
+              "bf109_02"
+            ]
           }
-        },
-        {
-          "unitMoveTo": [
-            {
-              "target": "end_waypoint"
-            },
-            {
-              "follow_target": false
-            },
-            {
-              "teleportHeightType": "absolute"
-            },
-            {
-              "useUnitHeightForTele": true
-            },
-            {
-              "shouldKeepFormation": false
-            },
-            {
-              "teleportHeightValue": 1000.0
-            },
-            {
-              "object": "bf109_01"
-            },
-            {
-              "object": "bf109_02"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "bf109_escaped",
+            "complete_mission"
           ]
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "bf109_escaped"
-            },
-            {
-              "target": "complete_mission"
-            }
-          ]
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": false
-            },
-            {
-              "target": "bf109_01"
-            },
-            {
-              "target": "bf109_02"
-            }
+        "unitSetIndication": {
+          "set": false,
+          "target": [
+            "bf109_01",
+            "bf109_02"
           ]
         }
-      ]
+      }
     },
     "complete_mission": {
       "is_enabled": false,
@@ -768,42 +643,30 @@
           "target": "patrol_point"
         }
       },
-      "actions": [
-        {
-          "triggerEnable": {
-            "target": "newbie_alive_succes"
-          }
+      "actions": {
+        "triggerEnable": {
+          "target": "newbie_alive_succes"
         },
-        {
-          "wait": {
+        "wait": [
+          {
+            "time": 3.0
+          },
+          {
+            "time": 3.0
+          },
+          {
             "time": 3.0
           }
+        ],
+        "moSetObjectiveStatus": {
+          "target": "dlc_newbie_fight_return",
+          "status": 2
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "missionCompleted": {
+          "timer": false
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_newbie_fight_return",
-            "status": 2
-          }
-        },
-        {
-          "missionCompleted": {
-            "timer": false
-          }
-        },
-        {
-          "missionDebriefing": []
-        }
-      ]
+        "missionDebriefing": {}
+      }
     },
     "vip_killed": {
       "is_enabled": true,
@@ -907,24 +770,22 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenStatus": {
+      "conditions": {
+        "unitWhenStatus": [
+          {
             "object_type": "damaged",
             "object_marking": 0,
             "check_objects": "any",
             "object": "ju_88_02"
-          }
-        },
-        {
-          "unitWhenStatus": {
+          },
+          {
             "object_type": "isKilled",
             "object_marking": 0,
             "check_objects": "any",
             "object": "ju_88_02"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "unitDropAmmo": {
           "object": "ju_88_02"
@@ -998,26 +859,16 @@
         "unitWakeUp": {
           "target": "bf109_02"
         },
-        "unitAttackTarget": [
-          {
-            "playerAttracted": true
-          },
-          {
-            "object": "bf109_02"
-          },
-          {
-            "target": "player_wing"
-          },
-          {
-            "target": "vip_person"
-          },
-          {
-            "playerAttractedCount": 2
-          },
-          {
-            "playerAttractedEffRate": 0.7
-          }
-        ],
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "bf109_02",
+          "target": [
+            "player_wing",
+            "vip_person"
+          ],
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 0.7
+        },
         "unitSetIndication": {
           "set": true,
           "target": "bf109_02"
@@ -1038,8 +889,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_newbie_fight_to_waypoint": {
       "is_enabled": false,
@@ -1051,8 +902,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_newbie_fight_return": {
       "is_enabled": false,
@@ -1064,8 +915,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_newbie_fight_newbie_alive": {
       "is_enabled": false,
@@ -1077,26 +928,42 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "enemies_count": 0,
     "close_fight_success": 0
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player_wing",
         "tm": [
-          [-0.573576,0.0,-0.819152],
-          [0.0,1.0,0.0],
-          [0.819152,0.0,-0.573576],
-          [21392.9,3453.4,10670.3]
+          [
+            -0.573576,
+            0.0,
+            -0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.819152,
+            0.0,
+            -0.573576
+          ],
+          [
+            21392.9,
+            3453.4,
+            10670.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "yak-3",
@@ -1122,17 +989,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "vip_person",
         "tm": [
-          [-0.573576,0.0,-0.819152],
-          [0.0,1.0,0.0],
-          [0.819152,0.0,-0.573576],
-          [21184.9,3453.4,10297.0]
+          [
+            -0.573576,
+            0.0,
+            -0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.819152,
+            0.0,
+            -0.573576
+          ],
+          [
+            21184.9,
+            3453.4,
+            10297.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "yak-3",
@@ -1159,17 +1040,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ju_88_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5106.45,3454.9,18918.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            5106.45,
+            3454.9,
+            18918.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "he-111h-6",
@@ -1196,17 +1091,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf109_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1774.25,4190.5,16193.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1774.25,
+            4190.5,
+            16193.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109k-4",
@@ -1232,17 +1141,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "bf109_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8569.8,5454.9,8391.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8569.8,
+            5454.9,
+            8391.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "bf-109k-4",
@@ -1268,17 +1191,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "air_defence_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21180.6,43.1876,-15606.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21180.6,
+            43.1876,
+            -15606.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1288,22 +1227,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21486.2,43.1926,-15190.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21486.2,
+            43.1926,
+            -15190.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
@@ -1313,22 +1272,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21468.7,45.0166,-14688.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21468.7,
+            45.0166,
+            -14688.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
@@ -1338,22 +1317,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21297.8,56.1573,-14415.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21297.8,
+            56.1573,
+            -14415.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1363,22 +1362,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20786.3,43.0479,-16348.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20786.3,
+            43.0479,
+            -16348.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
@@ -1388,22 +1407,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20284.4,44.0723,-16641.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20284.4,
+            44.0723,
+            -16641.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1413,22 +1452,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19377.6,63.3792,-16723.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19377.6,
+            63.3792,
+            -16723.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
@@ -1438,22 +1497,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18912.3,65.1001,-16431.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18912.3,
+            65.1001,
+            -16431.4
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1463,22 +1542,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_17",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21472.9,53.3956,-16088.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21472.9,
+            53.3956,
+            -16088.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1488,22 +1587,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_18",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21778.6,65.1279,-15672.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21778.6,
+            65.1279,
+            -15672.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
@@ -1513,22 +1632,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_19",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21761.1,43.8754,-15170.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21761.1,
+            43.8754,
+            -15170.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1538,22 +1677,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_20",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21590.2,44.2826,-14897.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21590.2,
+            44.2826,
+            -14897.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1563,22 +1722,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_21",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21078.7,43.5135,-16830.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21078.7,
+            43.5135,
+            -16830.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1588,22 +1767,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_22",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20972.6,47.1494,-17909.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20972.6,
+            47.1494,
+            -17909.9
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
@@ -1613,22 +1812,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_23",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19670.0,42.8878,-17205.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19670.0,
+            42.8878,
+            -17205.2
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
@@ -1638,22 +1857,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_16",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19204.7,52.483,-16913.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19204.7,
+            52.483,
+            -16913.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1663,22 +1902,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "berlin_aaa_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3833.25,42.25,8465.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3833.25,
+            42.25,
+            8465.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1688,22 +1947,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "berlin_aaa_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2886.8,42.25,7186.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2886.8,
+            42.25,
+            7186.3
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1713,22 +1992,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "berlin_aaa_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3852.3,42.25,6404.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3852.3,
+            42.25,
+            6404.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1738,22 +2037,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "berlin_aaa_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5839.55,42.25,5500.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            5839.55,
+            42.25,
+            5500.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1763,22 +2082,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "berlin_aaa_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6438.15,42.25,5295.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6438.15,
+            42.25,
+            5295.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1788,22 +2127,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "berlin_aaa_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4960.4,42.25,5163.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4960.4,
+            42.25,
+            5163.5
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1813,22 +2172,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "berlin_aaa_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5933.95,42.25,4358.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            5933.95,
+            42.25,
+            4358.6
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
@@ -1838,60 +2217,84 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "berlin_aaa_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3987.05,49.45,5775.55]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3987.05,
+            49.45,
+            5775.55
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "berlin_aaa_01"
-          },
-          {
-            "squad_members": "berlin_aaa_02"
-          },
-          {
-            "squad_members": "berlin_aaa_03"
-          },
-          {
-            "squad_members": "berlin_aaa_04"
-          },
-          {
-            "squad_members": "berlin_aaa_05"
-          },
-          {
-            "squad_members": "berlin_aaa_06"
-          },
-          {
-            "squad_members": "berlin_aaa_07"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "berlin_aaa_01",
+            "berlin_aaa_02",
+            "berlin_aaa_03",
+            "berlin_aaa_04",
+            "berlin_aaa_05",
+            "berlin_aaa_06",
+            "berlin_aaa_07"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "players_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9489.05,63.85,16012.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            9489.05,
+            63.85,
+            16012.1
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
@@ -1900,60 +2303,140 @@
           "squad_members": "players_squad",
           "object_type": "isPlayer"
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "waypoint": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [10445.2,3000.0,13314.2]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          10445.2,
+          3000.0,
+          13314.2
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "end_waypoint": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [18444.8,3000.0,-12974.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          18444.8,
+          3000.0,
+          -12974.3
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "bombers_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22885.0,3000.0,-23437.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22885.0,
+          3000.0,
+          -23437.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "patrol_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [23660.4,3000.0,575.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          23660.4,
+          3000.0,
+          575.0
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "briefing_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [26069.9,3000.0,15859.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          26069.9,
+          3000.0,
+          15859.5
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

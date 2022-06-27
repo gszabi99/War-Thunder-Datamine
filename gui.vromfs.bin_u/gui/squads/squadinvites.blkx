@@ -3,27 +3,15 @@
     "on_click": "goBack",
     "on_r_click": "goBack"
   },
-  "popup_menu": [
-    {
-      "id": "squad_invites"
-    },
-    {
-      "position": "root"
-    },
-    {
-      "not-input-transparent": "yes"
-    },
-    {
-      "css-hier-invalidate": "yes"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "menu_align": "top"
-    },
-    {
-      "div": {
+  "popup_menu": {
+    "id": "squad_invites",
+    "position": "root",
+    "not-input-transparent": "yes",
+    "css-hier-invalidate": "yes",
+    "flow": "vertical",
+    "menu_align": "top",
+    "div": [
+      {
         "id": "options_block",
         "width": "0.35@sf",
         "padding-bottom": "1@blockInterval",
@@ -49,20 +37,16 @@
           "smallFont": "yes",
           "text": "#guiHints/squadSize"
         }
-      }
-    },
-    {
-      "div": {
+      },
+      {
         "id": "invites_list",
         "pos": "50%pw-50%w, 0",
         "position": "relative",
         "padding-bottom": "1@blockInterval",
         "flow": "h-flow",
         "flow-align": "center"
-      }
-    },
-    {
-      "div": {
+      },
+      {
         "id": "applications_list",
         "pos": "50%pw-50%w, 0",
         "position": "relative",
@@ -70,31 +54,27 @@
         "flow": "h-flow",
         "flow-align": "center"
       }
+    ],
+    "CheckBox": {
+      "id": "receive_applications",
+      "width": "fw",
+      "text": "#squad/receiveApplications",
+      "value": "yes",
+      "btnName": "Y",
+      "on_change_value": "onReceiveApplications",
+      "CheckBoxImg": {},
+      "ButtonImg": {}
     },
-    {
-      "CheckBox": {
-        "id": "receive_applications",
-        "width": "fw",
-        "text": "#squad/receiveApplications",
-        "value": "yes",
-        "btnName": "Y",
-        "on_change_value": "onReceiveApplications",
-        "CheckBoxImg": [],
-        "ButtonImg": []
-      }
-    },
-    {
-      "activeText": {
+    "activeText": [
+      {
         "id": "invited_players_header",
         "pos": "50%pw - 50%w, 1@blockInterval",
         "position": "relative",
         "text": "#squad/invitedPlayers",
         "text-align": "center",
         "margin": "0.01@sf, 0"
-      }
-    },
-    {
-      "activeText": {
+      },
+      {
         "id": "applications_list_header",
         "pos": "50%pw - 50%w, 1@blockInterval",
         "position": "relative",
@@ -102,12 +82,10 @@
         "text-align": "center",
         "margin": "0.01@sf, 0"
       }
-    },
-    {
-      "popup_menu_arrow": []
-    }
-  ],
-  "gamercard_div": [],
+    ],
+    "popup_menu_arrow": {}
+  },
+  "gamercard_div": {},
   "tdiv": {
     "id": "chatPopupNest",
     "size": "0.4@sf+10, 0.075*@sf+10",

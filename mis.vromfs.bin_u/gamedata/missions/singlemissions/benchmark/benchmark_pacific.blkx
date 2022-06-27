@@ -15,11 +15,18 @@
       "type": "benchmark",
       "environment": "16.30",
       "weather": "cloudy",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "impulseBasedAircraftToUnitCollision": true,
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "windSpeed": [4.0,8.0],
+      "windSpeed": [
+        4.0,
+        8.0
+      ],
       "customWeather": {
         "max_wind_strength": 8.0,
         "wind_strength": 5.0,
@@ -28,7 +35,11 @@
           "ground": {
             "average_ground_albedo": 0.1,
             "min_ground_offset": 0.0,
-            "ground_color": [1.0,1.0,1.0]
+            "ground_color": [
+              1.0,
+              1.0,
+              1.0
+            ]
           },
           "clouds_settings": {
             "maximum_averaging_ratio": 0.6,
@@ -45,8 +56,16 @@
           "mie_height": 4.8,
           "mie_scale": 1.73,
           "mie_absorption_scale": 1.0,
-          "mie_scattering_color": [1.0,1.0,1.0],
-          "mie_absorption_color": [1.0,1.0,1.0],
+          "mie_scattering_color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mie_absorption_color": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "mie_assymetry": 0.8,
           "mie_back_assymetry": 0.15,
           "mie_forward_weight": 0.5,
@@ -54,14 +73,22 @@
           "atmosphere_scale": 1.0,
           "rayleigh_scale": 1.0,
           "rayleigh_alt_scale": 1.0,
-          "rayleigh_color": [1.0,1.0,1.0],
+          "rayleigh_color": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "multiple_scattering_factor": 1.0,
           "ozone_alt_dist": 1.0,
           "ozone_max_alt": 1.0,
           "ozone_scale": 1.0,
           "sun_brightness": 0.75,
           "moon_brightness": 1.0,
-          "moon_color": [1.0,1.0,1.0]
+          "moon_color": [
+            1.0,
+            1.0,
+            1.0
+          ]
         },
         "strata_clouds": {
           "amount": 0.64,
@@ -76,7 +103,7 @@
           "layers[1].seed": 78.87,
           "epicness": 0.14,
           "cumulonimbusCoverage": 0.32,
-          "cumulonimbusSeed": 9.03,
+          "cumulonimbusSeed": 9.03001,
           "worldSize": 65536.0
         },
         "clouds_form": {
@@ -113,9 +140,9 @@
       "pressure": 760.0,
       "temperature": 28.0
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -128,84 +155,70 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "ijn_fleet_sq"
-            },
-            {
-              "object": "jpn_armada_sq"
-            },
-            {
-              "object": "us_armada_sq"
-            },
-            {
-              "attack_type": "hold_fire"
-            },
-            {
-              "effShootingRate": 0.7
-            },
-            {
-              "plane": {
-                "targetDeviation": {
-                  "trigger": "machine gun",
-                  "defaultVal": 0.1,
-                  "limits": [0.0,0.2]
-                }
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "ijn_fleet_sq",
+              "jpn_armada_sq",
+              "us_armada_sq"
+            ],
+            "attack_type": "hold_fire",
+            "effShootingRate": 0.7,
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.1,
+                "limits": [
+                  0.0,
+                  0.2
+                ]
               }
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "us_armada_sq",
-            "plane": [
-              {
-                "targetDeviation": {
+            "plane": {
+              "targetDeviation": [
+                {
                   "trigger": "machine gun",
                   "defaultVal": 0.0,
-                  "limits": [0.0,0.1]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.0,
+                    0.1
+                  ]
+                },
+                {
                   "trigger": "gunner",
                   "defaultVal": 0.1,
-                  "limits": [0.0,0.1]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.0,
+                    0.1
+                  ]
+                },
+                {
                   "trigger": "bombs",
                   "defaultVal": 1.0,
-                  "limits": [0.1,1.0]
+                  "limits": [
+                    0.1,
+                    1.0
+                  ]
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -214,32 +227,22 @@
             "speed": 30.0,
             "lockSpeed": true
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "ijn_fleet_sq"
-            },
-            {
-              "target": "jpn_armada_sq"
-            },
-            {
-              "target": "us_armada_sq"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "ijn_fleet_sq",
+            "jpn_armada_sq",
+            "us_armada_sq"
           ]
         },
-        {
-          "missionForceMusic": {
-            "evName": "benchmark_music"
-          }
+        "missionForceMusic": {
+          "evName": "benchmark_music"
         },
-        {
-          "triggerEnable": {
-            "target": "clouds_flight_cut"
-          }
+        "triggerEnable": {
+          "target": "clouds_flight_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "clouds_flight_cut": {
       "is_enabled": false,
@@ -254,20 +257,32 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionStartCutscene": {
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": [
+          {
             "target": "clouds_flight_point03",
             "second_target": "clouds_flight_point03",
             "duration": 10.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 1.0,
             "frequency": 1.0,
-            "linear_at_vel": [400.0,0.0,-500.0],
-            "linear_eye_vel": [400.0,0.0,-550.0],
+            "linear_at_vel": [
+              400.0,
+              0.0,
+              -500.0
+            ],
+            "linear_eye_vel": [
+              400.0,
+              0.0,
+              -550.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -285,22 +300,40 @@
             "fov_accel": 0.0,
             "mustHaveGui": false,
             "constant_fov": 90.0,
-            "linear_at": [0.0,0.0,0.0],
-            "linear_eye": [-2500.0,0.0,4737.0]
-          }
-        },
-        {
-          "missionStartCutscene": {
+            "linear_at": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "linear_eye": [
+              -2500.0,
+              0.0,
+              4737.0
+            ]
+          },
+          {
             "target": "clouds_flight_point11",
             "second_target": "clouds_flight_point11",
             "duration": 8.0,
             "camera_type": "flat_linear",
             "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
             "zoom": 1.0,
             "frequency": 1.0,
-            "linear_at_vel": [0.0,0.0,0.0],
-            "linear_eye_vel": [-250.0,-70.0,600.0],
+            "linear_at_vel": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "linear_eye_vel": [
+              -250.0,
+              -70.0,
+              600.0
+            ],
             "linear_at_accel": 0.0,
             "linear_eye_accel": 0.0,
             "linear_relative": false,
@@ -318,65 +351,75 @@
             "fov_accel": 0.0,
             "mustHaveGui": false,
             "constant_fov": 75.0,
-            "linear_at": [0.0,0.0,0.0],
-            "linear_eye": [5236.0,771.0,-4675.0]
+            "linear_at": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "linear_eye": [
+              5236.0,
+              771.0,
+              -4675.0
+            ]
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 9.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 7.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "missionSetFade": {
+        ],
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "battle_in_clouds_cut"
-          }
+        ],
+        "triggerEnable": {
+          "target": "battle_in_clouds_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "battle_in_clouds_cut": {
       "is_enabled": false,
@@ -391,35 +434,27 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitWakeUp": [
-            {
-              "target": "sbd_cut"
-            },
-            {
-              "target": "f2a_cut"
-            }
-          ]
-        },
-        {
-          "unitWakeUp": {
+      "conditions": {},
+      "actions": {
+        "unitWakeUp": [
+          {
+            "target": [
+              "sbd_cut",
+              "f2a_cut"
+            ]
+          },
+          {
             "target": "ijn_fleet_sq"
+          },
+          {
+            "target": [
+              "sbd_cut01",
+              "ijn_bb01"
+            ]
           }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "sbd_cut01"
-            },
-            {
-              "target": "ijn_bb01"
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "flyby",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -444,10 +479,8 @@
             "timeBeforeFlyBy": 2.0,
             "flybyReverseDirection": true,
             "zoom": 0.75
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right2left",
             "startSubTypeGroundUnits": "",
@@ -468,10 +501,8 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "object": "f2a_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -492,10 +523,8 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "object": "sbd_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "flyby",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -520,10 +549,8 @@
             "flybyVertOffset": 1.0,
             "timeBeforeFlyBy": 3.0,
             "flybyReverseDirection": false
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -545,10 +572,8 @@
             "allowDeadUnits": false,
             "object": "zero_n_cut",
             "target": "sbd_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -570,10 +595,8 @@
             "allowDeadUnits": false,
             "object": "zero_n_cut",
             "target": "sbd_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -595,10 +618,8 @@
             "allowDeadUnits": false,
             "object": "zero_n_cut",
             "target": "sbd_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -620,10 +641,8 @@
             "allowDeadUnits": false,
             "object": "f2a_cut",
             "target": "zero_n_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -647,183 +666,141 @@
             "finalLook": "ijn_bb01",
             "zoom": 0.6
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 7.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.65
           }
-        },
-        {
-          "unitLoadBehTree": {
+        ],
+        "unitLoadBehTree": [
+          {
             "name": "missionHitThePoint",
             "objects": "zero_n_cut",
             "loadType": "tree"
-          }
-        },
-        {
-          "unitLoadBehTree": {
+          },
+          {
             "name": "missionFighter",
             "objects": "zero_n_cut",
             "loadType": "tree"
           }
+        ],
+        "unitMoveTo": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "zero_turn_point",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "zero_n_cut"
         },
-        {
-          "unitMoveTo": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "zero_turn_point",
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "follow_target": false,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "zero_n_cut"
-          }
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "zero_n_cut",
+          "effShootingRate": 0.7
         },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "zero_n_cut",
-            "effShootingRate": 0.7
-          }
-        },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "zero_n_cut",
             "target": "sbd_cut",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "f2a_cut",
             "target": "zero_n_cut",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "sbd_cut01",
             "target": "ijn_bb01"
           }
+        ],
+        "__showSmartCutscene": {
+          "sceneType": "unit_attack_unit",
+          "startSubTypeOnTheMarch": "",
+          "startSubTypeGroundUnits": "",
+          "startSubTypeArea": "",
+          "startSubTypeUnitAttackUnit": "1to2_2",
+          "startSubTypeUnitMoveToUnit": "",
+          "startSubTypeTwoUnits": "",
+          "startSubTypeTakeoff": "",
+          "startSubTypeFlyBy": "",
+          "duration": 1.0,
+          "wait": false,
+          "changeCameras": false,
+          "teleportAllAttackers": true,
+          "allowTeleportAttackers": true,
+          "inverseCameraDirection": false,
+          "delayPlayer": true,
+          "fadeIn": false,
+          "fadeOut": false,
+          "allowDeadUnits": false,
+          "object": "f2a_cut",
+          "target": "zero_n_cut"
         },
-        {
-          "__showSmartCutscene": {
-            "sceneType": "unit_attack_unit",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "1to2_2",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 1.0,
-            "wait": false,
-            "changeCameras": false,
-            "teleportAllAttackers": true,
-            "allowTeleportAttackers": true,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": false,
-            "fadeOut": false,
-            "allowDeadUnits": false,
-            "object": "f2a_cut",
-            "target": "zero_n_cut"
-          }
+        "missionForceUpdate": {
+          "target_type": "isAlive",
+          "dt": 0.05,
+          "timeToUpdate": 20.0,
+          "target": "ijn_fleet_sq"
         },
-        {
-          "missionForceUpdate": {
-            "target_type": "isAlive",
-            "dt": 0.05,
-            "timeToUpdate": 20.0,
-            "target": "ijn_fleet_sq"
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "zero_n_cut"
-            },
-            {
-              "target": "sbd_cut"
-            },
-            {
-              "target": "f2a_cut"
-            }
+        "unitPutToSleep": {
+          "target": [
+            "zero_n_cut",
+            "sbd_cut",
+            "f2a_cut"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "dive_bombing_cut"
-          }
+        "triggerEnable": {
+          "target": "dive_bombing_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dive_bombing_cut": {
       "is_enabled": false,
@@ -838,119 +815,91 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 15.5
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.1
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.3
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.1
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.12
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.88
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.2
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.8
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        },
-        {
-          "unitPutToSleep": {
+        ],
+        "unitPutToSleep": [
+          {
             "target": "sbd_cut01"
-          }
-        },
-        {
-          "unitPutToSleep": {
+          },
+          {
             "target": "sbd_cut"
           }
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -959,50 +908,40 @@
             "isImmortal": true,
             "effShootingRate": 0.0,
             "aiEnabled": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "sbd_cut",
             "isImmortal": true
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "sbd_cut02",
             "aiEnabled": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "sbd_cut02",
             "isImmortal": true
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "sbd_cut02",
             "engineFire": true
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -1010,9 +949,9 @@
             "object": "sbd_cut",
             "isImmortal": false
           }
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -1036,10 +975,8 @@
             "finalLook": "ijn_cv01",
             "changeLookTime": 5.0,
             "zoom": 0.75
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1060,10 +997,8 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "object": "fleet_cut_area01"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1086,10 +1021,8 @@
             "object": "area_02",
             "target": "ijn_bb01",
             "zoom": 1.0
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -1110,10 +1043,8 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "object": "sbd_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "bomber_attack_ground",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1135,10 +1066,8 @@
             "allowDeadUnits": false,
             "object": "sbd_cut",
             "target": "ijn_cv02"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -1162,10 +1091,8 @@
             "finalLook": "ijn_bb01",
             "changeLookTime": 3.0,
             "zoom": 0.5
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "center",
@@ -1186,10 +1113,8 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "object": "ijn_bb01"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "c2",
@@ -1210,10 +1135,8 @@
             "fadeOut": true,
             "allowDeadUnits": true,
             "object": "ijn_bb01"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "takeoff",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1235,205 +1158,232 @@
             "allowDeadUnits": true,
             "object": "zero_cut"
           }
+        ],
+        "unitWakeUp": {
+          "target": "sbd_cut"
         },
-        {
-          "unitWakeUp": {
-            "target": "sbd_cut"
-          }
+        "unitRestore": {
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": "sbd_cut",
+          "randomTargetsCount": 5
         },
-        {
-          "unitRestore": {
-            "ressurectIfDead": true,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "sbd_cut",
-            "randomTargetsCount": 5
-          }
+        "unitMoveTo": {
+          "target": "dive_tele_point",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": true,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "sbd_cut",
+          "move_type": "teleport",
+          "lookat": "ijn_cv02",
+          "velocity": 300.0
         },
-        {
-          "unitMoveTo": {
-            "target": "dive_tele_point",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": true,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "sbd_cut",
-            "move_type": "teleport",
-            "lookat": "ijn_cv02",
-            "velocity": 300.0
-          }
-        },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "ijn_fleet_sq",
             "target": "sbd_cut",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "ijn_bb01",
             "target": "sbd_cut03"
-          }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "sbd_cut"
-            },
-            {
-              "target": "ijn_cv02"
-            },
-            {
-              "target": "ijn_bb01"
-            },
-            {
-              "target": "ijn_bb02"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
+            "playerAttracted": false,
+            "object": "sbd_cut",
+            "target": [
+              "ijn_cv02",
+              "ijn_bb01",
+              "ijn_bb02"
+            ],
+            "fireRandom": true
+          },
+          {
             "playerAttracted": false,
             "object": "ijn_bb01",
             "target": "sbd_cut02"
           }
-        },
-        {
-          "unitPlayEffect": {
+        ],
+        "unitPlayEffect": [
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_500kg",
-            "offset": [0.0,15.0,0.0],
+            "offset": [
+              0.0,
+              15.0,
+              0.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv02"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_500kg",
-            "offset": [0.0,15.0,-2.0],
+            "offset": [
+              0.0,
+              15.0,
+              -2.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv02"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_1000kg",
-            "offset": [2.0,15.0,-1.0],
+            "offset": [
+              2.0,
+              15.0,
+              -1.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv02"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_1000kg",
-            "offset": [72.0,15.0,-1.0],
+            "offset": [
+              72.0,
+              15.0,
+              -1.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv02"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "land_explosion_plane",
-            "offset": [38.0,10.0,3.0],
+            "offset": [
+              38.0,
+              10.0,
+              3.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_bb01"
           }
-        },
-        {
-          "unitDamage": {
+        ],
+        "unitDamage": [
+          {
             "part": 4,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "ijn_cv02",
             "doExplosion": true
-          }
-        },
-        {
-          "unitDamage": {
+          },
+          {
             "part": 21,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "sbd_cut02"
-          }
-        },
-        {
-          "unitDamage": {
+          },
+          {
             "part": 0,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "ijn_bb01",
             "partName": "ammunition_storage_aux_01_dm"
           }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "ijn_cv01",
+          "objects": "zero_cut"
         },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "ijn_cv01",
-            "objects": "zero_cut"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "catalin_attack_cut"
-          }
+        "triggerEnable": {
+          "target": "catalin_attack_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "catalin_attack_cut": {
       "is_enabled": false,
@@ -1448,130 +1398,96 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 8.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.7
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.8
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.2
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.2
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.1
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "zero_cut"
-            },
-            {
-              "target": "sbd_cut02"
-            },
-            {
-              "target": "sbd_cut03"
-            }
-          ]
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "p38_cut"
-            },
-            {
-              "target": "ki_cut"
-            },
-            {
-              "target": "pby_cut"
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "unitPutToSleep": [
+          {
+            "target": [
+              "zero_cut",
+              "sbd_cut02",
+              "sbd_cut03"
+            ]
+          },
+          {
+            "target": [
+              "p38_cut",
+              "ki_cut",
+              "pby_cut"
+            ]
+          }
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "front",
             "startSubTypeGroundUnits": "",
@@ -1593,10 +1509,8 @@
             "allowDeadUnits": false,
             "object": "pby_cut",
             "zoom": 0.5
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right",
             "startSubTypeGroundUnits": "",
@@ -1621,10 +1535,8 @@
             "changeLookTime": 5.0,
             "zoom": 2.0,
             "finalZoom": 20.0
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1646,10 +1558,8 @@
             "allowDeadUnits": true,
             "object": "ki_cut",
             "target": "pby_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1671,10 +1581,8 @@
             "allowDeadUnits": true,
             "object": "p38_leader_sq",
             "target": "pby_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1696,10 +1604,8 @@
             "allowDeadUnits": true,
             "object": "p38_cut",
             "target": "ki_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -1722,10 +1628,8 @@
             "object": "ki_cut",
             "target": "pby_cut",
             "zoom": 0.25
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -1749,10 +1653,8 @@
             "finalLook": "ijn_cv01",
             "changeLookTime": 5.0,
             "zoom": 0.75
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "c3",
@@ -1774,188 +1676,173 @@
             "allowDeadUnits": true,
             "object": "ijn_cv01"
           }
-        },
-        {
-          "unitWakeUp": {
+        ],
+        "unitWakeUp": [
+          {
             "target": "ki_cut"
+          },
+          {
+            "target": [
+              "pby_cut01",
+              "pby_cut02",
+              "ijn_fleet_sq"
+            ]
           }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "pby_cut01"
-            },
-            {
-              "target": "pby_cut02"
-            },
-            {
-              "target": "ijn_fleet_sq"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "ki_cut",
             "effShootingRate": 0.7
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "pby_cut01",
+              "pby_cut02"
+            ],
+            "isImmortal": true
           }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "pby_cut01"
-            },
-            {
-              "object": "pby_cut02"
-            },
-            {
-              "isImmortal": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "ki_cut",
             "target": "pby_cut",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "p38_cut",
             "target": "ki_cut"
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "ijn_cv01",
+              "ijn_bb02",
+              "ijn_dd06",
+              "ijn_dd01",
+              "ijn_dd05"
+            ],
+            "target": [
+              "pby_cut01",
+              "pby_cut02"
+            ],
+            "fireRandom": true
           }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "ijn_cv01"
-            },
-            {
-              "object": "ijn_bb02"
-            },
-            {
-              "object": "ijn_dd06"
-            },
-            {
-              "object": "ijn_dd01"
-            },
-            {
-              "object": "ijn_dd05"
-            },
-            {
-              "target": "pby_cut01"
-            },
-            {
-              "target": "pby_cut02"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitDropAmmo": {
+        ],
+        "unitDropAmmo": [
+          {
             "object": "pby_cut01"
-          }
-        },
-        {
-          "unitDropAmmo": {
+          },
+          {
             "object": "pby_cut02"
           }
-        },
-        {
-          "unitPlayEffect": {
+        ],
+        "unitPlayEffect": [
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_500kg",
-            "offset": [0.0,15.0,-17.0],
+            "offset": [
+              0.0,
+              15.0,
+              -17.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv01"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_500kg",
-            "offset": [-80.0,15.0,-10.0],
+            "offset": [
+              -80.0,
+              15.0,
+              -10.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv01"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_1000kg",
-            "offset": [0.0,15.0,-1.0],
+            "offset": [
+              0.0,
+              15.0,
+              -1.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv01"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_1000kg",
-            "offset": [-88.0,15.0,-5.0],
+            "offset": [
+              -88.0,
+              15.0,
+              -5.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv01"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "bomb_expl_1000kg",
-            "offset": [80.0,15.0,2.0],
+            "offset": [
+              80.0,
+              15.0,
+              2.0
+            ],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "ijn_cv01"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "dogfight_above_fleet_cut"
-          }
+        ],
+        "triggerEnable": {
+          "target": "dogfight_above_fleet_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "dogfight_above_fleet_cut": {
       "is_enabled": false,
@@ -1970,457 +1857,321 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 8.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 12.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 10.0
           }
-        },
-        {
-          "unitDamage": {
+        ],
+        "unitDamage": [
+          {
             "part": 1,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "ijn_cv01",
             "doExplosion": true
+          },
+          {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": [
+              "ijn_dd06",
+              "ijn_dd05",
+              "ijn_dd07",
+              "ijn_ca01",
+              "ijn_bb01"
+            ],
+            "partName": "ammo_turret_01_dm",
+            "delayForObjects": [
+              0.0,
+              5.0
+            ]
+          },
+          {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": [
+              "ijn_bb01",
+              "ijn_ca02",
+              "ijn_dd05",
+              "ijn_dd07"
+            ],
+            "partName": "ammo_turret_02_dm",
+            "delayForObjects": [
+              0.0,
+              10.0
+            ]
+          },
+          {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": [
+              "ijn_bb01",
+              "ijn_ca03",
+              "ijn_dd05",
+              "ijn_dd04",
+              "ijn_dd07"
+            ],
+            "partName": "ammo_turret_03_dm",
+            "delayForObjects": [
+              0.0,
+              7.0
+            ]
+          },
+          {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": [
+              "ijn_bb02",
+              "ijn_ca02",
+              "ijn_dd07",
+              "ijn_dd06",
+              "ijn_dd05"
+            ],
+            "partName": "ammunition_storage_charges_01_dm",
+            "delayForObjects": [
+              0.0,
+              6.0
+            ]
           }
-        },
-        {
-          "unitDamage": [
-            {
-              "part": 0
-            },
-            {
-              "power": 1.0
-            },
-            {
-              "useEffect": false
-            },
-            {
-              "countEffects": 1
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [10.0,15.0]
-            },
-            {
-              "target": "ijn_dd06"
-            },
-            {
-              "target": "ijn_dd05"
-            },
-            {
-              "target": "ijn_dd07"
-            },
-            {
-              "target": "ijn_ca01"
-            },
-            {
-              "target": "ijn_bb01"
-            },
-            {
-              "partName": "ammo_turret_01_dm"
-            },
-            {
-              "delayForObjects": [0.0,5.0]
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "pby_cut01",
+            "pby_cut02"
           ]
         },
-        {
-          "unitDamage": [
-            {
-              "part": 0
-            },
-            {
-              "power": 1.0
-            },
-            {
-              "useEffect": false
-            },
-            {
-              "countEffects": 1
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [10.0,15.0]
-            },
-            {
-              "target": "ijn_bb01"
-            },
-            {
-              "target": "ijn_ca02"
-            },
-            {
-              "target": "ijn_dd05"
-            },
-            {
-              "target": "ijn_dd07"
-            },
-            {
-              "partName": "ammo_turret_02_dm"
-            },
-            {
-              "delayForObjects": [0.0,10.0]
-            }
+        "unitMoveTo": {
+          "target": "dive_tele_point",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "zero_cut",
+          "move_type": "teleport"
+        },
+        "unitWakeUp": {
+          "target": [
+            "ki_cut",
+            "zero_cut",
+            "zero_n_cut",
+            "f2a_cut",
+            "p38_cut",
+            "pby_cut03",
+            "ijn_fleet_sq"
           ]
         },
-        {
-          "unitDamage": [
-            {
-              "part": 0
-            },
-            {
-              "power": 1.0
-            },
-            {
-              "useEffect": false
-            },
-            {
-              "countEffects": 1
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [10.0,15.0]
-            },
-            {
-              "target": "ijn_bb01"
-            },
-            {
-              "target": "ijn_ca03"
-            },
-            {
-              "target": "ijn_dd05"
-            },
-            {
-              "target": "ijn_dd04"
-            },
-            {
-              "target": "ijn_dd07"
-            },
-            {
-              "partName": "ammo_turret_03_dm"
-            },
-            {
-              "delayForObjects": [0.0,7.0]
-            }
+        "unitRestore": {
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": [
+            "jpn_armada_sq",
+            "us_armada_sq"
           ]
         },
-        {
-          "unitDamage": [
-            {
-              "part": 0
-            },
-            {
-              "power": 1.0
-            },
-            {
-              "useEffect": false
-            },
-            {
-              "countEffects": 1
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [10.0,15.0]
-            },
-            {
-              "target": "ijn_bb02"
-            },
-            {
-              "target": "ijn_ca02"
-            },
-            {
-              "target": "ijn_dd07"
-            },
-            {
-              "target": "ijn_dd06"
-            },
-            {
-              "target": "ijn_dd05"
-            },
-            {
-              "partName": "ammunition_storage_charges_01_dm"
-            },
-            {
-              "delayForObjects": [0.0,6.0]
-            }
-          ]
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "ijn_fleet_sq",
+          "attack_type": "fire_at_will",
+          "targetAir": true
         },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "pby_cut01"
-            },
-            {
-              "target": "pby_cut02"
-            }
-          ]
-        },
-        {
-          "unitMoveTo": {
-            "target": "dive_tele_point",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "zero_cut",
-            "move_type": "teleport"
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "ki_cut"
-            },
-            {
-              "target": "zero_cut"
-            },
-            {
-              "target": "zero_n_cut"
-            },
-            {
-              "target": "f2a_cut"
-            },
-            {
-              "target": "p38_cut"
-            },
-            {
-              "target": "pby_cut03"
-            },
-            {
-              "target": "ijn_fleet_sq"
-            }
-          ]
-        },
-        {
-          "unitRestore": [
-            {
-              "ressurectIfDead": true
-            },
-            {
-              "fullRestore": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "target": "jpn_armada_sq"
-            },
-            {
-              "target": "us_armada_sq"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false,
             "object": "ijn_fleet_sq",
-            "attack_type": "fire_at_will",
-            "targetAir": true
-          }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "ijn_fleet_sq"
-            },
-            {
-              "target": "f2a_cut"
-            },
-            {
-              "target": "p38_cut"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
+            "target": [
+              "f2a_cut",
+              "p38_cut"
+            ],
+            "fireRandom": true
+          },
+          {
             "playerAttracted": false,
             "object": "zero_cut",
             "target": "pby_cut03",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "f2a_cut",
             "target": "zero_cut",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "ki_cut",
             "target": "f2a_cut",
             "fireRandom": true
+          },
+          {
+            "playerAttracted": false,
+            "object": "p38_cut",
+            "target": [
+              "ki_cut",
+              "zero_cut"
+            ],
+            "fireRandom": true
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "zero_n_cut",
+              "ki_cut",
+              "zero_cut"
+            ],
+            "target": [
+              "f2a_cut",
+              "p38_cut"
+            ],
+            "fireRandom": true
+          },
+          {
+            "playerAttracted": false,
+            "object": [
+              "f2a_cut",
+              "p38_cut"
+            ],
+            "target": [
+              "ki_cut",
+              "zero_n_cut",
+              "zero_cut"
+            ],
+            "fireRandom": true
           }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "p38_cut"
-            },
-            {
-              "target": "ki_cut"
-            },
-            {
-              "target": "zero_cut"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "zero_n_cut"
-            },
-            {
-              "object": "ki_cut"
-            },
-            {
-              "object": "zero_cut"
-            },
-            {
-              "target": "f2a_cut"
-            },
-            {
-              "target": "p38_cut"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "f2a_cut"
-            },
-            {
-              "object": "p38_cut"
-            },
-            {
-              "target": "ki_cut"
-            },
-            {
-              "target": "zero_n_cut"
-            },
-            {
-              "target": "zero_cut"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -2442,10 +2193,8 @@
             "allowDeadUnits": false,
             "object": "zero_cut",
             "target": "pby_cut03"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -2467,10 +2216,8 @@
             "allowDeadUnits": false,
             "object": "f2a_cut",
             "target": "zero_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -2492,232 +2239,94 @@
             "allowDeadUnits": false,
             "object": "ki_cut",
             "target": "f2a_cut"
-          }
-        },
-        {
-          "showSmartCutscene": [
-            {
-              "sceneType": "unit_attack_unit"
-            },
-            {
-              "startSubTypeOnTheMarch": ""
-            },
-            {
-              "startSubTypeGroundUnits": ""
-            },
-            {
-              "startSubTypeArea": ""
-            },
-            {
-              "startSubTypeUnitAttackUnit": "target"
-            },
-            {
-              "startSubTypeUnitMoveToUnit": ""
-            },
-            {
-              "startSubTypeTwoUnits": ""
-            },
-            {
-              "startSubTypeTakeoff": ""
-            },
-            {
-              "startSubTypeFlyBy": ""
-            },
-            {
-              "duration": 6.0
-            },
-            {
-              "wait": false
-            },
-            {
-              "changeCameras": true
-            },
-            {
-              "teleportAllAttackers": true
-            },
-            {
-              "allowTeleportAttackers": true
-            },
-            {
-              "inverseCameraDirection": false
-            },
-            {
-              "delayPlayer": true
-            },
-            {
-              "fadeIn": false
-            },
-            {
-              "fadeOut": true
-            },
-            {
-              "allowDeadUnits": false
-            },
-            {
-              "object": "p38_cut"
-            },
-            {
-              "target": "ki_cut"
-            },
-            {
-              "target": "zero_cut"
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": [
-            {
-              "sceneType": "unit_attack_unit"
-            },
-            {
-              "startSubTypeOnTheMarch": ""
-            },
-            {
-              "startSubTypeGroundUnits": ""
-            },
-            {
-              "startSubTypeArea": ""
-            },
-            {
-              "startSubTypeUnitAttackUnit": "target"
-            },
-            {
-              "startSubTypeUnitMoveToUnit": ""
-            },
-            {
-              "startSubTypeTwoUnits": ""
-            },
-            {
-              "startSubTypeTakeoff": ""
-            },
-            {
-              "startSubTypeFlyBy": ""
-            },
-            {
-              "duration": 6.0
-            },
-            {
-              "wait": false
-            },
-            {
-              "changeCameras": true
-            },
-            {
-              "teleportAllAttackers": true
-            },
-            {
-              "allowTeleportAttackers": true
-            },
-            {
-              "inverseCameraDirection": false
-            },
-            {
-              "delayPlayer": true
-            },
-            {
-              "fadeIn": false
-            },
-            {
-              "fadeOut": true
-            },
-            {
-              "allowDeadUnits": false
-            },
-            {
-              "object": "ki_cut"
-            },
-            {
-              "object": "zero_cut"
-            },
-            {
-              "object": "zero_n_cut"
-            },
-            {
-              "target": "f2a_cut"
-            },
-            {
-              "target": "p38_cut"
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": [
-            {
-              "sceneType": "unit_attack_unit"
-            },
-            {
-              "startSubTypeOnTheMarch": ""
-            },
-            {
-              "startSubTypeGroundUnits": ""
-            },
-            {
-              "startSubTypeArea": ""
-            },
-            {
-              "startSubTypeUnitAttackUnit": "target"
-            },
-            {
-              "startSubTypeUnitMoveToUnit": ""
-            },
-            {
-              "startSubTypeTwoUnits": ""
-            },
-            {
-              "startSubTypeTakeoff": ""
-            },
-            {
-              "startSubTypeFlyBy": ""
-            },
-            {
-              "duration": 12.0
-            },
-            {
-              "wait": false
-            },
-            {
-              "changeCameras": true
-            },
-            {
-              "teleportAllAttackers": true
-            },
-            {
-              "allowTeleportAttackers": true
-            },
-            {
-              "inverseCameraDirection": false
-            },
-            {
-              "delayPlayer": true
-            },
-            {
-              "fadeIn": true
-            },
-            {
-              "fadeOut": false
-            },
-            {
-              "allowDeadUnits": false
-            },
-            {
-              "object": "f2a_cut"
-            },
-            {
-              "object": "p38_cut"
-            },
-            {
-              "target": "zero_n_cut"
-            },
-            {
-              "target": "ki_cut"
-            },
-            {
-              "target": "zero_cut"
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "target",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 6.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": true,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "p38_cut",
+            "target": [
+              "ki_cut",
+              "zero_cut"
+            ]
+          },
+          {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "target",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 6.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": true,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": [
+              "ki_cut",
+              "zero_cut",
+              "zero_n_cut"
+            ],
+            "target": [
+              "f2a_cut",
+              "p38_cut"
+            ]
+          },
+          {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "target",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 12.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": true,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": true,
+            "fadeOut": false,
+            "allowDeadUnits": false,
+            "object": [
+              "f2a_cut",
+              "p38_cut"
+            ],
+            "target": [
+              "zero_n_cut",
+              "ki_cut",
+              "zero_cut"
+            ]
+          },
+          {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -2739,84 +2348,96 @@
             "allowDeadUnits": false,
             "object": "fleet_cut_area03"
           }
+        ],
+        "__showSmartCutscene": {
+          "sceneType": "two_units",
+          "startSubTypeOnTheMarch": "",
+          "startSubTypeGroundUnits": "",
+          "startSubTypeArea": "",
+          "startSubTypeUnitAttackUnit": "",
+          "startSubTypeUnitMoveToUnit": "",
+          "startSubTypeTwoUnits": "object",
+          "startSubTypeTakeoff": "",
+          "startSubTypeFlyBy": "",
+          "duration": 12.0,
+          "wait": false,
+          "changeCameras": false,
+          "teleportAllAttackers": false,
+          "allowTeleportAttackers": false,
+          "inverseCameraDirection": false,
+          "delayPlayer": true,
+          "fadeIn": false,
+          "fadeOut": true,
+          "allowDeadUnits": true,
+          "object": "final_cut_area",
+          "target": "ijn_dd04",
+          "finalLook": "ijn_dd07",
+          "changeLookTime": 10.0,
+          "zoom": 1.0
         },
-        {
-          "__showSmartCutscene": {
-            "sceneType": "two_units",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "object",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 12.0,
-            "wait": false,
-            "changeCameras": false,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": false,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": false,
-            "fadeOut": true,
-            "allowDeadUnits": true,
-            "object": "final_cut_area",
-            "target": "ijn_dd04",
-            "finalLook": "ijn_dd07",
-            "changeLookTime": 10.0,
-            "zoom": 1.0
-          }
+        "__missionStartCutscene": {
+          "target": "final_cut_area",
+          "second_target": "final_cut_area",
+          "duration": 10.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 1.0,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "linear_eye_vel": [
+            20.0,
+            0.0,
+            8.0
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 1.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splineSpeed": 100.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "constant_fov": 75.0,
+          "linear_at": [
+            0.0,
+            50.0,
+            0.0
+          ],
+          "linear_eye": [
+            -2626.0,
+            0.0,
+            864.0
+          ],
+          "delayPlayer": true
         },
-        {
-          "__missionStartCutscene": {
-            "target": "final_cut_area",
-            "second_target": "final_cut_area",
-            "duration": 10.0,
-            "camera_type": "flat_linear",
-            "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
-            "zoom": 1.0,
-            "frequency": 1.0,
-            "linear_at_vel": [0.0,0.0,0.0],
-            "linear_eye_vel": [20.0,0.0,8.0],
-            "linear_at_accel": 0.0,
-            "linear_eye_accel": 0.0,
-            "linear_relative": false,
-            "pitch": 0.1,
-            "yaw": 0.0,
-            "pitch_amplitude": 1.0,
-            "yaw_amplitude": 1.0,
-            "distance": 30.0,
-            "shake_mult": 1.0,
-            "splineEye": "",
-            "splineAt": "",
-            "splineSpeed": 100.0,
-            "resetCamera": true,
-            "shake_accel": 0.0,
-            "fov_accel": 0.0,
-            "mustHaveGui": false,
-            "constant_fov": 75.0,
-            "linear_at": [0.0,50.0,0.0],
-            "linear_eye": [-2626.0,0.0,864.0],
-            "delayPlayer": true
-          }
+        "triggerDisable": {
+          "target": "complete_timer"
         },
-        {
-          "triggerDisable": {
-            "target": "complete_timer"
-          }
-        },
-        {
-          "missionCompleted": {
-            "timer": false,
-            "debriefingTimer": 1,
-            "showCompleteMessage": false,
-            "startReplayCamera": false
-          }
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 1,
+          "showCompleteMessage": false,
+          "startReplayCamera": false
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "skip": {
       "is_enabled": false,
@@ -2831,7 +2452,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "triggerDisable": {
           "target": "complete_timer"
@@ -2843,7 +2464,7 @@
           "startReplayCamera": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "complete_timer": {
       "is_enabled": true,
@@ -2858,7 +2479,7 @@
           "time": 260.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionCompleted": {
           "timer": false,
@@ -2867,26 +2488,42 @@
           "startReplayCamera": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "ships": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
         "name": "ijn_ca01",
         "tm": [
-          [0.0117362,0.0,-0.999931],
-          [0.0,1.0,0.0],
-          [0.999931,0.0,0.0117362],
-          [-3718.16,8.09842,-502.369]
+          [
+            0.0117362,
+            0.0,
+            -0.999931
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999931,
+            0.0,
+            0.0117362
+          ],
+          [
+            -3718.16,
+            8.09842,
+            -502.369
+          ]
         ],
         "unit_class": "jp_cruiser_mogami",
         "closed_waypoints": false,
@@ -2908,8 +2545,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -2918,10 +2561,26 @@
           "ijn_ca01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3529.56,-0.00146484,-1921.36]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3529.56,
+                -0.00146484,
+                -1921.36
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2934,10 +2593,26 @@
           "ijn_ca01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3499.36,-0.00146484,-2491.96]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3499.36,
+                -0.00146484,
+                -2491.96
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2950,10 +2625,26 @@
           "ijn_ca01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3656.26,-0.00146484,-2945.86]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3656.26,
+                -0.00146484,
+                -2945.86
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2966,10 +2657,26 @@
           "ijn_ca01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3440.26,-0.00170898,-4868.36]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3440.26,
+                -0.00170898,
+                -4868.36
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2980,143 +2687,187 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": [
-        {
-          "name": "ijn_dd02"
-        },
-        {
-          "tm": [
-            [0.30905,0.0,-0.951046],
-            [0.0,1.0,0.0],
-            [0.951046,0.0,0.30905],
-            [-2607.96,8.09928,-284.94]
+      },
+      {
+        "name": "ijn_dd02",
+        "tm": [
+          [
+            0.30905,
+            0.0,
+            -0.951046
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.951046,
+            0.0,
+            0.30905
+          ],
+          [
+            -2607.96,
+            8.09928,
+            -284.94
           ]
+        ],
+        "unit_class": "jp_destroyer_yuudachi",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "127mm_jp_type1_naval_aa_distant_fuse_he",
+        "bullets1": "40mm_type91_naval_dist_fuse",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 1000,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "127mm_jp_type1_naval_aa_distant_fuse_he_ammo_pack",
+          "40mm_type91_naval_dist_fuse_ammo_pack"
+        ],
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
-        {
-          "unit_class": "jp_destroyer_yuudachi"
-        },
-        {
-          "closed_waypoints": false
-        },
-        {
-          "isShipSpline": false
-        },
-        {
-          "shipTurnRadius": 100.0
-        },
-        {
-          "weapons": ""
-        },
-        {
-          "bullets0": "127mm_jp_type1_naval_aa_distant_fuse_he"
-        },
-        {
-          "bullets1": "40mm_type91_naval_dist_fuse"
-        },
-        {
-          "bullets2": ""
-        },
-        {
-          "bullets3": ""
-        },
-        {
-          "bulletsCount0": 1000
-        },
-        {
-          "bulletsCount1": 1000
-        },
-        {
-          "bulletsCount2": 0
-        },
-        {
-          "bulletsCount3": 0
-        },
-        {
-          "modification": "127mm_jp_type1_naval_aa_distant_fuse_he_ammo_pack"
-        },
-        {
-          "modification": "40mm_type91_naval_dist_fuse_ammo_pack"
-        },
-        {
-          "crewSkillK": 0.0
-        },
-        {
-          "props": {
-            "army": 2,
-            "count": 1,
-            "formation_type": "rows",
-            "formation_div": 3,
-            "formation_step": [2.5,2.0],
-            "formation_noise": [0.1,0.1],
-            "uniqueName": "",
-            "attack_type": "fire_at_will"
-          }
-        },
-        {
-          "way": {
-            "ijn_dd02_wp_01": {
-              "type": "normal",
-              "tm": [
-                [1.0,0.0,0.0],
-                [0.0,1.0,0.0],
-                [0.0,0.0,1.0],
-                [-2151.46,-0.000366214,-1377.16]
+        "way": {
+          "ijn_dd02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
               ],
-              "props": {
-                "speed": 300.0,
-                "tas": false,
-                "moveType": "MOVETO_STRAIGHT",
-                "shouldKeepFormation": false,
-                "canUsePathFinder": false
-              }
-            },
-            "ijn_dd02_wp_02": {
-              "type": "normal",
-              "tm": [
-                [1.0,0.0,0.0],
-                [0.0,1.0,0.0],
-                [0.0,0.0,1.0],
-                [-2473.66,-0.000366214,-2151.16]
+              [
+                0.0,
+                1.0,
+                0.0
               ],
-              "props": {
-                "speed": 300.0,
-                "tas": false,
-                "moveType": "MOVETO_STRAIGHT",
-                "shouldKeepFormation": false,
-                "canUsePathFinder": false
-              }
-            },
-            "ijn_dd02_wp_03": {
-              "type": "normal",
-              "tm": [
-                [1.0,0.0,0.0],
-                [0.0,1.0,0.0],
-                [0.0,0.0,1.0],
-                [-2154.16,-0.000366214,-3682.96]
+              [
+                0.0,
+                0.0,
+                1.0
               ],
-              "props": {
-                "speed": 300.0,
-                "tas": false,
-                "moveType": "MOVETO_STRAIGHT",
-                "shouldKeepFormation": false,
-                "canUsePathFinder": false
-              }
+              [
+                -2151.46,
+                -0.000366214,
+                -1377.16
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ijn_dd02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2473.66,
+                -0.000366214,
+                -2151.16
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ijn_dd02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2154.16,
+                -0.000366214,
+                -3682.96
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
             }
           }
         }
-      ]
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_ca02",
         "tm": [
-          [0.264207,0.0,-0.964466],
-          [-5.71389e-08,1.0,-3.11174e-08],
-          [0.964466,6.0536e-08,0.264207],
-          [-2728.46,8.09879,-990.36]
+          [
+            0.264207,
+            0.0,
+            -0.964466
+          ],
+          [
+            -5.71389E-08,
+            1.0,
+            -3.11174E-08
+          ],
+          [
+            0.964466,
+            6.0536E-08,
+            0.264207
+          ],
+          [
+            -2728.46,
+            8.09879,
+            -990.36
+          ]
         ],
         "unit_class": "jp_cruiser_kako",
         "closed_waypoints": false,
@@ -3138,8 +2889,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3147,10 +2904,26 @@
           "ijn_ca02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2540.16,-0.0012207,-2070.46]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2540.16,
+                -0.0012207,
+                -2070.46
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3163,10 +2936,26 @@
           "ijn_ca02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2600.76,-0.0012207,-2809.36]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2600.76,
+                -0.0012207,
+                -2809.36
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3179,10 +2968,26 @@
           "ijn_ca02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2236.76,-0.000976563,-4776.06]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2236.76,
+                -0.000976563,
+                -4776.06
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3193,16 +2998,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_cv01",
         "tm": [
-          [0.130526,0.0,-0.991445],
-          [0.0,1.0,0.0],
-          [0.991445,0.0,0.130526],
-          [-3273.86,8.09879,198.731]
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            -3273.86,
+            8.09879,
+            198.731
+          ]
         ],
         "unit_class": "ijn_cv_zuikaku",
         "closed_waypoints": true,
@@ -3223,8 +3042,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3232,10 +3057,26 @@
           "ijn_cv01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2582.06,-0.00110054,-4554.66]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2582.06,
+                -0.00110054,
+                -4554.66
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3246,16 +3087,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_dd04",
         "tm": [
-          [0.0445407,0.0,-0.999008],
-          [-6.26028e-08,1.0,-1.77211e-08],
-          [0.999008,6.0536e-08,0.0445407],
-          [-4249.86,8.09928,460.751]
+          [
+            0.0445407,
+            0.0,
+            -0.999008
+          ],
+          [
+            -6.26028E-08,
+            1.0,
+            -1.77211E-08
+          ],
+          [
+            0.999008,
+            6.0536E-08,
+            0.0445407
+          ],
+          [
+            -4249.86,
+            8.09928,
+            460.751
+          ]
         ],
         "unit_class": "jp_destroyer_chidori",
         "closed_waypoints": false,
@@ -3277,8 +3132,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3286,10 +3147,26 @@
           "ijn_dd04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4137.06,-0.00158691,-824.74]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4137.06,
+                -0.00158691,
+                -824.74
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3302,10 +3179,26 @@
           "ijn_dd04_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4161.26,-0.00158691,-3226.06]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4161.26,
+                -0.00158691,
+                -3226.06
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3318,10 +3211,26 @@
           "ijn_dd04_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3852.56,-0.00158691,-3909.46]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3852.56,
+                -0.00158691,
+                -3909.46
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3332,16 +3241,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_dd05",
         "tm": [
-          [0.300706,0.0,-0.953717],
-          [-5.59138e-08,1.0,-3.32685e-08],
-          [0.953717,6.0536e-08,0.300706],
-          [-1938.26,8.09951,194.93]
+          [
+            0.300706,
+            0.0,
+            -0.953717
+          ],
+          [
+            -5.59138E-08,
+            1.0,
+            -3.32685E-08
+          ],
+          [
+            0.953717,
+            6.0536E-08,
+            0.300706
+          ],
+          [
+            -1938.26,
+            8.09951,
+            194.93
+          ]
         ],
         "unit_class": "jp_destroyer_shimakaze",
         "closed_waypoints": false,
@@ -3363,8 +3286,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3372,10 +3301,26 @@
           "ijn_dd05_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1771.12,-0.00109863,-1565.76]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1771.12,
+                -0.00109863,
+                -1565.76
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3388,10 +3333,26 @@
           "ijn_dd05_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1179.62,-0.00109863,-2817.96]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1179.62,
+                -0.00109863,
+                -2817.96
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3404,10 +3365,26 @@
           "ijn_dd05_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-992.218,-0.00109863,-3601.66]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -992.218,
+                -0.00109863,
+                -3601.66
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3418,16 +3395,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_dd06",
         "tm": [
-          [0.0492733,0.0,-0.998785],
-          [-6.25181e-08,1.0,-1.80175e-08],
-          [0.998785,6.0536e-08,0.0492733],
-          [-3545.56,8.09793,-1199.46]
+          [
+            0.0492733,
+            0.0,
+            -0.998785
+          ],
+          [
+            -6.25181E-08,
+            1.0,
+            -1.80175E-08
+          ],
+          [
+            0.998785,
+            6.0536E-08,
+            0.0492733
+          ],
+          [
+            -3545.56,
+            8.09793,
+            -1199.46
+          ]
         ],
         "unit_class": "jp_destroyer_shimakaze",
         "closed_waypoints": false,
@@ -3449,8 +3440,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3458,10 +3455,26 @@
           "ijn_dd06_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3267.96,-0.00195313,-2893.96]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3267.96,
+                -0.00195313,
+                -2893.96
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3474,10 +3487,26 @@
           "ijn_dd06_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3229.16,-0.0024414,-4239.56]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3229.16,
+                -0.0024414,
+                -4239.56
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3490,10 +3519,26 @@
           "ijn_dd06_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3227.86,-0.00219727,-5047.76]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3227.86,
+                -0.00219727,
+                -5047.76
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3504,16 +3549,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_cv02",
         "tm": [
-          [0.108793,0.0,-0.994065],
-          [0.0,1.0,0.0],
-          [0.994065,0.0,0.108793],
-          [-4165.66,8.09867,-401.059]
+          [
+            0.108793,
+            0.0,
+            -0.994065
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.994065,
+            0.0,
+            0.108793
+          ],
+          [
+            -4165.66,
+            8.09867,
+            -401.059
+          ]
         ],
         "unit_class": "ijn_cv_soryu",
         "closed_waypoints": true,
@@ -3534,8 +3593,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3543,10 +3608,26 @@
           "ijn_cv02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3868.86,-0.00109863,-2924.46]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3868.86,
+                -0.00109863,
+                -2924.46
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3557,16 +3638,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_dd07",
         "tm": [
-          [0.0856328,0.0,-0.996327],
-          [0.0,1.0,0.0],
-          [0.996327,0.0,0.0856328],
-          [-2200.06,8.09867,-757.879]
+          [
+            0.0856328,
+            0.0,
+            -0.996327
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.996327,
+            0.0,
+            0.0856328
+          ],
+          [
+            -2200.06,
+            8.09867,
+            -757.879
+          ]
         ],
         "unit_class": "jp_destroyer_yuudachi",
         "closed_waypoints": false,
@@ -3588,8 +3683,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3597,10 +3698,26 @@
           "ijn_dd07_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2037.76,-0.00195313,-2791.86]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2037.76,
+                -0.00195313,
+                -2791.86
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3613,10 +3730,26 @@
           "ijn_dd07_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1668.62,-0.00170898,-4887.46]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1668.62,
+                -0.00170898,
+                -4887.46
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3627,16 +3760,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_ca03",
         "tm": [
-          [0.217788,0.0,-0.975996],
-          [0.0,1.0,0.0],
-          [0.975996,0.0,0.217788],
-          [-4350.16,8.09854,-1192.46]
+          [
+            0.217788,
+            0.0,
+            -0.975996
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975996,
+            0.0,
+            0.217788
+          ],
+          [
+            -4350.16,
+            8.09854,
+            -1192.46
+          ]
         ],
         "unit_class": "jp_cruiser_mogami_suzuya",
         "closed_waypoints": true,
@@ -3658,8 +3805,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3667,10 +3820,26 @@
           "ijn_ca03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4301.06,-0.000854493,-4583.16]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4301.06,
+                -0.000854493,
+                -4583.16
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3681,16 +3850,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_dd01",
         "tm": [
-          [0.102184,0.0,-0.994765],
-          [0.0,1.0,0.0],
-          [0.994765,0.0,0.102184],
-          [-3765.26,8.09818,331.39]
+          [
+            0.102184,
+            0.0,
+            -0.994765
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.994765,
+            0.0,
+            0.102184
+          ],
+          [
+            -3765.26,
+            8.09818,
+            331.39
+          ]
         ],
         "unit_class": "jp_destroyer_akizuki",
         "closed_waypoints": false,
@@ -3712,8 +3895,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3721,10 +3910,26 @@
           "ijn_dd01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3433.46,-0.00170898,-1031.66]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3433.46,
+                -0.00170898,
+                -1031.66
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3737,10 +3942,26 @@
           "ijn_dd01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3369.16,-0.00170898,-2108.26]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3369.16,
+                -0.00170898,
+                -2108.26
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3753,10 +3974,26 @@
           "ijn_dd01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3150.06,-0.00170898,-3607.66]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3150.06,
+                -0.00170898,
+                -3607.66
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3767,16 +4004,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_dd03",
         "tm": [
-          [0.344905,0.0,-0.938637],
-          [0.0,1.0,0.0],
-          [0.938637,0.0,0.344905],
-          [-3151.46,8.09854,1382.97]
+          [
+            0.344905,
+            0.0,
+            -0.938637
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.938637,
+            0.0,
+            0.344905
+          ],
+          [
+            -3151.46,
+            8.09854,
+            1382.97
+          ]
         ],
         "unit_class": "jp_destroyer_yugumo",
         "closed_waypoints": false,
@@ -3798,8 +4049,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3807,10 +4064,26 @@
           "ijn_dd03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2830.16,-0.00134277,441.251]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2830.16,
+                -0.00134277,
+                441.251
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3823,10 +4096,26 @@
           "ijn_dd03_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2806.06,-0.00134277,-600.719]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2806.06,
+                -0.00134277,
+                -600.719
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3839,10 +4128,26 @@
           "ijn_dd03_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2530.46,-0.00134277,-2717.46]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2530.46,
+                -0.00134277,
+                -2717.46
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3853,16 +4158,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_ca04",
         "tm": [
-          [0.290406,0.0,-0.956903],
-          [0.0,1.0,0.0],
-          [0.956903,0.0,0.290406],
-          [-2624.36,8.09854,1322.79]
+          [
+            0.290406,
+            0.0,
+            -0.956903
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.956903,
+            0.0,
+            0.290406
+          ],
+          [
+            -2624.36,
+            8.09854,
+            1322.79
+          ]
         ],
         "unit_class": "jp_cruiser_tone",
         "closed_waypoints": true,
@@ -3884,8 +4203,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -3893,10 +4218,26 @@
           "ijn_ca04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2175.16,-0.00134277,491.611]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2175.16,
+                -0.00134277,
+                491.611
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3909,10 +4250,26 @@
           "ijn_ca04_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1607.52,-0.00256347,-2645.36]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1607.52,
+                -0.00256347,
+                -2645.36
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3923,16 +4280,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_cv03",
         "tm": [
-          [0.258819,0.0,-0.965926],
-          [0.0,1.0,0.0],
-          [0.965926,0.0,0.258819],
-          [-2189.26,8.09867,-131.099]
+          [
+            0.258819,
+            0.0,
+            -0.965926
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.965926,
+            0.0,
+            0.258819
+          ],
+          [
+            -2189.26,
+            8.09867,
+            -131.099
+          ]
         ],
         "unit_class": "ijn_cv_soryu",
         "closed_waypoints": false,
@@ -3953,8 +4324,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
@@ -3963,10 +4340,26 @@
           "ijn_cv03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1581.92,-0.00134277,-3565.26]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1581.92,
+                -0.00134277,
+                -3565.26
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3977,16 +4370,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_bb01",
         "tm": [
-          [0.261226,0.0,-0.965278],
-          [0.0,1.0,0.0],
-          [0.965278,0.0,0.261226],
-          [-2773.26,8.09867,892.241]
+          [
+            0.261226,
+            0.0,
+            -0.965278
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.965278,
+            0.0,
+            0.261226
+          ],
+          [
+            -2773.26,
+            8.09867,
+            892.241
+          ]
         ],
         "unit_class": "jp_cruiser_furutaka",
         "closed_waypoints": false,
@@ -4008,8 +4415,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -4017,10 +4430,26 @@
           "ijn_bb01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2477.36,-0.00134468,-422.119]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2477.36,
+                -0.00134468,
+                -422.119
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4033,10 +4462,26 @@
           "ijn_bb01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2225.06,-0.00134468,-1159.26]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2225.06,
+                -0.00134468,
+                -1159.26
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4049,10 +4494,26 @@
           "ijn_bb01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1971.86,-0.0020771,-3665.36]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1971.86,
+                -0.0020771,
+                -3665.36
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4063,16 +4524,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "ships": {
+      },
+      {
         "name": "ijn_bb02",
         "tm": [
-          [0.0318283,0.0,-0.999493],
-          [0.0,1.0,0.0],
-          [0.999493,0.0,0.0318283],
-          [-3243.96,8.09869,-580.179]
+          [
+            0.0318283,
+            0.0,
+            -0.999493
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999493,
+            0.0,
+            0.0318283
+          ],
+          [
+            -3243.96,
+            8.09869,
+            -580.179
+          ]
         ],
         "unit_class": "jp_cruiser_furutaka",
         "closed_waypoints": false,
@@ -4094,8 +4569,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire"
         },
@@ -4103,10 +4584,26 @@
           "ijn_bb02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3282.96,-0.00134277,-1504.66]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3282.96,
+                -0.00134277,
+                -1504.66
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4119,10 +4616,26 @@
           "ijn_bb02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3046.96,-0.00134277,-2033.76]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3046.96,
+                -0.00134277,
+                -2033.76
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4135,10 +4648,26 @@
           "ijn_bb02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2870.96,-0.000610352,-4788.76]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2870.96,
+                -0.000610352,
+                -4788.76
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4150,15 +4679,31 @@
           }
         }
       }
-    },
-    {
-      "armada": {
+    ],
+    "armada": [
+      {
         "name": "armada_01",
         "tm": [
-          [-0.939692,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,-0.939692],
-          [-10994.8,5125.9,-10892.5]
+          [
+            -0.939692,
+            0.0,
+            0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.34202,
+            0.0,
+            -0.939692
+          ],
+          [
+            -10994.8,
+            5125.9,
+            -10892.5
+          ]
         ],
         "unit_class": "a5m4",
         "closed_waypoints": false,
@@ -4194,17 +4739,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "sbd_cut",
         "tm": [
-          [-0.987931,0.0,-0.154898],
-          [0.0,1.0,0.0],
-          [0.154898,0.0,-0.987931],
-          [-8695.79,3930.35,-3758.22]
+          [
+            -0.987931,
+            0.0,
+            -0.154898
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.154898,
+            0.0,
+            -0.987931
+          ],
+          [
+            -8695.79,
+            3930.35,
+            -3758.22
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -4246,10 +4805,26 @@
           "sbd_cut_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-22410.8,4125.8,-8662.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -22410.8,
+                4125.8,
+                -8662.9
+              ]
             ],
             "props": {
               "speed": 250.0,
@@ -4260,16 +4835,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "f2a_cut",
         "tm": [
-          [-0.987931,0.0,-0.154898],
-          [0.0,1.0,0.0],
-          [0.154898,0.0,-0.987931],
-          [-8695.79,4000.0,-3758.22]
+          [
+            -0.987931,
+            0.0,
+            -0.154898
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.154898,
+            0.0,
+            -0.987931
+          ],
+          [
+            -8695.79,
+            4000.0,
+            -3758.22
+          ]
         ],
         "unit_class": "f2a-3",
         "closed_waypoints": false,
@@ -4311,10 +4900,26 @@
           "sbd_cut01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-22410.8,4575.0,-8662.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -22410.8,
+                4575.0,
+                -8662.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4325,16 +4930,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "zero_n_cut",
         "tm": [
-          [0.0829015,0.0,0.996558],
-          [0.0,1.0,0.0],
-          [-0.996558,0.0,0.0829015],
-          [-9054.71,4451.0,-4714.97]
+          [
+            0.0829015,
+            0.0,
+            0.996558
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.996558,
+            0.0,
+            0.0829015
+          ],
+          [
+            -9054.71,
+            4451.0,
+            -4714.97
+          ]
         ],
         "unit_class": "a6m2_n_zero",
         "closed_waypoints": false,
@@ -4376,10 +4995,26 @@
           "zero_n_cut_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-8107.54,4451.0,-942.283]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -8107.54,
+                4451.0,
+                -942.283
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4390,16 +5025,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "sbd_cut01",
         "tm": [
-          [-0.965926,0.0,0.258819],
-          [0.0,1.0,0.0],
-          [-0.258819,0.0,-0.965926],
-          [-1406.32,3350.0,-356.349]
+          [
+            -0.965926,
+            0.0,
+            0.258819
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.258819,
+            0.0,
+            -0.965926
+          ],
+          [
+            -1406.32,
+            3350.0,
+            -356.349
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -4441,10 +5090,26 @@
           "sbd_cut01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-24925.8,4125.8,-7551.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -24925.8,
+                4125.8,
+                -7551.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4455,16 +5120,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "zero_cut",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4484.26,399.999,8.04077]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -4484.26,
+            399.999,
+            8.04077
+          ]
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
@@ -4502,17 +5181,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "pby_cut",
         "tm": [
-          [0.958759,0.0,-0.284219],
-          [0.0,1.0,0.0],
-          [0.284219,0.0,0.958759],
-          [-26906.2,3536.7,-1775.96]
+          [
+            0.958759,
+            0.0,
+            -0.284219
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.284219,
+            0.0,
+            0.958759
+          ],
+          [
+            -26906.2,
+            3536.7,
+            -1775.96
+          ]
         ],
         "unit_class": "pv_2d",
         "closed_waypoints": false,
@@ -4554,10 +5247,26 @@
           "pby_cut_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11084.3,3336.0,-5298.67]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -11084.3,
+                3336.0,
+                -5298.67
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4568,16 +5277,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "p38_cut",
         "tm": [
-          [0.972952,0.0,-0.231005],
-          [0.0,1.0,0.0],
-          [0.231005,0.0,0.972952],
-          [-26139.7,3999.98,-1731.56]
+          [
+            0.972952,
+            0.0,
+            -0.231005
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.231005,
+            0.0,
+            0.972952
+          ],
+          [
+            -26139.7,
+            3999.98,
+            -1731.56
+          ]
         ],
         "unit_class": "p-38g",
         "closed_waypoints": false,
@@ -4615,17 +5338,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "pby_cut01",
         "tm": [
-          [0.996195,0.0,0.0871558],
-          [0.0,1.0,0.0],
-          [-0.0871558,0.0,0.996195],
-          [-3797.71,100.001,-654.674]
+          [
+            0.996195,
+            0.0,
+            0.0871558
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871558,
+            0.0,
+            0.996195
+          ],
+          [
+            -3797.71,
+            100.001,
+            -654.674
+          ]
         ],
         "unit_class": "pv_2d",
         "closed_waypoints": false,
@@ -4668,10 +5405,26 @@
           "pby_cut01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-614.602,99.9995,-410.124]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -614.602,
+                99.9995,
+                -410.124
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4682,16 +5435,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "pby_cut02",
         "tm": [
-          [0.996195,0.0,0.0871558],
-          [0.0,1.0,0.0],
-          [-0.0871558,0.0,0.996195],
-          [-3969.51,100.001,-606.024]
+          [
+            0.996195,
+            0.0,
+            0.0871558
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871558,
+            0.0,
+            0.996195
+          ],
+          [
+            -3969.51,
+            100.001,
+            -606.024
+          ]
         ],
         "unit_class": "pv_2d",
         "closed_waypoints": false,
@@ -4734,10 +5501,26 @@
           "pby_cut02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-639.239,99.9993,-265.496]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -639.239,
+                99.9993,
+                -265.496
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4748,16 +5531,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "ki_cut",
         "tm": [
-          [-0.928112,0.0,0.372302],
-          [0.0,1.0,0.0],
-          [-0.372302,0.0,-0.928112],
-          [-20807.1,3799.98,-3555.01]
+          [
+            -0.928112,
+            0.0,
+            0.372302
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.372302,
+            0.0,
+            -0.928112
+          ],
+          [
+            -20807.1,
+            3799.98,
+            -3555.01
+          ]
         ],
         "unit_class": "ki_43_3_otsu",
         "closed_waypoints": false,
@@ -4799,10 +5596,26 @@
           "ki_cut_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-26784.2,3600.0,-1482.53]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -26784.2,
+                3600.0,
+                -1482.53
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4813,16 +5626,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "sbd_cut02",
         "tm": [
-          [-0.14573,-0.793354,0.591062],
-          [-0.189919,0.608761,0.770286],
-          [-0.970924,2.36438e-08,-0.239388],
-          [-2541.6,399.999,33.8887]
+          [
+            -0.14573,
+            -0.793354,
+            0.591062
+          ],
+          [
+            -0.189919,
+            0.608761,
+            0.770286
+          ],
+          [
+            -0.970924,
+            2.36438E-08,
+            -0.239388
+          ],
+          [
+            -2541.6,
+            399.999,
+            33.8887
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -4860,17 +5687,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "sbd_cut03",
         "tm": [
-          [-0.5,-0.866026,-2.98023e-08],
-          [-0.866025,0.5,0.0],
-          [1.49012e-08,2.58096e-08,-1.0],
-          [-2279.86,1771.6,-67.0989]
+          [
+            -0.5,
+            -0.866026,
+            -2.98023E-08
+          ],
+          [
+            -0.866025,
+            0.5,
+            0.0
+          ],
+          [
+            1.49012E-08,
+            2.58096E-08,
+            -1.0
+          ],
+          [
+            -2279.86,
+            1771.6,
+            -67.0989
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -4909,17 +5750,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "pby_cut03",
         "tm": [
-          [0.999048,0.0,-0.0436194],
-          [0.0,1.0,0.0],
-          [0.0436194,0.0,0.999048],
-          [-7958.39,900.0,-712.118]
+          [
+            0.999048,
+            0.0,
+            -0.0436194
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436194,
+            0.0,
+            0.999048
+          ],
+          [
+            -7958.39,
+            900.0,
+            -712.118
+          ]
         ],
         "unit_class": "pv_2d",
         "closed_waypoints": false,
@@ -4962,10 +5817,26 @@
           "pby_cut03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1765.69,1000.0,-235.875]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1765.69,
+                1000.0,
+                -235.875
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -4977,150 +5848,150 @@
           }
         }
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "ijn_fleet_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2142.56,121.149,293.341]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -2142.56,
+            121.149,
+            293.341
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ijn_cv01"
-          },
-          {
-            "squad_members": "ijn_cv02"
-          },
-          {
-            "squad_members": "ijn_cv03"
-          },
-          {
-            "squad_members": "ijn_bb01"
-          },
-          {
-            "squad_members": "ijn_bb02"
-          },
-          {
-            "squad_members": "ijn_ca01"
-          },
-          {
-            "squad_members": "ijn_ca02"
-          },
-          {
-            "squad_members": "ijn_ca03"
-          },
-          {
-            "squad_members": "ijn_ca04"
-          },
-          {
-            "squad_members": "ijn_dd01"
-          },
-          {
-            "squad_members": "ijn_dd02"
-          },
-          {
-            "squad_members": "ijn_dd03"
-          },
-          {
-            "squad_members": "ijn_dd04"
-          },
-          {
-            "squad_members": "ijn_dd05"
-          },
-          {
-            "squad_members": "ijn_dd06"
-          },
-          {
-            "squad_members": "ijn_dd07"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "ijn_cv01",
+            "ijn_cv02",
+            "ijn_cv03",
+            "ijn_bb01",
+            "ijn_bb02",
+            "ijn_ca01",
+            "ijn_ca02",
+            "ijn_ca03",
+            "ijn_ca04",
+            "ijn_dd01",
+            "ijn_dd02",
+            "ijn_dd03",
+            "ijn_dd04",
+            "ijn_dd05",
+            "ijn_dd06",
+            "ijn_dd07"
+          ]
+        }
+      },
+      {
         "name": "jpn_armada_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3447.16,-0.00134277,2494.49]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3447.16,
+            -0.00134277,
+            2494.49
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "zero_n_cut"
-          },
-          {
-            "squad_members": "zero_cut"
-          },
-          {
-            "squad_members": "ki_cut"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "zero_n_cut",
+            "zero_cut",
+            "ki_cut"
+          ]
+        }
+      },
+      {
         "name": "us_armada_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3474.76,-0.00134277,3378.84]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3474.76,
+            -0.00134277,
+            3378.84
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "sbd_cut"
-          },
-          {
-            "squad_members": "sbd_cut01"
-          },
-          {
-            "squad_members": "sbd_cut02"
-          },
-          {
-            "squad_members": "sbd_cut03"
-          },
-          {
-            "squad_members": "f2a_cut"
-          },
-          {
-            "squad_members": "pby_cut"
-          },
-          {
-            "squad_members": "pby_cut01"
-          },
-          {
-            "squad_members": "pby_cut02"
-          },
-          {
-            "squad_members": "pby_cut03"
-          },
-          {
-            "squad_members": "p38_cut"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "sbd_cut",
+            "sbd_cut01",
+            "sbd_cut02",
+            "sbd_cut03",
+            "f2a_cut",
+            "pby_cut",
+            "pby_cut01",
+            "pby_cut02",
+            "pby_cut03",
+            "p38_cut"
+          ]
+        }
+      },
+      {
         "name": "p38_leader_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-5703.15,0.00012207,-12409.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -5703.15,
+            0.00012207,
+            -12409.5
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -5128,16 +5999,32 @@
           "object_type": "isFormationLeader"
         }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "dive_tele_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-2519.66,1600.0,-2559.16]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -2519.66,
+          1600.0,
+          -2559.16
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5146,10 +6033,26 @@
     "fleet_cut_area01": {
       "type": "Sphere",
       "tm": [
-        [404.496,0.0,976.54],
-        [0.0,380.52,0.0],
-        [-976.54,0.0,404.496],
-        [-3127.36,23.5486,-1103.56]
+        [
+          404.496,
+          0.0,
+          976.54
+        ],
+        [
+          0.0,
+          380.52,
+          0.0
+        ],
+        [
+          -976.54,
+          0.0,
+          404.496
+        ],
+        [
+          -3127.36,
+          23.5486,
+          -1103.56
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5158,10 +6061,26 @@
     "fleet_cut_area02": {
       "type": "Sphere",
       "tm": [
-        [1164.13,0.0,-311.929],
-        [0.0,482.08,0.0],
-        [311.929,0.0,1164.13],
-        [-3566.26,59.7486,-533.309]
+        [
+          1164.13,
+          0.0,
+          -311.929
+        ],
+        [
+          0.0,
+          482.08,
+          0.0
+        ],
+        [
+          311.929,
+          0.0,
+          1164.13
+        ],
+        [
+          -3566.26,
+          59.7486,
+          -533.309
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5170,10 +6089,26 @@
     "clouds_flight_point01": {
       "type": "Point",
       "tm": [
-        [-0.843391,0.0,0.5373],
-        [0.0,1.0,0.0],
-        [-0.5373,0.0,-0.843391],
-        [-60420.5,3569.48,-10015.1]
+        [
+          -0.843391,
+          0.0,
+          0.5373
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.5373,
+          0.0,
+          -0.843391
+        ],
+        [
+          -60420.5,
+          3569.48,
+          -10015.1
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5182,10 +6117,26 @@
     "clouds_flight_point02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-81317.7,3658.16,-7586.18]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -81317.7,
+          3658.16,
+          -7586.18
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5194,10 +6145,26 @@
     "clouds_flight_point03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-115315.0,4145.78,-45148.6]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -115315.0,
+          4145.78,
+          -45148.6
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5206,10 +6173,26 @@
     "clouds_flight_point04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-65174.0,3483.0,-7049.41]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -65174.0,
+          3483.0,
+          -7049.41
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5218,10 +6201,26 @@
     "clouds_flight_point05": {
       "type": "Point",
       "tm": [
-        [-0.843391,0.0,0.5373],
-        [0.0,1.0,0.0],
-        [-0.5373,0.0,-0.843391],
-        [-58312.9,3569.5,-11305.0]
+        [
+          -0.843391,
+          0.0,
+          0.5373
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.5373,
+          0.0,
+          -0.843391
+        ],
+        [
+          -58312.9,
+          3569.5,
+          -11305.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5230,10 +6229,26 @@
     "clouds_flight_point06": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-96800.9,3573.36,-13933.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -96800.9,
+          3573.36,
+          -13933.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5242,10 +6257,26 @@
     "clouds_flight_point07": {
       "type": "Point",
       "tm": [
-        [-0.843391,0.0,0.5373],
-        [0.0,1.0,0.0],
-        [-0.5373,0.0,-0.843391],
-        [-45292.0,4423.0,1673.0]
+        [
+          -0.843391,
+          0.0,
+          0.5373
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.5373,
+          0.0,
+          -0.843391
+        ],
+        [
+          -45292.0,
+          4423.0,
+          1673.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5254,10 +6285,26 @@
     "clouds_flight_point08": {
       "type": "Point",
       "tm": [
-        [-0.342702,0.0,0.939444],
-        [0.0,1.0,0.0],
-        [-0.939444,0.0,-0.342702],
-        [-33965.7,3897.0,-1465.03]
+        [
+          -0.342702,
+          0.0,
+          0.939444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.939444,
+          0.0,
+          -0.342702
+        ],
+        [
+          -33965.7,
+          3897.0,
+          -1465.03
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5266,10 +6313,26 @@
     "clouds_flight_point09": {
       "type": "Point",
       "tm": [
-        [-0.843391,0.0,0.5373],
-        [0.0,1.0,0.0],
-        [-0.5373,0.0,-0.843391],
-        [-83524.0,5770.0,-11204.0]
+        [
+          -0.843391,
+          0.0,
+          0.5373
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.5373,
+          0.0,
+          -0.843391
+        ],
+        [
+          -83524.0,
+          5770.0,
+          -11204.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5278,10 +6341,26 @@
     "clouds_flight_point10": {
       "type": "Point",
       "tm": [
-        [-0.843391,0.0,0.5373],
-        [0.0,1.0,0.0],
-        [-0.5373,0.0,-0.843391],
-        [-73668.0,6228.0,-12512.0]
+        [
+          -0.843391,
+          0.0,
+          0.5373
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.5373,
+          0.0,
+          -0.843391
+        ],
+        [
+          -73668.0,
+          6228.0,
+          -12512.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5290,10 +6369,26 @@
     "clouds_flight_point11": {
       "type": "Point",
       "tm": [
-        [-0.843391,0.0,0.5373],
-        [0.0,1.0,0.0],
-        [-0.5373,0.0,-0.843391],
-        [9479.74,4058.32,25508.3]
+        [
+          -0.843391,
+          0.0,
+          0.5373
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.5373,
+          0.0,
+          -0.843391
+        ],
+        [
+          9479.74,
+          4058.32,
+          25508.3
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5302,10 +6397,26 @@
     "clouds_flight_point12": {
       "type": "Point",
       "tm": [
-        [-0.843391,0.0,0.5373],
-        [0.0,1.0,0.0],
-        [-0.5373,0.0,-0.843391],
-        [-1260.96,4519.0,-16206.7]
+        [
+          -0.843391,
+          0.0,
+          0.5373
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.5373,
+          0.0,
+          -0.843391
+        ],
+        [
+          -1260.96,
+          4519.0,
+          -16206.7
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5314,43 +6425,107 @@
     "area_01": {
       "type": "Sphere",
       "tm": [
-        [117.762,0.0,0.0],
-        [0.0,117.762,0.0],
-        [0.0,0.0,117.762],
-        [-3097.36,-0.00134277,-646.509]
+        [
+          117.762,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          117.762,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          117.762
+        ],
+        [
+          -3097.36,
+          -0.00134277,
+          -646.509
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_02": {
       "type": "Sphere",
       "tm": [
-        [117.762,0.0,0.0],
-        [0.0,117.762,0.0],
-        [0.0,0.0,117.762],
-        [-2623.29,9.99854,332.683]
+        [
+          117.762,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          117.762,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          117.762
+        ],
+        [
+          -2623.29,
+          9.99854,
+          332.683
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_03": {
       "type": "Sphere",
       "tm": [
-        [117.762,0.0,0.0],
-        [0.0,117.762,0.0],
-        [0.0,0.0,117.762],
-        [-3404.36,-0.00134277,-941.059]
+        [
+          117.762,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          117.762,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          117.762
+        ],
+        [
+          -3404.36,
+          -0.00134277,
+          -941.059
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "clouds_flight_point13": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-114954.0,5714.61,-45330.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -114954.0,
+          5714.61,
+          -45330.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5359,21 +6534,53 @@
     "zero_turn_point": {
       "type": "Sphere",
       "tm": [
-        [939.566,0.0,0.0],
-        [0.0,939.566,0.0],
-        [0.0,0.0,939.566],
-        [-11322.8,4451.0,-1923.45]
+        [
+          939.566,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          939.566,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          939.566
+        ],
+        [
+          -11322.8,
+          4451.0,
+          -1923.45
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "fleet_cut_area03": {
       "type": "Sphere",
       "tm": [
-        [-1111.65,0.0,465.539],
-        [0.0,482.08,0.0],
-        [-465.539,0.0,-1111.65],
-        [-2706.93,59.749,-2780.62]
+        [
+          -1111.65,
+          0.0,
+          465.539
+        ],
+        [
+          0.0,
+          482.08,
+          0.0
+        ],
+        [
+          -465.539,
+          0.0,
+          -1111.65
+        ],
+        [
+          -2706.93,
+          59.749,
+          -2780.62
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -5382,36 +6589,46 @@
     "final_cut_area": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [303.922,828.954,-2974.76]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          303.922,
+          828.954,
+          -2974.76
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

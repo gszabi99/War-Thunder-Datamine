@@ -15,7 +15,7 @@
       "weather": "hazy"
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -49,16 +49,14 @@
         }
       },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "starshell_set_timer"
-          },
-          {
-            "target": "starshell_set_spawnzones"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "starshell_set_timer",
+            "starshell_set_spawnzones"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "starshell_set_timer": {
       "is_enabled": false,
@@ -73,32 +71,26 @@
           "time": 0.1
         }
       },
-      "conditions": [
-        {
-          "missionNamePostfix": {
+      "conditions": {
+        "missionNamePostfix": [
+          {
             "postfix": "_Conq1",
             "equal": true
-          }
-        },
-        {
-          "missionNamePostfix": {
+          },
+          {
             "postfix": "_Conq2",
             "equal": true
-          }
-        },
-        {
-          "missionNamePostfix": {
+          },
+          {
             "postfix": "_Conq3",
             "equal": true
-          }
-        },
-        {
-          "missionNamePostfix": {
+          },
+          {
             "postfix": "_Conq4",
             "equal": true
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "varSetInt": {
           "value": 45,
@@ -165,34 +157,30 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "triggerActivate": {
+      "conditions": {},
+      "actions": {
+        "triggerActivate": [
+          {
             "target": "starshell_conq_check_mode",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "starshell_dom_check_mode",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "starshell_bttl_check_mode",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "starshell_set_spawnzones": {
       "is_enabled": false,
@@ -207,62 +195,48 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetString": {
+      "conditions": {},
+      "actions": {
+        "varSetString": [
+          {
             "value": "t1_spawn_01_name",
             "var": "starshell_sz_t1_01_paramname"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_spawn_02_name",
             "var": "starshell_sz_t1_02_paramname"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "",
             "var": "starshell_sz_t1_01_name",
             "input_var": "@starshell_sz_t1_01_paramname"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "",
             "var": "starshell_sz_t1_02_name",
             "input_var": "@starshell_sz_t1_02_paramname"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_spawn_01_name",
             "var": "starshell_sz_t2_01_paramname"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_spawn_02_name",
             "var": "starshell_sz_t2_02_paramname"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "",
             "var": "starshell_sz_t2_01_name",
             "input_var": "@starshell_sz_t2_01_paramname"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "",
             "var": "starshell_sz_t2_02_name",
             "input_var": "@starshell_sz_t2_02_paramname"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "starshell_conq": {
       "isCategory": true,
@@ -280,38 +254,32 @@
             "time": 0.1
           }
         },
-        "conditions": [
-          {
-            "missionNamePostfix": {
+        "conditions": {
+          "missionNamePostfix": [
+            {
               "postfix": "_Conq1",
               "equal": true
-            }
-          },
-          {
-            "missionNamePostfix": {
+            },
+            {
               "postfix": "_Conq2",
               "equal": true
-            }
-          },
-          {
-            "missionNamePostfix": {
+            },
+            {
               "postfix": "_Conq3",
               "equal": true
-            }
-          },
-          {
-            "missionNamePostfix": {
+            },
+            {
               "postfix": "_Conq4",
               "equal": true
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "triggerEnable": {
             "target": "starshell_conq_choose_capturezone"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "starshell_conq_choose_capturezone": {
         "is_enabled": false,
@@ -326,28 +294,24 @@
             "time": 0.1
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varSetString": {
+        "conditions": {},
+        "actions": {
+          "varSetString": [
+            {
               "value": "zone_name",
               "var": "starshell_cz_paramname"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "",
               "var": "starshell_cz_name",
               "input_var": "@starshell_cz_paramname"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_conq_check_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_conq_check_spawn"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "starshell_conq_check_spawn": {
         "is_enabled": false,
@@ -362,20 +326,18 @@
             "time": 0.1
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@starshell_sz_t1_02_name",
               "type": "squad"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@starshell_sz_t2_02_name",
               "type": "squad"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "varSetRandomInt": {
             "var": "starshell_sz_idx",
@@ -386,19 +348,17 @@
             "target": "starshell_conq_choose_spawn"
           }
         },
-        "else_actions": [
-          {
-            "getNearestAreaByMask": {
+        "else_actions": {
+          "getNearestAreaByMask": [
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t1_choosen_name",
               "target": "@starshell_cz_name",
               "areas": "@starshell_sz_t1_01_name",
               "avoid_team": "B"
-            }
-          },
-          {
-            "getNearestAreaByMask": {
+            },
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t2_choosen_name",
@@ -406,13 +366,11 @@
               "areas": "@starshell_sz_t2_01_name",
               "avoid_team": "B"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_fire"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_fire"
           }
-        ]
+        }
       },
       "starshell_conq_choose_spawn": {
         "is_enabled": false,
@@ -434,19 +392,17 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "getNearestAreaByMask": {
+        "actions": {
+          "getNearestAreaByMask": [
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t1_choosen_name",
               "target": "@starshell_cz_name",
               "areas": "@starshell_sz_t1_01_name",
               "avoid_team": "B"
-            }
-          },
-          {
-            "getNearestAreaByMask": {
+            },
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t2_choosen_name",
@@ -454,26 +410,22 @@
               "areas": "@starshell_sz_t2_01_name",
               "avoid_team": "B"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_fire"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_fire"
           }
-        ],
-        "else_actions": [
-          {
-            "getNearestAreaByMask": {
+        },
+        "else_actions": {
+          "getNearestAreaByMask": [
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t1_choosen_name",
               "target": "@starshell_cz_name",
               "areas": "@starshell_sz_t1_02_name",
               "avoid_team": "B"
-            }
-          },
-          {
-            "getNearestAreaByMask": {
+            },
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t2_choosen_name",
@@ -481,13 +433,11 @@
               "areas": "@starshell_sz_t2_02_name",
               "avoid_team": "B"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_fire"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_fire"
           }
-        ]
+        }
       }
     },
     "starshell_dom": {
@@ -517,7 +467,7 @@
             "target": "starshell_dom_choose_capturezone"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "starshell_dom_choose_capturezone": {
         "is_enabled": false,
@@ -532,50 +482,42 @@
             "time": 0.1
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varSetRandomInt": {
-              "var": "starshell_cz_idx",
-              "from": 1,
-              "to_not_including": 4
-            }
+        "conditions": {},
+        "actions": {
+          "varSetRandomInt": {
+            "var": "starshell_cz_idx",
+            "from": 1,
+            "to_not_including": 4
           },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "zone_",
               "var": "starshell_cz_paramname"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "",
               "var": "starshell_cz_name",
               "input_var": "@starshell_cz_paramname"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 2,
               "var": "starshell_cz_paramname",
               "input_var": "starshell_cz_idx"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_name",
               "digits": 0,
               "var": "starshell_cz_paramname"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_dom_choose_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_dom_choose_spawn"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "starshell_dom_choose_spawn": {
         "is_enabled": false,
@@ -590,65 +532,37 @@
             "time": 0.1
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "getNearestAreaByMask": [
-              {
-                "dist_min_value": 0.0
-              },
-              {
-                "dist_max_value": 5000.0
-              },
-              {
-                "out_var": "starshell_sz_t1_choosen_name"
-              },
-              {
-                "target": "@starshell_cz_name"
-              },
-              {
-                "areas": "@starshell_sz_t1_01_name"
-              },
-              {
-                "areas": "@starshell_sz_t1_02_name"
-              },
-              {
-                "avoid_team": "B"
-              }
-            ]
-          },
-          {
-            "getNearestAreaByMask": [
-              {
-                "dist_min_value": 0.0
-              },
-              {
-                "dist_max_value": 5000.0
-              },
-              {
-                "out_var": "starshell_sz_t2_choosen_name"
-              },
-              {
-                "target": "@starshell_cz_name"
-              },
-              {
-                "areas": "@starshell_sz_t2_01_name"
-              },
-              {
-                "areas": "@starshell_sz_t2_02_name"
-              },
-              {
-                "avoid_team": "A"
-              }
-            ]
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_fire"
+        "conditions": {},
+        "actions": {
+          "getNearestAreaByMask": [
+            {
+              "dist_min_value": 0.0,
+              "dist_max_value": 5000.0,
+              "out_var": "starshell_sz_t1_choosen_name",
+              "target": "@starshell_cz_name",
+              "areas": [
+                "@starshell_sz_t1_01_name",
+                "@starshell_sz_t1_02_name"
+              ],
+              "avoid_team": "B"
+            },
+            {
+              "dist_min_value": 0.0,
+              "dist_max_value": 5000.0,
+              "out_var": "starshell_sz_t2_choosen_name",
+              "target": "@starshell_cz_name",
+              "areas": [
+                "@starshell_sz_t2_01_name",
+                "@starshell_sz_t2_02_name"
+              ],
+              "avoid_team": "A"
             }
+          ],
+          "triggerEnable": {
+            "target": "starshell_fire"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       }
     },
     "starshell_bttl": {
@@ -678,7 +592,7 @@
             "target": "starshell_bttl_choose_capturezone"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "starshell_bttl_choose_capturezone": {
         "is_enabled": false,
@@ -693,50 +607,42 @@
             "time": 0.1
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varSetRandomInt": {
-              "var": "starshell_cz_idx",
-              "from": 1,
-              "to_not_including": 3
-            }
+        "conditions": {},
+        "actions": {
+          "varSetRandomInt": {
+            "var": "starshell_cz_idx",
+            "from": 1,
+            "to_not_including": 3
           },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "t",
               "var": "starshell_cz_paramname"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "",
               "var": "starshell_cz_name",
               "input_var": "@starshell_cz_paramname"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "",
               "digits": 1,
               "var": "starshell_cz_paramname",
               "input_var": "starshell_cz_idx"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_zone_name",
               "digits": 0,
               "var": "starshell_cz_paramname"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_bttl_check_spawn"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_bttl_check_spawn"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "starshell_bttl_check_spawn": {
         "is_enabled": false,
@@ -751,20 +657,18 @@
             "time": 0.1
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@starshell_sz_t1_02_name",
               "type": "squad"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@starshell_sz_t2_02_name",
               "type": "squad"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "varSetRandomInt": {
             "var": "starshell_sz_idx",
@@ -775,19 +679,17 @@
             "target": "starshell_bttl_choose_spawn"
           }
         },
-        "else_actions": [
-          {
-            "getNearestAreaByMask": {
+        "else_actions": {
+          "getNearestAreaByMask": [
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t1_choosen_name",
               "target": "@starshell_cz_name",
               "areas": "@starshell_sz_t1_01_name",
               "avoid_team": "B"
-            }
-          },
-          {
-            "getNearestAreaByMask": {
+            },
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t2_choosen_name",
@@ -795,13 +697,11 @@
               "areas": "@starshell_sz_t2_01_name",
               "avoid_team": "B"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_fire"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_fire"
           }
-        ]
+        }
       },
       "starshell_bttl_choose_spawn": {
         "is_enabled": false,
@@ -823,19 +723,17 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "getNearestAreaByMask": {
+        "actions": {
+          "getNearestAreaByMask": [
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t1_choosen_name",
               "target": "@starshell_cz_name",
               "areas": "@starshell_sz_t1_01_name",
               "avoid_team": "B"
-            }
-          },
-          {
-            "getNearestAreaByMask": {
+            },
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t2_choosen_name",
@@ -843,26 +741,22 @@
               "areas": "@starshell_sz_t2_01_name",
               "avoid_team": "B"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_fire"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_fire"
           }
-        ],
-        "else_actions": [
-          {
-            "getNearestAreaByMask": {
+        },
+        "else_actions": {
+          "getNearestAreaByMask": [
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t1_choosen_name",
               "target": "@starshell_cz_name",
               "areas": "@starshell_sz_t1_02_name",
               "avoid_team": "B"
-            }
-          },
-          {
-            "getNearestAreaByMask": {
+            },
+            {
               "dist_min_value": 0.0,
               "dist_max_value": 5000.0,
               "out_var": "starshell_sz_t2_choosen_name",
@@ -870,13 +764,11 @@
               "areas": "@starshell_sz_t2_02_name",
               "avoid_team": "B"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "starshell_fire"
-            }
+          ],
+          "triggerEnable": {
+            "target": "starshell_fire"
           }
-        ]
+        }
       }
     },
     "starshell_fire": {
@@ -892,37 +784,45 @@
           "time": 0.1
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionUnitShootAtLine": {
+      "conditions": {},
+      "actions": {
+        "missionUnitShootAtLine": [
+          {
             "areaNameFrom": "@starshell_cz_name",
             "areaNameTo": "@starshell_sz_t1_choosen_name",
             "unitName": "starshell_artillery",
             "shotCount": 1,
-            "attackLineRange": [0.3,0.5],
-            "heightRange": [600.0,650.0],
+            "attackLineRange": [
+              0.3,
+              0.5
+            ],
+            "heightRange": [
+              600.0,
+              650.0
+            ],
             "lateralOffset": 120.0
-          }
-        },
-        {
-          "missionUnitShootAtLine": {
+          },
+          {
             "areaNameFrom": "@starshell_cz_name",
             "areaNameTo": "@starshell_sz_t2_choosen_name",
             "unitName": "starshell_artillery",
             "shotCount": 1,
-            "attackLineRange": [0.3,0.5],
-            "heightRange": [600.0,650.0],
+            "attackLineRange": [
+              0.3,
+              0.5
+            ],
+            "heightRange": [
+              600.0,
+              650.0
+            ],
             "lateralOffset": 120.0
           }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
+        ],
+        "wait": {
+          "time": 0.5
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -947,17 +847,33 @@
     "starshell_sz_t1_choosen_name": "",
     "starshell_sz_t2_choosen_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "structures": {
       "name": "starshell_artillery",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [0.0,0.0,0.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
       ],
       "unit_class": "ussr_152mm_d1_illum",
       "objLayer": 1,
@@ -979,37 +895,37 @@
         "count": 1,
         "formation_type": "rows",
         "formation_div": 3,
-        "formation_step": [2.5,2.0],
-        "formation_noise": [0.1,0.1],
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
         "uniqueName": "",
         "attack_type": "fire_at_will",
         "isDelayed": true
       },
-      "way": []
+      "way": {}
     }
   },
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

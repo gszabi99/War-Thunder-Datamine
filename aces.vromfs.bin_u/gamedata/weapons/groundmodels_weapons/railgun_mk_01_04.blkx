@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -33,14 +37,18 @@
     "outside": "ufo_railgun_ground_outside",
     "ai": "ufo_railgun_ground_ai"
   },
-  "overheat": [
-    {
-      "overheat": [1000.0,0.0]
-    },
-    {
-      "overheat": [10000.0,0.1]
-    }
-  ],
+  "overheat": {
+    "overheat": [
+      [
+        1000.0,
+        0.0
+      ],
+      [
+        10000.0,
+        0.1
+      ]
+    ]
+  },
   "bullet": {
     "mass": 1.0,
     "caliber": 0.05,
@@ -53,7 +61,11 @@
     "secondaryShattersPreset": "apds_fs_long",
     "bulletType": "apds_fs_long_tank",
     "slopeEffectPreset": "apds_fs_long",
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
     "hitPowerMult": 30000.0,
     "onHitChanceMultExplFuel": 0.1,
@@ -61,10 +73,19 @@
     "explodeTreshold": 0.1,
     "explodeHitPower": 500.0,
     "explodeArmorPower": 60.0,
-    "explodeRadius": [7.0,10.0],
+    "explodeRadius": [
+      7.0,
+      10.0
+    ],
     "rendinstDamageRadius": 7.0,
-    "relativeVelHitShift": [300.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_106_132mm_dirt_ap",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
@@ -75,22 +96,33 @@
       "precessionDamping": 0.3,
       "ricochetAnglePrecessionFactor": 5.0,
       "ricochetAngleOmegaFactor": 0.5,
-      "slopeToOmega": [1.0,10.0,0.0,1.0],
+      "slopeToOmega": [
+        1.0,
+        10.0,
+        0.0,
+        1.0
+      ],
       "angleLossStabilizationAfterRicochet": 30.0,
-      "penetrationReduction": [
-        {
-          "pnt": [0.0,1.0]
-        },
-        {
-          "pnt": [2.0,0.95]
-        },
-        {
-          "pnt": [10.0,0.5]
-        },
-        {
-          "pnt": [21.0,0.3]
-        }
-      ]
+      "penetrationReduction": {
+        "pnt": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            2.0,
+            0.95
+          ],
+          [
+            10.0,
+            0.5
+          ],
+          [
+            21.0,
+            0.3
+          ]
+        ]
+      }
     },
     "DamageParts": {
       "body": {
@@ -122,16 +154,34 @@
       "detectShells": true
     },
     "hitpower": {
-      "HitPower0m": [1.0,5000.0],
-      "HitPower10000m": [0.99,10000.0]
+      "HitPower0m": [
+        1.0,
+        5000.0
+      ],
+      "HitPower10000m": [
+        0.99,
+        10000.0
+      ]
     },
     "armorpower": {
-      "ArmorPower0m": [500.0,10.0],
-      "ArmorPower5000m": [490.0,5000.0],
-      "ArmorPower10000m": [0.0,10000.0]
+      "ArmorPower0m": [
+        500.0,
+        10.0
+      ],
+      "ArmorPower5000m": [
+        490.0,
+        5000.0
+      ],
+      "ArmorPower10000m": [
+        0.0,
+        10000.0
+      ]
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "152mmGreenBlue",
       "trail": "curved"

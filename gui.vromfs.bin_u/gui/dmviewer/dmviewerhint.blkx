@@ -1,45 +1,23 @@
 {
-  "tooltipObj": [
-    {
-      "id": "dmviewer_hint"
-    },
-    {
-      "behavior": "Timer"
-    },
-    {
-      "timer_handler_func": "onDMViewerHintTimer"
-    },
-    {
-      "position": "root"
-    },
-    {
-      "pos": "sw/2-w/2, 70%sh-h/2"
-    },
-    {
-      "style": "padding:16@sf/@pf; color-factor:192;"
-    },
-    {
-      "display": "hide"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "input-transparent": "yes"
-    },
-    {
-      "order-popup": "yes"
-    },
-    {
-      "textareaNoTab": {
+  "tooltipObj": {
+    "id": "dmviewer_hint",
+    "behavior": "Timer",
+    "timer_handler_func": "onDMViewerHintTimer",
+    "position": "root",
+    "pos": "sw/2-w/2, 70%sh-h/2",
+    "style": "padding:16@sf/@pf; color-factor:192;",
+    "display": "hide",
+    "flow": "vertical",
+    "input-transparent": "yes",
+    "order-popup": "yes",
+    "textareaNoTab": [
+      {
         "id": "dmviewer_title",
         "overlayTextColor": "active",
         "text": "",
         "input-transparent": "yes"
-      }
-    },
-    {
-      "textareaNoTab": {
+      },
+      {
         "id": "dmviewer_desc",
         "position": "relative",
         "top": "8@sf/@pf",
@@ -47,6 +25,6 @@
         "text": "",
         "input-transparent": "yes"
       }
-    }
-  ]
+    ]
+  }
 }

@@ -15,36 +15,34 @@
   "maxAccel": 0.5,
   "maxDecel": 0.5,
   "maxAngAccel": 0.7,
-  "maxAngAccel0": 0.0,
+  "maxAngAccel0": 1E-05,
   "maxAngAccelV": 0.01,
   "groundNormSmoothViscosity": 4.5,
   "customUpdateDiv": 5,
-  "drownGFactor": 0.0,
+  "drownGFactor": 1E-05,
   "drownRollSpeed": 0.01,
   "SoundMove": "models.Ship",
   "tailStartOffset": 0.0,
-  "DamageParts": [
-    {
-      "steel": {
-        "gun0_dm": {
-          "hp": 2.0
-        },
-        "gun5_dm": {
-          "hp": 2.0
-        },
-        "gun6_dm": {
-          "hp": 2.0
-        },
-        "gun7_dm": {
-          "hp": 2.0
-        },
-        "gun8_dm": {
-          "hp": 2.0
-        }
+  "DamageParts": {
+    "steel": {
+      "gun0_dm": {
+        "hp": 2.0
+      },
+      "gun5_dm": {
+        "hp": 2.0
+      },
+      "gun6_dm": {
+        "hp": 2.0
+      },
+      "gun7_dm": {
+        "hp": 2.0
+      },
+      "gun8_dm": {
+        "hp": 2.0
       }
     },
-    {
-      "armor40": {
+    "armor40": [
+      {
         "engine_dm": {
           "hp": 3500.0
         },
@@ -54,10 +52,8 @@
         "bodypart1_dm": {
           "hp": 3500.0
         }
-      }
-    },
-    {
-      "armor40": {
+      },
+      {
         "gun1_dm": {
           "hp": 50.0
         },
@@ -71,11 +67,11 @@
           "hp": 50.0
         }
       }
-    }
-  ],
-  "DamageEffects": [
-    {
-      "part": {
+    ]
+  },
+  "DamageEffects": {
+    "part": [
+      {
         "name": "body_dm",
         "onHit": {
           "smoke": 0.01,
@@ -84,30 +80,22 @@
         "onKill": {
           "expl": 1.0
         }
-      }
-    },
-    {
-      "part": [
-        {
-          "name": "engine_dm"
+      },
+      {
+        "name": [
+          "engine_dm",
+          "bodypart1_dm"
+        ],
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
         },
-        {
-          "name": "bodypart1_dm"
-        },
-        {
-          "onHit": {
-            "smoke": 0.1,
-            "fire": 0.01
-          }
-        },
-        {
-          "onKill": {
-            "body_dm": 1.0
-          }
+        "onKill": {
+          "body_dm": 1.0
         }
-      ]
-    }
-  ],
+      }
+    ]
+  },
   "attach": {
     "flag_front": "flag_usa",
     "flag_middle": "flag_usa",
@@ -121,8 +109,16 @@
   "ShipPhys": {
     "mass": {
       "Empty": 1600000.0,
-      "momentOfInertia": [100.0,250.0,250.0],
-      "CenterOfGravity": [-4.4,-1.0,0.0]
+      "momentOfInertia": [
+        100.0,
+        250.0,
+        250.0
+      ],
+      "CenterOfGravity": [
+        -4.4,
+        -1.0,
+        0.0
+      ]
     },
     "engines": {
       "maxThrust": 620000.0
@@ -130,8 +126,16 @@
     "hydrodynamics": {
       "keelArea": 1.0,
       "bodyArea": 191.35,
-      "keelArm": [-50.0,-3.0,0.0],
-      "bodyArm": [-5.0,0.0,0.0]
+      "keelArm": [
+        -50.0,
+        -3.0,
+        0.0
+      ],
+      "bodyArm": [
+        -5.0,
+        0.0,
+        0.0
+      ]
     }
   },
   "guns_remap": {

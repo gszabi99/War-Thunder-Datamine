@@ -13,71 +13,51 @@
         "pos": "pw-w, 0",
         "position": "relative",
         "padding": "2",
-        "tdiv": [
-          {
+        "tdiv": {
+          "width": "pw",
+          "flow": "vertical",
+          "HorizontalListBox": {
+            "id": "ia_table_clusters_list",
+            "width": "pw",
+            "min-height": "1@buttonHeight",
+            "smallFont": "yes",
+            "class": "tabs",
+            "flow": "h-flow",
+            "input-transparent": "yes",
+            "navigatorShortcuts": "yes",
+            "on_select": "onClustersTabChange"
+          },
+          "table": {
+            "id": "ia_tooltip_table",
+            "width": "pw",
+            "pos": "50%pw-50%w",
+            "position": "relative",
+            "display": "hide"
+          },
+          "div": {
+            "id": "queue_box_container",
             "width": "pw"
           },
-          {
-            "flow": "vertical"
+          "textAreaCentered": {
+            "id": "unstable_cluster_warning",
+            "pos": "50%pw-50%w, 6@sf/@pf",
+            "position": "relative",
+            "max-width": "pw",
+            "text": "#multiplayer/cluster_connection_unstable",
+            "text-halign": "center",
+            "overlayTextColor": "bad",
+            "smallFont": "yes",
+            "display": "hide",
+            "wink": "no"
           },
-          {
-            "HorizontalListBox": {
-              "id": "ia_table_clusters_list",
+          "tdiv": [
+            {
+              "id": "waiting_time",
               "width": "pw",
-              "min-height": "1@buttonHeight",
-              "smallFont": "yes",
-              "class": "tabs",
-              "flow": "h-flow",
-              "input-transparent": "yes",
-              "navigatorShortcuts": "yes",
-              "on_select": "onClustersTabChange"
-            }
-          },
-          {
-            "table": {
-              "id": "ia_tooltip_table",
-              "width": "pw",
-              "pos": "50%pw-50%w",
-              "position": "relative",
-              "display": "hide"
-            }
-          },
-          {
-            "div": {
-              "id": "queue_box_container",
-              "width": "pw"
-            }
-          },
-          {
-            "textAreaCentered": {
-              "id": "unstable_cluster_warning",
-              "pos": "50%pw-50%w, 6@sf/@pf",
-              "position": "relative",
-              "max-width": "pw",
-              "text": "#multiplayer/cluster_connection_unstable",
-              "text-halign": "center",
-              "overlayTextColor": "bad",
-              "smallFont": "yes",
-              "display": "hide",
-              "wink": "no"
-            }
-          },
-          {
-            "tdiv": [
-              {
-                "id": "waiting_time"
-              },
-              {
-                "width": "pw"
-              },
-              {
-                "padding": "10*@sf/@pf_outdated"
-              },
-              {
-                "flow": "vertical"
-              },
-              {
-                "tdiv": {
+              "padding": "10*@sf/@pf_outdated",
+              "flow": "vertical",
+              "tdiv": [
+                {
                   "id": "available_countries",
                   "pos": "50%pw-50%w, 0",
                   "position": "relative",
@@ -96,10 +76,8 @@
                     "pos": "50%pw-50%w, 0",
                     "position": "relative"
                   }
-                }
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "pos": "pw/2-w/2, 0",
                   "position": "relative",
                   "size": "180@sf/@pf, 180@sf/@pf",
@@ -128,94 +106,50 @@
                     }
                   }
                 }
-              },
-              {
-                "activeText": [
-                  {
-                    "id": "inQueue-topmenu-text"
-                  },
-                  {
-                    "display": "hide"
-                  },
-                  {
-                    "wink": "no"
-                  },
-                  {
-                    "text": "#yn1/waiting_for_game_query"
-                  },
-                  {
-                    "text": ""
-                  },
-                  {
-                    "style": "color:@userlogColoredText;"
-                  },
-                  {
-                    "pos": "50%pw-50%w, 10*@sf/@pf_outdated"
-                  },
-                  {
-                    "position": "relative"
-                  },
-                  {
-                    "hideEmptyText": "yes"
-                  }
-                ]
-              },
-              {
-                "activeText": [
-                  {
-                    "id": "queue_players_total"
-                  },
-                  {
-                    "text": ""
-                  },
-                  {
-                    "text": ""
-                  },
-                  {
-                    "style": "color:@commonMenuButtonColor;"
-                  },
-                  {
-                    "pos": "50%pw-50%w, 10*@sf/@pf_outdated"
-                  },
-                  {
-                    "position": "relative"
-                  },
-                  {
-                    "smallFont": "yes"
-                  },
-                  {
-                    "hideEmptyText": "yes"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "margin-bottom": "14@sf/@pf"
-              },
-              {
-                "flow": "horizontal"
-              },
-              {
-                "pos": "50%pw-50%w, 0"
-              },
-              {
-                "position": "relative"
-              },
-              {
-                "activeText": {
+              ],
+              "activeText": [
+                {
+                  "id": "inQueue-topmenu-text",
+                  "display": "hide",
+                  "wink": "no",
+                  "text": [
+                    "#yn1/waiting_for_game_query",
+                    ""
+                  ],
+                  "style": "color:@userlogColoredText;",
+                  "pos": "50%pw-50%w, 10*@sf/@pf_outdated",
+                  "position": "relative",
+                  "hideEmptyText": "yes"
+                },
+                {
+                  "id": "queue_players_total",
+                  "text": [
+                    "",
+                    ""
+                  ],
+                  "style": "color:@commonMenuButtonColor;",
+                  "pos": "50%pw-50%w, 10*@sf/@pf_outdated",
+                  "position": "relative",
+                  "smallFont": "yes",
+                  "hideEmptyText": "yes"
+                }
+              ]
+            },
+            {
+              "margin-bottom": "14@sf/@pf",
+              "flow": "horizontal",
+              "pos": "50%pw-50%w, 0",
+              "position": "relative",
+              "activeText": [
+                {
                   "id": "battle_rating_label",
                   "position": "relative",
                   "pos": "0, 50%ph-50%h",
                   "smallFont": "yes",
                   "commonButtonColor": "yes",
                   "hideEmptyText": "yes"
-                }
-              },
-              {
-                "activeText": {
+                },
+                {
                   "id": "battle_rating",
                   "position": "relative",
                   "pos": "1@blockInterval, 50%ph-50%h-2@dp",
@@ -223,91 +157,67 @@
                   "overlayTextColor": "userlog",
                   "hideEmptyText": "yes"
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "flow": "horizontal"
-              },
-              {
-                "width": "pw"
-              },
-              {
-                "height": "0.02@sf"
-              },
-              {
-                "tdiv": {
+              ]
+            },
+            {
+              "flow": "horizontal",
+              "width": "pw",
+              "height": "0.02@sf",
+              "tdiv": [
+                {
                   "size": "0.35pw, 3@sf/@pf",
                   "bgcolor": "#0E1114",
                   "position": "absolute",
                   "top": "0.5ph-0.5h"
-                }
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "size": "0.35pw, 3@sf/@pf",
                   "bgcolor": "#0E1114",
                   "position": "absolute",
                   "top": "0.5ph-0.5h",
                   "right": "0"
                 }
-              },
-              {
-                "activeText": {
-                  "text": "#multiplayer/hint",
-                  "commonButtonColor": "yes",
-                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                  "position": "absolute",
-                  "smallFont": "yes"
-                }
+              ],
+              "activeText": {
+                "text": "#multiplayer/hint",
+                "commonButtonColor": "yes",
+                "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                "position": "absolute",
+                "smallFont": "yes"
               }
-            ]
-          },
-          {
-            "tdiv": {
+            },
+            {
               "id": "crossplay_tip",
               "display": "hide",
               "flow": "vertical",
               "width": "pw",
-              "tdiv": [
-                {
-                  "width": "pw"
-                },
-                {
-                  "height": "0.02@sf"
-                },
-                {
-                  "flow": "horizontal"
-                },
-                {
-                  "tdiv": {
+              "tdiv": {
+                "width": "pw",
+                "height": "0.02@sf",
+                "flow": "horizontal",
+                "tdiv": [
+                  {
                     "size": "0.2pw, 3@sf/@pf",
                     "bgcolor": "#0E1114",
                     "position": "absolute",
                     "top": "0.5ph-0.5h"
-                  }
-                },
-                {
-                  "tdiv": {
+                  },
+                  {
                     "size": "0.2pw, 3@sf/@pf",
                     "bgcolor": "#0E1114",
                     "position": "absolute",
                     "top": "0.5ph-0.5h",
                     "right": "0"
                   }
-                },
-                {
-                  "activeText": {
-                    "text": "#options/ps4_crossplay",
-                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                    "position": "absolute",
-                    "smallFont": "yes",
-                    "overlayTextColor": "warning"
-                  }
+                ],
+                "activeText": {
+                  "text": "#options/ps4_crossplay",
+                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                  "position": "absolute",
+                  "smallFont": "yes",
+                  "overlayTextColor": "warning"
                 }
-              ],
+              },
               "textareaNoTab": {
                 "width": "pw",
                 "smallFont": "yes",
@@ -317,31 +227,27 @@
                 "overlayTextColor": "warning"
               }
             }
+          ],
+          "timer": {
+            "id": "queue_update_timer",
+            "timer_handler_func": "onUpdate",
+            "timer_interval_msec": "1000"
           },
-          {
-            "timer": {
-              "id": "queue_update_timer",
-              "timer_handler_func": "onUpdate",
-              "timer_interval_msec": "1000"
-            }
-          },
-          {
-            "loadingTip": {
-              "id": "queue_tip",
+          "loadingTip": {
+            "id": "queue_tip",
+            "width": "pw",
+            "padding": "0, 0.5*@scrn_tgt/100.0",
+            "behaviour": "bhvLoadingTip",
+            "loadingHint": {
+              "id": "tip_hint",
               "width": "pw",
-              "padding": "0, 0.5*@scrn_tgt/100.0",
-              "behaviour": "bhvLoadingTip",
-              "loadingHint": {
-                "id": "tip_hint",
-                "width": "pw",
-                "commonTextColor": "yes",
-                "smallFont": "yes",
-                "behaviour": "bhvHint",
-                "isWrapInRowAllowed": "yes"
-              }
+              "commonTextColor": "yes",
+              "smallFont": "yes",
+              "behaviour": "bhvHint",
+              "isWrapInRowAllowed": "yes"
             }
           }
-        ]
+        }
       }
     },
     "div": {

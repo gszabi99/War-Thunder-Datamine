@@ -1,31 +1,17 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      },
-      {
-        "node": "depth_charge_07"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner11",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -33,14 +19,21 @@
       "emitter": "bone_torpedo_01",
       "bullets": 5,
       "useEmitter": true,
-      "emitterGenRange": [1.0,5.0],
+      "emitterGenRange": [
+        1,
+        5
+      ],
       "emitterGenFmt": "bone_torpedo_%02d",
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_01_dm",
       "brokenBarrelAllowShoot": false,
       "enableCourseCorrection": false,
       "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
       "startSpeed": 18.0,
       "useStartSpeed": true,
       "allowableDelta": 40.0,
@@ -50,17 +43,27 @@
         "gunnerDm": "tt_01_dm"
       },
       "limits": {
-        "yaw": [-110.0,110.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -110.0,
+          110.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
       "limitsDeadzone": {
-        "yaw": [-60.0,60.0],
-        "pitch": [0.0,0.0]
+        "yaw": [
+          -60.0,
+          60.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner12",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -79,13 +82,17 @@
         "gun": "depth_charge_mount_01"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner13",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
@@ -104,9 +111,15 @@
         "gun": "depth_charge_mount_02"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

@@ -1,6 +1,6 @@
-[
-  {
-    "tdiv": {
+{
+  "tdiv": [
+    {
       "width": "pw",
       "padding-bottom": "0.01@scrn_tgt",
       "Button_text": {
@@ -25,93 +25,57 @@
         "background-image": "",
         "background-repeat": "aspect-ratio"
       },
-      "tdiv": [
-        {
-          "pos": "1*@scrn_tgt/100.0, 0"
+      "tdiv": {
+        "pos": "1*@scrn_tgt/100.0, 0",
+        "position": "relative",
+        "width": "fw",
+        "flow": "vertical",
+        "titleTextArea": {
+          "id": "descr-name",
+          "position": "relative",
+          "hideEmptyText": "yes",
+          "text": ""
         },
-        {
-          "position": "relative"
-        },
-        {
-          "width": "fw"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "titleTextArea": {
-            "id": "descr-name",
-            "position": "relative",
-            "hideEmptyText": "yes",
-            "text": ""
-          }
-        },
-        {
-          "textareaNoTab": {
+        "textareaNoTab": [
+          {
             "id": "descr-date",
             "hideEmptyText": "yes",
             "text": ""
-          }
-        },
-        {
-          "textareaNoTab": {
+          },
+          {
             "id": "descr-coop",
             "overlayTextColor": "userlog",
             "hideEmptyText": "yes",
             "text": ""
           }
-        }
-      ]
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "size": "pw,fh"
-      },
-      {
-        "pos": "0,0"
-      },
-      {
-        "position": "relative"
-      },
-      {
-        "overflow-y": "auto"
-      },
-      {
-        "scrollbarShortcuts": "yes"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "tdiv": {
+        ]
+      }
+    },
+    {
+      "size": "pw,fh",
+      "pos": "0,0",
+      "position": "relative",
+      "overflow-y": "auto",
+      "scrollbarShortcuts": "yes",
+      "flow": "vertical",
+      "tdiv": [
+        {
           "id": "descr_scroll_top_point",
           "pos": "0,0",
           "position": "absolute"
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "id": "descr-countries",
           "iconType": "country",
           "display": "hide",
           "height": "7.5*@scrn_tgt/100.0"
-        }
-      },
-      {
-        "tdiv": [
-          {
-            "width": "pw"
-          },
-          {
-            "pos": "0, 0"
-          },
-          {
-            "position": "relative"
-          },
-          {
-            "tdiv": {
+        },
+        {
+          "width": "pw",
+          "pos": "0, 0",
+          "position": "relative",
+          "tdiv": [
+            {
               "id": "tactical-map",
               "size": "40%pw,40%pw",
               "max-height": "w",
@@ -122,320 +86,222 @@
               "tacticalMap": {
                 "size": "pw, ph"
               }
-            }
-          },
-          {
-            "tdiv": [
-              {
-                "width": "fw-10"
-              },
-              {
-                "flow": "vertical"
-              },
-              {
-                "padding-left": "0.03@scrn_tgt*@isWide"
-              },
-              {
-                "textStyle": "mis-descr"
-              },
-              {
-                "textarea": {
+            },
+            {
+              "width": "fw-10",
+              "flow": "vertical",
+              "padding-left": "0.03@scrn_tgt*@isWide",
+              "textStyle": "mis-descr",
+              "textarea": [
+                {
                   "id": "descr-hotas4_tutorial_usage_restriction",
                   "max-width": "pw",
                   "overlayTextColor": "warning",
                   "text": "",
                   "padding-bottom": "0.02@scrn_tgt"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-conditionItem",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-condition",
                   "class": "textDescription",
                   "max-width": "pw",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-aircraftItem",
                   "padding-top": "0.02@scrn_tgt",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-aircraft",
                   "class": "textDescription",
                   "max-width": "pw"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-requirementsItem",
                   "padding-top": "0.02@scrn_tgt",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-requirements",
                   "class": "textDescription",
                   "max-width": "pw"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-playersItem",
                   "padding-top": "0.02@scrn_tgt",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-players",
                   "class": "textDescription",
                   "max-width": "pw"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-locationItem",
                   "padding-top": "0.02@scrn_tgt",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-location",
                   "class": "textDescription",
                   "max-width": "pw"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-timeItem",
                   "padding-top": "0.02@scrn_tgt",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-time",
                   "class": "textDescription",
                   "max-width": "pw"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-weatherItem",
                   "padding-top": "0.02@scrn_tgt",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-weather",
                   "class": "textDescription",
                   "max-width": "pw"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-baseReward",
                   "tooltip": "#baseReward/tooltip",
                   "padding-top": "0.02@scrn_tgt",
                   "class": "textHeader",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-objectiveItem",
                   "class": "textHeader",
                   "padding-top": "0.02@scrn_tgt"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-objective",
                   "width": "pw",
                   "class": "textDescription"
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "id": "descr-maintext",
                   "width": "pw",
                   "class": "textDescription",
                   "padding-top": "0.02@scrn_tgt"
                 }
-              },
-              {
-                "tdiv": {
-                  "id": "descr-rewards",
-                  "flow": "vertical",
-                  "width": "pw",
-                  "padding-top": "0.02@scrn_tgt",
-                  "display": "hide"
-                }
+              ],
+              "tdiv": {
+                "id": "descr-rewards",
+                "flow": "vertical",
+                "width": "pw",
+                "padding-top": "0.02@scrn_tgt",
+                "display": "hide"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "tdiv": [
-          {
-            "width": "90%pw + 2*@scrn_tgt/100.0"
-          },
-          {
-            "pos": "-1*@scrn_tgt/100.0, 1*@scrn_tgt/100.0"
-          },
-          {
-            "position": "relative"
-          },
-          {
-            "textStyle": "mis-middle"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "text": {
+            }
+          ]
+        },
+        {
+          "width": "90%pw + 2*@scrn_tgt/100.0",
+          "pos": "-1*@scrn_tgt/100.0, 1*@scrn_tgt/100.0",
+          "position": "relative",
+          "textStyle": "mis-middle",
+          "flow": "vertical",
+          "tdiv": [
+            {
+              "width": "pw",
+              "text": [
+                {
                   "id": "descr-roundsItem",
                   "text-align": "right"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "descr-rounds",
                   "text-align": "left"
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "text": {
+              ]
+            },
+            {
+              "width": "pw",
+              "text": [
+                {
                   "id": "descr-difficultyItem",
                   "text-align": "right"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "descr-difficulty",
                   "text-align": "left"
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "text": {
+              ]
+            },
+            {
+              "width": "pw",
+              "text": [
+                {
                   "id": "descr-rankItem",
                   "text-align": "right"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "descr-rank",
                   "text-align": "left"
                 }
-              },
-              {
-                "cardImg": {
-                  "id": "descr-prestigeImg",
-                  "margin": "1*@scrn_tgt/100.0, 0, -1*@scrn_tgt/100.0, 0",
-                  "display": "hide"
-                }
+              ],
+              "cardImg": {
+                "id": "descr-prestigeImg",
+                "margin": "1*@scrn_tgt/100.0, 0, -1*@scrn_tgt/100.0, 0",
+                "display": "hide"
               }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "text": {
+            },
+            {
+              "width": "pw",
+              "text": [
+                {
                   "id": "descr-playableItem",
                   "text-align": "right"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "descr-playable",
                   "text-align": "left"
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "text": {
+              ]
+            },
+            {
+              "width": "pw",
+              "text": [
+                {
                   "id": "descr-fuelAndAmmoItem",
                   "text-align": "right"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "descr-fuelAndAmmo",
                   "text-align": "left"
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "text": {
+              ]
+            },
+            {
+              "width": "pw",
+              "text": [
+                {
                   "id": "descr-repeatItem",
                   "text-align": "right"
-                }
-              },
-              {
-                "text": {
+                },
+                {
                   "id": "descr-repeat",
                   "text-align": "left"
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": {
+              ]
+            },
+            {
               "width": "pw",
               "text": {
                 "id": "descr-aircraftsListItem",
@@ -446,28 +312,24 @@
                 "text-align": "left"
               }
             }
-          }
-        ]
-      },
-      {
-        "img": {
-          "id": "descr-chapterImg",
-          "width": "p.p.w",
-          "height": "w*128/512",
-          "background-repeat": "expand",
-          "background-image": ""
+          ]
         }
+      ],
+      "img": {
+        "id": "descr-chapterImg",
+        "width": "p.p.w",
+        "height": "w*128/512",
+        "background-repeat": "expand",
+        "background-image": ""
       },
-      {
-        "textareaNoTab": {
-          "id": "descr-wpAward",
-          "width": "pw-10",
-          "pos": "0, 0",
-          "position": "relative",
-          "hideEmptyText": "yes",
-          "text": ""
-        }
+      "textareaNoTab": {
+        "id": "descr-wpAward",
+        "width": "pw-10",
+        "pos": "0, 0",
+        "position": "relative",
+        "hideEmptyText": "yes",
+        "text": ""
       }
-    ]
-  }
-]
+    }
+  ]
+}

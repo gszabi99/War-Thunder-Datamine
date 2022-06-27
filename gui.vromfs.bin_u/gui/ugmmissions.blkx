@@ -26,95 +26,61 @@
           "_on_select": "onItemSelect",
           "_on_dbl_click": "onItemDblClk"
         },
-        "tdiv": [
-          {
-            "id": "item_desc"
+        "tdiv": {
+          "id": "item_desc",
+          "flow": "vertical",
+          "pos": "1%sw,0",
+          "position": "relative",
+          "size": "fw, ph",
+          "padding-bottom": "0.5*@scrn_tgt/100.0",
+          "text": {
+            "left": "(pw-w)/2",
+            "id": "item_name",
+            "position": "relative",
+            "style": "font:@fontMedium;color:@titleTextColor;",
+            "text": ""
           },
-          {
-            "flow": "vertical"
-          },
-          {
-            "pos": "1%sw,0"
-          },
-          {
-            "position": "relative"
-          },
-          {
-            "size": "fw, ph"
-          },
-          {
-            "padding-bottom": "0.5*@scrn_tgt/100.0"
-          },
-          {
-            "text": {
-              "left": "(pw-w)/2",
-              "id": "item_name",
+          "tdiv": [
+            {
+              "flow": "vertical",
+              "pos": "0,1*@scrn_tgt/100.0",
               "position": "relative",
-              "style": "font:@fontMedium;color:@titleTextColor;",
-              "text": ""
-            }
-          },
-          {
-            "tdiv": [
-              {
-                "flow": "vertical"
-              },
-              {
-                "pos": "0,1*@scrn_tgt/100.0"
-              },
-              {
-                "position": "relative"
-              },
-              {
-                "size": "pw, 0.7ph"
-              },
-              {
-                "textarea": {
+              "size": "pw, 0.7ph",
+              "textarea": [
+                {
                   "id": "item_info",
                   "text": ""
-                }
-              },
-              {
-                "textarea": {
+                },
+                {
                   "padding": "5",
                   "interval": "10",
                   "size": "pw, fh",
                   "id": "item_desc_text",
                   "text": ""
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "flow": "vertical"
-              },
-              {
-                "size": "pw, fh"
-              },
-              {
-                "tdiv": {
+              ]
+            },
+            {
+              "flow": "vertical",
+              "size": "pw, fh",
+              "tdiv": [
+                {
                   "size": "pw, fh"
-                }
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "interval": "5",
                   "id": "priceDiv"
                 }
-              },
-              {
-                "text": {
-                  "id": "tags",
-                  "text": ""
-                }
+              ],
+              "text": {
+                "id": "tags",
+                "text": ""
               }
-            ]
-          }
-        ]
+            }
+          ]
+        }
       }
     }
   },
-  "navBar": []
+  "navBar": {}
 }

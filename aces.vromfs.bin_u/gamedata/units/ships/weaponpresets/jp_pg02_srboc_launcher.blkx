@@ -1,40 +1,20 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "turret_01"
-      },
-      {
-        "node": "turret_02"
-      },
-      {
-        "node": "ex_decor_22"
-      },
-      {
-        "node": "ex_decor_23"
-      },
-      {
-        "node": "ex_decor_28"
-      },
-      {
-        "node": "ex_decor_29"
-      },
-      {
-        "node": "rocket_13"
-      },
-      {
-        "node": "rocket_14"
-      },
-      {
-        "node": "rocket_15"
-      },
-      {
-        "node": "rocket_16"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "turret_01",
+      "turret_02",
+      "ex_decor_22",
+      "ex_decor_23",
+      "ex_decor_28",
+      "ex_decor_29",
+      "rocket_13",
+      "rocket_14",
+      "rocket_15",
+      "rocket_16"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "gunner1",
       "triggerGroup": "smoke",
       "weaponType": "rockets",
@@ -44,7 +24,10 @@
       "external": true,
       "dropSpeed": 100.0,
       "useEmitter": true,
-      "emitterGenRange": [1.0,6.0],
+      "emitterGenRange": [
+        1,
+        6
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "ammoDpGenFmt": "rocket_%02d_dm",
       "barrelDP": "depth_charge_mount_01_dm",
@@ -56,13 +39,17 @@
         "gun": "depth_charge_mount_01"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner2",
       "triggerGroup": "smoke",
       "weaponType": "rockets",
@@ -72,7 +59,10 @@
       "external": true,
       "dropSpeed": 100.0,
       "useEmitter": true,
-      "emitterGenRange": [7.0,12.0],
+      "emitterGenRange": [
+        7,
+        12
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "ammoDpGenFmt": "rocket_%02d_dm",
       "barrelDP": "depth_charge_mount_02_dm",
@@ -84,9 +74,15 @@
         "gun": "depth_charge_mount_02"
       },
       "limits": {
-        "yaw": [-0.0,0.0],
-        "pitch": [-0.0,0.0]
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
       }
     }
-  }
-]
+  ]
+}

@@ -17,13 +17,23 @@
       "isLocal": true,
       "isOnline": false,
       "attempts": false,
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "restoreType": "tactical control",
       "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 3,
-      "windSpeed": [5.0,5.0],
-      "windDirectionDeg": [90.0,90.0],
+      "windSpeed": [
+        5.0,
+        5.0
+      ],
+      "windDirectionDeg": [
+        90.0,
+        90.0
+      ],
       "stars": {
         "latitude": 19.0,
         "longitude": 167.0,
@@ -33,7 +43,10 @@
         "localTime": 11.0
       },
       "customWeather": {
-        "windDir": [0.6,0.8],
+        "windDir": [
+          0.6,
+          0.8
+        ],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
@@ -49,22 +62,14 @@
       "pressure": 760.0,
       "temperature": 32.0
     },
-    "spectator_points": [],
-    "briefing": [
-      {
-        "place_loc": "mb/wakeIs_03/place"
-      },
-      {
-        "date_loc": ""
-      },
-      {
-        "objective_loc": "mb/wakeIs_03/objective"
-      },
-      {
-        "music": "3_us_guadalcanal"
-      },
-      {
-        "part": {
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "mb/wakeIs_03/place",
+      "date_loc": "",
+      "objective_loc": "mb/wakeIs_03/objective",
+      "music": "3_us_guadalcanal",
+      "part": [
+        {
           "event": "mb/wakeIs_03/part1",
           "minTime": 0,
           "slide": {
@@ -73,10 +78,8 @@
             "picture": "wake_island/briefing_slide_wakeisland_m2_part1",
             "showAirMap": false
           }
-        }
-      },
-      {
-        "part": {
+        },
+        {
           "event": "mb/wakeIs_03/part2",
           "minTime": 0,
           "slide": {
@@ -85,10 +88,8 @@
             "picture": "wake_island/briefing_slide_wakeisland_m2_part2",
             "showAirMap": false
           }
-        }
-      },
-      {
-        "part": {
+        },
+        {
           "event": "mb/wakeIs_03/part3",
           "minTime": 0,
           "slide": {
@@ -97,100 +98,68 @@
             "picture": "wake_island/briefing_slide_wakeisland_m2_part3",
             "showAirMap": false
           }
-        }
-      },
-      {
-        "part": {
+        },
+        {
           "event": "mb/wakeIs_03/part4",
           "minTime": 0,
-          "slide": [
-            {
-              "map": true
-            },
-            {
-              "minTime": 6
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "arrow": [
-                {
-                  "width": 1
-                },
-                {
-                  "side": "enemy"
-                },
-                {
-                  "point": "enemy_squad02"
-                },
-                {
-                  "point": "btry_D"
-                }
-              ]
-            },
-            {
-              "arrow": [
-                {
-                  "width": 1
-                },
-                {
-                  "side": "enemy"
-                },
-                {
-                  "point": "enemy_squad01"
-                },
-                {
-                  "point": "btry_B"
-                }
-              ]
-            },
-            {
-              "icon": {
+          "slide": {
+            "map": true,
+            "minTime": 6,
+            "picture": "",
+            "showAirMap": false,
+            "arrow": [
+              {
+                "width": 1,
+                "side": "enemy",
+                "point": [
+                  "enemy_squad02",
+                  "btry_D"
+                ]
+              },
+              {
+                "width": 1,
+                "side": "enemy",
+                "point": [
+                  "enemy_squad01",
+                  "btry_B"
+                ]
+              }
+            ],
+            "icon": [
+              {
                 "icontype": "fighter",
                 "side": "player",
                 "target": "armada_01"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "bomber",
                 "side": "enemy",
                 "target": "enemy_squad01",
                 "lookAt": "btry_B"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "bomber",
                 "side": "enemy",
                 "target": "enemy_squad02",
                 "lookAt": "btry_D"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "artillery",
                 "side": "ally",
                 "target": "btry_B00"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "artillery",
                 "side": "ally",
                 "target": "btry_D01"
               }
-            }
-          ]
+            ]
+          }
         }
-      }
-    ]
+      ]
+    }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -203,129 +172,89 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "enemy_squad01"
-            },
-            {
-              "object": "enemy_squad02"
-            },
-            {
-              "object": "ally"
-            },
-            {
-              "effShootingRate": 0.1
-            },
-            {
-              "plane": [
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "enemy_squad01",
+              "enemy_squad02",
+              "ally"
+            ],
+            "effShootingRate": 0.1,
+            "plane": {
+              "targetDeviation": [
                 {
-                  "targetDeviation": {
-                    "trigger": "gunner",
-                    "defaultVal": 4.0,
-                    "limits": [1.0,4.0]
-                  }
+                  "trigger": "gunner",
+                  "defaultVal": 4.0,
+                  "limits": [
+                    1.0,
+                    4.0
+                  ]
                 },
                 {
-                  "targetDeviation": {
-                    "trigger": "machine gun",
-                    "defaultVal": 4.0,
-                    "limits": [1.0,4.0]
-                  }
+                  "trigger": "machine gun",
+                  "defaultVal": 4.0,
+                  "limits": [
+                    1.0,
+                    4.0
+                  ]
                 }
               ]
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "wake_artillery_squad",
             "effShootingRate": 0.1,
-            "plane": []
+            "plane": {}
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "enemy_squad01"
-            },
-            {
-              "target": "enemy_squad02"
-            },
-            {
-              "target": "armada_01_cut"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "enemy_squad01",
+            "enemy_squad02",
+            "armada_01_cut"
           ]
         },
-        {
-          "addAirfield": [
-            {
-              "runwayStart": "airfield00"
-            },
-            {
-              "runwayEnd": "airfield01"
-            },
-            {
-              "runwayWidth": 70.0
-            },
-            {
-              "army": 1
-            },
-            {
-              "spawnPoint": "spawnpoint00"
-            },
-            {
-              "spawnPoint": "spawnpoint01"
-            },
-            {
-              "spawnPoint": "spawnpoint02"
-            }
+        "addAirfield": {
+          "runwayStart": "airfield00",
+          "runwayEnd": "airfield01",
+          "runwayWidth": 70.0,
+          "army": 1,
+          "spawnPoint": [
+            "spawnpoint00",
+            "spawnpoint01",
+            "spawnpoint02"
           ]
         },
-        {
-          "spawnOnAirfield": {
+        "spawnOnAirfield": [
+          {
             "runwayName": "airfield00",
             "objects": "ally"
-          }
-        },
-        {
-          "spawnOnAirfield": {
+          },
+          {
             "runwayName": "airfield00",
             "objects": "armada_01"
           }
+        ],
+        "wait": {
+          "time": 0.1
         },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cut"
-          }
+        "triggerEnable": {
+          "target": "start_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "start_cut": {
       "is_enabled": false,
@@ -340,34 +269,26 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionForceMusic": {
-            "evName": "2_us_midway"
-          }
+      "conditions": {},
+      "actions": {
+        "missionForceMusic": {
+          "evName": "2_us_midway"
         },
-        {
-          "playerControls": {
+        "playerControls": [
+          {
             "setStatus": "disable",
             "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "ID_SKIP_CUTSCENE",
+              "ID_FLIGHTMENU"
+            ]
           }
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_SKIP_CUTSCENE"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -388,10 +309,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "cutscene_area02"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "front",
             "startSubTypeGroundUnits": "",
@@ -412,10 +331,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "enemy_squad01"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "takeoff",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -437,40 +354,30 @@
             "wait": false,
             "object": "armada_01"
           }
+        ],
+        "showCutsceneInfo": {
+          "text": "cutscene_text/wake_m3_p1",
+          "duration": 6.0
         },
-        {
-          "showCutsceneInfo": {
-            "text": "cutscene_text/wake_m3_p1",
-            "duration": 6.0
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -484,10 +391,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -502,24 +407,20 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "start_cut_skip"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "start_mission"
           }
-        },
-        {
-          "triggerDisable": {
-            "target": "start_cut_skip"
-          }
+        ],
+        "triggerDisable": {
+          "target": "start_cut_skip"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "start_cut_skip": {
       "is_enabled": false,
@@ -543,7 +444,7 @@
         "triggerDisable": {
           "target": "start_cut"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "custom",
           "name": "hints/cutsc_skip",
@@ -563,7 +464,7 @@
           "target": "start_mission"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "start_mission": {
       "is_enabled": false,
@@ -578,60 +479,54 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
           }
+        ],
+        "unitPutToSleep": {
+          "target": "enemy_squad01"
         },
-        {
-          "unitPutToSleep": {
-            "target": "enemy_squad01"
-          }
+        "missionStopCutscene": {},
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ALL"
         },
-        {
-          "missionStopCutscene": []
+        "moAddMissionObjective": {
+          "target": "wakeIs_mission3_fly00",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ALL"
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "wakeIs_mission3_fly00",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "takeOff_end"
-          }
+        "triggerEnable": {
+          "target": "takeOff_end"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "takeOff_end": {
       "is_enabled": false,
@@ -659,66 +554,60 @@
           "check_players": "any"
         }
       },
-      "actions": [
-        {
-          "missionForceMusic": {
-            "evName": "4_us_midway"
-          }
+      "actions": {
+        "missionForceMusic": {
+          "evName": "4_us_midway"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "wakeIs_mission3_fly00",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+        "moSetObjectiveStatus": {
+          "target": "wakeIs_mission3_fly00",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "missionSetFade": {
+        ],
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [1.0,1.0,1.0],
+            "color": [
+              1.0,
+              1.0,
+              1.0
+            ],
             "time": 1.0
           }
+        ],
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "ally",
+          "targetableByAi": false
         },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "ally",
-            "targetableByAi": false
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "enemy_squad01"
-            },
-            {
-              "target": "enemy_squad02"
-            }
+        "unitWakeUp": {
+          "target": [
+            "enemy_squad01",
+            "enemy_squad02"
           ]
         },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "wake3000",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -737,10 +626,8 @@
             "destTimeMode": false,
             "object": "enemy_squad01",
             "speed": 250.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "wake3000",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -759,10 +646,8 @@
             "destTimeMode": false,
             "object": "enemy_squad02",
             "speed": 250.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "ally_tele_point",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -786,14 +671,12 @@
             "lookat": "enemy_squad02",
             "velocity": 300.0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "cutscene_after_teleport"
-          }
+        ],
+        "triggerEnable": {
+          "target": "cutscene_after_teleport"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "cutscene_after_teleport": {
       "is_enabled": false,
@@ -814,33 +697,25 @@
           "check_players": "any"
         }
       },
-      "actions": [
-        {
-          "playerControls": {
+      "actions": {
+        "playerControls": [
+          {
             "setStatus": "disable",
             "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "ID_SKIP_CUTSCENE",
+              "ID_FLIGHTMENU"
+            ]
           }
+        ],
+        "unitWakeUp": {
+          "target": "armada_01_cut"
         },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_SKIP_CUTSCENE"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            }
-          ]
-        },
-        {
-          "unitWakeUp": {
-            "target": "armada_01_cut"
-          }
-        },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "player_tele_point",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -861,10 +736,8 @@
             "move_type": "teleport",
             "lookat": "enemy_squad01",
             "velocity": 300.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "cut_armada_way",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -883,9 +756,9 @@
             "destTimeMode": false,
             "object": "armada_01_cut"
           }
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "flyby",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -908,10 +781,8 @@
             "object": "armada_01_cut",
             "flybyUnitPos": "back",
             "flybyVertOffset": -2.0
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right2front",
             "startSubTypeGroundUnits": "",
@@ -932,10 +803,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "armada_01_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "mid",
             "startSubTypeGroundUnits": "",
@@ -956,10 +825,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "enemy_squad01"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -980,10 +847,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "enemy_squad02"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right2front",
             "startSubTypeGroundUnits": "",
@@ -1005,34 +870,26 @@
             "wait": false,
             "object": "armada_01_cut"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.5
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -1046,10 +903,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -1064,62 +919,58 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "cutscene_skip_after_teleport"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "after_teleport"
           }
-        },
-        {
-          "missionPlayDialogue": {
+        ],
+        "missionPlayDialogue": [
+          {
             "dialog": "wake_m2_dialogue_01_part1",
             "subtitles": true
-          }
-        },
-        {
-          "missionPlayDialogue": {
+          },
+          {
             "dialog": "wake_m2_dialogue_01_part2",
             "subtitles": true
-          }
-        },
-        {
-          "missionPlayDialogue": {
+          },
+          {
             "dialog": "wake_m2_dialogue_01_part3",
             "subtitles": true
-          }
-        },
-        {
-          "missionPlayDialogue": {
+          },
+          {
             "dialog": "wake_m2_dialogue_01_part4",
             "subtitles": true
           }
-        },
-        {
-          "missionSetFade": {
+        ],
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.5
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.5
           }
-        },
-        {
-          "triggerDisable": {
-            "target": "cutscene_skip_after_teleport"
-          }
+        ],
+        "triggerDisable": {
+          "target": "cutscene_skip_after_teleport"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "cutscene_skip_after_teleport": {
       "is_enabled": false,
@@ -1143,7 +994,7 @@
         "triggerDisable": {
           "target": "cutscene_after_teleport"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "custom",
           "name": "hints/cutsc_skip",
@@ -1165,9 +1016,9 @@
         "wait": {
           "time": 0.95
         },
-        "missionStopCutscene": []
+        "missionStopCutscene": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "after_teleport": {
       "is_enabled": false,
@@ -1182,123 +1033,101 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.5
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 0.6
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.5
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
           }
+        ],
+        "missionStopCutscene": {},
+        "unitPutToSleep": {
+          "target": "armada_01_cut"
         },
-        {
-          "missionStopCutscene": []
+        "unitMoveTo": {
+          "target": "player_tele_point",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "armada_01",
+          "move_type": "teleport",
+          "speed": 300.0,
+          "distributionRadius": 100.0,
+          "lookat": "enemy_squad01",
+          "velocity": 300.0
         },
-        {
-          "unitPutToSleep": {
-            "target": "armada_01_cut"
-          }
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ALL"
         },
-        {
-          "unitMoveTo": {
-            "target": "player_tele_point",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "armada_01",
-            "move_type": "teleport",
-            "speed": 300.0,
-            "distributionRadius": 100.0,
-            "lookat": "enemy_squad01",
-            "velocity": 300.0
-          }
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "ally",
+          "target": "enemy_squad02",
+          "fireRandom": true
         },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ALL"
-          }
+        "moAddMissionObjective": {
+          "target": "wakeIs_mission3_att00",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "ally",
-            "target": "enemy_squad02",
-            "fireRandom": true
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "enemy_squad01"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "wakeIs_mission3_att00",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "enemy_squad01"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "first_group_dead"
-            },
-            {
-              "target": "bombers_damaged"
-            },
-            {
-              "target": "bombers_near_wake"
-            },
-            {
-              "target": "all_enemy_dead"
-            },
-            {
-              "target": "enemy_bombers_count"
-            }
+        "triggerEnable": {
+          "target": [
+            "first_group_dead",
+            "bombers_damaged",
+            "bombers_near_wake",
+            "all_enemy_dead",
+            "enemy_bombers_count"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "enemy_bombers_count": {
       "is_enabled": false,
@@ -1313,7 +1142,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -1328,7 +1157,7 @@
           "target": "enemy_squad01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "all_enemy_dead": {
       "is_enabled": false,
@@ -1344,38 +1173,20 @@
         }
       },
       "conditions": {
-        "unitWhenStatus": [
-          {
-            "object_type": "isKilled"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "check_objects": "all"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_period": 1.0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "enemy_squad01"
-          },
-          {
-            "object": "enemy_squad02"
-          }
-        ]
+        "unitWhenStatus": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "check_objects": "all",
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ]
+        }
       },
       "actions": {
         "triggerEnable": {
@@ -1389,7 +1200,7 @@
           "objects": "ally"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombers_damaged": {
       "is_enabled": false,
@@ -1416,31 +1227,19 @@
         }
       },
       "actions": {
-        "unitSetProperties": [
-          {
-            "object_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "enemy_squad01"
-          },
-          {
-            "object": "enemy_squad02"
-          },
-          {
-            "effShootingRate": 0.0
-          }
-        ]
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ],
+          "effShootingRate": 0.0
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombers_near_wake": {
       "is_enabled": false,
@@ -1456,51 +1255,27 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 4000.0
-          },
-          {
-            "math": "2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "enemy_squad01"
-          },
-          {
-            "object": "enemy_squad02"
-          },
-          {
-            "target": "wake3000"
-          }
-        ]
+        "unitDistanceBetween": {
+          "value": 4000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ],
+          "target": "wake3000"
+        }
       },
-      "actions": [
-        {
-          "unitMoveTo": {
+      "actions": {
+        "unitMoveTo": [
+          {
             "target": "evac",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1518,10 +1293,8 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "enemy_squad01"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "evac",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1540,40 +1313,34 @@
             "destTimeMode": false,
             "object": "enemy_squad02"
           }
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "enemy_squad01",
             "target": "btry_B",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "enemy_squad01",
             "target": "btry_D",
             "fireRandom": true
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "mission_failed"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "enemy_planes_escaping"
           }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
+        ],
+        "wait": {
+          "time": 30.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "enemy_planes_escaping": {
       "is_enabled": false,
@@ -1589,89 +1356,47 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 4000.0
-          },
-          {
-            "math": "notNear2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_objects": "all"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "enemy_squad01"
-          },
-          {
-            "object": "enemy_squad02"
-          },
-          {
-            "target": "wake3000"
-          }
-        ]
+        "unitDistanceBetween": {
+          "value": 4000.0,
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "all",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ],
+          "target": "wake3000"
+        }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "enemy_bombers_count"
-            },
-            {
-              "target": "all_enemy_dead"
-            },
-            {
-              "target": "bombers_near_wake"
-            },
-            {
-              "target": "bombers_damaged"
-            },
-            {
-              "target": "kill_count"
-            },
-            {
-              "target": "mission_failed"
-            },
-            {
-              "target": "enemy_bombers_count_2nd_group"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "enemy_bombers_count",
+            "all_enemy_dead",
+            "bombers_near_wake",
+            "bombers_damaged",
+            "kill_count",
+            "mission_failed",
+            "enemy_bombers_count_2nd_group"
           ]
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "wakeIs_mission3_att00",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+        "moSetObjectiveStatus": {
+          "target": "wakeIs_mission3_att00",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "wait": {
+          "time": 3.0
         },
-        {
-          "missionSetTargetsIndicator": {
+        "missionSetTargetsIndicator": [
+          {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -1682,10 +1407,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "enemy_squad01"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -1696,160 +1419,76 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "enemy_squad02"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "delta": 0
-            },
-            {
-              "icon": "aa"
-            },
-            {
-              "icon army": 1
-            },
-            {
-              "set": false
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "btry_B00"
-            },
-            {
-              "target": "btry_D00"
-            },
-            {
-              "target": "btry_B01"
-            },
-            {
-              "target": "btry_D01"
-            }
-          ]
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "enemy_squad01"
-            },
-            {
-              "target": "enemy_squad02"
-            }
-          ]
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "wakeIs_mission3_att01",
+          },
+          {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "aa",
+            "icon army": 1,
+            "set": false,
+            "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_value": 0,
+            "target": [
+              "btry_B00",
+              "btry_D00",
+              "btry_B01",
+              "btry_D01"
+            ]
           }
-        },
-        {
-          "unitMoveTo": [
-            {
-              "target": "evac"
-            },
-            {
-              "follow_target": false
-            },
-            {
-              "teleportHeightType": "absolute"
-            },
-            {
-              "useUnitHeightForTele": true
-            },
-            {
-              "shouldKeepFormation": true
-            },
-            {
-              "teleportHeightValue": 1000.0
-            },
-            {
-              "horizontalDirectionForTeleport": true
-            },
-            {
-              "waypointReachedDist": 10.0
-            },
-            {
-              "recalculatePathDist": -1.0
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "fastClimb": false
-            },
-            {
-              "destTimeMode": false
-            },
-            {
-              "object": "enemy_squad01"
-            },
-            {
-              "object": "enemy_squad02"
-            }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "enemy_squad01",
+            "enemy_squad02"
           ]
         },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "kill_count"
-          }
+        "moAddMissionObjective": {
+          "target": "wakeIs_mission3_att01",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "banish_enemy_done"
-            },
-            {
-              "target": "banish_enemy_fail"
-            }
+        "unitMoveTo": {
+          "target": "evac",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ]
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "kill_count"
+        },
+        "triggerEnable": {
+          "target": [
+            "banish_enemy_done",
+            "banish_enemy_fail"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "banish_enemy_done": {
       "is_enabled": false,
@@ -1864,67 +1503,35 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenCountMatches": [
-            {
-              "object_type": "isKilledByPlayer"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "func": "more"
-            },
-            {
-              "value": 1
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object": "enemy_squad01"
-            },
-            {
-              "object": "enemy_squad02"
-            },
-            {
-              "var": "kill_count"
-            }
-          ]
-        },
-        {
-          "unitWhenCountMatches": [
-            {
-              "object_type": "isAlive"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "func": "less"
-            },
-            {
-              "value": 1
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object": "enemy_squad01"
-            },
-            {
-              "object": "enemy_squad02"
-            }
-          ]
-        }
-      ],
+      "conditions": {
+        "unitWhenCountMatches": [
+          {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": [
+              "enemy_squad01",
+              "enemy_squad02"
+            ],
+            "var": "kill_count"
+          },
+          {
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "func": "less",
+            "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": [
+              "enemy_squad01",
+              "enemy_squad02"
+            ]
+          }
+        ]
+      },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "wakeIs_mission3_att01",
@@ -1936,7 +1543,7 @@
           "target": "landing_start"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "banish_enemy_fail": {
       "is_enabled": false,
@@ -1952,61 +1559,31 @@
         }
       },
       "conditions": {
-        "unitWhenInArea": [
-          {
-            "math": "notNear2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "check_objects": "all"
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "enemy_squad01"
-          },
-          {
-            "object": "enemy_squad02"
-          },
-          {
-            "target": "banish_area"
-          }
-        ],
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "more"
-          },
-          {
-            "value": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "enemy_squad01"
-          },
-          {
-            "object": "enemy_squad02"
-          }
-        ]
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ],
+          "target": "banish_area"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ]
+        }
       },
       "actions": {
         "triggerDisable": {
@@ -2021,9 +1598,9 @@
         "wait": {
           "time": 3.0
         },
-        "missionFailed": []
+        "missionFailed": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "landing_start": {
       "is_enabled": false,
@@ -2038,104 +1615,70 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "banish_enemy_fail"
-            },
-            {
-              "target": "banish_enemy_done"
-            }
+      "conditions": {},
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "banish_enemy_fail",
+            "banish_enemy_done"
           ]
         },
-        {
-          "unitSetIndication": [
-            {
-              "set": false
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "enemy_squad01"
-            },
-            {
-              "target": "enemy_squad02"
-            }
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "enemy_squad01",
+            "enemy_squad02"
           ]
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 8.0
           }
+        ],
+        "missionPlayDialogue": {
+          "dialog": "wake_m2_dialogue_02",
+          "subtitles": true
         },
-        {
-          "missionPlayDialogue": {
-            "dialog": "wake_m2_dialogue_02",
-            "subtitles": true
-          }
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "ally",
+          "attack_type": "hold_fire"
         },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "ally",
-            "attack_type": "hold_fire"
-          }
+        "unitLandOnAirfield": {
+          "onWater": false,
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
+          "runwayName": "airfield00",
+          "objects": "ally"
         },
-        {
-          "unitLandOnAirfield": {
-            "onWater": false,
-            "rearmOnAirfield ": false,
-            "disappearAfterLanding": false,
-            "runwayName": "airfield00",
-            "objects": "ally"
-          }
+        "airfieldSetIndication": {
+          "set": true,
+          "target": "airfield00"
         },
-        {
-          "airfieldSetIndication": {
-            "set": true,
-            "target": "airfield00"
-          }
+        "moAddMissionObjective": {
+          "target": "wakeIs_mission3_fly01",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "moAddMissionObjective": {
-            "target": "wakeIs_mission3_fly01",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+        "triggerEnable": {
+          "target": "landing_done"
         },
-        {
-          "triggerEnable": {
-            "target": "landing_done"
-          }
-        },
-        {
-          "missionCompleted": {
-            "timer": true,
-            "afterComplete": "debriefing_cutscene"
-          }
+        "missionCompleted": {
+          "timer": true,
+          "afterComplete": "debriefing_cutscene"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "landing_done": {
       "is_enabled": false,
@@ -2181,7 +1724,7 @@
           "target": "debriefing_cutscene"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "debriefing_cutscene": {
       "is_enabled": false,
@@ -2202,110 +1745,84 @@
           "check_players": "any"
         }
       },
-      "actions": [
-        {
-          "missionForceMusic": {
-            "evName": "usa_victory_theme"
-          }
+      "actions": {
+        "missionForceMusic": {
+          "evName": "usa_victory_theme"
         },
-        {
-          "missionSetFade": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 8.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 18.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 58.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "unitRestore": {
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": "player_sq"
         },
-        {
-          "unitRestore": {
-            "ressurectIfDead": true,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "player_sq"
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "ally"
-            },
-            {
-              "target": "enemy_squad01"
-            },
-            {
-              "target": "enemy_squad02"
-            }
+        "unitPutToSleep": {
+          "target": [
+            "ally",
+            "enemy_squad01",
+            "enemy_squad02"
           ]
         },
-        {
-          "unitWakeUp": {
-            "target": "cutscene_units"
-          }
+        "unitWakeUp": {
+          "target": "cutscene_units"
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "cutscene_enemy_squad"
-            },
-            {
-              "target": "btry_D00"
-            },
-            {
-              "target": "btry_B00"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false,
+            "object": "cutscene_enemy_squad",
+            "target": [
+              "btry_D00",
+              "btry_B00"
+            ],
+            "fireRandom": true
+          },
+          {
             "playerAttracted": false,
             "object": "cutscene_plane",
             "target": "cutscene_enemy_squad"
           }
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -2316,13 +1833,14 @@
               "targetDeviation": {
                 "trigger": "gunner",
                 "defaultVal": 2.0,
-                "limits": [2.0,2.0]
+                "limits": [
+                  2.0,
+                  2.0
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -2333,13 +1851,16 @@
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 0.0,
-                "limits": [0.0,0.0]
+                "limits": [
+                  0.0,
+                  0.0
+                ]
               }
             }
           }
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -2360,10 +1881,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "debriefing_g4m"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -2385,10 +1904,8 @@
             "wait": false,
             "object": "cutscene_plane",
             "target": "cutscene_enemy_squad"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -2410,9 +1927,9 @@
             "wait": false,
             "object": "deb_cut_area"
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -2426,10 +1943,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -2444,27 +1959,19 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "debriefing_skip"
-            },
-            {
-              "target": "debriefing_dialogue"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "debriefing_skip",
+            "debriefing_dialogue"
           ]
         },
-        {
-          "triggerDisable": {
-            "target": "debriefing_skip"
-          }
+        "triggerDisable": {
+          "target": "debriefing_skip"
         },
-        {
-          "missionDebriefing": []
-        }
-      ],
-      "else_actions": []
+        "missionDebriefing": {}
+      },
+      "else_actions": {}
     },
     "debriefing_skip": {
       "is_enabled": false,
@@ -2488,7 +1995,7 @@
         "triggerDisable": {
           "target": "debriefing_cutscene"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "custom",
           "name": "hints/cutsc_skip",
@@ -2504,13 +2011,13 @@
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
-        "missionDebriefing": [],
+        "missionDebriefing": {},
         "wait": {
           "time": 0.95
         },
-        "missionStopCutscene": []
+        "missionStopCutscene": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "debriefing_dialogue": {
       "is_enabled": false,
@@ -2525,7 +2032,7 @@
           "time": 0.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "wake_m2_debriefing",
@@ -2534,9 +2041,9 @@
         "wait": {
           "time": 1.0
         },
-        "missionDebriefing": []
+        "missionDebriefing": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_failed": {
       "is_enabled": false,
@@ -2563,23 +2070,21 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "bombers_near_wake"
-          },
-          {
-            "target": "enemy_planes_escaping"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "bombers_near_wake",
+            "enemy_planes_escaping"
+          ]
+        },
         "moSetObjectiveStatus": {
           "target": "wakeIs_mission3_att00",
           "status": 3,
           "object_var_comp_op": "equal",
           "object_var_name": ""
         },
-        "missionFailed": []
+        "missionFailed": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "only_player_target": {
       "is_enabled": true,
@@ -2594,20 +2099,18 @@
           "time": 10.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "armada_01",
             "targetableByAi": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -2615,9 +2118,9 @@
             "object": "player_sq",
             "targetableByAi": true
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "first_group_dead": {
       "is_enabled": false,
@@ -2658,7 +2161,7 @@
           "target": "enemy_bombers_count_2nd_group"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "enemy_bombers_count_2nd_group": {
       "is_enabled": false,
@@ -2673,7 +2176,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -2688,7 +2191,7 @@
           "target": "enemy_squad02"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "kill_count": {
       "is_enabled": true,
@@ -2704,35 +2207,19 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isKilledByPlayer"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "more"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "enemy_squad01"
-          },
-          {
-            "object": "enemy_squad02"
-          },
-          {
-            "var": "kill_count"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isKilledByPlayer",
+          "object_marking": 0,
+          "func": "more",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "enemy_squad01",
+            "enemy_squad02"
+          ],
+          "var": "kill_count"
+        }
       },
       "actions": {
         "varModify": {
@@ -2741,7 +2228,7 @@
           "var": "kill_count"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -2757,8 +2244,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "wakeIs_mission3_att00": {
       "is_enabled": false,
@@ -2770,8 +2257,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "wakeIs_mission3_att01": {
       "is_enabled": false,
@@ -2783,8 +2270,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "wakeIs_mission3_fly01": {
       "is_enabled": false,
@@ -2796,8 +2283,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -2806,111 +2293,95 @@
     "kill_count": 0
   },
   "dialogs": {
-    "wake_m2_dialogue_01_part1": [
-      {
-        "speech": {
+    "wake_m2_dialogue_01_part1": {
+      "speech": [
+        {
           "id": "wake_mis3_dlg1_ph01",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 2.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_dlg1_ph02",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 3.0
           }
         }
-      }
-    ],
-    "wake_m2_dialogue_02": [
-      {
-        "speech": {
+      ]
+    },
+    "wake_m2_dialogue_02": {
+      "speech": [
+        {
           "id": "wake_mis3_dlg2_ph01",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_dlg2_ph02",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 2.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_dlg2_ph03",
           "speakerId": "american_fighter_pilot_2",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_dlg2_ph04",
           "speakerId": "american_fighter_pilot_3",
           "props": {
             "time": 3.0
           }
         }
-      }
-    ],
-    "wake_m2_debriefing": [
-      {
-        "speech": {
+      ]
+    },
+    "wake_m2_debriefing": {
+      "speech": [
+        {
           "id": "wake_mis3_debriefing_part1",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_debriefing_part2",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_debriefing_part3",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_debriefing_part4",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_debriefing_part5",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
         }
-      }
-    ],
+      ]
+    },
     "wake_m2_dialogue_01_part2": {
       "speech": {
         "id": "wake_mis3_dlg1_ph03",
@@ -2929,56 +2400,66 @@
         }
       }
     },
-    "wake_m2_dialogue_01_part4": [
-      {
-        "speech": {
+    "wake_m2_dialogue_01_part4": {
+      "speech": [
+        {
           "id": "wake_mis3_dlg1_ph05",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_dlg1_ph06",
           "speakerId": "american_fighter_pilot_2",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_dlg1_ph07",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "wake_mis3_dlg1_ph08",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 4.0
           }
         }
-      }
-    ]
+      ]
+    }
   },
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "armada_01",
         "tm": [
-          [-0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,-0.991445],
-          [1110.4,-226.05,-1946.55]
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            1110.4,
+            -226.05,
+            -1946.55
+          ]
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
@@ -3016,17 +2497,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "enemy_squad01",
         "tm": [
-          [0.746324,0.0,0.665582],
-          [0.0,1.0,0.0],
-          [-0.665582,0.0,0.746324],
-          [-20389.4,3000.0,-18377.1]
+          [
+            0.746324,
+            0.0,
+            0.665582
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.665582,
+            0.0,
+            0.746324
+          ],
+          [
+            -20389.4,
+            3000.0,
+            -18377.1
+          ]
         ],
         "unit_class": "g4m1",
         "closed_waypoints": false,
@@ -3067,10 +2562,26 @@
           "enemy_squad01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1430.45,3000.0,-1013.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1430.45,
+                3000.0,
+                -1013.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3081,16 +2592,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "enemy_squad02",
         "tm": [
-          [-0.141911,0.0,0.989879],
-          [0.0,1.0,0.0],
-          [-0.989879,0.0,-0.141911],
-          [-183.206,3000.0,-24196.6]
+          [
+            -0.141911,
+            0.0,
+            0.989879
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.989879,
+            0.0,
+            -0.141911
+          ],
+          [
+            -183.206,
+            3000.0,
+            -24196.6
+          ]
         ],
         "unit_class": "g4m1",
         "closed_waypoints": false,
@@ -3127,17 +2652,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ally",
         "tm": [
-          [-0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,-0.991445],
-          [1154.85,-230.3,-1996.8]
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            1154.85,
+            -230.3,
+            -1996.8
+          ]
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
@@ -3175,17 +2714,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "cutscene_enemy_squad",
         "tm": [
-          [0.746324,0.0,0.665582],
-          [0.0,1.0,0.0],
-          [-0.665582,0.0,0.746324],
-          [-2930.0,3000.0,-627.25]
+          [
+            0.746324,
+            0.0,
+            0.665582
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.665582,
+            0.0,
+            0.746324
+          ],
+          [
+            -2930.0,
+            3000.0,
+            -627.25
+          ]
         ],
         "unit_class": "g4m1",
         "closed_waypoints": false,
@@ -3223,17 +2776,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "cutscene_plane",
         "tm": [
-          [-0.819152,0.0,0.573576],
-          [0.0,1.0,0.0],
-          [-0.573576,0.0,-0.819152],
-          [-2270.65,3086.35,-1335.0]
+          [
+            -0.819152,
+            0.0,
+            0.573576
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.573576,
+            0.0,
+            -0.819152
+          ],
+          [
+            -2270.65,
+            3086.35,
+            -1335.0
+          ]
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
@@ -3272,17 +2839,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "debriefing_g4m",
         "tm": [
-          [0.573576,0.0,0.819152],
-          [0.0,1.0,0.0],
-          [-0.819152,0.0,0.573576],
-          [-5043.8,2000.0,-6670.45]
+          [
+            0.573576,
+            0.0,
+            0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.819152,
+            0.0,
+            0.573576
+          ],
+          [
+            -5043.8,
+            2000.0,
+            -6670.45
+          ]
         ],
         "unit_class": "g4m1",
         "closed_waypoints": false,
@@ -3324,10 +2905,26 @@
           "debriefing_g4m_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2505.34,2000.0,-3138.34]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2505.34,
+                2000.0,
+                -3138.34
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -3338,16 +2935,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "armada_01_cut",
         "tm": [
-          [-0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,-0.991445],
-          [1325.5,-226.05,-1813.6]
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            1325.5,
+            -226.05,
+            -1813.6
+          ]
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
@@ -3385,17 +2996,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "btry_D00",
         "tm": [
-          [0.608761,0.0,-0.793354],
-          [0.0,1.0,0.0],
-          [0.793354,0.0,0.608761],
-          [-52.05,24.5,926.75]
+          [
+            0.608761,
+            0.0,
+            -0.793354
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.793354,
+            0.0,
+            0.608761
+          ],
+          [
+            -52.05,
+            24.5,
+            926.75
+          ]
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
@@ -3416,22 +3043,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [0.6,1.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            0.6,
+            1.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "btry_B01",
         "tm": [
-          [0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,0.766044],
-          [-1417.55,26.35,2073.05]
+          [
+            0.766044,
+            0.0,
+            -0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.642788,
+            0.0,
+            0.766044
+          ],
+          [
+            -1417.55,
+            26.35,
+            2073.05
+          ]
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
@@ -3452,22 +3099,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [0.6,1.25],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            0.6,
+            1.25
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "btry_F",
         "tm": [
-          [0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,0.766044],
-          [-2673.2,21.55,-259.1]
+          [
+            0.766044,
+            0.0,
+            -0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.642788,
+            0.0,
+            0.766044
+          ],
+          [
+            -2673.2,
+            21.55,
+            -259.1
+          ]
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
@@ -3488,22 +3155,42 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [1.0,1.25],
-          "formation_noise": [-0.2,-0.1],
+          "formation_step": [
+            1.0,
+            1.25
+          ],
+          "formation_noise": [
+            -0.2,
+            -0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "btry_E",
         "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [1399.6,23.25,-2376.55]
+          [
+            -0.843391,
+            0.0,
+            0.5373
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5373,
+            0.0,
+            -0.843391
+          ],
+          [
+            1399.6,
+            23.25,
+            -2376.55
+          ]
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
@@ -3524,22 +3211,42 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [1.0,1.25],
-          "formation_noise": [0.1,-0.1],
+          "formation_step": [
+            1.0,
+            1.25
+          ],
+          "formation_noise": [
+            0.1,
+            -0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "btry_3inch",
         "tm": [
-          [-0.953685,0.0166924,0.300343],
-          [0.00380168,0.999048,-0.0434534],
-          [-0.300782,-0.0402991,-0.952841],
-          [147.65,27.3,-1910.2]
+          [
+            -0.953685,
+            0.0166924,
+            0.300343
+          ],
+          [
+            0.00380168,
+            0.999048,
+            -0.0434534
+          ],
+          [
+            -0.300782,
+            -0.0402991,
+            -0.952841
+          ],
+          [
+            147.65,
+            27.3,
+            -1910.2
+          ]
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
@@ -3560,22 +3267,42 @@
           "count": 3,
           "formation_type": "cols",
           "formation_div": 1,
-          "formation_step": [1.0,1.25],
-          "formation_noise": [-0.1,0.2],
+          "formation_step": [
+            1.0,
+            1.25
+          ],
+          "formation_noise": [
+            -0.1,
+            0.2
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "btry_30mm",
         "tm": [
-          [-0.996085,0.0166924,0.0868083],
-          [0.0131166,0.999048,-0.0416005],
-          [-0.0874201,-0.0402991,-0.995356],
-          [1148.25,10.7,1225.6]
+          [
+            -0.996085,
+            0.0166924,
+            0.0868083
+          ],
+          [
+            0.0131166,
+            0.999048,
+            -0.0416005
+          ],
+          [
+            -0.0874201,
+            -0.0402991,
+            -0.995356
+          ],
+          [
+            1148.25,
+            10.7,
+            1225.6
+          ]
         ],
         "unit_class": "us_40mm_bofors",
         "closed_waypoints": false,
@@ -3596,22 +3323,42 @@
           "count": 5,
           "formation_type": "cols",
           "formation_div": 1,
-          "formation_step": [1.0,1.5],
-          "formation_noise": [-0.1,0.2],
+          "formation_step": [
+            1.0,
+            1.5
+          ],
+          "formation_noise": [
+            -0.1,
+            0.2
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "btry_D01",
         "tm": [
-          [0.608761,0.0,-0.793354],
-          [0.0,1.0,0.0],
-          [0.793354,0.0,0.608761],
-          [-101.95,24.5,896.1]
+          [
+            0.608761,
+            0.0,
+            -0.793354
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.793354,
+            0.0,
+            0.608761
+          ],
+          [
+            -101.95,
+            24.5,
+            896.1
+          ]
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
@@ -3632,22 +3379,44 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [8.0,5.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            8.0,
+            5.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "structures": {
+    ],
+    "structures": [
+      {
         "name": "btry_B00",
         "tm": [
-          [0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,0.766044],
-          [-1512.5,20.3,1988.25]
+          [
+            0.766044,
+            0.0,
+            -0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.642788,
+            0.0,
+            0.766044
+          ],
+          [
+            -1512.5,
+            20.3,
+            1988.25
+          ]
         ],
         "unit_class": "us_155mm_m114",
         "closed_waypoints": false,
@@ -3668,22 +3437,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [0.8,1.2],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            0.8,
+            1.2
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "btry_L",
         "tm": [
-          [0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,0.766044],
-          [-3093.1,17.65,-93.65]
+          [
+            0.766044,
+            0.0,
+            -0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.642788,
+            0.0,
+            0.766044
+          ],
+          [
+            -3093.1,
+            17.65,
+            -93.65
+          ]
         ],
         "unit_class": "us_155mm_m114",
         "closed_waypoints": false,
@@ -3704,22 +3493,42 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [0.6,1.25],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            0.6,
+            1.25
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "btry_A",
         "tm": [
-          [-0.866025,0.0,-0.5],
-          [0.0,1.0,0.0],
-          [0.5,0.0,-0.866025],
-          [2508.8,39.3,-3077.55]
+          [
+            -0.866025,
+            0.0,
+            -0.5
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.5,
+            0.0,
+            -0.866025
+          ],
+          [
+            2508.8,
+            39.3,
+            -3077.55
+          ]
         ],
         "unit_class": "us_155mm_m114",
         "closed_waypoints": false,
@@ -3740,131 +3549,179 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [0.6,0.5],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            0.6,
+            0.5
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "btry_B",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1472.45,21.25,2053.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1472.45,
+            21.25,
+            2053.8
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "btry_B00"
-          },
-          {
-            "squad_members": "btry_B01"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "btry_B00",
+            "btry_B01"
+          ]
+        }
+      },
+      {
         "name": "wake_artillery_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1077.05,20.2,-1977.55]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1077.05,
+            20.2,
+            -1977.55
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "btry_D"
-          },
-          {
-            "squad_members": "btry_B00"
-          },
-          {
-            "squad_members": "btry_B01"
-          },
-          {
-            "squad_members": "btry_L"
-          },
-          {
-            "squad_members": "btry_F"
-          },
-          {
-            "squad_members": "btry_E"
-          },
-          {
-            "squad_members": "btry_A"
-          },
-          {
-            "squad_members": "btry_3inch"
-          },
-          {
-            "squad_members": "btry_30mm"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "btry_D",
+            "btry_B00",
+            "btry_B01",
+            "btry_L",
+            "btry_F",
+            "btry_E",
+            "btry_A",
+            "btry_3inch",
+            "btry_30mm"
+          ]
+        }
+      },
+      {
         "name": "btry_D",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-212.75,16.65,884.55]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -212.75,
+            16.65,
+            884.55
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "btry_D00"
-          },
-          {
-            "squad_members": "btry_D01"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "btry_D00",
+            "btry_D01"
+          ]
+        }
+      },
+      {
         "name": "cutscene_units",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1713.8,-57.35,-118.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1713.8,
+            -57.35,
+            -118.3
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "cutscene_plane"
-          },
-          {
-            "squad_members": "cutscene_enemy_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "cutscene_plane",
+            "cutscene_enemy_squad"
+          ]
+        }
+      },
+      {
         "name": "player_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4515.05,0.0,-2967.25]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4515.05,
+            0.0,
+            -2967.25
+          ]
         ],
         "props": {
           "object_marking": 0,
@@ -3872,16 +3729,32 @@
           "object_type": "isPlayer"
         }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "battery_B": {
       "type": "Point",
       "tm": [
-        [3833.7,0.0,0.0],
-        [0.0,3833.7,0.0],
-        [0.0,0.0,3833.7],
-        [-1508.75,3000.0,2068.4]
+        [
+          3833.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3833.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3833.7
+        ],
+        [
+          -1508.75,
+          3000.0,
+          2068.4
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3890,10 +3763,26 @@
     "fake_airfield": {
       "type": "Box",
       "tm": [
-        [-2611.15,0.0,343.764],
-        [0.0,113.265,0.0],
-        [-106.543,0.0,-809.268],
-        [1369.75,-46.75,-1984.6]
+        [
+          -2611.15,
+          0.0,
+          343.764
+        ],
+        [
+          0.0,
+          113.265,
+          0.0
+        ],
+        [
+          -106.543,
+          0.0,
+          -809.268
+        ],
+        [
+          1369.75,
+          -46.75,
+          -1984.6
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3902,10 +3791,26 @@
     "base_area": {
       "type": "Sphere",
       "tm": [
-        [17024.6,0.0,0.0],
-        [0.0,17024.6,0.0],
-        [0.0,0.0,17024.6],
-        [296.1,26.45,-761.1]
+        [
+          17024.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          17024.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          17024.6
+        ],
+        [
+          296.1,
+          26.45,
+          -761.1
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3914,10 +3819,26 @@
     "banish_area": {
       "type": "Sphere",
       "tm": [
-        [32000.0,0.0,0.0],
-        [0.0,32000.0,0.0],
-        [0.0,0.0,32000.0],
-        [323.45,0.0,-682.05]
+        [
+          32000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          32000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          32000.0
+        ],
+        [
+          323.45,
+          0.0,
+          -682.05
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3926,10 +3847,26 @@
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [165.2,0.0,0.0],
-        [0.0,165.2,0.0],
-        [0.0,0.0,165.2],
-        [1970.5,20.2,-2093.5]
+        [
+          165.2,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          165.2,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          165.2
+        ],
+        [
+          1970.5,
+          20.2,
+          -2093.5
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3938,10 +3875,26 @@
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [165.2,0.0,0.0],
-        [0.0,165.2,0.0],
-        [0.0,0.0,165.2],
-        [217.85,20.2,-1854.7]
+        [
+          165.2,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          165.2,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          165.2
+        ],
+        [
+          217.85,
+          20.2,
+          -1854.7
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3950,10 +3903,26 @@
     "spawnpoint01": {
       "type": "Sphere",
       "tm": [
-        [33.04,0.0,0.0],
-        [0.0,33.04,0.0],
-        [0.0,0.0,33.04],
-        [1329.1,20.2,-2000.2]
+        [
+          33.04,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          33.04,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          33.04
+        ],
+        [
+          1329.1,
+          20.2,
+          -2000.2
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3962,10 +3931,26 @@
     "spawnpoint02": {
       "type": "Sphere",
       "tm": [
-        [33.04,0.0,0.0],
-        [0.0,33.04,0.0],
-        [0.0,0.0,33.04],
-        [1366.95,20.2,-2049.4]
+        [
+          33.04,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          33.04,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          33.04
+        ],
+        [
+          1366.95,
+          20.2,
+          -2049.4
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3974,10 +3959,26 @@
     "spawnpoint00": {
       "type": "Sphere",
       "tm": [
-        [33.04,0.0,0.0],
-        [0.0,33.04,0.0],
-        [0.0,0.0,33.04],
-        [1275.15,20.2,-1966.5]
+        [
+          33.04,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          33.04,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          33.04
+        ],
+        [
+          1275.15,
+          20.2,
+          -1966.5
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3986,10 +3987,26 @@
     "evac": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-46990.9,1003.25,-60296.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -46990.9,
+          1003.25,
+          -60296.5
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -3998,10 +4015,26 @@
     "player_tele_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,7666.36],
-        [0.0,1.0,0.0],
-        [-7666.36,0.0,1.0],
-        [-13082.2,2408.9,-11781.2]
+        [
+          1.0,
+          0.0,
+          7666.36
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -7666.36,
+          0.0,
+          1.0
+        ],
+        [
+          -13082.2,
+          2408.9,
+          -11781.2
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4010,10 +4043,26 @@
     "ally_tele_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,-30.3122],
-        [0.0,1.0,0.0],
-        [30.3122,0.0,1.0],
-        [-1296.91,3200.0,-19361.6]
+        [
+          1.0,
+          0.0,
+          -30.3122
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          30.3122,
+          0.0,
+          1.0
+        ],
+        [
+          -1296.91,
+          3200.0,
+          -19361.6
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4022,10 +4071,26 @@
     "cutscene_area01": {
       "type": "Sphere",
       "tm": [
-        [297.6,0.0,0.0],
-        [0.0,297.6,0.0],
-        [0.0,0.0,297.6],
-        [-1480.7,77.15,2059.7]
+        [
+          297.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          297.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          297.6
+        ],
+        [
+          -1480.7,
+          77.15,
+          2059.7
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4034,10 +4099,26 @@
     "cutscene_area02": {
       "type": "Sphere",
       "tm": [
-        [878.56,0.0,0.0],
-        [0.0,878.56,0.0],
-        [0.0,0.0,878.56],
-        [1552.2,17.2,-1995.2]
+        [
+          878.56,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          878.56,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          878.56
+        ],
+        [
+          1552.2,
+          17.2,
+          -1995.2
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4046,10 +4127,26 @@
     "cutscene_area03": {
       "type": "Sphere",
       "tm": [
-        [297.6,0.0,0.0],
-        [0.0,297.6,0.0],
-        [0.0,0.0,297.6],
-        [-2004.1,1411.45,556.65]
+        [
+          297.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          297.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          297.6
+        ],
+        [
+          -2004.1,
+          1411.45,
+          556.65
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4058,10 +4155,26 @@
     "cutscene_area04": {
       "type": "Sphere",
       "tm": [
-        [297.6,0.0,0.0],
-        [0.0,297.6,0.0],
-        [0.0,0.0,297.6],
-        [4083.95,1213.9,1094.2]
+        [
+          297.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          297.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          297.6
+        ],
+        [
+          4083.95,
+          1213.9,
+          1094.2
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4070,10 +4183,26 @@
     "deb_cut_area": {
       "type": "Sphere",
       "tm": [
-        [4687.13,0.0,0.0],
-        [0.0,1837.35,0.0],
-        [0.0,0.0,4687.13],
-        [844.75,178.35,-863.0]
+        [
+          4687.13,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1837.35,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4687.13
+        ],
+        [
+          844.75,
+          178.35,
+          -863.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4082,10 +4211,26 @@
     "wake3000": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [990.15,3000.0,-1899.35]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          990.15,
+          3000.0,
+          -1899.35
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4094,37 +4239,47 @@
     "cut_armada_way": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,7666.36],
-        [0.0,1.0,0.0],
-        [-7666.36,0.0,1.0],
-        [-24936.4,3408.9,-21959.5]
+        [
+          1.0,
+          0.0,
+          7666.36
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -7666.36,
+          0.0,
+          1.0
+        ],
+        [
+          -24936.4,
+          3408.9,
+          -21959.5
+        ]
       ],
       "props": {
         "forceReplication": true
       }
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

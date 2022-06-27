@@ -15,11 +15,11 @@
   "maxAccel": 0.5,
   "maxDecel": 0.5,
   "maxAngAccel": 0.7,
-  "maxAngAccel0": 0.0,
+  "maxAngAccel0": 1E-05,
   "maxAngAccelV": 0.01,
   "groundNormSmoothViscosity": 4.5,
   "customUpdateDiv": 5,
-  "drownGFactor": 0.0,
+  "drownGFactor": 1E-05,
   "drownRollSpeed": 0.01,
   "SoundMove": "models.Ship",
   "tailStartOffset": -10.0,
@@ -36,10 +36,10 @@
       }
     }
   },
-  "class_tags": [],
-  "DamageEffects": [
-    {
-      "part": {
+  "class_tags": {},
+  "DamageEffects": {
+    "part": [
+      {
         "name": "body_dm",
         "onHit": {
           "smoke": 0.01,
@@ -48,30 +48,22 @@
         "onKill": {
           "expl": 1.0
         }
-      }
-    },
-    {
-      "part": [
-        {
-          "name": "engine_dm"
+      },
+      {
+        "name": [
+          "engine_dm",
+          "bodypart1_dm"
+        ],
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
         },
-        {
-          "name": "bodypart1_dm"
-        },
-        {
-          "onHit": {
-            "smoke": 0.1,
-            "fire": 0.01
-          }
-        },
-        {
-          "onKill": {
-            "body_dm": 1.0
-          }
+        "onKill": {
+          "body_dm": 1.0
         }
-      ]
-    }
-  ],
+      }
+    ]
+  },
   "attach": {
     "flag_middle": "flag_jpn",
     "flag_back": "flag_jpn"

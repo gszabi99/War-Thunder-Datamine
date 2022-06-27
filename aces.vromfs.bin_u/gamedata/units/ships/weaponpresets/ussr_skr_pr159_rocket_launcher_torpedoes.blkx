@@ -1,177 +1,121 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "depth_charge_01"
-      },
-      {
-        "node": "depth_charge_02"
-      },
-      {
-        "node": "depth_charge_03"
-      },
-      {
-        "node": "depth_charge_04"
-      },
-      {
-        "node": "depth_charge_05"
-      },
-      {
-        "node": "depth_charge_06"
-      },
-      {
-        "node": "depth_charge_07"
-      },
-      {
-        "node": "depth_charge_08"
-      },
-      {
-        "node": "depth_charge_09"
-      },
-      {
-        "node": "depth_charge_10"
-      },
-      {
-        "node": "depth_charge_11"
-      },
-      {
-        "node": "depth_charge_12"
-      },
-      {
-        "node": "depth_charge_13"
-      },
-      {
-        "node": "depth_charge_14"
-      },
-      {
-        "node": "depth_charge_15"
-      },
-      {
-        "node": "depth_charge_16"
-      },
-      {
-        "node": "depth_charge_17"
-      },
-      {
-        "node": "depth_charge_18"
-      },
-      {
-        "node": "depth_charge_19"
-      },
-      {
-        "node": "depth_charge_20"
-      },
-      {
-        "node": "depth_charge_21"
-      },
-      {
-        "node": "depth_charge_22"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07",
+      "depth_charge_08",
+      "depth_charge_09",
+      "depth_charge_10",
+      "depth_charge_11",
+      "depth_charge_12",
+      "depth_charge_13",
+      "depth_charge_14",
+      "depth_charge_15",
+      "depth_charge_16",
+      "depth_charge_17",
+      "depth_charge_18",
+      "depth_charge_19",
+      "depth_charge_20",
+      "depth_charge_21",
+      "depth_charge_22"
     ]
   },
-  {
-    "Weapon": [
-      {
-        "trigger": "gunner2"
+  "Weapon": [
+    {
+      "trigger": "gunner2",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 5,
+      "useEmitter": true,
+      "emitterGenRange": [
+        1,
+        5
+      ],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": [
+        "tt_01_dm",
+        "tt_01_dm"
+      ],
+      "brokenBarrelAllowShoot": [
+        false,
+        false
+      ],
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 20.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_01",
+        "gun": "tt_01"
       },
-      {
-        "triggerGroup": "torpedoes"
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
       },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/ussr_400mm_set40_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_01"
-      },
-      {
-        "bullets": 5
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitterGenRange": [1.0,5.0]
-      },
-      {
-        "emitterGenFmt": "bone_torpedo_%02d"
-      },
-      {
-        "ammoDpGenFmt": "torpedo_%02d_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [4.0,0.0,0.0]
-      },
-      {
-        "startSpeed": 20.0
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 40.0
-      },
-      {
-        "turret": {
-          "head": "tt_head_01",
-          "gun": "tt_01"
+      "limitsDeadzone": [
+        {
+          "yaw": [
+            -180.0,
+            -150.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "yaw": [
+            -45.0,
+            45.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "yaw": [
+            150.0,
+            180.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
         }
-      },
-      {
-        "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-180.0,-150.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-45.0,45.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [150.0,180.0],
-          "pitch": [0.0,0.0]
-        }
-      }
-    ]
-  },
-  {
-    "Weapon": {
+      ]
+    },
+    {
       "trigger": "gunner3",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb25.blk",
       "weaponType": "rockets",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
-      "emitterGenRange": [1.0,16.0],
+      "emitterGenRange": [
+        1,
+        16
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "barrelDP": "auxiliary_caliber_gun_01_dm",
       "breechDP": "auxiliary_caliber_gun_01_dm",
@@ -202,25 +146,47 @@
         "gunnerDm": "auxiliary_caliber_turret_01_dm"
       },
       "limits": {
-        "yaw": [-100.0,160.0],
-        "pitch": [-5.0,55.0]
+        "yaw": [
+          -100.0,
+          160.0
+        ],
+        "pitch": [
+          -5.0,
+          55.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-100.0,-65.0,14.0,85.0],
-        "lim2": [-65.0,-5.0,0.0,85.0],
-        "lim3": [-5.0,160.0,-10.0,85.0]
+        "lim1": [
+          -100.0,
+          -65.0,
+          14.0,
+          85.0
+        ],
+        "lim2": [
+          -65.0,
+          -5.0,
+          0.0,
+          85.0
+        ],
+        "lim3": [
+          -5.0,
+          160.0,
+          -10.0,
+          85.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner4",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb25.blk",
       "weaponType": "rockets",
       "useEmitter": true,
       "emitter": "bone_rocket_17",
-      "emitterGenRange": [17.0,32.0],
+      "emitterGenRange": [
+        17,
+        32
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "barrelDP": "auxiliary_caliber_gun_02_dm",
       "breechDP": "auxiliary_caliber_gun_02_dm",
@@ -251,25 +217,47 @@
         "gunnerDm": "auxiliary_caliber_turret_02_dm"
       },
       "limits": {
-        "yaw": [-160.0,110.0],
-        "pitch": [-5.0,55.0]
+        "yaw": [
+          -160.0,
+          110.0
+        ],
+        "pitch": [
+          -5.0,
+          55.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-160.0,5.0,-10.0,85.0],
-        "lim2": [5.0,65.0,0.0,85.0],
-        "lim3": [65.0,100.0,14.0,85.0]
+        "lim1": [
+          -160.0,
+          5.0,
+          -10.0,
+          85.0
+        ],
+        "lim2": [
+          5.0,
+          65.0,
+          0.0,
+          85.0
+        ],
+        "lim3": [
+          65.0,
+          100.0,
+          14.0,
+          85.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner5",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb25.blk",
       "weaponType": "rockets",
       "useEmitter": true,
       "emitter": "bone_rocket_33",
-      "emitterGenRange": [33.0,48.0],
+      "emitterGenRange": [
+        33,
+        48
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "barrelDP": "auxiliary_caliber_gun_03_dm",
       "breechDP": "auxiliary_caliber_gun_03_dm",
@@ -300,24 +288,41 @@
         "gunnerDm": "auxiliary_caliber_turret_03_dm"
       },
       "limits": {
-        "yaw": [-75.0,150.0],
-        "pitch": [-5.0,55.0]
+        "yaw": [
+          -75.0,
+          150.0
+        ],
+        "pitch": [
+          -5.0,
+          55.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-75.0,75.0,-10.0,85.0],
-        "lim2": [75.0,150.0,-4.0,85.0]
+        "lim1": [
+          -75.0,
+          75.0,
+          -10.0,
+          85.0
+        ],
+        "lim2": [
+          75.0,
+          150.0,
+          -4.0,
+          85.0
+        ]
       }
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "gunner6",
       "triggerGroup": "rockets",
       "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb25.blk",
       "weaponType": "rockets",
       "useEmitter": true,
       "emitter": "bone_rocket_56",
-      "emitterGenRange": [49.0,64.0],
+      "emitterGenRange": [
+        49,
+        64
+      ],
       "emitterGenFmt": "bone_rocket_%02d",
       "barrelDP": "auxiliary_caliber_gun_04_dm",
       "breechDP": "auxiliary_caliber_gun_04_dm",
@@ -348,13 +353,29 @@
         "gunnerDm": "auxiliary_caliber_turret_04_dm"
       },
       "limits": {
-        "yaw": [-150.0,75.0],
-        "pitch": [-5.0,55.0]
+        "yaw": [
+          -150.0,
+          75.0
+        ],
+        "pitch": [
+          -5.0,
+          55.0
+        ]
       },
       "limitsTable": {
-        "lim1": [-150.0,-75.0,-4.0,85.0],
-        "lim2": [-75.0,75.0,-10.0,85.0]
+        "lim1": [
+          -150.0,
+          -75.0,
+          -4.0,
+          85.0
+        ],
+        "lim2": [
+          -75.0,
+          75.0,
+          -10.0,
+          85.0
+        ]
       }
     }
-  }
-]
+  ]
+}

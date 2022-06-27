@@ -1,45 +1,21 @@
 {
-  "hideNodes": [
-    {
-      "node": "mine_01"
-    },
-    {
-      "node": "mine_02"
-    },
-    {
-      "node": "mine_03"
-    },
-    {
-      "node": "mine_04"
-    },
-    {
-      "node": "mine_05"
-    },
-    {
-      "node": "mine_06"
-    },
-    {
-      "node": "mine_07"
-    },
-    {
-      "node": "mine_08"
-    },
-    {
-      "node": "mine_09"
-    },
-    {
-      "node": "mine_10"
-    },
-    {
-      "node": "ex_decor_33"
-    },
-    {
-      "node": "ex_decor_35"
-    },
-    {
-      "node": "ex_decor_36"
-    }
-  ],
+  "hideNodes": {
+    "node": [
+      "mine_01",
+      "mine_02",
+      "mine_03",
+      "mine_04",
+      "mine_05",
+      "mine_06",
+      "mine_07",
+      "mine_08",
+      "mine_09",
+      "mine_10",
+      "ex_decor_33",
+      "ex_decor_35",
+      "ex_decor_36"
+    ]
+  },
   "Weapon": {
     "trigger": "gunner6",
     "triggerGroup": "rockets",
@@ -48,7 +24,10 @@
     "flash": "emtr_gun_flame_01",
     "useEmitter": true,
     "emitter": "bone_rocket_01",
-    "emitterGenRange": [1.0,17.0],
+    "emitterGenRange": [
+      1,
+      17
+    ],
     "emitterGenFmt": "bone_rocket_%02d",
     "ammoDpGenFmt": "ammo_turret_%02d_dm",
     "barrelDP": "auxiliary_caliber_gun_05_dm",
@@ -81,12 +60,24 @@
       "gunnerDm": "auxiliary_caliber_turret_05_dm"
     },
     "limits": {
-      "yaw": [-120.0,120.0],
-      "pitch": [-5.0,55.0]
+      "yaw": [
+        -120.0,
+        120.0
+      ],
+      "pitch": [
+        -5.0,
+        55.0
+      ]
     },
     "limitsDeadzone": {
-      "yaw": [-25.0,25.0],
-      "pitch": [-5.0,25.0]
+      "yaw": [
+        -25.0,
+        25.0
+      ],
+      "pitch": [
+        -5.0,
+        25.0
+      ]
     }
   }
 }

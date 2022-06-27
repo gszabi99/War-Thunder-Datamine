@@ -1,15 +1,11 @@
 {
   "debriefingTab": {
     "id": "battle_log_tab",
-    "tdiv": [
-      {
-        "size": "pw, ph"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "debrBlock": {
+    "tdiv": {
+      "size": "pw, ph",
+      "flow": "vertical",
+      "debrBlock": [
+        {
           "width": "pw",
           "padding": "1@debrPad",
           "RadioButtonList": {
@@ -20,10 +16,8 @@
           "debrSeparator": {
             "class": "bottom"
           }
-        }
-      },
-      {
-        "debrBlock": {
+        },
+        {
           "id": "battle_log_div",
           "size": "pw, fh",
           "overflow-y": "auto",
@@ -42,7 +36,7 @@
             }
           }
         }
-      }
-    ]
+      ]
+    }
   }
 }

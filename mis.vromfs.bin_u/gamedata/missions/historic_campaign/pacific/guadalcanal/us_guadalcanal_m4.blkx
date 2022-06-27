@@ -14,14 +14,24 @@
       "type": "campaign",
       "environment": "Morning",
       "weather": "hazy",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "restoreType": "tactical control",
       "optionalTakeOff": false,
       "locationName": "water_guadalcanal",
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 5,
-      "windSpeed": [12.0,12.0],
-      "windDirectionDeg": [90.0,90.0],
+      "windSpeed": [
+        12.0,
+        12.0
+      ],
+      "windDirectionDeg": [
+        90.0,
+        90.0
+      ],
       "stars": {
         "latitude": 9.4,
         "longitude": 160.0,
@@ -31,7 +41,10 @@
         "localTime": 10.0
       },
       "customWeather": {
-        "windDir": [0.6,0.8],
+        "windDir": [
+          0.6,
+          0.8
+        ],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "wind_strength": 5.0,
@@ -47,29 +60,21 @@
           "cumulonimbusCoverage": 0.25,
           "cumulonimbusSeed": 5.63
         },
-        "clouds_form": []
+        "clouds_form": {}
       }
     },
     "atmosphere": {
       "pressure": 760.0,
       "temperature": 25.0
     },
-    "spectator_points": [],
-    "briefing": [
-      {
-        "place_loc": "mb/us_guadalcanal_m4/place"
-      },
-      {
-        "date_loc": ""
-      },
-      {
-        "objective_loc": "mb/us_guadalcanal_m4/objective"
-      },
-      {
-        "music": "3_us_guadalcanal"
-      },
-      {
-        "part": {
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "mb/us_guadalcanal_m4/place",
+      "date_loc": "",
+      "objective_loc": "mb/us_guadalcanal_m4/objective",
+      "music": "3_us_guadalcanal",
+      "part": [
+        {
           "event": "mb/us_guadalcanal_m4/part1",
           "minTime": 0,
           "slide": {
@@ -78,10 +83,8 @@
             "picture": "guadalcanal/us_guadalcanal_m4_part1",
             "showAirMap": false
           }
-        }
-      },
-      {
-        "part": {
+        },
+        {
           "event": "mb/us_guadalcanal_m4/part2",
           "minTime": 0,
           "slide": {
@@ -90,147 +93,103 @@
             "picture": "guadalcanal/us_guadalcanal_m4_part2",
             "showAirMap": false
           }
-        }
-      },
-      {
-        "part": [
-          {
-            "event": "mb/us_guadalcanal_m4/part3"
-          },
-          {
-            "minTime": 0
-          },
-          {
-            "slide": {
+        },
+        {
+          "event": "mb/us_guadalcanal_m4/part3",
+          "minTime": 0,
+          "slide": [
+            {
               "map": false,
               "minTime": 4,
               "picture": "guadalcanal/us_guadalcanal_m4_part3",
               "showAirMap": false
-            }
-          },
-          {
-            "slide": {
+            },
+            {
               "map": false,
               "minTime": 4,
               "picture": "guadalcanal/us_guadalcanal_m4_part4",
               "showAirMap": false
             }
-          }
-        ]
-      },
-      {
-        "part": {
+          ]
+        },
+        {
           "event": "",
           "minTime": 0,
-          "slide": [
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "arrow": [
-                {
-                  "width": 1
-                },
-                {
-                  "side": "enemy"
-                },
-                {
-                  "point": "jpn_bombers_briefing"
-                },
-                {
-                  "point": "tf16_cv6"
-                }
+          "slide": {
+            "map": true,
+            "minTime": 4,
+            "picture": "",
+            "showAirMap": false,
+            "arrow": {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "jpn_bombers_briefing",
+                "tf16_cv6"
               ]
             },
-            {
-              "icon": {
+            "icon": [
+              {
                 "icontype": "carrier",
                 "side": "ally",
                 "target": "tf16_cv6"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "destroyer",
                 "side": "ally",
                 "target": "tf16_dd07"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "destroyer",
                 "side": "ally",
                 "target": "tf16_dd02"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "carrier",
                 "side": "ally",
                 "target": "tf17_cv8"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "destroyer",
                 "side": "ally",
                 "target": "tf17_dd03"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "destroyer",
                 "side": "ally",
                 "target": "tf17_dd06"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "fighter",
                 "side": "ally",
                 "target": "tf17_cv8",
                 "lookAt": "tf16_cv6"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "bomber",
                 "side": "enemy",
                 "target": "jpn_bombers_briefing",
                 "lookAt": "tf16_cv6"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "fighter",
                 "side": "enemy",
                 "target": "jpn_fighters_briefing",
                 "lookAt": "tf16_cv6"
-              }
-            },
-            {
-              "icon": {
+              },
+              {
                 "icontype": "fighter",
                 "side": "player",
                 "target": "tf16_dd04",
                 "lookAt": "jpn_bombers_briefing"
               }
-            }
-          ]
+            ]
+          }
         }
-      }
-    ]
+      ]
+    }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -247,7 +206,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -270,7 +229,7 @@
           "target": "armada_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "miss_init": {
       "is_enabled": true,
@@ -281,12 +240,12 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -296,128 +255,122 @@
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 4.5,
-                "limits": [0.0,4.5]
+                "limits": [
+                  0.0,
+                  4.5
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "us_f4f01"
-            },
-            {
-              "object": "us_f4f02"
-            },
-            {
-              "object": "us_f4f03"
-            },
-            {
-              "object": "us_f4f04"
-            },
-            {
-              "plane": {
-                "targetDeviation": {
-                  "trigger": "machine gun",
-                  "defaultVal": 2.0,
-                  "limits": [0.0,4.5]
-                }
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "us_f4f01",
+              "us_f4f02",
+              "us_f4f03",
+              "us_f4f04"
+            ],
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 2.0,
+                "limits": [
+                  0.0,
+                  4.5
+                ]
               }
             }
-          ]
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "1a_sq",
-            "plane": [
-              {
-                "targetDeviation": {
+            "plane": {
+              "targetDeviation": [
+                {
                   "trigger": "gunner",
                   "defaultVal": 0.0,
-                  "limits": [0.0,3.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.0,
+                    3.0
+                  ]
+                },
+                {
                   "trigger": "bombs",
                   "defaultVal": 0.1,
-                  "limits": [0.1,1.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.1,
+                    1.0
+                  ]
+                },
+                {
                   "trigger": "machine gun",
                   "defaultVal": 0.0,
-                  "limits": [0.0,3.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.0,
+                    3.0
+                  ]
+                },
+                {
                   "trigger": "torpedoes",
                   "defaultVal": 0.1,
-                  "limits": [0.1,1.0]
+                  "limits": [
+                    0.1,
+                    1.0
+                  ]
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "2a_sq",
-            "plane": [
-              {
-                "targetDeviation": {
+            "plane": {
+              "targetDeviation": [
+                {
                   "trigger": "gunner",
                   "defaultVal": 1.5,
-                  "limits": [0.0,3.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    0.0,
+                    3.0
+                  ]
+                },
+                {
                   "trigger": "bombs",
                   "defaultVal": 1.0,
-                  "limits": [1.0,1.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                {
                   "trigger": "torpedoes",
                   "defaultVal": 1.0,
-                  "limits": [1.0,1.0]
-                }
-              },
-              {
-                "targetDeviation": {
+                  "limits": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                {
                   "trigger": "machine gun",
                   "defaultVal": 1.5,
-                  "limits": [0.0,3.0]
+                  "limits": [
+                    0.0,
+                    3.0
+                  ]
                 }
-              }
-            ]
-          }
-        },
-        {
-          "unitSetProperties": {
+              ]
+            }
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -425,46 +378,28 @@
             "object": "us_all",
             "army": 1
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "1a_sq"
-            },
-            {
-              "target": "2a_sq"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "1a_sq",
+            "2a_sq"
           ]
         },
-        {
-          "unitSetStealth": [
-            {
-              "set": true
-            },
-            {
-              "radius": 5000.0
-            },
-            {
-              "target": "TF16_fleet_sq"
-            },
-            {
-              "target": "us_f4f02"
-            },
-            {
-              "target": "us_f4f03"
-            },
-            {
-              "target": "us_f4f03"
-            }
+        "unitSetStealth": {
+          "set": true,
+          "radius": 5000.0,
+          "target": [
+            "TF16_fleet_sq",
+            "us_f4f02",
+            "us_f4f03",
+            "us_f4f03"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "intro_cut"
-          }
+        "triggerEnable": {
+          "target": "intro_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "intro_cut": {
       "is_enabled": false,
@@ -485,47 +420,31 @@
           "check_players": "any"
         }
       },
-      "actions": [
-        {
-          "unitSetProperties": {
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "tbd_cut",
             "aiEnabled": false
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "d3a_start_cut",
+              "zero_cut",
+              "tbd_cut"
+            ],
+            "effShootingRate": 0.0
           }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "d3a_start_cut"
-            },
-            {
-              "object": "zero_cut"
-            },
-            {
-              "object": "tbd_cut"
-            },
-            {
-              "effShootingRate": 0.0
-            }
-          ]
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right2left",
             "startSubTypeGroundUnits": "",
@@ -546,10 +465,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "tbd_cut"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -572,35 +489,27 @@
             "object": "tbd_cut",
             "target": "d3a_start_cut"
           }
+        ],
+        "showCutsceneInfo": {
+          "text": "cutscene_text/us_guadalcanal_m4_t2",
+          "duration": 6.0
         },
-        {
-          "showCutsceneInfo": {
-            "text": "cutscene_text/us_guadalcanal_m4_t2",
-            "duration": 6.0
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.5
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -614,10 +523,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -632,40 +539,30 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "intro_cut_skip"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "takeOff_start"
           }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "d3a_start_cut"
-            },
-            {
-              "target": "zero_cut"
-            }
+        ],
+        "unitWakeUp": {
+          "target": [
+            "d3a_start_cut",
+            "zero_cut"
           ]
         },
-        {
-          "missionPlayDialogue": {
-            "dialog": "us_gc_m4_dialog1_part1",
-            "subtitles": false
-          }
+        "missionPlayDialogue": {
+          "dialog": "us_gc_m4_dialog1_part1",
+          "subtitles": false
         },
-        {
-          "triggerDisable": {
-            "target": "intro_cut_skip"
-          }
+        "triggerDisable": {
+          "target": "intro_cut_skip"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "intro_cut_skip": {
       "is_enabled": false,
@@ -689,7 +586,7 @@
         "triggerDisable": {
           "target": "intro_cut"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "custom",
           "name": "hints/cutsc_skip",
@@ -707,7 +604,7 @@
           "target": "takeOff_start"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "takeOff_start": {
       "is_enabled": false,
@@ -722,71 +619,63 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "tf17_cv8",
+          "objects": "armada_01"
         },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "tf17_cv8",
-            "objects": "armada_01"
-          }
+        "missionStopCutscene": {},
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "tbd_cut",
+          "aiEnabled": true
         },
-        {
-          "missionStopCutscene": []
+        "missionPlayDialogue": {
+          "dialog": "us_gc_m4_dialog1_part2",
+          "subtitles": false
         },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "tbd_cut",
-            "aiEnabled": true
-          }
+        "moAddMissionObjective": {
+          "target": "guadal_us4_mo1_takeoff",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "missionPlayDialogue": {
-            "dialog": "us_gc_m4_dialog1_part2",
-            "subtitles": false
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "guadal_us4_mo1_takeoff",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "player_inAir"
-          }
+        "triggerEnable": {
+          "target": "player_inAir"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "player_inAir": {
       "is_enabled": false,
@@ -814,46 +703,46 @@
           "absolute_value": false
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "guadal_us4_mo1_takeoff",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "guadal_us4_mo1_takeoff",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "missionSetFade": {
+        ],
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [1.0,1.0,1.0],
+            "color": [
+              1.0,
+              1.0,
+              1.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cutscene"
-          }
+        ],
+        "triggerEnable": {
+          "target": "start_cutscene"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "start_cutscene": {
       "is_enabled": false,
@@ -874,38 +763,34 @@
           "check_players": "any"
         }
       },
-      "actions": [
-        {
-          "missionForceMusic": {
-            "evName": "4_us_guadalcanal"
-          }
+      "actions": {
+        "missionForceMusic": {
+          "evName": "4_us_guadalcanal"
         },
-        {
-          "unitMoveTo": {
-            "target": "armada1_cut_spawn_point",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "armada_01",
-            "move_type": "teleport",
-            "lookat": "armada1_lookAt",
-            "velocity": 300.0
-          }
+        "unitMoveTo": {
+          "target": "armada1_cut_spawn_point",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "armada_01",
+          "move_type": "teleport",
+          "lookat": "armada1_lookAt",
+          "velocity": 300.0
         },
-        {
-          "showSmartCutscene": {
+        "showSmartCutscene": [
+          {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "",
@@ -927,10 +812,8 @@
             "wait": false,
             "object": "armada_01",
             "target": "tf17_cv8"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
             "startSubTypeGroundUnits": "",
@@ -952,65 +835,49 @@
             "wait": false,
             "object": "armada_01"
           }
+        ],
+        "showCutsceneInfo": {
+          "text": "cutscene_text/us_guadalcanal_m4_t1",
+          "duration": 6.0
         },
-        {
-          "showCutsceneInfo": {
-            "text": "cutscene_text/us_guadalcanal_m4_t1",
-            "duration": 6.0
-          }
-        },
-        {
-          "playerControls": {
+        "playerControls": [
+          {
             "setStatus": "disable",
             "control": "ALL"
-          }
-        },
-        {
-          "playerControls": {
+          },
+          {
             "setStatus": "enable",
             "control": "ID_SKIP_CUTSCENE"
-          }
-        },
-        {
-          "playerControls": {
+          },
+          {
             "setStatus": "disable",
             "control": "ALL"
-          }
-        },
-        {
-          "playerControls": {
+          },
+          {
             "setStatus": "enable",
             "control": "ID_SKIP_CUTSCENE"
-          }
-        },
-        {
-          "playerControls": {
+          },
+          {
             "setStatus": "disable",
             "control": "ALL"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -1024,10 +891,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -1042,24 +907,20 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "start_cut_skip"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "battle_start"
           }
-        },
-        {
-          "triggerDisable": {
-            "target": "start_cut_skip"
-          }
+        ],
+        "triggerDisable": {
+          "target": "start_cut_skip"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "start_cut_skip": {
       "is_enabled": false,
@@ -1083,7 +944,7 @@
         "triggerDisable": {
           "target": "start_cutscene"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "custom",
           "name": "hints/cutsc_skip",
@@ -1103,9 +964,9 @@
         "wait": {
           "time": 0.95
         },
-        "missionStopCutscene": []
+        "missionStopCutscene": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "battle_start": {
       "is_enabled": false,
@@ -1120,44 +981,44 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
+        ],
+        "unitWakeUp": {
+          "target": "1a_sq"
         },
-        {
-          "unitWakeUp": {
-            "target": "1a_sq"
-          }
-        },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "armada1_spawn_point",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -1178,10 +1039,8 @@
             "move_type": "teleport",
             "lookat": "armada1_lookAt",
             "velocity": 300.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "f4f_spawn_point",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -1202,10 +1061,8 @@
             "move_type": "teleport",
             "lookat": "armada1_lookAt",
             "velocity": 300.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf17_2000",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1224,10 +1081,8 @@
             "destTimeMode": false,
             "object": "1a_d3a",
             "speed": 215.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf17_2500",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1246,10 +1101,8 @@
             "destTimeMode": false,
             "object": "1a_zero",
             "speed": 215.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf17_1500",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1269,112 +1122,76 @@
             "object": "1a_b5n",
             "speed": 215.0
           }
+        ],
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ALL"
         },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ALL"
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "tbd_cut"
-            },
-            {
-              "target": "zero_cut"
-            },
-            {
-              "target": "d3a_start_cut"
-            }
+        "unitPutToSleep": {
+          "target": [
+            "tbd_cut",
+            "zero_cut",
+            "d3a_start_cut"
           ]
         },
-        {
-          "tacticalMapControl": {
+        "tacticalMapControl": [
+          {
             "follow_player": true,
             "use_scale": true,
-            "scale": [23000.0,23000.0]
-          }
-        },
-        {
-          "tacticalMapControl": {
+            "scale": [
+              23000.0,
+              23000.0
+            ]
+          },
+          {
             "follow_player": false,
             "use_scale": false,
-            "scale": [23000.0,23000.0]
+            "scale": [
+              23000.0,
+              23000.0
+            ]
           }
+        ],
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "us_f4f01",
+          "target": [
+            "1a_d3a",
+            "1a_zero"
+          ],
+          "fireRandom": true,
+          "fightInArea": "1a_d3a",
+          "fightAreaRadius": 2000.0,
+          "fightAreaOuterRadius": 5000.0
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "us_f4f01"
-            },
-            {
-              "target": "1a_d3a"
-            },
-            {
-              "target": "1a_zero"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "fightInArea": "1a_d3a"
-            },
-            {
-              "fightAreaRadius": 2000.0
-            },
-            {
-              "fightAreaOuterRadius": 5000.0
-            }
-          ]
+        "missionPlayDialogue": {
+          "dialog": "us_gc_m4_dialog2_part1",
+          "subtitles": false
         },
-        {
-          "missionPlayDialogue": {
-            "dialog": "us_gc_m4_dialog2_part1",
-            "subtitles": false
-          }
+        "moAddMissionObjective": {
+          "target": "guadal_us4_mo2_1attack",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "moAddMissionObjective": {
-            "target": "guadal_us4_mo2_1attack",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "1a_d3a"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "1a_d3a"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "near_d3a"
-            },
-            {
-              "target": "bombers_near_tf17"
-            },
-            {
-              "target": "1a_fail"
-            },
-            {
-              "target": "1a_all_death"
-            },
-            {
-              "target": "1a_b5n_bombed"
-            }
+        "triggerEnable": {
+          "target": [
+            "near_d3a",
+            "bombers_near_tf17",
+            "1a_fail",
+            "1a_all_death",
+            "1a_b5n_bombed"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "near_d3a": {
       "is_enabled": false,
@@ -1390,50 +1207,24 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 3000.0
-          },
-          {
-            "math": "2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "armada_01"
-          },
-          {
-            "object": "us_f4f01"
-          },
-          {
-            "target": "1a_d3a"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
+        "unitDistanceBetween": {
+          "value": 3000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "armada_01",
+            "us_f4f01"
+          ],
+          "target": "1a_d3a",
+          "object_var_value": 0
+        }
       },
       "actions": {
         "unitAttackTarget": {
@@ -1445,7 +1236,7 @@
           "playerAttractedEffRate": 1.0
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombers_near_tf17": {
       "is_enabled": false,
@@ -1461,54 +1252,28 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 5000.0
-          },
-          {
-            "math": "2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "1a_d3a"
-          },
-          {
-            "object": "1a_b5n"
-          },
-          {
-            "target": "tf17_cv8"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
+        "unitDistanceBetween": {
+          "value": 5000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "1a_d3a",
+            "1a_b5n"
+          ],
+          "target": "tf17_cv8",
+          "object_var_value": 0
+        }
       },
-      "actions": [
-        {
-          "unitMoveTo": {
+      "actions": {
+        "unitMoveTo": [
+          {
             "target": "evac",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1526,10 +1291,8 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "1a_d3a"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "evac",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -1548,58 +1311,42 @@
             "destTimeMode": false,
             "object": "1a_b5n"
           }
+        ],
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": [
+            "1a_d3a",
+            "1a_b5n"
+          ],
+          "target": "tf17_cv8"
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "1a_d3a"
-            },
-            {
-              "object": "1a_b5n"
-            },
-            {
-              "target": "tf17_cv8"
-            }
-          ]
+        "unitRestore": {
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": "tf17_cv8"
         },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "tf17_cv8"
-          }
+        "unitSetIndication": {
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "set": true,
+          "target": "1a_b5n"
         },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "1a_b5n"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "hornet_die"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "1a_done"
           }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
+        ],
+        "wait": {
+          "time": 30.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "1a_b5n_bombed": {
       "is_enabled": false,
@@ -1615,35 +1362,19 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "canBomb"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 4
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "1a_b5n"
-          },
-          {
-            "object": "1a_d3a"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "canBomb",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "1a_b5n",
+            "1a_d3a"
+          ],
+          "object_var_value": 0
+        }
       },
       "actions": {
         "unitSetIndication": {
@@ -1655,7 +1386,7 @@
           "target": "1a_b5n"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "hornet_die": {
       "is_enabled": false,
@@ -1671,35 +1402,19 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isKilledByPlayer"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "1a_d3a"
-          },
-          {
-            "object": "1a_b5n"
-          },
-          {
-            "object_var_value": 0
-          }
-        ],
+        "unitWhenCountMatches": {
+          "object_type": "isKilledByPlayer",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "1a_d3a",
+            "1a_b5n"
+          ],
+          "object_var_value": 0
+        },
         "unitWhenPartHp": {
           "func": "less",
           "check_objects": "any",
@@ -1715,13 +1430,23 @@
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "tf17_cv8"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "1a_fail": {
       "is_enabled": false,
@@ -1749,20 +1474,18 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "1a_done"
-          },
-          {
-            "target": "bombers_near_tf17"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "1a_done",
+            "bombers_near_tf17"
+          ]
+        },
         "missionSetFailText": {
           "value": "MF_hornet_died"
         },
-        "missionFailed": []
+        "missionFailed": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "1a_all_death": {
       "is_enabled": false,
@@ -1778,42 +1501,26 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "1a_d3a"
-          },
-          {
-            "object": "1a_b5n"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "1a_d3a",
+            "1a_b5n"
+          ],
+          "object_var_value": 0
+        }
       },
       "actions": {
         "triggerEnable": {
           "target": "1a_done"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "1a_done": {
       "is_enabled": false,
@@ -1829,171 +1536,103 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
+        "unitDistanceBetween": {
+          "value": 5000.0,
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "all",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "1a_d3a",
+            "1a_b5n"
+          ],
+          "target": "tf17_cv8",
+          "object_var_value": 0
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "1a_d3a",
+            "1a_b5n"
+          ],
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "hornet_die",
+            "1a_fail",
+            "1a_all_death",
+            "bombers_near_tf17"
+          ]
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": [
+            "1a_d3a",
+            "1a_b5n"
+          ]
+        },
+        "moSetObjectiveStatus": {
+          "target": "guadal_us4_mo2_1attack",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "wait": [
           {
-            "value": 5000.0
+            "time": 2.0
           },
           {
-            "math": "notNear2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_objects": "all"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "1a_d3a"
-          },
-          {
-            "object": "1a_b5n"
-          },
-          {
-            "target": "tf17_cv8"
-          },
-          {
-            "object_var_value": 0
+            "time": 1.0
           }
         ],
-        "unitWhenCountMatches": [
+        "missionSetFade": [
           {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 4
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "1a_d3a"
-          },
-          {
-            "object": "1a_b5n"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
-      },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "hornet_die"
-            },
-            {
-              "target": "1a_fail"
-            },
-            {
-              "target": "1a_all_death"
-            },
-            {
-              "target": "bombers_near_tf17"
-            }
-          ]
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": false
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target": "1a_d3a"
-            },
-            {
-              "target": "1a_b5n"
-            }
-          ]
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "guadal_us4_mo2_1attack",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "1a_sq"
-            },
-            {
-              "target": "us_f4f01"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "1a_sq",
+            "us_f4f01"
           ]
         },
-        {
-          "triggerEnable": {
-            "target": "1a_cutscene"
-          }
+        "triggerEnable": {
+          "target": "1a_cutscene"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "1a_cutscene": {
       "is_enabled": false,
@@ -2008,34 +1647,32 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitMoveTo": {
-            "target": "armada1_tf16_spawn_point",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "armada_01",
-            "move_type": "teleport",
-            "lookat": "tf16_2000",
-            "velocity": 300.0
-          }
+      "conditions": {},
+      "actions": {
+        "unitMoveTo": {
+          "target": "armada1_tf16_spawn_point",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "armada_01",
+          "move_type": "teleport",
+          "lookat": "tf16_2000",
+          "velocity": 300.0
         },
-        {
-          "showSmartCutscene": {
+        "showSmartCutscene": [
+          {
             "sceneType": "ground_units",
             "duration": 18.0,
             "delayPlayer": true,
@@ -2056,10 +1693,8 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "tf17_cv8"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "duration": 6.0,
             "delayPlayer": false,
@@ -2081,34 +1716,26 @@
             "wait": false,
             "object": "armada_01"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -2122,10 +1749,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -2140,48 +1765,38 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "1a_cut_skip"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "tf16_start"
           }
+        ],
+        "missionPlayDialogue": {
+          "dialog": "us_gc_m4_dialog2_part2",
+          "subtitles": false
         },
-        {
-          "missionPlayDialogue": {
-            "dialog": "us_gc_m4_dialog2_part2",
-            "subtitles": false
-          }
-        },
-        {
-          "playerControls": {
+        "playerControls": [
+          {
             "setStatus": "disable",
             "control": "ALL"
-          }
-        },
-        {
-          "playerControls": {
+          },
+          {
             "setStatus": "enable",
             "control": "ID_SKIP_CUTSCENE"
-          }
-        },
-        {
-          "playerControls": {
+          },
+          {
             "setStatus": "disable",
             "control": "ALL"
           }
-        },
-        {
-          "triggerDisable": {
-            "target": "1a_cut_skip"
-          }
+        ],
+        "triggerDisable": {
+          "target": "1a_cut_skip"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "1a_cut_skip": {
       "is_enabled": false,
@@ -2205,7 +1820,7 @@
         "triggerDisable": {
           "target": "1a_cutscene"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "custom",
           "name": "hints/cutsc_skip",
@@ -2225,9 +1840,9 @@
         "wait": {
           "time": 0.95
         },
-        "missionStopCutscene": []
+        "missionStopCutscene": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tf16_start": {
       "is_enabled": false,
@@ -2242,105 +1857,87 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
+            "time": 1.0
+          },
+          {
             "time": 1.0
           }
+        ],
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ALL"
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ALL"
-          }
-        },
-        {
-          "unitSetStealth": [
-            {
-              "set": false
-            },
-            {
-              "radius": 5000.0
-            },
-            {
-              "target": "TF16_fleet_sq"
-            },
-            {
-              "target": "us_f4f02"
-            },
-            {
-              "target": "us_f4f03"
-            },
-            {
-              "target": "us_f4f03"
-            }
+        "unitSetStealth": {
+          "set": false,
+          "radius": 5000.0,
+          "target": [
+            "TF16_fleet_sq",
+            "us_f4f02",
+            "us_f4f03",
+            "us_f4f03"
           ]
         },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "tf16_2000"
-          }
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "scale": 1.0,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "target": "tf16_2000"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "guadal_us4_mo3_flight",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+        "moAddMissionObjective": {
+          "target": "guadal_us4_mo3_flight",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "unitMoveTo": {
-            "target": "tf17_3000",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "us_f4f01"
-          }
+        "unitMoveTo": {
+          "target": "tf17_3000",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "us_f4f01"
         },
-        {
-          "triggerEnable": {
-            "target": "near_tf16"
-          }
+        "triggerEnable": {
+          "target": "near_tf16"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "near_tf16": {
       "is_enabled": false,
@@ -2366,32 +1963,26 @@
           "target": "TF16_fleet_sq"
         }
       },
-      "actions": [
-        {
-          "unitWakeUp": {
-            "target": "2a_sq"
-          }
+      "actions": {
+        "unitWakeUp": {
+          "target": "2a_sq"
         },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "tf16_2000"
-          }
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "scale": 1.0,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "target": "tf16_2000"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "guadal_us4_mo3_flight",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+        "moSetObjectiveStatus": {
+          "target": "guadal_us4_mo3_flight",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "tf16_2000",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -2409,10 +2000,8 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "2a_d3a01"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf16_2500",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -2430,10 +2019,8 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "2a_zero01"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf16_2000",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -2451,10 +2038,8 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "2a_d3a02"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf16_2500",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -2472,10 +2057,8 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "2a_zero02"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf16_2000",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -2493,10 +2076,8 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "2a_d3a03"
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf16_2500",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -2515,50 +2096,40 @@
             "destTimeMode": false,
             "object": "2a_zero03"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 10.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
+        ],
+        "missionPlayDialogue": {
+          "dialog": "us_gc_m4_dialog3",
+          "subtitles": false
         },
-        {
-          "missionPlayDialogue": {
-            "dialog": "us_gc_m4_dialog3",
-            "subtitles": false
-          }
-        },
-        {
-          "unitSetIndication": {
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "2a_d3a01"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "2a_d3a02"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -2566,46 +2137,30 @@
             "object_var_value": 0,
             "target": "2a_d3a03"
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "guadal_us4_mo4_2attack",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "moAddMissionObjective": {
-            "target": "guadal_us4_mo4_2attack",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "2a_fail"
-            },
-            {
-              "target": "2a_01_near_fleet"
-            },
-            {
-              "target": "2a_02_near_fleet"
-            },
-            {
-              "target": "2a_03_near_fleet"
-            },
-            {
-              "target": "2a_all_death"
-            },
-            {
-              "target": "cv6_heal"
-            }
+        "triggerEnable": {
+          "target": [
+            "2a_fail",
+            "2a_01_near_fleet",
+            "2a_02_near_fleet",
+            "2a_03_near_fleet",
+            "2a_all_death",
+            "cv6_heal"
           ]
         },
-        {
-          "unitAttackTarget": {
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "us_f4f02",
             "target": "2a_d3a01",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": true,
             "object": "2a_zero01",
             "target": "us_f4f02",
@@ -2615,18 +2170,14 @@
             "fightInArea": "2a_d3a01",
             "fightAreaRadius": 2000.0,
             "fightAreaOuterRadius": 5000.0
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "us_f4f03",
             "target": "2a_d3a02",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": true,
             "object": "2a_zero02",
             "target": "us_f4f03",
@@ -2636,18 +2187,14 @@
             "fightInArea": "2a_d3a02",
             "fightAreaRadius": 2000.0,
             "fightAreaOuterRadius": 5000.0
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "us_f4f04",
             "target": "2a_d3a03",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": true,
             "object": "2a_zero03",
             "target": "us_f4f04",
@@ -2658,25 +2205,21 @@
             "fightAreaRadius": 2000.0,
             "fightAreaOuterRadius": 5000.0
           }
+        ],
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "2a_sq"
         },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "2a_sq"
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": false,
-            "radius": 5000.0,
-            "target": "TF16_fleet_sq"
-          }
+        "unitSetStealth": {
+          "set": false,
+          "radius": 5000.0,
+          "target": "TF16_fleet_sq"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "2a_01_near_fleet": {
       "is_enabled": false,
@@ -2734,7 +2277,7 @@
           "target": "tf16_cv6"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "2a_02_near_fleet": {
       "is_enabled": false,
@@ -2792,7 +2335,7 @@
           "target": "tf16_cv6"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "2a_03_near_fleet": {
       "is_enabled": false,
@@ -2853,7 +2396,7 @@
           "target": "2a_done"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "2a_fail": {
       "is_enabled": false,
@@ -2881,20 +2424,18 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "2a_done"
-          },
-          {
-            "target": "2a_03_near_fleet"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "2a_done",
+            "2a_03_near_fleet"
+          ]
+        },
         "missionSetFailText": {
           "value": "MF_enterprise_died"
         },
-        "missionFailed": []
+        "missionFailed": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "2a_all_death": {
       "is_enabled": false,
@@ -2910,45 +2451,27 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "2a_d3a01"
-          },
-          {
-            "object": "2a_d3a02"
-          },
-          {
-            "object": "2a_d3a03"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "2a_d3a01",
+            "2a_d3a02",
+            "2a_d3a03"
+          ],
+          "object_var_value": 0
+        }
       },
       "actions": {
         "triggerEnable": {
           "target": "2a_done"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "2a_done": {
       "is_enabled": false,
@@ -2964,111 +2487,79 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 5000.0
-          },
-          {
-            "math": "notNear2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "check_objects": "all"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "2a_d3a01"
-          },
-          {
-            "object": "2a_d3a02"
-          },
-          {
-            "object": "2a_d3a03"
-          },
-          {
-            "target": "tf16_cv6"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
+        "unitDistanceBetween": {
+          "value": 5000.0,
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "all",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "2a_d3a01",
+            "2a_d3a02",
+            "2a_d3a03"
+          ],
+          "target": "tf16_cv6",
+          "object_var_value": 0
+        }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "cv6_heal"
-            },
-            {
-              "target": "2a_all_death"
-            },
-            {
-              "target": "2a_03_near_fleet"
-            },
-            {
-              "target": "2a_fail"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "cv6_heal",
+            "2a_all_death",
+            "2a_03_near_fleet",
+            "2a_fail"
           ]
         },
-        {
-          "unitSetIndication": {
-            "set": false,
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "2a_sq"
+        },
+        "moSetObjectiveStatus": {
+          "target": "guadal_us4_mo4_2attack",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "wait": [
+          {
+            "time": 3.0
+          },
+          {
+            "time": 1.0
+          },
+          {
+            "time": 3.0
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "playHint": [
+          {
+            "hintType": "custom",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "2a_sq"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "guadal_us4_mo4_2attack",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playHint": {
+            "shouldBlink": false
+          },
+          {
             "hintType": "custom",
             "name": "",
             "action": "hideCur",
@@ -3082,49 +2573,25 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        ],
+        "airfieldSetIndication": {
+          "set": true,
+          "target": "tf16_cv6"
         },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
+        "triggerEnable": {
+          "target": "landing_done"
         },
-        {
-          "airfieldSetIndication": {
-            "set": true,
-            "target": "tf16_cv6"
-          }
+        "moAddMissionObjective": {
+          "target": "guadal_us4_mo5_landing",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "triggerEnable": {
-            "target": "landing_done"
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "guadal_us4_mo5_landing",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "missionCompleted": {
-            "timer": true,
-            "afterComplete": "debriefing_cut"
-          }
+        "missionCompleted": {
+          "timer": true,
+          "afterComplete": "debriefing_cut"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "landing_done": {
       "is_enabled": false,
@@ -3169,7 +2636,7 @@
           "target": "debriefing_cut"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "cv6_heal": {
       "is_enabled": false,
@@ -3185,86 +2652,55 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isDamagedByPlayer"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "more"
-          },
-          {
-            "value": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object": "2a_d3a01"
-          },
-          {
-            "object": "2a_d3a02"
-          },
-          {
-            "object": "2a_d3a03"
-          },
-          {
-            "object_var_value": 0
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isDamagedByPlayer",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": [
+            "2a_d3a01",
+            "2a_d3a02",
+            "2a_d3a03"
+          ],
+          "object_var_value": 0
+        }
       },
-      "actions": [
-        {
-          "unitSetProperties": {
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "tf16_cv6",
             "isImmortal": true
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "us_f4f02"
-            },
-            {
-              "object": "us_f4f03"
-            },
-            {
-              "object": "us_f4f04"
-            },
-            {
-              "plane": {
-                "targetDeviation": {
-                  "trigger": "machine gun",
-                  "defaultVal": 1.0,
-                  "limits": [0.0,2.0]
-                }
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "us_f4f02",
+              "us_f4f03",
+              "us_f4f04"
+            ],
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 1.0,
+                "limits": [
+                  0.0,
+                  2.0
+                ]
               }
             }
-          ]
-        }
-      ],
-      "else_actions": []
+          }
+        ]
+      },
+      "else_actions": {}
     },
     "debriefing_cut": {
       "is_enabled": false,
@@ -3285,124 +2721,92 @@
           "check_players": "any"
         }
       },
-      "actions": [
-        {
-          "missionSetFade": {
+      "actions": {
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 1.0
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 24.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 58.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
-        },
-        {
-          "unitRestore": {
+        ],
+        "unitRestore": [
+          {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 0,
             "target": "player_sq"
+          },
+          {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target_marking": 0,
+            "target": [
+              "TF16_fleet_sq",
+              "2a_d3a01",
+              "us_f4f02"
+            ]
           }
-        },
-        {
-          "unitRestore": [
-            {
-              "ressurectIfDead": true
-            },
-            {
-              "fullRestore": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "target": "TF16_fleet_sq"
-            },
-            {
-              "target": "2a_d3a01"
-            },
-            {
-              "target": "us_f4f02"
-            }
-          ]
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "us_all"
-            },
-            {
-              "target": "jpn_air_all"
-            },
-            {
-              "target": "armada_01"
-            }
-          ]
-        },
-        {
-          "unitPutToSleep": {
+        ],
+        "unitPutToSleep": [
+          {
+            "target": [
+              "us_all",
+              "jpn_air_all",
+              "armada_01"
+            ]
+          },
+          {
             "target": "2a_d3a01"
           }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "TF16_fleet_sq"
-            },
-            {
-              "target": "2a_d3a01"
-            },
-            {
-              "target": "us_f4f02"
-            }
+        ],
+        "unitWakeUp": {
+          "target": [
+            "TF16_fleet_sq",
+            "2a_d3a01",
+            "us_f4f02"
           ]
         },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -3413,13 +2817,14 @@
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 0.1,
-                "limits": [0.1,0.1]
+                "limits": [
+                  0.1,
+                  0.1
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -3430,13 +2835,16 @@
               "targetDeviation": {
                 "trigger": "gunner",
                 "defaultVal": 1.5,
-                "limits": [1.5,1.5]
+                "limits": [
+                  1.5,
+                  1.5
+                ]
               }
             }
           }
-        },
-        {
-          "unitMoveTo": {
+        ],
+        "unitMoveTo": [
+          {
             "target": "deb_cut_d3a_spawn",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -3457,10 +2865,8 @@
             "move_type": "teleport",
             "lookat": "tf16_1500",
             "velocity": 250.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "deb_cut_f4f_spawn01",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -3481,10 +2887,8 @@
             "move_type": "teleport",
             "lookat": "deb_cut_d3a_spawn",
             "velocity": 250.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "tf16_2000",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -3503,10 +2907,8 @@
             "destTimeMode": false,
             "object": "2a_d3a01",
             "speed": 250.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "deb_cut_f4f_spawn02",
             "follow_target": false,
             "teleportHeightType": "target",
@@ -3527,10 +2929,8 @@
             "move_type": "teleport",
             "lookat": "deb_cut_d3a_spawn",
             "velocity": 250.0
-          }
-        },
-        {
-          "unitMoveTo": {
+          },
+          {
             "target": "deb_cut_d3a_spawn",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -3549,21 +2949,17 @@
             "destTimeMode": false,
             "object": "us_f4f02"
           }
+        ],
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "us_f4f02",
+          "target": "2a_d3a01"
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "us_f4f02",
-            "target": "2a_d3a01"
-          }
+        "missionForceMusic": {
+          "evName": "3_japan_coral"
         },
-        {
-          "missionForceMusic": {
-            "evName": "3_japan_coral"
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hideCur",
@@ -3577,10 +2973,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "show",
@@ -3594,10 +2988,8 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hide",
@@ -3612,9 +3004,9 @@
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "two_units",
             "duration": 6.0,
             "delayPlayer": true,
@@ -3636,10 +3028,8 @@
             "wait": false,
             "object": "f4f02_leader_for_cut",
             "target": "2a_d3a01"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "unit_attack_unit",
             "duration": 24.0,
             "delayPlayer": true,
@@ -3661,10 +3051,8 @@
             "wait": false,
             "object": "us_f4f02",
             "target": "2a_d3a01"
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "two_units",
             "duration": 6.0,
             "delayPlayer": true,
@@ -3687,10 +3075,8 @@
             "object": "f4f02_leader_for_cut",
             "target": "tf16_cv6",
             "changeLookTime": 12.0
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "on_the_march",
             "duration": 60.0,
             "delayPlayer": true,
@@ -3712,27 +3098,21 @@
             "wait": false,
             "object": "us_f4f02"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "debriefing_dialog"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "debriefing_cut_skip"
           }
+        ],
+        "triggerDisable": {
+          "target": "debriefing_cut_skip"
         },
-        {
-          "triggerDisable": {
-            "target": "debriefing_cut_skip"
-          }
-        },
-        {
-          "missionDebriefing": []
-        }
-      ],
-      "else_actions": []
+        "missionDebriefing": {}
+      },
+      "else_actions": {}
     },
     "debriefing_cut_skip": {
       "is_enabled": false,
@@ -3753,15 +3133,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "debriefing_cut"
-          },
-          {
-            "target": "debriefing_dialog"
-          }
-        ],
-        "missionStopSpeech": [],
+        "triggerDisable": {
+          "target": [
+            "debriefing_cut",
+            "debriefing_dialog"
+          ]
+        },
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "custom",
           "name": "hints/cutsc_skip",
@@ -3778,10 +3156,10 @@
         "missionForceMusic": {
           "evName": ""
         },
-        "missionStopCutscene": [],
-        "missionDebriefing": []
+        "missionStopCutscene": {},
+        "missionDebriefing": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "debriefing_dialog": {
       "is_enabled": false,
@@ -3796,7 +3174,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "debriefing_dialog",
@@ -3805,9 +3183,9 @@
         "wait": {
           "time": 5.0
         },
-        "missionDebriefing": []
+        "missionDebriefing": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "only_player_target": {
       "is_enabled": true,
@@ -3822,20 +3200,18 @@
           "time": 10.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitSetProperties": {
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "armada_01",
             "targetableByAi": false
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -3843,9 +3219,9 @@
             "object": "player_sq",
             "targetableByAi": true
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -3861,8 +3237,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "guadal_us4_mo2_1attack": {
       "is_enabled": false,
@@ -3874,8 +3250,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "guadal_us4_mo3_flight": {
       "is_enabled": false,
@@ -3887,8 +3263,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "guadal_us4_mo4_2attack": {
       "is_enabled": false,
@@ -3900,8 +3276,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "guadal_us4_mo5_landing": {
       "is_enabled": false,
@@ -3913,70 +3289,60 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "debug_timer": 0
   },
   "dialogs": {
-    "debriefing_dialog": [
-      {
-        "speech": {
+    "debriefing_dialog": {
+      "speech": [
+        {
           "id": "us_guadalcanal_m4_debriefing_part1",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_guadalcanal_m4_debriefing_part2",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_guadalcanal_m4_debriefing_part3",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_guadalcanal_m4_debriefing_part4",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_guadalcanal_m4_debriefing_part5",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_guadalcanal_m4_debriefing_part6",
           "speakerId": "",
           "props": {
             "time": 4.0
           }
         }
-      }
-    ],
+      ]
+    },
     "us_gc_m4_dialog1_part1": {
       "speech": {
         "id": "us_gc_m4_dialog1_ph1",
@@ -3986,75 +3352,67 @@
         }
       }
     },
-    "us_gc_m4_dialog2_part1": [
-      {
-        "speech": {
+    "us_gc_m4_dialog2_part1": {
+      "speech": [
+        {
           "id": "us_gc_m4_dialog2_ph1",
           "speakerId": "american_base_1",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_gc_m4_dialog2_ph2",
           "speakerId": "american_fighter_pilot_1",
           "props": {
             "time": 4.0
           }
         }
-      }
-    ],
-    "us_gc_m4_dialog3": [
-      {
-        "speech": {
+      ]
+    },
+    "us_gc_m4_dialog3": {
+      "speech": [
+        {
           "id": "us_gc_m4_dialog3_ph1",
           "speakerId": "american_base_2",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_gc_m4_dialog3_ph2",
           "speakerId": "american_fighter_pilot_1",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_gc_m4_dialog3_ph3",
           "speakerId": "american_fighter_pilot_leader",
           "props": {
             "time": 4.0
           }
         }
-      }
-    ],
-    "us_gc_m4_dialog1_part2": [
-      {
-        "speech": {
+      ]
+    },
+    "us_gc_m4_dialog1_part2": {
+      "speech": [
+        {
           "id": "us_gc_m4_dialog1_ph2",
           "speakerId": "american_fighter_pilot_2",
           "props": {
             "time": 4.0
           }
-        }
-      },
-      {
-        "speech": {
+        },
+        {
           "id": "us_gc_m4_dialog1_ph3",
           "speakerId": "american_fighter_pilot_1",
           "props": {
             "time": 4.0
           }
         }
-      }
-    ],
+      ]
+    },
     "us_gc_m4_dialog2_part2": {
       "speech": {
         "id": "us_gc_m4_dialog2_ph3",
@@ -4065,17 +3423,33 @@
       }
     }
   },
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "ships": {
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
         "name": "tf16_cv6",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-38115.9,28.55,-4818.25]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38115.9,
+            28.55,
+            -4818.25
+          ]
         ],
         "unit_class": "uss_cv_enterprise",
         "closed_waypoints": false,
@@ -4096,22 +3470,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": "unic_enterprise"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_ca01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37536.0,28.55,-4829.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37536.0,
+            28.55,
+            -4829.6
+          ]
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
@@ -4132,22 +3526,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_ca02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37713.6,28.55,-4214.25]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37713.6,
+            28.55,
+            -4214.25
+          ]
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
@@ -4168,22 +3582,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_cl01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37655.0,28.55,-5440.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37655.0,
+            28.55,
+            -5440.9
+          ]
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
@@ -4204,22 +3638,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37091.3,30.75,-4779.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37091.3,
+            30.75,
+            -4779.1
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4240,22 +3694,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37993.4,28.55,-5790.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37993.4,
+            28.55,
+            -5790.4
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4276,22 +3750,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-38425.1,28.55,-5184.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38425.1,
+            28.55,
+            -5184.35
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4312,22 +3806,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-38756.5,28.55,-4468.75]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38756.5,
+            28.55,
+            -4468.75
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4348,22 +3862,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-38675.8,28.55,-4838.75]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38675.8,
+            28.55,
+            -4838.75
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4384,22 +3918,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-38042.1,28.55,-5441.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38042.1,
+            28.55,
+            -5441.5
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4420,22 +3974,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37422.0,28.55,-4310.05]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37422.0,
+            28.55,
+            -4310.05
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4456,22 +4030,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_dd02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37996.4,28.55,-3910.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37996.4,
+            28.55,
+            -3910.0
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4492,22 +4086,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_ca01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-34002.3,82.6,7510.15]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -34002.3,
+            82.6,
+            7510.15
+          ]
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
@@ -4528,22 +4142,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_cv8",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-33496.3,82.6,7207.95]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -33496.3,
+            82.6,
+            7207.95
+          ]
         ],
         "unit_class": "uss_cv_enterprise",
         "closed_waypoints": false,
@@ -4564,22 +4198,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": "unic_hornet"
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_dd01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-32468.4,82.6,7292.65]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -32468.4,
+            82.6,
+            7292.65
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4600,22 +4254,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_dd02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-32900.1,82.6,7079.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -32900.1,
+            82.6,
+            7079.8
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4636,22 +4310,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_dd03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-32856.3,82.6,7919.75]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -32856.3,
+            82.6,
+            7919.75
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4672,22 +4366,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_dd04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-33476.4,82.6,8088.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -33476.4,
+            82.6,
+            8088.35
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4708,22 +4422,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_dd05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-34106.4,82.6,7123.25]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -34106.4,
+            82.6,
+            7123.25
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4744,22 +4478,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_dd06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-33361.1,82.6,6454.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -33361.1,
+            82.6,
+            6454.35
+          ]
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
@@ -4780,22 +4534,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_ca02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-32859.3,82.6,7509.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -32859.3,
+            82.6,
+            7509.2
+          ]
         ],
         "unit_class": "uss_bb_arizona",
         "closed_waypoints": false,
@@ -4816,22 +4590,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_ca03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-33967.4,82.6,6607.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -33967.4,
+            82.6,
+            6607.5
+          ]
         ],
         "unit_class": "uss_bb_arizona",
         "closed_waypoints": false,
@@ -4852,22 +4646,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf17_ca04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-34116.4,82.6,8009.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -34116.4,
+            82.6,
+            8009.8
+          ]
         ],
         "unit_class": "uss_bb_arizona",
         "closed_waypoints": false,
@@ -4888,22 +4702,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "tf16_bb01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-38120.2,28.55,-4406.65]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38120.2,
+            28.55,
+            -4406.65
+          ]
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
@@ -4924,311 +4758,389 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "attack_type": "fire_at_will",
           "uniqueName": ""
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "TF17_fleet_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-35480.2,0.0,8246.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -35480.2,
+            0.0,
+            8246.4
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "tf17_cv8"
-          },
-          {
-            "squad_members": "tf17_ca01"
-          },
-          {
-            "squad_members": "tf17_ca02"
-          },
-          {
-            "squad_members": "tf17_ca03"
-          },
-          {
-            "squad_members": "tf17_ca04"
-          },
-          {
-            "squad_members": "tf17_dd01"
-          },
-          {
-            "squad_members": "tf17_dd02"
-          },
-          {
-            "squad_members": "tf17_dd03"
-          },
-          {
-            "squad_members": "tf17_dd04"
-          },
-          {
-            "squad_members": "tf17_dd05"
-          },
-          {
-            "squad_members": "tf17_dd06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "tf17_cv8",
+            "tf17_ca01",
+            "tf17_ca02",
+            "tf17_ca03",
+            "tf17_ca04",
+            "tf17_dd01",
+            "tf17_dd02",
+            "tf17_dd03",
+            "tf17_dd04",
+            "tf17_dd05",
+            "tf17_dd06"
+          ]
+        }
+      },
+      {
         "name": "TF16_dd_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-39698.8,91.7,-4355.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39698.8,
+            91.7,
+            -4355.35
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "tf16_dd01"
-          },
-          {
-            "squad_members": "tf16_dd02"
-          },
-          {
-            "squad_members": "tf16_dd03"
-          },
-          {
-            "squad_members": "tf16_dd04"
-          },
-          {
-            "squad_members": "tf16_dd05"
-          },
-          {
-            "squad_members": "tf16_dd06"
-          },
-          {
-            "squad_members": "tf16_dd07"
-          },
-          {
-            "squad_members": "tf16_dd08"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "tf16_dd01",
+            "tf16_dd02",
+            "tf16_dd03",
+            "tf16_dd04",
+            "tf16_dd05",
+            "tf16_dd06",
+            "tf16_dd07",
+            "tf16_dd08"
+          ]
+        }
+      },
+      {
         "name": "TF16_fleet_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-39773.8,91.7,-4755.15]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39773.8,
+            91.7,
+            -4755.15
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "tf16_cv6"
-          },
-          {
-            "squad_members": "tf16_ca01"
-          },
-          {
-            "squad_members": "tf16_ca02"
-          },
-          {
-            "squad_members": "tf16_bb01"
-          },
-          {
-            "squad_members": "TF16_dd_sq"
-          },
-          {
-            "squad_members": "tf16_cl01"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "tf16_cv6",
+            "tf16_ca01",
+            "tf16_ca02",
+            "tf16_bb01",
+            "TF16_dd_sq",
+            "tf16_cl01"
+          ]
+        }
+      },
+      {
         "name": "us_all",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-42046.6,0.0,1174.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -42046.6,
+            0.0,
+            1174.2
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "TF17_fleet_sq"
-          },
-          {
-            "squad_members": "TF16_fleet_sq"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "TF17_fleet_sq",
+            "TF16_fleet_sq"
+          ]
+        }
+      },
+      {
         "name": "2a_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-29834.2,0.0,-12177.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -29834.2,
+            0.0,
+            -12177.2
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "2a_d3a01"
-          },
-          {
-            "squad_members": "2a_d3a02"
-          },
-          {
-            "squad_members": "2a_d3a03"
-          },
-          {
-            "squad_members": "2a_zero01"
-          },
-          {
-            "squad_members": "2a_zero02"
-          },
-          {
-            "squad_members": "2a_zero03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "2a_d3a01",
+            "2a_d3a02",
+            "2a_d3a03",
+            "2a_zero01",
+            "2a_zero02",
+            "2a_zero03"
+          ]
+        }
+      },
+      {
         "name": "1a_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-18588.4,0.0,5965.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18588.4,
+            0.0,
+            5965.2
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1a_d3a"
-          },
-          {
-            "squad_members": "1a_zero"
-          },
-          {
-            "squad_members": "1a_b5n"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "1a_d3a",
+            "1a_zero",
+            "1a_b5n"
+          ]
+        }
+      },
+      {
         "name": "jpn_air_all",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-17820.7,0.0,818.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17820.7,
+            0.0,
+            818.6
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1a_sq"
-          },
-          {
-            "squad_members": "2a_sq"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "1a_sq",
+            "2a_sq"
+          ]
+        }
+      },
+      {
         "name": "player_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-37626.6,0.0,8741.85]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -37626.6,
+            0.0,
+            8741.85
+          ]
         ],
         "props": {
           "object_marking": 0,
           "squad_members": "armada_01",
           "object_type": "isPlayer"
         }
-      }
-    },
-    {
-      "squad": {
+      },
+      {
         "name": "f4f02_leader_for_cut",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-33218.7,0.0,-8571.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -33218.7,
+            0.0,
+            -8571.8
+          ]
         ],
         "props": {
           "object_marking": 0,
           "squad_members": "us_f4f02",
           "object_type": "isFormationLeader"
         }
-      }
-    },
-    {
-      "squad": {
+      },
+      {
         "name": "jpn_bombers_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-22533.6,-17.2,-11868.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -22533.6,
+            -17.2,
+            -11868.7
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1a_d3a"
-          },
-          {
-            "squad_members": "2a_d3a01"
-          },
-          {
-            "squad_members": "2a_d3a02"
-          },
-          {
-            "squad_members": "2a_d3a03"
-          },
-          {
-            "squad_members": "1a_b5n"
-          }
-        ]
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "1a_d3a",
+            "2a_d3a01",
+            "2a_d3a02",
+            "2a_d3a03",
+            "1a_b5n"
+          ]
+        }
       }
-    },
-    {
-      "armada": {
+    ],
+    "armada": [
+      {
         "name": "us_f4f04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-40226.5,1000.0,-5052.35]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -40226.5,
+            1000.0,
+            -5052.35
+          ]
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
@@ -5269,10 +5181,26 @@
           "us_f4f04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-36689.5,1000.0,-5202.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -36689.5,
+                1000.0,
+                -5202.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -5285,10 +5213,26 @@
           "us_f4f04_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-39480.1,1000.0,-5208.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -39480.1,
+                1000.0,
+                -5208.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -5299,16 +5243,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "armada_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-36322.7,20.0,9276.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -36322.7,
+            20.0,
+            9276.7
+          ]
         ],
         "unit_class": "f4f-4",
         "closed_waypoints": false,
@@ -5345,17 +5303,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "1a_zero",
         "tm": [
-          [-0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,-0.991445],
-          [-17503.0,2500.0,7454.0]
+          [
+            -0.991445,
+            0.0,
+            -0.130526
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.130526,
+            0.0,
+            -0.991445
+          ],
+          [
+            -17503.0,
+            2500.0,
+            7454.0
+          ]
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
@@ -5392,17 +5364,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "us_f4f02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-38268.6,3000.0,-7041.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38268.6,
+            3000.0,
+            -7041.1
+          ]
         ],
         "unit_class": "f4f-4",
         "closed_waypoints": true,
@@ -5443,10 +5429,26 @@
           "fighers_fake01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-38950.8,3000.0,-5092.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -38950.8,
+                3000.0,
+                -5092.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -5459,10 +5461,26 @@
           "fighers_fake01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-38958.9,3000.0,-4085.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -38958.9,
+                3000.0,
+                -4085.75
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -5473,16 +5491,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "us_f4f03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-39800.7,2000.0,-5949.95]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39800.7,
+            2000.0,
+            -5949.95
+          ]
         ],
         "unit_class": "f4f-4",
         "closed_waypoints": true,
@@ -5523,10 +5555,26 @@
           "fighers_fake02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-37994.3,2000.0,-4639.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -37994.3,
+                2000.0,
+                -4639.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -5539,10 +5587,26 @@
           "fighers_fake02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-38779.3,2000.0,-5189.76]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -38779.3,
+                2000.0,
+                -5189.76
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -5553,16 +5617,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "us_f4f01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-31612.8,1000.0,8473.55]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -31612.8,
+            1000.0,
+            8473.55
+          ]
         ],
         "unit_class": "f4f-4",
         "closed_waypoints": true,
@@ -5599,17 +5677,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "1a_d3a",
         "tm": [
-          [-0.996195,0.0,0.0871556],
-          [0.0,1.0,0.0],
-          [-0.0871556,0.0,-0.996195],
-          [-18137.0,2000.0,7454.0]
+          [
+            -0.996195,
+            0.0,
+            0.0871556
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871556,
+            0.0,
+            -0.996195
+          ],
+          [
+            -18137.0,
+            2000.0,
+            7454.0
+          ]
         ],
         "unit_class": "d3a1",
         "closed_waypoints": false,
@@ -5646,17 +5738,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "1a_b5n",
         "tm": [
-          [-0.0871556,0.0,-0.996195],
-          [0.0,1.0,0.0],
-          [0.996195,0.0,-0.0871556],
-          [-31733.6,1500.0,25500.0]
+          [
+            -0.0871556,
+            0.0,
+            -0.996195
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.996195,
+            0.0,
+            -0.0871556
+          ],
+          [
+            -31733.6,
+            1500.0,
+            25500.0
+          ]
         ],
         "unit_class": "b5n2",
         "closed_waypoints": false,
@@ -5693,17 +5799,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "2a_d3a01",
         "tm": [
-          [-0.906308,0.0,-0.422619],
-          [0.0,1.0,0.0],
-          [0.422619,0.0,-0.906308],
-          [-27917.6,2000.0,-412.85]
+          [
+            -0.906308,
+            0.0,
+            -0.422619
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.422619,
+            0.0,
+            -0.906308
+          ],
+          [
+            -27917.6,
+            2000.0,
+            -412.85
+          ]
         ],
         "unit_class": "d3a1",
         "closed_waypoints": false,
@@ -5740,17 +5860,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "2a_d3a03",
         "tm": [
-          [-0.991445,0.0,0.130527],
-          [-4.43781e-08,1.0,5.84253e-09],
-          [-0.130527,2.14315e-18,-0.991445],
-          [-27171.1,2000.0,-6587.05]
+          [
+            -0.991445,
+            0.0,
+            0.130527
+          ],
+          [
+            -4.43781E-08,
+            1.0,
+            5.84253E-09
+          ],
+          [
+            -0.130527,
+            2.14315E-18,
+            -0.991445
+          ],
+          [
+            -27171.1,
+            2000.0,
+            -6587.05
+          ]
         ],
         "unit_class": "d3a1",
         "closed_waypoints": false,
@@ -5787,17 +5921,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "2a_d3a02",
         "tm": [
-          [-0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707107],
-          [-30454.3,2000.0,-13619.8]
+          [
+            -0.707107,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            -30454.3,
+            2000.0,
+            -13619.8
+          ]
         ],
         "unit_class": "d3a1",
         "closed_waypoints": false,
@@ -5834,17 +5982,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "tbd_cut",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-24976.1,2000.0,9901.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -24976.1,
+            2000.0,
+            9901.6
+          ]
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
@@ -5886,10 +6048,26 @@
           "tbd_cut_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-16089.3,2000.0,8779.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -16089.3,
+                2000.0,
+                8779.5
+              ]
             ],
             "props": {
               "speed": 250.0,
@@ -5900,16 +6078,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "d3a_start_cut",
         "tm": [
-          [-0.999048,0.0,-0.0436195],
-          [0.0,1.0,0.0],
-          [0.0436195,0.0,-0.999048],
-          [-22166.6,1800.0,11375.5]
+          [
+            -0.999048,
+            0.0,
+            -0.0436195
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0436195,
+            0.0,
+            -0.999048
+          ],
+          [
+            -22166.6,
+            1800.0,
+            11375.5
+          ]
         ],
         "unit_class": "d3a1",
         "closed_waypoints": false,
@@ -5951,10 +6143,26 @@
           "d3a_start_cut_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-26812.5,2200.0,11085.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -26812.5,
+                2200.0,
+                11085.4
+              ]
             ],
             "props": {
               "speed": 250.0,
@@ -5965,16 +6173,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "zero_cut",
         "tm": [
-          [-1.0,0.0,-1.19209e-07],
-          [0.0,1.0,0.0],
-          [1.19209e-07,0.0,-1.0],
-          [-22086.3,2000.0,11396.8]
+          [
+            -1.0,
+            0.0,
+            -1.19209E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.19209E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            -22086.3,
+            2000.0,
+            11396.8
+          ]
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
@@ -6016,10 +6238,26 @@
           "zero_cut_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-25280.7,2400.0,9151.65]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25280.7,
+                2400.0,
+                9151.65
+              ]
             ],
             "props": {
               "speed": 250.0,
@@ -6030,16 +6268,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
+      },
+      {
         "name": "2a_zero01",
         "tm": [
-          [-0.906308,0.0,-0.422619],
-          [0.0,1.0,0.0],
-          [0.422619,0.0,-0.906308],
-          [-27917.6,2500.0,-412.85]
+          [
+            -0.906308,
+            0.0,
+            -0.422619
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.422619,
+            0.0,
+            -0.906308
+          ],
+          [
+            -27917.6,
+            2500.0,
+            -412.85
+          ]
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
@@ -6076,17 +6328,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "2a_zero02",
         "tm": [
-          [-1.0,0.0,-2.98023e-07],
-          [0.0,1.0,0.0],
-          [2.98023e-07,0.0,-1.0],
-          [-30480.9,2500.0,-13478.6]
+          [
+            -1.0,
+            0.0,
+            -2.98023E-07
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            2.98023E-07,
+            0.0,
+            -1.0
+          ],
+          [
+            -30480.9,
+            2500.0,
+            -13478.6
+          ]
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
@@ -6123,17 +6389,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "2a_zero03",
         "tm": [
-          [-0.939693,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,-0.939693],
-          [-26740.1,2500.0,-6691.15]
+          [
+            -0.939693,
+            0.0,
+            0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.34202,
+            0.0,
+            -0.939693
+          ],
+          [
+            -26740.1,
+            2500.0,
+            -6691.15
+          ]
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
@@ -6170,18 +6450,34 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "jpn_fleet": {
       "type": "Cylinder",
       "tm": [
-        [5990.21,0.0,0.0],
-        [0.0,525.0,0.0],
-        [0.0,0.0,5990.21],
-        [381.5,-17.6,-1043.7]
+        [
+          5990.21,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          525.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5990.21
+        ],
+        [
+          381.5,
+          -17.6,
+          -1043.7
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6190,10 +6486,26 @@
     "10km": {
       "type": "Cylinder",
       "tm": [
-        [5009.73,0.0,0.0],
-        [0.0,725.55,0.0],
-        [0.0,0.0,5009.73],
-        [-35418.4,-478.5,962.6]
+        [
+          5009.73,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          725.55,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5009.73
+        ],
+        [
+          -35418.4,
+          -478.5,
+          962.6
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6202,10 +6514,26 @@
     "tf17_zone": {
       "type": "Cylinder",
       "tm": [
-        [15000.0,0.0,0.0],
-        [0.0,633.05,0.0],
-        [0.0,0.0,15000.0],
-        [-33539.2,-52.5,7104.5]
+        [
+          15000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          633.05,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          15000.0
+        ],
+        [
+          -33539.2,
+          -52.5,
+          7104.5
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6214,10 +6542,26 @@
     "30km": {
       "type": "Cylinder",
       "tm": [
-        [15009.7,0.0,0.0],
-        [0.0,725.55,0.0],
-        [0.0,0.0,15009.7],
-        [-16570.7,-18.9,-455.55]
+        [
+          15009.7,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          725.55,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          15009.7
+        ],
+        [
+          -16570.7,
+          -18.9,
+          -455.55
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6226,10 +6570,26 @@
     "tf16_2000": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-37973.6,2000.0,-4917.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -37973.6,
+          2000.0,
+          -4917.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6238,10 +6598,26 @@
     "tf16_2500": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-37973.6,2500.0,-4917.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -37973.6,
+          2500.0,
+          -4917.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6250,10 +6626,26 @@
     "tf16_3000": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-37973.6,3000.0,-4917.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -37973.6,
+          3000.0,
+          -4917.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6262,10 +6654,26 @@
     "tf17_1500": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-33580.5,1500.0,7112.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -33580.5,
+          1500.0,
+          7112.3
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6274,10 +6682,26 @@
     "tf17_3000": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-33580.5,3000.0,7112.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -33580.5,
+          3000.0,
+          7112.3
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6286,10 +6710,26 @@
     "tf17_3500": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-33580.5,3500.0,7112.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -33580.5,
+          3500.0,
+          7112.3
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6298,10 +6738,26 @@
     "evac": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [38545.8,1500.0,-4531.9]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          38545.8,
+          1500.0,
+          -4531.9
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6310,10 +6766,26 @@
     "tf17_2000": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-33580.5,2000.0,7112.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -33580.5,
+          2000.0,
+          7112.3
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6322,10 +6794,26 @@
     "tf17_2500": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-33580.5,2500.0,7112.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -33580.5,
+          2500.0,
+          7112.3
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6334,10 +6822,26 @@
     "tf16_1500": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-37973.6,1500.0,-4917.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -37973.6,
+          1500.0,
+          -4917.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6346,10 +6850,26 @@
     "tf16_1000": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-37973.6,1000.0,-4917.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -37973.6,
+          1000.0,
+          -4917.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6358,10 +6878,26 @@
     "armada1_spawn_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-29098.7,3000.0,3637.6]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -29098.7,
+          3000.0,
+          3637.6
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6370,10 +6906,26 @@
     "armada1_lookAt": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-27544.6,3000.0,4420.55]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -27544.6,
+          3000.0,
+          4420.55
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6382,10 +6934,26 @@
     "deb_cut_f4f_spawn02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-38180.8,1500.0,-3401.9]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -38180.8,
+          1500.0,
+          -3401.9
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6394,10 +6962,26 @@
     "f4f_cut_look": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-29337.6,1000.0,-5452.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -29337.6,
+          1000.0,
+          -5452.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6406,10 +6990,26 @@
     "armada1_cut_spawn_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-34517.5,2000.0,3905.85]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -34517.5,
+          2000.0,
+          3905.85
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6418,10 +7018,26 @@
     "armada1_tf16_spawn_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-32493.4,2000.0,2413.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -32493.4,
+          2000.0,
+          2413.8
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6430,10 +7046,26 @@
     "f4f_spawn_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-28925.6,3000.0,4065.8]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -28925.6,
+          3000.0,
+          4065.8
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6442,10 +7074,26 @@
     "deb_cut_d3a_spawn": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-33486.5,1500.0,-4480.05]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -33486.5,
+          1500.0,
+          -4480.05
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6454,10 +7102,26 @@
     "deb_cut_f4f_spawn01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-33164.1,2000.0,-5642.25]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -33164.1,
+          2000.0,
+          -5642.25
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6466,10 +7130,26 @@
     "tf16_zone": {
       "type": "Cylinder",
       "tm": [
-        [10000.0,0.0,0.0],
-        [0.0,633.05,0.0],
-        [0.0,0.0,10000.0],
-        [-37926.4,-478.5,-5080.75]
+        [
+          10000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          633.05,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10000.0
+        ],
+        [
+          -37926.4,
+          -478.5,
+          -5080.75
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6478,10 +7158,26 @@
     "area_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-39245.1,500.0,-3885.75]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -39245.1,
+          500.0,
+          -3885.75
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6490,10 +7186,26 @@
     "north": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [0.0,0.0,64000.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          64000.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6502,10 +7214,26 @@
     "east": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [64000.0,0.0,0.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          64000.0,
+          0.0,
+          0.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6514,10 +7242,26 @@
     "jpn_bombers_briefing": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-60551.6,0.0,-5809.45]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -60551.6,
+          0.0,
+          -5809.45
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -6526,16 +7270,32 @@
     "jpn_fighters_briefing": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-61507.9,0.0,-5880.45]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -61507.9,
+          0.0,
+          -5880.45
+        ]
       ],
       "props": {
         "forceReplication": true
       }
     }
   },
-  "objLayers": [],
-  "wayPoints": []
+  "objLayers": {},
+  "wayPoints": {}
 }

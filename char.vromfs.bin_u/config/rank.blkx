@@ -34,7 +34,7 @@
   "expMulWithTierDiffMinus7": 0.05,
   "crew_exp_mul": 0.03,
   "crew_exp_mul_arcade": 0.03,
-  "crew_exp_mul_historical": 0.0113,
+  "crew_exp_mul_historical": 0.01125,
   "crew_exp_mul_simulation": 0.009,
   "maxXPLimit": 200000000,
   "expForHitTimeout": 5.0,
@@ -119,41 +119,21 @@
       "costGold": 1800
     }
   },
-  "country": [
-    {
-      "c": "country_0"
-    },
-    {
-      "c": "country_usa"
-    },
-    {
-      "c": "country_germany"
-    },
-    {
-      "c": "country_ussr"
-    },
-    {
-      "c": "country_britain"
-    },
-    {
-      "c": "country_japan"
-    },
-    {
-      "c": "country_italy"
-    },
-    {
-      "c": "country_france"
-    },
-    {
-      "c": "country_china"
-    },
-    {
-      "c": "country_sweden"
-    },
-    {
-      "c": "country_israel"
-    }
-  ],
+  "country": {
+    "c": [
+      "country_0",
+      "country_usa",
+      "country_germany",
+      "country_ussr",
+      "country_britain",
+      "country_japan",
+      "country_italy",
+      "country_france",
+      "country_china",
+      "country_sweden",
+      "country_israel"
+    ]
+  },
   "needBuyToOpenNextInEra": {
     "country_ussr": {
       "needBuyToOpenNextInEraAircraft1": 6,
@@ -641,29 +621,74 @@
     "pilotMouseAimNoiseKLow": 2.0,
     "pilotMouseAimNoiseKHigh": 0.5,
     "mechanic": {
-      "hangarRepairSpeed": [1.0,3.0],
-      "airfieldRepairDuration": [30.0,10.0],
-      "airfieldReloadDuration": [30.0,10.0]
+      "hangarRepairSpeed": [
+        1.0,
+        3.0
+      ],
+      "airfieldRepairDuration": [
+        30.0,
+        10.0
+      ],
+      "airfieldReloadDuration": [
+        30.0,
+        10.0
+      ]
     },
     "weaponsmith": {
       "reloadSpeed": {
-        "gun": [1.0,3.0],
-        "cannon": [1.0,3.0],
-        "schraegeMusik": [1.0,3.0],
-        "bombs": [1.0,2.0],
-        "rockets": [1.0,2.0],
-        "torpedoes": [1.0,2.0],
-        "gunners": [0.5,2.0]
+        "gun": [
+          1.0,
+          3.0
+        ],
+        "cannon": [
+          1.0,
+          3.0
+        ],
+        "schraegeMusik": [
+          1.0,
+          3.0
+        ],
+        "bombs": [
+          1.0,
+          2.0
+        ],
+        "rockets": [
+          1.0,
+          2.0
+        ],
+        "torpedoes": [
+          1.0,
+          2.0
+        ],
+        "gunners": [
+          0.5,
+          2.0
+        ]
       },
       "weaponCare": {
-        "bombScatterMultiplier": [2.0,1.0],
-        "torpedoScatterMultiplier": [2.0,1.0],
-        "rocketScatterMultiplier": [2.0,1.0],
-        "jamProbabilityMultiplier": [3.0,1.0]
+        "bombScatterMultiplier": [
+          2.0,
+          1.0
+        ],
+        "torpedoScatterMultiplier": [
+          2.0,
+          1.0
+        ],
+        "rocketScatterMultiplier": [
+          2.0,
+          1.0
+        ],
+        "jamProbabilityMultiplier": [
+          3.0,
+          1.0
+        ]
       }
     },
     "gForce": {
-      "adaptationK": [0.0,1.0],
+      "adaptationK": [
+        0.0,
+        1.0
+      ],
       "arcadeMul": 0.75,
       "percievedViscosity": {
         "positive": 2.0,
@@ -676,20 +701,38 @@
         "release": 0.25
       },
       "adopted": {
-        "min": [0.5,0.25],
-        "max": [1.2,1.7],
+        "min": [
+          0.5,
+          0.25
+        ],
+        "max": [
+          1.2,
+          1.7
+        ],
         "viscosity": 2.0
       },
       "unadopted": {
         "viscosity": 1.0
       },
       "blackout": {
-        "start": [3.3,4.5],
-        "end": [4.5,7.5]
+        "start": [
+          3.3,
+          4.5
+        ],
+        "end": [
+          4.5,
+          7.5
+        ]
       },
       "redout": {
-        "start": [2.0,3.0],
-        "end": [3.0,4.0]
+        "start": [
+          2.0,
+          3.0
+        ],
+        "end": [
+          3.0,
+          4.0
+        ]
       },
       "posteffectViscosity": {
         "blackout": 0.5,
@@ -700,725 +743,1838 @@
     "gunner": {
       "shootingRealistic": {
         "fullStamina": {
-          "accuracy": [0.2,0.8],
-          "density": [0.07,0.6]
+          "accuracy": [
+            0.2,
+            0.8
+          ],
+          "density": [
+            0.07,
+            0.6
+          ]
         },
         "noStamina": {
-          "accuracy": [0.1,0.6],
-          "density": [0.05,0.3]
+          "accuracy": [
+            0.1,
+            0.6
+          ],
+          "density": [
+            0.05,
+            0.3
+          ]
         },
         "rotationSpeed": {
-          "accuracyMultiplier": [45.0,55.0],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            45.0,
+            55.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,3.0],
-            "multiplier": [1.0,0.3]
+            "value": [
+              1.0,
+              3.0
+            ],
+            "multiplier": [
+              1.0,
+              0.3
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.3]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.3
+            ]
           },
           "tangage": {
-            "value": [15.0,70.0],
-            "multiplier": [1.0,0.15]
+            "value": [
+              15.0,
+              70.0
+            ],
+            "multiplier": [
+              1.0,
+              0.15
+            ]
           },
           "roll": {
-            "value": [15.0,60.0],
-            "multiplier": [1.0,0.2]
+            "value": [
+              15.0,
+              60.0
+            ],
+            "multiplier": [
+              1.0,
+              0.2
+            ]
           }
         },
         "bulletDeviation": {
-          "accuracyMultiplier": [1.0,1.0],
-          "densityMultiplier": [2.0,1.0],
-          "redBlackoutMultiplier": [1.0,3.0],
+          "accuracyMultiplier": [
+            1.0,
+            1.0
+          ],
+          "densityMultiplier": [
+            2.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            3.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,2.5]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              2.5
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,-1.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              -1.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "roll": {
-            "value": [25.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              25.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           }
         },
         "burstMinDurationSeconds": {
-          "accuracyMultiplier": [0.75,0.75],
-          "densityMultiplier": [0.75,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            0.75,
+            0.75
+          ],
+          "densityMultiplier": [
+            0.75,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.3]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.3
+            ]
           },
           "tangage": {
-            "value": [35.0,90.0],
-            "multiplier": [1.0,0.3]
+            "value": [
+              35.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.3
+            ]
           },
           "roll": {
-            "value": [35.0,90.0],
-            "multiplier": [1.0,0.3]
+            "value": [
+              35.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.3
+            ]
           }
         },
         "burstMaxDurationSeconds": {
-          "accuracyMultiplier": [0.5,1.5],
-          "densityMultiplier": [0.75,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            0.5,
+            1.5
+          ],
+          "densityMultiplier": [
+            0.75,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.4]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.4
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.3]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.3
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.3]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.3
+            ]
           }
         },
         "trackingMinDuration": {
-          "accuracyMultiplier": [0.1,0.1],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.1,
+            0.1
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.9]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.9
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.9]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.9
+            ]
           }
         },
         "trackingMaxDuration": {
-          "accuracyMultiplier": [0.75,0.75],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.75,
+            0.75
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.1]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.1
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.1]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.1
+            ]
           },
           "tangage": {
-            "value": [40.0,90.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              40.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "roll": {
-            "value": [40.0,90.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              40.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           }
         },
         "sleepMinDuration": {
-          "accuracyMultiplier": [0.1,0.1],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.1,
+            0.1
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,3.0]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              3.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,3.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              3.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,3.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              3.0
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,3.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              3.0
+            ]
           }
         },
         "sleepMaxDuration": {
-          "accuracyMultiplier": [0.5,0.5],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.5,
+            0.5
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           }
         },
         "openFireDistance": {
-          "accuracyMultiplier": [148.0,229.0],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            148.0,
+            229.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.6]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.6
+            ]
           },
           "tangage": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           },
           "roll": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.6]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.6
+            ]
           }
         },
         "startTrackingDistance": {
-          "accuracyMultiplier": [500.0,700.0],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            500.0,
+            700.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           },
           "tangage": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           },
           "roll": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           }
         },
         "switchTargetMinDistance": {
-          "accuracyMultiplier": [150.0,150.0],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            150.0,
+            150.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "tangage": {
-            "value": [15.0,80.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              15.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "roll": {
-            "value": [15.0,80.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              15.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           }
         },
         "openFireWhileTrackingProbability": {
-          "accuracyMultiplier": [0.6,1.0],
-          "densityMultiplier": [0.3,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            0.6,
+            1.0
+          ],
+          "densityMultiplier": [
+            0.3,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.6]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.6
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           }
         },
         "sleepAfterBurstProbability": {
-          "accuracyMultiplier": [0.2,0.2],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,2.0],
+          "accuracyMultiplier": [
+            0.2,
+            0.2
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            2.0
+          ],
           "positiveOverload": {
-            "value": [2.0,4.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              2.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "negativeOverload": {
-            "value": [0.0,-2.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              0.0,
+              -2.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,3.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              3.0
+            ]
           },
           "roll": {
-            "value": [45.0,80.0],
-            "multiplier": [1.0,2.5]
+            "value": [
+              45.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.5
+            ]
           }
         },
         "switchTargetWhileTrackingProbability": {
-          "accuracyMultiplier": [0.5,0.5],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.5,
+            0.5
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.5]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.5
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.5]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.5
+            ]
           },
           "tangage": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,1.5]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              1.5
+            ]
           },
           "roll": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,1.5]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              1.5
+            ]
           }
         },
         "predictionDisplacementMultiplier": {
-          "accuracyMultiplier": [0.55,0.08],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,2.0],
+          "accuracyMultiplier": [
+            0.55,
+            0.08
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            2.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,2.5]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              2.5
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,2.5]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              2.5
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.9]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.9
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.9]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.9
+            ]
           }
         }
       },
       "shooting": {
         "fullStamina": {
-          "accuracy": [0.5,1.0],
-          "density": [0.3,0.9]
+          "accuracy": [
+            0.5,
+            1.0
+          ],
+          "density": [
+            0.3,
+            0.9
+          ]
         },
         "noStamina": {
-          "accuracy": [0.2,0.5],
-          "density": [0.2,0.6]
+          "accuracy": [
+            0.2,
+            0.5
+          ],
+          "density": [
+            0.2,
+            0.6
+          ]
         },
         "rotationSpeed": {
-          "accuracyMultiplier": [50.0,80.0],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            50.0,
+            80.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,3.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              1.0,
+              3.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "tangage": {
-            "value": [15.0,80.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              15.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "roll": {
-            "value": [15.0,60.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              15.0,
+              60.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           }
         },
         "bulletDeviation": {
-          "accuracyMultiplier": [1.0,1.0],
-          "densityMultiplier": [2.5,1.0],
-          "redBlackoutMultiplier": [1.0,3.0],
+          "accuracyMultiplier": [
+            1.0,
+            1.0
+          ],
+          "densityMultiplier": [
+            2.5,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            3.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,-1.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              -1.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "tangage": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "roll": {
-            "value": [35.0,90.0],
-            "multiplier": [1.0,2.9]
+            "value": [
+              35.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              2.9
+            ]
           }
         },
         "burstMinDurationSeconds": {
-          "accuracyMultiplier": [0.75,0.75],
-          "densityMultiplier": [0.75,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            0.75,
+            0.75
+          ],
+          "densityMultiplier": [
+            0.75,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.7]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.7
+            ]
           },
           "tangage": {
-            "value": [35.0,90.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              35.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "roll": {
-            "value": [35.0,90.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              35.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           }
         },
         "burstMaxDurationSeconds": {
-          "accuracyMultiplier": [0.5,1.5],
-          "densityMultiplier": [0.75,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            0.5,
+            1.5
+          ],
+          "densityMultiplier": [
+            0.75,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "tangage": {
-            "value": [35.0,90.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              35.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           },
           "roll": {
-            "value": [35.0,90.0],
-            "multiplier": [1.0,0.5]
+            "value": [
+              35.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.5
+            ]
           }
         },
         "trackingMinDuration": {
-          "accuracyMultiplier": [0.1,0.1],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.1,
+            0.1
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           }
         },
         "trackingMaxDuration": {
-          "accuracyMultiplier": [0.75,0.75],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.75,
+            0.75
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "tangage": {
-            "value": [40.0,90.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              40.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "roll": {
-            "value": [40.0,90.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              40.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           }
         },
         "sleepMinDuration": {
-          "accuracyMultiplier": [0.1,0.1],
-          "densityMultiplier": [1.0,0.9],
-          "redBlackoutMultiplier": [1.0,0.5],
+          "accuracyMultiplier": [
+            0.1,
+            0.1
+          ],
+          "densityMultiplier": [
+            1.0,
+            0.9
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.5
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           }
         },
         "sleepMaxDuration": {
-          "accuracyMultiplier": [0.5,0.5],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,0.5],
+          "accuracyMultiplier": [
+            0.5,
+            0.5
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.5
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           }
         },
         "openFireDistance": {
-          "accuracyMultiplier": [200.0,750.0],
-          "densityMultiplier": [1.0,1.08],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            200.0,
+            750.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.08
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,0.75]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              0.75
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "tangage": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "roll": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           }
         },
         "startTrackingDistance": {
-          "accuracyMultiplier": [800.0,1000.0],
-          "densityMultiplier": [1.0,1.08],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            800.0,
+            1000.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.08
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "tangage": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "roll": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           }
         },
         "switchTargetMinDistance": {
-          "accuracyMultiplier": [140.0,170.0],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            140.0,
+            170.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "tangage": {
-            "value": [15.0,80.0],
-            "multiplier": [1.0,0.9]
+            "value": [
+              15.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.9
+            ]
           },
           "roll": {
-            "value": [15.0,80.0],
-            "multiplier": [1.0,0.9]
+            "value": [
+              15.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.9
+            ]
           }
         },
         "openFireWhileTrackingProbability": {
-          "accuracyMultiplier": [0.6,1.0],
-          "densityMultiplier": [0.3,1.0],
-          "redBlackoutMultiplier": [1.0,0.0],
+          "accuracyMultiplier": [
+            0.6,
+            1.0
+          ],
+          "densityMultiplier": [
+            0.3,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            0.0
+          ],
           "positiveOverload": {
-            "value": [1.0,4.0],
-            "multiplier": [1.0,0.9]
+            "value": [
+              1.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              0.9
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,0.85]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              0.85
+            ]
           },
           "tangage": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           },
           "roll": {
-            "value": [35.0,80.0],
-            "multiplier": [1.0,0.8]
+            "value": [
+              35.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              0.8
+            ]
           }
         },
         "sleepAfterBurstProbability": {
-          "accuracyMultiplier": [0.2,0.2],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,2.0],
+          "accuracyMultiplier": [
+            0.2,
+            0.2
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            2.0
+          ],
           "positiveOverload": {
-            "value": [2.0,4.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              2.0,
+              4.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "negativeOverload": {
-            "value": [0.0,-2.0],
-            "multiplier": [1.0,1.0]
+            "value": [
+              0.0,
+              -2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.0
+            ]
           },
           "tangage": {
-            "value": [65.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              65.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           },
           "roll": {
-            "value": [65.0,80.0],
-            "multiplier": [1.0,2.0]
+            "value": [
+              65.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              2.0
+            ]
           }
         },
         "switchTargetWhileTrackingProbability": {
-          "accuracyMultiplier": [0.5,0.5],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.0],
+          "accuracyMultiplier": [
+            0.5,
+            0.5
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.0
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.1]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.1
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.1]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.1
+            ]
           },
           "tangage": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,1.5]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              1.5
+            ]
           },
           "roll": {
-            "value": [45.0,90.0],
-            "multiplier": [1.0,1.5]
+            "value": [
+              45.0,
+              90.0
+            ],
+            "multiplier": [
+              1.0,
+              1.5
+            ]
           }
         },
         "predictionDisplacementMultiplier": {
-          "accuracyMultiplier": [0.2,0.0],
-          "densityMultiplier": [1.0,1.0],
-          "redBlackoutMultiplier": [1.0,1.5],
+          "accuracyMultiplier": [
+            0.2,
+            0.0
+          ],
+          "densityMultiplier": [
+            1.0,
+            1.0
+          ],
+          "redBlackoutMultiplier": [
+            1.0,
+            1.5
+          ],
           "positiveOverload": {
-            "value": [1.0,2.0],
-            "multiplier": [1.0,1.4]
+            "value": [
+              1.0,
+              2.0
+            ],
+            "multiplier": [
+              1.0,
+              1.4
+            ]
           },
           "negativeOverload": {
-            "value": [1.0,0.0],
-            "multiplier": [1.0,1.6]
+            "value": [
+              1.0,
+              0.0
+            ],
+            "multiplier": [
+              1.0,
+              1.6
+            ]
           },
           "tangage": {
-            "value": [45.0,80.0],
-            "multiplier": [1.0,1.5]
+            "value": [
+              45.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              1.5
+            ]
           },
           "roll": {
-            "value": [45.0,80.0],
-            "multiplier": [1.0,1.8]
+            "value": [
+              45.0,
+              80.0
+            ],
+            "multiplier": [
+              1.0,
+              1.8
+            ]
           }
         }
       },
       "takingDamage": {
-        "damageMultiplier": [3.0,1.0],
-        "deathChanceMultiplier": [0.5,0.3]
+        "damageMultiplier": [
+          3.0,
+          1.0
+        ],
+        "deathChanceMultiplier": [
+          0.5,
+          0.3
+        ]
       },
       "detection": {
         "helicopter": {
           "vision": {
-            "spottingDistance": [1000.0,2000.0],
-            "instantSpottingDistance": [400.0,800.0],
-            "rocketSpottingDistance": [5000.0,10000.0]
+            "spottingDistance": [
+              1000.0,
+              2000.0
+            ],
+            "instantSpottingDistance": [
+              400.0,
+              800.0
+            ],
+            "rocketSpottingDistance": [
+              5000.0,
+              10000.0
+            ]
           },
           "hearing": {
-            "spottingDistance": [400.0,800.0],
-            "instantSpottingDistance": [200.0,400.0]
+            "spottingDistance": [
+              400.0,
+              800.0
+            ],
+            "instantSpottingDistance": [
+              200.0,
+              400.0
+            ]
           }
         },
         "vision": {
-          "spottingDistance": [4000.0,8000.0],
-          "instantSpottingDistance": [500.0,1000.0],
-          "rocketSpottingTime": [3.0,1.5],
-          "rocketSpottingDistance": [5000.0,10000.0]
+          "spottingDistance": [
+            4000.0,
+            8000.0
+          ],
+          "instantSpottingDistance": [
+            500.0,
+            1000.0
+          ],
+          "rocketSpottingTime": [
+            3.0,
+            1.5
+          ],
+          "rocketSpottingDistance": [
+            5000.0,
+            10000.0
+          ]
         },
         "hearing": {
-          "spottingDistance": [400.0,800.0],
-          "instantSpottingDistance": [150.0,300.0]
+          "spottingDistance": [
+            400.0,
+            800.0
+          ],
+          "instantSpottingDistance": [
+            150.0,
+            300.0
+          ]
         }
       }
     },
     "pilot": {
       "takingDamage": {
-        "damageMultiplier": [3.0,1.0],
-        "deathChanceMultiplier": [1.0,0.3]
+        "damageMultiplier": [
+          3.0,
+          1.0
+        ],
+        "deathChanceMultiplier": [
+          1.0,
+          0.3
+        ]
       },
       "detection": {
         "helicopter": {
           "vision": {
-            "spottingDistance": [1000.0,2000.0],
-            "instantSpottingDistance": [400.0,800.0],
-            "rocketSpottingDistance": [5000.0,10000.0]
+            "spottingDistance": [
+              1000.0,
+              2000.0
+            ],
+            "instantSpottingDistance": [
+              400.0,
+              800.0
+            ],
+            "rocketSpottingDistance": [
+              5000.0,
+              10000.0
+            ]
           },
           "hearing": {
-            "spottingDistance": [400.0,800.0],
-            "instantSpottingDistance": [200.0,400.0]
+            "spottingDistance": [
+              400.0,
+              800.0
+            ],
+            "instantSpottingDistance": [
+              200.0,
+              400.0
+            ]
           }
         },
         "vision": {
-          "spottingDistance": [4000.0,8000.0],
-          "instantSpottingDistance": [500.0,1000.0],
-          "rocketSpottingDistance": [5000.0,10000.0]
+          "spottingDistance": [
+            4000.0,
+            8000.0
+          ],
+          "instantSpottingDistance": [
+            500.0,
+            1000.0
+          ],
+          "rocketSpottingDistance": [
+            5000.0,
+            10000.0
+          ]
         },
         "hearing": {
-          "spottingDistance": [400.0,800.0],
-          "instantSpottingDistance": [150.0,300.0]
+          "spottingDistance": [
+            400.0,
+            800.0
+          ],
+          "instantSpottingDistance": [
+            150.0,
+            300.0
+          ]
         }
       },
       "mouseAim": {
-        "smoothnessK": [2.0,0.5],
-        "noiseK": [2.0,0.5]
+        "smoothnessK": [
+          2.0,
+          0.5
+        ],
+        "noiseK": [
+          2.0,
+          0.5
+        ]
       }
     },
     "stamina": {
-      "restorationSpeed": [0.2,0.4],
-      "staminaAttenuationK": [0.25,0.5],
+      "restorationSpeed": [
+        0.2,
+        0.4
+      ],
+      "staminaAttenuationK": [
+        0.25,
+        0.5
+      ],
       "staminaUsageThreshold": 0.3,
       "positiveOverload": {
-        "usageSpeed": [0.5,0.3],
-        "adoptableGMultiplier": [0.775,1.0]
+        "usageSpeed": [
+          0.5,
+          0.3
+        ],
+        "adoptableGMultiplier": [
+          0.775,
+          1.0
+        ]
       },
       "negativeOverload": {
-        "usageSpeed": [0.7,0.5],
-        "adoptableGMultiplier": [0.5,1.0]
+        "usageSpeed": [
+          0.7,
+          0.5
+        ],
+        "adoptableGMultiplier": [
+          0.5,
+          1.0
+        ]
       }
     },
     "tank_crew": {
@@ -1432,58 +2588,199 @@
       "crewTankVisionAngle": 80.0,
       "crewTankVisionSpottingAngle": 50.0,
       "driver": {
-        "visionSpottingDistanceMultiplier": [0.45,1.0],
-        "fieldRepairSpeedMultiplier": [1.0,2.0],
-        "damageMultiplier": [2.0,1.0],
-        "changeTimeMultiplier": [1.3,0.8],
-        "brakesTau": [0.1,0.05],
-        "gearChangeTime": [1.0,0.1],
-        "maxForwardSpeed": [1.0,1.0],
-        "maxBackSpeed": [1.0,1.0],
+        "visionSpottingDistanceMultiplier": [
+          0.45,
+          1.0
+        ],
+        "fieldRepairSpeedMultiplier": [
+          1.0,
+          2.0
+        ],
+        "damageMultiplier": [
+          2.0,
+          1.0
+        ],
+        "changeTimeMultiplier": [
+          1.3,
+          0.8
+        ],
+        "brakesTau": [
+          0.1,
+          0.05
+        ],
+        "gearChangeTime": [
+          1.0,
+          0.1
+        ],
+        "maxForwardSpeed": [
+          1.0,
+          1.0
+        ],
+        "maxBackSpeed": [
+          1.0,
+          1.0
+        ],
         "driverSpeedThreshold": 0.5
       },
       "tank_gunner": {
-        "visionSpottingDistanceMultiplier": [0.45,1.0],
-        "fieldRepairSpeedMultiplier": [1.0,2.0],
-        "damageMultiplier": [2.0,1.0],
-        "changeTimeMultiplier": [1.3,0.8],
-        "targetingQuality": [0.0,1.0],
-        "targetingSpeedYawMult": [0.7,1.0],
-        "targetingSpeedPitchMult": [0.7,1.0],
-        "distanceError": [1.0,5.0,50.0,100.0],
-        "distanceThresholdMin": [25.0,150.0,300.0,600.0],
-        "distanceThresholdMax": [50.0,250.0,600.0,1000.0],
-        "distanceErrorRealistic": [5.0,10.0,50.0,100.0],
-        "distanceThresholdMinRealistic": [50.0,200.0,400.0,800.0],
-        "distanceThresholdMaxRealistic": [100.0,400.0,800.0,1200.0],
-        "timeMeasurementRange": [6.0,3.0]
+        "visionSpottingDistanceMultiplier": [
+          0.45,
+          1.0
+        ],
+        "fieldRepairSpeedMultiplier": [
+          1.0,
+          2.0
+        ],
+        "damageMultiplier": [
+          2.0,
+          1.0
+        ],
+        "changeTimeMultiplier": [
+          1.3,
+          0.8
+        ],
+        "targetingQuality": [
+          0.0,
+          1.0
+        ],
+        "targetingSpeedYawMult": [
+          0.7,
+          1.0
+        ],
+        "targetingSpeedPitchMult": [
+          0.7,
+          1.0
+        ],
+        "distanceError": [
+          1.0,
+          5.0,
+          50.0,
+          100.0
+        ],
+        "distanceThresholdMin": [
+          25.0,
+          150.0,
+          300.0,
+          600.0
+        ],
+        "distanceThresholdMax": [
+          50.0,
+          250.0,
+          600.0,
+          1000.0
+        ],
+        "distanceErrorRealistic": [
+          5.0,
+          10.0,
+          50.0,
+          100.0
+        ],
+        "distanceThresholdMinRealistic": [
+          50.0,
+          200.0,
+          400.0,
+          800.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          100.0,
+          400.0,
+          800.0,
+          1200.0
+        ],
+        "timeMeasurementRange": [
+          6.0,
+          3.0
+        ]
       },
       "commander": {
-        "visionSpottingDistanceMultiplier": [0.45,1.0],
-        "fieldRepairSpeedMultiplier": [1.0,2.0],
-        "damageMultiplier": [2.0,1.0],
-        "changeTimeMultiplier": [1.3,0.8],
-        "leadership": [0.0,0.2],
-        "machineGunError": [1.0,0.1]
+        "visionSpottingDistanceMultiplier": [
+          0.45,
+          1.0
+        ],
+        "fieldRepairSpeedMultiplier": [
+          1.0,
+          2.0
+        ],
+        "damageMultiplier": [
+          2.0,
+          1.0
+        ],
+        "changeTimeMultiplier": [
+          1.3,
+          0.8
+        ],
+        "leadership": [
+          0.0,
+          0.2
+        ],
+        "machineGunError": [
+          1.0,
+          0.1
+        ]
       },
       "loader": {
-        "visionSpottingDistanceMultiplier": [0.45,1.0],
-        "fieldRepairSpeedMultiplier": [1.0,2.0],
-        "damageMultiplier": [2.0,1.0],
-        "changeTimeMultiplier": [1.3,0.8],
-        "loadingTimeMult": [1.3,1.0]
+        "visionSpottingDistanceMultiplier": [
+          0.45,
+          1.0
+        ],
+        "fieldRepairSpeedMultiplier": [
+          1.0,
+          2.0
+        ],
+        "damageMultiplier": [
+          2.0,
+          1.0
+        ],
+        "changeTimeMultiplier": [
+          1.3,
+          0.8
+        ],
+        "loadingTimeMult": [
+          1.3,
+          1.0
+        ]
       },
       "radio_gunner": {
-        "visionSpottingDistanceMultiplier": [0.45,1.0],
-        "fieldRepairSpeedMultiplier": [1.0,2.0],
-        "damageMultiplier": [2.0,1.0],
-        "changeTimeMultiplier": [1.3,0.8],
-        "artilleryDispersionMult": [1.3,1.0],
-        "artilleryAdjustmentDispersionMult": [1.3,1.0],
-        "artilleryTimeToFirstShotMult": [1.3,1.0],
-        "artilleryTimeBetweenShotsMult": [1.3,1.0],
-        "artilleryTimeBetweenAdjustmentsShots": [1.3,1.0],
-        "radioDistanceMult": [0.5,1.0]
+        "visionSpottingDistanceMultiplier": [
+          0.45,
+          1.0
+        ],
+        "fieldRepairSpeedMultiplier": [
+          1.0,
+          2.0
+        ],
+        "damageMultiplier": [
+          2.0,
+          1.0
+        ],
+        "changeTimeMultiplier": [
+          1.3,
+          0.8
+        ],
+        "artilleryDispersionMult": [
+          1.3,
+          1.0
+        ],
+        "artilleryAdjustmentDispersionMult": [
+          1.3,
+          1.0
+        ],
+        "artilleryTimeToFirstShotMult": [
+          1.3,
+          1.0
+        ],
+        "artilleryTimeBetweenShotsMult": [
+          1.3,
+          1.0
+        ],
+        "artilleryTimeBetweenAdjustmentsShots": [
+          1.3,
+          1.0
+        ],
+        "radioDistanceMult": [
+          0.5,
+          1.0
+        ]
       }
     },
     "ship_crew": {
@@ -1494,36 +2791,99 @@
       "crewShipVisionSpottingDistance": 300.0,
       "crewShipToTorpedoViewCamSpottingDistance": 100.0,
       "crewShipToMineViewCamSpottingDistance": 50.0,
-      "visionSpottingDistanceMultiplier": [0.75,1.0],
+      "visionSpottingDistanceMultiplier": [
+        0.75,
+        1.0
+      ],
       "ship_commander": {
-        "interchangeAbilityMult": [1.4,1.0],
-        "leadership": [0.0,0.1],
-        "radioDistanceMult": [5.0,10.0]
+        "interchangeAbilityMult": [
+          1.4,
+          1.0
+        ],
+        "leadership": [
+          0.0,
+          0.1
+        ],
+        "radioDistanceMult": [
+          5.0,
+          10.0
+        ]
       },
       "ship_engine_room": {
-        "operationTime": [2.0,1.5],
-        "floodCriticalWork": [0.5,1.0],
-        "antiFireSkill": [1.0,0.5]
+        "operationTime": [
+          2.0,
+          1.5
+        ],
+        "floodCriticalWork": [
+          0.5,
+          1.0
+        ],
+        "antiFireSkill": [
+          1.0,
+          0.5
+        ]
       },
       "ship_artillery": {
-        "mainCaliberReloadMult": [1.3,1.0],
-        "auxCaliberReloadMult": [1.3,1.0],
-        "antiairCaliberReloadMult": [1.3,1.0],
-        "antiairGunnerMaxAngle": [2.0,1.0],
-        "auxGunnerMaxAngle": [2.0,1.0],
-        "distFuseAccuracy": [1.5,1.0]
+        "mainCaliberReloadMult": [
+          1.3,
+          1.0
+        ],
+        "auxCaliberReloadMult": [
+          1.3,
+          1.0
+        ],
+        "antiairCaliberReloadMult": [
+          1.3,
+          1.0
+        ],
+        "antiairGunnerMaxAngle": [
+          2.0,
+          1.0
+        ],
+        "auxGunnerMaxAngle": [
+          2.0,
+          1.0
+        ],
+        "distFuseAccuracy": [
+          1.5,
+          1.0
+        ]
       },
       "ship_damage_control": {
-        "unwatering": [1.5,1.0],
-        "extinguisherTimeMult": [1.5,1.0],
-        "fireDamageMult": [1.0,0.85],
-        "repairTimeMult": [1.5,1.0],
-        "surviveEffortMult": [0.75,1.0]
+        "unwatering": [
+          1.5,
+          1.0
+        ],
+        "extinguisherTimeMult": [
+          1.5,
+          1.0
+        ],
+        "fireDamageMult": [
+          1.0,
+          0.85
+        ],
+        "repairTimeMult": [
+          1.5,
+          1.0
+        ],
+        "surviveEffortMult": [
+          0.75,
+          1.0
+        ]
       },
       "ship_dock_service": {
-        "torpedoGunSpreadMult": [1.5,1.0],
-        "rocketGunSpreadMult": [1.5,1.0],
-        "machineGunCoolDownMult": [1.5,1.0]
+        "torpedoGunSpreadMult": [
+          1.5,
+          1.0
+        ],
+        "rocketGunSpreadMult": [
+          1.5,
+          1.0
+        ],
+        "machineGunCoolDownMult": [
+          1.5,
+          1.0
+        ]
       }
     }
   }

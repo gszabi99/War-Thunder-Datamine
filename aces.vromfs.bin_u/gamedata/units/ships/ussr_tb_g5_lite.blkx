@@ -22,9 +22,9 @@
   "customUpdateDiv": 5,
   "SoundMove": "models.Ship",
   "tailStartOffset": -45.0,
-  "DamageParts": [
-    {
-      "steel": {
+  "DamageParts": {
+    "steel": [
+      {
         "engine_dm": {
           "hp": 15.0
         },
@@ -34,10 +34,8 @@
         "body_dm": {
           "hp": 240.0
         }
-      }
-    },
-    {
-      "steel": {
+      },
+      {
         "gun1_dm": {
           "hp": 10.0
         },
@@ -51,16 +49,16 @@
           "hp": 10.0
         }
       }
-    }
-  ],
+    ]
+  },
   "class_tags": {
     "pacific": true,
     "mediterran": true,
     "westernfront": true
   },
-  "DamageEffects": [
-    {
-      "part": {
+  "DamageEffects": {
+    "part": [
+      {
         "name": "body_dm",
         "onHit": {
           "smoke": 0.01,
@@ -69,10 +67,8 @@
         "onKill": {
           "expl": 1.0
         }
-      }
-    },
-    {
-      "part": {
+      },
+      {
         "name": "engine_dm",
         "onHit": {
           "smoke": 0.1,
@@ -81,36 +77,24 @@
         "onKill": {
           "body_dm": 1.0
         }
-      }
-    },
-    {
-      "part": [
-        {
-          "name": "bodypart1_dm"
+      },
+      {
+        "name": [
+          "bodypart1_dm",
+          "bodypart1_dm",
+          "bodypart1_dm",
+          "bodypart1_dm"
+        ],
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
         },
-        {
-          "name": "bodypart1_dm"
-        },
-        {
-          "name": "bodypart1_dm"
-        },
-        {
-          "name": "bodypart1_dm"
-        },
-        {
-          "onHit": {
-            "smoke": 0.1,
-            "fire": 0.01
-          }
-        },
-        {
-          "onKill": {
-            "smoke": 1.0
-          }
+        "onKill": {
+          "smoke": 1.0
         }
-      ]
-    }
-  ],
+      }
+    ]
+  },
   "sound": {
     "path": "sounds/engines",
     "pathStudio": "aircraft/engines",
@@ -148,8 +132,14 @@
       "gun": "gun0"
     },
     "limits": {
-      "yaw": [-180.0,180.0],
-      "pitch": [-10.0,90.0]
+      "yaw": [
+        -180.0,
+        180.0
+      ],
+      "pitch": [
+        -10.0,
+        90.0
+      ]
     }
   }
 }

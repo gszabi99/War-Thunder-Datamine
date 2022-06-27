@@ -10,57 +10,33 @@
       "text": "#options/voiceChat/disableWarning",
       "overlayTextColor": "warning"
     },
-    "tdiv": [
-      {
-        "id": "voice_options_block"
+    "tdiv": {
+      "id": "voice_options_block",
+      "width": "pw",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "max-height": "@bigOptionsHeight",
+      "flow": "vertical",
+      "optionsBoxRightScroll": {
+        "id": "voiceOptions"
       },
-      {
-        "width": "pw"
-      },
-      {
-        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
-      },
-      {
-        "max-height": "@bigOptionsHeight"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "optionsBoxRightScroll": {
-          "id": "voiceOptions"
-        }
-      },
-      {
-        "tdiv": [
-          {
-            "id": "ptt_buttons_block"
-          },
-          {
-            "width": "pw"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "display": "hide"
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "td": {
+      "tdiv": [
+        {
+          "id": "ptt_buttons_block",
+          "width": "pw",
+          "flow": "vertical",
+          "display": "hide",
+          "tdiv": [
+            {
+              "width": "pw",
+              "td": [
+                {
                   "cellType": "left",
                   "width": "0.5pw",
                   "optiontext": {
                     "text": "#options/ptt_shortcut"
                   }
-                }
-              },
-              {
-                "td": {
+                },
+                {
                   "cellType": "right",
                   "width": "0.5pw",
                   "padding-left": "@optPad",
@@ -79,25 +55,17 @@
                     }
                   }
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "width": "pw"
-              },
-              {
-                "padding-top": "0.005@sf"
-              },
-              {
-                "td": {
+              ]
+            },
+            {
+              "width": "pw",
+              "padding-top": "0.005@sf",
+              "td": [
+                {
                   "cellType": "left",
                   "width": "0.5pw"
-                }
-              },
-              {
-                "td": {
+                },
+                {
                   "cellType": "right",
                   "width": "0.5pw",
                   "padding-left": "@optPad",
@@ -107,27 +75,19 @@
                     "tooltip": "#guiHints/ptt_shortcut_reset"
                   }
                 }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tdiv": [
-          {
-            "width": "pw"
-          },
-          {
-            "padding-top": "0.005@sf"
-          },
-          {
-            "td": {
+              ]
+            }
+          ]
+        },
+        {
+          "width": "pw",
+          "padding-top": "0.005@sf",
+          "td": [
+            {
               "cellType": "left",
               "width": "0.5pw"
-            }
-          },
-          {
-            "td": {
+            },
+            {
               "cellType": "right",
               "width": "0.5pw",
               "padding-left": "@optPad",
@@ -138,9 +98,9 @@
                 "_on_click": "onEchoTestButton"
               }
             }
-          }
-        ]
-      }
-    ]
+          ]
+        }
+      ]
+    }
   }
 }

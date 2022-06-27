@@ -1,8 +1,8 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "id": "clan_activity_modal",
       "size": "70*@scrn_tgt/100, 70*@scrn_tgt/100.0",
@@ -14,23 +14,15 @@
           "caption": "yes",
           "text": "#clan/activity"
         },
-        "Button_close": []
+        "Button_close": {}
       },
-      "tdiv": [
-        {
-          "size": "pw, ph"
-        },
-        {
-          "id": "clan_activity_container"
-        },
-        {
-          "padding": "0.01*@scrn_tgt"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "tdiv": {
+      "tdiv": {
+        "size": "pw, ph",
+        "id": "clan_activity_container",
+        "padding": "0.01*@scrn_tgt",
+        "flow": "vertical",
+        "tdiv": [
+          {
             "left": "pw-w-0.02@scrn_tgt",
             "position": "relative",
             "textareaNoTab": {
@@ -56,10 +48,8 @@
                 "caption": "yes"
               }
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "left": "pw-w-0.02@scrn_tgt",
             "position": "relative",
             "textareaNoTab": {
@@ -85,10 +75,8 @@
                 "caption": "yes"
               }
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "width": "pw",
             "table": {
               "id": "clan_member_activity_history_table_header",
@@ -97,10 +85,8 @@
               "text-valign": "center",
               "text-halign": "center"
             }
-          }
-        },
-        {
-          "tdiv": {
+          },
+          {
             "size": "pw, fh",
             "overflow-y": "auto",
             "scrollbarShortcuts": "yes",
@@ -112,8 +98,8 @@
               "text-halign": "center"
             }
           }
-        }
-      ]
+        ]
+      }
     }
   }
 }

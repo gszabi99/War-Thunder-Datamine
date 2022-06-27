@@ -1,7 +1,7 @@
 {
   "root": {
-    "blur": [],
-    "blur_foreground": [],
+    "blur": {},
+    "blur_foreground": {},
     "frame": {
       "pos": "0.5sw-0.5w, 0.5sh-0.5h",
       "position": "absolute",
@@ -19,35 +19,31 @@
         "text-align": "left"
       },
       "navBar": {
-        "navMiddle": [
-          {
-            "Button_text": {
+        "navMiddle": {
+          "Button_text": [
+            {
               "id": "accept",
               "text": "#msgbox/btn_haveReadAndAgree",
               "on_click": "onAcceptEula",
               "btnName": "A",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "decline",
               "text": "#msgbox/btn_cancel",
               "_on_click": "onExit",
               "btnName": "B",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
+              "ButtonImg": {}
+            },
+            {
               "id": "close",
               "text": "#mainmenu/btnClose",
               "_on_click": "goBack",
               "btnName": "B",
-              "ButtonImg": []
+              "ButtonImg": {}
             }
-          }
-        ]
+          ]
+        }
       }
     }
   }

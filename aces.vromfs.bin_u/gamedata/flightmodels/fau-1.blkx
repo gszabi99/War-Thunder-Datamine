@@ -394,40 +394,28 @@
       }
     }
   },
-  "DamageEffects": [
-    {
-      "part": [
-        {
-          "name": "tank1_dm"
+  "DamageEffects": {
+    "part": [
+      {
+        "name": [
+          "tank1_dm",
+          "tank2_dm",
+          "tank3_dm",
+          "tank4_dm"
+        ],
+        "onHit": {
+          "expl": 0.0001,
+          "fire": 0.03,
+          "leak": 0.035
         },
-        {
-          "name": "tank2_dm"
-        },
-        {
-          "name": "tank3_dm"
-        },
-        {
-          "name": "tank4_dm"
-        },
-        {
-          "onHit": {
-            "expl": 0.0001,
-            "fire": 0.03,
-            "leak": 0.035
-          }
-        },
-        {
-          "onKill": {
-            "expl": 0.1,
-            "fire": 0.9,
-            "leak": 2.0,
-            "nothing": 3.0
-          }
+        "onKill": {
+          "expl": 0.1,
+          "fire": 0.9,
+          "leak": 2.0,
+          "nothing": 3.0
         }
-      ]
-    },
-    {
-      "part": {
+      },
+      {
         "name": "tail_dm",
         "onHit": {
           "tailcontrol_dm": 0.001
@@ -436,84 +424,56 @@
           "nothing": 9.0,
           "tailcontrol_dm": 1.0
         }
-      }
-    },
-    {
-      "part": [
-        {
-          "name": "engine1_dm"
+      },
+      {
+        "name": [
+          "engine1_dm",
+          "engine2_dm",
+          "engine3_dm",
+          "engine4_dm"
+        ],
+        "onHit": {
+          "expl": 0.001,
+          "leak_oil": 0.2
         },
-        {
-          "name": "engine2_dm"
-        },
-        {
-          "name": "engine3_dm"
-        },
-        {
-          "name": "engine4_dm"
-        },
-        {
-          "onHit": {
-            "expl": 0.001,
-            "leak_oil": 0.2
-          }
-        },
-        {
-          "onKill": {
-            "expl": 1.0,
-            "fire": 2.0,
-            "nothing": 7.0
-          }
+        "onKill": {
+          "expl": 1.0,
+          "fire": 2.0,
+          "nothing": 7.0
         }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "wing_l_dm"
-        },
-        {
-          "name": "wing_r_dm"
-        },
-        {
-          "name": "wing1_l_dm"
-        },
-        {
-          "name": "wing1_r_dm"
-        },
-        {
-          "name": "wing2_l_dm"
-        },
-        {
-          "name": "wing2_r_dm"
-        },
-        {
-          "onHit": {
+      },
+      {
+        "name": [
+          "wing_l_dm",
+          "wing_r_dm",
+          "wing1_l_dm",
+          "wing1_r_dm",
+          "wing2_l_dm",
+          "wing2_r_dm"
+        ],
+        "onHit": [
+          {
             "wingcontrol_r_dm": 0.001
-          }
-        },
-        {
-          "onHit": {
+          },
+          {
             "cut": 0.6,
             "damage": 31.0
           }
-        },
-        {
-          "onKill": {
+        ],
+        "onKill": [
+          {
             "nothing": 9.0,
             "wingcontrol_r_dm": 1.0
-          }
-        },
-        {
-          "onKill": {
+          },
+          {
             "cut": 1.0,
             "damage": 3.0,
             "nothing": 5.0
           }
-        }
-      ]
-    }
-  ],
+        ]
+      }
+    ]
+  },
   "Sound": {
     "Engine": "engine01",
     "gun": "gun_default"
@@ -527,23 +487,87 @@
     "radiusSpeed": 1.0
   },
   "cutting": {
-    "_emtr_break_wing0_l_from": [-0.221234,-0.0324014,0.71297],
-    "_emtr_break_wing0_l_to": [-0.221234,-0.0324014,0.979988],
-    "emtr_break_wing1_l_from": [-0.221234,-0.0324014,2.66388],
-    "emtr_break_wing1_l_to": [-0.221234,-0.0324014,2.67388],
-    "emtr_break_wing2_l_from": [-0.221234,-0.0324014,2.66388],
-    "emtr_break_wing2_l_to": [-0.221234,-0.0324014,2.67388],
-    "_emtr_break_wing0_r_from": [-0.221234,-0.0324015,-0.714861],
-    "_emtr_break_wing0_r_to": [-0.221234,-0.0324015,-0.981879],
-    "emtr_break_wing1_r_from": [-0.221234,-0.0324015,-2.67648],
-    "emtr_break_wing1_r_to": [-0.221234,-0.0324015,-2.68648],
-    "emtr_break_wing2_r_from": [-0.221234,-0.0324015,-2.67648],
-    "emtr_break_wing2_r_to": [-0.221234,-0.0324015,-2.68648],
+    "_emtr_break_wing0_l_from": [
+      -0.221234,
+      -0.0324014,
+      0.71297
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.221234,
+      -0.0324014,
+      0.979988
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.221234,
+      -0.0324014,
+      2.66388
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.221234,
+      -0.0324014,
+      2.67388
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.221234,
+      -0.0324014,
+      2.66388
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.221234,
+      -0.0324014,
+      2.67388
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.221234,
+      -0.0324015,
+      -0.714861
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.221234,
+      -0.0324015,
+      -0.981879
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.221234,
+      -0.0324015,
+      -2.67648
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.221234,
+      -0.0324015,
+      -2.68648
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.221234,
+      -0.0324015,
+      -2.67648
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.221234,
+      -0.0324015,
+      -2.68648
+    ],
     "emtr_break_wing_tail": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [-3.29329,0.0,0.0]
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        -3.29329,
+        0.0,
+        0.0
+      ]
     ]
   }
 }

@@ -411,9 +411,9 @@
       }
     },
     "locales": {
-      "en": [],
-      "de": [],
-      "ru": []
+      "en": {},
+      "de": {},
+      "ru": {}
     },
     "speechLocales": {
       "English": {
@@ -504,53 +504,28 @@
     "sound": 120
   },
   "buses": {
-    "sfx": [
-      {
-        "name": "sfx"
-      },
-      {
-        "name": "gui"
-      },
-      {
-        "name": "sounds/fx"
-      },
-      {
-        "name": "sounds/outside/fx/ai_hits"
-      },
-      {
-        "name": "sounds/outside/fx/ambient"
-      },
-      {
-        "name": "sounds/outside/fx/bomb_whistle"
-      },
-      {
-        "name": "sounds/outside/fx/explosions"
-      },
-      {
-        "name": "sounds/outside/fx/loud_sounds"
-      },
-      {
-        "name": "sounds/outside/fx/miscellaneous"
-      },
-      {
-        "name": "sounds/outside/fx/passbys"
-      },
-      {
-        "name": "sounds/outside/fx/ship_water"
-      },
-      {
-        "name": "sounds/outside/fx/taken_hits"
-      },
-      {
-        "name": "sounds/outside/fx/track_surfaces"
-      },
-      {
-        "volLimits": [50.0,100.0]
-      },
-      {
-        "defaultVol": 100.0
-      }
-    ],
+    "sfx": {
+      "name": [
+        "sfx",
+        "gui",
+        "sounds/fx",
+        "sounds/outside/fx/ai_hits",
+        "sounds/outside/fx/ambient",
+        "sounds/outside/fx/bomb_whistle",
+        "sounds/outside/fx/explosions",
+        "sounds/outside/fx/loud_sounds",
+        "sounds/outside/fx/miscellaneous",
+        "sounds/outside/fx/passbys",
+        "sounds/outside/fx/ship_water",
+        "sounds/outside/fx/taken_hits",
+        "sounds/outside/fx/track_surfaces"
+      ],
+      "volLimits": [
+        50.0,
+        100.0
+      ],
+      "defaultVol": 100.0
+    },
     "music": {
       "name": "music",
       "defaultVol": 70.0
@@ -577,44 +552,34 @@
       "name": "sounds/outside/engines_ai",
       "defaultVol": 100.0
     },
-    "my_engine": [
-      {
-        "name": "sounds/engines"
-      },
-      {
-        "name": "sounds/outside/engines"
-      },
-      {
-        "volLimits": [27.0,100.0]
-      },
-      {
-        "defaultVol": 60.0
-      }
-    ],
+    "my_engine": {
+      "name": [
+        "sounds/engines",
+        "sounds/outside/engines"
+      ],
+      "volLimits": [
+        27.0,
+        100.0
+      ],
+      "defaultVol": 60.0
+    },
     "master": {
       "name": "",
       "defaultVol": 100.0
     },
-    "guns": [
-      {
-        "name": "sounds/guns"
-      },
-      {
-        "name": "sounds/outside/guns"
-      },
-      {
-        "name": "sounds/outside/fx/weapon_ai"
-      },
-      {
-        "name": "sounds/outside/fx/weapon_common"
-      },
-      {
-        "volLimits": [50.0,100.0]
-      },
-      {
-        "defaultVol": 100.0
-      }
-    ],
+    "guns": {
+      "name": [
+        "sounds/guns",
+        "sounds/outside/guns",
+        "sounds/outside/fx/weapon_ai",
+        "sounds/outside/fx/weapon_common"
+      ],
+      "volLimits": [
+        50.0,
+        100.0
+      ],
+      "defaultVol": 100.0
+    },
     "tinnitus": {
       "defaultVol": 50.0
     }
@@ -751,8 +716,14 @@
     "eventBucketDeploy": "bucket_deploy",
     "eventTankCollisionSuspension": "collision_suspension",
     "eventTankCollisionWheels": "collision_wheels",
-    "suspensionShockImpulseLimits": [0.34,1.5],
-    "shockImpulseLimits": [0.5,3.0],
+    "suspensionShockImpulseLimits": [
+      0.34,
+      1.5
+    ],
+    "shockImpulseLimits": [
+      0.5,
+      3.0
+    ],
     "eventTankKillSceneBulletFlyStart": "killscene/shell_flight",
     "eventTankKillSceneBulletFlyEnd": "killscene/stop_hit_camera",
     "eventTankKillScenePierce": "killscene/pierce",
@@ -842,13 +813,22 @@
     "tinnitusDSPDuration": 5.0,
     "planeSonicBoomRadius": 3000.0,
     "planeSonicBoomEvAngle": 100.0,
-    "passBySpeedRange": [300.0,5000.0],
-    "passByDistRange": [0.0,300.0],
+    "passBySpeedRange": [
+      300.0,
+      5000.0
+    ],
+    "passByDistRange": [
+      0.0,
+      300.0
+    ],
     "tree_fall": "tree_fall",
     "tree_creak": "tree_creak",
     "tree_creakDist": 50.0,
     "tree_fallDist": 50.0,
-    "minMaxCaliber": [0.01,0.4],
+    "minMaxCaliber": [
+      0.01,
+      0.4
+    ],
     "eventBoosterEngine": "engineBooster",
     "eventBoosterCockpitEngine": "engineBooster_cockpit",
     "eventBoosterAiEngine": "engineBooster_ai",
@@ -982,39 +962,35 @@
     "eventOverheatStart": "engine_overheat_start",
     "eventEngineOverheat": "engine_overheat"
   },
-  "ambient_engines": [
-    {
-      "path": "aircraft/engines"
-    },
-    {
-      "maxAlt": 100.0
-    },
-    {
-      "event": {
+  "ambient_engines": {
+    "path": "aircraft/engines",
+    "maxAlt": 100.0,
+    "event": [
+      {
         "engineType": 5,
         "event": "distant_engine_heli",
         "maxDist": 4000.0
-      }
-    },
-    {
-      "event": {
+      },
+      {
         "engineType": 2,
         "event": "distant_engine_jet",
         "maxDist": 6000.0
-      }
-    },
-    {
-      "event": {
+      },
+      {
         "engineType": 1,
         "event": "distant_engine_piston",
         "maxDist": 4000.0
       }
-    }
-  ],
+    ]
+  },
   "cockpit_occlusion": {
     "directOcclusion": 1.0,
     "reverbOcclusion": 1.0,
-    "size": [10.0,10.0,10.0]
+    "size": [
+      10.0,
+      10.0,
+      10.0
+    ]
   },
   "dsp_default": {
     "cutoff": 22000.0,
@@ -1221,8 +1197,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine01_cockpit_l",
       "event_cockpit_r": "engine01_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmScale": 0.9,
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
@@ -1258,8 +1242,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine01_cockpit_l",
       "event_cockpit_r": "engine01_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmScale": 0.9,
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
@@ -1295,8 +1287,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine02_cockpit_l",
       "event_cockpit_r": "engine02_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1331,8 +1331,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine03_cockpit_l",
       "event_cockpit_r": "engine03_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1367,8 +1375,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine04_cockpit_l",
       "event_cockpit_r": "engine04_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1403,8 +1419,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1439,8 +1463,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1475,8 +1507,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1511,8 +1551,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1547,8 +1595,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1583,8 +1639,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1619,8 +1683,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1655,8 +1727,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1691,8 +1771,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1727,8 +1815,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1763,8 +1859,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1799,8 +1903,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1835,8 +1947,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1871,8 +1991,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1907,8 +2035,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1943,8 +2079,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -1979,8 +2123,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2015,8 +2167,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2051,8 +2211,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2087,8 +2255,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2123,8 +2299,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2159,8 +2343,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2195,8 +2387,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2231,8 +2431,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2267,8 +2475,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2303,8 +2519,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2339,8 +2563,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2375,8 +2607,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2411,8 +2651,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.003,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2447,8 +2695,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2483,8 +2739,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2519,8 +2783,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2555,8 +2827,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2591,8 +2871,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2627,8 +2915,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2663,8 +2959,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2699,8 +3003,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2735,8 +3047,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2771,8 +3091,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2807,8 +3135,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2843,8 +3179,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2879,8 +3223,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2915,8 +3267,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2951,8 +3311,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2987,8 +3355,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3023,8 +3399,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3059,8 +3443,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3095,8 +3487,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3131,8 +3531,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3167,8 +3575,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3203,8 +3619,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3239,8 +3663,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3275,8 +3707,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_cockpit_l",
       "event_cockpit_r": "engine05_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3311,8 +3751,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine24_cockpit_l",
       "event_cockpit_r": "engine24_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3347,8 +3795,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine25_cockpit_l",
       "event_cockpit_r": "engine25_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3383,8 +3839,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine06_cockpit_l",
       "event_cockpit_r": "engine06_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3419,8 +3883,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine07_cockpit_l",
       "event_cockpit_r": "engine07_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3455,8 +3927,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine08_cockpit_l",
       "event_cockpit_r": "engine08_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3491,8 +3971,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine09_cockpit_l",
       "event_cockpit_r": "engine09_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3527,8 +4015,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine10_cockpit_l",
       "event_cockpit_r": "engine10_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3563,8 +4059,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine11_cockpit_l",
       "event_cockpit_r": "engine11_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3599,8 +4103,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine12_cockpit_l",
       "event_cockpit_r": "engine12_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3635,8 +4147,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine13_cockpit_l",
       "event_cockpit_r": "engine13_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3671,8 +4191,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine14_cockpit_l",
       "event_cockpit_r": "engine14_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3707,8 +4235,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine15_cockpit_l",
       "event_cockpit_r": "engine15_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3743,8 +4279,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine16_cockpit_l",
       "event_cockpit_r": "engine16_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3779,8 +4323,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine17_cockpit_l",
       "event_cockpit_r": "engine17_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3815,8 +4367,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine17_mk2_cockpit_l",
       "event_cockpit_r": "engine17_mk2_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3851,8 +4411,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine_bv138_cockpit_l",
       "event_cockpit_r": "engine_bv138_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3887,8 +4455,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine18_cockpit_l",
       "event_cockpit_r": "engine18_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3923,8 +4499,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine19_cockpit_l",
       "event_cockpit_r": "engine19_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3963,8 +4547,16 @@
         "path": "aircraft/engines",
         "event_cockpit_l": "engine20_cockpit_l",
         "event_cockpit_r": "engine20_cockpit_r",
-        "leftPos": [0.5,1.0,5.0],
-        "rightPos": [0.5,1.0,-5.0],
+        "leftPos": [
+          0.5,
+          1.0,
+          5.0
+        ],
+        "rightPos": [
+          0.5,
+          1.0,
+          -5.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -3981,7 +4573,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor20_ai",
-        "pos_1": [3.0,0.5,0.0],
+        "pos_1": [
+          3.0,
+          0.5,
+          0.0
+        ],
         "propIndex_1": 1,
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
@@ -3992,7 +4588,11 @@
       "cockpit": {
         "path": "aircraft/engines",
         "event_1": "rotor20_cockpit",
-        "pos_1": [2.0,0.5,0.0],
+        "pos_1": [
+          2.0,
+          0.5,
+          0.0
+        ],
         "propIndex_1": 1,
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
@@ -4029,8 +4629,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine21_cockpit_l",
       "event_cockpit_r": "engine21_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4065,8 +4673,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine22_cockpit_l",
       "event_cockpit_r": "engine22_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4101,8 +4717,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine23_cockpit_l",
       "event_cockpit_r": "engine23_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4137,8 +4761,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine_f4ej_cockpit_l",
       "event_cockpit_r": "engine_f4ej_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4173,8 +4805,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine05_RM8A_N1_cockpit_l",
       "event_cockpit_r": "engine05_RM8A_N1_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4209,8 +4849,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine23_cockpit_l",
       "event_cockpit_r": "engine23_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4245,8 +4893,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine_do335_cockpit_l",
       "event_cockpit_r": "engine_do335_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4281,8 +4937,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine_xp55_cockpit_l",
       "event_cockpit_r": "engine_xp55_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4317,8 +4981,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine_j7w1_cockpit_l",
       "event_cockpit_r": "engine_j7w1_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4353,8 +5025,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine01_cockpit_l",
       "event_cockpit_r": "engine01_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4389,8 +5069,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine01_cockpit_l",
       "event_cockpit_r": "engine01_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.005,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4425,8 +5113,16 @@
       "path": "aircraft/engines",
       "event_cockpit_l": "engine01_cockpit_l",
       "event_cockpit_r": "engine01_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.005,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4550,12 +5246,20 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/ai_train",
       "event_cockpit_l": "engine",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "engine_steampowered_train_ai": {
@@ -4579,12 +5283,20 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/ai_train_steampowered",
       "event_cockpit_l": "engine",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "engine_ctr_ai": {
@@ -4762,7 +5474,11 @@
       "event_start_cockpit_l": "engine01_start",
       "event_stop_cockpit_l": "engine01_stop",
       "event_prop_cockpit_l": "engine01_prop",
-      "leftPos": [0.0,0.0,0.0],
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4800,7 +5516,11 @@
       "event_start_cockpit_l": "engine02_start",
       "event_stop_cockpit_l": "engine02_stop",
       "event_prop_cockpit_l": "engine02_prop",
-      "leftPos": [0.0,0.0,0.0],
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4838,7 +5558,11 @@
       "event_start_cockpit_l": "engine03_start",
       "event_stop_cockpit_l": "engine03_stop",
       "event_prop_cockpit_l": "engine03_prop",
-      "leftPos": [0.0,0.0,0.0],
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4876,7 +5600,11 @@
       "event_start_cockpit_l": "engine04_start",
       "event_stop_cockpit_l": "engine04_stop",
       "event_prop_cockpit_l": "engine04_prop",
-      "leftPos": [0.0,0.0,0.0],
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4914,7 +5642,11 @@
       "event_start_cockpit_l": "engine05_start",
       "event_stop_cockpit_l": "engine05_stop",
       "event_prop_cockpit_l": "engine05_prop",
-      "leftPos": [0.0,0.0,0.0],
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4952,7 +5684,11 @@
       "event_start_cockpit_l": "engine06_start",
       "event_stop_cockpit_l": "engine06_stop",
       "event_prop_cockpit_l": "engine06_prop",
-      "leftPos": [0.0,0.0,0.0],
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -4990,7 +5726,11 @@
       "event_start_cockpit_l": "engine_uav_start",
       "event_stop_cockpit_l": "engine_uav_stop",
       "event_prop_cockpit_l": "engine_uav_prop",
-      "leftPos": [0.0,0.0,0.0],
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5207,8 +5947,16 @@
       "event_stop_cockpit_r": "engine01_stop_cockpit_r",
       "event_prop_cockpit_l": "engine01_prop_cockpit_l",
       "event_prop_cockpit_r": "engine01_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5250,8 +5998,16 @@
       "event_stop_cockpit_r": "engine02_stop_cockpit_r",
       "event_prop_cockpit_l": "engine02_prop_cockpit_l",
       "event_prop_cockpit_r": "engine02_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5293,8 +6049,16 @@
       "event_stop_cockpit_r": "engine03_stop_cockpit_r",
       "event_prop_cockpit_l": "engine03_prop_cockpit_l",
       "event_prop_cockpit_r": "engine03_prop_cockpit_r",
-      "leftPos": [4.0,1.0,5.0],
-      "rightPos": [4.0,1.0,-5.0],
+      "leftPos": [
+        4.0,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        4.0,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5320,7 +6084,11 @@
       "eventBack": "engine04",
       "eventSurround": "",
       "eventLod1": "engine04",
-      "offsetPos": [1.0,0.0,0.0],
+      "offsetPos": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.01,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5337,8 +6105,16 @@
       "event_stop_cockpit_r": "engine04_stop_cockpit_r",
       "event_prop_cockpit_l": "engine04_prop_cockpit_l",
       "event_prop_cockpit_r": "engine04_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5379,8 +6155,16 @@
       "event_start_cockpit_r": "engine05_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5421,8 +6205,16 @@
       "event_start_cockpit_r": "engine05_01_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_01_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_01_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5463,8 +6255,16 @@
       "event_start_cockpit_r": "engine05_01_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_01_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_01_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5505,8 +6305,16 @@
       "event_start_cockpit_r": "engine05_02_nene_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_02_nene_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_02_nene_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0015,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5547,8 +6355,16 @@
       "event_start_cockpit_r": "engine05_02_nene_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_02_nene_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_02_nene_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0015,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5589,8 +6405,16 @@
       "event_start_cockpit_r": "engine05_02_dervent_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_02_dervent_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_02_dervent_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0015,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5631,8 +6455,16 @@
       "event_start_cockpit_r": "engine05_02_dervent_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_02_dervent_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_02_dervent_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0015,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5673,8 +6505,16 @@
       "event_start_cockpit_r": "engine05_02_goblin_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_02_goblin_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_02_goblin_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.002,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5715,8 +6555,16 @@
       "event_start_cockpit_r": "engine05_02_goblin_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_02_goblin_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_02_goblin_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.002,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5757,8 +6605,16 @@
       "event_start_cockpit_r": "engine05_02_J33_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_02_J33_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_02_J33_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.002,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5799,8 +6655,16 @@
       "event_start_cockpit_r": "engine05_03_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_03_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_03_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5841,8 +6705,16 @@
       "event_start_cockpit_r": "engine05_03_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_03_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_03_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5883,8 +6755,16 @@
       "event_start_cockpit_r": "engine05_04_jumo004_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_04_jumo004_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_04_jumo004_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0015,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5925,8 +6805,16 @@
       "event_start_cockpit_r": "engine05_04_jumo004_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_04_jumo004_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_04_jumo004_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0015,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -5967,8 +6855,16 @@
       "event_start_cockpit_r": "engine05_04_J79GE_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_04_J79GE_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_04_J79GE_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.01,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6012,8 +6908,16 @@
       "event_start_cockpit_r": "engine05_tf30_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_tf30_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_tf30_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.01,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6054,8 +6958,16 @@
       "event_start_cockpit_r": "engine05_J57P_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_J57P_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_J57P_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0055,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6096,8 +7008,16 @@
       "event_start_cockpit_r": "engine05_R11_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_R11_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_R11_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0055,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6138,8 +7058,16 @@
       "event_start_cockpit_r": "engine05_RD9_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_RD9_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_RD9_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.004,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6180,8 +7108,16 @@
       "event_start_cockpit_r": "engine05_RD9_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_RD9_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_RD9_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.004,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6222,8 +7158,16 @@
       "event_start_cockpit_r": "engine05_AL21_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_AL21_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_AL21_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0065,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6264,8 +7208,16 @@
       "event_start_cockpit_r": "engine05_AL21_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_AL21_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_AL21_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0065,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6306,8 +7258,16 @@
       "event_start_cockpit_r": "engine05_pegasus_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_pegasus_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_pegasus_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0075,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6348,8 +7308,16 @@
       "event_start_cockpit_r": "engine05_R28_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_R28_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_R28_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0065,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6390,8 +7358,16 @@
       "event_start_cockpit_r": "engine05_J85_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_J85_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_J85_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.006,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6432,8 +7408,16 @@
       "event_start_cockpit_r": "engine05_J85_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_J85_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_J85_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.006,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6474,8 +7458,16 @@
       "event_start_cockpit_r": "engine05_TF40_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_TF40_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_TF40_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0045,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6516,8 +7508,16 @@
       "event_start_cockpit_r": "engine05_TF40_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_TF40_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_TF40_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0045,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6558,8 +7558,16 @@
       "event_start_cockpit_r": "engine05_TF34_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_TF34_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_TF34_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.003,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6600,8 +7608,16 @@
       "event_start_cockpit_r": "engine05_J52P_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_J52P_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_J52P_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.004,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6642,8 +7658,16 @@
       "event_start_cockpit_r": "engine05_J34WE_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_J34WE_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_J34WE_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0014,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6684,8 +7708,16 @@
       "event_start_cockpit_r": "engine05_atar_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_atar_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_atar_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0045,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6726,8 +7758,16 @@
       "event_start_cockpit_r": "engine05_atar_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_atar_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_atar_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0045,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6768,8 +7808,16 @@
       "event_start_cockpit_r": "engine05_10_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_10_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_10_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6810,8 +7858,16 @@
       "event_start_cockpit_r": "engine05_10_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_10_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_10_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6852,8 +7908,16 @@
       "event_start_cockpit_r": "engine05_11_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_11_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_11_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6894,8 +7958,16 @@
       "event_start_cockpit_r": "engine05_11_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_11_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_11_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6936,8 +8008,16 @@
       "event_start_cockpit_r": "engine05_06_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -6978,8 +8058,16 @@
       "event_start_cockpit_r": "engine05_06_J47_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_J47_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_J47_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0025,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7020,8 +8108,16 @@
       "event_start_cockpit_r": "engine05_06_J47_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_J47_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_J47_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0025,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7062,8 +8158,16 @@
       "event_start_cockpit_r": "engine05_06_J65W_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_J65W_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_J65W_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0055,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7104,8 +8208,16 @@
       "event_start_cockpit_r": "engine05_06_J65W_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_J65W_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_J65W_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0055,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7146,8 +8258,16 @@
       "event_start_cockpit_r": "engine05_06_spey_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_spey_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_spey_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.007,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7188,8 +8308,16 @@
       "event_start_cockpit_r": "engine05_06_spey_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_spey_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_spey_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.007,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7230,8 +8358,16 @@
       "event_start_cockpit_r": "engine05_06_avon_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_avon_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_avon_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0035,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7272,8 +8408,16 @@
       "event_start_cockpit_r": "engine05_06_avon_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_avon_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_avon_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0035,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7314,8 +8458,16 @@
       "event_start_cockpit_r": "engine05_TF41_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_TF41_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_TF41_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0055,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7356,8 +8508,16 @@
       "event_start_cockpit_r": "engine05_06_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_06_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_06_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7398,8 +8558,16 @@
       "event_start_cockpit_r": "engine05_07_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_07_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_07_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7440,8 +8608,16 @@
       "event_start_cockpit_r": "engine05_07_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_07_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_07_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7482,8 +8658,16 @@
       "event_start_cockpit_r": "engine05_08_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_08_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_08_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7524,8 +8708,16 @@
       "event_start_cockpit_r": "engine05_08_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_08_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_08_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7566,8 +8758,16 @@
       "event_start_cockpit_r": "engine05_B_04_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_B_04_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_B_04_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7606,8 +8806,16 @@
       "event_start_cockpit_r": "engine24_start_cockpit_r",
       "event_stop_cockpit_l": "engine24_stop_cockpit_l",
       "event_stop_cockpit_r": "engine24_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 1.0,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7646,8 +8854,16 @@
       "event_start_cockpit_r": "engine25_start_cockpit_r",
       "event_stop_cockpit_l": "engine25_stop_cockpit_l",
       "event_stop_cockpit_r": "engine25_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.004,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -7689,8 +8905,16 @@
       "event_stop_cockpit_r": "engine06_stop_cockpit_r",
       "event_prop_cockpit_l": "engine06_prop_cockpit_l",
       "event_prop_cockpit_r": "engine06_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7732,8 +8956,16 @@
       "event_stop_cockpit_r": "engine07_stop_cockpit_r",
       "event_prop_cockpit_l": "engine07_prop_cockpit_l",
       "event_prop_cockpit_r": "engine07_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7775,8 +9007,16 @@
       "event_stop_cockpit_r": "engine08_stop_cockpit_r",
       "event_prop_cockpit_l": "engine08_prop_cockpit_l",
       "event_prop_cockpit_r": "engine08_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7818,8 +9058,16 @@
       "event_stop_cockpit_r": "engine09_stop_cockpit_r",
       "event_prop_cockpit_l": "engine09_prop_cockpit_l",
       "event_prop_cockpit_r": "engine09_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7861,8 +9109,16 @@
       "event_stop_cockpit_r": "engine10_stop_cockpit_r",
       "event_prop_cockpit_l": "engine10_prop_cockpit_l",
       "event_prop_cockpit_r": "engine10_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7904,8 +9160,16 @@
       "event_stop_cockpit_r": "engine11_stop_cockpit_r",
       "event_prop_cockpit_l": "engine11_prop_cockpit_l",
       "event_prop_cockpit_r": "engine11_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7947,8 +9211,16 @@
       "event_stop_cockpit_r": "engine12_stop_cockpit_r",
       "event_prop_cockpit_l": "engine12_prop_cockpit_l",
       "event_prop_cockpit_r": "engine12_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7990,8 +9262,16 @@
       "event_stop_cockpit_r": "engine13_stop_cockpit_r",
       "event_prop_cockpit_l": "engine13_prop_cockpit_l",
       "event_prop_cockpit_r": "engine13_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8033,8 +9313,16 @@
       "event_stop_cockpit_r": "engine14_stop_cockpit_r",
       "event_prop_cockpit_l": "engine14_prop_cockpit_l",
       "event_prop_cockpit_r": "engine14_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8076,8 +9364,16 @@
       "event_stop_cockpit_r": "engine15_stop_cockpit_r",
       "event_prop_cockpit_l": "engine15_prop_cockpit_l",
       "event_prop_cockpit_r": "engine15_prop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8119,8 +9415,16 @@
       "event_stop_cockpit_r": "engine16_stop_cockpit_r",
       "event_prop_cockpit_l": "engine16_prop_cockpit_l",
       "event_prop_cockpit_r": "engine16_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8162,8 +9466,16 @@
       "event_stop_cockpit_r": "engine17_stop_cockpit_r",
       "event_prop_cockpit_l": "engine17_prop_cockpit_l",
       "event_prop_cockpit_r": "engine17_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8205,8 +9517,16 @@
       "event_stop_cockpit_r": "engine17_mk2_stop_cockpit_r",
       "event_prop_cockpit_l": "engine17_mk2_prop_cockpit_l",
       "event_prop_cockpit_r": "engine17_mk2_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8250,8 +9570,16 @@
       "event_stop_cockpit_r": "engine_bv138_stop_cockpit_r",
       "event_prop_cockpit_l": "engine_bv138_prop_cockpit_l",
       "event_prop_cockpit_r": "engine_bv138_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8293,8 +9621,16 @@
       "event_stop_cockpit_r": "engine18_stop_cockpit_r",
       "event_prop_cockpit_l": "engine18_prop_cockpit_l",
       "event_prop_cockpit_r": "engine18_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8336,8 +9672,16 @@
       "event_stop_cockpit_r": "engine19_stop_cockpit_r",
       "event_prop_cockpit_l": "engine19_prop_cockpit_l",
       "event_prop_cockpit_r": "engine19_prop_cockpit_r",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8383,8 +9727,16 @@
         "event_stop_cockpit_r": "engine20_stop_cockpit_r",
         "event_prop_cockpit_l": "engine20_prop_cockpit_l",
         "event_prop_cockpit_r": "engine20_prop_cockpit_r",
-        "leftPos": [0.5,1.0,1.0],
-        "rightPos": [0.5,1.0,-1.0],
+        "leftPos": [
+          0.5,
+          1.0,
+          1.0
+        ],
+        "rightPos": [
+          0.5,
+          1.0,
+          -1.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -8401,7 +9753,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor20",
-        "pos_1": [3.0,0.5,0.0],
+        "pos_1": [
+          3.0,
+          0.5,
+          0.0
+        ],
         "propIndex_1": 1,
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
@@ -8412,7 +9768,11 @@
       "cockpit": {
         "path": "aircraft/engines",
         "event_1": "rotor20_cockpit",
-        "pos_1": [2.0,0.5,0.0],
+        "pos_1": [
+          2.0,
+          0.5,
+          0.0
+        ],
         "propIndex_1": 1,
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
@@ -8456,8 +9816,16 @@
       "event_stop_cockpit_r": "engine21_stop_cockpit_r",
       "event_prop_cockpit_l": "engine21_prop_cockpit_l",
       "event_prop_cockpit_r": "engine21_prop_cockpit_r",
-      "leftPos": [0.5,1.0,1.0],
-      "rightPos": [0.5,1.0,-1.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -1.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8499,8 +9867,16 @@
       "event_stop_cockpit_r": "engine22_stop_cockpit_r",
       "event_prop_cockpit_l": "engine22_prop_cockpit_l",
       "event_prop_cockpit_r": "engine22_prop_cockpit_r",
-      "leftPos": [0.5,1.0,1.0],
-      "rightPos": [0.5,1.0,-1.0],
+      "leftPos": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -1.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8541,8 +9917,16 @@
       "event_start_cockpit_r": "engine23_start_cockpit_r",
       "event_stop_cockpit_l": "engine23_stop_cockpit_l",
       "event_stop_cockpit_r": "engine23_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -8583,8 +9967,16 @@
       "event_start_cockpit_r": "engine_f4ej_start_cockpit_r",
       "event_stop_cockpit_l": "engine_f4ej_stop_cockpit_l",
       "event_stop_cockpit_r": "engine_f4ej_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.01,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -8625,8 +10017,16 @@
       "event_start_cockpit_r": "engine05_RM8A_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_RM8A_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_RM8A_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.007,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -8667,8 +10067,16 @@
       "event_start_cockpit_r": "engine05_05_J79_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_05_J79_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_05_J79_N1_stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.005,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -8710,8 +10118,16 @@
       "event_stop_cockpit_r": "engine_do335_stop_cockpit_r",
       "event_prop_cockpit_l": "engine_do335_prop_cockpit_l",
       "event_prop_cockpit_r": "engine_do335_prop_cockpit_r",
-      "leftPos": [4.0,0.0,0.0],
-      "rightPos": [-4.0,0.0,0.0],
+      "leftPos": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "rightPos": [
+        -4.0,
+        0.0,
+        0.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8753,8 +10169,16 @@
       "event_stop_cockpit_r": "engine_xp55_stop_cockpit_r",
       "event_prop_cockpit_l": "engine_xp55_prop_cockpit_l",
       "event_prop_cockpit_r": "engine_xp55_prop_cockpit_r",
-      "leftPos": [-2.0,0.0,1.0],
-      "rightPos": [-2.0,0.0,-1.0],
+      "leftPos": [
+        -2.0,
+        0.0,
+        1.0
+      ],
+      "rightPos": [
+        -2.0,
+        0.0,
+        -1.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8796,8 +10220,16 @@
       "event_stop_cockpit_r": "engine_j7w1_stop_cockpit_r",
       "event_prop_cockpit_l": "engine_j7w1_prop_cockpit_l",
       "event_prop_cockpit_r": "engine_j7w1_prop_cockpit_r",
-      "leftPos": [-3.0,1.0,3.0],
-      "rightPos": [-3.0,1.0,-3.0],
+      "leftPos": [
+        -3.0,
+        1.0,
+        3.0
+      ],
+      "rightPos": [
+        -3.0,
+        1.0,
+        -3.0
+      ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -8827,14 +10259,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.5,1.0,0.0]
+      "offsetPos": [
+        -1.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/tank01",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -8876,14 +10316,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.5,1.0,0.0]
+      "offsetPos": [
+        -1.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/su76",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -8925,14 +10373,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.5,1.0,0.0]
+      "offsetPos": [
+        -1.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/ikv103",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -8974,14 +10430,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.5,1.0,0.0]
+      "offsetPos": [
+        -1.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/ikv91",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9023,14 +10487,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.5,1.0,0.0]
+      "offsetPos": [
+        -1.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/pvrbv551",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9072,14 +10544,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [2.0,1.0,-0.5]
+      "offsetPos": [
+        2.0,
+        1.0,
+        -0.5
+      ]
     },
     "cockpit": {
       "path": "ground/engines/strf90",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9121,14 +10601,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [2.0,1.3,0.0]
+      "offsetPos": [
+        2.0,
+        1.3,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/patria",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9170,14 +10658,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.5,1.0,0.0]
+      "offsetPos": [
+        -1.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/patria",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9219,14 +10715,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/panzer3",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9268,14 +10772,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [2.0,1.0,0.0]
+      "offsetPos": [
+        2.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/panzer3",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [2.0,1.0,0.0]
+      "leftPos": [
+        2.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9317,14 +10829,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/hetzer",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9366,14 +10886,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/su100",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9415,14 +10943,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/t34",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9453,50 +10989,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "ground/engines/m3_bradley"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 1.0
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "ground/engines/m3_bradley",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "ground/engines/m3_bradley",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9527,50 +11053,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "ground/engines/type93"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 1.0
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "ground/engines/type93",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "ground/engines/type93",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9601,50 +11117,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "ground/engines/object120"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 1.0
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "ground/engines/object120",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "ground/engines/object120",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9675,50 +11181,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "ground/engines/kv220"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 1.0
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "ground/engines/kv220",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "ground/engines/kv220",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9749,50 +11245,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "ground/engines/pt76"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 1.0
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "ground/engines/pt76",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          -1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "ground/engines/pt76",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9823,50 +11309,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "ground/engines/bmp"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 1.0
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "ground/engines/bmp",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          -1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "ground/engines/bmp",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9908,14 +11384,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/panzer4",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -9957,14 +11441,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/panzer6",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10006,14 +11498,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/strv103",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10055,14 +11555,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/tigerdiesel",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10104,14 +11612,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-3.0,1.0,0.0]
+      "offsetPos": [
+        -3.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/maus",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-3.0,1.0,0.0]
+      "leftPos": [
+        -3.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10153,14 +11669,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/panther",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10202,14 +11726,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/chieftain",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10251,14 +11783,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/challenger",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10300,14 +11840,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/comet",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10349,14 +11897,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/centurion",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10398,14 +11954,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/cromwell",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10447,14 +12011,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/valentine",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10496,14 +12068,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/stug40",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10545,14 +12125,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/sherman_m4a1",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10594,14 +12182,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/stuart_m5a",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10643,14 +12239,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/char_b1",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10692,14 +12296,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/m8",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10741,14 +12353,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.8,1.0,0.0]
+      "offsetPos": [
+        1.8,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/m16",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10790,14 +12410,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.8,1.0,0.0]
+      "offsetPos": [
+        1.8,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/m10",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10839,14 +12467,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/m1",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10888,14 +12524,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/brdm",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10937,14 +12581,22 @@
       "loadSmooth": 0.1,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/ystervark",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -10986,14 +12638,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.5,1.0,0.0]
+      "offsetPos": [
+        -1.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/brdm",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11035,14 +12695,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/chaffee_m24",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11084,14 +12752,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/hellcat_m18",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11133,14 +12809,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/sherman_m4a3",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11182,14 +12866,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/m60_patton",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11231,14 +12923,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/t90a",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11280,14 +12980,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/t72",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11329,14 +13037,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/ztz99",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11380,14 +13096,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/t80",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11429,14 +13153,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/t64a",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11478,14 +13210,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/fiat_8144",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11527,14 +13267,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/mcta_v6",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11576,14 +13324,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/leo2a5",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11625,14 +13381,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/leo1",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11674,14 +13438,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/leclerc",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11723,14 +13495,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/type90",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11772,14 +13552,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/type74",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11823,14 +13611,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [-1.0,1.0,0.0]
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "ground/engines/abrams",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -11876,7 +13672,11 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "offsetPos": [1.0,1.5,0.0]
+        "offsetPos": [
+          1.0,
+          1.5,
+          0.0
+        ]
       },
       "cockpit": {
         "path": "aircraft/engines",
@@ -11888,8 +13688,16 @@
         "event_stop_cockpit_r": "engine_ah1_stop_cockpit_r",
         "event_prop_cockpit_l": "engine_ah1_prop_cockpit_l",
         "event_prop_cockpit_r": "engine_ah1_prop_cockpit_r",
-        "leftPos": [-0.5,1.0,2.0],
-        "rightPos": [-0.5,1.0,-2.0],
+        "leftPos": [
+          -0.5,
+          1.0,
+          2.0
+        ],
+        "rightPos": [
+          -0.5,
+          1.0,
+          -2.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -11909,10 +13717,26 @@
         "event_2": "rotor_ah1_r",
         "event_3": "rotor_tail",
         "event_4": "rotor_echo",
-        "pos_1": [0.5,1.5,3.0],
-        "pos_2": [0.5,1.5,-3.0],
-        "pos_3": [-8.0,1.2,0.0],
-        "pos_4": [-6.0,1.0,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          3.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -3.0
+        ],
+        "pos_3": [
+          -8.0,
+          1.2,
+          0.0
+        ],
+        "pos_4": [
+          -6.0,
+          1.0,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -11927,8 +13751,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_ah1_cockpit_l",
         "event_2": "rotor_ah1_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -11972,8 +13804,16 @@
       "event_start_cockpit_r": "start_cockpit_r",
       "event_stop_cockpit_l": "stop_cockpit_l",
       "event_stop_cockpit_r": "stop_cockpit_r",
-      "leftPos": [-0.5,1.0,5.0],
-      "rightPos": [-0.5,1.0,-5.0],
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
       "rpmSmooth": 0.0075,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
@@ -12028,14 +13868,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "desert/vehicles/truck",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -12077,14 +13925,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "desert/vehicles/medium",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -12126,14 +13982,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "desert/vehicles/heavy",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -12175,14 +14039,22 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
+      "offsetPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "desert/vehicles/light",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
+      "leftPos": [
+        1.0,
+        1.0,
+        0.0
+      ]
     },
     "ai": {
       "effects": {
@@ -12232,8 +14104,16 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0]
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ]
       },
       "cockpit": {
         "path": "aircraft/engines",
@@ -12249,12 +14129,20 @@
         "event_start_cockpit_1": "engine_ah1_start_cockpit_l",
         "event_stop_cockpit_1": "engine_ah1_stop_cockpit_l",
         "event_prop_cockpit_1": "engine_ah1_prop_cockpit_l",
-        "pos_1": [0.5,1.5,1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
         "event_cockpit_2": "engine_ah1z_cockpit_r",
         "event_start_cockpit_2": "engine_ah1_start_cockpit_r",
         "event_stop_cockpit_2": "engine_ah1_stop_cockpit_r",
         "event_prop_cockpit_2": "engine_ah1z_prop_cockpit_r",
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -12274,10 +14162,26 @@
         "event_2": "rotor_ah1z_r",
         "event_3": "rotor_tail",
         "event_4": "rotor_echo",
-        "pos_1": [0.5,1.5,3.0],
-        "pos_2": [0.5,1.5,-3.0],
-        "pos_3": [-8.0,1.2,0.0],
-        "pos_4": [-6.0,1.0,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          3.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -3.0
+        ],
+        "pos_3": [
+          -8.0,
+          1.2,
+          0.0
+        ],
+        "pos_4": [
+          -6.0,
+          1.0,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -12292,8 +14196,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_ah1_cockpit_l",
         "event_2": "rotor_ah1z_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -12334,8 +14246,16 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0]
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ]
       },
       "cockpit": {
         "path": "aircraft/engines",
@@ -12351,12 +14271,20 @@
         "event_start_cockpit_1": "engine_mi24v_start_cockpit_l",
         "event_stop_cockpit_1": "engine_mi24v_stop_cockpit_l",
         "event_prop_cockpit_1": "engine_mi24v_prop_cockpit_l",
-        "pos_1": [0.5,1.5,1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
         "event_cockpit_2": "engine_mi24v_cockpit_r",
         "event_start_cockpit_2": "engine_mi24v_start_cockpit_r",
         "event_stop_cockpit_2": "engine_mi24v_stop_cockpit_r",
         "event_prop_cockpit_2": "engine_mi24v_prop_cockpit_r",
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -12376,10 +14304,26 @@
         "event_2": "rotor_mi24v_r",
         "event_3": "rotor_tail",
         "event_4": "rotor_echo",
-        "pos_1": [0.5,1.5,3.0],
-        "pos_2": [0.5,1.5,-3.0],
-        "pos_3": [-11.5,2.0,0.0],
-        "pos_4": [-6.0,2.0,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          3.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -3.0
+        ],
+        "pos_3": [
+          -11.5,
+          2.0,
+          0.0
+        ],
+        "pos_4": [
+          -6.0,
+          2.0,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -12394,8 +14338,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_mi24v_cockpit_l",
         "event_2": "rotor_mi24v_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -12435,8 +14387,16 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0]
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ]
       },
       "cockpit": {
         "path": "aircraft/engines",
@@ -12452,12 +14412,20 @@
         "event_start_cockpit_1": "engine_mi24v_start_cockpit_l",
         "event_stop_cockpit_1": "engine_mi24v_stop_cockpit_l",
         "event_prop_cockpit_1": "engine_mi24v_prop_cockpit_l",
-        "pos_1": [0.5,1.5,1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
         "event_cockpit_2": "engine_mi24v_cockpit_r",
         "event_start_cockpit_2": "engine_mi24v_start_cockpit_r",
         "event_stop_cockpit_2": "engine_mi24v_stop_cockpit_r",
         "event_prop_cockpit_2": "engine_mi24v_prop_cockpit_r",
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -12477,10 +14445,26 @@
         "event_2": "rotor_mi24v_r",
         "event_3": "rotor_tail",
         "event_4": "rotor_echo",
-        "pos_1": [0.5,1.5,3.0],
-        "pos_2": [0.5,1.5,-3.0],
-        "pos_3": [-11.5,2.0,0.0],
-        "pos_4": [-6.0,2.0,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          3.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -3.0
+        ],
+        "pos_3": [
+          -11.5,
+          2.0,
+          0.0
+        ],
+        "pos_4": [
+          -6.0,
+          2.0,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -12495,8 +14479,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_mi24v_cockpit_l",
         "event_2": "rotor_mi24v_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -12536,8 +14528,16 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "pos_1": [0.5,1.0,1.0],
-        "pos_2": [0.5,1.0,-1.0]
+        "pos_1": [
+          0.5,
+          1.0,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.0,
+          -1.0
+        ]
       },
       "cockpit": {
         "path": "aircraft/engines",
@@ -12553,12 +14553,20 @@
         "event_start_cockpit_1": "engine_ka50_start_cockpit_l",
         "event_stop_cockpit_1": "engine_ka50_stop_cockpit_l",
         "event_prop_cockpit_1": "engine_ka50_prop_cockpit_l",
-        "pos_1": [0.5,1.5,1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
         "event_cockpit_2": "engine_ka50_cockpit_r",
         "event_start_cockpit_2": "engine_ka50_start_cockpit_r",
         "event_stop_cockpit_2": "engine_ka50_stop_cockpit_r",
         "event_prop_cockpit_2": "engine_ka50_prop_cockpit_r",
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -12577,9 +14585,21 @@
         "event_1": "rotor_ka50_l",
         "event_2": "rotor_ka50_r",
         "event_3": "rotor_ka50_tail",
-        "pos_1": [0.5,3.0,3.0],
-        "pos_2": [0.5,1.2,-3.0],
-        "pos_3": [-11.5,2.0,0.0],
+        "pos_1": [
+          0.5,
+          3.0,
+          3.0
+        ],
+        "pos_2": [
+          0.5,
+          1.2,
+          -3.0
+        ],
+        "pos_3": [
+          -11.5,
+          2.0,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -12593,8 +14613,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_ka50_cockpit_l",
         "event_2": "rotor_ka50_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -12634,8 +14662,16 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0]
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ]
       },
       "cockpit": {
         "path": "aircraft/engines",
@@ -12651,12 +14687,20 @@
         "event_start_cockpit_1": "engine_bo_105_start_cockpit_l",
         "event_stop_cockpit_1": "engine_bo_105_stop_cockpit_l",
         "event_prop_cockpit_1": "engine_bo_105_prop_cockpit_l",
-        "pos_1": [0.5,1.5,1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
         "event_cockpit_2": "engine_bo_105_cockpit_r",
         "event_start_cockpit_2": "engine_bo_105_start_cockpit_r",
         "event_stop_cockpit_2": "engine_bo_105_stop_cockpit_r",
         "event_prop_cockpit_2": "engine_bo_105_prop_cockpit_r",
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "rpm2Type": "jetTrue",
         "rpm2Bias": 0.0,
         "rpm2Scale": 2700.0,
@@ -12676,10 +14720,26 @@
         "event_2": "rotor_bo_105_r",
         "event_3": "rotor_tail",
         "event_4": "rotor_echo",
-        "pos_1": [0.5,1.5,2.0],
-        "pos_2": [0.5,1.5,-2.0],
-        "pos_3": [-6.0,1.2,0.0],
-        "pos_4": [-3.0,1.2,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          2.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -2.0
+        ],
+        "pos_3": [
+          -6.0,
+          1.2,
+          0.0
+        ],
+        "pos_4": [
+          -3.0,
+          1.2,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -12694,8 +14754,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_bo_105_cockpit_l",
         "event_2": "rotor_bo_105_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -12731,88 +14799,64 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "offsetPos": [0.5,1.5,0.0]
+        "offsetPos": [
+          0.5,
+          1.5,
+          0.0
+        ]
       },
-      "cockpit": [
-        {
-          "path": "aircraft/engines"
-        },
-        {
-          "event_cockpit_l": "engine_sa_313b_cockpit_l"
-        },
-        {
-          "event_cockpit_l": "engine_sa_313b_cockpit_l"
-        },
-        {
-          "event_cockpit_r": "engine_sa_313b_cockpit_r"
-        },
-        {
-          "event_cockpit_r": "engine_sa_313b_cockpit_r"
-        },
-        {
-          "event_start_cockpit_l": "engine_sa_313b_start_cockpit_l"
-        },
-        {
-          "event_start_cockpit_l": "engine_sa_313b_start_cockpit_l"
-        },
-        {
-          "event_start_cockpit_r": "engine_sa_313b_start_cockpit_r"
-        },
-        {
-          "event_start_cockpit_r": "engine_sa_313b_start_cockpit_r"
-        },
-        {
-          "event_stop_cockpit_l": "engine_sa_313b_stop_cockpit_l"
-        },
-        {
-          "event_stop_cockpit_l": "engine_sa_313b_stop_cockpit_l"
-        },
-        {
-          "event_stop_cockpit_r": "engine_sa_313b_stop_cockpit_r"
-        },
-        {
-          "event_stop_cockpit_r": "engine_sa_313b_stop_cockpit_r"
-        },
-        {
-          "event_prop_cockpit_l": "engine_sa_313b_prop_cockpit_l"
-        },
-        {
-          "event_prop_cockpit_l": "engine_sa_313b_prop_cockpit_l"
-        },
-        {
-          "event_prop_cockpit_r": "engine_sa_313b_prop_cockpit_r"
-        },
-        {
-          "event_prop_cockpit_r": "engine_sa_313b_prop_cockpit_r"
-        },
-        {
-          "leftPos": [-0.5,1.5,1.0]
-        },
-        {
-          "rightPos": [-0.5,1.5,-1.0]
-        },
-        {
-          "rpm2Type": "jetTrue"
-        },
-        {
-          "rpm2Bias": 0.0
-        },
-        {
-          "rpm2Scale": 2700.0
-        },
-        {
-          "rpmSmooth": 0.02
-        },
-        {
-          "loadScale": 6.0
-        },
-        {
-          "loadSmooth": 0.05
-        },
-        {
-          "distSmooth": 0.9
-        }
-      ]
+      "cockpit": {
+        "path": "aircraft/engines",
+        "event_cockpit_l": [
+          "engine_sa_313b_cockpit_l",
+          "engine_sa_313b_cockpit_l"
+        ],
+        "event_cockpit_r": [
+          "engine_sa_313b_cockpit_r",
+          "engine_sa_313b_cockpit_r"
+        ],
+        "event_start_cockpit_l": [
+          "engine_sa_313b_start_cockpit_l",
+          "engine_sa_313b_start_cockpit_l"
+        ],
+        "event_start_cockpit_r": [
+          "engine_sa_313b_start_cockpit_r",
+          "engine_sa_313b_start_cockpit_r"
+        ],
+        "event_stop_cockpit_l": [
+          "engine_sa_313b_stop_cockpit_l",
+          "engine_sa_313b_stop_cockpit_l"
+        ],
+        "event_stop_cockpit_r": [
+          "engine_sa_313b_stop_cockpit_r",
+          "engine_sa_313b_stop_cockpit_r"
+        ],
+        "event_prop_cockpit_l": [
+          "engine_sa_313b_prop_cockpit_l",
+          "engine_sa_313b_prop_cockpit_l"
+        ],
+        "event_prop_cockpit_r": [
+          "engine_sa_313b_prop_cockpit_r",
+          "engine_sa_313b_prop_cockpit_r"
+        ],
+        "leftPos": [
+          -0.5,
+          1.5,
+          1.0
+        ],
+        "rightPos": [
+          -0.5,
+          1.5,
+          -1.0
+        ],
+        "rpm2Type": "jetTrue",
+        "rpm2Bias": 0.0,
+        "rpm2Scale": 2700.0,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9
+      }
     },
     "propellers": {
       "effects": {
@@ -12824,10 +14868,26 @@
         "event_2": "rotor_sa_313b_r",
         "event_3": "rotor_tail",
         "event_4": "rotor_echo_small",
-        "pos_1": [0.5,1.5,3.0],
-        "pos_2": [0.5,1.5,-3.0],
-        "pos_3": [-6.0,0.0,0.0],
-        "pos_4": [-3.0,0.0,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          3.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -3.0
+        ],
+        "pos_3": [
+          -6.0,
+          0.0,
+          0.0
+        ],
+        "pos_4": [
+          -3.0,
+          0.0,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -12842,8 +14902,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_sa_313b_cockpit_l",
         "event_2": "rotor_sa_313b_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -12877,7 +14945,11 @@
         "loadSmooth": 0.05,
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8,
-        "offsetPos": [1.0,1.5,0.0]
+        "offsetPos": [
+          1.0,
+          1.5,
+          0.0
+        ]
       },
       "cockpit": {
         "path": "aircraft/engines",
@@ -12889,8 +14961,16 @@
         "event_stop_cockpit_r": "engine_mi4_stop_cockpit_r",
         "event_prop_cockpit_l": "engine_mi4_prop_cockpit_l",
         "event_prop_cockpit_r": "engine_mi4_prop_cockpit_r",
-        "leftPos": [-0.5,1.0,2.0],
-        "rightPos": [-0.5,1.0,-2.0],
+        "leftPos": [
+          -0.5,
+          1.0,
+          2.0
+        ],
+        "rightPos": [
+          -0.5,
+          1.0,
+          -2.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -12907,10 +14987,26 @@
         "event_2": "rotor_mi4_r",
         "event_3": "rotor_tail",
         "event_4": "rotor_echo",
-        "pos_1": [0.5,1.5,3.0],
-        "pos_2": [0.5,1.5,-3.0],
-        "pos_3": [-11.5,2.0,0.0],
-        "pos_4": [-6.0,2.0,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          3.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -3.0
+        ],
+        "pos_3": [
+          -11.5,
+          2.0,
+          0.0
+        ],
+        "pos_4": [
+          -6.0,
+          2.0,
+          0.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "propIndex_3": 2,
@@ -12925,8 +15021,16 @@
         "path": "aircraft/engines",
         "event_1": "rotor_mi4_cockpit_l",
         "event_2": "rotor_mi4_cockpit_r",
-        "pos_1": [0.5,1.5,1.0],
-        "pos_2": [0.5,1.5,-1.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          1.0
+        ],
+        "pos_2": [
+          0.5,
+          1.5,
+          -1.0
+        ],
         "propIndex_1": 1,
         "propIndex_2": 1,
         "rpmSmooth": 0.02,
@@ -12969,7 +15073,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_piston_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13014,7 +15122,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13059,7 +15171,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_small_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13104,7 +15220,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13149,7 +15269,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13194,7 +15318,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_blades_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13239,7 +15367,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_blades_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13284,7 +15416,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_blades_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13329,7 +15465,11 @@
       "outside": {
         "path": "aircraft/engines",
         "event_1": "rotor_heli_ai",
-        "pos_1": [0.5,1.5,0.0],
+        "pos_1": [
+          0.5,
+          1.5,
+          0.0
+        ],
         "rpmSmooth": 0.02,
         "loadScale": 6.0,
         "loadSmooth": 0.05,
@@ -13350,50 +15490,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "naval/engines/ctr01"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 0.02
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "naval/engines/ctr01",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "naval/engines/ctr01",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "engine_ctr_jet": {
@@ -13408,50 +15538,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "naval/engines/ctr03"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 0.02
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "naval/engines/ctr03",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "naval/engines/ctr03",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "engine_pt15": {
@@ -13466,50 +15586,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "naval/engines/pt15"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 0.02
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "naval/engines/pt15",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "naval/engines/pt15",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "engine_shiplight01": {
@@ -13524,50 +15634,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "naval/engines/shiplight01"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 0.02
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "naval/engines/shiplight01",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "naval/engines/shiplight01",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "engine_ship_karotei": {
@@ -13591,8 +15691,16 @@
       "eventBack_1": "engine",
       "eventBack_2": "engine12",
       "eventSurround": "",
-      "pos_1": [1.0,1.0,0.0],
-      "pos_2": [-4.0,3.0,0.0],
+      "pos_1": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "pos_2": [
+        -4.0,
+        3.0,
+        0.0
+      ],
       "engineIndex_1": 1,
       "engineIndex_2": 1,
       "rpmSmooth": 0.02,
@@ -13614,50 +15722,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "naval/engines/shipmid01"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 0.02
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "naval/engines/shipmid01",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "naval/engines/shipmid01",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "engine_submarine": {
@@ -13672,44 +15770,30 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "naval/engines/submarine"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 0.02
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ]
+    "outside": {
+      "path": "naval/engines/submarine",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
   },
   "engine_shipbig01": {
     "effects": {
@@ -13723,50 +15807,40 @@
       "eventStart": "engine_start",
       "eventStop": "engine_stop"
     },
-    "outside": [
-      {
-        "path": "naval/engines/shipbig01"
-      },
-      {
-        "eventFront": ""
-      },
-      {
-        "eventBack": "engine"
-      },
-      {
-        "eventSurround": ""
-      },
-      {
-        "eventLod1": "engine"
-      },
-      {
-        "offsetPos": [1.0,1.0,0.0]
-      },
-      {
-        "offsetPos": [-1.0,1.0,0.0]
-      },
-      {
-        "rpmSmooth": 0.02
-      },
-      {
-        "loadScale": 6.0
-      },
-      {
-        "loadSmooth": 0.05
-      },
-      {
-        "distSmooth": 0.9
-      },
-      {
-        "distScaleOnNotHero": 1.0
-      }
-    ],
+    "outside": {
+      "path": "naval/engines/shipbig01",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
     "cockpit": {
       "path": "naval/engines/shipbig01",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
     }
   },
   "reloads": {
@@ -13907,8 +15981,16 @@
       "eventLod1": "yak3_guns_right",
       "cannonLeft": "yak3_h_guns_left",
       "cannonRight": "yak3_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -13916,8 +15998,16 @@
       "eventRight": "yak3_guns_c_right",
       "cannonLeft": "yak3_h_guns_c_left",
       "cannonRight": "yak3_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_hurricane": {
@@ -13928,8 +16018,16 @@
       "eventLod1": "hurricane_guns_right",
       "cannonLeft": "hurricane_h_guns_left",
       "cannonRight": "hurricane_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -13937,8 +16035,16 @@
       "eventRight": "hurricane_guns_c_right",
       "cannonLeft": "hurricane_h_guns_c_left",
       "cannonRight": "hurricane_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_spitfire": {
@@ -13949,8 +16055,16 @@
       "eventLod1": "spitfire_guns_right",
       "cannonLeft": "spitfire_h_guns_left",
       "cannonRight": "spitfire_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -13958,8 +16072,16 @@
       "eventRight": "spitfire_guns_c_right",
       "cannonLeft": "spitfire_h_guns_c_left",
       "cannonRight": "spitfire_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_blenheim": {
@@ -13970,8 +16092,16 @@
       "eventLod1": "blenheim_guns_right",
       "cannonLeft": "blenheim_h_guns_left",
       "cannonRight": "blenheim_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -13979,8 +16109,16 @@
       "eventRight": "blenheim_guns_c_right",
       "cannonLeft": "blenheim_h_guns_c_left",
       "cannonRight": "blenheim_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_bf": {
@@ -13991,8 +16129,16 @@
       "eventLod1": "bf_guns_left",
       "cannonLeft": "bf_h_guns_left",
       "cannonRight": "bf_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -14000,8 +16146,16 @@
       "eventRight": "bf_guns_c_right",
       "cannonLeft": "bf_h_guns_c_left",
       "cannonRight": "bf_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_yak3": {
@@ -14012,8 +16166,16 @@
       "eventLod1": "yak3_guns_left",
       "cannonLeft": "yak3_h_guns_left",
       "cannonRight": "yak3_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -14021,8 +16183,16 @@
       "eventRight": "yak3_guns_c_right",
       "cannonLeft": "yak3_h_guns_c_left",
       "cannonRight": "yak3_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_a20": {
@@ -14033,8 +16203,16 @@
       "eventLod1": "a20_guns_left",
       "cannonLeft": "a20_h_guns_left",
       "cannonRight": "a20_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -14042,8 +16220,16 @@
       "eventRight": "a20_guns_c_right",
       "cannonLeft": "a20_h_guns_c_left",
       "cannonRight": "a20_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_fw": {
@@ -14054,8 +16240,16 @@
       "eventLod1": "fw_guns_left",
       "cannonLeft": "fw_h_guns_left",
       "cannonRight": "fw_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -14063,8 +16257,16 @@
       "eventRight": "fw_guns_c_right",
       "cannonLeft": "fw_h_guns_c_left",
       "cannonRight": "fw_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_il2": {
@@ -14075,8 +16277,16 @@
       "eventLod1": "il2_guns_left",
       "cannonLeft": "il2_h_guns_left",
       "cannonRight": "il2_h_guns_right",
-      "leftPos": [0.5,1.0,15.0],
-      "rightPos": [0.5,1.0,-15.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        15.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -15.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
@@ -14084,52 +16294,92 @@
       "eventRight": "il2_guns_c_right",
       "cannonLeft": "il2_h_guns_c_left",
       "cannonRight": "il2_h_guns_c_right",
-      "leftPos": [0.5,1.0,5.0],
-      "rightPos": [0.5,1.0,-5.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ]
     }
   },
   "gun_ah_64": {
     "outside": {
       "path": "aircraft/weapon",
       "eventLeft": "apache_30mm_outside",
-      "leftPos": [0.5,1.0,0.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
       "eventLeft": "apache_30mm_inside",
-      "leftPos": [0.0,0.0,0.0]
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     "ai": {
       "path": "aircraft/weapon",
       "eventLeft": "apache_30mm_ai",
-      "leftPos": [0.0,0.0,0.0]
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     "flir": {
       "path": "aircraft/weapon",
       "eventLeft": "apache_30mm_cam",
-      "leftPos": [0.0,0.0,0.0]
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ]
     }
   },
   "gun_mi_35": {
     "outside": {
       "path": "aircraft/weapon",
       "eventLeft": "mi35_outside",
-      "leftPos": [0.5,1.0,0.0]
+      "leftPos": [
+        0.5,
+        1.0,
+        0.0
+      ]
     },
     "cockpit": {
       "path": "aircraft/weapon",
       "eventLeft": "mi35_inside",
-      "leftPos": [0.0,0.0,0.0]
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     "ai": {
       "path": "aircraft/weapon",
       "eventLeft": "mi35_ai",
-      "leftPos": [0.0,0.0,0.0]
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     "flir": {
       "path": "aircraft/weapon",
       "eventLeft": "mi35_cam",
-      "leftPos": [0.0,0.0,0.0]
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ]
     }
   },
   "music": {

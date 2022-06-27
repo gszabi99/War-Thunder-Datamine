@@ -33,8 +33,14 @@
   "scanPatterns": {
     "search": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-15.0,15.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        15.0
+      ],
       "rollStabLimit": 70.0,
       "period": 1.0,
       "width": 58.0,
@@ -45,8 +51,14 @@
     },
     "designationLock": {
       "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-15.0,15.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        15.0
+      ],
       "rollStabLimit": 70.0,
       "period": 0.5,
       "width": 2.0,
@@ -54,21 +66,36 @@
     },
     "boresightLock": {
       "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-15.0,15.0],
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        15.0
+      ],
       "period": 0.5,
       "width": 2.0,
       "indicate": true
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-45.0,45.0]
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        45.0
+      ]
     }
   },
   "signals": {
     "pulse": {
-      "dynamicRange": [40.0,15.0],
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -80,7 +107,10 @@
       }
     },
     "pulseTrack": {
-      "dynamicRange": [40.0,15.0],
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -94,7 +124,10 @@
       }
     },
     "MTI": {
-      "dynamicRange": [40.0,12.0],
+      "dynamicRange": [
+        40.0,
+        12.0
+      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": false,
@@ -115,7 +148,10 @@
       }
     },
     "MTITrack": {
-      "dynamicRange": [40.0,12.0],
+      "dynamicRange": [
+        40.0,
+        12.0
+      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -220,8 +256,8 @@
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": [],
-          "clearTargetsOfInterest": [],
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
           "setScanPatternSet": {
             "scanPatternSet": "search"
           },
@@ -230,9 +266,9 @@
           }
         },
         "setMediumAltStandbyMode": {
-          "setStandbyModeCommon": [],
-          "setPulseModeCommon": [],
-          "setMediumAltModeCommon": [],
+          "setStandbyModeCommon": {},
+          "setPulseModeCommon": {},
+          "setMediumAltModeCommon": {},
           "setModeName": {
             "name": "standby"
           },
@@ -242,9 +278,9 @@
           }
         },
         "setLowAltStandbyMode": {
-          "setStandbyModeCommon": [],
-          "setPulseDopplerModeCommon": [],
-          "setLowAltModeCommon": [],
+          "setStandbyModeCommon": {},
+          "setPulseDopplerModeCommon": {},
+          "setLowAltModeCommon": {},
           "setModeName": {
             "name": "MTI standby"
           },
@@ -269,8 +305,8 @@
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": [],
-          "clearTargetsOfInterest": [],
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
           "setCueEnabled": {
             "value": true
           },
@@ -282,9 +318,9 @@
           }
         },
         "setMediumAltSearchMode": {
-          "setSearchModeCommon": [],
-          "setPulseModeCommon": [],
-          "setMediumAltModeCommon": [],
+          "setSearchModeCommon": {},
+          "setPulseModeCommon": {},
+          "setMediumAltModeCommon": {},
           "setModeName": {
             "name": "search"
           },
@@ -294,9 +330,9 @@
           }
         },
         "setLowAltSearchMode": {
-          "setSearchModeCommon": [],
-          "setPulseDopplerModeCommon": [],
-          "setLowAltModeCommon": [],
+          "setSearchModeCommon": {},
+          "setPulseDopplerModeCommon": {},
+          "setLowAltModeCommon": {},
           "setModeName": {
             "name": "MTI search"
           },
@@ -330,15 +366,15 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargetsOfInterest": [],
+          "clearTargetsOfInterest": {},
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 765.0,
             "width": 1470.0
           },
-          "setScanPatternSet": [],
-          "resetScanPhase": [],
-          "clearTargets": [],
+          "setScanPatternSet": {},
+          "resetScanPhase": {},
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "lock",
             "active": true
@@ -348,7 +384,7 @@
           }
         },
         "setDesignationLockModeCommon": {
-          "setLockModeCommon": [],
+          "setLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "designationLock"
           },
@@ -369,23 +405,23 @@
           }
         },
         "setMediumAltDesignationLockMode": {
-          "setDesignationLockModeCommon": [],
-          "setPulseModeCommon": [],
-          "setMediumAltModeCommon": [],
+          "setDesignationLockModeCommon": {},
+          "setPulseModeCommon": {},
+          "setMediumAltModeCommon": {},
           "setModeName": {
             "name": "acquisition"
           }
         },
         "setLowAltDesignationLockMode": {
-          "setDesignationLockModeCommon": [],
-          "setPulseDopplerModeCommon": [],
-          "setLowAltModeCommon": [],
+          "setDesignationLockModeCommon": {},
+          "setPulseDopplerModeCommon": {},
+          "setLowAltModeCommon": {},
           "setModeName": {
             "name": "MTI acquisition"
           }
         },
         "setBoresightLockModeCommon": {
-          "setLockModeCommon": [],
+          "setLockModeCommon": {},
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -407,582 +443,456 @@
           }
         },
         "setMediumAltBoresightLockMode": {
-          "setBoresightLockModeCommon": [],
-          "setPulseModeCommon": [],
+          "setBoresightLockModeCommon": {},
+          "setPulseModeCommon": {},
           "setModeName": {
             "name": "ACM"
           }
         },
         "setLowAltBoresightLockMode": {
-          "setBoresightLockModeCommon": [],
-          "setPulseDopplerModeCommon": [],
+          "setBoresightLockModeCommon": {},
+          "setPulseDopplerModeCommon": {},
           "setModeName": {
             "name": "MTI ACM"
           }
         },
-        "setTrackModeCommon": [
-          {
-            "setEnabled": {
-              "value": true
-            }
+        "setTrackModeCommon": {
+          "setEnabled": {
+            "value": true
           },
-          {
-            "setScanPatternSet": []
+          "setScanPatternSet": {},
+          "clearTargetsOfInterest": {},
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
           },
-          {
-            "clearTargetsOfInterest": []
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
           },
-          {
-            "addTargetOfInterest": []
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
           },
-          {
-            "setLastTargetOfInterestActive": []
+          "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
           },
-          {
-            "updateActiveTargetOfInterest": []
-          },
-          {
-            "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            }
-          },
-          {
-            "setCenterElevation": {
-              "source": "activeTargetOfInterest"
-            }
-          },
-          {
-            "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            }
-          },
-          {
-            "setRelSpeedGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            }
-          },
-          {
-            "setFsmActive": {
+          "setFsmActive": [
+            {
               "fsm": "track",
               "active": true
-            }
-          },
-          {
-            "setFsmActive": {
+            },
+            {
               "fsm": "checkRaltGreater",
               "active": false
             }
+          ],
+          "setScanPattern": {
+            "scanPattern": "track"
           },
-          {
-            "setScanPattern": {
-              "scanPattern": "track"
-            }
-          },
-          {
-            "setIllumination": {
-              "illumination": true
-            }
+          "setIllumination": {
+            "illumination": true
           }
-        ],
+        },
         "setMediumAltTrackMode": {
-          "setTrackModeCommon": [],
-          "setPulseTrackModeCommon": [],
-          "setMediumAltModeCommon": [],
+          "setTrackModeCommon": {},
+          "setPulseTrackModeCommon": {},
+          "setMediumAltModeCommon": {},
           "setModeName": {
             "name": "track"
           }
         },
         "setLowAltTrackMode": {
-          "setTrackModeCommon": [],
-          "setPulseDopplerTrackModeCommon": [],
-          "setLowAltModeCommon": [],
+          "setTrackModeCommon": {},
+          "setPulseDopplerTrackModeCommon": {},
+          "setLowAltModeCommon": {},
           "setModeName": {
             "name": "MTI track"
           }
         }
       },
-      "transitions": [
-        {
-          "init": {
-            "stateFrom": "init",
-            "event": "init",
-            "stateTo": "MediumAltStandby",
-            "actions": {
-              "init": [],
-              "setMediumAltStandbyMode": [],
-              "setTargetDesignationRange": {
-                "azimuthRange": [-60.0,60.0],
-                "distanceRange": [500.0,55000.0],
-                "distanceWidth": 1000.0
-              }
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "MediumAltStandby",
+          "actions": {
+            "init": {},
+            "setMediumAltStandbyMode": {},
+            "setTargetDesignationRange": {
+              "azimuthRange": [
+                -60.0,
+                60.0
+              ],
+              "distanceRange": [
+                500.0,
+                55000.0
+              ],
+              "distanceWidth": 1000.0
             }
           }
         },
-        {
-          "MediumAltSwitchOn": {
-            "stateFrom": "MediumAltStandby",
-            "command": "switch",
-            "event": "enable",
-            "stateTo": "MediumAltSearch",
-            "actions": {
-              "setMediumAltSearchMode": []
+        "MediumAltSwitchOn": {
+          "stateFrom": "MediumAltStandby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "MediumAltSearch",
+          "actions": {
+            "setMediumAltSearchMode": {}
+          }
+        },
+        "LowAltSwitchOn": {
+          "stateFrom": "LowAltStandby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "LowAltSearch",
+          "actions": {
+            "setLowAltSearchMode": {}
+          }
+        },
+        "MediumAltswitchOff": {
+          "stateFrom": "MediumAltSearch",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "MediumAltStandby",
+          "actions": {
+            "resetSearchMode": {},
+            "setMediumAltStandbyMode": {}
+          }
+        },
+        "LowAltswitchOff": {
+          "stateFrom": "LowAltSearch",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "LowAltStandby",
+          "actions": {
+            "resetSearchMode": {},
+            "setLowAltStandbyMode": {}
+          }
+        },
+        "MediumAltToLowAltStandby": {
+          "stateFrom": "MediumAltStandby",
+          "command": "modeSwitch",
+          "stateTo": "LowAltStandby",
+          "actions": {
+            "setLowAltStandbyMode": {}
+          }
+        },
+        "LowAltToMediumAltStandby": {
+          "stateFrom": "LowAltStandby",
+          "command": "modeSwitch",
+          "event": "raltCheckOk",
+          "stateTo": "MediumAltStandby",
+          "actions": {
+            "setMediumAltStandbyMode": {}
+          }
+        },
+        "MediumAltToLowAltSearch": {
+          "stateFrom": "MediumAltSearch",
+          "command": "modeSwitch",
+          "stateTo": "LowAltSearch",
+          "actions": {
+            "setLowAltSearchMode": {}
+          }
+        },
+        "LowAltToMediumAltSearch": {
+          "stateFrom": "LowAltSearch",
+          "command": "modeSwitch",
+          "event": "raltCheckOk",
+          "stateTo": "MediumAltSearch",
+          "actions": {
+            "setMediumAltSearchMode": {}
+          }
+        },
+        "MediumAltDesignationLock": {
+          "stateFrom": "MediumAltSearch",
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
+            },
+            "designateTargetUnderCue": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
             }
           }
         },
-        {
-          "LowAltSwitchOn": {
-            "stateFrom": "LowAltStandby",
-            "command": "switch",
-            "event": "enable",
-            "stateTo": "LowAltSearch",
-            "actions": {
-              "setLowAltSearchMode": []
+        "checkMediumAltDesignationType0": {
+          "stateFrom": "MediumAltSearch",
+          "command": "designateTarget",
+          "stateTo": "checkMediumAltDesignationType0",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 0
             }
           }
         },
-        {
-          "MediumAltswitchOff": {
-            "stateFrom": "MediumAltSearch",
-            "command": "switch",
-            "event": "disable",
-            "stateTo": "MediumAltStandby",
-            "actions": {
-              "resetSearchMode": [],
-              "setMediumAltStandbyMode": []
-            }
+        "MediumAltDesignationLockResponce": {
+          "stateFrom": "checkMediumAltDesignationType0",
+          "event": "designationTypeEquals",
+          "stateTo": "MediumAltDesignationLock",
+          "actions": {
+            "resetSearchMode": {},
+            "setMediumAltDesignationLockMode": {}
           }
         },
-        {
-          "LowAltswitchOff": {
-            "stateFrom": "LowAltSearch",
-            "command": "switch",
-            "event": "disable",
-            "stateTo": "LowAltStandby",
-            "actions": {
-              "resetSearchMode": [],
-              "setLowAltStandbyMode": []
-            }
-          }
-        },
-        {
-          "MediumAltToLowAltStandby": {
-            "stateFrom": "MediumAltStandby",
-            "command": "modeSwitch",
-            "stateTo": "LowAltStandby",
-            "actions": {
-              "setLowAltStandbyMode": []
-            }
-          }
-        },
-        {
-          "LowAltToMediumAltStandby": {
-            "stateFrom": "LowAltStandby",
-            "command": "modeSwitch",
-            "event": "raltCheckOk",
-            "stateTo": "MediumAltStandby",
-            "actions": {
-              "setMediumAltStandbyMode": []
-            }
-          }
-        },
-        {
-          "MediumAltToLowAltSearch": {
-            "stateFrom": "MediumAltSearch",
-            "command": "modeSwitch",
-            "stateTo": "LowAltSearch",
-            "actions": {
-              "setLowAltSearchMode": []
-            }
-          }
-        },
-        {
-          "LowAltToMediumAltSearch": {
-            "stateFrom": "LowAltSearch",
-            "command": "modeSwitch",
-            "event": "raltCheckOk",
-            "stateTo": "MediumAltSearch",
-            "actions": {
-              "setMediumAltSearchMode": []
-            }
-          }
-        },
-        {
-          "MediumAltDesignationLock": {
-            "stateFrom": "MediumAltSearch",
-            "command": "selectTarget",
-            "actions": {
-              "designateActiveDetectedTarget": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
-              }
-            }
-          }
-        },
-        {
-          "checkMediumAltDesignationType0": {
-            "stateFrom": "MediumAltSearch",
-            "command": "designateTarget",
-            "stateTo": "checkMediumAltDesignationType0",
-            "actions": {
-              "checkDesignationTypeEquals": {
-                "value": 0
-              }
-            }
-          }
-        },
-        {
-          "MediumAltDesignationLockResponce": {
-            "stateFrom": "checkMediumAltDesignationType0",
-            "event": "designationTypeEquals",
-            "stateTo": "MediumAltDesignationLock",
-            "actions": {
-              "resetSearchMode": [],
-              "setMediumAltDesignationLockMode": []
-            }
-          }
-        },
-        {
-          "returnToMediumAltSearchMode": {
+        "returnToMediumAltSearchMode": [
+          {
             "stateFrom": "checkMediumAltDesignationType0",
             "event": "designationTypeNotEquals",
             "stateTo": "MediumAltSearch"
-          }
-        },
-        {
-          "returnToMediumAltSearchMode": [
-            {
-              "stateFrom": "MediumAltBoresightLock"
-            },
-            {
-              "stateFrom": "MediumAltBoresightTrack"
-            },
-            {
-              "command": "acmSwitch"
-            },
-            {
-              "stateTo": "MediumAltSearch"
-            },
-            {
-              "actions": {
-                "resetLockMode": [],
-                "resetTrackMode": [],
-                "setMediumAltSearchMode": []
-              }
-            }
-          ]
-        },
-        {
-          "MediumAltDesignationTrack": {
-            "stateFrom": "MediumAltDesignationLock",
-            "event": "targetDetected",
-            "stateTo": "MediumAltDesignationTrack",
-            "actions": {
-              "resetLockMode": [],
-              "setMediumAltTrackMode": []
-            }
-          }
-        },
-        {
-          "failedMediumAltDesignationLock": {
-            "stateFrom": "MediumAltDesignationLock",
-            "event": "scanFinished",
+          },
+          {
+            "stateFrom": [
+              "MediumAltBoresightLock",
+              "MediumAltBoresightTrack"
+            ],
+            "command": "acmSwitch",
             "stateTo": "MediumAltSearch",
             "actions": {
-              "resetLockMode": [],
-              "setMediumAltSearchMode": []
+              "resetLockMode": {},
+              "resetTrackMode": {},
+              "setMediumAltSearchMode": {}
             }
           }
+        ],
+        "MediumAltDesignationTrack": {
+          "stateFrom": "MediumAltDesignationLock",
+          "event": "targetDetected",
+          "stateTo": "MediumAltDesignationTrack",
+          "actions": {
+            "resetLockMode": {},
+            "setMediumAltTrackMode": {}
+          }
         },
-        {
-          "finishedDesignationTrack": {
+        "failedMediumAltDesignationLock": {
+          "stateFrom": "MediumAltDesignationLock",
+          "event": "scanFinished",
+          "stateTo": "MediumAltSearch",
+          "actions": {
+            "resetLockMode": {},
+            "setMediumAltSearchMode": {}
+          }
+        },
+        "finishedDesignationTrack": [
+          {
             "stateFrom": "MediumAltDesignationTrack",
             "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "MediumAltSearch",
             "actions": {
-              "resetTrackMode": [],
-              "setMediumAltSearchMode": []
+              "resetTrackMode": {},
+              "setMediumAltSearchMode": {}
             }
-          }
-        },
-        {
-          "finishedDesignationTrack": {
+          },
+          {
             "stateFrom": "LowAltDesignationTrack",
             "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "LowAltSearch",
             "actions": {
-              "resetTrackMode": [],
-              "setLowAltSearchMode": []
+              "resetTrackMode": {},
+              "setLowAltSearchMode": {}
             }
           }
-        },
-        {
-          "MediumAltBoresightLock": {
+        ],
+        "MediumAltBoresightLock": [
+          {
             "stateFrom": "MediumAltStandby",
             "command": "selectTarget",
             "stateTo": "MediumAltBoresightLock",
             "actions": {
-              "setMediumAltBoresightLockMode": []
+              "setMediumAltBoresightLockMode": {}
             }
-          }
-        },
-        {
-          "MediumAltBoresightLock": {
+          },
+          {
             "stateFrom": "MediumAltSearch",
             "command": "acmSwitch",
             "stateTo": "MediumAltBoresightLock",
             "actions": {
-              "resetSearchMode": [],
-              "setMediumAltBoresightLockMode": []
+              "resetSearchMode": {},
+              "setMediumAltBoresightLockMode": {}
             }
           }
-        },
-        {
-          "MediumAltBoresightTrack": {
-            "stateFrom": "MediumAltBoresightLock",
-            "event": "targetDetected",
-            "stateTo": "MediumAltBoresightTrack",
-            "actions": {
-              "resetLockMode": [],
-              "setMediumAltTrackMode": []
-            }
+        ],
+        "MediumAltBoresightTrack": {
+          "stateFrom": "MediumAltBoresightLock",
+          "event": "targetDetected",
+          "stateTo": "MediumAltBoresightTrack",
+          "actions": {
+            "resetLockMode": {},
+            "setMediumAltTrackMode": {}
           }
         },
-        {
-          "returnToMediumAltStandbyMode": [
-            {
-              "stateFrom": "MediumAltBoresightLock"
+        "returnToMediumAltStandbyMode": {
+          "stateFrom": [
+            "MediumAltBoresightLock",
+            "MediumAltBoresightTrack"
+          ],
+          "command": "selectTarget",
+          "stateTo": "MediumAltStandby",
+          "actions": {
+            "resetLockMode": {},
+            "resetTrackMode": {},
+            "setMediumAltStandbyMode": {}
+          }
+        },
+        "finishedMediumAltBoresightTrack": {
+          "stateFrom": "MediumAltBoresightTrack",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "MediumAltBoresightLock",
+          "actions": {
+            "resetTrackMode": {},
+            "setMediumAltBoresightLockMode": {}
+          }
+        },
+        "LowAltDesignationLock": {
+          "stateFrom": "LowAltSearch",
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
             },
-            {
-              "stateFrom": "MediumAltBoresightTrack"
-            },
-            {
-              "command": "selectTarget"
-            },
-            {
-              "stateTo": "MediumAltStandby"
-            },
-            {
-              "actions": {
-                "resetLockMode": [],
-                "resetTrackMode": [],
-                "setMediumAltStandbyMode": []
-              }
-            }
-          ]
-        },
-        {
-          "finishedMediumAltBoresightTrack": {
-            "stateFrom": "MediumAltBoresightTrack",
-            "event": "targetsOfInterestCleanup",
-            "stateTo": "MediumAltBoresightLock",
-            "actions": {
-              "resetTrackMode": [],
-              "setMediumAltBoresightLockMode": []
+            "designateTargetUnderCue": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
             }
           }
         },
-        {
-          "LowAltDesignationLock": {
-            "stateFrom": "LowAltSearch",
-            "command": "selectTarget",
-            "actions": {
-              "designateActiveDetectedTarget": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
-              }
+        "checkLowAltDesignationType0": {
+          "stateFrom": "LowAltSearch",
+          "command": "designateTarget",
+          "stateTo": "checkLowAltDesignationType0",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 0
             }
           }
         },
-        {
-          "checkLowAltDesignationType0": {
-            "stateFrom": "LowAltSearch",
-            "command": "designateTarget",
-            "stateTo": "checkLowAltDesignationType0",
-            "actions": {
-              "checkDesignationTypeEquals": {
-                "value": 0
-              }
-            }
+        "LowAltDesignationLockResponce": {
+          "stateFrom": "checkLowAltDesignationType0",
+          "event": "designationTypeEquals",
+          "stateTo": "LowAltDesignationLock",
+          "actions": {
+            "resetSearchMode": {},
+            "setLowAltDesignationLockMode": {}
           }
         },
-        {
-          "LowAltDesignationLockResponce": {
-            "stateFrom": "checkLowAltDesignationType0",
-            "event": "designationTypeEquals",
-            "stateTo": "LowAltDesignationLock",
-            "actions": {
-              "resetSearchMode": [],
-              "setLowAltDesignationLockMode": []
-            }
-          }
-        },
-        {
-          "returnToLowAltSearchMode": {
+        "returnToLowAltSearchMode": [
+          {
             "stateFrom": "checkLowAltDesignationType0",
             "event": "designationTypeNotEquals",
             "stateTo": "LowAltSearch"
-          }
-        },
-        {
-          "returnToLowAltSearchMode": [
-            {
-              "stateFrom": "LowAltBoresightLock"
-            },
-            {
-              "stateFrom": "LowAltBoresightTrack"
-            },
-            {
-              "command": "acmSwitch"
-            },
-            {
-              "stateTo": "LowAltSearch"
-            },
-            {
-              "actions": {
-                "resetLockMode": [],
-                "resetTrackMode": [],
-                "setLowAltSearchMode": []
-              }
-            }
-          ]
-        },
-        {
-          "LowAltDesignationTrack": {
-            "stateFrom": "LowAltDesignationLock",
-            "event": "targetDetected",
-            "stateTo": "LowAltDesignationTrack",
-            "actions": {
-              "resetLockMode": [],
-              "setLowAltTrackMode": []
-            }
-          }
-        },
-        {
-          "failedLowAltDesignationLock": {
-            "stateFrom": "LowAltDesignationLock",
-            "event": "scanFinished",
+          },
+          {
+            "stateFrom": [
+              "LowAltBoresightLock",
+              "LowAltBoresightTrack"
+            ],
+            "command": "acmSwitch",
             "stateTo": "LowAltSearch",
             "actions": {
-              "resetLockMode": [],
-              "setLowAltSearchMode": []
+              "resetLockMode": {},
+              "resetTrackMode": {},
+              "setLowAltSearchMode": {}
             }
           }
+        ],
+        "LowAltDesignationTrack": {
+          "stateFrom": "LowAltDesignationLock",
+          "event": "targetDetected",
+          "stateTo": "LowAltDesignationTrack",
+          "actions": {
+            "resetLockMode": {},
+            "setLowAltTrackMode": {}
+          }
         },
-        {
-          "LowAltBoresightLock": {
+        "failedLowAltDesignationLock": {
+          "stateFrom": "LowAltDesignationLock",
+          "event": "scanFinished",
+          "stateTo": "LowAltSearch",
+          "actions": {
+            "resetLockMode": {},
+            "setLowAltSearchMode": {}
+          }
+        },
+        "LowAltBoresightLock": [
+          {
             "stateFrom": "LowAltStandby",
             "command": "selectTarget",
             "stateTo": "LowAltBoresightLock",
             "actions": {
-              "setLowAltBoresightLockMode": []
+              "setLowAltBoresightLockMode": {}
             }
-          }
-        },
-        {
-          "LowAltBoresightLock": {
+          },
+          {
             "stateFrom": "LowAltSearch",
             "command": "acmSwitch",
             "stateTo": "LowAltBoresightLock",
             "actions": {
-              "resetSearchMode": [],
-              "setLowAltBoresightLockMode": []
+              "resetSearchMode": {},
+              "setLowAltBoresightLockMode": {}
             }
           }
-        },
-        {
-          "LowAltBoresightTrack": {
-            "stateFrom": "LowAltBoresightLock",
-            "event": "targetDetected",
-            "stateTo": "LowAltBoresightTrack",
-            "actions": {
-              "resetLockMode": [],
-              "setLowAltTrackMode": []
-            }
+        ],
+        "LowAltBoresightTrack": {
+          "stateFrom": "LowAltBoresightLock",
+          "event": "targetDetected",
+          "stateTo": "LowAltBoresightTrack",
+          "actions": {
+            "resetLockMode": {},
+            "setLowAltTrackMode": {}
           }
         },
-        {
-          "returnToLowAltStandbyMode": [
-            {
-              "stateFrom": "LowAltBoresightLock"
-            },
-            {
-              "stateFrom": "LowAltBoresightTrack"
-            },
-            {
-              "command": "selectTarget"
-            },
-            {
-              "stateTo": "LowAltStandby"
-            },
-            {
-              "actions": {
-                "resetLockMode": [],
-                "resetTrackMode": [],
-                "setLowAltStandbyMode": []
-              }
-            }
-          ]
-        },
-        {
-          "finishedLowAltBoresightTrack": {
-            "stateFrom": "LowAltBoresightTrack",
-            "event": "targetsOfInterestCleanup",
-            "stateTo": "LowAltBoresightLock",
-            "actions": {
-              "resetTrackMode": [],
-              "setLowAltBoresightLockMode": []
-            }
+        "returnToLowAltStandbyMode": {
+          "stateFrom": [
+            "LowAltBoresightLock",
+            "LowAltBoresightTrack"
+          ],
+          "command": "selectTarget",
+          "stateTo": "LowAltStandby",
+          "actions": {
+            "resetLockMode": {},
+            "resetTrackMode": {},
+            "setLowAltStandbyMode": {}
           }
         },
-        {
-          "switchScanPattern": [
-            {
-              "stateFrom": "MediumAltStandby"
-            },
-            {
-              "stateFrom": "LowAltStandby"
-            },
-            {
-              "stateFrom": "MediumAltSearch"
-            },
-            {
-              "stateFrom": "LowAltSearch"
-            },
-            {
-              "command": "scanPatternSwitch"
-            },
-            {
-              "actions": {
-                "setNextScanPattern": []
-              }
-            }
-          ]
+        "finishedLowAltBoresightTrack": {
+          "stateFrom": "LowAltBoresightTrack",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "LowAltBoresightLock",
+          "actions": {
+            "resetTrackMode": {},
+            "setLowAltBoresightLockMode": {}
+          }
         },
-        {
-          "switchScopeRange": {
-            "command": "rangeSwitch",
-            "actions": {
-              "setNextScopeRange": []
-            }
+        "switchScanPattern": {
+          "stateFrom": [
+            "MediumAltStandby",
+            "LowAltStandby",
+            "MediumAltSearch",
+            "LowAltSearch"
+          ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {}
+          }
+        },
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": {}
           }
         }
-      ]
+      }
     },
     "checkRaltGreater": {
       "stateInit": "init",
@@ -1004,7 +914,7 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": []
+            "scan": {}
           }
         },
         "detect": {
@@ -1018,38 +928,38 @@
               "source": "continuousScale",
               "width": 0.0
             },
-            "detectTarget": []
+            "detectTarget": {}
           }
         },
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": [],
-            "updateActiveDetectedTarget": []
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
           }
         },
         "switchSelectedTarget": {
           "command": "switchTarget",
           "actions": {
-            "setNextDetectedTargetActive": []
+            "setNextDetectedTargetActive": {}
           }
         },
         "setCueAzimuth": {
           "command": "cueAxisX",
           "actions": {
-            "setCueAzimuth": []
+            "setCueAzimuth": {}
           }
         },
         "setCueDist": {
           "command": "cueAxisY",
           "actions": {
-            "setCueDist": []
+            "setCueDist": {}
           }
         },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
-            "setDetectedTargetActive": []
+            "setDetectedTargetActive": {}
           }
         }
       }
@@ -1060,13 +970,13 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": []
+            "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         }
       }
@@ -1077,13 +987,13 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": []
+            "detectTarget": {}
           }
         },
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": [],
+            "updateActiveTargetOfInterest": {},
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1103,7 +1013,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
+            "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 1.0
             },

@@ -1,131 +1,53 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "aim_9_pylon_002"
-      },
-      {
-        "node": "aim_9_pylon_003"
-      },
-      {
-        "node": "aim_9_pylon_004"
-      },
-      {
-        "node": "aim_9_pylon_005"
-      },
-      {
-        "node": "aim_7_pylon_001"
-      },
-      {
-        "node": "aim_7_pylon_002"
-      },
-      {
-        "node": "aero_7_b001"
-      },
-      {
-        "node": "aero_7_cap_b001"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b001"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b001"
-      },
-      {
-        "node": "aero_7_b002"
-      },
-      {
-        "node": "aero_7_cap_b002"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b002"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b002"
-      },
-      {
-        "node": "aero_7_b003"
-      },
-      {
-        "node": "aero_7_cap_b003"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b003"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b003"
-      },
-      {
-        "node": "aero_7_b004"
-      },
-      {
-        "node": "aero_7_cap_b004"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b004"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b004"
-      },
-      {
-        "node": "zuni_lau_10a_b001"
-      },
-      {
-        "node": "zuni_lau_10a_cap_b001"
-      },
-      {
-        "node": "zuni_lau_10a_cap_dmg1_b001"
-      },
-      {
-        "node": "zuni_lau_10a_cap_dmg2_b001"
-      },
-      {
-        "node": "zuni_lau_10a_b002"
-      },
-      {
-        "node": "zuni_lau_10a_cap_b002"
-      },
-      {
-        "node": "zuni_lau_10a_cap_dmg1_b002"
-      },
-      {
-        "node": "zuni_lau_10a_cap_dmg2_b002"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "aim_9_pylon_002",
+      "aim_9_pylon_003",
+      "aim_9_pylon_004",
+      "aim_9_pylon_005",
+      "aim_7_pylon_001",
+      "aim_7_pylon_002",
+      "aero_7_b001",
+      "aero_7_cap_b001",
+      "aero_7_cap_dmg1_b001",
+      "aero_7_cap_dmg2_b001",
+      "aero_7_b002",
+      "aero_7_cap_b002",
+      "aero_7_cap_dmg1_b002",
+      "aero_7_cap_dmg2_b002",
+      "aero_7_b003",
+      "aero_7_cap_b003",
+      "aero_7_cap_dmg1_b003",
+      "aero_7_cap_dmg2_b003",
+      "aero_7_b004",
+      "aero_7_cap_b004",
+      "aero_7_cap_dmg1_b004",
+      "aero_7_cap_dmg2_b004",
+      "zuni_lau_10a_b001",
+      "zuni_lau_10a_cap_b001",
+      "zuni_lau_10a_cap_dmg1_b001",
+      "zuni_lau_10a_cap_dmg2_b001",
+      "zuni_lau_10a_b002",
+      "zuni_lau_10a_cap_b002",
+      "zuni_lau_10a_cap_dmg1_b002",
+      "zuni_lau_10a_cap_dmg2_b002"
     ]
   },
-  {
-    "Weapon": [
-      {
-        "trigger": "cannon"
-      },
-      {
-        "blk": "gameData/Weapons/cannonM61A1.blk"
-      },
-      {
-        "emitter": "flare1"
-      },
-      {
-        "flash": "flare1"
-      },
-      {
-        "dm": "cannon1_dm"
-      },
-      {
-        "bullets": 750
-      },
-      {
-        "spread": 1.0
-      },
-      {
-        "counterIndex": 1
-      },
-      {
-        "counterIndex": 2
-      }
-    ]
-  },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
+      "trigger": "cannon",
+      "blk": "gameData/Weapons/cannonM61A1.blk",
+      "emitter": "flare1",
+      "flash": "flare1",
+      "dm": "cannon1_dm",
+      "bullets": 750,
+      "spread": 1.0,
+      "counterIndex": [
+        1,
+        2
+      ]
+    },
+    {
       "trigger": "aam",
       "external": true,
       "separate": true,
@@ -133,10 +55,8 @@
       "emitter": "aim_9_001",
       "bullets": 1,
       "loadFactorLimit": 7.0
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "aam",
       "external": true,
       "separate": true,
@@ -144,70 +64,56 @@
       "emitter": "aim_9_006",
       "bullets": 1,
       "loadFactorLimit": 7.0
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
       "emitter": "750lb_m117_001",
       "bullets": 1,
       "external": true,
       "separate": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
       "emitter": "750lb_m117_007",
       "bullets": 1,
       "external": true,
       "separate": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
       "emitter": "750lb_m117_002",
       "bullets": 1,
       "external": true,
       "separate": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
       "emitter": "750lb_m117_006",
       "bullets": 1,
       "external": true,
       "separate": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
       "emitter": "750lb_m117_003",
       "bullets": 1,
       "external": true,
       "separate": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
       "emitter": "750lb_m117_005",
       "bullets": 1,
       "external": true,
       "separate": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
       "emitter": "750lb_m117_004",
@@ -215,5 +121,5 @@
       "external": true,
       "separate": true
     }
-  }
-]
+  ]
+}

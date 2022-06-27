@@ -18,7 +18,7 @@
       "optionalTakeOff": false
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -31,11 +31,11 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [],
-      "else_actions": []
+      "conditions": {},
+      "actions": {},
+      "else_actions": {}
     },
     "flt_draw_frontline": {
       "isCategory": true,
@@ -60,74 +60,52 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "dozhdalis' okonchaniya vystavleniya sostoyaniya yacheek"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "ochishchaem frontlajn"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "ochishchaem peremennye"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskaem cikl"
             }
-          },
-          {
-            "varSetString": [
-              {
-                "value": ""
-              },
-              {
-                "var": "flt_draw_point_01"
-              },
-              {
-                "var": "flt_draw_point_02"
-              },
-              {
-                "var": "flt_draw_point_03"
-              },
-              {
-                "var": "flt_draw_point_04"
-              }
+          ],
+          "varSetString": {
+            "value": "",
+            "var": [
+              "flt_draw_point_01",
+              "flt_draw_point_02",
+              "flt_draw_point_03",
+              "flt_draw_point_04"
             ]
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_point_01",
-              "areaNameTo": "@flt_draw_point_04",
-              "curve": false,
-              "clear": true
-            }
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_point_01",
+            "areaNameTo": "@flt_draw_point_04",
+            "curve": false,
+            "clear": true
           },
-          {
-            "varSetInt": {
+          "varSetInt": [
+            {
               "value": 0,
               "var": "flt_draw_cur_row"
-            }
-          },
-          {
-            "varSetInt": {
+            },
+            {
               "value": 0,
               "var": "flt_draw_cur_cell",
               "input_var": "flt_start_cell"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_row"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_frontline_row"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "flt_draw_frontline_row": {
         "is_enabled": false,
@@ -150,41 +128,31 @@
             "var_value_other": "flt_zones_in_row"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "ne vyshli za diapazon. mozhem risovat'"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "obnulyaem schetchik stroki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskaem proverku stroki"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "flt_draw_cur_row"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "flt_draw_cur_row"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_draw_cur_col"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_draw_cur_col"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "zakonchili risovat'"
@@ -212,97 +180,75 @@
             "var_value_other": "flt_zones_in_col"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "vnutri stroki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "uvelichivaem indeks tekushchej obrabatyvaemoj yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj sostoyaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem armiyu yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem yachejku sverhu"
             }
-          },
-          {
-            "varModify": {
+          ],
+          "varModify": [
+            {
               "operator": "add",
               "value": 1.0,
               "var": "flt_draw_cur_col"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "add",
               "value": 1.0,
               "var": "flt_draw_cur_cell"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "flt_area_",
               "var": "flt_draw_cur_cell_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_cur_cell_state"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "@flt_draw_cur_cell",
               "digits": 2,
               "var": "flt_draw_cur_cell_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_cur_cell",
               "digits": 2,
               "var": "flt_draw_cur_cell_state"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_state",
               "digits": 0,
               "var": "flt_draw_cur_cell_state"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_draw_cur_army",
+            "input_var": "@flt_draw_cur_cell_state"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_draw_cur_army",
-              "input_var": "@flt_draw_cur_cell_state"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_left_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_left_start"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "vyshli za predely stroki. prodolzhaem cikl"
@@ -325,7 +271,7 @@
             "time": 0.0
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "varModify": {
             "operator": "add",
@@ -338,7 +284,7 @@
             "target": "flt_draw_frontline_row"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "flt_draw_left_start": {
         "is_enabled": false,
@@ -361,172 +307,126 @@
             "var_value_other": "flt_zones_in_col"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "sozdaem imya levoj yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj sostoyaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj tipa sostoyaniya tekushchej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj tipa sostoyaniya levoj yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya tochki skipa risovaniya linii"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem est' li levaya zona"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_draw_left_cell",
+            "input_var": "flt_draw_cur_cell"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_draw_left_cell",
-              "input_var": "flt_draw_cur_cell"
-            }
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "flt_draw_left_cell"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "flt_draw_left_cell"
-            }
-          },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "flt_area_",
               "var": "flt_draw_check_cell_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_cur_state_type_var"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_check_state_type_var"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_cur_cell_left_skip_point"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "@flt_draw_left_cell",
               "digits": 2,
               "var": "flt_draw_check_cell_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_left_cell",
               "digits": 2,
               "var": "flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_state",
               "digits": 0,
               "var": "flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_cur_cell",
               "digits": 2,
               "var": "flt_draw_cur_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_type",
               "digits": 0,
               "var": "flt_draw_cur_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_left_cell",
               "digits": 2,
               "var": "flt_draw_check_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_type",
               "digits": 0,
               "var": "flt_draw_check_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_cur_cell",
               "digits": 2,
               "var": "flt_draw_cur_cell_left_skip_point"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_left_skip_point",
               "digits": 0,
               "var": "flt_draw_cur_cell_left_skip_point"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_left_skip_exist"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_left_skip_exist"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "proskipali poslednyuyu levuyu otrisovku v ryadu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem pravuyu"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ]
+        }
       },
       "flt_draw_left_skip_exist": {
         "is_enabled": false,
@@ -547,73 +447,55 @@
             "type": "area"
           }
         },
-        "actions": [
-          {
-            "comment": {
-              "value": "tochka sushchestvuet. skipaem risovku i idem risovat' sleduyushchij segment"
-            }
+        "actions": {
+          "comment": {
+            "value": "tochka sushchestvuet. skipaem risovku i idem risovat' sleduyushchij segment"
           },
-          {
-            "__systemLog": {
+          "__systemLog": [
+            {
               "value": "exist:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_left_skip_point",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_log_string",
               "logtype": "screen_and_log"
             }
+          ],
+          "__varSetString": {
+            "value": "cur index is ",
+            "var": "flt_log_string"
           },
-          {
-            "__varSetString": {
-              "value": "cur index is ",
-              "var": "flt_log_string"
-            }
+          "__varAddString": {
+            "value": "@flt_draw_cur_cell_name",
+            "digits": 0,
+            "var": "flt_log_string"
           },
-          {
-            "__varAddString": {
-              "value": "@flt_draw_cur_cell_name",
-              "digits": 0,
-              "var": "flt_log_string"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
-              "value": "tochki ne sushchestvuet. risuem vse kak obychno"
-            }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "tochki ne sushchestvuet. risuem vse kak obychno"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_left_exist"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_left_exist"
           },
-          {
-            "__systemLog": {
+          "__systemLog": [
+            {
               "value": "not exist:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_left_skip_point",
               "logtype": "screen_and_log"
             }
-          }
-        ]
+          ]
+        }
       },
       "flt_draw_left_exist": {
         "is_enabled": false,
@@ -634,57 +516,43 @@
             "type": "area"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "levaya yachejka est'. "
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem armiyu levoj yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem tip tekushchej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem tip levoj yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem sovpadenie armij"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_draw_check_army",
+            "input_var": "@flt_draw_check_cell_state"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_draw_check_army",
-              "input_var": "@flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varGetStringValue": {
+          "varGetStringValue": [
+            {
               "from_var_name": "@flt_draw_cur_state_type_var",
               "var": "flt_draw_cur_state_type_value"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "@flt_draw_check_state_type_var",
               "var": "flt_draw_check_state_type_value"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_left_army_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_left_army_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "levoj yachejki net. proveryaem pravuyu"
@@ -707,78 +575,64 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "notEqual",
               "var_value_other": "flt_draw_check_army"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_check_army",
               "value": 0,
               "comparasion_func": "more"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "more"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "armii ne sovadayut"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya dopolnitel'nyh tochek"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem est' li dop tochka"
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "flt_draw_cur_cell_name",
               "var": "flt_draw_cur_cell_left_draw_up_point"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "flt_draw_cur_cell_name",
               "var": "flt_draw_cur_cell_left_draw_down_point"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "_up_point",
               "digits": 0,
               "var": "flt_draw_cur_cell_left_draw_up_point"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_down_point",
               "digits": 0,
               "var": "flt_draw_cur_cell_left_draw_down_point"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_left_both_points_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_left_both_points_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "proveryaem ne nulevye-li armii"
@@ -801,20 +655,18 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@flt_draw_cur_cell_left_draw_up_point",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@flt_draw_cur_cell_left_draw_down_point",
               "type": "area"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "est' obe dop tochki risuem liniyu"
@@ -924,126 +776,98 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B sleva. risuem liniyu sverhu vniz"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaFromSide": "top_left",
+            "areaToSide": "bottom_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaFromSide": "top_left",
-              "areaToSide": "bottom_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "__systemLog": {
+          "__systemLog": [
+            {
               "value": "left line:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_name",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_log_string",
               "logtype": "screen_and_log"
             }
+          ],
+          "__varSetString": {
+            "value": "cur index is ",
+            "var": "flt_log_string"
           },
-          {
-            "__varSetString": {
-              "value": "cur index is ",
-              "var": "flt_log_string"
-            }
+          "__varAddString": {
+            "value": "@flt_draw_cur_cell_name",
+            "digits": 0,
+            "var": "flt_log_string"
           },
-          {
-            "__varAddString": {
-              "value": "@flt_draw_cur_cell_name",
-              "digits": 0,
-              "var": "flt_log_string"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "Armiya A sleva risuem liniya snizu vverh"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaFromSide": "bottom_left",
+            "areaToSide": "top_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaFromSide": "bottom_left",
-              "areaToSide": "top_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
-          },
-          {
-            "__systemLog": {
+          "__systemLog": [
+            {
               "value": "left line:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_name",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_log_string",
               "logtype": "screen_and_log"
             }
+          ],
+          "__varSetString": {
+            "value": "cur index is",
+            "var": "flt_log_string"
           },
-          {
-            "__varSetString": {
-              "value": "cur index is",
-              "var": "flt_log_string"
-            }
-          },
-          {
-            "__varAddString": {
-              "value": "@flt_draw_cur_cell",
-              "digits": 0,
-              "var": "flt_log_string"
-            }
+          "__varAddString": {
+            "value": "@flt_draw_cur_cell",
+            "digits": 0,
+            "var": "flt_log_string"
           }
-        ]
+        }
       },
       "flt_draw_left_drawing_both_points_line": {
         "is_enabled": false,
@@ -1065,60 +889,48 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B sleva. risuem liniyu sverhu vniz"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_left_draw_up_point",
+            "areaNameTo": "@flt_draw_cur_cell_left_draw_down_point",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_left_draw_up_point",
-              "areaNameTo": "@flt_draw_cur_cell_left_draw_down_point",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "Armiya A sleva risuem liniya snizu vverh"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_left_draw_down_point",
+            "areaNameTo": "@flt_draw_cur_cell_left_draw_up_point",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_left_draw_down_point",
-              "areaNameTo": "@flt_draw_cur_cell_left_draw_up_point",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ]
+        }
       },
       "flt_draw_left_drawing_up_point_line": {
         "is_enabled": false,
@@ -1140,67 +952,53 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B sleva. risuem liniyu sverhu vniz"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_left_draw_up_point",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaToSide": "bottom_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_left_draw_up_point",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaToSide": "bottom_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "Armiya A sleva risuem liniya snizu vverh"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_left_draw_up_point",
+            "areaFromSide": "bottom_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_left_draw_up_point",
-              "areaFromSide": "bottom_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ]
+        }
       },
       "flt_draw_left_drawing_down_point_line": {
         "is_enabled": false,
@@ -1222,62 +1020,50 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B sleva. risuem liniyu sverhu vniz"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_left_draw_down_point",
+            "areaFromSide": "top_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_left_draw_down_point",
-              "areaFromSide": "top_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "Armiya A sleva risuem liniya snizu vverh"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_left_draw_down_point",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaToSide": "top_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_left_draw_down_point",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaToSide": "top_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ]
+        }
       },
       "flt_draw_left_drawing_line_zero_both_check": {
         "is_enabled": false,
@@ -1292,22 +1078,20 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_check_army",
               "value": 0,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "obe armii nulevye - ne nado risovat'"
@@ -1338,22 +1122,20 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareString": {
+        "conditions": {
+          "varCompareString": [
+            {
               "var_value": "flt_draw_cur_state_type_value",
               "value": "sea",
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareString": {
+            },
+            {
               "var_value": "flt_draw_check_state_type_value",
               "value": "sea",
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "morskoj kvadrat - ne nado risovat'"
@@ -1384,51 +1166,43 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_check_army",
               "value": 0,
               "comparasion_func": "equal"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B sleva. risuem liniyu sverhu vniz"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem proveryat' levuyu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaFromSide": "top_left",
+            "areaToSide": "bottom_left",
+            "colorCode": "White",
+            "transparency": 75,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaFromSide": "top_left",
-              "areaToSide": "bottom_left",
-              "colorCode": "White",
-              "transparency": 75,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_start"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_bottom_start"
           }
-        ],
+        },
         "else_actions": {
           "triggerEnable": {
             "target": "flt_draw_bottom_start"
@@ -1448,159 +1222,117 @@
             "time": 0.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "sozdaem imya nizhnej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj sostoyaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj tipa sostoyaniya tekushchej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj tipa sostoyaniya nizhnej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya tochki skipa risovaniya linii"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem est' li nizhnyaya zona"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_draw_bottom_cell",
+            "input_var": "flt_draw_cur_cell"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_draw_bottom_cell",
-              "input_var": "flt_draw_cur_cell"
-            }
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "flt_draw_bottom_cell",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col_real"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "flt_draw_bottom_cell",
-              "use_variable": true,
-              "var_value": "flt_zones_in_col_real"
-            }
-          },
-          {
-            "varSetString": {
+          "varSetString": [
+            {
               "value": "flt_area_",
               "var": "flt_draw_check_cell_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_cur_state_type_var"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_check_state_type_var"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_draw_cur_cell_bottom_skip_point"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "@flt_draw_bottom_cell",
               "digits": 2,
               "var": "flt_draw_check_cell_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_bottom_cell",
               "digits": 2,
               "var": "flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_state",
               "digits": 0,
               "var": "flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_cur_cell",
               "digits": 2,
               "var": "flt_draw_cur_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_type",
               "digits": 0,
               "var": "flt_draw_cur_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_bottom_cell",
               "digits": 2,
               "var": "flt_draw_check_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_type",
               "digits": 0,
               "var": "flt_draw_check_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_draw_cur_cell",
               "digits": 2,
               "var": "flt_draw_cur_cell_bottom_skip_point"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_bottom_skip_point",
               "digits": 0,
               "var": "flt_draw_cur_cell_bottom_skip_point"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_skip_exist"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_bottom_skip_exist"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "flt_draw_bottom_skip_exist": {
         "is_enabled": false,
@@ -1661,62 +1393,46 @@
             "type": "area"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "nizhnyaya yachejka est'. "
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem armiyu nizhnej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem tip tekushchej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem tip nizhnej yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem sovpadenie armij"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": ""
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_draw_check_army",
+            "input_var": "@flt_draw_check_cell_state"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_draw_check_army",
-              "input_var": "@flt_draw_check_cell_state"
-            }
-          },
-          {
-            "varGetStringValue": {
+          "varGetStringValue": [
+            {
               "from_var_name": "@flt_draw_cur_state_type_var",
               "var": "flt_draw_cur_state_type_value"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "@flt_draw_check_state_type_var",
               "var": "flt_draw_check_state_type_value"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_army_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_bottom_army_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "nizhnej yachejki net. idem dal'she po ciklu"
@@ -1739,78 +1455,64 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "notEqual",
               "var_value_other": "flt_draw_check_army"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_check_army",
               "value": 0,
               "comparasion_func": "more"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "more"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "armii ne sovadayut"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya dopolnitel'noj tochki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem est' li dop tochka"
             }
-          },
-          {
-            "varGetStringValue": {
+          ],
+          "varGetStringValue": [
+            {
               "from_var_name": "flt_draw_cur_cell_name",
               "var": "flt_draw_cur_cell_bottom_draw_right_point"
-            }
-          },
-          {
-            "varGetStringValue": {
+            },
+            {
               "from_var_name": "flt_draw_cur_cell_name",
               "var": "flt_draw_cur_cell_bottom_draw_left_point"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "_right_point",
               "digits": 0,
               "var": "flt_draw_cur_cell_bottom_draw_right_point"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_left_point",
               "digits": 0,
               "var": "flt_draw_cur_cell_bottom_draw_left_point"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_bottom_both_points_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_draw_bottom_both_points_check"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "proveryaem ne nulevye-li armii"
@@ -1833,20 +1535,18 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "objectExists": {
+        "conditions": {
+          "objectExists": [
+            {
               "target": "@flt_draw_cur_cell_bottom_draw_right_point",
               "type": "area"
-            }
-          },
-          {
-            "objectExists": {
+            },
+            {
               "target": "@flt_draw_cur_cell_bottom_draw_left_point",
               "type": "area"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "est' obe dop tochki risuem liniyu"
@@ -1956,88 +1656,72 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B snizu risuem liniyu sleva napravo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaFromSide": "bottom_left",
+            "areaToSide": "bottom_right",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaFromSide": "bottom_left",
-              "areaToSide": "bottom_right",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
-          },
-          {
-            "__systemLog": {
+          "__systemLog": [
+            {
               "value": "bottom line:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_name",
               "logtype": "screen_and_log"
             }
-          }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+          ]
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "armiya A snizu. risuem liniyu sprava nalevo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaFromSide": "bottom_right",
+            "areaToSide": "bottom_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaFromSide": "bottom_right",
-              "areaToSide": "bottom_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
-          },
-          {
-            "__systemLog": {
+          "__systemLog": [
+            {
               "value": "bottom line:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "__systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_name",
               "logtype": "screen_and_log"
             }
-          }
-        ]
+          ]
+        }
       },
       "flt_draw_bottom_drawing_both_points_line": {
         "is_enabled": false,
@@ -2059,96 +1743,76 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B snizu risuem liniyu sleva napravo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_left_point",
+            "areaNameTo": "@flt_draw_cur_cell_bottom_draw_right_point",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_left_point",
-              "areaNameTo": "@flt_draw_cur_cell_bottom_draw_right_point",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
-          },
-          {
-            "systemLog": {
+          "systemLog": [
+            {
               "value": "bottom line:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_bottom_draw_left_point",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_bottom_draw_right_point",
               "logtype": "screen_and_log"
             }
-          }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+          ]
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "armiya A snizu. risuem liniyu sprava nalevo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_right_point",
+            "areaNameTo": "@flt_draw_cur_cell_bottom_draw_left_point",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_right_point",
-              "areaNameTo": "@flt_draw_cur_cell_bottom_draw_left_point",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
-          },
-          {
-            "systemLog": {
+          "systemLog": [
+            {
               "value": "bottom line:",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_bottom_draw_right_point",
               "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
+            },
+            {
               "value": "@flt_draw_cur_cell_bottom_draw_left_point",
               "logtype": "screen_and_log"
             }
-          }
-        ]
+          ]
+        }
       },
       "flt_draw_bottom_drawing_right_points_line": {
         "is_enabled": false,
@@ -2170,62 +1834,50 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B snizu risuem liniyu sleva napravo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_bottom_draw_right_point",
+            "areaFromSide": "bottom_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_bottom_draw_right_point",
-              "areaFromSide": "bottom_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "armiya A snizu. risuem liniyu sprava nalevo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_right_point",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaToSide": "bottom_left",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_right_point",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaToSide": "bottom_left",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           }
-        ]
+        }
       },
       "flt_draw_bottom_drawing_left_points_line": {
         "is_enabled": false,
@@ -2247,62 +1899,50 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "Armiya B snizu risuem liniyu sleva napravo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_left_point",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaToSide": "bottom_right",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_bottom_draw_left_point",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaToSide": "bottom_right",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "armiya A snizu. risuem liniyu sprava nalevo"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_bottom_draw_left_point",
+            "areaFromSide": "bottom_right",
+            "colorCode": "Team B-A",
+            "transparency": 30,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_bottom_draw_left_point",
-              "areaFromSide": "bottom_right",
-              "colorCode": "Team B-A",
-              "transparency": 30,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           }
-        ]
+        }
       },
       "flt_draw_bottom_drawing_zero_both_check": {
         "is_enabled": false,
@@ -2317,22 +1957,20 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_check_army",
               "value": 0,
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "obe armii nulevye nichego ne risuem"
@@ -2363,22 +2001,20 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareString": {
+        "conditions": {
+          "varCompareString": [
+            {
               "var_value": "flt_draw_cur_state_type_value",
               "value": "sea",
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareString": {
+            },
+            {
               "var_value": "flt_draw_check_state_type_value",
               "value": "sea",
               "comparasion_func": "equal"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "comment": {
             "value": "morskoj kvadrat - ne nado risovat'"
@@ -2409,51 +2045,43 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_draw_cur_army",
               "value": 0,
               "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "flt_draw_check_army",
               "value": 0,
               "comparasion_func": "equal"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "granica s pustjo yachejkoj risuem beluyu liniyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "missionShowMapLine": {
+            "areaNameFrom": "@flt_draw_cur_cell_name",
+            "areaNameTo": "@flt_draw_cur_cell_name",
+            "areaFromSide": "bottom_left",
+            "areaToSide": "bottom_right",
+            "colorCode": "White",
+            "transparency": 75,
+            "scale": 1.2,
+            "curve": false
           },
-          {
-            "missionShowMapLine": {
-              "areaNameFrom": "@flt_draw_cur_cell_name",
-              "areaNameTo": "@flt_draw_cur_cell_name",
-              "areaFromSide": "bottom_left",
-              "areaToSide": "bottom_right",
-              "colorCode": "White",
-              "transparency": 75,
-              "scale": 1.2,
-              "curve": false
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_draw_frontline_col"
-            }
+          "triggerEnable": {
+            "target": "flt_draw_frontline_col"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "idem dal'she po ciklu"
@@ -2486,23 +2114,19 @@
             "type": "area"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "zona s takim imenem najdena. rabotaem"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem ne aktiven li poisk na dannyj moment"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_find_army_wait_for_search"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_find_army_wait_for_search"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "net zony s takim imenem"
@@ -2532,65 +2156,47 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "podozhdali chto predydushchij poisk zakonchilsya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim chto poisk nachalsya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem imya stejta"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem armiyu"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem armiyu A"
             }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "flt_find_army_search_in_progress"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "flt_find_army_search_in_progress"
-            }
+          "varGetStringValue": {
+            "from_var_name": "flt_find_army_area_name",
+            "var": "flt_find_army_state_var"
           },
-          {
-            "varGetStringValue": {
-              "from_var_name": "flt_find_army_area_name",
-              "var": "flt_find_army_state_var"
-            }
+          "varAddString": {
+            "value": "_state",
+            "digits": 0,
+            "var": "flt_find_army_state_var"
           },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "flt_find_army_state_var"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_find_army_state_value",
+            "input_var": "@flt_find_army_state_var"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_find_army_state_value",
-              "input_var": "@flt_find_army_state_var"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_check_army_A"
-            }
+          "triggerEnable": {
+            "target": "flt_state_check_army_A"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "flt_find_army_check_A": {
         "is_enabled": false,
@@ -2612,34 +2218,26 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "indeks iskomoj zony men'she zony frontlajna - armiya A"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "naznachaem peremennoj znachenie armii A"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim chto poisk okonchen"
             }
+          ],
+          "varSetInt": {
+            "value": 1,
+            "var": "flt_find_army_army_idx"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "flt_find_army_army_idx"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_find_army_complete"
-            }
+          "triggerEnable": {
+            "target": "flt_find_army_complete"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "indeks zony ne men'she zony frontlajna. smotrim prinadlezhnost' armii B"
@@ -2669,34 +2267,26 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "indeks iskomoj zony bol'she zony frontlajna - armiya B"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "naznachaem peremennoj znachenie armii B"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim chto poisk okonchen"
             }
+          ],
+          "varSetInt": {
+            "value": 2,
+            "var": "flt_find_army_army_idx"
           },
-          {
-            "varSetInt": {
-              "value": 2,
-              "var": "flt_find_army_army_idx"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_find_army_complete"
-            }
+          "triggerEnable": {
+            "target": "flt_find_army_complete"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "govorim, chto poisk zakonchen i nichego ne najdeno"
@@ -2719,37 +2309,29 @@
             "time": 0.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "proizoshla oshibka"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim chto poisk zavershen"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim chto indeks armii raven -1"
             }
+          ],
+          "varSetBool": {
+            "value": false,
+            "var": "flt_find_army_search_in_progress"
           },
-          {
-            "varSetBool": {
-              "value": false,
-              "var": "flt_find_army_search_in_progress"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": -1,
-              "var": "flt_find_army_army_idx"
-            }
+          "varSetInt": {
+            "value": -1,
+            "var": "flt_find_army_army_idx"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "flt_find_army_complete": {
         "is_enabled": false,
@@ -2764,7 +2346,7 @@
             "time": 1.0
           }
         },
-        "conditions": [],
+        "conditions": {},
         "actions": {
           "comment": {
             "value": "govorim chto poisk zavershen"
@@ -2774,7 +2356,7 @@
             "var": "flt_find_army_search_in_progress"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "flt_army_state_setting": {
@@ -2800,74 +2382,54 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "obnulyaem znacheniya peremennyh"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "counting cell idx for team B"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim chto idet vystanovlenie sostoyaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "zapuskaem cikl"
             }
-          },
-          {
-            "varSetInt": [
-              {
-                "value": 0
-              },
-              {
-                "var": "flt_state_cur_row"
-              },
-              {
-                "var": "flt_state_cur_col"
-              }
-            ]
-          },
-          {
-            "varSetInt": {
+          ],
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": [
+                "flt_state_cur_row",
+                "flt_state_cur_col"
+              ]
+            },
+            {
               "value": 0,
               "var": "flt_state_cur_cell",
               "input_var": "flt_start_cell"
-            }
-          },
-          {
-            "varSetInt": {
+            },
+            {
               "value": 0,
               "var": "flt_army_B_width",
               "input_var": "flt_army_A_width"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "flt_army_B_width"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "flt_army_B_width"
-            }
+          "varSetBool": {
+            "value": true,
+            "var": "flt_state_in_progress"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "flt_state_in_progress"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_mode_select"
-            }
+          "triggerEnable": {
+            "target": "flt_mode_select"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "flt_mode_select": {
         "is_enabled": false,
@@ -2927,41 +2489,31 @@
             "var_value_other": "flt_zones_in_row_real"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "proverili chto ne  vyshli za predely"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "postavili schetchik vnutri stroki v 0"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem stroki"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "flt_state_cur_row"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "flt_state_cur_row"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_state_cur_col"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_state_cur_col"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_check_col"
-            }
+          "triggerEnable": {
+            "target": "flt_state_check_col"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "vyshli za predely massiva. vystavlyaem flag okonchaniya"
@@ -2993,92 +2545,72 @@
             "var_value_other": "flt_zones_in_col_real"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "v predelah stroki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem nomer yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, hranyashchej sostoyanie yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremenno, hranyashchej tip sostoyaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem armiyu A"
             }
-          },
-          {
-            "varModify": {
+          ],
+          "varModify": [
+            {
               "operator": "add",
               "value": 1.0,
               "var": "flt_state_cur_col"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "add",
               "value": 1.0,
               "var": "flt_state_cur_cell"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "flt_area_",
               "var": "flt_state_cell_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_state_type_var"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "@flt_state_cur_cell",
               "digits": 2,
               "var": "flt_state_cell_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_state",
               "digits": 0,
               "var": "flt_state_cell_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_state_cur_cell",
               "digits": 2,
               "var": "flt_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_type",
               "digits": 0,
               "var": "flt_state_type_var"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_check_army_A"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_state_check_army_A"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "vyshli za predely stroki. prodolzhaem cikl"
@@ -3101,62 +2633,48 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_state_cur_col",
               "value": 4,
               "comparasion_func": "less",
               "var_value_other": "flt_army_A_width"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "@flt_state_cell_name",
               "value": 0,
               "comparasion_func": "less"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "yachejka bezuslovno prinadlezhit komande A"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "prisvaivaem nuzhnyj stejt"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim, chto state - armiya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po cikul"
             }
+          ],
+          "varSetInt": {
+            "value": 1,
+            "var": "@flt_state_cell_name"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "@flt_state_cell_name"
-            }
+          "varSetString": {
+            "value": "army",
+            "var": "@flt_state_type_var"
           },
-          {
-            "varSetString": {
-              "value": "army",
-              "var": "@flt_state_type_var"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_check_col"
-            }
+          "triggerEnable": {
+            "target": "flt_state_check_col"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "vne diapazona. proveryaem armiyu B"
@@ -3179,62 +2697,48 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_state_cur_col",
               "value": 4,
               "comparasion_func": "more",
               "var_value_other": "flt_army_A_width"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "@flt_state_cell_name",
               "value": 0,
               "comparasion_func": "less"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "yachejka bezuslovno prinadlezhit komande B"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "prisvaivaem nuzhnyj stejt"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim, chto state - armiya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "idem dal'she po ciklu"
             }
+          ],
+          "varSetInt": {
+            "value": 2,
+            "var": "@flt_state_cell_name"
           },
-          {
-            "varSetInt": {
-              "value": 2,
-              "var": "@flt_state_cell_name"
-            }
+          "varSetString": {
+            "value": "army",
+            "var": "@flt_state_type_var"
           },
-          {
-            "varSetString": {
-              "value": "army",
-              "var": "@flt_state_type_var"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_check_col"
-            }
+          "triggerEnable": {
+            "target": "flt_state_check_col"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "proveryaem yachejku linii fronta"
@@ -3257,59 +2761,47 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_state_cur_col",
               "value": 4,
               "comparasion_func": "equal",
               "var_value_other": "flt_army_A_width"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "@flt_state_cell_name",
               "value": 0,
               "comparasion_func": "less"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "liniya fronta. sluchajnaya armiya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "prisvaivaem nuzhnyj stejt"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "prodolzhaem cikl"
             }
+          ],
+          "varSetRandomInt": {
+            "var": "flt_state_army_randomizer",
+            "from": 1,
+            "to_not_including": 3
           },
-          {
-            "varSetRandomInt": {
-              "var": "flt_state_army_randomizer",
-              "from": 1,
-              "to_not_including": 3
-            }
+          "varSetInt": {
+            "value": 1,
+            "var": "@flt_state_cell_name",
+            "input_var": "flt_state_army_randomizer"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "@flt_state_cell_name",
-              "input_var": "flt_state_army_randomizer"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_check_col"
-            }
+          "triggerEnable": {
+            "target": "flt_state_check_col"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "ne liniya fronta. prodolzhaem cikl"
@@ -3340,41 +2832,31 @@
             "var_value_other": "flt_zones_in_row_real"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "proverili chto ne  vyshli za predely"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "postavili schetchik vnutri stroki v 0"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem stroki"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "flt_state_cur_row"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "flt_state_cur_row"
-            }
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_state_cur_col"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "flt_state_cur_col"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_mirror_check_col"
-            }
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_col"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "vyshli za predely massiva. vystavlyaem flag okonchaniya"
@@ -3406,92 +2888,72 @@
             "var_value_other": "flt_zones_in_col_real"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "v predelah stroki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "poluchaem nomer yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremennoj, hranyashchej sostoyanie yachejki"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "sozdaem imya peremenno, hranyashchej tip sostoyaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem armiyu A"
             }
-          },
-          {
-            "varModify": {
+          ],
+          "varModify": [
+            {
               "operator": "add",
               "value": 1.0,
               "var": "flt_state_cur_col"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "add",
               "value": 1.0,
               "var": "flt_state_cur_cell"
             }
-          },
-          {
-            "varSetString": {
+          ],
+          "varSetString": [
+            {
               "value": "flt_area_",
               "var": "flt_state_cell_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "flt_area_",
               "var": "flt_state_type_var"
             }
-          },
-          {
-            "varAddString": {
+          ],
+          "varAddString": [
+            {
               "value": "@flt_state_cur_cell",
               "digits": 2,
               "var": "flt_state_cell_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_state",
               "digits": 0,
               "var": "flt_state_cell_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "@flt_state_cur_cell",
               "digits": 2,
               "var": "flt_state_type_var"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_type",
               "digits": 0,
               "var": "flt_state_type_var"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_mirror_check_army_A"
-            }
+          ],
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_army_A"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "vyshli za predely stroki. prodolzhaem cikl"
@@ -3514,62 +2976,48 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_state_cur_col",
               "value": 4,
               "comparasion_func": "notMore",
               "var_value_other": "flt_army_A_width"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "@flt_state_cell_name",
               "value": 0,
               "comparasion_func": "less"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "yachejka bezuslovno prinadlezhit komande A"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "prisvaivaem nuzhnyj stejt"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim, chto state - armiya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "checking random battle chance"
             }
+          ],
+          "varSetInt": {
+            "value": 1,
+            "var": "@flt_state_cell_name"
           },
-          {
-            "varSetInt": {
-              "value": 1,
-              "var": "@flt_state_cell_name"
-            }
+          "varSetString": {
+            "value": "army",
+            "var": "@flt_state_type_var"
           },
-          {
-            "varSetString": {
-              "value": "army",
-              "var": "@flt_state_type_var"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_random_battles_t1_start"
-            }
+          "triggerEnable": {
+            "target": "flt_random_battles_t1_start"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "vne diapazona. proveryaem armiyu B"
@@ -3592,62 +3040,48 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "flt_state_cur_col",
               "value": 4,
               "comparasion_func": "more",
               "var_value_other": "flt_army_A_width"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "@flt_state_cell_name",
               "value": 0,
               "comparasion_func": "less"
             }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
               "value": "yachejka bezuslovno prinadlezhit komande B"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "prisvaivaem nuzhnyj stejt"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "govorim, chto state - armiya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "checking random battle chance"
             }
+          ],
+          "varSetInt": {
+            "value": 2,
+            "var": "@flt_state_cell_name"
           },
-          {
-            "varSetInt": {
-              "value": 2,
-              "var": "@flt_state_cell_name"
-            }
+          "varSetString": {
+            "value": "army",
+            "var": "@flt_state_type_var"
           },
-          {
-            "varSetString": {
-              "value": "army",
-              "var": "@flt_state_type_var"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_random_battles_t2_start"
-            }
+          "triggerEnable": {
+            "target": "flt_random_battles_t2_start"
           }
-        ],
+        },
         "else_actions": {
           "comment": {
             "value": "dal'she po ciklu"
@@ -3778,95 +3212,71 @@
             "var_value_other": "flt_random_battle_t1_cur_chance"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "battle is ok"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "setting value"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
+              "value": ""
+            },
+            {
               "value": ""
             }
+          ],
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "flt_random_battle_t1_heat_var_name"
           },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "flt_random_battle_t1_heat_var_name"
-            }
-          },
-          {
-            "varAddString": {
+          "varAddString": [
+            {
               "value": "@flt_state_cur_cell",
               "digits": 2,
               "var": "flt_random_battle_t1_heat_var_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_heat",
               "digits": 0,
               "var": "flt_random_battle_t1_heat_var_name"
             }
+          ],
+          "varSetInt": {
+            "value": 10000,
+            "var": "@flt_random_battle_t1_heat_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 10000,
-              "var": "@flt_random_battle_t1_heat_var_name"
-            }
+          "varSetBool": {
+            "value": true,
+            "var": "flt_random_battle_t1_assigned"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "flt_random_battle_t1_assigned"
-            }
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_col"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_state_mirror_check_col"
-            }
-          },
-          {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            }
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "increase chance for next attempt"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "going by rotation"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 10.0,
+            "var": "flt_random_battle_t1_cur_chance"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 10.0,
-              "var": "flt_random_battle_t1_cur_chance"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_mirror_check_col"
-            }
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_col"
           }
-        ]
+        }
       },
       "flt_random_battles_t2_check_battle": {
         "is_enabled": false,
@@ -3889,95 +3299,71 @@
             "var_value_other": "flt_random_battle_t2_cur_chance"
           }
         },
-        "actions": [
-          {
-            "comment": {
+        "actions": {
+          "comment": [
+            {
               "value": "battle is ok"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "setting value"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
+              "value": ""
+            },
+            {
               "value": ""
             }
+          ],
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "flt_random_battle_t2_heat_var_name"
           },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "flt_random_battle_t2_heat_var_name"
-            }
-          },
-          {
-            "varAddString": {
+          "varAddString": [
+            {
               "value": "@flt_state_cur_cell",
               "digits": 2,
               "var": "flt_random_battle_t2_heat_var_name"
-            }
-          },
-          {
-            "varAddString": {
+            },
+            {
               "value": "_heat",
               "digits": 0,
               "var": "flt_random_battle_t2_heat_var_name"
             }
+          ],
+          "varSetInt": {
+            "value": 20000,
+            "var": "@flt_random_battle_t2_heat_var_name"
           },
-          {
-            "varSetInt": {
-              "value": 20000,
-              "var": "@flt_random_battle_t2_heat_var_name"
-            }
+          "varSetBool": {
+            "value": true,
+            "var": "flt_random_battle_t2_assigned"
           },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "flt_random_battle_t2_assigned"
-            }
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_col"
           },
-          {
-            "triggerEnable": {
-              "target": "flt_state_mirror_check_col"
-            }
-          },
-          {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            }
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           }
-        ],
-        "else_actions": [
-          {
-            "comment": {
+        },
+        "else_actions": {
+          "comment": [
+            {
               "value": "increase chance for next attempt"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "going by rotation"
             }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 10.0,
+            "var": "flt_random_battle_t2_cur_chance"
           },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 10.0,
-              "var": "flt_random_battle_t2_cur_chance"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "flt_state_mirror_check_col"
-            }
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_col"
           }
-        ]
+        }
       }
     }
   },
@@ -4388,32 +3774,26 @@
     "flt_t1_forces_squad_name": "",
     "flt_t2_forces_squad_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

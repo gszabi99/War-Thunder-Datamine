@@ -25,50 +25,36 @@
         "day": 13
       }
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
       "objective_loc": "",
       "music": "action_01",
-      "part": [
-        {
-          "event": ""
-        },
-        {
-          "minTime": 0
-        },
-        {
-          "slide": {
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
             "map": false,
             "minTime": 4,
             "picture": "",
             "showAirMap": false
-          }
-        },
-        {
-          "slide": {
+          },
+          {
             "map": true,
             "minTime": 4,
             "picture": "",
             "showAirMap": false,
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "germ_sparviero"
-              },
-              {
-                "point": "area_01"
-              },
-              {
-                "point": "area_01"
-              }
-            ],
+            "arrow": {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "germ_sparviero",
+                "area_01",
+                "area_01"
+              ]
+            },
             "icon": {
               "icontype": "bomber",
               "side": "ally",
@@ -76,11 +62,11 @@
               "lookAt": "area_01"
             }
           }
-        }
-      ]
+        ]
+      }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -93,18 +79,16 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitLoadBehTree": {
-            "name": "missionKamikaze",
-            "objects": "germ_sparviero"
-          }
+      "conditions": {},
+      "actions": {
+        "unitLoadBehTree": {
+          "name": "missionKamikaze",
+          "objects": "germ_sparviero"
         },
-        {
-          "unitMoveTo": {
+        "unitMoveTo": [
+          {
             "target": "fall_down01",
             "follow_target": false,
             "teleportHeightType": "absolute",
@@ -118,159 +102,91 @@
             "recalculatePathDist": -1.0,
             "object": "germ_sparviero",
             "distributionRadius": 0.0
+          },
+          {
+            "target": "area_01",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object": [
+              "sparviero_sq",
+              "germ_sparviero04"
+            ],
+            "distributionRadius": 0.0
           }
-        },
-        {
-          "unitMoveTo": [
-            {
-              "target": "area_01"
-            },
-            {
-              "follow_target": false
-            },
-            {
-              "teleportHeightType": "absolute"
-            },
-            {
-              "useUnitHeightForTele": true
-            },
-            {
-              "shouldKeepFormation": false
-            },
-            {
-              "teleportHeightValue": 1000.0
-            },
-            {
-              "horizontalDirectionForTeleport": true
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "waypointReachedDist": 10.0
-            },
-            {
-              "recalculatePathDist": -1.0
-            },
-            {
-              "object": "sparviero_sq"
-            },
-            {
-              "object": "germ_sparviero04"
-            },
-            {
-              "distributionRadius": 0.0
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+        ],
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object": "usr_aaa_sq",
             "targetableByAi": false,
             "stealthRadius": 10.0,
             "accuracy": 0.1,
             "effShootingRate": 0.0
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object": "ussr_atack_sq",
             "accuracy": 0.4,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.4,
             "speed": 0.0
+          },
+          {
+            "object_marking": 0,
+            "object": [
+              "ussr_aaa01",
+              "ussr_aaa02",
+              "ussr_aaa03",
+              "ussr_aaa04"
+            ],
+            "targetAir": true,
+            "accuracy": 0.4,
+            "effShootingRate": 0.0,
+            "airEffShootingRate": 0.4,
+            "speed": 0.0
           }
+        ],
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "usr_aaa_sq",
+          "target": "germ_sparviero"
         },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object": "ussr_aaa01"
-            },
-            {
-              "object": "ussr_aaa02"
-            },
-            {
-              "object": "ussr_aaa03"
-            },
-            {
-              "object": "ussr_aaa04"
-            },
-            {
-              "targetAir": true
-            },
-            {
-              "accuracy": 0.4
-            },
-            {
-              "effShootingRate": 0.0
-            },
-            {
-              "airEffShootingRate": 0.4
-            },
-            {
-              "speed": 0.0
-            }
+        "unitPutToSleep": {
+          "target": [
+            "capture_zone_circle",
+            "ital_infantry01",
+            "ital_infantry02",
+            "ussr_inf01",
+            "ussr_inf02",
+            "ussr_fighter_sq"
           ]
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "usr_aaa_sq",
-            "target": "germ_sparviero"
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "capture_zone_circle"
-            },
-            {
-              "target": "ital_infantry01"
-            },
-            {
-              "target": "ital_infantry02"
-            },
-            {
-              "target": "ussr_inf01"
-            },
-            {
-              "target": "ussr_inf02"
-            },
-            {
-              "target": "ussr_fighter_sq"
-            }
-          ]
-        },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        },
-        {
-          "moAddMissionObjective": {
+        ],
+        "moAddMissionObjective": [
+          {
             "target": "spain_wet_job_fly_in_formation"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "spain_wet_job_fly_in_formation_close"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "fail_mission_by_player": {
       "is_enabled": true,
@@ -285,29 +201,25 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenStatus": {
+      "conditions": {
+        "unitWhenStatus": [
+          {
             "object_type": "isKilledByPlayer",
             "check_objects": "any",
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
             "object": "germ_sparviero"
-          }
-        },
-        {
-          "unitWhenStatus": {
+          },
+          {
             "object_type": "isKilledByPlayer",
             "check_objects": "any",
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
             "object": "boats_sq"
-          }
-        },
-        {
-          "unitWhenStatus": {
+          },
+          {
             "object_type": "isKilledByPlayer",
             "check_objects": "any",
             "object_marking": 0,
@@ -315,15 +227,15 @@
             "check_period": 1.0,
             "object": "sparviero_sq"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "missionFailed": {
           "team": "A",
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sparviero_fly_to_fall": {
       "is_enabled": true,
@@ -338,9 +250,9 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitDistanceBetween": {
+      "conditions": {
+        "unitDistanceBetween": [
+          {
             "value": 500.0,
             "math": "2D",
             "object_type": "isAlive",
@@ -351,10 +263,8 @@
             "check_targets": "any",
             "object": "germ_sparviero",
             "target": "fall_down01"
-          }
-        },
-        {
-          "unitDistanceBetween": {
+          },
+          {
             "value": 800.0,
             "math": "2D",
             "object_type": "isAlive",
@@ -366,94 +276,98 @@
             "object": "player",
             "target": "sparviero_sq"
           }
-        }
-      ],
-      "actions": [
-        {
-          "unitPlayEffect": {
+        ]
+      },
+      "actions": {
+        "unitPlayEffect": [
+          {
             "effect_type": "specify",
             "effect": "major_fuel_fire",
-            "offset": [0.0,0.0,-0.3],
-            "radiusOffset": [0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              -0.3
+            ],
+            "radiusOffset": [
+              0.0,
+              0.0
+            ],
             "show": true,
             "attach": true,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "germ_sparviero"
-          }
-        },
-        {
-          "unitPlayEffect": {
+          },
+          {
             "effect_type": "specify",
             "effect": "major_fuel_smoke",
-            "offset": [0.0,0.0,-0.3],
-            "radiusOffset": [0.0,0.0],
+            "offset": [
+              0.0,
+              0.0,
+              -0.3
+            ],
+            "radiusOffset": [
+              0.0,
+              0.0
+            ],
             "show": true,
             "attach": true,
             "scale": 1.0,
             "loopSpawn": true,
-            "delay": [1.0,1.0],
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "germ_sparviero"
           }
+        ],
+        "unitMoveTo": {
+          "target": "fall_down",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object": "germ_sparviero"
         },
-        {
-          "unitMoveTo": {
-            "target": "fall_down",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object": "germ_sparviero"
-          }
-        },
-        {
-          "triggerDisable": {
+        "triggerDisable": [
+          {
             "target": "fail_fly_in_formation"
+          },
+          {
+            "target": [
+              "fly_closer_then_50m_var",
+              "fly_closer_then_50m_complete",
+              "fly_closer_then_50m_check_fail"
+            ]
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "fly_closer_then_50m_var"
-            },
-            {
-              "target": "fly_closer_then_50m_complete"
-            },
-            {
-              "target": "fly_closer_then_50m_check_fail"
-            }
-          ]
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "spain_wet_job_follow_sparviero_to_fall_zone"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "spain_wet_job_follow_sparviero_to_fall_zone"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "spain_wet_job_fly_in_formation",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "spain_wet_job_fly_in_formation",
+          "status": 2
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "fail_fly_in_formation": {
       "is_enabled": true,
@@ -468,9 +382,9 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitDistanceBetween": {
+      "conditions": {
+        "unitDistanceBetween": [
+          {
             "value": 500.0,
             "math": "2D",
             "object_type": "isAlive",
@@ -481,10 +395,8 @@
             "check_targets": "any",
             "object": "germ_sparviero",
             "target": "fall_down01"
-          }
-        },
-        {
-          "unitDistanceBetween": {
+          },
+          {
             "value": 500.0,
             "math": "notNear2D",
             "object_type": "isAlive",
@@ -496,17 +408,27 @@
             "object": "germ_sparviero",
             "target": "sparviero_sq"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "unitDamage": {
           "part": 1,
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
-          "delay": [1.0,1.0],
-          "offset": [0.0,0.0,0.0],
-          "radiusOffset": [10.0,15.0],
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": "germ_sparviero",
           "partName": "engine1_dm"
         },
@@ -517,9 +439,9 @@
         "wait": {
           "time": 6.0
         },
-        "missionFailed": []
+        "missionFailed": {}
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "fall_down": {
       "is_enabled": true,
@@ -548,47 +470,41 @@
           "target": "fall_down"
         }
       },
-      "actions": [
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object": "germ_sparviero",
-            "useForTriggerFiltered": true,
-            "speed": 270.0,
-            "lockSpeed": true,
-            "aiEnabled": false,
-            "disableFallUndergroundAtDestroyed": true
-          }
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object": "germ_sparviero",
+          "useForTriggerFiltered": true,
+          "speed": 270.0,
+          "lockSpeed": true,
+          "aiEnabled": false,
+          "disableFallUndergroundAtDestroyed": true
         },
-        {
-          "unitSetControls": {
+        "unitSetControls": [
+          {
             "controls": "elevator",
             "value": -0.01,
             "force": true,
             "objects": "germ_sparviero",
             "useForTriggerFiltered": true
-          }
-        },
-        {
-          "unitSetControls": {
+          },
+          {
             "controls": "ailerons",
             "value": -0.1,
             "force": true,
             "objects": "germ_sparviero",
             "useForTriggerFiltered": true
-          }
-        },
-        {
-          "unitSetControls": {
+          },
+          {
             "controls": "rudder",
             "value": 0.4,
             "force": true,
             "objects": "germ_sparviero",
             "useForTriggerFiltered": true
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "sq_fly_away": {
       "is_enabled": true,
@@ -636,7 +552,7 @@
           "object": "germ_sparviero01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sparviero_fall": {
       "is_enabled": true,
@@ -673,137 +589,99 @@
           "target": "germ_sparviero"
         }
       },
-      "actions": [
-        {
-          "wait": {
+      "actions": {
+        "wait": [
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 6.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "capture_zone_circle"
-            },
-            {
-              "target": "ussr_inf01"
-            },
-            {
-              "target": "ussr_inf02"
-            }
+        ],
+        "unitWakeUp": {
+          "target": [
+            "capture_zone_circle",
+            "ussr_inf01",
+            "ussr_inf02"
           ]
         },
-        {
-          "unitRespawn": [
-            {
-              "delay": 1.0
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "object": "ital_infantry01"
-            },
-            {
-              "object": "ital_infantry02"
-            },
-            {
-              "object_type": "isInactive"
-            },
-            {
-              "target": "area_03"
-            },
-            {
-              "randomObjectsCount": 5
-            }
-          ]
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": [
+            "ital_infantry01",
+            "ital_infantry02"
+          ],
+          "object_type": "isInactive",
+          "target": "area_03",
+          "randomObjectsCount": 5
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 1,
-            "timeMultiplier": 2.0,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "target": "capture_zone01",
-            "captureNoPenalty": true
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 1,
+          "timeMultiplier": 2.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "capture_zone01",
+          "captureNoPenalty": true
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "spain_wet_job_follow_sparviero_to_fall_zone",
-            "status": 2
-          }
+        "moSetObjectiveStatus": {
+          "target": "spain_wet_job_follow_sparviero_to_fall_zone",
+          "status": 2
         },
-        {
-          "moAddMissionObjective": {
+        "moAddMissionObjective": [
+          {
             "target": "spain_wet_job_cover_crashsite"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "spain_wet_job_destroy_aaa"
           }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "target": "ussr_atack_sq"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "target": "ussr_atack_sq"
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object": "ussr_atack_sq",
+          "stealthRadius": 50000.0,
+          "speed": 27.0
+        },
+        "triggerEnable": [
+          {
+            "target": [
+              "updatable_indicator",
+              "updatable_indicator_aaa"
+            ]
+          },
+          {
+            "target": [
+              "crashsite_defended",
+              "destroy_aaa"
+            ]
           }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object": "ussr_atack_sq",
-            "stealthRadius": 50000.0,
-            "speed": 27.0
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "updatable_indicator"
-            },
-            {
-              "target": "updatable_indicator_aaa"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "crashsite_defended"
-            },
-            {
-              "target": "destroy_aaa"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "ital_inf_sq",
             "target": "ussr_inf_sq"
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "ussr_inf_sq",
             "target": "ital_inf_sq"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "updatable_indicator": {
       "is_enabled": false,
@@ -818,7 +696,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -830,7 +708,7 @@
           "target": "ussr_atack_sq"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "updatable_indicator_aaa": {
       "is_enabled": false,
@@ -845,7 +723,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -857,7 +735,7 @@
           "target": "base_aaa_sq"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "crashsite_captured_by_ussr": {
       "is_enabled": true,
@@ -879,14 +757,12 @@
         }
       },
       "actions": {
-        "unitPutToSleep": [
-          {
-            "target": "ital_infantry01"
-          },
-          {
-            "target": "ital_infantry02"
-          }
-        ],
+        "unitPutToSleep": {
+          "target": [
+            "ital_infantry01",
+            "ital_infantry02"
+          ]
+        },
         "wait": {
           "time": 6.0
         },
@@ -899,7 +775,7 @@
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "crashsite_defended": {
       "is_enabled": false,
@@ -927,109 +803,81 @@
           "army": 1
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "spain_wet_job_cover_crashsite",
-            "status": 2
-          }
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "spain_wet_job_cover_crashsite",
+          "status": 2
         },
-        {
-          "triggerDisable": [
-            {
-              "target": "crashsite_captured_by_ussr"
-            },
-            {
-              "target": "updatable_indicator"
-            }
+        "triggerDisable": {
+          "target": [
+            "crashsite_captured_by_ussr",
+            "updatable_indicator"
           ]
         },
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isAlive",
-            "target_marking": 0,
-            "delta": 0,
-            "icon": "tank",
-            "icon army": 1,
-            "set": false,
-            "target": "ussr_atack_sq"
-          }
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "tank",
+          "icon army": 1,
+          "set": false,
+          "target": "ussr_atack_sq"
         },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
             "object_marking": 0,
             "object": "boats_sq",
             "army": 1,
             "stealthRadius": 50000.0
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object": "boats_sq",
             "stealthRadius": 128000.0
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object_marking": 0,
             "object": "ussr_fighter_sq",
             "accuracy": 0.4,
             "effShootingRate": 0.4
           }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "ital_inf_sq"
-            },
-            {
-              "target": "ussr_inf_sq"
-            },
-            {
-              "target": "capture_zone_circle"
-            }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "ital_inf_sq",
+            "ussr_inf_sq",
+            "capture_zone_circle"
           ]
         },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 2,
-            "timeMultiplier": 2.0,
-            "disableZone": true,
-            "name_for_respawn_base": "",
-            "target": "capture_zone01",
-            "captureNoPenalty": true
-          }
+        "missionMarkAsCaptureZone": {
+          "army": 2,
+          "timeMultiplier": 2.0,
+          "disableZone": true,
+          "name_for_respawn_base": "",
+          "target": "capture_zone01",
+          "captureNoPenalty": true
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 5.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 20.0
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "spain_wet_job_cover_boats"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "spain_wet_job_cover_boats"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "target": "boats_sq"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "target": "boats_sq"
-          }
+        "unitWakeUp": {
+          "target": "ussr_fighter01"
         },
-        {
-          "unitWakeUp": {
-            "target": "ussr_fighter01"
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/dlc_in_tennets_of_berlin_hint",
             "action": "show",
@@ -1040,10 +888,8 @@
             "target_type": "isAlive",
             "target_marking": 0,
             "team": "A"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/dlc_in_tennets_of_berlin_hint",
             "action": "hide",
@@ -1055,58 +901,40 @@
             "target_marking": 0,
             "team": "A"
           }
+        ],
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "ussr_fighter_sq",
+          "target": [
+            "boats_sq",
+            "player"
+          ],
+          "playerAttractedCount": 1
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "ussr_fighter_sq"
-            },
-            {
-              "target": "boats_sq"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "playerAttractedCount": 1
-            }
+        "triggerEnable": {
+          "target": [
+            "arcade_spawn_fighter01",
+            "boats_destroyed",
+            "fighters_wave01_dead"
           ]
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "arcade_spawn_fighter01"
-            },
-            {
-              "target": "boats_destroyed"
-            },
-            {
-              "target": "fighters_wave01_dead"
-            }
-          ]
-        },
-        {
-          "unitMoveTo": {
-            "target": "live_area_for_boat",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object": "boats_sq",
-            "speed": 15.0
-          }
+        "unitMoveTo": {
+          "target": "live_area_for_boat",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object": "boats_sq",
+          "speed": 15.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "updatable_indicator_wave_2": {
       "is_enabled": false,
@@ -1121,10 +949,10 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetTargetsIndicator": {
+      "conditions": {},
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -1132,10 +960,8 @@
             "icon army": 1,
             "set": true,
             "target": "boats_sq"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isActive",
             "target_marking": 0,
             "delta": 0,
@@ -1144,9 +970,9 @@
             "set": true,
             "target": "ussr_fighter_sq"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "arcade_spawn_fighter01": {
       "is_enabled": false,
@@ -1176,31 +1002,19 @@
           "objects": "ussr_fighter_sq",
           "loadType": "tree"
         },
-        "unitAttackTarget": [
-          {
-            "playerAttracted": true
-          },
-          {
-            "object": "ussr_fighter_sq"
-          },
-          {
-            "target": "boats_sq"
-          },
-          {
-            "target": "player"
-          },
-          {
-            "fireRandom": true
-          },
-          {
-            "randomObjectsCount": 1
-          },
-          {
-            "playerAttractedCount": 1
-          }
-        ]
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "ussr_fighter_sq",
+          "target": [
+            "boats_sq",
+            "player"
+          ],
+          "fireRandom": true,
+          "randomObjectsCount": 1,
+          "playerAttractedCount": 1
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "arcade_spawn_fighter02": {
       "is_enabled": false,
@@ -1221,46 +1035,28 @@
           "is": "equal"
         }
       },
-      "actions": [
-        {
-          "unitWakeUp": {
-            "target": "ussr_fighter04"
-          }
+      "actions": {
+        "unitWakeUp": {
+          "target": "ussr_fighter04"
         },
-        {
-          "unitLoadBehTree": {
-            "name": "missionAssault",
-            "objects": "ussr_fighter_sq",
-            "loadType": "tree"
-          }
+        "unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": "ussr_fighter_sq",
+          "loadType": "tree"
         },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "ussr_fighter_sq"
-            },
-            {
-              "target": "boats_sq"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "randomObjectsCount": 1
-            },
-            {
-              "playerAttractedCount": 1
-            }
-          ]
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "ussr_fighter_sq",
+          "target": [
+            "boats_sq",
+            "player"
+          ],
+          "fireRandom": true,
+          "randomObjectsCount": 1,
+          "playerAttractedCount": 1
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "show",
@@ -1271,10 +1067,8 @@
             "target_type": "isAlive",
             "target_marking": 0,
             "team": "A"
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "hide",
@@ -1286,14 +1080,12 @@
             "target_marking": 0,
             "team": "A"
           }
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
+        ],
+        "wait": {
+          "time": 10.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "fighters_wave01_dead": {
       "is_enabled": false,
@@ -1309,58 +1101,38 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object": "ussr_fighter02"
-          },
-          {
-            "object": "ussr_fighter01"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": [
+            "ussr_fighter02",
+            "ussr_fighter01"
+          ]
+        }
       },
       "actions": {
         "unitWakeUp": {
           "target": "ussr_fighter03"
         },
-        "unitAttackTarget": [
-          {
-            "playerAttracted": true
-          },
-          {
-            "object": "ussr_fighter_sq"
-          },
-          {
-            "target": "boats_sq"
-          },
-          {
-            "target": "player"
-          },
-          {
-            "playerAttractedCount": 1
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "arcade_spawn_fighter02"
-          },
-          {
-            "target": "fighters_wave02_dead"
-          }
-        ]
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "ussr_fighter_sq",
+          "target": [
+            "boats_sq",
+            "player"
+          ],
+          "playerAttractedCount": 1
+        },
+        "triggerEnable": {
+          "target": [
+            "arcade_spawn_fighter02",
+            "fighters_wave02_dead"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "boats_destroyed": {
       "is_enabled": false,
@@ -1397,7 +1169,7 @@
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "fighters_wave02_dead": {
       "is_enabled": false,
@@ -1413,26 +1185,16 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isActive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object": "ussr_fighter03"
-          },
-          {
-            "object": "ussr_fighter04"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": [
+            "ussr_fighter03",
+            "ussr_fighter04"
+          ]
+        }
       },
       "actions": {
         "moSetObjectiveStatus": {
@@ -1447,7 +1209,7 @@
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "fly_closer_then_50m_var": {
       "is_enabled": true,
@@ -1463,41 +1225,21 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 50.0
-          },
-          {
-            "math": "2D"
-          },
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "target_type": "isAlive"
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "check_targets": "any"
-          },
-          {
-            "object": "player"
-          },
-          {
-            "target": "sparviero_sq"
-          },
-          {
-            "target": "germ_sparviero"
-          }
-        ]
+        "unitDistanceBetween": {
+          "value": 50.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "player",
+          "target": [
+            "sparviero_sq",
+            "germ_sparviero"
+          ]
+        }
       },
       "actions": {
         "varModify": {
@@ -1506,7 +1248,7 @@
           "var": "timer_in_formation"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "fly_closer_then_50m_complete": {
       "is_enabled": true,
@@ -1535,7 +1277,7 @@
           "status": 2
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "fly_closer_then_50m_check_fail": {
       "is_enabled": true,
@@ -1577,7 +1319,7 @@
           "status": 3
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "destroy_aaa": {
       "is_enabled": false,
@@ -1607,7 +1349,7 @@
           "status": 2
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "boats_live_area": {
       "is_enabled": true,
@@ -1668,7 +1410,7 @@
           "timer": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "sparviero_sq_live": {
       "is_enabled": true,
@@ -1702,7 +1444,7 @@
           "target": "sparviero_sq"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1719,8 +1461,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "spain_wet_job_follow_sparviero_to_fall_zone": {
       "is_enabled": false,
@@ -1733,8 +1475,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "spain_wet_job_cover_crashsite": {
       "is_enabled": false,
@@ -1747,8 +1489,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "spain_wet_job_cover_boats": {
       "is_enabled": false,
@@ -1761,8 +1503,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "spain_wet_job_fly_in_formation_close": {
       "is_enabled": false,
@@ -1775,8 +1517,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "spain_wet_job_destroy_aaa": {
       "is_enabled": false,
@@ -1789,26 +1531,42 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
     "timer_in_formation": 0,
     "timer_in_formation_neaded": 30
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player",
         "tm": [
-          [0.573576,0.0,-0.819152],
-          [0.0,1.0,0.0],
-          [0.819152,0.0,0.573576],
-          [23727.8,238.4,-47274.9]
+          [
+            0.573576,
+            0.0,
+            -0.819152
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.819152,
+            0.0,
+            0.573576
+          ],
+          [
+            23727.8,
+            238.4,
+            -47274.9
+          ]
         ],
         "unit_class": "fiat_cr42_italy",
         "objLayer": 1,
@@ -1845,17 +1603,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "germ_sparviero",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [24488.5,200.0,-52043.1]
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            24488.5,
+            200.0,
+            -52043.1
+          ]
         ],
         "unit_class": "sm_79_1936",
         "objLayer": 1,
@@ -1891,17 +1663,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "germ_sparviero01",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [24419.9,200.0,-51939.3]
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            24419.9,
+            200.0,
+            -51939.3
+          ]
         ],
         "unit_class": "sm_79_1936",
         "objLayer": 1,
@@ -1937,17 +1723,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "germ_sparviero02",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [24563.2,200.0,-51946.1]
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            24563.2,
+            200.0,
+            -51946.1
+          ]
         ],
         "unit_class": "sm_79_1936",
         "objLayer": 1,
@@ -1983,17 +1783,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "germ_sparviero03",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [24613.4,200.0,-52036.0]
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            24613.4,
+            200.0,
+            -52036.0
+          ]
         ],
         "unit_class": "sm_79_1936",
         "objLayer": 1,
@@ -2029,17 +1843,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "germ_sparviero04",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [24710.5,200.0,-51967.5]
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            24710.5,
+            200.0,
+            -51967.5
+          ]
         ],
         "unit_class": "sm_79_1936",
         "objLayer": 1,
@@ -2075,17 +1903,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "germ_sparviero05",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [24763.8,200.0,-52050.8]
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991445,
+            0.0,
+            0.130526
+          ],
+          [
+            24763.8,
+            200.0,
+            -52050.8
+          ]
         ],
         "unit_class": "sm_79_1936",
         "objLayer": 1,
@@ -2121,17 +1963,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ussr_fighter02",
         "tm": [
-          [0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,0.5],
-          [19238.3,350.1,-41747.3]
+          [
+            0.5,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            19238.3,
+            350.1,
+            -41747.3
+          ]
         ],
         "unit_class": "i-15_1934",
         "objLayer": 1,
@@ -2167,17 +2023,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ussr_fighter01",
         "tm": [
-          [0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,0.5],
-          [19204.5,354.55,-41681.1]
+          [
+            0.5,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            19204.5,
+            354.55,
+            -41681.1
+          ]
         ],
         "unit_class": "i-15_1934",
         "objLayer": 1,
@@ -2213,17 +2083,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ussr_fighter03",
         "tm": [
-          [0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,0.5],
-          [19214.9,350.9,-42232.1]
+          [
+            0.5,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            19214.9,
+            350.9,
+            -42232.1
+          ]
         ],
         "unit_class": "i-15_1934",
         "objLayer": 1,
@@ -2259,17 +2143,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "ussr_fighter04",
         "tm": [
-          [0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,0.5],
-          [19257.4,350.9,-42256.1]
+          [
+            0.5,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            19257.4,
+            350.9,
+            -42256.1
+          ]
         ],
         "unit_class": "i-15_1934",
         "objLayer": 1,
@@ -2305,265 +2203,315 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "sparviero_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [25069.5,17.55,-50971.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            25069.5,
+            17.55,
+            -50971.4
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "germ_sparviero01"
-          },
-          {
-            "squad_members": "germ_sparviero02"
-          },
-          {
-            "squad_members": "germ_sparviero03"
-          },
-          {
-            "squad_members": "germ_sparviero05"
-          },
-          {
-            "squad_members": "germ_sparviero04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "germ_sparviero01",
+            "germ_sparviero02",
+            "germ_sparviero03",
+            "germ_sparviero05",
+            "germ_sparviero04"
+          ]
+        }
+      },
+      {
         "name": "usr_aaa_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22356.5,53.15,-43545.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22356.5,
+            53.15,
+            -43545.5
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "air_defence_01"
-          },
-          {
-            "squad_members": "air_defence_02"
-          },
-          {
-            "squad_members": "air_defence_03"
-          },
-          {
-            "squad_members": "air_defence_04"
-          },
-          {
-            "squad_members": "air_defence_05"
-          },
-          {
-            "squad_members": "air_defence_06"
-          },
-          {
-            "squad_members": "air_defence_07"
-          },
-          {
-            "squad_members": "air_defence_08"
-          },
-          {
-            "squad_members": "air_defence_09"
-          },
-          {
-            "squad_members": "air_defence_10"
-          },
-          {
-            "squad_members": "air_defence_11"
-          },
-          {
-            "squad_members": "air_defence_12"
-          },
-          {
-            "squad_members": "air_defence_13"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "air_defence_01",
+            "air_defence_02",
+            "air_defence_03",
+            "air_defence_04",
+            "air_defence_05",
+            "air_defence_06",
+            "air_defence_07",
+            "air_defence_08",
+            "air_defence_09",
+            "air_defence_10",
+            "air_defence_11",
+            "air_defence_12",
+            "air_defence_13"
+          ]
+        }
+      },
+      {
         "name": "ussr_atack_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20327.7,69.25,-38613.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20327.7,
+            69.25,
+            -38613.2
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "ussr_jeep01"
-          },
-          {
-            "squad_members": "ussr_jeep02"
-          },
-          {
-            "squad_members": "ussr_jeep03"
-          },
-          {
-            "squad_members": "ussr_jeep04"
-          },
-          {
-            "squad_members": "ussr_aaa01"
-          },
-          {
-            "squad_members": "ussr_aaa02"
-          },
-          {
-            "squad_members": "ussr_aaa03"
-          },
-          {
-            "squad_members": "ussr_aaa04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ussr_jeep01",
+            "ussr_jeep02",
+            "ussr_jeep03",
+            "ussr_jeep04",
+            "ussr_aaa01",
+            "ussr_aaa02",
+            "ussr_aaa03",
+            "ussr_aaa04"
+          ]
+        }
+      },
+      {
         "name": "ital_inf_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [23320.5,74.25,-38861.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            23320.5,
+            74.25,
+            -38861.0
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "ital_infantry01"
-          },
-          {
-            "squad_members": "ital_infantry02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ital_infantry01",
+            "ital_infantry02"
+          ]
+        }
+      },
+      {
         "name": "ussr_inf_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [23264.2,66.4,-39250.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            23264.2,
+            66.4,
+            -39250.9
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "ussr_inf01"
-          },
-          {
-            "squad_members": "ussr_inf02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ussr_inf01",
+            "ussr_inf02"
+          ]
+        }
+      },
+      {
         "name": "ussr_fighter_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20339.6,43.25,-41471.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20339.6,
+            43.25,
+            -41471.7
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "ussr_fighter02"
-          },
-          {
-            "squad_members": "ussr_fighter01"
-          },
-          {
-            "squad_members": "ussr_fighter03"
-          },
-          {
-            "squad_members": "ussr_fighter04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ussr_fighter02",
+            "ussr_fighter01",
+            "ussr_fighter03",
+            "ussr_fighter04"
+          ]
+        }
+      },
+      {
         "name": "boats_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22061.1,-14.6,-37997.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22061.1,
+            -14.6,
+            -37997.6
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "ships_01"
-          },
-          {
-            "squad_members": "ships_02"
-          },
-          {
-            "squad_members": "ships_03"
-          },
-          {
-            "squad_members": "ships_04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ships_01",
+            "ships_02",
+            "ships_03",
+            "ships_04"
+          ]
+        }
+      },
+      {
         "name": "base_aaa_sq",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18987.9,67.85,-38755.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18987.9,
+            67.85,
+            -38755.6
+          ]
         ],
-        "props": [
-          {
-            "squad_members": "base_aaa_01"
-          },
-          {
-            "squad_members": "base_aaa_02"
-          },
-          {
-            "squad_members": "base_aaa_03"
-          },
-          {
-            "squad_members": "base_aaa_04"
-          },
-          {
-            "squad_members": "base_aaa_06"
-          },
-          {
-            "squad_members": "base_aaa_05"
-          },
-          {
-            "squad_members": "base_aaa_07"
-          },
-          {
-            "squad_members": "base_aaa_08"
-          },
-          {
-            "squad_members": "base_aaa_09"
-          },
-          {
-            "squad_members": "base_aaa_10"
-          }
-        ]
+        "props": {
+          "squad_members": [
+            "base_aaa_01",
+            "base_aaa_02",
+            "base_aaa_03",
+            "base_aaa_04",
+            "base_aaa_06",
+            "base_aaa_05",
+            "base_aaa_07",
+            "base_aaa_08",
+            "base_aaa_09",
+            "base_aaa_10"
+          ]
+        }
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "air_defence_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22849.3,60.85,-43112.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22849.3,
+            60.85,
+            -43112.1
+          ]
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "objLayer": 1,
@@ -2584,22 +2532,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22666.1,60.85,-43297.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22666.1,
+            60.85,
+            -43297.8
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -2620,22 +2588,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22477.1,60.85,-43566.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22477.1,
+            60.85,
+            -43566.0
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -2656,22 +2644,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22272.5,60.85,-43809.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22272.5,
+            60.85,
+            -43809.8
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -2692,22 +2700,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22044.4,60.85,-43992.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22044.4,
+            60.85,
+            -43992.9
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -2728,22 +2756,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22529.7,60.85,-43422.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22529.7,
+            60.85,
+            -43422.5
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -2764,22 +2812,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22298.2,60.85,-43669.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22298.2,
+            60.85,
+            -43669.8
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -2800,22 +2868,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22063.1,60.85,-43883.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22063.1,
+            60.85,
+            -43883.7
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -2836,22 +2924,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "ussr_aaa01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18537.8,85.25,-38798.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18537.8,
+            85.25,
+            -38798.9
+          ]
         ],
         "unit_class": "ussr_zis5_20mm",
         "objLayer": 1,
@@ -2872,8 +2980,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -2883,10 +2997,26 @@
           "ussr_aaa01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22661.6,67.25,-38710.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22661.6,
+                67.25,
+                -38710.7
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -2897,16 +3027,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
+      },
+      {
         "name": "ussr_aaa02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19951.6,85.25,-39199.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19951.6,
+            85.25,
+            -39199.1
+          ]
         ],
         "unit_class": "ussr_zis5_20mm",
         "objLayer": 1,
@@ -2927,8 +3071,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -2938,10 +3088,26 @@
           "ussr_aaa02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22679.8,90.3,-38801.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22679.8,
+                90.3,
+                -38801.2
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -2952,16 +3118,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
+      },
+      {
         "name": "ussr_aaa03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19338.6,85.25,-40057.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19338.6,
+            85.25,
+            -40057.9
+          ]
         ],
         "unit_class": "ussr_zis5_20mm",
         "objLayer": 1,
@@ -2982,8 +3162,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -2993,10 +3179,26 @@
           "ussr_aaa03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22662.3,101.55,-38852.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22662.3,
+                101.55,
+                -38852.9
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -3007,16 +3209,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
+      },
+      {
         "name": "ussr_aaa04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20385.3,85.25,-40116.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20385.3,
+            85.25,
+            -40116.8
+          ]
         ],
         "unit_class": "ussr_zis5_20mm",
         "objLayer": 1,
@@ -3037,8 +3253,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -3048,10 +3270,26 @@
           "ussr_aaa04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22648.0,139.15,-38879.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22648.0,
+                139.15,
+                -38879.0
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -3062,16 +3300,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
+      },
+      {
         "name": "base_aaa_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18705.9,86.6,-40655.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18705.9,
+            86.6,
+            -40655.8
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3092,25 +3344,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19106.6,82.2,-40240.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19106.6,
+            82.2,
+            -40240.9
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3131,25 +3403,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18840.0,102.55,-39977.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18840.0,
+            102.55,
+            -39977.2
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3170,25 +3462,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19280.4,95.85,-39604.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19280.4,
+            95.85,
+            -39604.4
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3209,25 +3521,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19060.4,112.25,-39118.5]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19060.4,
+            112.25,
+            -39118.5
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3248,25 +3580,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18619.3,95.85,-39261.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18619.3,
+            95.85,
+            -39261.4
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3287,25 +3639,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19254.2,112.25,-39993.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19254.2,
+            112.25,
+            -39993.1
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3326,25 +3698,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_08",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19433.5,112.25,-39816.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19433.5,
+            112.25,
+            -39816.4
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3365,25 +3757,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18756.2,112.25,-39426.0]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18756.2,
+            112.25,
+            -39426.0
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3404,25 +3816,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "base_aaa_10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19227.9,112.25,-39192.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19227.9,
+            112.25,
+            -39192.1
+          ]
         ],
         "unit_class": "ussr_25mm_72k_noground",
         "objLayer": 1,
@@ -3443,25 +3875,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "calmDetection": true,
           "accuracy": 0.2,
           "effShootingRate": 0.2
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_09",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22578.2,60.85,-43364.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22578.2,
+            60.85,
+            -43364.6
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -3482,22 +3934,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_10",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22436.3,60.85,-43472.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22436.3,
+            60.85,
+            -43472.1
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -3518,22 +3990,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_11",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22382.2,60.85,-43634.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22382.2,
+            60.85,
+            -43634.4
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -3554,22 +4046,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_12",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22144.5,60.85,-43830.3]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22144.5,
+            60.85,
+            -43830.3
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -3590,22 +4102,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "air_defence_13",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21907.6,60.85,-44090.2]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            21907.6,
+            60.85,
+            -44090.2
+          ]
         ],
         "unit_class": "ussr_85mm_52k_noground",
         "objLayer": 1,
@@ -3626,22 +4158,44 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "objectGroups": {
+    ],
+    "objectGroups": [
+      {
         "name": "capture_zone_circle",
         "tm": [
-          [17.28,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,17.28],
-          [22764.7,84.55,-38837.7]
+          [
+            17.28,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            17.28
+          ],
+          [
+            22764.7,
+            84.55,
+            -38837.7
+          ]
         ],
         "unit_class": "capture_zone_circle",
         "objLayer": 2,
@@ -3649,16 +4203,30 @@
           "army": 0,
           "active": false
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "objectGroups_01",
         "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [18949.2,72.1,-40134.0]
+          [
+            0.984808,
+            0.0,
+            0.173648
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173648,
+            0.0,
+            0.984808
+          ],
+          [
+            18949.2,
+            72.1,
+            -40134.0
+          ]
         ],
         "unit_class": "alliance_big_camp_pit_entrenchment_s",
         "objLayer": 2,
@@ -3666,16 +4234,30 @@
           "army": 2,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "objectGroups_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19019.8,70.75,-39783.6]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19019.8,
+            70.75,
+            -39783.6
+          ]
         ],
         "unit_class": "cargo_zone_square",
         "objLayer": 2,
@@ -3683,16 +4265,30 @@
           "army": 2,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "objectGroups_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19218.8,93.6,-39290.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19218.8,
+            93.6,
+            -39290.7
+          ]
         ],
         "unit_class": "alliance_home_front_military_base_s",
         "objLayer": 2,
@@ -3701,15 +4297,31 @@
           "active": true
         }
       }
-    },
-    {
-      "infantry": {
+    ],
+    "infantry": [
+      {
         "name": "ital_infantry01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22962.1,84.4,-38815.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22962.1,
+            84.4,
+            -38815.1
+          ]
         ],
         "unit_class": "rifle_infantry",
         "objLayer": 1,
@@ -3739,10 +4351,26 @@
           "ital_infantry01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22826.2,72.25,-38831.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22826.2,
+                72.25,
+                -38831.6
+              ]
             ],
             "props": {
               "speed": 5.0,
@@ -3753,16 +4381,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "infantry": {
+      },
+      {
         "name": "ital_infantry02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22722.5,84.4,-38812.9]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22722.5,
+            84.4,
+            -38812.9
+          ]
         ],
         "unit_class": "rifle_infantry",
         "objLayer": 1,
@@ -3792,10 +4434,26 @@
           "ital_infantry02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22738.5,88.95,-38683.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22738.5,
+                88.95,
+                -38683.7
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -3806,16 +4464,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "infantry": {
+      },
+      {
         "name": "ussr_inf01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22556.9,73.1,-39242.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22556.9,
+            73.1,
+            -39242.4
+          ]
         ],
         "unit_class": "rifle_infantry",
         "objLayer": 1,
@@ -3844,10 +4516,26 @@
           "ussr_inf01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22657.1,71.95,-38982.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22657.1,
+                71.95,
+                -38982.6
+              ]
             ],
             "props": {
               "speed": 5.0,
@@ -3858,16 +4546,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "infantry": {
+      },
+      {
         "name": "ussr_inf02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [22916.0,77.55,-39265.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            22916.0,
+            77.55,
+            -39265.1
+          ]
         ],
         "unit_class": "rifle_infantry",
         "objLayer": 1,
@@ -3895,10 +4597,26 @@
           "ussr_inf02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22900.0,76.85,-38946.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22900.0,
+                76.85,
+                -38946.0
+              ]
             ],
             "props": {
               "speed": 5.0,
@@ -3910,15 +4628,31 @@
           }
         }
       }
-    },
-    {
-      "wheeled_vehicles": {
+    ],
+    "wheeled_vehicles": [
+      {
         "name": "ussr_jeep01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [18556.5,87.55,-38796.1]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            18556.5,
+            87.55,
+            -38796.1
+          ]
         ],
         "unit_class": "ussr_gaz_67",
         "objLayer": 1,
@@ -3939,8 +4673,14 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [6.0,5.0],
-          "formation_noise": [0.4,0.2],
+          "formation_step": [
+            6.0,
+            5.0
+          ],
+          "formation_noise": [
+            0.4,
+            0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -3950,10 +4690,26 @@
           "wheeled_vehicles_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22649.3,92.25,-38689.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22649.3,
+                92.25,
+                -38689.0
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -3964,16 +4720,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "ussr_jeep02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19970.0,74.85,-39190.4]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19970.0,
+            74.85,
+            -39190.4
+          ]
         ],
         "unit_class": "ussr_gaz_67",
         "objLayer": 1,
@@ -3994,8 +4764,14 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [6.0,5.0],
-          "formation_noise": [0.4,0.2],
+          "formation_step": [
+            6.0,
+            5.0
+          ],
+          "formation_noise": [
+            0.4,
+            0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -4005,10 +4781,26 @@
           "ussr_jeep02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22705.0,138.9,-38747.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22705.0,
+                138.9,
+                -38747.7
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -4019,16 +4811,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "ussr_jeep03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19352.5,74.85,-40052.7]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19352.5,
+            74.85,
+            -40052.7
+          ]
         ],
         "unit_class": "ussr_gaz_67",
         "objLayer": 1,
@@ -4049,8 +4855,14 @@
           "count": 3,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [6.0,5.0],
-          "formation_noise": [0.4,0.2],
+          "formation_step": [
+            6.0,
+            5.0
+          ],
+          "formation_noise": [
+            0.4,
+            0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -4060,10 +4872,26 @@
           "ussr_jeep03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22727.7,138.9,-38798.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22727.7,
+                138.9,
+                -38798.0
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -4074,16 +4902,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "ussr_jeep04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20405.9,74.85,-40111.8]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            20405.9,
+            74.85,
+            -40111.8
+          ]
         ],
         "unit_class": "ussr_gaz_67",
         "objLayer": 1,
@@ -4104,8 +4946,14 @@
           "count": 2,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [6.0,5.0],
-          "formation_noise": [0.4,0.2],
+          "formation_step": [
+            6.0,
+            5.0
+          ],
+          "formation_noise": [
+            0.4,
+            0.2
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
@@ -4115,10 +4963,26 @@
           "ussr_jeep04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [22767.8,138.9,-38844.0]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                22767.8,
+                138.9,
+                -38844.0
+              ]
             ],
             "props": {
               "speed": 15.0,
@@ -4130,15 +4994,31 @@
           }
         }
       }
-    },
-    {
-      "ships": {
+    ],
+    "ships": [
+      {
         "name": "ships_01",
         "tm": [
-          [0.382683,0.0,0.92388],
-          [0.0,1.0,0.0],
-          [-0.92388,0.0,0.382683],
-          [22268.3,-3.15,-38081.0]
+          [
+            0.382683,
+            0.0,
+            0.92388
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.92388,
+            0.0,
+            0.382683
+          ],
+          [
+            22268.3,
+            -3.15,
+            -38081.0
+          ]
         ],
         "unit_class": "fishboat2",
         "objLayer": 1,
@@ -4159,25 +5039,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ships_02",
         "tm": [
-          [-0.21644,0.0,0.976296],
-          [0.0,1.0,0.0],
-          [-0.976296,0.0,-0.21644],
-          [22196.9,-3.15,-38062.7]
+          [
+            -0.21644,
+            0.0,
+            0.976296
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.976296,
+            0.0,
+            -0.21644
+          ],
+          [
+            22196.9,
+            -3.15,
+            -38062.7
+          ]
         ],
         "unit_class": "fishboat2",
         "objLayer": 1,
@@ -4198,25 +5098,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ships_03",
         "tm": [
-          [-0.21644,0.0,0.976296],
-          [0.0,1.0,0.0],
-          [-0.976296,0.0,-0.21644],
-          [22127.2,7.85,-38046.8]
+          [
+            -0.21644,
+            0.0,
+            0.976296
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.976296,
+            0.0,
+            -0.21644
+          ],
+          [
+            22127.2,
+            7.85,
+            -38046.8
+          ]
         ],
         "unit_class": "fishboat2",
         "objLayer": 1,
@@ -4237,25 +5157,45 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
         },
-        "way": []
-      }
-    },
-    {
-      "ships": {
+        "way": {}
+      },
+      {
         "name": "ships_04",
         "tm": [
-          [-0.21644,0.0,0.976296],
-          [0.0,1.0,0.0],
-          [-0.976296,0.0,-0.21644],
-          [22053.5,24.1,-38041.9]
+          [
+            -0.21644,
+            0.0,
+            0.976296
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.976296,
+            0.0,
+            -0.21644
+          ],
+          [
+            22053.5,
+            24.1,
+            -38041.9
+          ]
         ],
         "unit_class": "fishboat2",
         "objLayer": 1,
@@ -4276,145 +5216,287 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "hold_fire",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "fall_down": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22780.4,130.85,-38778.4]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22780.4,
+          130.85,
+          -38778.4
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [27265.5,200.0,-22935.5]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          27265.5,
+          200.0,
+          -22935.5
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [43414.5,1089.35,6503.65]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          43414.5,
+          1089.35,
+          6503.65
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "fall_down01": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [25772.0,200.0,-39459.9]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          25772.0,
+          200.0,
+          -39459.9
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "capture_zone01": {
       "type": "Cylinder",
       "tm": [
-        [400.0,0.0,0.0],
-        [0.0,153.85,0.0],
-        [0.0,0.0,400.0],
-        [22767.3,46.15,-38836.1]
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          153.85,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          22767.3,
+          46.15,
+          -38836.1
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_03": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22860.7,71.6,-38799.4]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22860.7,
+          71.6,
+          -38799.4
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "area_04": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22192.7,75.2,-38184.9]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22192.7,
+          75.2,
+          -38184.9
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "live_area_for_boat": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [22063.0,10.4,-35897.3]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          22063.0,
+          10.4,
+          -35897.3
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "ussr_fighter_live_area": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [14005.4,300.0,-42753.6]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          14005.4,
+          300.0,
+          -42753.6
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

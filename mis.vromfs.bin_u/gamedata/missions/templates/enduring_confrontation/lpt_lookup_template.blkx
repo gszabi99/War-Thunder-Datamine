@@ -17,9 +17,9 @@
       "restoreType": "attempts",
       "optionalTakeOff": false
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -32,79 +32,63 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitPutToSleep": [
-            {
-              "target": "lpt_t1_lookup"
-            },
-            {
-              "target": "lpt_t2_lookup"
-            }
+      "conditions": {},
+      "actions": {
+        "unitPutToSleep": {
+          "target": [
+            "lpt_t1_lookup",
+            "lpt_t2_lookup"
           ]
         },
-        {
-          "missionGetBalanceLevel": {
-            "input_var": "lpt_matching_rank"
-          }
+        "missionGetBalanceLevel": {
+          "input_var": "lpt_matching_rank"
         },
-        {
-          "varSetString": {
+        "varSetString": [
+          {
             "value": "lpt_t1_lookup",
             "var": "lpt_t1_lookup_plane"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "lpt_t2_lookup",
             "var": "lpt_t2_lookup_plane"
           }
-        },
-        {
-          "triggerActivate": {
+        ],
+        "triggerActivate": [
+          {
             "target": "lpt_matching_0_3",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "lpt_matching_4_7",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "lpt_matching_8_11",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "lpt_matching_12_16",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
+          },
+          {
             "target": "lpt_matching_17_20",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "lpt_start": {
       "is_enabled": false,
@@ -119,67 +103,55 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "randomiziruem vremya starta"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetRandomInt": {
+        ],
+        "varSetRandomInt": [
+          {
             "var": "lpt_t1_delay_timer",
             "from": 30,
             "to_not_including": 120
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "lpt_t2_delay_timer",
             "from": 30,
             "to_not_including": 120
           }
-        },
-        {
-          "varModify": {
+        ],
+        "varModify": [
+          {
             "operator": "add",
             "value": 0.0,
             "var": "lpt_t1_delay_timer",
             "use_variable": true,
             "var_value": "lpt_delay_timer"
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "operator": "add",
             "value": 0.0,
             "var": "lpt_t2_delay_timer",
             "use_variable": true,
             "var_value": "lpt_delay_timer"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t1_start"
-            },
-            {
-              "target": "lpt_t2_start"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "lpt_t1_start",
+            "lpt_t2_start"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t1_start": {
       "is_enabled": false,
@@ -238,29 +210,23 @@
           "comparasion_func": "notEqual"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "govorim, chto shablon zapushchen dlya komandy A"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "shablon ne prednaznachen dyal zapuska tol'ko dyal armii B"
           }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "lpt_t1_active"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "lpt_t1_active"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_delayed_start"
-          }
+        "triggerEnable": {
+          "target": "lpt_t1_delayed_start"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "shablon prednaznachen tol'ko dlya armii B"
@@ -284,214 +250,160 @@
           "var": "lpt_t1_delay_timer"
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "lpt_t1_def_time"
-            },
-            {
-              "var": "lpt_t1_def_players_activity_time"
-            }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 1,
+          "var": [
+            "lpt_t1_def_time",
+            "lpt_t1_def_players_activity_time"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "vremya podoshlo"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vybiraem tochku naznacheniya"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vybiraem tochku spavna"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "spavnim i otpravlyaem k celi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim razvedchiku dvigat'sya k tochke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem indikaciyu po umolchaniyu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dobavlyaem bonus k razvedke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem  obnovlenie pozicii dlya obzhektiva"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem vklyuchen li rezhim razvedki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem ostal'nye skripty"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vydaem zadanie na prikrytie razvedchika"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem proverku otklyucheniya shablona"
           }
-        },
-        {
-          "varSetRandomInt": {
+        ],
+        "varSetRandomInt": [
+          {
             "var": "lpt_randomizer",
             "from": 1,
             "to_not_including": 4,
             "var_to_not_including": "lpt_num_points"
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "lpt_randomizer",
             "from": 1,
             "to_not_including": 5
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "t1_lookup_point_",
             "var": "lpt_t1_target_point"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t1_lookup_spawn_",
             "var": "lpt_t1_spawn_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "lpt_t1_matching_move_",
             "var": "lpt_matching_t1_move_trigger_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@lpt_randomizer",
             "digits": 2,
             "var": "lpt_t1_target_point"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@lpt_randomizer",
             "digits": 2,
             "var": "lpt_t1_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@lpt_matching_type",
             "digits": 1,
             "var": "lpt_matching_t1_move_trigger_name"
           }
+        ],
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@lpt_t1_lookup_plane",
+          "object_type": "isInactive",
+          "target": "@lpt_t1_spawn_name"
         },
-        {
-          "unitRespawn": {
-            "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
-            "object": "@lpt_t1_lookup_plane",
-            "object_type": "isInactive",
-            "target": "@lpt_t1_spawn_name"
-          }
+        "unitRestore": {
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": "@lpt_t1_lookup_plane"
         },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "@lpt_t1_lookup_plane"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "@lpt_matching_t1_move_trigger_name"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t1_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t1_update_pos_for_t2"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+          },
+          {
+            "target": [
+              "lpt_t1_update_pos_for_t1",
+              "lpt_t1_update_pos_for_t2"
+            ]
+          },
+          {
             "target": "lpt_t1_is_detect_on"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t1_lookup_dead"
-            },
-            {
-              "target": "lpt_t1_lookup_active"
-            },
-            {
-              "target": "lpt_t1_lookup_retreat"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+          },
+          {
+            "target": [
+              "lpt_t1_lookup_dead",
+              "lpt_t1_lookup_active",
+              "lpt_t1_lookup_retreat"
+            ]
+          },
+          {
             "target": "lpt_template_end"
           }
+        ],
+        "__unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@lpt_t1_lookup_plane",
+          "speed": 300.0
         },
-        {
-          "__unitMoveTo": {
-            "target": "@lpt_t1_target_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@lpt_t1_lookup_plane",
-            "speed": 300.0
-          }
-        },
-        {
-          "unitSetIndication": {
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -499,10 +411,8 @@
             "object_var_value": 0,
             "target": "@lpt_t1_lookup_plane",
             "team": "A"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": false,
             "target_marking": 0,
             "object_var_name": "",
@@ -511,28 +421,22 @@
             "target": "@lpt_t1_lookup_plane",
             "team": "B"
           }
+        ],
+        "varSetReal": {
+          "value": 2000.0,
+          "var": "lpt_t1_detection_bonus"
         },
-        {
-          "varSetReal": {
-            "value": 2000.0,
-            "var": "lpt_t1_detection_bonus"
-          }
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "lpt_t1_defend_task",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@lpt_t1_lookup_plane"
-          }
+        "moAddMissionObjective": {
+          "target": "lpt_t1_defend_task",
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "unit_or_area": "@lpt_t1_lookup_plane"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t1_update_pos_for_t1": {
       "is_enabled": false,
@@ -577,7 +481,7 @@
           "after_activation": "disable"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_update_pos_for_t2": {
       "is_enabled": false,
@@ -611,7 +515,7 @@
           "unit_or_area": "@lpt_t1_lookup_plane"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_is_detect_on": {
       "is_enabled": false,
@@ -633,87 +537,59 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "rezhim razvedki vklyuchen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem proverku na obnaruzhenie razvedchika"
           }
-        },
-        {
-          "varSetReal": [
-            {
-              "value": 0.0
-            },
-            {
-              "var": "lpt_t1_detection_range"
-            },
-            {
-              "var": "lpt_t1_players_detection_range"
-            }
+        ],
+        "varSetReal": {
+          "value": 0.0,
+          "var": [
+            "lpt_t1_detection_range",
+            "lpt_t1_players_detection_range"
           ]
         },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 1.0
-            },
-            {
-              "var": "lpt_t1_detection_range"
-            },
-            {
-              "var": "lpt_t1_players_detection_range"
-            },
-            {
-              "use_variable": true
-            },
-            {
-              "var_value": "lpt_detection_base_range"
-            }
-          ]
-        },
-        {
-          "varModify": {
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lpt_t1_detection_range",
+              "lpt_t1_players_detection_range"
+            ],
+            "use_variable": true,
+            "var_value": "lpt_detection_base_range"
+          },
+          {
             "operator": "add",
             "value": 2000.0,
             "var": "lpt_t1_players_detection_range"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t1_lookup_detect_check"
-            },
-            {
-              "target": "lpt_t1_lookup_players_detect_check"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "lpt_t1_lookup_detect_check",
+            "lpt_t1_lookup_players_detect_check"
           ]
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "rezhim razvedki vyklyuchen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim, chto razvedchik obnaruzhen"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_lookup_detected"
-          }
+        ],
+        "triggerEnable": {
+          "target": "lpt_t1_lookup_detected"
         }
-      ]
+      }
     },
     "lpt_t1_lookup_detect_check": {
       "is_enabled": false,
@@ -754,7 +630,7 @@
           "target": "lpt_t1_lookup_detected"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_lookup_detected": {
       "is_enabled": false,
@@ -769,44 +645,36 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "razvedchik obnaruzhen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "daem zadanie na unichtozhenie razvedchika"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem indikaciyu"
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "lpt_t2_kill_task",
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "unit_or_area": "@lpt_t1_lookup_plane"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "lpt_t2_kill_task",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@lpt_t1_lookup_plane"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@lpt_t1_lookup_plane",
-            "team": "Both"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@lpt_t1_lookup_plane",
+          "team": "Both"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t1_lookup_dead": {
       "is_enabled": false,
@@ -833,81 +701,55 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "razvedchik pogib"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "otklyuchaem otslezhivanie pozicii dlya obzhektiva"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "umen'shaem bonus k razvezdke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "otklyuchaem aktivnost' razvedchika i tajmer aktivnosti"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim, chto zadanie na prikrytie provaleno"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem ne vypolnila li komanda protivnika zadanie"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zhdem 20 sekund i pryachem kvest na prikrytie"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem uborshchik musora"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t1_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t1_update_pos_for_t2"
-            },
-            {
-              "target": "lpt_t1_lookup_retreat"
-            },
-            {
-              "target": "lpt_t1_lookup_despawn"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t1_lookup_active"
-            },
-            {
-              "target": "lpt_t1_lookup_timer"
-            }
-          ]
-        },
-        {
-          "varSetReal": {
-            "value": 0.0,
-            "var": "lpt_t1_detection_bonus"
+        ],
+        "triggerDisable": [
+          {
+            "target": [
+              "lpt_t1_update_pos_for_t1",
+              "lpt_t1_update_pos_for_t2",
+              "lpt_t1_lookup_retreat",
+              "lpt_t1_lookup_despawn"
+            ]
+          },
+          {
+            "target": [
+              "lpt_t1_lookup_active",
+              "lpt_t1_lookup_timer"
+            ]
           }
+        ],
+        "varSetReal": {
+          "value": 0.0,
+          "var": "lpt_t1_detection_bonus"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t1_defend_task",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -916,39 +758,33 @@
             "team": "A",
             "unit_or_area": "@lpt_t1_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t1_defend_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "lpt_t1_quest_complete_for_t2"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "lpt_t1_clean_garbage"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 20.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "lpt_t1_quest_complete_for_t2": {
       "is_enabled": false,
@@ -969,19 +805,15 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "comment": {
-            "value": "u komandy B est' kvest. zaschityvaem ego"
-          }
+      "actions": {
+        "comment": {
+          "value": "u komandy B est' kvest. zaschityvaem ego"
         },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_kill_activity_check"
-          }
+        "triggerEnable": {
+          "target": "lpt_t2_kill_activity_check"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t2_kill_task",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -990,23 +822,19 @@
             "team": "B",
             "unit_or_area": "@lpt_t1_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t2_kill_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "u komandy B net kvesta"
@@ -1032,9 +860,9 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t2_kill_task",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -1043,24 +871,20 @@
             "team": "B",
             "unit_or_area": "@lpt_t1_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t2_kill_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t1_lookup_retreat": {
       "is_enabled": false,
@@ -1075,9 +899,9 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenStatus": {
+      "conditions": {
+        "unitWhenStatus": [
+          {
             "object_type": "haveKilledParts",
             "check_objects": "any",
             "object_marking": 0,
@@ -1087,10 +911,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "@lpt_t1_lookup_plane"
-          }
-        },
-        {
-          "unitWhenStatus": {
+          },
+          {
             "object_type": "isActive",
             "check_objects": "any",
             "object_marking": 0,
@@ -1101,58 +923,48 @@
             "object_var_value": 0,
             "object": "@lpt_t1_lookup_plane"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t1_lookup_timer"
-            },
-            {
-              "target": "lpt_t1_lookup_active"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "lpt_t1_lookup_timer",
+            "lpt_t1_lookup_active"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "razvedchik ranen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem proverku na dostizhenii konechnoj tochki"
           }
+        ],
+        "unitMoveTo": {
+          "target": "t1_lookup_retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@lpt_t1_lookup_plane",
+          "speed": 350.0
         },
-        {
-          "unitMoveTo": {
-            "target": "t1_lookup_retreat_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@lpt_t1_lookup_plane",
-            "speed": 350.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_lookup_despawn"
-          }
+        "triggerEnable": {
+          "target": "lpt_t1_lookup_despawn"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t1_lookup_active": {
       "is_enabled": false,
@@ -1185,34 +997,26 @@
           "compareCenters": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "korrektirovshchik nad cel'yu otklyuchaem proverku obnaruzheniya"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem tajmer i govorim chto razvedchik obnaruzhen"
           }
+        ],
+        "triggerDisable": {
+          "target": "lpt_t1_lookup_detect_check"
         },
-        {
-          "triggerDisable": {
-            "target": "lpt_t1_lookup_detect_check"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t1_lookup_timer"
-            },
-            {
-              "target": "lpt_t1_lookup_detected"
-            }
+        "triggerEnable": {
+          "target": [
+            "lpt_t1_lookup_timer",
+            "lpt_t1_lookup_detected"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t1_lookup_timer": {
       "is_enabled": false,
@@ -1228,62 +1032,50 @@
           "var": "lpt_active_timer"
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "vremya podoshlo k koncu i razvedchik hochet domoj"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zakryvaem vozvrashchenie domoj po raneniyu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "napravlyaem razvedchika domoj"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem proverku na dostizhenii konechnoj tochki"
           }
+        ],
+        "triggerDisable": {
+          "target": "lpt_t1_lookup_retreat"
         },
-        {
-          "triggerDisable": {
-            "target": "lpt_t1_lookup_retreat"
-          }
+        "unitMoveTo": {
+          "target": "t1_lookup_retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@lpt_t1_lookup_plane",
+          "speed": 350.0
         },
-        {
-          "unitMoveTo": {
-            "target": "t1_lookup_retreat_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@lpt_t1_lookup_plane",
-            "speed": 350.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_lookup_despawn"
-          }
+        "triggerEnable": {
+          "target": "lpt_t1_lookup_despawn"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t1_lookup_despawn": {
       "is_enabled": false,
@@ -1316,51 +1108,35 @@
           "compareCenters": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "razvedchik doletel do doma"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "umen'shaem bonus k razvezdke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem uborshchik musora"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t1_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t1_update_pos_for_t2"
-            },
-            {
-              "target": "lpt_t1_lookup_active"
-            },
-            {
-              "target": "lpt_t1_lookup_dead"
-            }
+        ],
+        "triggerDisable": {
+          "target": [
+            "lpt_t1_update_pos_for_t1",
+            "lpt_t1_update_pos_for_t2",
+            "lpt_t1_lookup_active",
+            "lpt_t1_lookup_dead"
           ]
         },
-        {
-          "varSetReal": {
-            "value": 0.0,
-            "var": "lpt_t1_detection_bonus"
-          }
+        "varSetReal": {
+          "value": 0.0,
+          "var": "lpt_t1_detection_bonus"
         },
-        {
-          "unitPutToSleep": {
-            "target": "@lpt_t1_lookup_plane"
-          }
+        "unitPutToSleep": {
+          "target": "@lpt_t1_lookup_plane"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t1_defend_task",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -1369,44 +1145,36 @@
             "team": "A",
             "unit_or_area": "@lpt_t1_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t1_defend_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "lpt_t1_def_activity_calc"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "lpt_t1_quest_fail_for_t2"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "lpt_t1_clean_garbage"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 20.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "lpt_t1_clean_garbage": {
       "is_enabled": false,
@@ -1421,90 +1189,50 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "sobiraem musor"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim, chto shablon ne aktiven"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "unitPutToSleep": {
+          "target": "@lpt_t1_lookup_plane"
         },
-        {
-          "unitPutToSleep": {
-            "target": "@lpt_t1_lookup_plane"
-          }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t1_start"
-            },
-            {
-              "target": "lpt_t1_check_army"
-            },
-            {
-              "target": "lpt_t1_delayed_start"
-            },
-            {
-              "target": "lpt_t1_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t1_update_pos_for_t2"
-            },
-            {
-              "target": "lpt_t1_is_detect_on"
-            },
-            {
-              "target": "lpt_t1_lookup_detect_check"
-            },
-            {
-              "target": "lpt_t1_lookup_detected"
-            },
-            {
-              "target": "lpt_t1_lookup_dead"
-            },
-            {
-              "target": "lpt_t1_quest_complete_for_t2"
-            },
-            {
-              "target": "lpt_t1_quest_fail_for_t2"
-            },
-            {
-              "target": "lpt_t1_lookup_retreat"
-            },
-            {
-              "target": "lpt_t1_lookup_active"
-            },
-            {
-              "target": "lpt_t1_lookup_timer"
-            },
-            {
-              "target": "lpt_t1_lookup_despawn"
-            }
+        "triggerDisable": {
+          "target": [
+            "lpt_t1_start",
+            "lpt_t1_check_army",
+            "lpt_t1_delayed_start",
+            "lpt_t1_update_pos_for_t1",
+            "lpt_t1_update_pos_for_t2",
+            "lpt_t1_is_detect_on",
+            "lpt_t1_lookup_detect_check",
+            "lpt_t1_lookup_detected",
+            "lpt_t1_lookup_dead",
+            "lpt_t1_quest_complete_for_t2",
+            "lpt_t1_quest_fail_for_t2",
+            "lpt_t1_lookup_retreat",
+            "lpt_t1_lookup_active",
+            "lpt_t1_lookup_timer",
+            "lpt_t1_lookup_despawn"
           ]
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "lpt_t1_active"
-          }
+        "varSetBool": {
+          "value": false,
+          "var": "lpt_t1_active"
         },
-        {
-          "triggerEnable": {
-            "target": "lpt_template_end"
-          }
+        "triggerEnable": {
+          "target": "lpt_template_end"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t2_start": {
       "is_enabled": false,
@@ -1563,29 +1291,23 @@
           "comparasion_func": "notEqual"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "govorim, chto shablon zapushchen dlya komandy B"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "shablon ne prednaznachen dyal zapuska tol'ko dyal armii B"
           }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "lpt_t2_active"
         },
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "lpt_t2_active"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_delayed_start"
-          }
+        "triggerEnable": {
+          "target": "lpt_t2_delayed_start"
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "shablon prednaznachen tol'ko dlya armii A"
@@ -1609,214 +1331,160 @@
           "var": "lpt_t2_delay_timer"
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "lpt_t2_def_time"
-            },
-            {
-              "var": "lpt_t2_def_players_activity_time"
-            }
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 1,
+          "var": [
+            "lpt_t2_def_time",
+            "lpt_t2_def_players_activity_time"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "vremya podoshlo"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vybiraem tochku naznacheniya"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vybiraem tochku spavna"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "spavnim i otpravlyaem k celi"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim razvedchiku dvigat'sya k tochke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vystavlyaem indikaciyu po umolchaniyu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "dobavlyaem bonus k razvedke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem  obnovlenie pozicii dlya obzhektiva"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem vklyuchen li rezhim razvedki"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem ostal'nye skripty"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vydaem zadanie na prikrytie razvedchika"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem proverku otklyucheniya shablona"
           }
-        },
-        {
-          "varSetRandomInt": {
+        ],
+        "varSetRandomInt": [
+          {
             "var": "lpt_randomizer",
             "from": 1,
             "to_not_including": 4,
             "var_to_not_including": "lpt_num_points"
-          }
-        },
-        {
-          "varSetRandomInt": {
+          },
+          {
             "var": "lpt_randomizer",
             "from": 1,
             "to_not_including": 5
           }
-        },
-        {
-          "varSetString": {
+        ],
+        "varSetString": [
+          {
             "value": "t2_lookup_point_",
             "var": "lpt_t2_target_point"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "t2_lookup_spawn_",
             "var": "lpt_t2_spawn_name"
-          }
-        },
-        {
-          "varSetString": {
+          },
+          {
             "value": "lpt_t2_matching_move_",
             "var": "lpt_matching_t2_move_trigger_name"
           }
-        },
-        {
-          "varAddString": {
+        ],
+        "varAddString": [
+          {
             "value": "@lpt_randomizer",
             "digits": 2,
             "var": "lpt_t2_target_point"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@lpt_randomizer",
             "digits": 2,
             "var": "lpt_t2_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
+          },
+          {
             "value": "@lpt_matching_type",
             "digits": 1,
             "var": "lpt_matching_t2_move_trigger_name"
           }
+        ],
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@lpt_t2_lookup_plane",
+          "object_type": "isInactive",
+          "target": "@lpt_t2_spawn_name"
         },
-        {
-          "unitRespawn": {
-            "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
-            "object": "@lpt_t2_lookup_plane",
-            "object_type": "isInactive",
-            "target": "@lpt_t2_spawn_name"
-          }
+        "unitRestore": {
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": "@lpt_t2_lookup_plane"
         },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "@lpt_t2_lookup_plane"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "@lpt_matching_t2_move_trigger_name"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t2_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t2_update_pos_for_t2"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+          },
+          {
+            "target": [
+              "lpt_t2_update_pos_for_t1",
+              "lpt_t2_update_pos_for_t2"
+            ]
+          },
+          {
             "target": "lpt_t2_is_detect_on"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t2_lookup_dead"
-            },
-            {
-              "target": "lpt_t2_lookup_active"
-            },
-            {
-              "target": "lpt_t2_lookup_retreat"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+          },
+          {
+            "target": [
+              "lpt_t2_lookup_dead",
+              "lpt_t2_lookup_active",
+              "lpt_t2_lookup_retreat"
+            ]
+          },
+          {
             "target": "lpt_template_end"
           }
+        ],
+        "__unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@lpt_t2_lookup_plane",
+          "speed": 300.0
         },
-        {
-          "__unitMoveTo": {
-            "target": "@lpt_t2_target_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@lpt_t2_lookup_plane",
-            "speed": 300.0
-          }
-        },
-        {
-          "unitSetIndication": {
+        "unitSetIndication": [
+          {
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
@@ -1824,10 +1492,8 @@
             "object_var_value": 0,
             "target": "@lpt_t2_lookup_plane",
             "team": "B"
-          }
-        },
-        {
-          "unitSetIndication": {
+          },
+          {
             "set": false,
             "target_marking": 0,
             "object_var_name": "",
@@ -1836,28 +1502,22 @@
             "target": "@lpt_t2_lookup_plane",
             "team": "A"
           }
+        ],
+        "varSetReal": {
+          "value": 2000.0,
+          "var": "lpt_t2_detection_bonus"
         },
-        {
-          "varSetReal": {
-            "value": 2000.0,
-            "var": "lpt_t2_detection_bonus"
-          }
+        "wait": {
+          "time": 1.0
         },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "lpt_t2_defend_task",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@lpt_t2_lookup_plane"
-          }
+        "moAddMissionObjective": {
+          "target": "lpt_t2_defend_task",
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "unit_or_area": "@lpt_t2_lookup_plane"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t2_update_pos_for_t1": {
       "is_enabled": false,
@@ -1891,7 +1551,7 @@
           "unit_or_area": "@lpt_t2_lookup_plane"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_update_pos_for_t2": {
       "is_enabled": false,
@@ -1936,7 +1596,7 @@
           "after_activation": "disable"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_is_detect_on": {
       "is_enabled": false,
@@ -1958,87 +1618,59 @@
           "comparasion_func": "equal"
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "rezhim razvedki vklyuchen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zapuskaem proverku na obnaruzhenie razvedchika"
           }
-        },
-        {
-          "varSetReal": [
-            {
-              "value": 0.0
-            },
-            {
-              "var": "lpt_t2_detection_range"
-            },
-            {
-              "var": "lpt_t2_players_detection_range"
-            }
+        ],
+        "varSetReal": {
+          "value": 0.0,
+          "var": [
+            "lpt_t2_detection_range",
+            "lpt_t2_players_detection_range"
           ]
         },
-        {
-          "varModify": [
-            {
-              "operator": "add"
-            },
-            {
-              "value": 1.0
-            },
-            {
-              "var": "lpt_t2_detection_range"
-            },
-            {
-              "var": "lpt_t2_players_detection_range"
-            },
-            {
-              "use_variable": true
-            },
-            {
-              "var_value": "lpt_detection_base_range"
-            }
-          ]
-        },
-        {
-          "varModify": {
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lpt_t2_detection_range",
+              "lpt_t2_players_detection_range"
+            ],
+            "use_variable": true,
+            "var_value": "lpt_detection_base_range"
+          },
+          {
             "operator": "add",
             "value": 2000.0,
             "var": "lpt_t2_players_detection_range"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t2_lookup_detect_check"
-            },
-            {
-              "target": "lpt_t2_lookup_players_detect_check"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "lpt_t2_lookup_detect_check",
+            "lpt_t2_lookup_players_detect_check"
           ]
         }
-      ],
-      "else_actions": [
-        {
-          "comment": {
+      },
+      "else_actions": {
+        "comment": [
+          {
             "value": "rezhim razvedki vyklyuchen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim, chto razvedchik obnaruzhen"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_lookup_detected"
-          }
+        ],
+        "triggerEnable": {
+          "target": "lpt_t2_lookup_detected"
         }
-      ]
+      }
     },
     "lpt_t2_lookup_detect_check": {
       "is_enabled": false,
@@ -2079,7 +1711,7 @@
           "target": "lpt_t2_lookup_detected"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_lookup_detected": {
       "is_enabled": false,
@@ -2094,44 +1726,36 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "razvedchik obnaruzhen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "daem zadanie na unichtozhenie razvedchika"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem indikaciyu"
           }
+        ],
+        "moAddMissionObjective": {
+          "target": "lpt_t1_kill_task",
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "unit_or_area": "@lpt_t2_lookup_plane"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "lpt_t1_kill_task",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@lpt_t2_lookup_plane"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@lpt_t2_lookup_plane",
-            "team": "Both"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@lpt_t2_lookup_plane",
+          "team": "Both"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t2_lookup_dead": {
       "is_enabled": false,
@@ -2158,81 +1782,55 @@
           "object_var_value": 0
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "razvedchik pogib"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "otklyuchaem otslezhivanie pozicii dlya obzhektiva"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "umen'shaem bonus k razvezdke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "otklyuchaem aktivnost' razvedchika i tajmer aktivnosti"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim, chto zadanie na prikrytie provaleno"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "proveryaem ne vypolnila li komanda protivnika zadanie"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zhdem 20 sekund i pryachem kvest na prikrytie"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem uborshchik musora"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t2_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t2_update_pos_for_t2"
-            },
-            {
-              "target": "lpt_t2_lookup_retreat"
-            },
-            {
-              "target": "lpt_t2_lookup_despawn"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t2_lookup_active"
-            },
-            {
-              "target": "lpt_t2_lookup_timer"
-            }
-          ]
-        },
-        {
-          "varSetReal": {
-            "value": 0.0,
-            "var": "lpt_t2_detection_bonus"
+        ],
+        "triggerDisable": [
+          {
+            "target": [
+              "lpt_t2_update_pos_for_t1",
+              "lpt_t2_update_pos_for_t2",
+              "lpt_t2_lookup_retreat",
+              "lpt_t2_lookup_despawn"
+            ]
+          },
+          {
+            "target": [
+              "lpt_t2_lookup_active",
+              "lpt_t2_lookup_timer"
+            ]
           }
+        ],
+        "varSetReal": {
+          "value": 0.0,
+          "var": "lpt_t2_detection_bonus"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t2_defend_task",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -2241,39 +1839,33 @@
             "team": "B",
             "unit_or_area": "@lpt_t2_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t2_defend_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "lpt_t2_quest_complete_for_t1"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "lpt_t2_clean_garbage"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 20.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "lpt_t2_quest_complete_for_t1": {
       "is_enabled": false,
@@ -2294,19 +1886,15 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "comment": {
-            "value": "u komandy B est' kvest. zaschityvaem ego"
-          }
+      "actions": {
+        "comment": {
+          "value": "u komandy B est' kvest. zaschityvaem ego"
         },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_kill_activity_check"
-          }
+        "triggerEnable": {
+          "target": "lpt_t1_kill_activity_check"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t1_kill_task",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -2315,23 +1903,19 @@
             "team": "A",
             "unit_or_area": "@lpt_t2_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t1_kill_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
+      },
       "else_actions": {
         "comment": {
           "value": "u komandy B net kvesta"
@@ -2357,9 +1941,9 @@
           "status": "inProgress"
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
+      "actions": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t1_kill_task",
             "status": 3,
             "object_var_comp_op": "equal",
@@ -2368,24 +1952,20 @@
             "team": "A",
             "unit_or_area": "@lpt_t2_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t1_kill_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
           }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
+        ],
+        "wait": {
+          "time": 20.0
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t2_lookup_retreat": {
       "is_enabled": false,
@@ -2400,9 +1980,9 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenStatus": {
+      "conditions": {
+        "unitWhenStatus": [
+          {
             "object_type": "haveKilledParts",
             "check_objects": "any",
             "object_marking": 0,
@@ -2412,10 +1992,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "@lpt_t2_lookup_plane"
-          }
-        },
-        {
-          "unitWhenStatus": {
+          },
+          {
             "object_type": "isActive",
             "check_objects": "any",
             "object_marking": 0,
@@ -2426,58 +2004,48 @@
             "object_var_value": 0,
             "object": "@lpt_t2_lookup_plane"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t2_lookup_timer"
-            },
-            {
-              "target": "lpt_t2_lookup_active"
-            }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "lpt_t2_lookup_timer",
+            "lpt_t2_lookup_active"
           ]
         },
-        {
-          "comment": {
+        "comment": [
+          {
             "value": "razvedchik ranen"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem proverku na dostizhenii konechnoj tochki"
           }
+        ],
+        "unitMoveTo": {
+          "target": "t2_lookup_retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@lpt_t2_lookup_plane",
+          "speed": 350.0
         },
-        {
-          "unitMoveTo": {
-            "target": "t2_lookup_retreat_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@lpt_t2_lookup_plane",
-            "speed": 350.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_lookup_despawn"
-          }
+        "triggerEnable": {
+          "target": "lpt_t2_lookup_despawn"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t2_lookup_active": {
       "is_enabled": false,
@@ -2510,34 +2078,26 @@
           "compareCenters": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "korrektirovshchik nad cel'yu otklyuchaem proverku obnaruzheniya"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem tajmer i govorim chto razvedchik obnaruzhen"
           }
+        ],
+        "triggerDisable": {
+          "target": "lpt_t2_lookup_detect_check"
         },
-        {
-          "triggerDisable": {
-            "target": "lpt_t2_lookup_detect_check"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t2_lookup_timer"
-            },
-            {
-              "target": "lpt_t2_lookup_detected"
-            }
+        "triggerEnable": {
+          "target": [
+            "lpt_t2_lookup_timer",
+            "lpt_t2_lookup_detected"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t2_lookup_timer": {
       "is_enabled": false,
@@ -2553,62 +2113,50 @@
           "var": "lpt_active_timer"
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "vremya podoshlo k koncu i razvedchik hochet domoj"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "zakryvaem vozvrashchenie domoj po raneniyu"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "napravlyaem razvedchika domoj"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem proverku na dostizhenii konechnoj tochki"
           }
+        ],
+        "triggerDisable": {
+          "target": "lpt_t2_lookup_retreat"
         },
-        {
-          "triggerDisable": {
-            "target": "lpt_t2_lookup_retreat"
-          }
+        "unitMoveTo": {
+          "target": "t2_lookup_retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "@lpt_t2_lookup_plane",
+          "speed": 350.0
         },
-        {
-          "unitMoveTo": {
-            "target": "t2_lookup_retreat_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "@lpt_t2_lookup_plane",
-            "speed": 350.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_lookup_despawn"
-          }
+        "triggerEnable": {
+          "target": "lpt_t2_lookup_despawn"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_t2_lookup_despawn": {
       "is_enabled": false,
@@ -2641,51 +2189,35 @@
           "compareCenters": false
         }
       },
-      "actions": [
-        {
-          "comment": {
+      "actions": {
+        "comment": [
+          {
             "value": "razvedchik doletel do doma"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "umen'shaem bonus k razvezdke"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "vklyuchaem uborshchik musora"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t2_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t2_update_pos_for_t2"
-            },
-            {
-              "target": "lpt_t2_lookup_active"
-            },
-            {
-              "target": "lpt_t2_lookup_dead"
-            }
+        ],
+        "triggerDisable": {
+          "target": [
+            "lpt_t2_update_pos_for_t1",
+            "lpt_t2_update_pos_for_t2",
+            "lpt_t2_lookup_active",
+            "lpt_t2_lookup_dead"
           ]
         },
-        {
-          "varSetReal": {
-            "value": 0.0,
-            "var": "lpt_t2_detection_bonus"
-          }
+        "varSetReal": {
+          "value": 0.0,
+          "var": "lpt_t2_detection_bonus"
         },
-        {
-          "unitPutToSleep": {
-            "target": "@lpt_t2_lookup_plane"
-          }
+        "unitPutToSleep": {
+          "target": "@lpt_t2_lookup_plane"
         },
-        {
-          "moSetObjectiveStatus": {
+        "moSetObjectiveStatus": [
+          {
             "target": "lpt_t2_defend_task",
             "status": 2,
             "object_var_comp_op": "equal",
@@ -2694,44 +2226,36 @@
             "team": "B",
             "unit_or_area": "@lpt_t2_lookup_plane",
             "object_type": "any"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
+          },
+          {
             "target": "lpt_t2_defend_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "lpt_t2_def_activity_calc"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "lpt_t2_quest_fail_for_t1"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "lpt_t2_clean_garbage"
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 20.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 5.0
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "lpt_t2_clean_garbage": {
       "is_enabled": false,
@@ -2746,90 +2270,50 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "sobiraem musor"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "govorim, chto shablon ne aktiven"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": ""
           }
+        ],
+        "unitPutToSleep": {
+          "target": "@lpt_t2_lookup_plane"
         },
-        {
-          "unitPutToSleep": {
-            "target": "@lpt_t2_lookup_plane"
-          }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "lpt_t2_start"
-            },
-            {
-              "target": "lpt_t2_check_army"
-            },
-            {
-              "target": "lpt_t2_delayed_start"
-            },
-            {
-              "target": "lpt_t2_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t2_update_pos_for_t2"
-            },
-            {
-              "target": "lpt_t2_is_detect_on"
-            },
-            {
-              "target": "lpt_t2_lookup_detect_check"
-            },
-            {
-              "target": "lpt_t2_lookup_detected"
-            },
-            {
-              "target": "lpt_t2_lookup_dead"
-            },
-            {
-              "target": "lpt_t2_quest_complete_for_t1"
-            },
-            {
-              "target": "lpt_t2_quest_fail_for_t1"
-            },
-            {
-              "target": "lpt_t2_lookup_retreat"
-            },
-            {
-              "target": "lpt_t2_lookup_active"
-            },
-            {
-              "target": "lpt_t2_lookup_timer"
-            },
-            {
-              "target": "lpt_t2_lookup_despawn"
-            }
+        "triggerDisable": {
+          "target": [
+            "lpt_t2_start",
+            "lpt_t2_check_army",
+            "lpt_t2_delayed_start",
+            "lpt_t2_update_pos_for_t1",
+            "lpt_t2_update_pos_for_t2",
+            "lpt_t2_is_detect_on",
+            "lpt_t2_lookup_detect_check",
+            "lpt_t2_lookup_detected",
+            "lpt_t2_lookup_dead",
+            "lpt_t2_quest_complete_for_t1",
+            "lpt_t2_quest_fail_for_t1",
+            "lpt_t2_lookup_retreat",
+            "lpt_t2_lookup_active",
+            "lpt_t2_lookup_timer",
+            "lpt_t2_lookup_despawn"
           ]
         },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "lpt_t2_active"
-          }
+        "varSetBool": {
+          "value": false,
+          "var": "lpt_t2_active"
         },
-        {
-          "triggerEnable": {
-            "target": "lpt_template_end"
-          }
+        "triggerEnable": {
+          "target": "lpt_template_end"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "lpt_matching": {
       "isCategory": true,
@@ -2864,7 +2348,7 @@
             "var": "lpt_activity_distance"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "lpt_matching_4_7": {
         "is_enabled": false,
@@ -2879,22 +2363,20 @@
             "time": 1.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "lpt_matching_rank",
               "value": 8,
               "comparasion_func": "less"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "lpt_matching_rank",
               "value": 3,
               "comparasion_func": "more"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "varSetInt": {
             "value": 2,
@@ -2905,7 +2387,7 @@
             "var": "lpt_activity_distance"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "lpt_matching_8_11": {
         "is_enabled": false,
@@ -2920,22 +2402,20 @@
             "time": 1.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "lpt_matching_rank",
               "value": 12,
               "comparasion_func": "less"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "lpt_matching_rank",
               "value": 7,
               "comparasion_func": "more"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "varSetInt": {
             "value": 3,
@@ -2946,7 +2426,7 @@
             "var": "lpt_activity_distance"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "lpt_matching_12_16": {
         "is_enabled": false,
@@ -2961,22 +2441,20 @@
             "time": 1.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
+        "conditions": {
+          "varCompareInt": [
+            {
               "var_value": "lpt_matching_rank",
               "value": 17,
               "comparasion_func": "less"
-            }
-          },
-          {
-            "varCompareInt": {
+            },
+            {
               "var_value": "lpt_matching_rank",
               "value": 11,
               "comparasion_func": "more"
             }
-          }
-        ],
+          ]
+        },
         "actions": {
           "varSetInt": {
             "value": 4,
@@ -2987,7 +2465,7 @@
             "var": "lpt_activity_distance"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "lpt_matching_17_20": {
         "is_enabled": false,
@@ -3019,7 +2497,7 @@
             "var": "lpt_activity_distance"
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "lpt_t1_matching_move_1": {
@@ -3062,10 +2540,13 @@
           "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
           "speed": 300.0,
-          "altRange": [1700.0,2000.0]
+          "altRange": [
+            1700.0,
+            2000.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_matching_move_2": {
       "is_enabled": false,
@@ -3107,10 +2588,13 @@
           "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
           "speed": 320.0,
-          "altRange": [2200.0,2500.0]
+          "altRange": [
+            2200.0,
+            2500.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_matching_move_3": {
       "is_enabled": false,
@@ -3152,10 +2636,13 @@
           "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
           "speed": 340.0,
-          "altRange": [2700.0,3000.0]
+          "altRange": [
+            2700.0,
+            3000.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_matching_move_4": {
       "is_enabled": false,
@@ -3196,10 +2683,13 @@
           "fastClimb": false,
           "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
-          "altRange": [3200.0,3500.0]
+          "altRange": [
+            3200.0,
+            3500.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_matching_move_5": {
       "is_enabled": false,
@@ -3240,10 +2730,13 @@
           "fastClimb": false,
           "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
-          "altRange": [3700.0,4000.0]
+          "altRange": [
+            3700.0,
+            4000.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_matching_move_1": {
       "is_enabled": false,
@@ -3285,10 +2778,13 @@
           "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
           "speed": 300.0,
-          "altRange": [1700.0,2000.0]
+          "altRange": [
+            1700.0,
+            2000.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_matching_move_2": {
       "is_enabled": false,
@@ -3330,10 +2826,13 @@
           "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
           "speed": 320.0,
-          "altRange": [2200.0,2500.0]
+          "altRange": [
+            2200.0,
+            2500.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_matching_move_3": {
       "is_enabled": false,
@@ -3375,10 +2874,13 @@
           "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
           "speed": 340.0,
-          "altRange": [2700.0,3000.0]
+          "altRange": [
+            2700.0,
+            3000.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_matching_move_4": {
       "is_enabled": false,
@@ -3419,10 +2921,13 @@
           "fastClimb": false,
           "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
-          "altRange": [3200.0,3500.0]
+          "altRange": [
+            3200.0,
+            3500.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t2_matching_move_5": {
       "is_enabled": false,
@@ -3463,10 +2968,13 @@
           "fastClimb": false,
           "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
-          "altRange": [3700.0,4000.0]
+          "altRange": [
+            3700.0,
+            4000.0
+          ]
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_template_end": {
       "is_enabled": false,
@@ -3481,29 +2989,27 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "varCompareBool": {
+      "conditions": {
+        "varCompareBool": [
+          {
             "var_value": "lpt_t1_active",
             "value": false,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareBool": {
+          },
+          {
             "var_value": "lpt_t2_active",
             "value": false,
             "comparasion_func": "equal"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "varSetBool": {
           "value": false,
           "var": "lpt_is_template_active"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "lpt_t1_lookup_players_detect_check": {
       "is_enabled": false,
@@ -3537,29 +3043,23 @@
           "compareCenters": false
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "lpt_t1_lookup_detect_check"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "lpt_t1_lookup_detect_check"
         },
-        {
-          "comment": {
-            "value": "razvedchik obnaruzhen"
-          }
+        "comment": {
+          "value": "razvedchik obnaruzhen"
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "lpt_t1_lookup_detected"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "t2_detection_task_completed"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "lpt_t2_lookup_players_detect_check": {
       "is_enabled": false,
@@ -3593,29 +3093,23 @@
           "compareCenters": false
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "lpt_t2_lookup_detect_check"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "lpt_t2_lookup_detect_check"
         },
-        {
-          "comment": {
-            "value": "razvedchik obnaruzhen"
-          }
+        "comment": {
+          "value": "razvedchik obnaruzhen"
         },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "lpt_t2_lookup_detected"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "t1_detection_task_completed"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "players_activity": {
       "isCategory": true,
@@ -3731,48 +3225,40 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem aktivnost'"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "lpt_t1_def_player_activity_calc",
+            "input_var": "lpt_t1_def_players_activity_time"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lpt_t1_def_player_activity_calc",
-              "input_var": "lpt_t1_def_players_activity_time"
-            }
-          },
-          {
-            "varModify": {
+          "varModify": [
+            {
               "operator": "mul",
               "value": 100.0,
               "var": "lpt_t1_def_player_activity_calc"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "divAB",
               "value": 100.0,
               "var": "lpt_t1_def_player_activity_calc",
               "use_variable": true,
               "var_value": "lpt_t1_def_time"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "lpt_t1_def_activity_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "lpt_t1_def_activity_check"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "lpt_t1_def_activity_check": {
         "is_enabled": false,
@@ -3824,48 +3310,40 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "comment": {
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
               "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
-            }
-          },
-          {
-            "comment": {
+            },
+            {
               "value": "proveryaem aktivnost'"
             }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "lpt_t2_def_player_activity_calc",
+            "input_var": "lpt_t2_def_players_activity_time"
           },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lpt_t2_def_player_activity_calc",
-              "input_var": "lpt_t2_def_players_activity_time"
-            }
-          },
-          {
-            "varModify": {
+          "varModify": [
+            {
               "operator": "mul",
               "value": 100.0,
               "var": "lpt_t2_def_player_activity_calc"
-            }
-          },
-          {
-            "varModify": {
+            },
+            {
               "operator": "divAB",
               "value": 100.0,
               "var": "lpt_t2_def_player_activity_calc",
               "use_variable": true,
               "var_value": "lpt_t2_def_time"
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "lpt_t2_def_activity_check"
-            }
+          ],
+          "triggerEnable": {
+            "target": "lpt_t2_def_activity_check"
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "lpt_t2_def_activity_check": {
         "is_enabled": false,
@@ -4004,8 +3482,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "lpt_t2_kill_task": {
       "is_enabled": false,
@@ -4018,8 +3496,8 @@
         "scoreTime": 400,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "lpt_t1_defend_task": {
       "is_enabled": false,
@@ -4032,8 +3510,8 @@
         "scoreTime": 400,
         "team": "A"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "lpt_t2_defend_task": {
       "is_enabled": false,
@@ -4046,8 +3524,8 @@
         "scoreTime": 400,
         "team": "B"
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -4087,32 +3565,26 @@
     "lpt_matching_rank": 0,
     "lpt_delay_timer": 120
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [
-    {
-      "layer": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

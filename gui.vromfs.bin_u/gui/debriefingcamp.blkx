@@ -14,364 +14,272 @@
       "position": "absolute",
       "style": "valign:center"
     },
-    "optionlist_container": [
-      {
-        "flow": "vertical"
+    "optionlist_container": {
+      "flow": "vertical",
+      "overflow-y": "auto",
+      "scrollbarShortcuts": "yes",
+      "dyncampresult": {
+        "id": "campaign-status",
+        "text": "",
+        "width": "70%pw",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative"
       },
-      {
-        "overflow-y": "auto"
-      },
-      {
-        "scrollbarShortcuts": "yes"
-      },
-      {
-        "dyncampresult": {
-          "id": "campaign-status",
-          "text": "",
-          "width": "70%pw",
-          "pos": "50%pw-50%w, 0",
-          "position": "relative"
-        }
-      },
-      {
-        "textAreaCentered": {
+      "textAreaCentered": [
+        {
           "id": "campaign-result",
           "text": "",
           "width": "70%pw",
           "pos": "50%pw-50%w, 5%ph",
           "position": "relative"
-        }
-      },
-      {
-        "textAreaCentered": {
+        },
+        {
           "text": "#multiplayer/tableLosses",
           "width": "30%pw",
           "pos": "50%pw-50%w, 5%ph",
           "position": "relative"
         }
-      },
-      {
-        "tdiv": [
+      ],
+      "tdiv": {
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "activeText": [
           {
-            "pos": "50%pw-50%w, 0"
+            "id": "info-dc-text",
+            "text": "",
+            "tdalign": "right"
           },
           {
-            "position": "relative"
-          },
-          {
-            "activeText": {
-              "id": "info-dc-text",
-              "text": "",
-              "tdalign": "right"
-            }
-          },
-          {
-            "activeText": {
-              "id": "info-dc-wp",
-              "text": "",
-              "tdalign": "left"
-            }
+            "id": "info-dc-wp",
+            "text": "",
+            "tdalign": "left"
           }
         ]
       },
-      {
-        "table": [
+      "table": {
+        "width": "50%pw",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "baseRow": "yes",
+        "css-hier-invalidate": "all",
+        "tr": [
           {
-            "width": "50%pw"
-          },
-          {
-            "pos": "50%pw-50%w, 0"
-          },
-          {
-            "position": "relative"
-          },
-          {
-            "baseRow": "yes"
-          },
-          {
-            "css-hier-invalidate": "all"
-          },
-          {
-            "tr": [
+            "td": [
               {
-                "td": {
-                  "width": "@baseTrHeight-5%pw"
+                "width": "@baseTrHeight-5%pw"
+              },
+              {},
+              {
+                "width": "18%sh",
+                "activeText": {
+                  "text": "#multiplayer/yours",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": []
-              },
-              {
-                "td": {
-                  "width": "18%sh",
-                  "activeText": {
-                    "text": "#multiplayer/yours",
-                    "tdalign": "right"
-                  }
-                }
-              },
-              {
-                "td": {
-                  "width": "15%sh",
-                  "activeText": {
-                    "text": "#multiplayer/enemy",
-                    "tdalign": "right"
-                  }
+                "width": "15%sh",
+                "activeText": {
+                  "text": "#multiplayer/enemy",
+                  "tdalign": "right"
                 }
               }
             ]
           },
           {
-            "tr": [
+            "td": [
+              {},
               {
-                "td": []
-              },
-              {
-                "td": {
-                  "activeText": {
-                    "text": "#multiplayer/BattlesWon"
-                  }
+                "activeText": {
+                  "text": "#multiplayer/BattlesWon"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-dc-wins",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-dc-wins",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-dc-fails",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-dc-fails",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               }
             ]
           },
           {
-            "tr": [
+            "td": [
               {
-                "td": {
-                  "tdIcon45x25": {
-                    "background-image": "#ui/gameuiskin#objective_bomber.svg"
-                  }
+                "tdIcon45x25": {
+                  "background-image": "#ui/gameuiskin#objective_bomber.svg"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "text": "#debriefing_dyn/bombers"
-                  }
+                "activeText": {
+                  "text": "#debriefing_dyn/bombers"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-bombers0",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-bombers0",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-bombers1",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-bombers1",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               }
             ]
           },
           {
-            "tr": [
+            "td": [
               {
-                "td": {
-                  "tdIcon45x25": {
-                    "background-image": "#ui/gameuiskin#objective_fighter.svg"
-                  }
+                "tdIcon45x25": {
+                  "background-image": "#ui/gameuiskin#objective_fighter.svg"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "text": "#debriefing_dyn/fighters"
-                  }
+                "activeText": {
+                  "text": "#debriefing_dyn/fighters"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-fighters0",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-fighters0",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-fighters1",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-fighters1",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               }
             ]
           },
           {
-            "tr": [
+            "td": [
               {
-                "td": {
-                  "tdIcon45x25": {
-                    "background-image": "#ui/gameuiskin#objective_troops.png"
-                  }
+                "tdIcon45x25": {
+                  "background-image": "#ui/gameuiskin#objective_troops.png"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "text": "#debriefing_dyn/infantry"
-                  }
+                "activeText": {
+                  "text": "#debriefing_dyn/infantry"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-infantry0",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-infantry0",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-infantry1",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-infantry1",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               }
             ]
           },
           {
-            "tr": [
+            "td": [
               {
-                "td": {
-                  "tdIcon45x25": {
-                    "background-image": "#ui/gameuiskin#objective_tank.svg"
-                  }
+                "tdIcon45x25": {
+                  "background-image": "#ui/gameuiskin#objective_tank.svg"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "text": "#debriefing_dyn/tanks"
-                  }
+                "activeText": {
+                  "text": "#debriefing_dyn/tanks"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-tanks0",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-tanks0",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-tanks1",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-tanks1",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               }
             ]
           },
           {
-            "tr": [
+            "td": [
               {
-                "td": {
-                  "tdIcon45x25": {
-                    "background-image": "#ui/gameuiskin#objective_aa.png"
-                  }
+                "tdIcon45x25": {
+                  "background-image": "#ui/gameuiskin#objective_aa.png"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "text": "#debriefing_dyn/artillery"
-                  }
+                "activeText": {
+                  "text": "#debriefing_dyn/artillery"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-artillery0",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-artillery0",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-artillery1",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-artillery1",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               }
             ]
           },
           {
-            "tr": [
+            "td": [
               {
-                "td": {
-                  "tdIcon45x25": {
-                    "background-image": "#ui/gameuiskin#objective_destroyer.svg"
-                  }
+                "tdIcon45x25": {
+                  "background-image": "#ui/gameuiskin#objective_destroyer.svg"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "text": "#debriefing_dyn/ships"
-                  }
+                "activeText": {
+                  "text": "#debriefing_dyn/ships"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-ships0",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-ships0",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               },
               {
-                "td": {
-                  "activeText": {
-                    "id": "info-ships1",
-                    "text": "0",
-                    "tdalign": "right"
-                  }
+                "activeText": {
+                  "id": "info-ships1",
+                  "text": "0",
+                  "tdalign": "right"
                 }
               }
             ]
           }
         ]
       }
-    ],
+    },
     "navBar": {
       "navLeft": {
         "Button_text": {
@@ -379,7 +287,7 @@
           "text": "#mainmenu/btnBack",
           "btnName": "B",
           "_on_click": "onBack",
-          "ButtonImg": []
+          "ButtonImg": {}
         }
       },
       "navRight": {
@@ -388,7 +296,7 @@
           "text": "#mainmenu/btnOk",
           "btnName": "A",
           "_on_click": "onSelect",
-          "ButtonImg": []
+          "ButtonImg": {}
         }
       }
     }

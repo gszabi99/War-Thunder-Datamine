@@ -9,84 +9,48 @@
       "tdiv": {
         "size": "fw, ph",
         "flow": "vertical",
-        "debrBlock": [
-          {
-            "id": "top_bar_nest"
-          },
-          {
-            "width": "pw"
-          },
-          {
-            "pos": "0, 1@debrMyPlaceBlockOffset"
-          },
-          {
-            "position": "relative"
-          },
-          {
-            "padding": "1@debrPad, 0.5@debrPad"
-          },
-          {
-            "background-color": "@separatorBlockColor"
-          },
-          {
-            "tdiv": [
-              {
-                "id": "my_place_move_box"
-              },
-              {
-                "pos": "0, 0.5ph-0.5h"
-              },
-              {
-                "position": "relative"
-              },
-              {
-                "css-hier-invalidate": "yes"
-              },
-              {
-                "total-input-transparent": "yes"
-              },
-              {
-                "display": "hide"
-              },
-              {
-                "activeText": {
+        "debrBlock": {
+          "id": "top_bar_nest",
+          "width": "pw",
+          "pos": "0, 1@debrMyPlaceBlockOffset",
+          "position": "relative",
+          "padding": "1@debrPad, 0.5@debrPad",
+          "background-color": "@separatorBlockColor",
+          "tdiv": [
+            {
+              "id": "my_place_move_box",
+              "pos": "0, 0.5ph-0.5h",
+              "position": "relative",
+              "css-hier-invalidate": "yes",
+              "total-input-transparent": "yes",
+              "display": "hide",
+              "activeText": [
+                {
                   "id": "my_place_label",
                   "mediumFont": "yes",
                   "animateFontSize": "yes",
                   "text": "#debriefing/placeInMyTeam"
-                }
-              },
-              {
-                "activeText": {
+                },
+                {
                   "id": "my_place_in_mptable",
                   "mediumFont": "yes",
                   "animateFontSize": "yes",
                   "overlayTextColor": "userlog",
                   "text": "0"
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "id": "my_stats_top_bar"
-              },
-              {
-                "top": "0.5ph-0.5h"
-              },
-              {
-                "position": "relative"
-              },
-              {
-                "tdiv": {
+              ]
+            },
+            {
+              "id": "my_stats_top_bar",
+              "top": "0.5ph-0.5h",
+              "position": "relative",
+              "tdiv": [
+                {
                   "id": "wnd_total",
                   "top": "0.5ph-0.5h",
                   "position": "relative"
-                }
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "id": "buy_premium",
                   "pos": "1@debrPad, 0.5ph-0.5h",
                   "position": "relative",
@@ -102,8 +66,8 @@
                     "buttonWink": {
                       "_transp-timer": "0"
                     },
-                    "buttonGlance": [],
-                    "ButtonImg": [],
+                    "buttonGlance": {},
+                    "ButtonImg": {},
                     "textarea": {
                       "id": "label",
                       "pos": "0, 0.5ph-0.5h",
@@ -123,10 +87,8 @@
                     "smallFont": "yes",
                     "text": "#mainmenu/notEarnedPremiumReward"
                   }
-                }
-              },
-              {
-                "tdiv": {
+                },
+                {
                   "id": "active_wager_container",
                   "pos": "1@debrPad, 0.5ph-0.5h",
                   "position": "relative",
@@ -162,7 +124,7 @@
                     "smallFont": "yes",
                     "text": ""
                   },
-                  "focus_border": [],
+                  "focus_border": {},
                   "tooltipObj": {
                     "id": "active_wager_tooltip",
                     "on_tooltip_open": "onWagerTooltipOpen",
@@ -171,57 +133,43 @@
                     "enable": "no"
                   }
                 }
-              },
-              {
-                "debriefingBonusIconNest": {
-                  "id": "bonus_ico_place",
-                  "size": "1@debrBonusWidth, 1@debrBonusHeight",
-                  "pos": "1@debrPad, 0.5ph-0.5h",
-                  "position": "relative",
-                  "display": "hide",
-                  "interactive": "yes",
-                  "css-hier-invalidate": "yes",
-                  "img": {
-                    "id": "bonus_ico",
-                    "size": "1@debrBonusWidth, 1@debrBonusHeight"
-                  },
-                  "tdiv": {
-                    "id": "start_bonus_place",
-                    "size": "2.5@debrBonusWidth, 2.5@debrBonusHeight",
-                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                    "position": "absolute"
-                  },
-                  "focus_border": {
-                    "class": "expanded"
-                  }
+              ],
+              "debriefingBonusIconNest": {
+                "id": "bonus_ico_place",
+                "size": "1@debrBonusWidth, 1@debrBonusHeight",
+                "pos": "1@debrPad, 0.5ph-0.5h",
+                "position": "relative",
+                "display": "hide",
+                "interactive": "yes",
+                "css-hier-invalidate": "yes",
+                "img": {
+                  "id": "bonus_ico",
+                  "size": "1@debrBonusWidth, 1@debrBonusHeight"
+                },
+                "tdiv": {
+                  "id": "start_bonus_place",
+                  "size": "2.5@debrBonusWidth, 2.5@debrBonusHeight",
+                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                  "position": "absolute"
+                },
+                "focus_border": {
+                  "class": "expanded"
                 }
               }
-            ]
-          }
-        ],
-        "tdiv": [
-          {
-            "size": "pw, fh"
-          },
-          {
-            "tdiv": [
-              {
-                "id": "left_block"
-              },
-              {
-                "min-width": "1@navBarBattleButtonMinWidth"
-              },
-              {
-                "size": "2@debriefingUnlockIconSize+1@debrPad, ph"
-              },
-              {
-                "margin-right": "@debrBigGap"
-              },
-              {
-                "flow": "vertical"
-              },
-              {
-                "debrBlock": {
+            }
+          ]
+        },
+        "tdiv": {
+          "size": "pw, fh",
+          "tdiv": [
+            {
+              "id": "left_block",
+              "min-width": "1@navBarBattleButtonMinWidth",
+              "size": "2@debriefingUnlockIconSize+1@debrPad, ph",
+              "margin-right": "@debrBigGap",
+              "flow": "vertical",
+              "debrBlock": [
+                {
                   "id": "inventory_gift_block",
                   "width": "pw",
                   "padding": "0, 1@debrPad",
@@ -249,7 +197,7 @@
                         "display": "hide",
                         "enable": "no",
                         "btnName": "R3",
-                        "ButtonImg": []
+                        "ButtonImg": {}
                       }
                     },
                     "Button_text": {
@@ -265,12 +213,12 @@
                       "_on_click": "onInventoryGiftAction",
                       "display": "hide",
                       "enable": "no",
-                      "pattern": [],
+                      "pattern": {},
                       "buttonWink": {
                         "_transp-timer": "0"
                       },
-                      "buttonGlance": [],
-                      "ButtonImg": [],
+                      "buttonGlance": {},
+                      "ButtonImg": {},
                       "btnText": {
                         "id": "btn_inventory_gift_action_text"
                       }
@@ -279,10 +227,8 @@
                   "debrSeparator": {
                     "class": "bottom"
                   }
-                }
-              },
-              {
-                "debrBlock": {
+                },
+                {
                   "id": "my_stats_awards_block",
                   "size": "pw, fh",
                   "class": "button",
@@ -290,18 +236,12 @@
                   "on_click": "onViewAwards",
                   "total-input-transparent": "yes",
                   "skip-navigation": "yes",
-                  "tdiv": [
-                    {
-                      "height": "ph"
-                    },
-                    {
-                      "pos": "0.5pw-0.5w, 0"
-                    },
-                    {
-                      "position": "relative"
-                    },
-                    {
-                      "tdiv": {
+                  "tdiv": {
+                    "height": "ph",
+                    "pos": "0.5pw-0.5w, 0",
+                    "position": "relative",
+                    "tdiv": [
+                      {
                         "id": "awards_list_unlocks",
                         "width": "1@debriefingUnlockIconSize",
                         "height": "ph",
@@ -312,10 +252,8 @@
                         "behavior": "PosNavigator",
                         "navigatorShortcuts": "active",
                         "on_activate": "onViewAwards"
-                      }
-                    },
-                    {
-                      "tdiv": {
+                      },
+                      {
                         "id": "awards_list_streaks",
                         "width": "1@debriefingUnlockIconSize",
                         "height": "ph",
@@ -327,52 +265,34 @@
                         "navigatorShortcuts": "active",
                         "on_activate": "onViewAwards"
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
-              }
-            ]
-          },
-          {
-            "tdiv": [
-              {
-                "size": "fw, ph"
-              },
-              {
-                "flow": "vertical"
-              },
-              {
-                "debrBlock": [
-                  {
-                    "id": "pve_trophy_block"
-                  },
-                  {
-                    "size": "pw, 0.75@itemHeight"
-                  },
-                  {
-                    "padding": "0, 1@debrPad"
-                  },
-                  {
-                    "display": "hide"
-                  },
-                  {
-                    "tdiv": {
+              ]
+            },
+            {
+              "size": "fw, ph",
+              "flow": "vertical",
+              "debrBlock": [
+                {
+                  "id": "pve_trophy_block",
+                  "size": "pw, 0.75@itemHeight",
+                  "padding": "0, 1@debrPad",
+                  "display": "hide",
+                  "tdiv": [
+                    {
                       "id": "pve_trophy_progress",
                       "pos": "0, 0.5ph-0.5h",
                       "position": "relative",
                       "width": "75%pw"
-                    }
-                  },
-                  {
-                    "tdiv": {
+                    },
+                    {
                       "id": "pve_trophy_chest",
                       "size": "0.75@itemHeight, 0.75@itemHeight",
                       "pos": "pw-w, 0.5ph-0.5h",
                       "position": "absolute"
-                    }
-                  },
-                  {
-                    "tdiv": {
+                    },
+                    {
                       "size": "0.75@itemHeight, 0.75@itemHeight",
                       "pos": "pw-w-0.25w, 0.5ph-0.5h",
                       "position": "absolute",
@@ -383,25 +303,19 @@
                         "position": "absolute"
                       }
                     }
+                  ],
+                  "activeText": {
+                    "id": "pve_award_already_received",
+                    "pos": "pw-w-1@debrPad, 50%ph",
+                    "position": "absolute",
+                    "text": "#debriefing/awardHasAlreadyBeenReceived",
+                    "display": "hide"
                   },
-                  {
-                    "activeText": {
-                      "id": "pve_award_already_received",
-                      "pos": "pw-w-1@debrPad, 50%ph",
-                      "position": "absolute",
-                      "text": "#debriefing/awardHasAlreadyBeenReceived",
-                      "display": "hide"
-                    }
-                  },
-                  {
-                    "debrSeparator": {
-                      "class": "bottom"
-                    }
+                  "debrSeparator": {
+                    "class": "bottom"
                   }
-                ]
-              },
-              {
-                "debrBlock": {
+                },
+                {
                   "id": "no_awards_block",
                   "size": "pw, 0.12@scrn_tgt",
                   "padding": "0, 1@debrPad",
@@ -431,66 +345,64 @@
                       "activeText": {
                         "text": "#msgbox/btn_more",
                         "css-hier-invalidate": "yes",
-                        "underline": []
+                        "underline": {}
                       },
-                      "ButtonImg": []
+                      "ButtonImg": {}
                     }
                   },
                   "debrSeparator": {
                     "class": "bottom"
                   }
                 }
-              },
-              {
-                "tdiv": {
-                  "size": "pw, fh",
-                  "debrBlock": {
-                    "id": "my_stats_scroll_block",
-                    "size": "fw, ph",
+              ],
+              "tdiv": {
+                "size": "pw, fh",
+                "debrBlock": {
+                  "id": "my_stats_scroll_block",
+                  "size": "fw, ph",
+                  "flow": "vertical",
+                  "overflow-y": "auto",
+                  "scrollbarShortcuts": "yes",
+                  "css-hier-invalidate": "yes",
+                  "tdiv": {
+                    "width": "pw",
+                    "min-height": "ph",
+                    "margin": "0, 1@debrPad",
                     "flow": "vertical",
-                    "overflow-y": "auto",
-                    "scrollbarShortcuts": "yes",
-                    "css-hier-invalidate": "yes",
-                    "tdiv": {
+                    "table": {
+                      "id": "stat_table",
                       "width": "pw",
-                      "min-height": "ph",
-                      "margin": "0, 1@debrPad",
+                      "baseRow": "rows16",
                       "flow": "vertical",
-                      "table": {
-                        "id": "stat_table",
-                        "width": "pw",
-                        "baseRow": "rows16",
-                        "flow": "vertical",
-                        "total-input-transparent": "yes",
-                        "behavior": "PosNavigator",
-                        "navigatorShortcuts": "noSelect",
-                        "selfFocusBorder": "yes"
-                      },
-                      "tdiv": {
-                        "id": "leaderbord_stats",
-                        "width": "pw",
-                        "pos": "0, 1@debrPad",
-                        "position": "relative",
-                        "flow": "h-flow",
-                        "display": "hide"
-                      },
-                      "textareaNoTab": {
-                        "id": "stat_info_text",
-                        "width": "pw",
-                        "pos": "0, 3@debrPad",
-                        "position": "relative",
-                        "overlayTextColor": "",
-                        "text-align": "right",
-                        "text": "",
-                        "display": "hide"
-                      }
+                      "total-input-transparent": "yes",
+                      "behavior": "PosNavigator",
+                      "navigatorShortcuts": "noSelect",
+                      "selfFocusBorder": "yes"
+                    },
+                    "tdiv": {
+                      "id": "leaderbord_stats",
+                      "width": "pw",
+                      "pos": "0, 1@debrPad",
+                      "position": "relative",
+                      "flow": "h-flow",
+                      "display": "hide"
+                    },
+                    "textareaNoTab": {
+                      "id": "stat_info_text",
+                      "width": "pw",
+                      "pos": "0, 3@debrPad",
+                      "position": "relative",
+                      "overlayTextColor": "",
+                      "text-align": "right",
+                      "text": "",
+                      "display": "hide"
                     }
                   }
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        }
       },
       "debrBlock": {
         "id": "right_block",
@@ -531,18 +443,12 @@
           "size": "pw, fh",
           "overflow-y": "auto",
           "scrollbarShortcuts": "left",
-          "tdiv": [
-            {
-              "width": "pw"
-            },
-            {
-              "min-height": "ph"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "tdiv": {
+          "tdiv": {
+            "width": "pw",
+            "min-height": "ph",
+            "flow": "vertical",
+            "tdiv": [
+              {
                 "size": "pw, 1@buttonHeight",
                 "background-color": "@separatorBlockColor",
                 "activeText": {
@@ -551,31 +457,21 @@
                   "position": "relative",
                   "text": "#debriefing/researched_unit"
                 }
-              }
-            },
-            {
-              "tdiv": [
-                {
-                  "width": "pw"
-                },
-                {
-                  "margin-bottom": "1@debrPad"
-                },
-                {
-                  "background-color": "@frameDarkTransparentBgColor"
-                },
-                {
-                  "textAreaCentered": {
+              },
+              {
+                "width": "pw",
+                "margin-bottom": "1@debrPad",
+                "background-color": "@frameDarkTransparentBgColor",
+                "textAreaCentered": [
+                  {
                     "id": "no_air_text",
                     "width": "pw",
                     "pos": "0.5pw-0.5w, 0.5ph-0.5h",
                     "position": "absolute",
                     "smallFont": "yes",
                     "text": ""
-                  }
-                },
-                {
-                  "textAreaCentered": {
+                  },
+                  {
                     "id": "air_item_text",
                     "width": "pw",
                     "pos": "0.5pw-0.5w, 0.5ph-0.5h",
@@ -583,22 +479,18 @@
                     "smallFont": "yes",
                     "text": ""
                   }
-                },
-                {
-                  "rankUpList": {
-                    "id": "air_item_place",
-                    "max-width": "pw-2@debrPad",
-                    "min-height": "@slot_height+2@slot_vert_pad",
-                    "position": "relative",
-                    "pos": "0.5pw-0.5w, 0",
-                    "flow": "h-flow",
-                    "holdTooltipChildren": "yes"
-                  }
+                ],
+                "rankUpList": {
+                  "id": "air_item_place",
+                  "max-width": "pw-2@debrPad",
+                  "min-height": "@slot_height+2@slot_vert_pad",
+                  "position": "relative",
+                  "pos": "0.5pw-0.5w, 0",
+                  "flow": "h-flow",
+                  "holdTooltipChildren": "yes"
                 }
-              ]
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "size": "pw, 1@buttonHeight",
                 "background-color": "@separatorBlockColor",
                 "activeText": {
@@ -607,10 +499,8 @@
                   "position": "relative",
                   "text": "#debriefing/research_list"
                 }
-              }
-            },
-            {
-              "tdiv": {
+              },
+              {
                 "id": "research_list",
                 "width": "pw",
                 "flow": "vertical",
@@ -632,8 +522,8 @@
                   "interactiveChildren": "yes"
                 }
               }
-            }
-          ]
+            ]
+          }
         }
       }
     }

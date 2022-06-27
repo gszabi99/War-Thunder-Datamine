@@ -1,25 +1,15 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "torpedo_01"
-      },
-      {
-        "node": "torpedo_02"
-      },
-      {
-        "node": "torpedo_03"
-      },
-      {
-        "node": "torpedo_04"
-      },
-      {
-        "node": "ex_decor_09"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "torpedo_01",
+      "torpedo_02",
+      "torpedo_03",
+      "torpedo_04",
+      "ex_decor_09"
     ]
   },
-  {
-    "Weapon": {
+  "Weapon": [
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/germ_mine_emf.blk",
@@ -27,15 +17,16 @@
       "bullets": 2,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [1.0,2.0],
+      "emitterGenRange": [
+        1,
+        2
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "mines",
       "triggerGroup": "mine",
       "blk": "gameData/weapons/mines/germ_mine_emf.blk",
@@ -43,11 +34,14 @@
       "bullets": 2,
       "external": true,
       "dropSpeed": 5.0,
-      "emitterGenRange": [3.0,4.0],
+      "emitterGenRange": [
+        3,
+        4
+      ],
       "emitterGenFmt": "bone_mine_%02d",
       "ammoDpGenFmt": "mine_%02d_dm",
       "feedSystem": true,
       "sequentalFeed": true
     }
-  }
-]
+  ]
+}

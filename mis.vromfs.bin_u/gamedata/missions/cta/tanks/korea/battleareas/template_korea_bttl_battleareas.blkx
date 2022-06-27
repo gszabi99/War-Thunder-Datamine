@@ -15,9 +15,9 @@
       "weather": "hazy"
     }
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/cta/tanks/korea/mainareas/template_korea_Bttl_areas.blk",
         "importAreas": true,
         "importUnits": true,
@@ -29,11 +29,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/tanks/korea/mainareas/template_korea_Bttl_areas_hardcore.blk",
         "difficulty": "hardcore",
         "importAreas": true,
@@ -46,10 +44,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -58,100 +56,190 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
   "areas": {
     "bttl_battle_area_arcade": {
       "type": "Box",
       "tm": [
-        [-817.688,0.0,0.0],
-        [0.0,400.0,0.0],
-        [0.0,0.0,-1450.0],
-        [1095.3,364.5,1007.35]
+        [
+          -817.688,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1450.0
+        ],
+        [
+          1095.3,
+          364.5,
+          1007.35
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "bttl_battle_area_hardcore": {
       "type": "Box",
       "tm": [
-        [-1160.83,0.0,0.0],
-        [0.0,400.0,0.0],
-        [0.0,0.0,-1450.0],
-        [1266.85,364.5,1007.35]
+        [
+          -1160.83,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1450.0
+        ],
+        [
+          1266.85,
+          364.5,
+          1007.35
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "t2_killarea": {
       "type": "Cylinder",
       "tm": [
-        [100.0,0.0,0.0],
-        [0.0,37.7788,0.0],
-        [0.0,0.0,100.0],
-        [1009.02,356.379,350.646]
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          37.7788,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          1009.02,
+          356.379,
+          350.646
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t1_killarea": {
       "type": "Cylinder",
       "tm": [
-        [100.0,0.0,0.0],
-        [0.0,37.7788,0.0],
-        [0.0,0.0,100.0],
-        [1025.68,356.379,1656.31]
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          37.7788,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          1025.68,
+          356.379,
+          1656.31
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t1_killarea_hardcore": {
       "type": "Cylinder",
       "tm": [
-        [100.0,0.0,0.0],
-        [0.0,37.7788,0.0],
-        [0.0,0.0,100.0],
-        [1025.68,356.379,1656.31]
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          37.7788,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          1025.68,
+          356.379,
+          1656.31
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "t2_killarea_hardcore": {
       "type": "Cylinder",
       "tm": [
-        [100.0,0.0,0.0],
-        [0.0,37.7788,0.0],
-        [0.0,0.0,100.0],
-        [1009.02,356.379,350.646]
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          37.7788,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          1009.02,
+          356.379,
+          350.646
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

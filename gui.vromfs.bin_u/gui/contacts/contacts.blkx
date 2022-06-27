@@ -7,7 +7,7 @@
     "behaviour": "button",
     "on_click": "goBack",
     "display": "hide",
-    "blur": [],
+    "blur": {},
     "blur_foreground": {
       "isRoot": "yes"
     }
@@ -23,7 +23,7 @@
     "max-width": "60%sw",
     "class": "scaleable",
     "padding-top": "1@frameTopPadding",
-    "moveElem": [],
+    "moveElem": {},
     "frame_header": {
       "smallIcon": "yes",
       "input-transparent": "yes",
@@ -69,32 +69,22 @@
         }
       }
     },
-    "div": [
-      {
-        "size": "pw, fh"
+    "div": {
+      "size": "pw, fh",
+      "background-color": "@frameDarkBackgroundColor",
+      "padding": "@blockInterval",
+      "flow": "vertical",
+      "groupBox": {
+        "id": "contacts_groups",
+        "size": "pw, fh",
+        "on_select": "onGroupSelect",
+        "on_dbl_click": "onGroupActivate",
+        "on_cancel_edit": "onGroupCancel",
+        "on_hover": "onContactsFocus",
+        "on_unhover": "onContactsFocus"
       },
-      {
-        "background-color": "@frameDarkBackgroundColor"
-      },
-      {
-        "padding": "@blockInterval"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "groupBox": {
-          "id": "contacts_groups",
-          "size": "pw, fh",
-          "on_select": "onGroupSelect",
-          "on_dbl_click": "onGroupActivate",
-          "on_cancel_edit": "onGroupCancel",
-          "on_hover": "onContactsFocus",
-          "on_unhover": "onContactsFocus"
-        }
-      },
-      {
-        "tdiv": {
+      "tdiv": [
+        {
           "id": "contacts_buttons_console",
           "width": "pw",
           "height": "1@buttonHeight",
@@ -111,12 +101,10 @@
             "enable": "no",
             "inactive": "yes",
             "skip-navigation": "yes",
-            "ButtonImg": []
+            "ButtonImg": {}
           }
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "width": "pw",
           "Button_text": {
             "id": "btn_squadInvite_bottom",
@@ -132,8 +120,8 @@
             "enable": "no"
           }
         }
-      }
-    ],
+      ]
+    },
     "timer": {
       "id": "contacts_update",
       "timer_handler_func": "onUpdate"

@@ -12,10 +12,13 @@
     "mass": 10.0,
     "massEnd": 8.0,
     "statType": "hydra",
-    "explodeTreshold": 0.0,
+    "explodeTreshold": 1E-05,
     "explodeHitPower": 150.0,
     "explodeArmorPower": 8.0,
-    "explodeRadius": [0.2,0.5],
+    "explodeRadius": [
+      0.2,
+      0.5
+    ],
     "rendinstDamageRadius": 0.3,
     "maxDistance": 3200.0,
     "minDistance": 30.0,
@@ -24,7 +27,11 @@
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "distFromCmToStab": 0.01,
-    "WdK": [0.1,0.1,0.1],
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
     "dragCx": 0.018,
     "CxK": 1.5,
     "useStartSpeed": true,
@@ -46,15 +53,42 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
     "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [10.0,50.0],
-    "midArmorPower": [7.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explosionEffect": "explosion_midair_tiny",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -67,20 +101,26 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "maxDeltaAngle": 3.5,
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.05
+      ],
+      "mod2": [
+        20.0,
+        0.1
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.2
+        ],
+        [
+          45.0,
+          0.3
+        ]
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },

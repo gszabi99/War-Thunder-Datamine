@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -39,11 +43,18 @@
     "bulletType": "he_dp",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
-    "fresnel": [0.23,0.1,2.0],
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
     "shellAnimation": "video/shells_animations/heat.ivf",
     "bulletName": "30mm_m789",
     "effectiveDistance": 2500.0,
-    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
     "shutterDamage": true,
     "shutterDamageRadius": 4.0,
     "shutterAmount": 15,
@@ -56,15 +67,36 @@
     "waterCollisionEffect": "hit_28_38mm_water",
     "explosionPatchRadius": 1.0,
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.0],
-      "mod2": [20.0,1.0]
+      "mod1": [
+        0.0,
+        0.0
+      ],
+      "mod2": [
+        20.0,
+        1.0
+      ]
     },
     "hitpower": {
-      "HitPower0m": [1.0,500.0],
-      "HitPower1000m": [0.9,1000.0],
-      "HitPower1500m": [0.65,1500.0],
-      "HitPower2500m": [0.5,2500.0],
-      "HitPower7000m": [0.0,7000.0]
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower1000m": [
+        0.9,
+        1000.0
+      ],
+      "HitPower1500m": [
+        0.65,
+        1500.0
+      ],
+      "HitPower2500m": [
+        0.5,
+        2500.0
+      ],
+      "HitPower7000m": [
+        0.0,
+        7000.0
+      ]
     },
     "cumulativeDamage": {
       "armorPower": 51.0,
@@ -153,7 +185,10 @@
       }
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "noColor",
       "trail": "noTrail"
@@ -166,23 +201,31 @@
     "cockpit": "cannon_M230E1_inside",
     "ai": "cannon_M230E1_ai"
   },
-  "overheat": [
-    {
-      "overheat": [21.3,0.0]
-    },
-    {
-      "overheat": [32.0,0.05]
-    }
-  ],
+  "overheat": {
+    "overheat": [
+      [
+        21.3,
+        0.0
+      ],
+      [
+        32.0,
+        0.05
+      ]
+    ]
+  },
   "aden_new_gun": {
     "maxDeltaAngle": 0.12,
-    "overheat": [
-      {
-        "overheat": [20.0,0.0]
-      },
-      {
-        "overheat": [30.0,0.05]
-      }
-    ]
+    "overheat": {
+      "overheat": [
+        [
+          20.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.05
+        ]
+      ]
+    }
   }
 }

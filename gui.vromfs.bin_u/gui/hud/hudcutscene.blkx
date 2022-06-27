@@ -1,23 +1,13 @@
-[
-  {
-    "tdiv": [
-      {
-        "id": "hud_hints_nest"
-      },
-      {
-        "size": "pw, ph"
-      },
-      {
-        "position": "absolute"
-      },
-      {
-        "css-hier-invalidate": "yes"
-      },
-      {
-        "behavior": "Timer"
-      },
-      {
-        "tdiv": {
+{
+  "tdiv": [
+    {
+      "id": "hud_hints_nest",
+      "size": "pw, ph",
+      "position": "absolute",
+      "css-hier-invalidate": "yes",
+      "behavior": "Timer",
+      "tdiv": [
+        {
           "pos": "pw/2 - w/2, 1@topCenterMessagesTopPos",
           "position": "absolute",
           "flow": "vertical",
@@ -29,10 +19,8 @@
             "flow": "vertical",
             "message_style": "death_reason_notification"
           }
-        }
-      },
-      {
-        "tdiv": {
+        },
+        {
           "id": "mission_hints",
           "width": "2/3@rwHud",
           "pos": "pw-w, 0.9ph",
@@ -40,35 +28,27 @@
           "flow": "vertical",
           "flow-align": "right"
         }
-      }
-    ]
-  },
-  {
-    "tdiv": {
+      ]
+    },
+    {
       "id": "hud_live_stats_nest",
       "width": "@shHud",
       "pos": "pw/2-w/2, ph-h-0.03@shHud",
       "position": "absolute",
       "display": "hide"
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "id": "minor_priority_hints",
       "width": "pw",
       "position": "absolute",
       "pos": "50%pw-50%w, ph - h",
       "flow": "vertical"
-    }
-  },
-  {
-    "tdiv": {
+    },
+    {
       "id": "hud_message_timers"
     }
-  },
-  {
-    "timer": {
-      "id": "hud_message_timer"
-    }
+  ],
+  "timer": {
+    "id": "hud_message_timer"
   }
-]
+}

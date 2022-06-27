@@ -1,255 +1,189 @@
-[
-  {
-    "hideNodes": [
-      {
-        "node": "mer_001"
-      },
-      {
-        "node": "mer_002"
-      },
-      {
-        "node": "mer_003"
-      },
-      {
-        "node": "aero_5a_001"
-      },
-      {
-        "node": "aero_5a_002"
-      },
-      {
-        "node": "aero_5a_003"
-      },
-      {
-        "node": "aero_5a_004"
-      },
-      {
-        "node": "aero_7_b001"
-      },
-      {
-        "node": "aero_7_b002"
-      },
-      {
-        "node": "aero_7_b003"
-      },
-      {
-        "node": "aero_7_b004"
-      },
-      {
-        "node": "aero_7_cap_b001"
-      },
-      {
-        "node": "aero_7_cap_b002"
-      },
-      {
-        "node": "aero_7_cap_b003"
-      },
-      {
-        "node": "aero_7_cap_b004"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b001"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b002"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b003"
-      },
-      {
-        "node": "aero_7_cap_dmg1_b004"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b001"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b002"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b003"
-      },
-      {
-        "node": "aero_7_cap_dmg2_b004"
-      },
-      {
-        "node": "us_lau_117a_001"
-      },
-      {
-        "node": "us_lau_117a_002"
-      },
-      {
-        "node": "us_lau_117a_003"
-      },
-      {
-        "node": "us_lau_117a_004"
-      },
-      {
-        "node": "us_gpu_5a_pod_001"
-      },
-      {
-        "node": "flare3"
-      }
+{
+  "hideNodes": {
+    "node": [
+      "mer_001",
+      "mer_002",
+      "mer_003",
+      "aero_5a_001",
+      "aero_5a_002",
+      "aero_5a_003",
+      "aero_5a_004",
+      "aero_7_b001",
+      "aero_7_b002",
+      "aero_7_b003",
+      "aero_7_b004",
+      "aero_7_cap_b001",
+      "aero_7_cap_b002",
+      "aero_7_cap_b003",
+      "aero_7_cap_b004",
+      "aero_7_cap_dmg1_b001",
+      "aero_7_cap_dmg1_b002",
+      "aero_7_cap_dmg1_b003",
+      "aero_7_cap_dmg1_b004",
+      "aero_7_cap_dmg2_b001",
+      "aero_7_cap_dmg2_b002",
+      "aero_7_cap_dmg2_b003",
+      "aero_7_cap_dmg2_b004",
+      "us_lau_117a_001",
+      "us_lau_117a_002",
+      "us_lau_117a_003",
+      "us_lau_117a_004",
+      "us_gpu_5a_pod_001",
+      "flare3"
     ]
   },
-  {
-    "hideDmParts": [
-      {
-        "node": "cannon3_dm"
-      },
-      {
-        "node": "cover2_dm"
-      }
+  "hideDmParts": {
+    "node": [
+      "cannon3_dm",
+      "cover2_dm"
     ]
   },
-  {
-    "RocketCap": [
-      {
-        "name": "cap_b001"
-      },
-      {
-        "part": "zuni_lau_10a_cap_b001"
-      },
-      {
-        "wreckPart": "zuni_lau_10a_cap_dmg1_b001"
-      },
-      {
-        "wreckPart": "zuni_lau_10a_cap_dmg2_b001"
-      }
-    ]
-  },
-  {
-    "RocketCap": [
-      {
-        "name": "cap_b002"
-      },
-      {
-        "part": "zuni_lau_10a_cap_b002"
-      },
-      {
-        "wreckPart": "zuni_lau_10a_cap_dmg1_b002"
-      },
-      {
-        "wreckPart": "zuni_lau_10a_cap_dmg2_b002"
-      }
-    ]
-  },
-  {
-    "Weapon": {
+  "RocketCap": [
+    {
+      "name": "cap_b001",
+      "part": "zuni_lau_10a_cap_b001",
+      "wreckPart": [
+        "zuni_lau_10a_cap_dmg1_b001",
+        "zuni_lau_10a_cap_dmg2_b001"
+      ]
+    },
+    {
+      "name": "cap_b002",
+      "part": "zuni_lau_10a_cap_b002",
+      "wreckPart": [
+        "zuni_lau_10a_cap_dmg1_b002",
+        "zuni_lau_10a_cap_dmg2_b002"
+      ]
+    }
+  ],
+  "Weapon": [
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_001_b001",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0],
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
       "mass": 48.0,
       "dragCx": 0.005,
       "capName": "cap_b001"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_001_b002",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0],
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
       "mass": 48.0,
       "dragCx": 0.005,
       "capName": "cap_b002"
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_002_b001",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0]
-    }
-  },
-  {
-    "Weapon": {
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ]
+    },
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_002_b002",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0]
-    }
-  },
-  {
-    "Weapon": {
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ]
+    },
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_003_b001",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0]
-    }
-  },
-  {
-    "Weapon": {
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ]
+    },
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_003_b002",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0]
-    }
-  },
-  {
-    "Weapon": {
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ]
+    },
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_004_b001",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0]
-    }
-  },
-  {
-    "Weapon": {
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ]
+    },
+    {
       "trigger": "rockets",
       "external": true,
       "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
       "emitter": "zuni_004_b002",
       "bullets": 1,
-      "minSize": [1.5,1.0,1.0]
-    }
-  },
-  {
-    "Weapon": {
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ]
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
       "emitter": "500lb_mk_82_002",
       "bullets": 1,
       "external": true,
       "machLimit": 1.01
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
       "emitter": "500lb_mk_82_004",
       "bullets": 1,
       "external": true,
       "machLimit": 1.01
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "bombs",
       "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
       "emitter": "500lb_mk_82_003",
       "bullets": 1,
       "external": true,
       "machLimit": 1.01
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "aam",
       "external": true,
       "separate": true,
@@ -257,10 +191,8 @@
       "emitter": "lau_100_aim_9",
       "bullets": 1,
       "loadFactorLimit": 7.0
-    }
-  },
-  {
-    "Weapon": {
+    },
+    {
       "trigger": "aam",
       "external": true,
       "separate": true,
@@ -269,5 +201,5 @@
       "bullets": 1,
       "loadFactorLimit": 7.0
     }
-  }
-]
+  ]
+}

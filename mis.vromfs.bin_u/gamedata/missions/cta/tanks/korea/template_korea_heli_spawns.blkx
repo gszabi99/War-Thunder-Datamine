@@ -28,7 +28,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -39,19 +39,35 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "objectGroups": {
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
         "name": "t1_helipad",
         "tm": [
-          [-0.141788,0.0,0.989897],
-          [0.0,1.0,0.0],
-          [-0.989897,0.0,-0.141788],
-          [721.086,498.562,5361.63]
+          [
+            -0.141788,
+            0.0,
+            0.989897
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.989897,
+            0.0,
+            -0.141788
+          ],
+          [
+            721.086,
+            498.562,
+            5361.63
+          ]
         ],
         "unit_class": "dynHelipad_beton_a_ussr",
         "objLayer": 2,
@@ -60,16 +76,30 @@
           "isDelayed": true,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "t1_helipad_farspawn",
         "tm": [
-          [0.506638,0.0,0.86216],
-          [0.0,1.0,0.0],
-          [-0.86216,0.0,0.506638],
-          [2668.6,492.569,8394.25]
+          [
+            0.506638,
+            0.0,
+            0.86216
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.86216,
+            0.0,
+            0.506638
+          ],
+          [
+            2668.6,
+            492.569,
+            8394.25
+          ]
         ],
         "unit_class": "dynHelipad_beton_b_ussr",
         "objLayer": 2,
@@ -78,16 +108,30 @@
           "isDelayed": true,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "t2_helipad",
         "tm": [
-          [0.848737,0.0,-0.528814],
-          [0.0,1.0,0.0],
-          [0.528814,0.0,0.848737],
-          [5298.73,472.35,-253.755]
+          [
+            0.848737,
+            0.0,
+            -0.528814
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.528814,
+            0.0,
+            0.848737
+          ],
+          [
+            5298.73,
+            472.35,
+            -253.755
+          ]
         ],
         "unit_class": "dynHelipad_beton_a_usa",
         "objLayer": 2,
@@ -96,16 +140,30 @@
           "isDelayed": true,
           "active": true
         }
-      }
-    },
-    {
-      "objectGroups": {
+      },
+      {
         "name": "t2_helipad_farspawn",
         "tm": [
-          [0.829367,0.0,-0.558705],
-          [0.0,1.0,0.0],
-          [0.558705,0.0,0.829367],
-          [7527.1,507.295,-1688.44]
+          [
+            0.829367,
+            0.0,
+            -0.558705
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.558705,
+            0.0,
+            0.829367
+          ],
+          [
+            7527.1,
+            507.295,
+            -1688.44
+          ]
         ],
         "unit_class": "dynHelipad_beton_b_usa",
         "objLayer": 2,
@@ -115,15 +173,31 @@
           "active": true
         }
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "t2_helipad_defence_01",
         "tm": [
-          [-0.927795,0.0,0.373091],
-          [0.0,1.0,0.0],
-          [-0.373091,0.0,-0.927795],
-          [5087.04,455.45,-353.047]
+          [
+            -0.927795,
+            0.0,
+            0.373091
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.373091,
+            0.0,
+            -0.927795
+          ],
+          [
+            5087.04,
+            455.45,
+            -353.047
+          ]
         ],
         "unit_class": "germ_20mm_flak38_longrange_helipad",
         "objLayer": 1,
@@ -145,22 +219,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_helipad_defence_02",
         "tm": [
-          [-0.927795,0.0,0.373091],
-          [0.0,1.0,0.0],
-          [-0.373091,0.0,-0.927795],
-          [5217.21,455.451,-36.8453]
+          [
+            -0.927795,
+            0.0,
+            0.373091
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.373091,
+            0.0,
+            -0.927795
+          ],
+          [
+            5217.21,
+            455.451,
+            -36.8453
+          ]
         ],
         "unit_class": "germ_20mm_flak38_longrange_helipad",
         "objLayer": 1,
@@ -182,22 +276,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_helipad_defence_03",
         "tm": [
-          [-0.927795,0.0,0.373091],
-          [0.0,1.0,0.0],
-          [-0.373091,0.0,-0.927795],
-          [5519.34,455.451,-192.419]
+          [
+            -0.927795,
+            0.0,
+            0.373091
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.373091,
+            0.0,
+            -0.927795
+          ],
+          [
+            5519.34,
+            455.451,
+            -192.419
+          ]
         ],
         "unit_class": "germ_20mm_flak38_helipad",
         "objLayer": 1,
@@ -219,22 +333,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t2_helipad_defence_04",
         "tm": [
-          [-0.927795,0.0,0.373091],
-          [0.0,1.0,0.0],
-          [-0.373091,0.0,-0.927795],
-          [5380.63,455.451,-483.62]
+          [
+            -0.927795,
+            0.0,
+            0.373091
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.373091,
+            0.0,
+            -0.927795
+          ],
+          [
+            5380.63,
+            455.451,
+            -483.62
+          ]
         ],
         "unit_class": "germ_20mm_flak38_helipad",
         "objLayer": 1,
@@ -256,22 +390,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_helipad_defence_01",
         "tm": [
-          [0.498445,0.0,-0.866921],
-          [0.0,1.0,0.0],
-          [0.866921,0.0,0.498445],
-          [917.959,509.273,5228.04]
+          [
+            0.498445,
+            0.0,
+            -0.866921
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.866921,
+            0.0,
+            0.498445
+          ],
+          [
+            917.959,
+            509.273,
+            5228.04
+          ]
         ],
         "unit_class": "germ_20mm_flak38_longrange_helipad",
         "objLayer": 1,
@@ -293,22 +447,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_helipad_defence_02",
         "tm": [
-          [0.498445,0.0,-0.866921],
-          [0.0,1.0,0.0],
-          [0.866921,0.0,0.498445],
-          [850.12,509.273,5561.03]
+          [
+            0.498445,
+            0.0,
+            -0.866921
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.866921,
+            0.0,
+            0.498445
+          ],
+          [
+            850.12,
+            509.273,
+            5561.03
+          ]
         ],
         "unit_class": "germ_20mm_flak38_longrange_helipad",
         "objLayer": 1,
@@ -330,22 +504,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_helipad_defence_03",
         "tm": [
-          [0.498445,0.0,-0.866921],
-          [0.0,1.0,0.0],
-          [0.866921,0.0,0.498445],
-          [522.058,509.273,5464.57]
+          [
+            0.498445,
+            0.0,
+            -0.866921
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.866921,
+            0.0,
+            0.498445
+          ],
+          [
+            522.058,
+            509.273,
+            5464.57
+          ]
         ],
         "unit_class": "germ_20mm_flak38_helipad",
         "objLayer": 1,
@@ -367,22 +561,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "t1_helipad_defence_04",
         "tm": [
-          [0.498445,0.0,-0.866921],
-          [0.0,1.0,0.0],
-          [0.866921,0.0,0.498445],
-          [604.057,509.273,5153.88]
+          [
+            0.498445,
+            0.0,
+            -0.866921
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.866921,
+            0.0,
+            0.498445
+          ],
+          [
+            604.057,
+            509.273,
+            5153.88
+          ]
         ],
         "unit_class": "germ_20mm_flak38_helipad",
         "objLayer": 1,
@@ -404,110 +618,138 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "t2_helipad_aaa_squad",
         "tm": [
-          [0.626064,0.0,0.779772],
-          [0.0,1.0,0.0],
-          [-0.779772,0.0,0.626064],
-          [5301.06,455.451,-266.482]
+          [
+            0.626064,
+            0.0,
+            0.779772
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.779772,
+            0.0,
+            0.626064
+          ],
+          [
+            5301.06,
+            455.451,
+            -266.482
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_helipad_defence_04"
-          },
-          {
-            "squad_members": "t2_helipad_defence_01"
-          },
-          {
-            "squad_members": "t2_helipad_defence_02"
-          },
-          {
-            "squad_members": "t2_helipad_defence_03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "t2_helipad_defence_04",
+            "t2_helipad_defence_01",
+            "t2_helipad_defence_02",
+            "t2_helipad_defence_03"
+          ]
+        }
+      },
+      {
         "name": "t1_helipad_aaa_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [723.548,509.273,5351.88]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            723.548,
+            509.273,
+            5351.88
+          ]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_helipad_defence_03"
-          },
-          {
-            "squad_members": "t1_helipad_defence_02"
-          },
-          {
-            "squad_members": "t1_helipad_defence_01"
-          },
-          {
-            "squad_members": "t1_helipad_defence_04"
-          }
-        ]
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "t1_helipad_defence_03",
+            "t1_helipad_defence_02",
+            "t1_helipad_defence_01",
+            "t1_helipad_defence_04"
+          ]
+        }
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "heli_4000": {
       "type": "Sphere",
       "tm": [
-        [-889.288,0.0,-7950.42],
-        [0.0,8000.0,0.0],
-        [7950.42,0.0,-889.288],
-        [1296.25,538.865,984.062]
+        [
+          -889.288,
+          0.0,
+          -7950.42
+        ],
+        [
+          0.0,
+          8000.0,
+          0.0
+        ],
+        [
+          7950.42,
+          0.0,
+          -889.288
+        ],
+        [
+          1296.25,
+          538.865,
+          984.062
+        ]
       ],
       "objLayer": 4,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

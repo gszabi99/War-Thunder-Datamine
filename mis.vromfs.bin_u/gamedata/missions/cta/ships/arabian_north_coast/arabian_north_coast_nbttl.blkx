@@ -2,115 +2,49 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
     "mission": {
       "level": "levels/avn_arabian_north_coast.bin",
       "type": "domination",
@@ -135,7 +69,7 @@
         "isHelicoptersAllowed": false
       }
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -144,125 +78,83 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "ally"
-              },
-              {
-                "point": "briefing_capture_zone_01"
-              },
-              {
-                "point": "briefing_capture_zone_t2"
-              },
-              {
-                "point": "briefing_capture_zone_02"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "enemy"
-              },
-              {
-                "point": "briefing_capture_zone_01"
-              },
-              {
-                "point": "briefing_capture_zone_t1"
-              },
-              {
-                "point": "briefing_capture_zone_02"
-              }
-            ]
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": [
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "briefing_capture_zone_01",
+                "briefing_capture_zone_t2",
+                "briefing_capture_zone_02"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "briefing_capture_zone_01",
+                "briefing_capture_zone_t1",
+                "briefing_capture_zone_02"
+              ]
+            }
+          ],
+          "icon": [
+            {
               "icontype": "ship",
               "side": "ally",
               "target": "briefing_spawn_t1_boat_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "ship",
               "side": "ally",
               "target": "briefing_spawn_t1_boat_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "ship",
               "side": "enemy",
               "target": "briefing_spawn_t2_boat_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "ship",
               "side": "enemy",
               "target": "briefing_spawn_t2_boat_02"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone",
               "side": "ally",
               "target": "briefing_capture_zone_t2"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone",
               "side": "enemy",
               "target": "briefing_capture_zone_t1"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone_A",
               "side": "neutral",
               "target": "briefing_capture_zone_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "basezone_B",
               "side": "neutral",
               "target": "briefing_capture_zone_02"
             }
-          },
-          {
-            "battleArea": {
-              "target": "briefing_battle_area"
-            }
+          ],
+          "battleArea": {
+            "target": "briefing_battle_area"
           }
-        ]
+        }
       }
     }
   },
-  "imports": [
-    {
-      "import_record": {
+  "imports": {
+    "import_record": [
+      {
         "file": "gameData/missions/templates/navy_templates/ship_base_logic.blk",
         "importAreas": true,
         "importUnits": true,
@@ -274,11 +166,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/navy_templates/nbttl_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -290,11 +180,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/ships/arabian_north_coast/template_arabian_north_coast_air_spawn.blk",
         "importAreas": true,
         "importUnits": true,
@@ -306,13 +194,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/ships/arabian_north_coast/mainareas/arabian_north_coast_NBttl_airspawn.blk",
-        "rankRange": [6.0,50.0],
+        "rankRange": [
+          6,
+          50
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -323,13 +212,14 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/ships/arabian_north_coast/mainareas/arabian_north_coast_NBttl_newbie_airspawn.blk",
-        "rankRange": [0.0,5.0],
+        "rankRange": [
+          0,
+          5
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -340,11 +230,9 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/ships/arabian_north_coast/mainareas/arabian_north_coast_NBttl_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -356,10 +244,10 @@
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
-        "excludes": []
+        "excludes": {}
       }
-    }
-  ],
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -368,18 +256,34 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "armada": {
       "name": "t1_player01",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2886.5,1378.2,-7470.15]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2886.5,
+          1378.2,
+          -7470.15
+        ]
       ],
       "unit_class": "a-20g",
       "objLayer": 1,
@@ -415,131 +319,269 @@
           "task": "FLY_WAYPOINT"
         }
       },
-      "way": []
+      "way": {}
     }
   },
   "areas": {
     "briefing_capture_zone_02": {
       "type": "Point",
       "tm": [
-        [300.0,0.0,0.0],
-        [0.0,211.1,0.0],
-        [0.0,0.0,300.0],
-        [3534.22,0.0,2081.5]
+        [
+          300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          300.0
+        ],
+        [
+          3534.22,
+          0.0,
+          2081.5
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_capture_zone_01": {
       "type": "Point",
       "tm": [
-        [300.0,0.0,0.0],
-        [0.0,211.1,0.0],
-        [0.0,0.0,300.0],
-        [1876.96,-0.000244141,3667.04]
+        [
+          300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          300.0
+        ],
+        [
+          1876.96,
+          -0.000244141,
+          3667.04
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_capture_zone_t1": {
       "type": "Point",
       "tm": [
-        [199.53,0.0,-224.025],
-        [0.0,211.1,0.0],
-        [224.025,0.0,199.53],
-        [3315.39,0.0,3453.49]
+        [
+          199.53,
+          0.0,
+          -224.025
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          224.025,
+          0.0,
+          199.53
+        ],
+        [
+          3315.39,
+          0.0,
+          3453.49
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_capture_zone_t2": {
       "type": "Point",
       "tm": [
-        [199.53,0.0,-224.025],
-        [0.0,211.1,0.0],
-        [224.025,0.0,199.53],
-        [2150.5,0.000244141,2258.33]
+        [
+          199.53,
+          0.0,
+          -224.025
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          224.025,
+          0.0,
+          199.53
+        ],
+        [
+          2150.5,
+          0.000244141,
+          2258.33
+        ]
       ],
       "objLayer": 3,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t2_boat_01": {
       "type": "Point",
       "tm": [
-        [0.527207,0.0,-0.849737],
-        [0.0,1.0,0.0],
-        [0.849737,0.0,0.527207],
-        [3072.24,0.0,5208.44]
+        [
+          0.527207,
+          0.0,
+          -0.849737
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.849737,
+          0.0,
+          0.527207
+        ],
+        [
+          3072.24,
+          0.0,
+          5208.44
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t2_boat_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [5189.67,0.0,3794.39]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5189.67,
+          0.0,
+          3794.39
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t1_boat_01": {
       "type": "Point",
       "tm": [
-        [0.923589,0.0,-0.383385],
-        [0.0,1.0,0.0],
-        [0.383385,0.0,0.923589],
-        [178.674,0.0,2075.97]
+        [
+          0.923589,
+          0.0,
+          -0.383385
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.383385,
+          0.0,
+          0.923589
+        ],
+        [
+          178.674,
+          0.0,
+          2075.97
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_spawn_t1_boat_02": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [1868.16,0.0,488.193]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1868.16,
+          0.0,
+          488.193
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     },
     "briefing_battle_area": {
       "type": "Box",
       "tm": [
-        [4241.85,0.0,-3955.59],
-        [0.0,500.0,0.0],
-        [3955.59,0.0,4241.85],
-        [2730.0,-24.3664,2800.0]
+        [
+          4241.85,
+          0.0,
+          -3955.59
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          3955.59,
+          0.0,
+          4241.85
+        ],
+        [
+          2730.0,
+          -24.3664,
+          2800.0
+        ]
       ],
       "objLayer": 0,
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": true
-      }
-    },
-    {
-      "layer": {
+      },
+      {
         "enabled": false
       }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

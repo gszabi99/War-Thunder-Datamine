@@ -2,7 +2,11 @@
   "cannon": true,
   "weaponType": -1,
   "bUseHookAsRel": true,
-  "emitColor": [1.0,1.0,0.0],
+  "emitColor": [
+    1.0,
+    1.0,
+    0.0
+  ],
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
@@ -43,16 +47,37 @@
     "maxDistance": 2000.0,
     "hitPowerMult": 1.0,
     "onHitChanceMultFire": 2.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,300.0],
-    "farHitPower": [0.1,700.0],
-    "endHitPower": [0.008,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "relativeVelArmorShift": [200.0,1000.0],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      300.0
+    ],
+    "farHitPower": [
+      0.1,
+      700.0
+    ],
+    "endHitPower": [
+      0.008,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
     "explodeTreshold": 0.3,
     "explodeHitPower": 12.0,
     "explodeArmorPower": 2.0,
-    "explodeRadius": [0.13,0.25],
+    "explodeRadius": [
+      0.13,
+      0.25
+    ],
     "fuseDelayDist": 0.02,
     "shutterDamage": true,
     "shutterDamageRadius": 0.3,
@@ -62,30 +87,57 @@
     "groundCollisionEffect": "hit_12_18mm_dirt_he",
     "ricochetEffect": "hit_12_18mm_metal_ap",
     "waterCollisionEffect": "hit_12_18mm_water",
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.05
+      ],
+      "mod2": [
+        20.0,
+        0.1
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.2
+        ],
+        [
+          45.0,
+          0.3
+        ]
+      ]
+    },
     "armorpower": {
-      "ArmorPower0m": [2.0,10.0],
-      "ArmorPower100m": [2.0,100.0],
-      "ArmorPower500m": [1.5,500.0],
-      "ArmorPower1000m": [1.0,1000.0],
-      "ArmorPower1450m": [0.5,1450.0],
-      "ArmorPower1500m": [0.0,1500.0]
+      "ArmorPower0m": [
+        2.0,
+        10.0
+      ],
+      "ArmorPower100m": [
+        2.0,
+        100.0
+      ],
+      "ArmorPower500m": [
+        1.5,
+        500.0
+      ],
+      "ArmorPower1000m": [
+        1.0,
+        1000.0
+      ],
+      "ArmorPower1450m": [
+        0.5,
+        1450.0
+      ],
+      "ArmorPower1500m": [
+        0.0,
+        1500.0
+      ]
     },
     "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
       "traceFreq": 1,
       "tracer": "12mmDarkRed",
       "trail": "noTrail"

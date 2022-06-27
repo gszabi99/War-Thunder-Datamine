@@ -1,37 +1,33 @@
 {
   "hintDiv": {
     "modalPos": "left",
-    "hintText": []
+    "hintText": {}
   },
-  "navRight": [
-    {
-      "text": {
-        "id": "restart_suggestion",
-        "position": "relative",
-        "pos": "0, 50%ph-50%h",
-        "padding-right": "5*@sf/@pf_outdated",
-        "text": "#msgbox/client_restart_pending",
-        "display": "hide"
-      }
+  "navRight": {
+    "text": {
+      "id": "restart_suggestion",
+      "position": "relative",
+      "pos": "0, 50%ph-50%h",
+      "padding-right": "5*@sf/@pf_outdated",
+      "text": "#msgbox/client_restart_pending",
+      "display": "hide"
     },
-    {
-      "Button_text": {
+    "Button_text": [
+      {
         "id": "btn_restart",
         "text": "#msgbox/btn_restart",
         "btnName": "L3",
         "_on_click": "onSystemOptionsRestartClient",
         "display": "hide",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
+        "ButtonImg": {}
+      },
+      {
         "id": "btn_apply",
         "text": "#mainmenu/btnClose",
         "btnName": "X",
         "_on_click": "onApply",
-        "ButtonImg": []
+        "ButtonImg": {}
       }
-    }
-  ]
+    ]
+  }
 }

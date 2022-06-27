@@ -16,10 +16,14 @@
       "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
       "locName": "missions/testFlight"
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -28,39 +32,29 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "airfield00",
               "lookAt": "airfield01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "airfield",
               "side": "ally",
               "target": "airfield01"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -73,9 +67,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "addAirfield": {
           "runwayStart": "airfield00",
@@ -97,7 +91,7 @@
           "target": "structures_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "end": {
       "is_enabled": true,
@@ -127,25 +121,41 @@
           "objects": "armada_01"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": [],
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
   "units": {
     "armada": {
       "name": "armada_01",
       "tm": [
-        [-0.947083,0.0,-0.320989],
-        [0.0,1.0,0.0],
-        [0.320989,0.0,-0.947083],
-        [4365.95,9.75,-2359.2]
+        [
+          -0.947083,
+          0.0,
+          -0.320989
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.320989,
+          0.0,
+          -0.947083
+        ],
+        [
+          4365.95,
+          9.75,
+          -2359.2
+        ]
       ],
       "unit_class": "b-29",
       "closed_waypoints": false,
@@ -181,15 +191,31 @@
           "task": "FLY_WAYPOINT"
         }
       },
-      "way": []
+      "way": {}
     },
     "wheeled_vehicles": {
       "name": "structures_01",
       "tm": [
-        [-0.019222,0.0,-0.999815],
-        [0.0,1.0,0.0],
-        [0.999815,0.0,-0.019222],
-        [-1426.43,18.6499,-3056.68]
+        [
+          -0.019222,
+          0.0,
+          -0.999815
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999815,
+          0.0,
+          -0.019222
+        ],
+        [
+          -1426.43,
+          18.6499,
+          -3056.68
+        ]
       ],
       "unit_class": "jpn_truck",
       "closed_waypoints": false,
@@ -209,68 +235,116 @@
         "count": 1,
         "formation_type": "rows",
         "formation_div": 3,
-        "formation_step": [2.5,2.0],
-        "formation_noise": [0.1,0.1],
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
         "uniqueName": "",
         "attack_type": "fire_at_will",
         "targetableByAi": false
       },
-      "way": []
+      "way": {}
     }
   },
   "areas": {
     "airfield00": {
       "type": "Sphere",
       "tm": [
-        [-96.0376,0.0,-27.8707],
-        [0.0,100.0,0.0],
-        [27.8707,0.0,-96.0376],
-        [4366.55,7.94397,-2346.71]
+        [
+          -96.0376,
+          0.0,
+          -27.8707
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          27.8707,
+          0.0,
+          -96.0376
+        ],
+        [
+          4366.55,
+          7.94397,
+          -2346.71
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "airfield01": {
       "type": "Sphere",
       "tm": [
-        [-96.0717,0.0,-27.7528],
-        [0.0,100.0,0.0],
-        [27.7528,0.0,-96.0717],
-        [2755.32,3.08142,-2862.21]
+        [
+          -96.0717,
+          0.0,
+          -27.7528
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          27.7528,
+          0.0,
+          -96.0717
+        ],
+        [
+          2755.32,
+          3.08142,
+          -2862.21
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
-        [-57.4761,0.0,-17.2192],
-        [0.0,60.0,0.0],
-        [17.2192,0.0,-57.4761],
-        [4298.93,7.90403,-2364.61]
+        [
+          -57.4761,
+          0.0,
+          -17.2192
+        ],
+        [
+          0.0,
+          60.0,
+          0.0
+        ],
+        [
+          17.2192,
+          0.0,
+          -57.4761
+        ],
+        [
+          4298.93,
+          7.90403,
+          -2364.61
+        ]
       ],
-      "props": []
+      "props": {}
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }

@@ -20,8 +20,14 @@
       "optionalTakeOff": false,
       "environment": "Evening",
       "weather": "hazy",
-      "windSpeed": [5.0,7.0],
-      "windDirectionDeg": [160.0,180.0],
+      "windSpeed": [
+        5.0,
+        7.0
+      ],
+      "windDirectionDeg": [
+        160.0,
+        180.0
+      ],
       "gt_cooperative": true,
       "gt_reload_explosives": true,
       "stars": {
@@ -41,83 +47,55 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "player"
-              },
-              {
-                "point": "player_wing"
-              },
-              {
-                "point": "germ_tanks_01"
-              }
-            ]
-          },
-          {
-            "arrow": [
-              {
-                "width": 1
-              },
-              {
-                "side": "enemy"
-              },
-              {
-                "point": "germ_tanks_01"
-              },
-              {
-                "point": "final_point"
-              },
-              {
-                "point": "final_point"
-              }
-            ]
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "arrow": [
+            {
+              "width": 1,
+              "side": "player",
+              "point": [
+                "player_wing",
+                "germ_tanks_01"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "germ_tanks_01",
+                "final_point",
+                "final_point"
+              ]
+            }
+          ],
+          "icon": [
+            {
               "icontype": "bomber",
               "side": "player",
               "target": "player_wing",
               "lookAt": "germ_tanks_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "fighter",
               "side": "ally",
               "target": "allies_yak7",
               "lookAt": "germ_tanks_01"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "tank",
               "side": "enemy",
               "target": "germ_tanks_01",
               "lookAt": "middle_point"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "artillery",
               "side": "ally",
               "target": "ussr_artillery"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -130,7 +108,7 @@
       "showAreas": false,
       "showUnits": true,
       "showTriggers": false,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -145,112 +123,89 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "unitMoveTo": {
-            "target": "player_wing",
-            "follow_target": true,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "object": "allies_yak7",
-            "follow_offset": [-150.0,150.0,50.0]
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "germ_squad_01"
-            },
-            {
-              "object": "germ_squad_02"
-            },
-            {
-              "speed": 70.0
-            }
+      "conditions": {},
+      "actions": {
+        "unitMoveTo": {
+          "target": "player_wing",
+          "follow_target": true,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "object": "allies_yak7",
+          "follow_offset": [
+            -150.0,
+            150.0,
+            50.0
           ]
         },
-        {
-          "unitSetProperties": [
-            {
-              "object": "germ_air_def_trucks_02"
-            },
-            {
-              "object": "germ_air_def_squad"
-            },
-            {
-              "effShootingRate": 0.1
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
+            "object": [
+              "germ_squad_01",
+              "germ_squad_02"
+            ],
+            "speed": 70.0
+          },
+          {
+            "object": [
+              "germ_air_def_trucks_02",
+              "germ_air_def_squad"
+            ],
+            "effShootingRate": 0.1
+          },
+          {
             "object": "ussr_artillery",
             "attack_type": "hold_fire",
             "targetableByAi": false,
             "effShootingRate": 0.4
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "allies_yak7",
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
                 "defaultVal": 1.2,
-                "limits": [0.2,2.0]
+                "limits": [
+                  0.2,
+                  2.0
+                ]
               }
             }
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "germ_squad_02",
             "stealthRadius": 1500.0,
             "speed": 70.0
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "germ_air_def_trucks_02",
             "attack_type": "hold_fire"
           }
+        ],
+        "unitPutToSleep": {
+          "target": "cutscene_tanks"
         },
-        {
-          "unitPutToSleep": {
-            "target": "cutscene_tanks"
-          }
+        "wait": {
+          "time": 3.0
         },
-        {
-          "wait": {
-            "time": 3.0
-          }
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "begin_point"
         },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "begin_point"
-          }
+        "moAddMissionObjective": {
+          "target": "dlc_paulus_last_tanks_to_the_battle"
         },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_paulus_last_tanks_to_the_battle"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "update_timer"
-          }
+        "triggerEnable": {
+          "target": "update_timer"
         }
-      ]
+      }
     },
     "check_for_reach_begin_point": {
       "is_enabled": true,
@@ -265,9 +220,9 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "playersDistanceBetween": {
+      "conditions": {
+        "playersDistanceBetween": [
+          {
             "value": 3500.0,
             "math": "2D",
             "players": "isAlive",
@@ -275,10 +230,8 @@
             "check_players": "any",
             "check_targets": "any",
             "target": "germ_squad_01"
-          }
-        },
-        {
-          "playersDistanceBetween": {
+          },
+          {
             "value": 3500.0,
             "math": "2D",
             "players": "isAlive",
@@ -287,73 +240,55 @@
             "check_targets": "any",
             "target": "begin_point"
           }
-        }
-      ],
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_paulus_last_tanks_to_the_battle",
-            "status": 2
-          }
+        ]
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "dlc_paulus_last_tanks_to_the_battle",
+          "status": 2
         },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "begin_point"
-          }
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "begin_point"
         },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "allies_yak7",
-            "target": "germ_air_def_squad",
-            "fireRandom": true
-          }
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "allies_yak7",
+          "target": "germ_air_def_squad",
+          "fireRandom": true
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 7.0
           }
-        },
-        {
-          "moAddMissionObjective": {
+        ],
+        "moAddMissionObjective": [
+          {
             "target": "dlc_paulus_last_tanks_hold_enemy"
-          }
-        },
-        {
-          "moAddMissionObjective": {
+          },
+          {
             "target": "dlc_paulus_last_tanks_destroy_tanks"
           }
+        ],
+        "unitSetIndication": {
+          "set": true,
+          "target": "germ_squad_01"
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "germ_squad_01"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "update_indication"
-            },
-            {
-              "target": "death_timer_increaser"
-            },
-            {
-              "target": "update_death_timer"
-            }
+        "triggerEnable": {
+          "target": [
+            "update_indication",
+            "death_timer_increaser",
+            "update_death_timer"
           ]
         }
-      ]
+      }
     },
     "update_indication": {
       "is_enabled": false,
@@ -368,10 +303,10 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetTargetsIndicator": {
+      "conditions": {},
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -379,10 +314,8 @@
             "icon army": 2,
             "set": true,
             "target": "germ_tanks_01"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
+          },
+          {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -391,8 +324,8 @@
             "set": true,
             "target": "germ_trucks_01"
           }
-        }
-      ]
+        ]
+      }
     },
     "update_timer": {
       "is_enabled": false,
@@ -448,38 +381,28 @@
           "var": "squad_count"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "var": "squad_count",
             "operator": "add",
             "value": -1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "death_timer",
             "operator": "add",
             "value": 10.0
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "start_germ_squad"
-            },
-            {
-              "target": "start_germ_squad_coop2"
-            },
-            {
-              "target": "start_germ_squad_coop3"
-            },
-            {
-              "target": "start_germ_squad_coop4"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "start_germ_squad",
+            "start_germ_squad_coop2",
+            "start_germ_squad_coop3",
+            "start_germ_squad_coop4"
           ]
         }
-      ]
+      }
     },
     "death_timer_increaser_all": {
       "is_enabled": false,
@@ -504,38 +427,28 @@
           "var": "squad_count"
         }
       },
-      "actions": [
-        {
-          "varModify": {
+      "actions": {
+        "varModify": [
+          {
             "var": "squad_count",
             "operator": "add",
             "value": -1.0
-          }
-        },
-        {
-          "varModify": {
+          },
+          {
             "var": "death_timer",
             "operator": "add",
             "value": 10.0
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "start_germ_squad_all"
-            },
-            {
-              "target": "start_germ_squad_all_coop2"
-            },
-            {
-              "target": "start_germ_squad_all_coop3"
-            },
-            {
-              "target": "start_germ_squad_all_coop4"
-            }
+        ],
+        "triggerEnable": {
+          "target": [
+            "start_germ_squad_all",
+            "start_germ_squad_all_coop2",
+            "start_germ_squad_all_coop3",
+            "start_germ_squad_all_coop4"
           ]
         }
-      ]
+      }
     },
     "update_death_timer": {
       "is_enabled": false,
@@ -624,17 +537,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad_coop2"
-          },
-          {
-            "target": "start_germ_squad_coop3"
-          },
-          {
-            "target": "start_germ_squad_coop4"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad_coop2",
+            "start_germ_squad_coop3",
+            "start_germ_squad_coop4"
+          ]
+        },
         "unitSetProperties": {
           "object": "germ_squad_01",
           "speed": 50.0,
@@ -670,17 +579,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad"
-          },
-          {
-            "target": "start_germ_squad_coop3"
-          },
-          {
-            "target": "start_germ_squad_coop4"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad",
+            "start_germ_squad_coop3",
+            "start_germ_squad_coop4"
+          ]
+        },
         "unitSetProperties": {
           "object": "germ_squad_01",
           "speed": 60.0,
@@ -721,17 +626,13 @@
           "speed": 70.0,
           "lockSpeed": true
         },
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad"
-          },
-          {
-            "target": "start_germ_squad_coop2"
-          },
-          {
-            "target": "start_germ_squad_coop4"
-          }
-        ]
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad",
+            "start_germ_squad_coop2",
+            "start_germ_squad_coop4"
+          ]
+        }
       }
     },
     "start_germ_squad_coop4": {
@@ -767,17 +668,13 @@
           "speed": 80.0,
           "lockSpeed": true
         },
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad"
-          },
-          {
-            "target": "start_germ_squad_coop2"
-          },
-          {
-            "target": "start_germ_squad_coop3"
-          }
-        ]
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad",
+            "start_germ_squad_coop2",
+            "start_germ_squad_coop3"
+          ]
+        }
       }
     },
     "mission_failed": {
@@ -805,79 +702,63 @@
           "target": "final_point"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "mission_completed"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "mission_completed"
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_paulus_last_tanks_hold_enemy",
-            "status": 3
-          }
+        "moSetObjectiveStatus": {
+          "target": "dlc_paulus_last_tanks_hold_enemy",
+          "status": 3
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 4.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "missionSetFade": {
+          "mode": "fadeOut",
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time": 1.0
         },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
+        "unitPutToSleep": {
+          "target": "all_german_squad"
         },
-        {
-          "unitPutToSleep": {
-            "target": "all_german_squad"
-          }
+        "unitWakeUp": {
+          "target": "cutscene_tanks"
         },
-        {
-          "unitWakeUp": {
-            "target": "cutscene_tanks"
-          }
-        },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
             "object": "cutscene_tanks",
             "speed": 300.0,
             "lockSpeed": true,
             "isImmortal": true,
             "effShootingRate": 0.6
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "ussr_artillery",
             "targetableByAi": true,
             "isImmortal": false,
             "effShootingRate": 0.2
           }
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "far",
@@ -899,10 +780,8 @@
             "allowDeadUnits": false,
             "object": "cutscene_tanks",
             "zoom": 0.5
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "far",
@@ -925,14 +804,10 @@
             "object": "ussr_artillery",
             "zoom": 0.5
           }
-        },
-        {
-          "missionFailed": []
-        },
-        {
-          "missionDebriefing": []
-        }
-      ]
+        ],
+        "missionFailed": {},
+        "missionDebriefing": {}
+      }
     },
     "mission_completed": {
       "is_enabled": true,
@@ -961,97 +836,77 @@
           "object": "all_german_squad"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "mission_failed"
-          }
+      "actions": {
+        "triggerDisable": {
+          "target": "mission_failed"
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 7.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "moSetObjectiveStatus": {
+          "target": "dlc_paulus_last_tanks_hold_enemy",
+          "status": 2
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "dlc_paulus_last_tanks_hold_enemy",
-            "status": 2
-          }
+        "missionSetFade": {
+          "mode": "fadeOut",
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time": 1.0
         },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
+        "unitPutToSleep": {
+          "target": "all_german_squad"
         },
-        {
-          "unitPutToSleep": {
-            "target": "all_german_squad"
-          }
+        "unitWakeUp": {
+          "target": "cutscene_tanks"
         },
-        {
-          "unitWakeUp": {
-            "target": "cutscene_tanks"
-          }
-        },
-        {
-          "unitSetProperties": {
+        "unitSetProperties": [
+          {
             "object": "ussr_artillery",
             "isImmortal": true,
             "effShootingRate": 1.0
-          }
-        },
-        {
-          "unitSetProperties": {
+          },
+          {
             "object": "cutscene_tanks",
             "isImmortal": false,
             "effShootingRate": 0.0
           }
-        },
-        {
-          "unitAttackTarget": {
+        ],
+        "unitAttackTarget": [
+          {
             "playerAttracted": false,
             "object": "ussr_artillery",
             "target": "cutscene_tanks",
             "fireRandom": true
-          }
-        },
-        {
-          "unitAttackTarget": {
+          },
+          {
             "playerAttracted": false,
             "object": "cutscene_tanks",
             "target": "ussr_artillery",
             "fireRandom": true
           }
-        },
-        {
-          "showSmartCutscene": {
+        ],
+        "showSmartCutscene": [
+          {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "far",
@@ -1073,10 +928,8 @@
             "allowDeadUnits": false,
             "object": "ussr_artillery",
             "zoom": 0.5
-          }
-        },
-        {
-          "showSmartCutscene": {
+          },
+          {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
             "startSubTypeGroundUnits": "far",
@@ -1099,16 +952,12 @@
             "object": "cutscene_tanks",
             "zoom": 0.5
           }
+        ],
+        "missionCompleted": {
+          "timer": false
         },
-        {
-          "missionCompleted": {
-            "timer": false
-          }
-        },
-        {
-          "missionDebriefing": []
-        }
-      ]
+        "missionDebriefing": {}
+      }
     },
     "check_for_tanks_destroyed": {
       "is_enabled": true,
@@ -1124,26 +973,16 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": [
-          {
-            "object_type": "isAlive"
-          },
-          {
-            "object_marking": 0
-          },
-          {
-            "func": "less"
-          },
-          {
-            "value": 1
-          },
-          {
-            "object": "germ_tanks_01"
-          },
-          {
-            "object": "germ_tanks_02"
-          }
-        ]
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": [
+            "germ_tanks_01",
+            "germ_tanks_02"
+          ]
+        }
       },
       "actions": {
         "moSetObjectiveStatus": {
@@ -1196,68 +1035,36 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetTargetsIndicator": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "delta": 0
-            },
-            {
-              "icon": "tank"
-            },
-            {
-              "icon army": 2
-            },
-            {
-              "set": true
-            },
-            {
-              "target": "germ_tanks_02"
-            },
-            {
-              "target": "germ_tanks_01"
-            }
-          ]
-        },
-        {
-          "missionSetTargetsIndicator": [
-            {
-              "target_type": "isAlive"
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "delta": 0
-            },
-            {
-              "icon": "truck"
-            },
-            {
-              "icon army": 2
-            },
-            {
-              "set": true
-            },
-            {
-              "target": "germ_trucks_02"
-            },
-            {
-              "target": "germ_air_def_trucks_02"
-            },
-            {
-              "target": "germ_trucks_01"
-            }
-          ]
-        }
-      ]
+      "conditions": {},
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 2,
+            "set": true,
+            "target": [
+              "germ_tanks_02",
+              "germ_tanks_01"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "truck",
+            "icon army": 2,
+            "set": true,
+            "target": [
+              "germ_trucks_02",
+              "germ_air_def_trucks_02",
+              "germ_trucks_01"
+            ]
+          }
+        ]
+      }
     },
     "stop_germ_squad_all": {
       "is_enabled": false,
@@ -1315,17 +1122,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad_all_coop2"
-          },
-          {
-            "target": "start_germ_squad_all_coop3"
-          },
-          {
-            "target": "start_germ_squad_all_coop4"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad_all_coop2",
+            "start_germ_squad_all_coop3",
+            "start_germ_squad_all_coop4"
+          ]
+        },
         "unitSetProperties": {
           "object": "all_german_squad",
           "speed": 50.0,
@@ -1361,17 +1164,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad_all"
-          },
-          {
-            "target": "start_germ_squad_all_coop3"
-          },
-          {
-            "target": "start_germ_squad_all_coop4"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad_all",
+            "start_germ_squad_all_coop3",
+            "start_germ_squad_all_coop4"
+          ]
+        },
         "unitSetProperties": {
           "object": "all_german_squad",
           "speed": 60.0,
@@ -1407,17 +1206,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad_all"
-          },
-          {
-            "target": "start_germ_squad_all_coop2"
-          },
-          {
-            "target": "start_germ_squad_all_coop4"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad_all",
+            "start_germ_squad_all_coop2",
+            "start_germ_squad_all_coop4"
+          ]
+        },
         "unitSetProperties": {
           "object": "all_german_squad",
           "speed": 70.0,
@@ -1453,17 +1248,13 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "start_germ_squad_all"
-          },
-          {
-            "target": "start_germ_squad_all_coop2"
-          },
-          {
-            "target": "start_germ_squad_all_coop3"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "start_germ_squad_all",
+            "start_germ_squad_all_coop2",
+            "start_germ_squad_all_coop3"
+          ]
+        },
         "unitSetProperties": {
           "object": "all_german_squad",
           "speed": 80.0,
@@ -1523,81 +1314,53 @@
           "target": "middle_point"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "update_indication"
-            },
-            {
-              "target": "stop_germ_squad"
-            },
-            {
-              "target": "start_germ_squad"
-            },
-            {
-              "target": "second_wave_attacked"
-            },
-            {
-              "target": "check_for_second_wave"
-            },
-            {
-              "target": "death_timer_increaser"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "update_indication",
+            "stop_germ_squad",
+            "start_germ_squad",
+            "second_wave_attacked",
+            "check_for_second_wave",
+            "death_timer_increaser"
           ]
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "update_indication_second_wave"
-            },
-            {
-              "target": "stop_germ_squad_all"
-            },
-            {
-              "target": "start_germ_squad_all"
-            },
-            {
-              "target": "death_timer_increaser_all"
-            }
+        "triggerEnable": {
+          "target": [
+            "update_indication_second_wave",
+            "stop_germ_squad_all",
+            "start_germ_squad_all",
+            "death_timer_increaser_all"
           ]
         },
-        {
-          "unitSetProperties": {
-            "object": "germ_squad_02",
-            "attack_type": "fire_at_will",
-            "stealthRadius": 3500.0,
-            "speed": 70.0
-          }
+        "unitSetProperties": {
+          "object": "germ_squad_02",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 3500.0,
+          "speed": 70.0
         },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "germ_squad_02"
-          }
+        "unitSetIndication": {
+          "set": true,
+          "target": "germ_squad_02"
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "custom",
             "name": "hints/dlc_paulus_last_tanks_second_wave",
             "action": "show",
             "shouldFadeOut": true
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "custom",
             "name": "hints/dlc_paulus_last_tanks_second_wave",
             "action": "hide",
             "shouldFadeOut": true
           }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
+        ],
+        "wait": {
+          "time": 5.0
         }
-      ]
+      }
     }
   },
   "mission_objectives": {
@@ -1613,8 +1376,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_paulus_last_tanks_hold_enemy": {
       "is_enabled": false,
@@ -1626,8 +1389,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "dlc_paulus_last_tanks_destroy_tanks": {
       "is_enabled": false,
@@ -1639,8 +1402,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -1648,18 +1411,34 @@
     "death_timer": 0,
     "squad_count": 54
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [
-    {
-      "armada": {
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
         "name": "player_wing",
         "tm": [
-          [-0.939693,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,-0.939693],
-          [6117.01,1200.0,-3307.76]
+          [
+            -0.939693,
+            0.0,
+            0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.34202,
+            0.0,
+            -0.939693
+          ],
+          [
+            6117.01,
+            1200.0,
+            -3307.76
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "il-2i",
@@ -1685,17 +1464,31 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
+        "way": {}
+      },
+      {
         "name": "allies_yak7",
         "tm": [
-          [-0.939693,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,-0.939693],
-          [6335.46,1700.0,-3422.85]
+          [
+            -0.939693,
+            0.0,
+            0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.34202,
+            0.0,
+            -0.939693
+          ],
+          [
+            6335.46,
+            1700.0,
+            -3422.85
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "yak-7b",
@@ -1721,17 +1514,33 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": []
+        "way": {}
       }
-    },
-    {
-      "tracked_vehicles": {
+    ],
+    "tracked_vehicles": [
+      {
         "name": "germ_tanks_01",
         "tm": [
-          [-0.819151,0.0,-0.573576],
-          [0.0,1.0,0.0],
-          [0.573576,0.0,-0.819151],
-          [-913.331,84.95,-332.229]
+          [
+            -0.819151,
+            0.0,
+            -0.573576
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573576,
+            0.0,
+            -0.819151
+          ],
+          [
+            -913.331,
+            84.95,
+            -332.229
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -1741,8 +1550,14 @@
           "count": 14,
           "formation_type": "rows",
           "formation_div": 7,
-          "formation_step": [3.0,1.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            1.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1750,10 +1565,26 @@
           "germ_tanks_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1042.45,89.0,-387.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1042.45,
+                89.0,
+                -387.45
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1763,10 +1594,26 @@
           "germ_tanks_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1371.6,137.6,-692.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1371.6,
+                137.6,
+                -692.9
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1776,10 +1623,26 @@
           "germ_tanks_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1440.05,141.5,-722.15]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1440.05,
+                141.5,
+                -722.15
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1789,10 +1652,26 @@
           "germ_tanks_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1824.4,124.85,-566.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1824.4,
+                124.85,
+                -566.05
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1802,10 +1681,26 @@
           "germ_tanks_wp_11": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2057.8,132.45,-717.55]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2057.8,
+                132.45,
+                -717.55
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1815,10 +1710,26 @@
           "germ_tanks_wp_12": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2501.35,121.9,-561.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2501.35,
+                121.9,
+                -561.75
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1828,10 +1739,26 @@
           "germ_tanks_wp_13": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2852.6,132.6,-628.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2852.6,
+                132.6,
+                -628.45
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1841,10 +1768,26 @@
           "germ_tanks_wp_14": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3201.6,130.75,-712.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3201.6,
+                130.75,
+                -712.9
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1854,10 +1797,26 @@
           "germ_tanks_wp_15": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3580.75,163.35,-444.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3580.75,
+                163.35,
+                -444.9
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1867,10 +1826,26 @@
           "germ_tanks_wp_16": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4135.85,184.35,-631.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4135.85,
+                184.35,
+                -631.05
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1880,10 +1855,26 @@
           "germ_tanks_wp_17": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4695.55,187.8,-1095.3]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4695.55,
+                187.8,
+                -1095.3
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -1891,16 +1882,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "cutscene_tanks_01",
         "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-4942.32,182.136,-1205.79]
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            -4942.32,
+            182.136,
+            -1205.79
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -1910,8 +1915,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.0
@@ -1920,10 +1931,26 @@
           "cutscene_tanks_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4858.6,184.1,-1312.2]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4858.6,
+                184.1,
+                -1312.2
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -1933,10 +1960,26 @@
           "cutscene_tanks_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4684.8,188.25,-1476.9]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4684.8,
+                188.25,
+                -1476.9
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1946,10 +1989,26 @@
           "cutscene_tanks_01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4599.15,176.9,-1697.85]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4599.15,
+                176.9,
+                -1697.85
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1959,10 +2018,26 @@
           "cutscene_tanks_01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4647.25,164.4,-2169.05]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4647.25,
+                164.4,
+                -2169.05
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -1970,16 +2045,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "germ_tanks_02",
         "tm": [
-          [-0.923879,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,-0.923879],
-          [-1252.7,139.129,-995.332]
+          [
+            -0.923879,
+            0.0,
+            -0.382683
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.382683,
+            0.0,
+            -0.923879
+          ],
+          [
+            -1252.7,
+            139.129,
+            -995.332
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -1989,8 +2078,14 @@
           "count": 6,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [5.0,5.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            5.0,
+            5.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -1998,10 +2093,26 @@
           "germ_tanks_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1506.5,136.733,-1057.92]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1506.5,
+                136.733,
+                -1057.92
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2011,10 +2122,26 @@
           "germ_tanks_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1680.32,137.311,-1095.32]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1680.32,
+                137.311,
+                -1095.32
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2024,10 +2151,26 @@
           "germ_tanks_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2140.0,128.387,-984.945]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2140.0,
+                128.387,
+                -984.945
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2037,10 +2180,26 @@
           "germ_tanks_02_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2823.58,123.589,-708.293]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2823.58,
+                123.589,
+                -708.293
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2050,10 +2209,26 @@
           "germ_tanks_02_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3158.87,118.788,-794.955]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3158.87,
+                118.788,
+                -794.955
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2063,10 +2238,26 @@
           "germ_tanks_02_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3610.85,154.767,-527.099]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3610.85,
+                154.767,
+                -527.099
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2076,10 +2267,26 @@
           "germ_tanks_02_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4042.31,188.31,-703.549]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4042.31,
+                188.31,
+                -703.549
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2089,10 +2296,26 @@
           "germ_tanks_02_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4579.56,190.184,-1148.67]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4579.56,
+                190.184,
+                -1148.67
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2100,16 +2323,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "cutscene_tanks_02",
         "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-4931.93,181.775,-1179.59]
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            -4931.93,
+            181.775,
+            -1179.59
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -2119,8 +2356,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.0
@@ -2129,10 +2372,26 @@
           "cutscene_tanks_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4791.8,187.5,-1300.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4791.8,
+                187.5,
+                -1300.4
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2142,10 +2401,26 @@
           "cutscene_tanks_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4588.25,186.4,-1466.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4588.25,
+                186.4,
+                -1466.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2155,10 +2430,26 @@
           "cutscene_tanks_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4554.7,174.7,-1900.7]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4554.7,
+                174.7,
+                -1900.7
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2166,16 +2457,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "cutscene_tanks_03",
         "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-4946.4,182.232,-1235.07]
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            -4946.4,
+            182.232,
+            -1235.07
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -2185,8 +2490,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.0
@@ -2195,10 +2506,26 @@
           "cutscene_tanks_03_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4798.0,184.9,-1384.4]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4798.0,
+                184.9,
+                -1384.4
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2208,10 +2535,26 @@
           "cutscene_tanks_03_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4641.85,182.45,-1589.6]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4641.85,
+                182.45,
+                -1589.6
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2221,10 +2564,26 @@
           "cutscene_tanks_03_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4597.65,176.95,-1834.55]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4597.65,
+                176.95,
+                -1834.55
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2232,16 +2591,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "cutscene_tanks_04",
         "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-4971.68,181.172,-1231.67]
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            -4971.68,
+            181.172,
+            -1231.67
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -2251,8 +2624,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.0
@@ -2261,10 +2640,26 @@
           "cutscene_tanks_04_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4873.95,183.65,-1307.55]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4873.95,
+                183.65,
+                -1307.55
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2274,10 +2669,26 @@
           "cutscene_tanks_04_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4641.4,184.75,-1546.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4641.4,
+                184.75,
+                -1546.5
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2287,10 +2698,26 @@
           "cutscene_tanks_04_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4588.1,176.65,-1828.25]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4588.1,
+                176.65,
+                -1828.25
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2298,16 +2725,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "cutscene_tanks_05",
         "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-4968.03,180.865,-1194.0]
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            -4968.03,
+            180.865,
+            -1194.0
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -2317,8 +2758,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.0
@@ -2327,10 +2774,26 @@
           "cutscene_tanks_05_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4769.9,187.15,-1353.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4769.9,
+                187.15,
+                -1353.5
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2340,10 +2803,26 @@
           "cutscene_tanks_05_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4629.45,186.05,-1521.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4629.45,
+                186.05,
+                -1521.45
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2353,10 +2832,26 @@
           "cutscene_tanks_05_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4529.8,175.6,-1902.3]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4529.8,
+                175.6,
+                -1902.3
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2364,16 +2859,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "cutscene_tanks_06",
         "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-4955.52,180.98,-1162.51]
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            -4955.52,
+            180.98,
+            -1162.51
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -2383,8 +2892,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.0
@@ -2393,10 +2908,26 @@
           "cutscene_tanks_06_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4774.0,188.05,-1311.75]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4774.0,
+                188.05,
+                -1311.75
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2406,10 +2937,26 @@
           "cutscene_tanks_06_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4590.4,184.3,-1554.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4590.4,
+                184.3,
+                -1554.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2419,10 +2966,26 @@
           "cutscene_tanks_06_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4528.75,175.1,-1944.95]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4528.75,
+                175.1,
+                -1944.95
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2430,16 +2993,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "tracked_vehicles": {
+      },
+      {
         "name": "cutscene_tanks_07",
         "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-4988.58,180.673,-1204.14]
+          [
+            0.67559,
+            0.0,
+            -0.737277
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.737277,
+            0.0,
+            0.67559
+          ],
+          [
+            -4988.58,
+            180.673,
+            -1204.14
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_pzIVh",
@@ -2449,8 +3026,14 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 4,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            3.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.0
@@ -2459,10 +3042,26 @@
           "cutscene_tanks_07_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4817.65,185.2,-1338.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4817.65,
+                185.2,
+                -1338.45
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2472,10 +3071,26 @@
           "cutscene_tanks_07_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4621.2,184.1,-1558.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4621.2,
+                184.1,
+                -1558.45
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2485,10 +3100,26 @@
           "cutscene_tanks_07_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4572.05,174.75,-1914.1]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4572.05,
+                174.75,
+                -1914.1
+              ]
             ],
             "props": {
               "speed": 300.0,
@@ -2497,15 +3128,31 @@
           }
         }
       }
-    },
-    {
-      "wheeled_vehicles": {
+    ],
+    "wheeled_vehicles": [
+      {
         "name": "germ_trucks_01",
         "tm": [
-          [-0.737278,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,-0.737278],
-          [-349.45,76.95,467.15]
+          [
+            -0.737278,
+            0.0,
+            -0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.67559,
+            0.0,
+            -0.737278
+          ],
+          [
+            -349.45,
+            76.95,
+            467.15
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_opelBlitz_fuel",
@@ -2515,8 +3162,14 @@
           "count": 20,
           "formation_type": "rows",
           "formation_div": 10,
-          "formation_step": [3.0,5.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            5.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2524,10 +3177,26 @@
           "germ_trucks_01_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-599.8,57.6,240.5]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -599.8,
+                57.6,
+                240.5
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2537,10 +3206,26 @@
           "germ_trucks_01_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-644.25,58.5,201.65]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -644.25,
+                58.5,
+                201.65
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2550,10 +3235,26 @@
           "germ_trucks_01_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-766.658,66.2,255.086]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -766.658,
+                66.2,
+                255.086
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2563,10 +3264,26 @@
           "germ_trucks_01_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-784.298,73.9,223.023]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -784.298,
+                73.9,
+                223.023
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2576,10 +3293,26 @@
           "germ_trucks_01_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-839.684,77.55,228.285]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -839.684,
+                77.55,
+                228.285
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2589,10 +3322,26 @@
           "germ_trucks_01_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-915.163,70.1489,182.659]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -915.163,
+                70.1489,
+                182.659
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2602,10 +3351,26 @@
           "germ_trucks_01_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1026.52,76.3066,66.9184]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1026.52,
+                76.3066,
+                66.9184
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2615,10 +3380,26 @@
           "germ_trucks_01_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1014.18,75.7517,16.076]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1014.18,
+                75.7517,
+                16.076
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2628,10 +3409,26 @@
           "germ_trucks_01_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1036.99,76.6088,-17.8792]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1036.99,
+                76.6088,
+                -17.8792
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2641,10 +3438,26 @@
           "germ_trucks_01_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-989.921,73.9328,-94.1228]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -989.921,
+                73.9328,
+                -94.1228
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2654,10 +3467,26 @@
           "germ_trucks_01_wp_11": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1087.16,82.9899,-169.701]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1087.16,
+                82.9899,
+                -169.701
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2667,10 +3496,26 @@
           "germ_trucks_01_wp_12": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1188.37,89.2478,-177.949]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1188.37,
+                89.2478,
+                -177.949
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2680,10 +3525,26 @@
           "germ_trucks_01_wp_13": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1232.27,95.194,-280.739]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1232.27,
+                95.194,
+                -280.739
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2693,10 +3554,26 @@
           "germ_trucks_01_wp_14": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1358.1,100.561,-303.067]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1358.1,
+                100.561,
+                -303.067
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2706,10 +3583,26 @@
           "germ_trucks_01_wp_15": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1509.0,103.6,-264.605]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1509.0,
+                103.6,
+                -264.605
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2719,10 +3612,26 @@
           "germ_trucks_01_wp_16": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1818.21,124.513,-554.411]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1818.21,
+                124.513,
+                -554.411
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2732,10 +3641,26 @@
           "germ_trucks_01_wp_17": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2039.68,129.94,-668.972]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2039.68,
+                129.94,
+                -668.972
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2745,10 +3670,26 @@
           "germ_trucks_01_wp_18": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2471.76,122.839,-524.595]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2471.76,
+                122.839,
+                -524.595
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2758,10 +3699,26 @@
           "germ_trucks_01_wp_19": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2844.59,135.518,-582.779]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2844.59,
+                135.518,
+                -582.779
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2771,10 +3728,26 @@
           "germ_trucks_01_wp_20": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3131.7,143.095,-654.231]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3131.7,
+                143.095,
+                -654.231
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2784,10 +3757,26 @@
           "germ_trucks_01_wp_21": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3526.68,164.997,-391.654]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3526.68,
+                164.997,
+                -391.654
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2797,10 +3786,26 @@
           "germ_trucks_01_wp_22": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4161.48,188.837,-571.201]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4161.48,
+                188.837,
+                -571.201
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2810,10 +3815,26 @@
           "germ_trucks_01_wp_23": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4737.12,189.096,-1023.52]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4737.12,
+                189.096,
+                -1023.52
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2821,16 +3842,30 @@
             }
           }
         }
-      }
-    },
-    {
-      "wheeled_vehicles": {
+      },
+      {
         "name": "germ_trucks_02",
         "tm": [
-          [-0.843392,0.0,-0.537299],
-          [0.0,1.0,0.0],
-          [0.537299,0.0,-0.843392],
-          [-1033.37,142.972,-864.891]
+          [
+            -0.843392,
+            0.0,
+            -0.537299
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.537299,
+            0.0,
+            -0.843392
+          ],
+          [
+            -1033.37,
+            142.972,
+            -864.891
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_opelBlitz_fuel",
@@ -2840,8 +3875,14 @@
           "count": 10,
           "formation_type": "rows",
           "formation_div": 10,
-          "formation_step": [5.0,5.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            5.0,
+            5.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
@@ -2849,10 +3890,26 @@
           "germ_trucks_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1223.03,125.8,-978.112]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1223.03,
+                125.8,
+                -978.112
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -2862,10 +3919,26 @@
           "germ_trucks_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1502.95,137.003,-1052.29]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1502.95,
+                137.003,
+                -1052.29
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2875,10 +3948,26 @@
           "germ_trucks_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1696.02,141.14,-1085.45]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1696.02,
+                141.14,
+                -1085.45
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2888,10 +3977,26 @@
           "germ_trucks_02_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2136.43,128.85,-974.892]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2136.43,
+                128.85,
+                -974.892
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2901,10 +4006,26 @@
           "germ_trucks_02_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2457.8,111.33,-726.84]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2457.8,
+                111.33,
+                -726.84
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2914,10 +4035,26 @@
           "germ_trucks_02_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2819.93,125.113,-690.146]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2819.93,
+                125.113,
+                -690.146
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2927,10 +4064,26 @@
           "germ_trucks_02_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3168.65,130.313,-722.852]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3168.65,
+                130.313,
+                -722.852
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2940,10 +4093,26 @@
           "germ_trucks_02_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3543.11,163.73,-425.208]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3543.11,
+                163.73,
+                -425.208
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2953,10 +4122,26 @@
           "germ_trucks_02_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4114.1,185.485,-611.38]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4114.1,
+                185.485,
+                -611.38
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2966,10 +4151,26 @@
           "germ_trucks_02_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4666.3,188.548,-1050.32]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4666.3,
+                188.548,
+                -1050.32
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -2978,201 +4179,259 @@
           }
         }
       }
-    },
-    {
-      "squad": {
+    ],
+    "squad": [
+      {
         "name": "germ_squad_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1531.05,288.8,-474.25]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1531.05,
+            288.8,
+            -474.25
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "germ_tanks_01"
-          },
-          {
-            "squad_members": "germ_trucks_01"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "germ_tanks_01",
+            "germ_trucks_01"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "germ_air_def_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-181.331,59.7087,799.386]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -181.331,
+            59.7087,
+            799.386
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "germ_air_def_01"
-          },
-          {
-            "squad_members": "germ_air_def_02"
-          },
-          {
-            "squad_members": "germ_air_def_03"
-          },
-          {
-            "squad_members": "germ_air_def_04"
-          },
-          {
-            "squad_members": "germ_air_def_05"
-          },
-          {
-            "squad_members": "germ_air_def_06"
-          },
-          {
-            "squad_members": "germ_air_def_07"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "germ_air_def_01",
+            "germ_air_def_02",
+            "germ_air_def_03",
+            "germ_air_def_04",
+            "germ_air_def_05",
+            "germ_air_def_06",
+            "germ_air_def_07"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "germ_squad_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-759.923,45.2336,-1107.48]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -759.923,
+            45.2336,
+            -1107.48
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "germ_trucks_02"
-          },
-          {
-            "squad_members": "germ_tanks_02"
-          },
-          {
-            "squad_members": "germ_air_def_trucks_02"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "germ_trucks_02",
+            "germ_tanks_02",
+            "germ_air_def_trucks_02"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "all_german_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1702.44,131.492,-570.01]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1702.44,
+            131.492,
+            -570.01
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "germ_squad_01"
-          },
-          {
-            "squad_members": "germ_squad_02"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "germ_squad_01",
+            "germ_squad_02"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "ussr_artillery",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4680.88,187.297,-1352.02]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -4680.88,
+            187.297,
+            -1352.02
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "ussr_artillery_01"
-          },
-          {
-            "squad_members": "ussr_artillery_02"
-          },
-          {
-            "squad_members": "ussr_artillery_03"
-          },
-          {
-            "squad_members": "ussr_artillery_04"
-          },
-          {
-            "squad_members": "ussr_artillery_05"
-          },
-          {
-            "squad_members": "ussr_artillery_06"
-          },
-          {
-            "squad_members": "ussr_artillery_07"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
+        "props": {
+          "squad_members": [
+            "ussr_artillery_01",
+            "ussr_artillery_02",
+            "ussr_artillery_03",
+            "ussr_artillery_04",
+            "ussr_artillery_05",
+            "ussr_artillery_06",
+            "ussr_artillery_07"
+          ]
+        },
+        "way": {}
+      },
+      {
         "name": "cutscene_tanks",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4889.41,183.13,-1172.66]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -4889.41,
+            183.13,
+            -1172.66
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "",
         "weapons": "",
-        "props": [
-          {
-            "squad_members": "cutscene_tanks_01"
-          },
-          {
-            "squad_members": "cutscene_tanks_02"
-          },
-          {
-            "squad_members": "cutscene_tanks_03"
-          },
-          {
-            "squad_members": "cutscene_tanks_04"
-          },
-          {
-            "squad_members": "cutscene_tanks_05"
-          },
-          {
-            "squad_members": "cutscene_tanks_06"
-          },
-          {
-            "squad_members": "cutscene_tanks_07"
-          }
-        ],
-        "way": []
+        "props": {
+          "squad_members": [
+            "cutscene_tanks_01",
+            "cutscene_tanks_02",
+            "cutscene_tanks_03",
+            "cutscene_tanks_04",
+            "cutscene_tanks_05",
+            "cutscene_tanks_06",
+            "cutscene_tanks_07"
+          ]
+        },
+        "way": {}
       }
-    },
-    {
-      "air_defence": {
+    ],
+    "air_defence": [
+      {
         "name": "germ_air_def_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-656.263,71.3363,883.743]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -656.263,
+            71.3363,
+            883.743
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -3182,23 +4441,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.4
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "germ_air_def_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-976.742,71.3363,147.086]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -976.742,
+            71.3363,
+            147.086
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -3208,23 +4487,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.4
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "germ_air_def_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-421.083,71.3363,463.998]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -421.083,
+            71.3363,
+            463.998
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -3234,23 +4533,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.4
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "germ_air_def_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-115.144,71.3363,1224.74]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -115.144,
+            71.3363,
+            1224.74
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -3260,23 +4579,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.4
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "germ_air_def_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-937.484,71.3363,-369.657]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -937.484,
+            71.3363,
+            -369.657
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -3286,23 +4625,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.4
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "germ_air_def_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-197.645,71.3363,96.8363]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -197.645,
+            71.3363,
+            96.8363
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -3312,23 +4671,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.4
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "germ_air_def_07",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1445.07,97.5707,-91.1687]
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1445.07,
+            97.5707,
+            -91.1687
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43_noground",
@@ -3338,23 +4717,43 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.4
         },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
+        "way": {}
+      },
+      {
         "name": "germ_air_def_trucks_02",
         "tm": [
-          [-0.819152,0.0,-0.573576],
-          [0.0,1.0,0.0],
-          [0.573576,0.0,-0.819152],
-          [-1126.33,118.055,-784.873]
+          [
+            -0.819152,
+            0.0,
+            -0.573576
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573576,
+            0.0,
+            -0.819152
+          ],
+          [
+            -1126.33,
+            118.055,
+            -784.873
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "germ_sdkfz62_37mm",
@@ -3364,8 +4763,14 @@
           "count": 4,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [5.0,5.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            5.0,
+            5.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.6
@@ -3374,10 +4779,26 @@
           "germ_air_def_trucks_02_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1259.47,134.905,-889.307]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1259.47,
+                134.905,
+                -889.307
+              ]
             ],
             "props": {
               "speed": 0.0,
@@ -3387,10 +4808,26 @@
           "germ_air_def_trucks_02_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1419.36,144.433,-843.726]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1419.36,
+                144.433,
+                -843.726
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3400,10 +4837,26 @@
           "germ_air_def_trucks_02_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1566.78,142.448,-841.559]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -1566.78,
+                142.448,
+                -841.559
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3413,10 +4866,26 @@
           "germ_air_def_trucks_02_wp_04": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2014.39,134.686,-781.954]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2014.39,
+                134.686,
+                -781.954
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3426,10 +4895,26 @@
           "germ_air_def_trucks_02_wp_05": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2441.87,115.9,-637.66]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2441.87,
+                115.9,
+                -637.66
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3439,10 +4924,26 @@
           "germ_air_def_trucks_02_wp_06": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2826.04,127.338,-669.694]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2826.04,
+                127.338,
+                -669.694
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3452,10 +4953,26 @@
           "germ_air_def_trucks_02_wp_07": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3164.79,125.045,-755.633]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3164.79,
+                125.045,
+                -755.633
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3465,10 +4982,26 @@
           "germ_air_def_trucks_02_wp_08": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3585.19,157.957,-499.797]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3585.19,
+                157.957,
+                -499.797
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3478,10 +5011,26 @@
           "germ_air_def_trucks_02_wp_09": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4046.12,187.962,-689.567]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4046.12,
+                187.962,
+                -689.567
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3491,10 +5040,26 @@
           "germ_air_def_trucks_02_wp_10": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4612.87,189.273,-1110.16]
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -4612.87,
+                189.273,
+                -1110.16
+              ]
             ],
             "props": {
               "speed": 70.0,
@@ -3503,15 +5068,31 @@
           }
         }
       }
-    },
-    {
-      "structures": {
+    ],
+    "structures": [
+      {
         "name": "ussr_artillery_01",
         "tm": [
-          [-0.707106,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707106],
-          [-4726.2,187.43,-1421.51]
+          [
+            -0.707106,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707106
+          ],
+          [
+            -4726.2,
+            187.43,
+            -1421.51
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_76mm_zis3_noground",
@@ -3521,22 +5102,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "ussr_artillery_02",
         "tm": [
-          [-0.707106,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707106],
-          [-4713.88,188.636,-1397.42]
+          [
+            -0.707106,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707106
+          ],
+          [
+            -4713.88,
+            188.636,
+            -1397.42
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_76mm_zis3_noground",
@@ -3546,22 +5147,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "ussr_artillery_03",
         "tm": [
-          [-0.707106,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707106],
-          [-4703.63,188.092,-1373.84]
+          [
+            -0.707106,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707106
+          ],
+          [
+            -4703.63,
+            188.092,
+            -1373.84
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_76mm_zis3_noground",
@@ -3571,22 +5192,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "ussr_artillery_04",
         "tm": [
-          [-0.707106,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707106],
-          [-4740.46,186.069,-1445.87]
+          [
+            -0.707106,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707106
+          ],
+          [
+            -4740.46,
+            186.069,
+            -1445.87
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_76mm_zis3_noground",
@@ -3596,22 +5237,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "ussr_artillery_05",
         "tm": [
-          [-0.707106,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707106],
-          [-4755.75,185.494,-1474.92]
+          [
+            -0.707106,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707106
+          ],
+          [
+            -4755.75,
+            185.494,
+            -1474.92
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_76mm_zis3_noground",
@@ -3621,22 +5282,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "soviet_artillery_for_emotions",
         "tm": [
-          [0.793353,0.0,0.608762],
-          [0.0,1.0,0.0],
-          [-0.608762,0.0,0.793353],
-          [-3174.55,149.35,-1174.8]
+          [
+            0.793353,
+            0.0,
+            0.608762
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608762,
+            0.0,
+            0.793353
+          ],
+          [
+            -3174.55,
+            149.35,
+            -1174.8
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_57mm_zis2_noground",
@@ -3646,23 +5327,43 @@
           "count": 10,
           "formation_type": "rows",
           "formation_div": 2,
-          "formation_step": [3.0,2.0],
-          "formation_noise": [1.0,1.0],
+          "formation_step": [
+            3.0,
+            2.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.1
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "ussr_artillery_06",
         "tm": [
-          [-0.707106,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707106],
-          [-4784.05,185.5,-1518.25]
+          [
+            -0.707106,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707106
+          ],
+          [
+            -4784.05,
+            185.5,
+            -1518.25
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_76mm_zis3_noground",
@@ -3672,22 +5373,42 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "structures": {
+        "way": {}
+      },
+      {
         "name": "ussr_artillery_07",
         "tm": [
-          [-0.707106,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707106],
-          [-4808.05,185.5,-1558.45]
+          [
+            -0.707106,
+            0.0,
+            0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707107,
+            0.0,
+            -0.707106
+          ],
+          [
+            -4808.05,
+            185.5,
+            -1558.45
+          ]
         ],
         "closed_waypoints": false,
         "unit_class": "ussr_76mm_zis3_noground",
@@ -3697,45 +5418,99 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 1,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
+        "way": {}
       }
-    }
-  ],
+    ]
+  },
   "areas": {
     "begin_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-1116.78,1200.0,464.593]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1116.78,
+          1200.0,
+          464.593
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "final_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-4818.82,159.409,-1112.89]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -4818.82,
+          159.409,
+          -1112.89
+        ]
       ],
-      "props": []
+      "props": {}
     },
     "middle_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-2185.79,130.573,-678.433]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -2185.79,
+          130.573,
+          -678.433
+        ]
       ],
-      "props": []
+      "props": {}
     }
   }
 }

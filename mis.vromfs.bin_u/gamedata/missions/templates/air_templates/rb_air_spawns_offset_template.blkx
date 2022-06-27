@@ -2,100 +2,44 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": ""
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1,
+      "wing": [
+        "",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
     "mission": {
       "level": "levels/berlin.bin",
       "type": "domination",
@@ -117,9 +61,9 @@
         "day": 2
       }
     },
-    "spectator_points": []
+    "spectator_points": {}
   },
-  "imports": [],
+  "imports": {},
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -132,33 +76,29 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t1_base_spawn_point",
             "type": "area"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t2_base_spawn_point",
             "type": "area"
           }
-        }
-      ],
-      "actions": {
-        "triggerEnable": [
-          {
-            "target": "t1_spawns_start"
-          },
-          {
-            "target": "t2_spawns_start"
-          }
         ]
       },
-      "else_actions": []
+      "actions": {
+        "triggerEnable": {
+          "target": [
+            "t1_spawns_start",
+            "t2_spawns_start"
+          ]
+        }
+      },
+      "else_actions": {}
     },
     "t1_spawns_start": {
       "is_enabled": false,
@@ -169,42 +109,32 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "shturmoviki: 1000m vysoty +5000 blizhe k centru"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "perehvatchiki: 1000m vysoty -5000 blizhe k centru"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+        ],
+        "missionMarkAsRespawnPoint": [
+          {
             "loc_name": "missions/assault_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -221,15 +151,17 @@
             "replaceAreas": false,
             "target": "t1_base_spawn_point",
             "team": "A",
-            "spawnOffset": [3000.0,1000.0,0.0],
+            "spawnOffset": [
+              3000.0,
+              1000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_assault": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/interceptor_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -248,15 +180,17 @@
             "team": "A",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-5000.0,1000.0,0.0],
+            "spawnOffset": [
+              -5000.0,
+              1000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_interceptor": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/aaa_fighter_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -275,15 +209,17 @@
             "team": "A",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-3000.0,1000.0,0.0],
+            "spawnOffset": [
+              -3000.0,
+              1000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_aa_fighter": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/main_bomber_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -302,16 +238,18 @@
             "team": "A",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-5000.0,2000.0,0.0],
+            "spawnOffset": [
+              -5000.0,
+              2000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_bomber": true,
               "type_longrange_bomber": false
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/far_bomber_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -330,20 +268,22 @@
             "team": "A",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-5000.0,3000.0,0.0],
+            "spawnOffset": [
+              -5000.0,
+              3000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_longrange_bomber": true
             }
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "t1_common_fighter_in_air"
-          }
+        ],
+        "triggerEnable": {
+          "target": "t1_common_fighter_in_air"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t1_common_fighter_in_air": {
       "is_enabled": false,
@@ -354,7 +294,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -381,14 +321,18 @@
           "replaceAreas": false,
           "target": "t1_base_spawn_point",
           "team": "A",
-          "spawnOffset": [-3000.0,500.0,0.0],
+          "spawnOffset": [
+            -3000.0,
+            500.0,
+            0.0
+          ],
           "spawnOffsetSpace": "object",
           "tags": {
             "tank": false
           }
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_spawns_start": {
       "is_enabled": false,
@@ -399,42 +343,32 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
             "value": "shturmoviki: 1000m vysoty +5000 blizhe k centru"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
             "value": "perehvatchiki: 1000m vysoty -5000 blizhe k centru"
-          }
-        },
-        {
-          "comment": {
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": ""
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+        ],
+        "missionMarkAsRespawnPoint": [
+          {
             "loc_name": "missions/assault_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -453,15 +387,17 @@
             "team": "B",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [3000.0,1000.0,0.0],
+            "spawnOffset": [
+              3000.0,
+              1000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_assault": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/interceptor_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -480,15 +416,17 @@
             "team": "B",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-5000.0,1000.0,0.0],
+            "spawnOffset": [
+              -5000.0,
+              1000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_interceptor": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/aaa_fighter_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -507,15 +445,17 @@
             "team": "B",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-3000.0,1000.0,0.0],
+            "spawnOffset": [
+              -3000.0,
+              1000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_aa_fighter": true
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/main_bomber_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -534,16 +474,18 @@
             "team": "B",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-5000.0,2000.0,0.0],
+            "spawnOffset": [
+              -5000.0,
+              2000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_bomber": true,
               "type_longrange_bomber": false
             }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
+          },
+          {
             "loc_name": "missions/far_bomber_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -562,20 +504,22 @@
             "team": "B",
             "separate_fuel_time": false,
             "modular_airfield": false,
-            "spawnOffset": [-5000.0,3000.0,0.0],
+            "spawnOffset": [
+              -5000.0,
+              3000.0,
+              0.0
+            ],
             "spawnOffsetSpace": "object",
             "tags": {
               "type_longrange_bomber": true
             }
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "t2_common_fighter_in_air"
-          }
+        ],
+        "triggerEnable": {
+          "target": "t2_common_fighter_in_air"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "t2_common_fighter_in_air": {
       "is_enabled": false,
@@ -586,7 +530,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -613,14 +557,18 @@
           "replaceAreas": false,
           "target": "t2_base_spawn_point",
           "team": "B",
-          "spawnOffset": [-3000.0,500.0,0.0],
+          "spawnOffset": [
+            -3000.0,
+            500.0,
+            0.0
+          ],
           "spawnOffsetSpace": "object",
           "tags": {
             "tank": false
           }
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_airfields_01_exist_check": {
       "is_enabled": true,
@@ -631,22 +579,20 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t1_airfield_01",
             "type": "objectGroup"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t1_airfield_01",
             "type": "area"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "aerodrom 01 sushchestvuet"
@@ -656,7 +602,7 @@
           "var": "t1_airfield_01_exist"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_airfields_02_exist_check": {
       "is_enabled": true,
@@ -667,22 +613,20 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t1_airfield_02",
             "type": "objectGroup"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t1_airfield_02",
             "type": "area"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "aerodrom 02 sushchestvuet"
@@ -692,7 +636,7 @@
           "var": "t1_airfield_02_exist"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_airfields_default_spawn_check": {
       "is_enabled": true,
@@ -703,24 +647,22 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "varCompareBool": {
+      "conditions": {
+        "varCompareBool": [
+          {
             "var_value": "t1_airfield_01_exist",
             "value": false,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareBool": {
+          },
+          {
             "var_value": "t1_airfield_02_exist",
             "value": false,
             "comparasion_func": "equal"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "aerodromov net. proveryaem defoltnyj"
@@ -729,7 +671,7 @@
           "target": "t1_airfield_default_spawn_for_all"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_airfield_01_spawn_for_all": {
       "is_enabled": true,
@@ -740,7 +682,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -781,7 +723,7 @@
           "enemySurrenderOnLanding": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t1_airfield_02_spawn_for_all": {
       "is_enabled": true,
@@ -792,7 +734,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -833,7 +775,7 @@
           "enemySurrenderOnLanding": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_airfields_01_exist_check": {
       "is_enabled": true,
@@ -844,22 +786,20 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t2_airfield_01",
             "type": "objectGroup"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t2_airfield_01",
             "type": "area"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "aerodrom 01 sushchestvuet"
@@ -869,7 +809,7 @@
           "var": "t2_airfield_01_exist"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_airfields_02_exist_check": {
       "is_enabled": true,
@@ -880,22 +820,20 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "objectExists": {
+      "conditions": {
+        "objectExists": [
+          {
             "target": "t2_airfield_02",
             "type": "objectGroup"
-          }
-        },
-        {
-          "objectExists": {
+          },
+          {
             "target": "t2_airfield_02",
             "type": "area"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "aerodrom 02 sushchestvuet"
@@ -905,7 +843,7 @@
           "var": "t2_airfield_02_exist"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_airfields_default_spawn_check": {
       "is_enabled": true,
@@ -916,24 +854,22 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
-      "conditions": [
-        {
-          "varCompareBool": {
+      "conditions": {
+        "varCompareBool": [
+          {
             "var_value": "t2_airfield_01_exist",
             "value": false,
             "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareBool": {
+          },
+          {
             "var_value": "t2_airfield_02_exist",
             "value": false,
             "comparasion_func": "equal"
           }
-        }
-      ],
+        ]
+      },
       "actions": {
         "comment": {
           "value": "aerodromov net. proveryaem defoltnyj"
@@ -942,7 +878,7 @@
           "target": "t2_airfield_default_spawn_for_all"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_airfield_01_spawn_for_all": {
       "is_enabled": true,
@@ -953,7 +889,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -994,7 +930,7 @@
           "enemySurrenderOnLanding": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_airfield_02_spawn_for_all": {
       "is_enabled": true,
@@ -1005,7 +941,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -1046,7 +982,7 @@
           "enemySurrenderOnLanding": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "rearm_areas": {
       "isCategory": true,
@@ -1064,32 +1000,26 @@
             "time": 1.0
           }
         },
-        "conditions": [],
-        "actions": [
-          {
-            "varSetString": {
+        "conditions": {},
+        "actions": {
+          "varSetString": [
+            {
               "value": "t1_bombers_rearm_area",
               "var": "t1_bombers_rearm_area_name"
-            }
-          },
-          {
-            "varSetString": {
+            },
+            {
               "value": "t2_bombers_rearm_area",
               "var": "t2_bombers_rearm_area_name"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_bombers_rearm_area_check"
-              },
-              {
-                "target": "t2_bombers_rearm_area_check"
-              }
+          ],
+          "triggerEnable": {
+            "target": [
+              "t1_bombers_rearm_area_check",
+              "t2_bombers_rearm_area_check"
             ]
           }
-        ],
-        "else_actions": []
+        },
+        "else_actions": {}
       },
       "t1_bombers_rearm_area_check": {
         "is_enabled": false,
@@ -1121,7 +1051,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       },
       "t2_bombers_rearm_area_check": {
         "is_enabled": false,
@@ -1153,7 +1083,7 @@
             }
           }
         },
-        "else_actions": []
+        "else_actions": {}
       }
     },
     "t1_airfield_default_spawn_for_all": {
@@ -1165,7 +1095,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "objectExists": {
@@ -1201,7 +1131,7 @@
           }
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "t2_airfield_default_spawn_for_all": {
       "is_enabled": true,
@@ -1212,7 +1142,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "initMission": {}
       },
       "conditions": {
         "objectExists": {
@@ -1248,7 +1178,7 @@
           }
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1266,11 +1196,11 @@
     "t1_airfield_spawn_name": "",
     "t2_airfield_spawn_name": ""
   },
-  "dialogs": [],
-  "airfields": [],
-  "effects": [],
-  "units": [],
-  "areas": [],
-  "objLayers": [],
-  "wayPoints": []
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {},
+  "wayPoints": {}
 }

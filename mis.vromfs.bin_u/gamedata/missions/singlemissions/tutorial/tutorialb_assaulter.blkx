@@ -24,7 +24,10 @@
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 34,
       "customWeather": {
-        "windDir": [0.6,0.8],
+        "windDir": [
+          0.6,
+          0.8
+        ],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
@@ -40,7 +43,7 @@
       "pressure": 760.0,
       "temperature": 0.0
     },
-    "spectator_points": [],
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -50,42 +53,30 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
               "icontype": "fighter",
               "side": "player",
               "target": "player_spawn03",
               "lookAt": "bombing_point"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "truck",
               "side": "neutral",
               "target": "bombing_point"
-            }
-          },
-          {
-            "icon": {
+            },
+            {
               "icontype": "truck",
               "side": "neutral",
               "target": "target_truck02"
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
@@ -102,7 +93,7 @@
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
-      "excludes": []
+      "excludes": {}
     }
   },
   "triggers": {
@@ -121,250 +112,168 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "retry_flight_hint"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "flight_start"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            },
-            {
-              "target": "dialogue_intro_p03"
-            },
-            {
-              "target": "dialogue_intro_p04"
-            },
-            {
-              "target": "dialogue_intro_p05"
-            },
-            {
-              "target": "dialogue_intro_p06"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "dialogue_bombing_p06"
-            },
-            {
-              "target": "dialogue_bombing_p07"
-            },
-            {
-              "target": "dialogue_bombing_MA_p07"
-            },
-            {
-              "target": "dialogue_bombing_p08"
-            },
-            {
-              "target": "dialogue_rockets_p01"
-            },
-            {
-              "target": "dialogue_rockets_p02"
-            },
-            {
-              "target": "dialogue_rockets_p03"
-            },
-            {
-              "target": "dialogue_rockets_p04"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "timer"
+      "conditions": {},
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "retry_flight_hint",
+              "flight_waypoint",
+              "flight_near_target",
+              "mission_timer",
+              "flight_start"
+            ]
+          },
+          {
+            "target": [
+              "dialogue_intro_p01",
+              "dialogue_intro_p02",
+              "dialogue_intro_p03",
+              "dialogue_intro_p04",
+              "dialogue_intro_p05",
+              "dialogue_intro_p06",
+              "dialogue_bombing_p01",
+              "dialogue_bombing_p02",
+              "dialogue_bombing_p03",
+              "dialogue_bombing_p04",
+              "dialogue_bombing_p05",
+              "dialogue_bombing_p06",
+              "dialogue_bombing_p07",
+              "dialogue_bombing_MA_p07",
+              "dialogue_bombing_p08",
+              "dialogue_rockets_p01",
+              "dialogue_rockets_p02",
+              "dialogue_rockets_p03",
+              "dialogue_rockets_p04",
+              "bombing_climb_hint_Thrustmaster"
+            ]
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "timer"
         },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "missionSetFade": {
+        "missionStopSpeech": {},
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.1
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.5
           }
-        },
-        {
-          "playerControls": {
+        ],
+        "playerControls": [
+          {
             "setStatus": "disable",
             "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "ID_FLIGHTMENU",
+              "ID_FLIGHTMENU_SETUP",
+              "ID_CONTINUE",
+              "ID_CONTINUE_SETUP"
+            ]
           }
+        ],
+        "unitPutToSleep": {
+          "target": "enemies_squad"
         },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            },
-            {
-              "control": "ID_FLIGHTMENU_SETUP"
-            },
-            {
-              "control": "ID_CONTINUE"
-            },
-            {
-              "control": "ID_CONTINUE_SETUP"
-            }
-          ]
-        },
-        {
-          "unitPutToSleep": {
-            "target": "enemies_squad"
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 0.8
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.15
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.7
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "unitRestore": {
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": "player",
+          "ammoRestore": true
         },
-        {
-          "unitRestore": {
-            "ressurectIfDead": true,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "player",
-            "ammoRestore": true
-          }
-        },
-        {
-          "playerOptions": {
+        "playerOptions": [
+          {
             "respawnBullets": true
-          }
-        },
-        {
-          "playerOptions": {
+          },
+          {
             "currentView": "3rdperson"
           }
+        ],
+        "unitMoveTo": {
+          "target": "player_start",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "player",
+          "move_type": "teleport",
+          "speed": 350.0,
+          "lookat": "player_waypoint",
+          "velocity": 200.0
         },
-        {
-          "unitMoveTo": {
-            "target": "player_start",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "player",
-            "move_type": "teleport",
-            "speed": 350.0,
-            "lookat": "player_waypoint",
-            "velocity": 200.0
-          }
+        "missionKillEffects": {
+          "area": "big_area"
         },
-        {
-          "missionKillEffects": {
-            "area": "big_area"
-          }
+        "unitSetControls": {
+          "controls": "power",
+          "value": 1.0,
+          "force": true,
+          "objects": "player"
         },
-        {
-          "unitSetControls": {
-            "controls": "power",
-            "value": 1.0,
-            "force": true,
-            "objects": "player"
-          }
+        "unitForceRearmSpeed": {
+          "rearmSpeedK": 100000.0,
+          "target": "player"
         },
-        {
-          "unitForceRearmSpeed": {
-            "rearmSpeedK": 100000.0,
-            "target": "player"
-          }
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "dialogue_intro_p01"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "flight_intro_skip"
           }
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_assault_intro",
             "action": "show",
@@ -377,10 +286,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_assault_intro_continue",
             "action": "show",
@@ -394,9 +301,9 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "flight_intro_skip": {
       "is_enabled": false,
@@ -416,25 +323,17 @@
           "control": "ID_CONTINUE"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "flight_initial",
+            "dialogue_intro_p01",
+            "dialogue_intro_p02"
           ]
         },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "playHint": {
+        "missionStopSpeech": {},
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -447,10 +346,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_about_assault",
             "action": "show",
@@ -463,10 +360,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_about_assault_continue",
             "action": "show",
@@ -480,29 +375,25 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 0.5
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "dialogue_intro_p03"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "flight_waypoint"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "flight_waypoint": {
       "is_enabled": false,
@@ -523,21 +414,15 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "flight_intro_skip"
-          },
-          {
-            "target": "dialogue_intro_p03"
-          },
-          {
-            "target": "dialogue_intro_p04"
-          },
-          {
-            "target": "dialogue_intro_p05"
-          }
-        ],
-        "missionStopSpeech": [],
+        "triggerDisable": {
+          "target": [
+            "flight_intro_skip",
+            "dialogue_intro_p03",
+            "dialogue_intro_p04",
+            "dialogue_intro_p05"
+          ]
+        },
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "tutorialHint",
           "name": "hints/tutorialB_about_assault",
@@ -567,7 +452,7 @@
           "target": "flight_start"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "flight_start": {
       "is_enabled": false,
@@ -582,84 +467,54 @@
           "time": 0.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "triggerDisable": {
-            "target": "flight_waypoint"
-          }
+      "conditions": {},
+      "actions": {
+        "triggerDisable": {
+          "target": "flight_waypoint"
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          }
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
         },
-        {
-          "playerControls": {
+        "playerControls": [
+          {
             "setStatus": "enable",
             "control": "ALL"
+          },
+          {
+            "setStatus": "disable",
+            "control": [
+              "ID_FIRE",
+              "ID_FIRE_MGUNS",
+              "ID_FIRE_CANNONS",
+              "ID_BOMBS",
+              "ID_ROCKETS",
+              "AXIS_FIRE",
+              "AXIS_THROTTLE",
+              "ID_TOGGLE_VIEW"
+            ]
           }
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "disable"
-            },
-            {
-              "control": "ID_FIRE"
-            },
-            {
-              "control": "ID_FIRE_MGUNS"
-            },
-            {
-              "control": "ID_FIRE_CANNONS"
-            },
-            {
-              "control": "ID_BOMBS"
-            },
-            {
-              "control": "ID_ROCKETS"
-            },
-            {
-              "control": "AXIS_FIRE"
-            },
-            {
-              "control": "AXIS_THROTTLE"
-            },
-            {
-              "control": "ID_TOGGLE_VIEW"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "retry_flight_hint"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "mission_timer",
+              "flight_near_target",
+              "retry_flight_hint"
+            ]
+          },
+          {
             "target": "dialogue_intro_p06"
           }
-        },
-        {
-          "triggerActivate": {
-            "target": "tutorialB_assaulter_waypoint_objective_init",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
+        ],
+        "triggerActivate": {
+          "target": "tutorialB_assaulter_waypoint_objective_init",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "flight_near_target": {
       "is_enabled": false,
@@ -687,34 +542,22 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "flight_initial"
-          },
-          {
-            "target": "flight_waypoint"
-          },
-          {
-            "target": "retry_flight_hint"
-          },
-          {
-            "target": "flight_start"
-          },
-          {
-            "target": "mission_timer"
-          },
-          {
-            "target": "flight_intro_skip"
-          },
-          {
-            "target": "dialogue_intro_p06"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "flight_initial",
+            "flight_waypoint",
+            "retry_flight_hint",
+            "flight_start",
+            "mission_timer",
+            "flight_intro_skip",
+            "dialogue_intro_p06"
+          ]
+        },
         "varSetInt": {
           "value": 0,
           "var": "timer"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "missionMarkAsWaypoint": {
           "visible": false,
           "primary": true,
@@ -740,7 +583,7 @@
           "target": "bombing_initial"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "retry_flight_hint": {
       "is_enabled": false,
@@ -773,107 +616,53 @@
           "object": "player"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "flight_start"
-            },
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            },
-            {
-              "target": "dialogue_intro_p03"
-            },
-            {
-              "target": "dialogue_intro_p04"
-            },
-            {
-              "target": "dialogue_intro_p05"
-            },
-            {
-              "target": "dialogue_intro_p06"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "dialogue_bombing_p06"
-            },
-            {
-              "target": "dialogue_bombing_p07"
-            },
-            {
-              "target": "dialogue_bombing_MA_p07"
-            },
-            {
-              "target": "dialogue_bombing_p08"
-            },
-            {
-              "target": "dialogue_rockets_p01"
-            },
-            {
-              "target": "dialogue_rockets_p02"
-            },
-            {
-              "target": "dialogue_rockets_p03"
-            },
-            {
-              "target": "dialogue_rockets_p04"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "timer"
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "flight_initial",
+              "flight_waypoint",
+              "flight_near_target",
+              "flight_start",
+              "mission_timer",
+              "bombing_climb_hint_Thrustmaster"
+            ]
+          },
+          {
+            "target": [
+              "dialogue_intro_p01",
+              "dialogue_intro_p02",
+              "dialogue_intro_p03",
+              "dialogue_intro_p04",
+              "dialogue_intro_p05",
+              "dialogue_intro_p06",
+              "dialogue_bombing_p01",
+              "dialogue_bombing_p02",
+              "dialogue_bombing_p03",
+              "dialogue_bombing_p04",
+              "dialogue_bombing_p05",
+              "dialogue_bombing_p06",
+              "dialogue_bombing_p07",
+              "dialogue_bombing_MA_p07",
+              "dialogue_bombing_p08",
+              "dialogue_rockets_p01",
+              "dialogue_rockets_p02",
+              "dialogue_rockets_p03",
+              "dialogue_rockets_p04"
+            ]
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "timer"
         },
-        {
-          "missionStopSpeech": []
+        "missionStopSpeech": {},
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
         },
-        {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ALL"
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -886,10 +675,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
             "action": "show",
@@ -902,10 +689,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
             "action": "hide",
@@ -919,30 +704,24 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": false
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": false
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.5
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "flight_initial"
-          }
+        ],
+        "triggerEnable": {
+          "target": "flight_initial"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bombing_initial": {
       "is_enabled": false,
@@ -957,281 +736,173 @@
           "time": 0.01
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb"
-            },
-            {
-              "target": "retry_truck_hint"
-            },
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "retry_flight_hint"
-            },
-            {
-              "target": "flight_start"
-            },
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "bombing_how_to_aim"
-            },
-            {
-              "target": "bombing_aim_now"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb_hint"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            },
-            {
-              "target": "dialogue_intro_p03"
-            },
-            {
-              "target": "dialogue_intro_p04"
-            },
-            {
-              "target": "dialogue_intro_p05"
-            },
-            {
-              "target": "dialogue_intro_p06"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "dialogue_bombing_p06"
-            },
-            {
-              "target": "dialogue_bombing_p07"
-            },
-            {
-              "target": "dialogue_bombing_MA_p07"
-            },
-            {
-              "target": "dialogue_bombing_p08"
-            },
-            {
-              "target": "dialogue_rockets_p01"
-            },
-            {
-              "target": "dialogue_rockets_p02"
-            },
-            {
-              "target": "dialogue_rockets_p03"
-            },
-            {
-              "target": "dialogue_rockets_p04"
-            }
-          ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 0.1
+      "conditions": {},
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "bombing_drop_bomb",
+              "bombing_climb",
+              "retry_truck_hint",
+              "flight_initial",
+              "flight_waypoint",
+              "flight_near_target",
+              "retry_flight_hint",
+              "flight_start",
+              "bombing_sight_hint",
+              "bombing_how_to_aim",
+              "bombing_aim_now",
+              "bombing_drop_bomb",
+              "bombing_climb_hint",
+              "bombing_climb_hint_Thrustmaster"
+            ]
+          },
+          {
+            "target": [
+              "dialogue_intro_p01",
+              "dialogue_intro_p02",
+              "dialogue_intro_p03",
+              "dialogue_intro_p04",
+              "dialogue_intro_p05",
+              "dialogue_intro_p06",
+              "dialogue_bombing_p01",
+              "dialogue_bombing_p02",
+              "dialogue_bombing_p03",
+              "dialogue_bombing_p04",
+              "dialogue_bombing_p05",
+              "dialogue_bombing_p06",
+              "dialogue_bombing_p07",
+              "dialogue_bombing_MA_p07",
+              "dialogue_bombing_p08",
+              "dialogue_rockets_p01",
+              "dialogue_rockets_p02",
+              "dialogue_rockets_p03",
+              "dialogue_rockets_p04"
+            ]
           }
-        },
-        {
-          "missionSetFade": {
+        ],
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.1
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.5
           }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "playerControls": {
+        ],
+        "missionStopSpeech": {},
+        "playerControls": [
+          {
             "setStatus": "disable",
             "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "ID_FLIGHTMENU",
+              "ID_FLIGHTMENU_SETUP",
+              "ID_CONTINUE",
+              "ID_CONTINUE_SETUP"
+            ]
           }
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            },
-            {
-              "control": "ID_FLIGHTMENU_SETUP"
-            },
-            {
-              "control": "ID_CONTINUE"
-            },
-            {
-              "control": "ID_CONTINUE_SETUP"
-            }
-          ]
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 0.6
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.15
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.7
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "unitWakeUp": {
+          "target": "target_truck01"
         },
-        {
-          "unitWakeUp": {
-            "target": "target_truck01"
-          }
+        "unitRestore": {
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": [
+            "player",
+            "target_truck01"
+          ],
+          "ammoRestore": true
         },
-        {
-          "unitRestore": [
-            {
-              "ressurectIfDead": true
-            },
-            {
-              "fullRestore": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "target": "player"
-            },
-            {
-              "target": "target_truck01"
-            },
-            {
-              "ammoRestore": true
-            }
-          ]
+        "playerOptions": {
+          "respawnBullets": true
         },
-        {
-          "playerOptions": {
-            "respawnBullets": true
-          }
+        "unitMoveTo": {
+          "target": "player_spawn03",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "player",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "lookat": "bombing_point",
+          "velocity": 200.0
         },
-        {
-          "unitMoveTo": {
-            "target": "player_spawn03",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": false,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "player",
-            "move_type": "teleport",
-            "speed": 200.0,
-            "lookat": "bombing_point",
-            "velocity": 200.0
-          }
+        "missionKillEffects": {
+          "area": "big_area"
         },
-        {
-          "missionKillEffects": {
-            "area": "big_area"
-          }
+        "unitForceRearmSpeed": {
+          "rearmSpeedK": 100000.0,
+          "target": "player"
         },
-        {
-          "unitForceRearmSpeed": {
-            "rearmSpeedK": 100000.0,
-            "target": "player"
-          }
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
+        "triggerActivate": {
+          "target": "tutorialB_assaulter_kill_truck_objective_init",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         },
-        {
-          "triggerActivate": {
-            "target": "tutorialB_assaulter_kill_truck_objective_init",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "dialogue_bombing_p01"
+          },
+          {
+            "target": [
+              "bombing_sight_hint",
+              "retry_truck_hint"
+            ]
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "retry_truck_hint"
-            }
-          ]
-        },
-        {
-          "playHint": {
+        ],
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_ground",
             "action": "show",
@@ -1244,10 +915,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_ground_continue",
             "action": "show",
@@ -1261,9 +930,9 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "bombing_sight_hint": {
       "is_enabled": false,
@@ -1283,19 +952,15 @@
           "control": "ID_CONTINUE"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bombing_initial"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bombing_initial",
+            "dialogue_bombing_p01"
           ]
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_ground",
             "action": "hideCur",
@@ -1308,10 +973,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_where_bombs_fall",
             "action": "show",
@@ -1324,10 +987,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_where_bombs_fall_continue",
             "action": "show",
@@ -1341,39 +1002,31 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
+        ],
+        "missionStopSpeech": {},
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "dialogue_bombing_p02"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "bombing_how_to_aim"
           }
-        },
-        {
-          "hudElementBlink": {
-            "element": "bombSight",
-            "time": 10.0,
-            "blink": true
-          }
+        ],
+        "hudElementBlink": {
+          "element": "bombSight",
+          "time": 10.0,
+          "blink": true
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bombing_how_to_aim": {
       "is_enabled": false,
@@ -1393,19 +1046,15 @@
           "control": "ID_CONTINUE"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bombing_sight_hint",
+            "dialogue_bombing_p02"
           ]
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_where_bombs_fall",
             "action": "hideCur",
@@ -1418,10 +1067,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_aim",
             "action": "show",
@@ -1434,10 +1081,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_aim_continue",
             "action": "show",
@@ -1451,32 +1096,26 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
+        ],
+        "missionStopSpeech": {},
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
-        },
-        {
-          "triggerEnable": {
+        ],
+        "triggerEnable": [
+          {
             "target": "dialogue_bombing_p03"
-          }
-        },
-        {
-          "triggerEnable": {
+          },
+          {
             "target": "bombing_aim_now"
           }
-        }
-      ],
-      "else_actions": []
+        ]
+      },
+      "else_actions": {}
     },
     "bombing_aim_now": {
       "is_enabled": false,
@@ -1496,19 +1135,15 @@
           "control": "ID_CONTINUE"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bombing_how_to_aim"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bombing_how_to_aim",
+            "dialogue_bombing_p03"
           ]
         },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_aim",
             "action": "hideCur",
@@ -1521,10 +1156,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_red_sight",
             "action": "show",
@@ -1539,55 +1172,41 @@
             "item": "ID_BOMBS",
             "shouldBlink": false
           }
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.5
           }
-        },
-        {
-          "missionSetTimeSpeed": {
+        ],
+        "missionSetTimeSpeed": [
+          {
             "speed": 0.2,
             "realtimeTriggers": true
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
+          },
+          {
             "speed": 0.0,
             "realtimeTriggers": true
           }
+        ],
+        "missionStopSpeech": {},
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_BOMBS"
         },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_BOMBS"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            }
+        "triggerEnable": {
+          "target": [
+            "bombing_drop_bomb",
+            "dialogue_bombing_p04"
           ]
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bombing_drop_bomb": {
       "is_enabled": false,
@@ -1607,126 +1226,106 @@
           "control": "ID_BOMBS"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "bombing_aim_now"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "dialogue_bombing_p04",
+            "dialogue_bombing_p05",
+            "bombing_aim_now"
           ]
         },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialB_red_sight",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_BOMBS",
-            "shouldBlink": false
-          }
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialB_red_sight",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_BOMBS",
+          "shouldBlink": false
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": false
-          }
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": false
         },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
+        "missionStopSpeech": {},
+        "wait": [
+          {
             "time": 0.1
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 9.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 3.5
           }
+        ],
+        "showSmartCutscene": {
+          "sceneType": "follow_bomb",
+          "startSubTypeOnTheMarch": "",
+          "startSubTypeGroundUnits": "",
+          "startSubTypeArea": "",
+          "startSubTypeUnitAttackUnit": "",
+          "startSubTypeUnitMoveToUnit": "",
+          "startSubTypeTwoUnits": "",
+          "startSubTypeTakeoff": "",
+          "startSubTypeFlyBy": "",
+          "duration": 12.0,
+          "wait": false,
+          "changeCameras": false,
+          "teleportAllAttackers": false,
+          "allowTeleportAttackers": false,
+          "inverseCameraDirection": false,
+          "delayPlayer": true,
+          "fadeIn": true,
+          "fadeOut": true,
+          "allowDeadUnits": false,
+          "object": "player"
         },
-        {
-          "showSmartCutscene": {
-            "sceneType": "follow_bomb",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 12.0,
-            "wait": false,
-            "changeCameras": false,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": false,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": true,
-            "fadeOut": true,
-            "allowDeadUnits": false,
-            "object": "player"
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "dialogue_bombing_p08"
+          },
+          {
+            "target": [
+              "bombing_climb_hint",
+              "bombing_climb_hint_MA",
+              "bombing_climb_hint_Thrustmaster"
+            ]
           }
+        ],
+        "unitDamage": {
+          "part": 1,
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "target_truck01",
+          "doExplosion": true
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "bombing_climb_hint"
-            },
-            {
-              "target": "bombing_climb_hint_MA"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
-        },
-        {
-          "unitDamage": {
-            "part": 1,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "target_truck01",
-            "doExplosion": true
-          }
-        },
-        {
-          "playerCenterMouseAim": []
-        },
-        {
-          "playerOptions": {
-            "currentView": "3rdperson"
-          }
+        "playerCenterMouseAim": {},
+        "playerOptions": {
+          "currentView": "3rdperson"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bombing_climb_hint": {
       "is_enabled": false,
@@ -1741,40 +1340,32 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "playerWhenOptions": {
+      "conditions": {
+        "playerWhenOptions": [
+          {
             "isGamepadPseudoMouseAim": false
-          }
-        },
-        {
-          "playerWhenOptions": {
+          },
+          {
             "isMouseAim": false
-          }
-        },
-        {
-          "playerWhenOptions": {
+          },
+          {
             "isThrustmasterHotas4": false
           }
-        }
-      ],
+        ]
+      },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "bombing_climb_hint_MA"
-          },
-          {
-            "target": "dialogue_bombing_p08"
-          },
-          {
-            "target": "bombing_drop_bomb"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "bombing_climb_hint_MA",
+            "dialogue_bombing_p08",
+            "bombing_drop_bomb"
+          ]
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "tutorialHint",
           "name": "hints/tutorialB_change_direction",
@@ -1790,39 +1381,25 @@
           "item": "elevator=max",
           "shouldBlink": false
         },
-        "playerControls": [
-          {
-            "setStatus": "enable"
-          },
-          {
-            "control": "AXIS_AILERONS"
-          },
-          {
-            "control": "AXIS_ELEVATOR"
-          },
-          {
-            "control": "AXIS_RUDDER"
-          },
-          {
-            "control": "AXIS_THROTTLE"
-          },
-          {
-            "control": "AXIS_MOUSE_AIM_X"
-          },
-          {
-            "control": "AXIS_MOUSE_AIM_Y"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "bombing_climb"
-          },
-          {
-            "target": "dialogue_bombing_p06"
-          }
-        ]
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_AILERONS",
+            "AXIS_ELEVATOR",
+            "AXIS_RUDDER",
+            "AXIS_THROTTLE",
+            "AXIS_MOUSE_AIM_X",
+            "AXIS_MOUSE_AIM_Y"
+          ]
+        },
+        "triggerEnable": {
+          "target": [
+            "bombing_climb",
+            "dialogue_bombing_p06"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_climb_hint_Thrustmaster": {
       "is_enabled": false,
@@ -1843,25 +1420,19 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "bombing_climb_hint_MA"
-          },
-          {
-            "target": "dialogue_bombing_p08"
-          },
-          {
-            "target": "bombing_drop_bomb"
-          },
-          {
-            "target": "bombing_climb_hint"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "bombing_climb_hint_MA",
+            "dialogue_bombing_p08",
+            "bombing_drop_bomb",
+            "bombing_climb_hint"
+          ]
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "tutorialHint",
           "name": "hints/tutorialB_change_direction",
@@ -1877,39 +1448,25 @@
           "item": "#ui/gameuiskin#tm_stick_down",
           "shouldBlink": false
         },
-        "playerControls": [
-          {
-            "setStatus": "enable"
-          },
-          {
-            "control": "AXIS_AILERONS"
-          },
-          {
-            "control": "AXIS_ELEVATOR"
-          },
-          {
-            "control": "AXIS_RUDDER"
-          },
-          {
-            "control": "AXIS_THROTTLE"
-          },
-          {
-            "control": "AXIS_MOUSE_AIM_X"
-          },
-          {
-            "control": "AXIS_MOUSE_AIM_Y"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "bombing_climb"
-          },
-          {
-            "target": "dialogue_bombing_p06"
-          }
-        ]
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_AILERONS",
+            "AXIS_ELEVATOR",
+            "AXIS_RUDDER",
+            "AXIS_THROTTLE",
+            "AXIS_MOUSE_AIM_X",
+            "AXIS_MOUSE_AIM_Y"
+          ]
+        },
+        "triggerEnable": {
+          "target": [
+            "bombing_climb",
+            "dialogue_bombing_p06"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_climb": {
       "is_enabled": false,
@@ -1936,19 +1493,15 @@
           "speed": 1.0,
           "realtimeTriggers": true
         },
-        "triggerEnable": [
-          {
-            "target": "bombing_plane_levelled"
-          },
-          {
-            "target": "retry_truck_hint"
-          },
-          {
-            "target": "mission_timer"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "bombing_plane_levelled",
+            "retry_truck_hint",
+            "mission_timer"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_climb_hint_MA": {
       "is_enabled": false,
@@ -1963,30 +1516,24 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "playerWhenOptions": {
+      "conditions": {
+        "playerWhenOptions": [
+          {
             "isMouseAim": true
-          }
-        },
-        {
-          "playerWhenOptions": {
+          },
+          {
             "isGamepadPseudoMouseAim": true
           }
-        }
-      ],
+        ]
+      },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "bombing_climb_hint"
-          },
-          {
-            "target": "dialogue_bombing_p08"
-          },
-          {
-            "target": "bombing_drop_bomb"
-          }
-        ],
+        "triggerDisable": {
+          "target": [
+            "bombing_climb_hint",
+            "dialogue_bombing_p08",
+            "bombing_drop_bomb"
+          ]
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
@@ -1994,7 +1541,7 @@
         "hudElementSelectionShade": {
           "element": "screenTop"
         },
-        "missionStopSpeech": [],
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "tutorialHint",
           "name": "hints/tutorialB_climb",
@@ -2009,39 +1556,25 @@
           "object_var_value": 0,
           "shouldBlink": false
         },
-        "playerControls": [
-          {
-            "setStatus": "enable"
-          },
-          {
-            "control": "AXIS_AILERONS"
-          },
-          {
-            "control": "AXIS_ELEVATOR"
-          },
-          {
-            "control": "AXIS_RUDDER"
-          },
-          {
-            "control": "AXIS_THROTTLE"
-          },
-          {
-            "control": "AXIS_MOUSE_AIM_X"
-          },
-          {
-            "control": "AXIS_MOUSE_AIM_Y"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "bombing_climb_MA"
-          },
-          {
-            "target": "dialogue_bombing_MA_p06"
-          }
-        ]
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_AILERONS",
+            "AXIS_ELEVATOR",
+            "AXIS_RUDDER",
+            "AXIS_THROTTLE",
+            "AXIS_MOUSE_AIM_X",
+            "AXIS_MOUSE_AIM_Y"
+          ]
+        },
+        "triggerEnable": {
+          "target": [
+            "bombing_climb_MA",
+            "dialogue_bombing_MA_p06"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_climb_MA": {
       "is_enabled": false,
@@ -2067,19 +1600,15 @@
           "speed": 1.0,
           "realtimeTriggers": true
         },
-        "triggerEnable": [
-          {
-            "target": "bombing_plane_levelled"
-          },
-          {
-            "target": "retry_truck_hint"
-          },
-          {
-            "target": "mission_timer"
-          }
-        ]
+        "triggerEnable": {
+          "target": [
+            "bombing_plane_levelled",
+            "retry_truck_hint",
+            "mission_timer"
+          ]
+        }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_plane_levelled": {
       "is_enabled": false,
@@ -2102,33 +1631,19 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "dialogue_bombing_p06"
-          },
-          {
-            "target": "dialogue_bombing_p07"
-          },
-          {
-            "target": "dialogue_bombing_MA_p06"
-          },
-          {
-            "target": "dialogue_bombing_MA_p07"
-          },
-          {
-            "target": "bombing_climb_hint"
-          },
-          {
-            "target": "bombing_climb"
-          },
-          {
-            "target": "bombing_climb_hint_MA"
-          },
-          {
-            "target": "bombing_climb_MA"
-          }
-        ],
-        "missionStopSpeech": [],
+        "triggerDisable": {
+          "target": [
+            "dialogue_bombing_p06",
+            "dialogue_bombing_p07",
+            "dialogue_bombing_MA_p06",
+            "dialogue_bombing_MA_p07",
+            "bombing_climb_hint",
+            "bombing_climb",
+            "bombing_climb_hint_MA",
+            "bombing_climb_MA"
+          ]
+        },
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "tutorialHint",
           "name": "",
@@ -2150,7 +1665,7 @@
           "target": "bombing_truck_killed"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_truck_killed": {
       "is_enabled": false,
@@ -2172,93 +1687,51 @@
           "comparasion_func": "more"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "retry_truck_hint"
-            },
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "bombing_initial"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb"
-            },
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "retry_flight_hint"
-            },
-            {
-              "target": "flight_start"
-            },
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "bombing_how_to_aim"
-            },
-            {
-              "target": "bombing_aim_now"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb_hint"
-            },
-            {
-              "target": "bombing_climb_hint_MA"
-            },
-            {
-              "target": "bombing_climb_MA"
-            }
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "retry_truck_hint",
+            "mission_timer",
+            "bombing_initial",
+            "bombing_drop_bomb",
+            "bombing_climb",
+            "flight_initial",
+            "flight_waypoint",
+            "flight_near_target",
+            "retry_flight_hint",
+            "flight_start",
+            "bombing_sight_hint",
+            "bombing_how_to_aim",
+            "bombing_aim_now",
+            "bombing_drop_bomb",
+            "bombing_climb_hint",
+            "bombing_climb_hint_MA",
+            "bombing_climb_MA"
           ]
         },
-        {
-          "bigQueryAddRecord": {
-            "name": "tutorialB_assaulter",
-            "params": "task 2/4: player divebombed the truck and pulled out of dive"
-          }
+        "bigQueryAddRecord": {
+          "name": "tutorialB_assaulter",
+          "params": "task 2/4: player divebombed the truck and pulled out of dive"
         },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 1.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 2.0
           }
+        ],
+        "moSetObjectiveStatus": {
+          "target": "tutorialB_assaulter_kill_truck",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "moSetObjectiveStatus": {
-            "target": "tutorialB_assaulter_kill_truck",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bombing_kill_other_trucks"
-          }
+        "triggerEnable": {
+          "target": "bombing_kill_other_trucks"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "retry_truck_hint": {
       "is_enabled": false,
@@ -2273,187 +1746,105 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
+      "conditions": {
+        "varCompareInt": [
+          {
             "var_value": "timer",
             "value": 15,
             "comparasion_func": "more"
-          }
-        },
-        {
-          "varCompareInt": {
+          },
+          {
             "var_value": "timer_slow",
             "value": 13,
             "comparasion_func": "more"
           }
+        ],
+        "unitWhenStatus": {
+          "object_type": "isUseless",
+          "object_marking": 0,
+          "check_objects": "all",
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player"
         },
-        {
-          "unitWhenStatus": {
-            "object_type": "isUseless",
-            "object_marking": 0,
-            "check_objects": "all",
-            "target_type": "isAlive",
-            "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player"
-          }
-        },
-        {
-          "unitWhenInArea": {
-            "math": "notNear3D",
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "check_objects": "any",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "player",
-            "target": "big_area"
-          }
+        "unitWhenInArea": {
+          "math": "notNear3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "player",
+          "target": "big_area"
         }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bombing_initial"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb"
-            },
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "bombing_truck_killed"
-            },
-            {
-              "target": "mission_slow_timer"
-            },
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "retry_flight_hint"
-            },
-            {
-              "target": "flight_start"
-            },
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "bombing_how_to_aim"
-            },
-            {
-              "target": "bombing_aim_now"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb_hint"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            },
-            {
-              "target": "dialogue_intro_p03"
-            },
-            {
-              "target": "dialogue_intro_p04"
-            },
-            {
-              "target": "dialogue_intro_p05"
-            },
-            {
-              "target": "dialogue_intro_p06"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "dialogue_bombing_p06"
-            },
-            {
-              "target": "dialogue_bombing_p07"
-            },
-            {
-              "target": "dialogue_bombing_MA_p07"
-            },
-            {
-              "target": "dialogue_bombing_p08"
-            },
-            {
-              "target": "dialogue_rockets_p01"
-            },
-            {
-              "target": "dialogue_rockets_p02"
-            },
-            {
-              "target": "dialogue_rockets_p03"
-            },
-            {
-              "target": "dialogue_rockets_p04"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
+      },
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "bombing_initial",
+              "bombing_drop_bomb",
+              "bombing_climb",
+              "mission_timer",
+              "bombing_truck_killed",
+              "mission_slow_timer",
+              "flight_initial",
+              "flight_waypoint",
+              "flight_near_target",
+              "retry_flight_hint",
+              "flight_start",
+              "bombing_sight_hint",
+              "bombing_how_to_aim",
+              "bombing_aim_now",
+              "bombing_drop_bomb",
+              "bombing_climb_hint",
+              "bombing_climb_hint_Thrustmaster"
+            ]
+          },
+          {
+            "target": [
+              "dialogue_intro_p01",
+              "dialogue_intro_p02",
+              "dialogue_intro_p03",
+              "dialogue_intro_p04",
+              "dialogue_intro_p05",
+              "dialogue_intro_p06",
+              "dialogue_bombing_p01",
+              "dialogue_bombing_p02",
+              "dialogue_bombing_p03",
+              "dialogue_bombing_p04",
+              "dialogue_bombing_p05",
+              "dialogue_bombing_p06",
+              "dialogue_bombing_p07",
+              "dialogue_bombing_MA_p07",
+              "dialogue_bombing_p08",
+              "dialogue_rockets_p01",
+              "dialogue_rockets_p02",
+              "dialogue_rockets_p03",
+              "dialogue_rockets_p04"
+            ]
+          }
+        ],
+        "varSetInt": [
+          {
             "value": 0,
             "var": "timer"
-          }
-        },
-        {
-          "varSetInt": {
+          },
+          {
             "value": 0,
             "var": "timer_slow"
           }
+        ],
+        "missionStopSpeech": {},
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
         },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ALL"
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -2466,10 +1857,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
             "action": "show",
@@ -2482,10 +1871,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
             "action": "hide",
@@ -2499,30 +1886,24 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": false
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": false
-          }
-        },
-        {
-          "wait": {
+        "wait": [
+          {
             "time": 2.0
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.5
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "bombing_initial"
-          }
+        ],
+        "triggerEnable": {
+          "target": "bombing_initial"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bombing_kill_other_trucks": {
       "is_enabled": false,
@@ -2537,337 +1918,203 @@
           "time": 1.0
         }
       },
-      "conditions": [],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bombing_initial"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb"
-            },
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "bombing_truck_killed"
-            },
-            {
-              "target": "bombing_all_trucks_killed"
-            },
-            {
-              "target": "retry_truck_hint"
-            },
-            {
-              "target": "retry_trucks_hint"
-            },
-            {
-              "target": "bombing_fire_button_pressed"
-            },
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "retry_flight_hint"
-            },
-            {
-              "target": "flight_start"
-            },
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "bombing_how_to_aim"
-            },
-            {
-              "target": "bombing_aim_now"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb_hint"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            },
-            {
-              "target": "dialogue_intro_p03"
-            },
-            {
-              "target": "dialogue_intro_p04"
-            },
-            {
-              "target": "dialogue_intro_p05"
-            },
-            {
-              "target": "dialogue_intro_p06"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "dialogue_bombing_p06"
-            },
-            {
-              "target": "dialogue_bombing_p07"
-            },
-            {
-              "target": "dialogue_bombing_MA_p07"
-            },
-            {
-              "target": "dialogue_bombing_p08"
-            },
-            {
-              "target": "dialogue_rockets_p01"
-            },
-            {
-              "target": "dialogue_rockets_p02"
-            },
-            {
-              "target": "dialogue_rockets_p03"
-            },
-            {
-              "target": "dialogue_rockets_p04"
-            }
-          ]
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "missionSetFade": {
+      "conditions": {},
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "bombing_initial",
+              "bombing_drop_bomb",
+              "bombing_climb",
+              "mission_timer",
+              "bombing_truck_killed",
+              "bombing_all_trucks_killed",
+              "retry_truck_hint",
+              "retry_trucks_hint",
+              "bombing_fire_button_pressed",
+              "flight_initial",
+              "flight_waypoint",
+              "flight_near_target",
+              "retry_flight_hint",
+              "flight_start",
+              "bombing_sight_hint",
+              "bombing_how_to_aim",
+              "bombing_aim_now",
+              "bombing_drop_bomb",
+              "bombing_climb_hint",
+              "bombing_climb_hint_Thrustmaster"
+            ]
+          },
+          {
+            "target": [
+              "dialogue_intro_p01",
+              "dialogue_intro_p02",
+              "dialogue_intro_p03",
+              "dialogue_intro_p04",
+              "dialogue_intro_p05",
+              "dialogue_intro_p06",
+              "dialogue_bombing_p01",
+              "dialogue_bombing_p02",
+              "dialogue_bombing_p03",
+              "dialogue_bombing_p04",
+              "dialogue_bombing_p05",
+              "dialogue_bombing_p06",
+              "dialogue_bombing_p07",
+              "dialogue_bombing_MA_p07",
+              "dialogue_bombing_p08",
+              "dialogue_rockets_p01",
+              "dialogue_rockets_p02",
+              "dialogue_rockets_p03",
+              "dialogue_rockets_p04"
+            ]
+          }
+        ],
+        "missionStopSpeech": {},
+        "missionSetFade": [
+          {
             "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.5
-          }
-        },
-        {
-          "missionSetFade": {
+          },
+          {
             "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
             "time": 0.5
           }
-        },
-        {
-          "playerControls": {
+        ],
+        "playerControls": [
+          {
             "setStatus": "disable",
             "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "ID_FLIGHTMENU",
+              "ID_FLIGHTMENU_SETUP",
+              "ID_CONTINUE",
+              "ID_CONTINUE_SETUP"
+            ]
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "ID_ROCKETS",
+              "ID_FLIGHTMENU",
+              "ID_FLIGHTMENU_SETUP",
+              "ID_CONTINUE",
+              "ID_CONTINUE_SETUP"
+            ]
           }
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            },
-            {
-              "control": "ID_FLIGHTMENU_SETUP"
-            },
-            {
-              "control": "ID_CONTINUE"
-            },
-            {
-              "control": "ID_CONTINUE_SETUP"
-            }
-          ]
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_ROCKETS"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            },
-            {
-              "control": "ID_FLIGHTMENU_SETUP"
-            },
-            {
-              "control": "ID_CONTINUE"
-            },
-            {
-              "control": "ID_CONTINUE_SETUP"
-            }
-          ]
-        },
-        {
-          "wait": {
+        ],
+        "wait": [
+          {
             "time": 0.6
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.1
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.4
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 0.6
-          }
-        },
-        {
-          "wait": {
+          },
+          {
             "time": 1.0
           }
+        ],
+        "unitRestore": {
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target_marking": 0,
+          "target": [
+            "target_truck02",
+            "player"
+          ],
+          "ammoRestore": true
         },
-        {
-          "unitRestore": [
-            {
-              "ressurectIfDead": true
-            },
-            {
-              "fullRestore": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "target": "target_truck02"
-            },
-            {
-              "target": "player"
-            },
-            {
-              "ammoRestore": true
-            }
-          ]
+        "unitWakeUp": {
+          "target": "target_truck02"
         },
-        {
-          "unitWakeUp": {
-            "target": "target_truck02"
-          }
+        "playerOptions": {
+          "respawnBullets": true
         },
-        {
-          "playerOptions": {
-            "respawnBullets": true
-          }
+        "missionKillEffects": {
+          "area": "big_area"
         },
-        {
-          "missionKillEffects": {
-            "area": "big_area"
-          }
+        "unitMoveTo": {
+          "target": "player_spawn05",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "player",
+          "move_type": "teleport",
+          "lookat": "trucks_area",
+          "velocity": 250.0
         },
-        {
-          "unitMoveTo": {
-            "target": "player_spawn05",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": false,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "player",
-            "move_type": "teleport",
-            "lookat": "trucks_area",
-            "velocity": 250.0
-          }
-        },
-        {
-          "triggerEnable": {
+        "triggerEnable": [
+          {
             "target": "dialogue_rockets_p01"
+          },
+          {
+            "target": [
+              "bombing_fire_button_pressed",
+              "retry_trucks_hint"
+            ]
           }
+        ],
+        "unitForceRearmSpeed": {
+          "rearmSpeedK": 100000.0,
+          "target": "player"
         },
-        {
-          "triggerEnable": [
-            {
-              "target": "bombing_fire_button_pressed"
-            },
-            {
-              "target": "retry_trucks_hint"
-            }
-          ]
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
-        {
-          "unitForceRearmSpeed": {
-            "rearmSpeedK": 100000.0,
-            "target": "player"
-          }
+        "triggerActivate": {
+          "target": "tutorialB_assaulter_destroy_all_trucks_objective_init",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "tutorialB_assaulter_destroy_all_trucks_objective_init",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialB_rockets",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_ROCKETS",
-            "shouldBlink": false
-          }
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialB_rockets",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_ROCKETS",
+          "shouldBlink": false
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "bombing_fire_button_pressed": {
       "is_enabled": false,
@@ -2888,18 +2135,14 @@
         }
       },
       "actions": {
-        "triggerDisable": [
-          {
-            "target": "bombing_kill_other_trucks"
-          },
-          {
-            "target": "dialogue_rockets_p01"
-          },
-          {
-            "target": "dialogue_rockets_p02"
-          }
-        ],
-        "missionStopSpeech": [],
+        "triggerDisable": {
+          "target": [
+            "bombing_kill_other_trucks",
+            "dialogue_rockets_p01",
+            "dialogue_rockets_p02"
+          ]
+        },
+        "missionStopSpeech": {},
         "playHint": {
           "hintType": "tutorialHint",
           "name": "hints/tutorialB_rockets",
@@ -2930,20 +2173,14 @@
         "wait": {
           "time": 0.5
         },
-        "triggerEnable": [
-          {
-            "target": "retry_trucks_hint"
-          },
-          {
-            "target": "bombing_all_trucks_killed"
-          },
-          {
-            "target": "mission_timer"
-          },
-          {
-            "target": "dialogue_rockets_p03"
-          }
-        ],
+        "triggerEnable": {
+          "target": [
+            "retry_trucks_hint",
+            "bombing_all_trucks_killed",
+            "mission_timer",
+            "dialogue_rockets_p03"
+          ]
+        },
         "unitSetIndication": {
           "set": true,
           "target_marking": 0,
@@ -2953,7 +2190,7 @@
           "target": "target_truck02"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "bombing_all_trucks_killed": {
       "is_enabled": false,
@@ -2981,155 +2218,73 @@
           "object": "target_truck02"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "retry_trucks_hint"
-            },
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "bombing_initial"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb"
-            },
-            {
-              "target": "retry_truck_hint"
-            },
-            {
-              "target": "bombing_kill_other_trucks"
-            },
-            {
-              "target": "bombing_fire_button_pressed"
-            },
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "retry_flight_hint"
-            },
-            {
-              "target": "flight_start"
-            },
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "bombing_how_to_aim"
-            },
-            {
-              "target": "bombing_aim_now"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb_hint"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            },
-            {
-              "target": "dialogue_intro_p03"
-            },
-            {
-              "target": "dialogue_intro_p04"
-            },
-            {
-              "target": "dialogue_intro_p05"
-            },
-            {
-              "target": "dialogue_intro_p06"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "dialogue_bombing_p06"
-            },
-            {
-              "target": "dialogue_bombing_p07"
-            },
-            {
-              "target": "dialogue_bombing_MA_p07"
-            },
-            {
-              "target": "dialogue_bombing_p08"
-            },
-            {
-              "target": "dialogue_rockets_p01"
-            },
-            {
-              "target": "dialogue_rockets_p02"
-            },
-            {
-              "target": "dialogue_rockets_p03"
-            },
-            {
-              "target": "dialogue_rockets_p04"
-            }
-          ]
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "tutorialB_assaulter_destroy_all_trucks",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "retry_trucks_hint",
+              "mission_timer",
+              "bombing_initial",
+              "bombing_drop_bomb",
+              "bombing_climb",
+              "retry_truck_hint",
+              "bombing_kill_other_trucks",
+              "bombing_fire_button_pressed",
+              "flight_initial",
+              "flight_waypoint",
+              "flight_near_target",
+              "retry_flight_hint",
+              "flight_start",
+              "bombing_sight_hint",
+              "bombing_how_to_aim",
+              "bombing_aim_now",
+              "bombing_drop_bomb",
+              "bombing_climb_hint"
+            ]
+          },
+          {
+            "target": [
+              "dialogue_intro_p01",
+              "dialogue_intro_p02",
+              "dialogue_intro_p03",
+              "dialogue_intro_p04",
+              "dialogue_intro_p05",
+              "dialogue_intro_p06",
+              "dialogue_bombing_p01",
+              "dialogue_bombing_p02",
+              "dialogue_bombing_p03",
+              "dialogue_bombing_p04",
+              "dialogue_bombing_p05",
+              "dialogue_bombing_p06",
+              "dialogue_bombing_p07",
+              "dialogue_bombing_MA_p07",
+              "dialogue_bombing_p08",
+              "dialogue_rockets_p01",
+              "dialogue_rockets_p02",
+              "dialogue_rockets_p03",
+              "dialogue_rockets_p04"
+            ]
           }
+        ],
+        "missionStopSpeech": {},
+        "moSetObjectiveStatus": {
+          "target": "tutorialB_assaulter_destroy_all_trucks",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "bigQueryAddRecord": {
-            "name": "tutorialB_assaulter",
-            "params": "task 4/4: player killed the rest of the trucks and finished the tutorial"
-          }
+        "bigQueryAddRecord": {
+          "name": "tutorialB_assaulter",
+          "params": "task 4/4: player killed the rest of the trucks and finished the tutorial"
         },
-        {
-          "wait": {
-            "time": 0.5
-          }
+        "wait": {
+          "time": 0.5
         },
-        {
-          "triggerEnable": {
-            "target": "dialogue_rockets_p04"
-          }
+        "triggerEnable": {
+          "target": "dialogue_rockets_p04"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "retry_trucks_hint": {
       "is_enabled": false,
@@ -3144,29 +2299,25 @@
           "time": 0.01
         }
       },
-      "conditions": [
-        {
-          "varCompareInt": {
-            "var_value": "timer",
-            "value": 100,
-            "comparasion_func": "more"
-          }
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "timer",
+          "value": 100,
+          "comparasion_func": "more"
         },
-        {
-          "unitWhenStatus": {
-            "object_type": "isUseless",
-            "object_marking": 0,
-            "check_objects": "all",
-            "target_type": "isAlive",
-            "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player"
-          }
+        "unitWhenStatus": {
+          "object_type": "isUseless",
+          "object_marking": 0,
+          "check_objects": "all",
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player"
         },
-        {
-          "unitWhenInArea": {
+        "unitWhenInArea": [
+          {
             "math": "notNear2D",
             "object_type": "isAlive",
             "object_marking": 0,
@@ -3175,10 +2326,8 @@
             "object_var_comp_op": "equal",
             "object": "player",
             "target": "trucks_area"
-          }
-        },
-        {
-          "unitWhenInArea": {
+          },
+          {
             "math": "notNear2D",
             "object_type": "isAlive",
             "object_marking": 0,
@@ -3188,136 +2337,64 @@
             "object": "player",
             "target": "big_area"
           }
-        }
-      ],
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "bombing_initial"
-            },
-            {
-              "target": "bombing_drop_bomb"
-            },
-            {
-              "target": "bombing_climb"
-            },
-            {
-              "target": "mission_timer"
-            },
-            {
-              "target": "bombing_truck_killed"
-            },
-            {
-              "target": "bombing_all_trucks_killed"
-            },
-            {
-              "target": "retry_truck_hint"
-            },
-            {
-              "target": "bombing_kill_other_trucks"
-            },
-            {
-              "target": "bombing_fire_button_pressed"
-            },
-            {
-              "target": "flight_initial"
-            },
-            {
-              "target": "flight_waypoint"
-            },
-            {
-              "target": "flight_near_target"
-            },
-            {
-              "target": "retry_flight_hint"
-            },
-            {
-              "target": "flight_start"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "dialogue_intro_p01"
-            },
-            {
-              "target": "dialogue_intro_p02"
-            },
-            {
-              "target": "dialogue_intro_p03"
-            },
-            {
-              "target": "dialogue_intro_p04"
-            },
-            {
-              "target": "dialogue_intro_p05"
-            },
-            {
-              "target": "dialogue_intro_p06"
-            },
-            {
-              "target": "dialogue_bombing_p01"
-            },
-            {
-              "target": "dialogue_bombing_p02"
-            },
-            {
-              "target": "dialogue_bombing_p03"
-            },
-            {
-              "target": "dialogue_bombing_p04"
-            },
-            {
-              "target": "dialogue_bombing_p05"
-            },
-            {
-              "target": "dialogue_bombing_p06"
-            },
-            {
-              "target": "dialogue_bombing_p07"
-            },
-            {
-              "target": "dialogue_bombing_MA_p07"
-            },
-            {
-              "target": "dialogue_bombing_p08"
-            },
-            {
-              "target": "dialogue_rockets_p01"
-            },
-            {
-              "target": "dialogue_rockets_p02"
-            },
-            {
-              "target": "dialogue_rockets_p03"
-            },
-            {
-              "target": "dialogue_rockets_p04"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "timer"
+        ]
+      },
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "bombing_initial",
+              "bombing_drop_bomb",
+              "bombing_climb",
+              "mission_timer",
+              "bombing_truck_killed",
+              "bombing_all_trucks_killed",
+              "retry_truck_hint",
+              "bombing_kill_other_trucks",
+              "bombing_fire_button_pressed",
+              "flight_initial",
+              "flight_waypoint",
+              "flight_near_target",
+              "retry_flight_hint",
+              "flight_start",
+              "bombing_climb_hint_Thrustmaster"
+            ]
+          },
+          {
+            "target": [
+              "dialogue_intro_p01",
+              "dialogue_intro_p02",
+              "dialogue_intro_p03",
+              "dialogue_intro_p04",
+              "dialogue_intro_p05",
+              "dialogue_intro_p06",
+              "dialogue_bombing_p01",
+              "dialogue_bombing_p02",
+              "dialogue_bombing_p03",
+              "dialogue_bombing_p04",
+              "dialogue_bombing_p05",
+              "dialogue_bombing_p06",
+              "dialogue_bombing_p07",
+              "dialogue_bombing_MA_p07",
+              "dialogue_bombing_p08",
+              "dialogue_rockets_p01",
+              "dialogue_rockets_p02",
+              "dialogue_rockets_p03",
+              "dialogue_rockets_p04"
+            ]
           }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "timer"
         },
-        {
-          "missionStopSpeech": []
+        "missionStopSpeech": {},
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
         },
-        {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ALL"
-          }
-        },
-        {
-          "playHint": {
+        "playHint": [
+          {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -3330,10 +2407,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
             "action": "show",
@@ -3346,10 +2421,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
+          },
+          {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
             "action": "hide",
@@ -3363,19 +2436,15 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        ],
+        "wait": {
+          "time": 2.0
         },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bombing_kill_other_trucks"
-          }
+        "triggerEnable": {
+          "target": "bombing_kill_other_trucks"
         }
-      ],
-      "else_actions": []
+      },
+      "else_actions": {}
     },
     "mission_timer": {
       "is_enabled": false,
@@ -3390,7 +2459,7 @@
           "time": 1.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -3398,7 +2467,7 @@
           "var": "timer"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "mission_slow_timer": {
       "is_enabled": false,
@@ -3413,7 +2482,7 @@
           "time": 0.1
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "varModify": {
           "operator": "add",
@@ -3421,7 +2490,7 @@
           "var": "timer_slow"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "forever_full_ammo": {
       "is_enabled": false,
@@ -3436,7 +2505,7 @@
           "time": 10.0
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "unitRestore": {
           "ressurectIfDead": false,
@@ -3449,7 +2518,7 @@
           "respawnBullets": true
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_intro_p01": {
       "is_enabled": false,
@@ -3464,7 +2533,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_intro_p01",
@@ -3474,7 +2543,7 @@
           "target": "dialogue_intro_p02"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_intro_p02": {
       "is_enabled": false,
@@ -3489,14 +2558,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_intro_p02",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_intro_p03": {
       "is_enabled": false,
@@ -3511,7 +2580,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_intro_p03",
@@ -3521,7 +2590,7 @@
           "target": "dialogue_intro_p04"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_intro_p04": {
       "is_enabled": false,
@@ -3536,7 +2605,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_intro_p04",
@@ -3546,7 +2615,7 @@
           "target": "dialogue_intro_p05"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_intro_p05": {
       "is_enabled": false,
@@ -3561,14 +2630,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_intro_p05",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_intro_p06": {
       "is_enabled": false,
@@ -3583,14 +2652,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_intro_p06",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p01": {
       "is_enabled": false,
@@ -3605,14 +2674,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p01",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p02": {
       "is_enabled": false,
@@ -3627,14 +2696,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p02",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p03": {
       "is_enabled": false,
@@ -3649,14 +2718,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p03",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p04": {
       "is_enabled": false,
@@ -3671,7 +2740,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p04",
@@ -3681,7 +2750,7 @@
           "target": "dialogue_bombing_p05"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p05": {
       "is_enabled": false,
@@ -3696,14 +2765,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p05",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p06": {
       "is_enabled": false,
@@ -3718,7 +2787,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p06",
@@ -3728,7 +2797,7 @@
           "target": "dialogue_bombing_p07"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p07": {
       "is_enabled": false,
@@ -3743,14 +2812,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p07",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_MA_p06": {
       "is_enabled": false,
@@ -3765,7 +2834,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p06",
@@ -3775,7 +2844,7 @@
           "target": "dialogue_bombing_MA_p07"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_MA_p07": {
       "is_enabled": false,
@@ -3790,14 +2859,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_MA_p07",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_bombing_p08": {
       "is_enabled": false,
@@ -3812,14 +2881,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_bombing_p08",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_rockets_p01": {
       "is_enabled": false,
@@ -3834,7 +2903,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_rockets_p01",
@@ -3844,7 +2913,7 @@
           "target": "dialogue_rockets_p02"
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_rockets_p02": {
       "is_enabled": false,
@@ -3859,14 +2928,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_rockets_p02",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_rockets_p03": {
       "is_enabled": false,
@@ -3881,14 +2950,14 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_rockets_p03",
           "subtitles": false
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "dialogue_rockets_p04": {
       "is_enabled": false,
@@ -3903,7 +2972,7 @@
           "time": 0.01
         }
       },
-      "conditions": [],
+      "conditions": {},
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_assault_rockets_p04",
@@ -3914,7 +2983,7 @@
           "debriefingTimer": 2
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tutorialB_assaulter_waypoint_objective_init": {
       "is_enabled": false,
@@ -3942,7 +3011,7 @@
           "object_var_name": ""
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tutorialB_assaulter_kill_truck_objective_init": {
       "is_enabled": false,
@@ -3970,7 +3039,7 @@
           "object_var_name": ""
         }
       },
-      "else_actions": []
+      "else_actions": {}
     },
     "tutorialB_assaulter_destroy_all_trucks_objective_init": {
       "is_enabled": false,
@@ -3998,7 +3067,7 @@
           "object_var_name": ""
         }
       },
-      "else_actions": []
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -4014,8 +3083,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "tutorialB_assaulter_kill_truck": {
       "is_enabled": false,
@@ -4027,8 +3096,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     },
     "tutorialB_assaulter_destroy_all_trucks": {
       "is_enabled": false,
@@ -4040,8 +3109,8 @@
         "scoreConst": 100,
         "scoreTime": 400
       },
-      "onSuccess": [],
-      "onFailed": []
+      "onSuccess": {},
+      "onFailed": {}
     }
   },
   "variables": {
@@ -4221,16 +3290,32 @@
       }
     }
   },
-  "airfields": [],
-  "effects": [],
+  "airfields": {},
+  "effects": {},
   "units": {
     "armada": {
       "name": "player",
       "tm": [
-        [-0.461748,0.0,-0.887011],
-        [0.0,1.0,0.0],
-        [0.887011,0.0,-0.461748],
-        [-3299.15,900.0,-8279.7]
+        [
+          -0.461748,
+          0.0,
+          -0.887011
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.887011,
+          0.0,
+          -0.461748
+        ],
+        [
+          -3299.15,
+          900.0,
+          -8279.7
+        ]
       ],
       "unit_class": "il-2i",
       "closed_waypoints": false,
@@ -4268,15 +3353,31 @@
           "task": "FLY_WAYPOINT"
         }
       },
-      "way": []
+      "way": {}
     },
     "tracked_vehicles": {
       "name": "target_truck01",
       "tm": [
-        [-0.461748,0.0,-0.887011],
-        [0.0,1.0,0.0],
-        [0.887011,0.0,-0.461748],
-        [-5035.35,-1.55,-12111.1]
+        [
+          -0.461748,
+          0.0,
+          -0.887011
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.887011,
+          0.0,
+          -0.461748
+        ],
+        [
+          -5035.35,
+          -1.55,
+          -12111.1
+        ]
       ],
       "unit_class": "germ_stugIII",
       "closed_waypoints": false,
@@ -4297,20 +3398,42 @@
         "count": 1,
         "formation_type": "rows",
         "formation_div": 3,
-        "formation_step": [2.5,2.0],
-        "formation_noise": [0.1,0.1],
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
         "uniqueName": "",
         "attack_type": "fire_at_will"
       },
-      "way": []
+      "way": {}
     },
     "wheeled_vehicles": {
       "name": "target_truck02",
       "tm": [
-        [0.573577,0.0,-0.819152],
-        [0.0,1.0,0.0],
-        [0.819152,0.0,0.573577],
-        [-6363.1,-1.55,-13631.4]
+        [
+          0.573577,
+          0.0,
+          -0.819152
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.819152,
+          0.0,
+          0.573577
+        ],
+        [
+          -6363.1,
+          -1.55,
+          -13631.4
+        ]
       ],
       "unit_class": "germ_opelBlitz_fuel",
       "closed_waypoints": false,
@@ -4331,42 +3454,76 @@
         "count": 5,
         "formation_type": "cols",
         "formation_div": 3,
-        "formation_step": [12.0,7.3],
-        "formation_noise": [-0.2,-0.4],
+        "formation_step": [
+          12.0,
+          7.3
+        ],
+        "formation_noise": [
+          -0.2,
+          -0.4
+        ],
         "uniqueName": "",
         "attack_type": "fire_at_will"
       },
-      "way": []
+      "way": {}
     },
     "squad": {
       "name": "enemies_squad",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-3944.85,-2.6,-11501.7]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -3944.85,
+          -2.6,
+          -11501.7
+        ]
       ],
-      "props": [
-        {
-          "object_marking": 0
-        },
-        {
-          "squad_members": "target_truck01"
-        },
-        {
-          "squad_members": "target_truck02"
-        }
-      ]
+      "props": {
+        "object_marking": 0,
+        "squad_members": [
+          "target_truck01",
+          "target_truck02"
+        ]
+      }
     }
   },
   "areas": {
     "target_balloon_area": {
       "type": "Sphere",
       "tm": [
-        [3400.0,0.0,0.0],
-        [0.0,3400.0,0.0],
-        [0.0,0.0,3400.0],
-        [-3945.9,-3.15,-9577.25]
+        [
+          3400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3400.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3400.0
+        ],
+        [
+          -3945.9,
+          -3.15,
+          -9577.25
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4375,10 +3532,26 @@
     "player_spawn01": {
       "type": "Sphere",
       "tm": [
-        [358.9,0.0,0.0],
-        [0.0,358.9,0.0],
-        [0.0,0.0,358.9],
-        [-3192.6,900.0,-8194.4]
+        [
+          358.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          358.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          358.9
+        ],
+        [
+          -3192.6,
+          900.0,
+          -8194.4
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4387,10 +3560,26 @@
     "player_spawn02": {
       "type": "Sphere",
       "tm": [
-        [358.9,0.0,0.0],
-        [0.0,358.9,0.0],
-        [0.0,0.0,358.9],
-        [-4133.65,900.0,-9848.9]
+        [
+          358.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          358.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          358.9
+        ],
+        [
+          -4133.65,
+          900.0,
+          -9848.9
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4399,10 +3588,26 @@
     "player_spawn03": {
       "type": "Sphere",
       "tm": [
-        [358.9,0.0,0.0],
-        [0.0,358.9,0.0],
-        [0.0,0.0,358.9],
-        [-4666.3,900.0,-11980.2]
+        [
+          358.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          358.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          358.9
+        ],
+        [
+          -4666.3,
+          900.0,
+          -11980.2
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4411,10 +3616,26 @@
     "big_area": {
       "type": "Sphere",
       "tm": [
-        [14000.0,0.0,0.0],
-        [0.0,14000.0,0.0],
-        [0.0,0.0,14000.0],
-        [-4101.7,-6.05,-12822.4]
+        [
+          14000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          14000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          14000.0
+        ],
+        [
+          -4101.7,
+          -6.05,
+          -12822.4
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4423,10 +3644,26 @@
     "player_spawn04": {
       "type": "Sphere",
       "tm": [
-        [358.9,0.0,0.0],
-        [0.0,358.9,0.0],
-        [0.0,0.0,358.9],
-        [-4485.7,900.0,-10997.0]
+        [
+          358.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          358.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          358.9
+        ],
+        [
+          -4485.7,
+          900.0,
+          -10997.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4435,10 +3672,26 @@
     "bombing_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-5238.6,-1.4,-12183.0]
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -5238.6,
+          -1.4,
+          -12183.0
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4447,10 +3700,26 @@
     "trucks_area": {
       "type": "Sphere",
       "tm": [
-        [6000.0,0.0,0.0],
-        [0.0,6000.0,0.0],
-        [0.0,0.0,6000.0],
-        [-6361.45,-0.3,-13633.7]
+        [
+          6000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6000.0
+        ],
+        [
+          -6361.45,
+          -0.3,
+          -13633.7
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4459,10 +3728,26 @@
     "player_start": {
       "type": "Sphere",
       "tm": [
-        [358.9,0.0,0.0],
-        [0.0,358.9,0.0],
-        [0.0,0.0,358.9],
-        [-4377.75,1200.0,-5048.15]
+        [
+          358.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          358.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          358.9
+        ],
+        [
+          -4377.75,
+          1200.0,
+          -5048.15
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4471,10 +3756,26 @@
     "player_waypoint": {
       "type": "Sphere",
       "tm": [
-        [358.9,0.0,0.0],
-        [0.0,358.9,0.0],
-        [0.0,0.0,358.9],
-        [-4416.65,1200.0,-6489.75]
+        [
+          358.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          358.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          358.9
+        ],
+        [
+          -4416.65,
+          1200.0,
+          -6489.75
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4483,10 +3784,26 @@
     "truck_spotting_area": {
       "type": "Sphere",
       "tm": [
-        [1200.0,0.0,0.0],
-        [0.0,1200.0,0.0],
-        [0.0,0.0,1200.0],
-        [-5035.5,-1.1,-12111.5]
+        [
+          1200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1200.0
+        ],
+        [
+          -5035.5,
+          -1.1,
+          -12111.5
+        ]
       ],
       "props": {
         "forceReplication": true
@@ -4495,37 +3812,47 @@
     "player_spawn05": {
       "type": "Sphere",
       "tm": [
-        [358.9,0.0,0.0],
-        [0.0,358.9,0.0],
-        [0.0,0.0,358.9],
-        [-5731.1,700.0,-13090.5]
+        [
+          358.9,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          358.9,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          358.9
+        ],
+        [
+          -5731.1,
+          700.0,
+          -13090.5
+        ]
       ],
       "props": {
         "forceReplication": true
       }
     }
   },
-  "objLayers": [
-    {
-      "layer": {
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
         "enabled": true
       }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    },
-    {
-      "layer": {
-        "enabled": true
-      }
-    }
-  ],
-  "wayPoints": []
+    ]
+  },
+  "wayPoints": {}
 }
