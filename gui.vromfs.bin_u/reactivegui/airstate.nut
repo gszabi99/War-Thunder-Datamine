@@ -89,10 +89,11 @@ let CritIas = Watched(false)
 
 let CannonCount = []
 let CannonReloadTime = []
+let CannonSelectedArray = Watched(array(NUM_CANNONS_MAX, false))
+let CannonSelected = Watched(false)
 let IsCannonEmpty = Watched(array(NUM_CANNONS_MAX, false))
 let isAllCannonsEmpty = Computed(@() !IsCannonEmpty.value.contains(false))
 let CannonMode = Watched(0)
-let CannonSelected = Watched(false)
 
 let InstructorState = Watched(0)
 let InstructorForced = Watched(false)
@@ -131,10 +132,10 @@ let TurretSightLineWidthFactor = Watched(1.0)
 
 let MachineGunsCount = []
 let MachineGunsReloadTime = []
+let MachineGunsSelectedArray = Watched(array(NUM_CANNONS_MAX, false))
 let IsMachineGunsEmpty = Watched(array(NUM_CANNONS_MAX, false))
 let isAllMachineGunsEmpty = Computed(@() !IsMachineGunsEmpty.value.contains(false))
 let MachineGunsMode = Watched(0)
-let MachineGunsSelected = Watched(false)
 
 //retroCompatibility
 let MachineGuns = {
@@ -378,6 +379,7 @@ let helicopterState = {
   CannonReloadTime,
   IsCannonEmpty,
   CannonMode,
+  CannonSelectedArray,
   CannonSelected,
 
   InstructorState,
@@ -394,7 +396,7 @@ let helicopterState = {
   MachineGunsReloadTime,
   IsMachineGunsEmpty,
   MachineGunsMode,
-  MachineGunsSelected,
+  MachineGunsSelectedArray,
 
   CannonsAdditional,
   Rockets, Agm, Aam, GuidedBombs, Bombs, Flares, Chaffs
@@ -505,6 +507,14 @@ let helicopterState = {
   CannonReloadTime[index](sec)
 }
 
+::interop.updateCannonsArray <- function(index, count, sec = -1, selected = false) {
+  CannonCount[index](count)
+  CannonReloadTime[index](sec)
+
+  if (selected != CannonSelectedArray.value[index])
+    CannonSelectedArray.mutate(@(v) v[index] = selected)
+}
+
 ::interop.updateIsCannonEmpty <- function(index, is_empty) {
   if (is_empty != IsCannonEmpty.value[index])
     IsCannonEmpty.mutate(@(v) v[index] = is_empty)
@@ -534,9 +544,12 @@ let helicopterState = {
   MachineGuns.selected.update(selected)
 }
 
-::interop.updateMachineGunsArray <- function(index, count, sec = -1) {
+::interop.updateMachineGunsArray <- function(index, count, sec = -1, selected = false) {
   MachineGunsCount[index](count)
   MachineGunsReloadTime[index](sec)
+
+  if (selected != MachineGunsSelectedArray.value[index])
+    MachineGunsSelectedArray.mutate(@(v) v[index] = selected)
 }
 
 ::interop.updateIsMachineGunsEmpty <- function(index, is_empty) {

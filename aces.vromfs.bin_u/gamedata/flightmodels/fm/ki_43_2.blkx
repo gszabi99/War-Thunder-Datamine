@@ -207,7 +207,6 @@
           0.35,
           1.5
         ],
-        "ClToCmCoeff": 0.035,
         "SineAosMultiplier": 0.2,
         "VFocusMultiplier": 1.0,
         "FlapsShift": [
@@ -276,6 +275,10 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": true,
+        "ClToCmByMach": [
+          0.0,
+          0.035
+        ],
         "Cl0": 0.1524,
         "alphaCritHigh": 15.6,
         "alphaCritLow": -14.2,
@@ -330,6 +333,10 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": true,
+        "ClToCmByMach": [
+          0.0,
+          0.035
+        ],
         "Cl0": 1.2,
         "alphaCritHigh": 15.0,
         "alphaCritLow": -14.0,
@@ -403,6 +410,10 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
         "Cl0": 0.0,
         "alphaCritHigh": 20.0,
         "alphaCritLow": -20.0,
@@ -419,7 +430,7 @@
         0.2,
         0.945
       ],
-      "FlowInertia": 0.05,
+      "FlowInertia": 0.0500011,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 2.5,
@@ -471,6 +482,10 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
         "Cl0": 0.0,
         "alphaCritHigh": 18.0,
         "alphaCritLow": -18.0,
@@ -487,7 +502,7 @@
         0.75,
         0.0
       ],
-      "FlowInertia": 0.05,
+      "FlowInertia": 0.0500011,
       "SlipStreamDistance": 8.72,
       "Areas": {
         "Main": 0.682,
@@ -539,6 +554,10 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
         "Cl0": 0.0,
         "alphaCritHigh": 18.0,
         "alphaCritLow": -18.0,
@@ -693,7 +712,7 @@
       "CarbueretorType": 2,
       "CarbureutorCapacity": 0.271877,
       "IsAutonomous": true,
-      "MinThrMult": 0.115,
+      "MinThrMult": 0.1185,
       "MaxThrMult": 1.0,
       "IsWaterCooled": false,
       "EngineInertiaMoment": 1.0,
@@ -847,14 +866,14 @@
       "Mode2": {
         "Altitude": 1000.0,
         "RPM": 2700.0,
-        "ManifoldPressure": 1.263,
+        "ManifoldPressure": 1.31,
         "WaterTemperature": 200.0,
         "OilTemperature": 85.0
       },
       "Mode3": {
         "Altitude": 1000.0,
         "RPM": 2800.0,
-        "ManifoldPressure": 1.395,
+        "ManifoldPressure": 1.43,
         "WaterTemperature": 225.0,
         "OilTemperature": 93.0
       },
@@ -903,7 +922,7 @@
       "RPM3": 2600.0,
       "ATA3": 1.184,
       "RPM4": 2700.0,
-      "ATA4": 1.263,
+      "ATA4": 1.31,
       "ExactAltitudes": true,
       "CompressorOmegaFactorSq": 1.4,
       "CompressorPressureAtRPM0": 0.1,
@@ -923,7 +942,7 @@
       "PowerConstRPMCurvature1": 1.0,
       "Ceiling1": 10000.0,
       "PowerAtCeiling1": 500.0,
-      "AfterburnerManifoldPressure": 1.395,
+      "AfterburnerManifoldPressure": 1.43,
       "SpeedManifoldMultiplier": 0.4,
       "AllowAutoTurboCharger": false,
       "TurboChargerRPMMin": 0.0,
@@ -1042,6 +1061,10 @@
       ],
       "RudderToThrust": [
         0.0,
+        0.0,
+        0.0
+      ],
+      "AirbrakeToThrust": [
         0.0,
         0.0
       ],
@@ -1242,7 +1265,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -180.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -1367,7 +1390,7 @@
   },
   "Gear": {
     "SinkFactor": 800.0,
-    "SinkRateMult": 1.0326,
+    "SinkRateMult": 1.0488,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 10.0,
     "GearOffset": 0.0,
@@ -1390,6 +1413,8 @@
     "StrutL": {
       "SpringHeight": 0.3,
       "SpringCoeff": 255946.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.4,
       "Retractable": true,
       "LeftBrake": true,
@@ -1401,6 +1426,8 @@
     "StrutR": {
       "SpringHeight": 0.3,
       "SpringCoeff": 255946.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.4,
       "Retractable": true,
       "LeftBrake": false,
@@ -1412,6 +1439,8 @@
     "StrutC": {
       "SpringHeight": 0.1,
       "SpringCoeff": 255946.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.4,
       "Retractable": false,
       "LeftBrake": false,

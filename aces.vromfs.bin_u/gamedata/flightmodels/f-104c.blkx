@@ -1787,12 +1787,54 @@
         "blk": "gameData/FlightModels/weaponPresets/f-104c_default.blk"
       },
       {
-        "name": "f-104c_aim_9b",
-        "blk": "gameData/FlightModels/weaponPresets/f-104c_aim_9b.blk"
+        "name": "f-104c_bomb_m117",
+        "blk": "gameData/FlightModels/weaponPresets/f-104c_bomb_m117.blk",
+        "reqModification": "us_750lb_m117a1"
       },
       {
-        "name": "f-104c_bomb_m117",
-        "blk": "gameData/FlightModels/weaponPresets/f-104c_bomb_m117.blk"
+        "name": "f-104c_aero_7",
+        "blk": "gameData/FlightModels/weaponPresets/f-104c_aero_7.blk",
+        "reqModification": "us_2_75_in_ffar_lau_3a"
+      },
+      {
+        "name": "f-104c_aim_9b",
+        "blk": "gameData/FlightModels/weaponPresets/f-104c_aim_9b.blk",
+        "reqModification": "us_aim_9b"
+      },
+      {
+        "name": "f-104c_bomb_m117_aim_9b",
+        "blk": "gameData/FlightModels/weaponPresets/f-104c_bomb_m117_aim_9b.blk",
+        "reqModification": [
+          "us_750lb_m117a1",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "f-104c_bomb_blu_27",
+        "blk": "gameData/FlightModels/weaponPresets/f-104c_bomb_blu_27.blk",
+        "reqModification": "us_blu_1",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
+      },
+      {
+        "name": "f-104c_bomb_blu_27_aim_9b",
+        "blk": "gameData/FlightModels/weaponPresets/f-104c_bomb_blu_27_aim_9b.blk",
+        "reqModification": [
+          "us_blu_1",
+          "us_aim_9b"
+        ],
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
       }
     ]
   },
@@ -1915,6 +1957,24 @@
     "M60_new_gun": {
       "reqModification": "M60_belt_pack",
       "tier": 3
+    },
+    "us_blu_1": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_750lb_m117a1": {
+      "prevModification": "us_blu_1",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "us_2_75_in_ffar_lau_3a": {
+      "reqModification": "us_750lb_m117a1",
+      "tier": 4,
+      "modClass": "weapon"
+    },
+    "us_aim_9b": {
+      "tier": 2,
+      "modClass": "weapon"
     }
   },
   "default_skin_tomoe": {

@@ -1,10 +1,10 @@
 let {floor, round_by_value} = require("%sqstd/math.nut")
 
-let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
+let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
   EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, FuelState, IsCompassVisible,
   MachineGuns, IsMachineGunEmpty, // <= retro compatibility
-  MachineGunsMode, MachineGunsSelected, MachineGunsReloadTime, MachineGunsCount, IsMachineGunsEmpty,
+  MachineGunsMode, MachineGunsSelectedArray, MachineGunsReloadTime, MachineGunsCount, IsMachineGunsEmpty,
   CannonsAdditional, IsCanAdditionalEmpty, Rockets,
   IsRktEmpty, IsSightHudVisible, Agm, IsAgmEmpty,
   DetectAllyProgress, DetectAllyState, Bombs, IsBmbEmpty,
@@ -791,7 +791,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   textParamsMapMain[AirParamsMain.MACHINE_GUNS_1 + idx] <- {
     titleComputed = Computed(@() getMachineGunCaption(MachineGunsMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(MachineGunsAmmoCount.value, MachineGunsAmmoReloadTime.value))
-    selectedComputed = Computed(@() MachineGunsSelected.value ? ">" : "")
+    selectedComputed = Computed(@() MachineGunsSelectedArray.value?[idx] ? ">" : "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsMachineGunsEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsMachineGunsEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -809,7 +809,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   textParamsMapMain[AirParamsMain.CANNON_1 + idx] <- {
     titleComputed = Computed(@() getCannonsCaption(CannonMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonAmmoCount.value, CannonAmmoReloadTime.value))
-    selectedComputed = Computed(@() CannonSelected.value ? ">" : "")
+    selectedComputed = Computed(@() CannonSelectedArray.value?[idx] || CannonSelected.value? ">" : "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
