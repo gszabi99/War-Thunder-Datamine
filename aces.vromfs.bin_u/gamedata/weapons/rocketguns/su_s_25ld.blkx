@@ -224,7 +224,11 @@
       "warmUpTime": 1.0,
       "workTime": 3600.0,
       "uncageBeforeLaunch": true,
-      "breakLockMaxTime": 2.0,
+      "launchAngleMax": [
+        12.5,
+        30.0
+      ],
+      "breakLockMaxTime": 5.0,
       "laserSeeker": {
         "range": 10000.0,
         "rangeMax": 12000.0,
@@ -234,7 +238,8 @@
         "rateMax": 8.0,
         "prolongationTimeMax": 1.0,
         "filterAlpha": 0.85,
-        "filterBetta": 0.2
+        "filterBetta": 0.2,
+        "designationSourceTypeMask": 5
       },
       "guidanceAutopilot": {
         "timeOut": 0.8,
