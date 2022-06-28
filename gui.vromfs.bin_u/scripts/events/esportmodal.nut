@@ -3,12 +3,11 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
-let { MY_FILTERS, getTourUserData, getCurrentSeason, checkByFilter,
-  getTourListViewData, updateTourView, getTourById, removeItemFromList,
-  getSessionParams, isTournamentWndAvailable } = require("%scripts/events/eSport.nut")
+let { MY_FILTERS, TOURNAMENT_TYPES, getTourUserData, getCurrentSeason, checkByFilter,
+  getTourListViewData, updateTourView, getTourById, removeItemFromList, getEventByDay,
+  getTourParams, isTournamentWndAvailable, hasAnyTickets } = require("%scripts/events/eSport.nut")
 
 let FILTER_CHAPTERS = ["tour", "unit"]
-let TOURNAMENT_TYPES = ["1x1", "2x2", "3x3", "4x4", "5x5", "spec", "my only"]
 
 local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.BASE
@@ -18,7 +17,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   seasonHeader    = ""
   currSeason      = null
-  tournamentList      = null
+  tournamentList  = null
   // Filter params
   filterObj       = null
   eventListObj    = null
@@ -103,7 +102,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       let isVisible = checkByFilter(tour, filter)
       tObj.show(isVisible)
       if (isVisible)
-        updateTourView(tObj, tour, tourStatesList, getSessionParams(tour))
+        updateTourView(tObj, tour, tourStatesList, getTourParams(tour))
     }
   }
 
@@ -167,7 +166,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       tourTypes[tType] <- {
         id        = $"tour_{tType}"
         sortId    = idx
-        isDisable = !isTournamentTypeInEvents(tType)
+        isDisable = tType != "my_only" ? !isTournamentTypeInEvents(tType) : !hasAnyTickets()
         text  = ::loc(tType)
       }
   }
@@ -192,15 +191,14 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEvent(obj) {
-    let tour = getTourById(obj.id)
-    if (!tour)
+    let tournament = getTourById(obj.id)
+    if (!tournament)
       return
 
-    if (isTournamentWndAvailable(tour))
-      eSportTournamentModal(tour)
-  }
-
-  function onMyTournaments() {
+    let curTourParams = getTourParams(tournament)
+    let curEvent = getEventByDay(tournament.id, curTourParams.dayNum, curTourParams.isTraining)
+    if (curEvent != null && isTournamentWndAvailable(tournament))
+      eSportTournamentModal({ tournament, curTourParams, curEvent })
   }
 
   function onLeaderboard() {
@@ -209,10 +207,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onTabChange(obj) {
   }
 
-  function onItemHover(obj) {
-  }
-
-  onTimer = @(obj, dt) updateAllEventsByFilters()
+  onTimer = @(obj, dt) (scene.getModalCounter() != 0) ? null : updateAllEventsByFilters()
 }
 
 ::gui_handlers.ESportList <- ESportList

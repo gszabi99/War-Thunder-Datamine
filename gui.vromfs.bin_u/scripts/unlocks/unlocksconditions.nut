@@ -704,12 +704,16 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     res.values = v != "" ? v : null
   }
   else if (t == "ammoMass") {
-    res.values = format("%d %s", (blk?.mass ?? 1), ::loc("measureUnits/kg"))
-    res.notLess <- blk?.notLess ?? true
+    res.values = {
+      value = format("%d %s", (blk?.mass ?? 1), ::loc("measureUnits/kg"))
+      notLess = blk?.notLess ?? true
+    }
   }
   else if (t == "bulletCaliber") {
-    res.values = format("%d %s", (blk?.caliber ?? 1) * 1000, ::loc("measureUnits/mm"))
-    res.notLess <- blk?.notLess ?? true
+    res.values = {
+      value = format("%d %s", (blk?.caliber ?? 1) * 1000, ::loc("measureUnits/mm"))
+      notLess = blk?.notLess ?? true
+    }
   }
   else if (t == "bulletModName")
     res.values = (blk % "name")
@@ -1045,7 +1049,7 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
     else if (cType == "targetDistance")
       text = format( ::loc($"conditions/{(condition.gt ? "min" : "max")}_limit"), v.tostring())
     else if (::isInArray(cType, [ "ammoMass", "bulletCaliber" ]))
-      text = format( ::loc(condition.notLess ? "conditions/min_limit" : "conditions/less"), v.tostring())
+      text = format( ::loc(v.notLess ? "conditions/min_limit" : "conditions/less"), v.value.tostring())
     else if (::isInArray(cType, [ "activity", "playerUnitRank", "offenderUnitRank", "playerUnitMRank", "offenderUnitMRank",
       "crewsUnitRank", "crewsUnitMRank", "minStat", "higherBR" ])) {
       text = v.tostring()

@@ -94,12 +94,6 @@ let WEAPON_TAG = {
   TORPEDO          = "torpedo"
   FRONT_GUN        = "frontGun"
   CANNON           = "cannon"
-  ANTI_SHIP        = "antiShip"
-  ANTI_SHIP_BOMB   = "antiShipBomb"
-  ANTI_SHIP_ROCKET = "antiShipRocket"
-  ANTI_TANK_BOMB   = "antiTankBomb"
-  ANTI_TANK_ROCKET = "antiTankRocket"
-  ANTI_HEAVY_TANK  = "antiHeavyTanks"
 }
 
 let WEAPON_TEXT_PARAMS = { //const
@@ -534,6 +528,23 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         item.diveDepth <- itemBlk?.diveDepth ?? 0
         item.armDistance <- itemBlk?.armDistance ?? 0
       }
+
+      if ([ WEAPON_TYPE.BOMBS, WEAPON_TYPE.GUIDED_BOMBS ].contains(currentTypeName) && weapon?.machLimit)
+        item.machLimit <- weapon.machLimit
+
+      if ([ WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS].contains(currentTypeName))
+      {
+        if (itemBlk?.strikingPart != null)
+          item.warhead <- "multidart"
+        else if (itemBlk?.smokeShell == true)
+          item.warhead <- "smoke"
+        else if (itemBlk?.cumulativeDamage.armorPower != null)
+          item.warhead <- itemBlk?.kineticDamage.damageType == "tandemPrecharge" ? "tandem" : "heat"
+        else if (item.explosiveType != null)
+          item.warhead <- itemBlk?.armorpower != null ? "aphe" : "he"
+        else if (itemBlk?.armorpower != null)
+          item.warhead <- "ap"
+      }
     }
 
     if(isTurret && (weapon?.turret != null))
@@ -728,6 +739,10 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
         ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
   }
 
+  if (weapon?.machLimit)
+    res.append("".concat(::loc("bombProperties/machLimit"), colon,
+      format("%.1f %s", weapon.machLimit, ::loc("measureUnits/machNumber"))))
+
   if (weapon.explosiveType != null)
   {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon
@@ -756,7 +771,9 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
       }
     }
   }
-
+  if (weapon?.warhead)
+    res.append("".concat(::loc("rocket/warhead"), colon,
+      ::loc("rocket/warhead/{0}".subst(weapon.warhead))))
   return "".concat(res.len() ? newLine : "", newLine.join(res))
 }
 

@@ -811,8 +811,9 @@ local lastInventoryUpdateDelayedCall = 0
   inventoryClient.refreshItems()
 }
 
-::ItemsManager.onEventExtInventoryChanged    <- @(p) markInventoryUpdateDelayed()
-::ItemsManager.onEventSendingItemsChanged    <- @(p) markInventoryUpdateDelayed()
+::ItemsManager.onEventExtInventoryChanged        <- @(p) markInventoryUpdateDelayed()
+::ItemsManager.onEventSendingItemsChanged        <- @(p) markInventoryUpdateDelayed()
+::ItemsManager.onEventTourRegistrationComplete   <- @(p) markInventoryUpdate()
 
 ::ItemsManager.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
 {

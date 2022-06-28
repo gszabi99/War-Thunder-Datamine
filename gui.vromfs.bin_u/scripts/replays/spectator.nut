@@ -8,7 +8,8 @@ let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarUnitName } = ::require_native("hudActionBar")
-let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { guiStartMPStatScreen, getWeaponTypeIcoByWeapon
+} = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { onSpectatorMode, switchSpectatorTargetById,
   getSpectatorTargetId = @() ::get_spectator_target_id(), // compatibility with 2.15.1.X
   getSpectatorTargetName = @() ::get_spectator_target_name() // compatibility with 2.15.1.X
@@ -27,6 +28,12 @@ enum SPECTATOR_CHAT_TAB {
   HISTORY  = "btn_tab_history"
   CHAT     = "btn_tab_chat"
   ORDERS   = "btn_tab_orders"
+}
+
+let weaponIconsReloadBits = {
+  bomb = ::BMS_OUT_OF_BOMBS
+  rocket = ::BMS_OUT_OF_ROCKETS
+  torpedo = ::BMS_OUT_OF_TORPEDOES
 }
 
 ::Spectator <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -117,12 +124,6 @@ enum SPECTATOR_CHAT_TAB {
     ::HUD_MSG_EVENT,
     -200 // historyLogCustomMsgType
   ]
-
-  weaponIcons = {
-    [::BMS_OUT_OF_BOMBS]      = "bomb",
-    [::BMS_OUT_OF_ROCKETS]    = "rocket",
-    [::BMS_OUT_OF_TORPEDOES]  = "torpedo",
-  }
 
   curTabId = ""
   tabsList = [
@@ -1079,14 +1080,26 @@ enum SPECTATOR_CHAT_TAB {
       unitIcoObj.shopItemType = iconType
 
       let briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
-      let weaponType = (unitId && ("weapon" in player)) ?
-          ::getWeaponTypeIcoByWeapon(unitId, player.weapon, true) : ::getWeaponTypeIcoByWeapon("", "")
+      let weaponIcons = (unitId && ("weapon" in player)) ? getWeaponTypeIcoByWeapon(unitId, player.weapon)
+        : getWeaponTypeIcoByWeapon("", "")
 
-      foreach (bit, w in weaponIcons)
+      foreach (iconId, w in weaponIcons)
       {
-        let weaponIcoObj = obj.findObject(w + "-ico")
-        weaponIcoObj.show(weaponType[w] != "")
-        weaponIcoObj["reloading"] = (briefMalfunctionState & bit) ? "yes" : "no"
+        let weaponIcoObj = obj.findObject($"{iconId}-ico")
+        if (!(weaponIcoObj?.isValid() ?? false))
+          continue
+
+        let isVisible = w.icon != ""
+        weaponIcoObj.show(isVisible)
+        if (!isVisible)
+          continue
+
+        let iconSize = $"{w.ratio}@tableIcoSize, @tableIcoSize"
+        weaponIcoObj.size = iconSize
+        weaponIcoObj["background-image"] = w.icon
+        weaponIcoObj["background-svg-size"] = iconSize
+        weaponIcoObj["reloading"] = (iconId in weaponIconsReloadBits)
+          && (briefMalfunctionState & weaponIconsReloadBits[iconId]) != 0 ? "yes" : "no"
       }
 
       let battleStateIconClass =

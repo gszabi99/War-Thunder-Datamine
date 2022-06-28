@@ -457,7 +457,14 @@ let function getSkillCategoryView(crewData, unit) {
 
   function onEventFavoriteUnlocksChanged(p)
   {
-    showUnlockAchievementInfo()
+    let currentIndex = tabsInfo.findindex(@(e) e.contentId == "unlockachievement_content")
+    if(listboxObj.getValue() == currentIndex){
+      showUnlockAchievementInfo()
+    }
+    else
+    {
+      listboxObj.setValue(currentIndex)
+    }
   }
 
   function onAchievementsButtonClicked(obj)

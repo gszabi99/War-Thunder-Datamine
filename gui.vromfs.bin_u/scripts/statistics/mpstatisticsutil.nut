@@ -20,6 +20,38 @@ let { is_replay_playing } = require("replays")
     ::statscreen_handler = handler
 }
 
+let function getWeaponTypeIcoByWeapon(airName, weapon) {
+  let config = {
+    bomb            = { icon = "", ratio = 0.375 }
+    rocket          = { icon = "", ratio = 0.375 }
+    torpedo         = { icon = "", ratio = 0.375 }
+    additionalGuns  = { icon = "", ratio = 0.375 }
+    mine            = { icon = "", ratio = 0.594 }
+  }
+  let air = getAircraftByName(airName)
+  if (!air)
+    return config
+
+  foreach(w in air.getWeapons()) {
+    if (w.name != weapon)
+      continue
+
+    let isShip = air.isShipOrBoat()
+    config.bomb = {
+      icon = !w.bomb ? ""
+        : isShip ? "#ui/gameuiskin#weap_naval_bomb.svg"
+        : "#ui/gameuiskin#weap_bomb.svg"
+      ratio = isShip ? 0.594 :0.375
+    }
+    config.rocket.icon = w.rocket ? "#ui/gameuiskin#weap_missile.svg" : ""
+    config.torpedo.icon = w.torpedo ? "#ui/gameuiskin#weap_torpedo.svg" : ""
+    config.additionalGuns.icon = w.additionalGuns ? "#ui/gameuiskin#weap_pod.svg" : ""
+    config.mine.icon = w.hasMines ? "#ui/gameuiskin#weap_mine.svg" : ""
+    break
+  }
+  return config
+}
+
 let function sort_units_for_br_tooltip(u1, u2)
 {
   if (u1.rating != u2.rating)
@@ -207,7 +239,7 @@ let function guiStartMPStatScreenFromGame()
       {
         //creating empty unit class/dead icon and weapons icons, to be filled in update func
         let images = [ "img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; background-repeat:t='aspect-ratio'; shopItemType:t=''; }" ]
-        foreach(id, weap in ::getWeaponTypeIcoByWeapon("", ""))
+        foreach(id, weap in getWeaponTypeIcoByWeapon("", ""))
           images.insert(0, format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
         if (isRowInvert)
           images.reverse()
@@ -553,11 +585,15 @@ let function guiStartMPStatScreenFromGame()
           obj["shopItemType"] = unitIcoColorType
         }
 
-        foreach(iconId, icon in ::getWeaponTypeIcoByWeapon(unitId, weapon))
+        foreach(iconId, weap in getWeaponTypeIcoByWeapon(unitId, weapon))
         {
-          obj = objTd.findObject(iconId + "-ico")
-          if (::check_obj(obj))
-            obj["background-image"] = icon
+          obj = objTd.findObject($"{iconId}-ico")
+          if (::check_obj(obj)) {
+            let iconSize = $"{weap.ratio}@tableIcoSize,@tableIcoSize"
+            obj.size = iconSize
+            obj["background-image"] = weap.icon
+            obj["background-svg-size"] = iconSize
+          }
         }
       }
       else if (hdr == "aircraft")
@@ -710,26 +746,6 @@ let function guiStartMPStatScreenFromGame()
   return role + "Color"
 }
 
-::getWeaponTypeIcoByWeapon <- function getWeaponTypeIcoByWeapon(airName, weapon, tankWeapons = false)
-{
-  let config = {bomb = "", rocket = "", torpedo = "", additionalGuns = ""}
-  let air = getAircraftByName(airName)
-  if (!air) return config
-
-  foreach(w in air.getWeapons())
-    if (w.name == weapon)
-    {
-      let tankRockets = tankWeapons && (w?[WEAPON_TAG.ANTI_TANK_ROCKET] ||
-        w?[WEAPON_TAG.ANTI_SHIP_ROCKET])
-      config.bomb = w.bomb? "#ui/gameuiskin#weap_bomb.svg" : ""
-      config.rocket = w.rocket || tankRockets? "#ui/gameuiskin#weap_missile.svg" : ""
-      config.torpedo = w.torpedo? "#ui/gameuiskin#weap_torpedo.svg" : ""
-      config.additionalGuns = w.additionalGuns ? "#ui/gameuiskin#weap_pod.svg" : ""
-      break
-    }
-  return config
-}
-
 ::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName)
 {
   if (!weaponName || ::u.isEmpty(weaponName))
@@ -787,4 +803,5 @@ let function guiStartMPStatScreenFromGame()
 return {
   guiStartMPStatScreen
   guiStartMPStatScreenFromGame
+  getWeaponTypeIcoByWeapon
 }

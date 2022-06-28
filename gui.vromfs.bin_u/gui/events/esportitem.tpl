@@ -7,6 +7,7 @@ eSItemDiv {
   <</isVisible>>
   // CONTENT TOP
   tdiv {
+    id:t='scheduler'
     size:t='pw, 1@eSItemBgrHeight'
     top:t='1@eSItemBgrTopPos'
     position:t='absolute'
@@ -180,23 +181,30 @@ eSItemDiv {
     smallFont:t='yes'
     text:t='<<vehicleType>>'
   }
-  <<#isMyTournament>>
-  img {
+
+  tdiv {
+    id:t='my_tournament_img'
     size:t='1@eSItemCornerSize, 1@eSItemCornerSize'
     pos:t='pw-w, ph-h'
     position:t='absolute'
-    background-image:t='#ui/gameuiskin#tournament_my_corner.svg'
-    background-svg-size:t='1@eSItemCornerSize, 1@eSItemCornerSize'
-  }
+    <<^isMyTournament>>
+    display:t='hide'
+    <</isMyTournament>>
+    img {
+      size:t='pw, ph'
+      position:t='absolute'
+      background-image:t='#ui/gameuiskin#tournament_my_corner.svg'
+      background-svg-size:t='pw, ph'
+    }
 
-  img {
-    size:t='0.7@eSItemIcoSize, 1@eSItemIcoSize'
-    right:t='1@eSItemInterval'
-    bottom:t='1@eSItemInterval'
-    position:t='absolute'
-    background-image:t='#ui/gameuiskin#tournament_my.svg'
-    background-svg-size:t='0.7@eSItemIcoSize, 1@eSItemIcoSize'
+    img {
+      size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+      right:t='0'
+      bottom:t='1@eSItemInterval'
+      position:t='absolute'
+      background-image:t='#ui/gameuiskin#tournament_my.svg'
+      background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+    }
   }
-  <</isMyTournament>>
 }
 <</items>>

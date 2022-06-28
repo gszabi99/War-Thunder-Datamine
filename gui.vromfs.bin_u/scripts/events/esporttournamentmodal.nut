@@ -1,60 +1,57 @@
-let { DAY, getSessionParams, getTourCommonViewParams, getMatchingEventId, updateTourView,
-  isTourStateChanged } = require("%scripts/events/eSport.nut")
+let { DAY, getTourParams, getTourCommonViewParams, updateTourView,
+  isTourStateChanged, getTourActiveTicket, getEventByDay, getEventMission,
+    isRewardsAvailable } = require("%scripts/events/eSport.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
+let { needShowOverrideSlotbar, isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
 local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
-  wndType         = handlerType.MODAL
-  sceneTplName    = "%gui/events/eSportTournamentModal"
-  slotbarActions  = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "repair"]
-  queueToShow     = null
-  tournamentId    = null
-  tourStatesList  = {}
-  queueInfoHandlerWeak = null
-  // Incomong params
-  tournament = null
+  wndType              = handlerType.MODAL
+  sceneTplName         = "%gui/events/eSportTournamentModal"
+  slotbarActions       = []
+  queueToShow          = null
+  tourStatesList       = {}
+  // Incoming params
+  tournament           = null
+  curEvent             = null
+  curTourParams        = null
 
   function getSceneTplView() {
-    let sesParams = getSessionParams(tournament)
-    tournamentId = getMatchingEventId(
-      tournament.id, sesParams.dayNum >= 0 ? sesParams.dayNum + 1 : 1, sesParams.isTraining)
-
-    return getTourCommonViewParams(tournament, sesParams, true)
+    return getTourCommonViewParams(tournament, curTourParams, true).__merge(getDescParams())
   }
 
   function initScreen() {
     scene.findObject("update_timer").setUserData(this)
     updateQueueInterface()
-    updateContentView(getSessionParams(tournament))
+    updateContentView()
+
+    let showOverrideSlotbar = needShowOverrideSlotbar(curEvent)
+    if (showOverrideSlotbar)
+      updateOverrideSlotbar(getEventMission(curEvent), curEvent)
+    else
+      resetSlotbarOverrided()
     createSlotbar({
-      eventId = tournamentId
+      eventId = curEvent.name
+      needPresetsPanel = !showOverrideSlotbar
       afterSlotbarSelect = updateApplyButton
       afterFullUpdate = updateApplyButton
-      hasResearchesBtn = true
+      showAlwaysFullSlotbar = true
+      needCheckUnitUnlock = showOverrideSlotbar
     })
   }
 
   isInEventQueue = @() queueToShow != null
 
-  function checkQueueInfoBox() {
-    if (!queueToShow || ::handlersManager.isHandlerValid(queueInfoHandlerWeak))
-      return
-
-    let queueObj = this.showSceneBtn("queue_progress", true)
-    queueObj.height = "ph"
-    let queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
-    let queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
-      scene = queueObj
-      leaveQueueCb = ::Callback(onLeaveEvent, this)
-    })
-    registerSubHandler(queueHandler)
-    queueInfoHandlerWeak = queueHandler
+  function updateCurTournament() {
+    curTourParams = getTourParams(tournament)
+    curEvent = getEventByDay(tournament.id, curTourParams.dayNum, curTourParams.isTraining)
   }
 
   function updateQueueInterface() {
     if (!queueToShow || !::queues.isQueueActive(queueToShow))
       queueToShow = getCurEventQueue()
-    checkQueueInfoBox()
     let slotbar = getSlotbar()
     if (slotbar)
       slotbar.shade(isInEventQueue())
@@ -73,59 +70,169 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     updateApplyButton()
   }
 
-  function updateContentView(sesParams) {
-    let prevState = clone tourStatesList?[tournament.id]
-    tourStatesList[tournament.id] <- sesParams
-    if (!isTourStateChanged(prevState, sesParams))
+  function getDaysParams() {
+    local res = []
+    let daysNum = tournament.tickets.len()
+    for (local i = 0; i < daysNum ; i++) {
+      let event = getEventByDay(tournament.id, i)
+      let countries = event?.mission_decl.editSlotbar.map(@(v)
+        typeof(v) == "table" ? v : null).filter(@(v) v)
+      if (countries == null)
+        continue
+
+      let isCollapsed = curTourParams.dayNum != i
+      local items = []
+      local dayCountries = []
+      foreach (country, units in countries) {
+        dayCountries.append({ icon = ::get_country_icon($"{::g_string.trim(country)}_round") })
+        foreach (name, v in units)
+          items.append({
+            text = ::getUnitName(::getAircraftByName(name), false)
+            image = ::getUnitClassIco(name)
+            shopItemType = getUnitRole(name)
+          })
+      }
+
+      res.append({
+        day = i+1
+        dayCountries = dayCountries
+        items = items
+        chapterName = ::loc("tournaments/enumerated_day", {num = i + 1})
+        isCollapsed = isCollapsed
+        collapsed = isCollapsed ? "yes" : "no"
+      })
+    }
+
+    return res
+  }
+
+  function getDescParams() {
+    let rangeData = ::events.getPlayersRangeTextData(curEvent)
+    let missArr = [$"{::loc("mainmenu/missions")}{::loc("ui/colon")}"]
+    foreach (miss, v in (curEvent.mission_decl?.missions_list ?? {}))
+      missArr.append("".concat("<color=@activeTextColor>",
+        ::get_combine_loc_name_mission(::get_meta_mission_info_by_name(miss)), "</color>"))
+    let descTxtArr = [
+      ::events.getEventActiveTicketText(curEvent, "activeTextColor"),
+      rangeData.isValid ? $"{rangeData.label}<color=@activeTextColor>{rangeData.value}</color>" : "",
+      ::events.getRespawnsText(curEvent),
+      ::events.getEventDescriptionText(curEvent)
+    ].extend(missArr.len() > 1 ? missArr : [])
+
+    return {
+      descTxt = "\n".join(descTxtArr, true)
+      rewardsBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/rewards"))
+      hasLeaderboardBtn = isLeaderboardsAvailable()
+      hasRewardBtn = isRewardsAvailable(tournament)
+      days = getDaysParams()
+    }
+  }
+
+  function updateDescriptionView() {
+    let isFinished = curTourParams.dayNum == DAY.FINISH
+    let descObj = ::showBtn("item_desc", !isFinished)
+    if (!descObj?.isValid() || isFinished)
       return
 
-    let isFinished = sesParams.dayNum == DAY.FINISH
-    let isActive = sesParams.dayNum >= 0 || sesParams.dayNum == DAY.NEXT
-    ::showBtnTable(scene, {
-      join_btn    = !isFinished
-      scheduler   = isActive
-    })
+    let { descTxt, hasLeaderboardBtn, hasRewardBtn } = getDescParams()
+    let eventDescTextObj = descObj.findObject("event_desc_text")
+    if (eventDescTextObj?.isValid())
+      eventDescTextObj.setValue(descTxt)
+    ::showBtn("my_tournament_img", curTourParams.isMyTournament, scene)
+    ::showBtn("leaderboard_btn", hasLeaderboardBtn, scene)
+    ::showBtn("rewards_btn", hasRewardBtn, scene)
+  }
+
+  function updateContentView() {
+    let prevState = clone tourStatesList?[tournament.id]
+    tourStatesList[tournament.id] <- curTourParams
+    if (!isTourStateChanged(prevState, curTourParams))
+      return
+
+    let isActive = curTourParams.dayNum >= 0 || curTourParams.dayNum == DAY.NEXT
+    ::showBtn("scheduler", isActive)
     foreach (key in ["h_left", "h_center", "h_right"]) {
       let obj = scene.findObject(key)
       if (obj?.isValid())
-        obj["background-saturate"] = isFinished ? 0 : 1
+        obj["background-saturate"] = curTourParams.dayNum == DAY.FINISH ? 0 : 1
     }
 
     updateApplyButton()
+    updateDescriptionView()
   }
 
   function updateApplyButton() {
-    let event = ::events.getEvent(tournamentId)
-    let isEvent = event != null
-    let isInQueue = isInEventQueue()
-    let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
-    let reasonData = ::events.getCantJoinReasonData(
-      isEvent && (isMouseMode || isInQueue) ? event : null)
-    let isReady = ::g_squad_manager.isMeReady()
-    let isSquadMember = ::g_squad_manager.isSquadMember()
+    if (curTourParams.dayNum == DAY.FINISH) {
+      ::showBtnTable(scene, {
+        action_btn = false
+        leave_btn = false
+      })
+      return
+    }
 
-    let joinButtonObj = ::showBtn("join_btn",
-      isEvent && (!isInQueue || (isSquadMember && !isReady)), scene)
-    joinButtonObj.inactiveColor = (reasonData.activeJoinButton && !isInQueue) ? "no" : "yes"
-    joinButtonObj.tooltip = isSquadMember ? reasonData.reasonText : ""
+    let btnObj = ::showBtn("action_btn", !curTourParams.isMyTournament, scene)
+    if (!curTourParams.isMyTournament) {
+      btnObj.setValue(::loc("events/join_event"))
+      btnObj.inactiveColor = "no"
+      showSceneBtn("leave_btn", false)
+      return
+    }
+    let isEvent = curEvent != null
+    let isInQueue = isInEventQueue()
+    let hasActiveTicket = !isEvent ? false
+      : getTourActiveTicket(curEvent.economicName, tournament.id) != null
+
+    let isBtnVisible = isEvent && hasActiveTicket && curTourParams.isSesActive && !isInQueue
+    btnObj.show(isBtnVisible)
+    btnObj["enable"] = isBtnVisible ? "yes" : "no"
+    btnObj.setValue(::loc("mainmenu/toBattle"))
     showSceneBtn("leave_btn", isInQueue)
   }
 
-  function onJoinEvent(isFromDebriefing = false) {
-    let event = ::events.getEvent(tournamentId)
-    if (!event || !suggestAndAllowPsnPremiumFeatures())
+  function registerForTournament(){
+    let tourId = tournament.id
+    let blk = ::DataBlock()
+    blk["eventName"] = tourId
+
+    let taskId = ::char_send_blk("cln_subscribe_tournament", blk)
+    let taskOptions = {
+      showProgressBox = true
+      progressBoxText = ::loc("tournaments/registration_in_progress")
+    }
+    let onSuccess = @() ::broadcastEvent("TourRegistrationComplete", {id = tourId})
+    ::g_tasker.addTask(taskId, taskOptions, onSuccess)
+  }
+
+  function onEventTourRegistrationComplete(param) {
+    curTourParams.isMyTournament = true
+    updateDescriptionView()
+    updateApplyButton()
+  }
+
+  function onBtnAction() {
+    if (curEvent == null)
+      return
+
+    if (curTourParams.isMyTournament)
+      onJoinEvent()
+    else
+      registerForTournament()
+  }
+
+  function onJoinEvent() {
+    if (!curEvent || !suggestAndAllowPsnPremiumFeatures())
       return
 
     let configForStatistic = {
       actionPlace = "event_window"
-      economicName = ::events.getEventEconomicName(event)
-      difficulty = event?.difficulty ?? ""
+      economicName = ::events.getEventEconomicName(curEvent)
+      difficulty = curEvent?.difficulty ?? ""
       canIntoToBattle = true
       missionsComplete = ::my_stats.getMissionsComplete()
     }
 
-    ::EventJoinProcess(event, null,
-      @(event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+    ::EventJoinProcess(curEvent, null,
+      @(curEvent) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
       function() {
         configForStatistic.canIntoToBattle <- false
         ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
@@ -133,15 +240,6 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onLeaveEvent() {
-    if (!::g_squad_utils.canJoinFlightMsgBox(
-        {isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel"},
-        ::Callback(onLeaveEventActions, this)))
-      return
-
-    onLeaveEventActions()
-  }
-
-  function onLeaveEventActions() {
     let q = getCurEventQueue()
     if (!q)
       return
@@ -149,21 +247,71 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     ::queues.leaveQueue(q, { isCanceledByPlayer = true })
   }
 
-  onTimer = function (obj, dt) {
-    let sesParams = getSessionParams(tournament)
-    updateTourView(scene, tournament, tourStatesList, sesParams)
-    updateContentView(sesParams)
+  function onLeaderboard() {
+    if (curEvent != null)
+      ::gui_modal_event_leaderboards(curEvent.name)
   }
 
-  function onEventAfterJoinEventRoom(event) {
-    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+  function onReward() {
+    ::gui_handlers.EventRewardsWnd.open(curEvent)
+  }
+
+  function updateQueueView() {
+    let isInQueue = isInEventQueue()
+    let timerObj = ::showBtn("wait_time_block", isInQueue)
+    if (!isInQueue)
+      return
+
+    let textObj = scene.findObject("waitText")
+    let iconObj = scene.findObject("queue_wait_icon")
+    ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
+      iconObj, ::loc("yn1/waiting_for_game_query"))
+  }
+
+  function onTimer(obj, dt) {
+    updateCurTournament()
+    updateTourView(scene, tournament, tourStatesList, curTourParams)
+    updateContentView()
+    updateQueueView()
+  }
+
+  function goBackImpl() {
+    resetSlotbarOverrided()
+    checkedForward(base.goBack)
   }
 
   function goBack() {
-    checkedForward(base.goBack)
+    let q = getCurEventQueue()
+    if (!q) {
+      goBackImpl()
+      return
+    }
+
+    ::scene_msg_box("requeue_question", null, ::loc("msg/cancel_queue_question"),
+      [["ok", ::Callback(function(){
+          ::queues.leaveQueue(q, { isCanceledByPlayer = true })
+          goBackImpl()
+        }, this)], ["no", null]], "ok")
+  }
+
+  function onCollapse(obj) {
+    let itemObj = obj.getParent()
+    if (!itemObj?.isValid())
+      return
+
+    let isShow = itemObj.collapsed == "yes"
+    itemObj.collapsed  = isShow ? "no" : "yes"
+
+    for (local i = 0; i < itemObj.childrenCount(); i++) {
+      let child = itemObj.getChild(i)
+      if (child?.collapse_header)
+        continue
+      child.show(isShow)
+      child.enable(isShow)
+    }
   }
 }
 
 ::gui_handlers.ESportTournament <- ESportTournament
 
-return @(tournament) ::handlersManager.loadHandler(ESportTournament, {tournament})
+return @(params) ::handlersManager.loadHandler(ESportTournament, params)

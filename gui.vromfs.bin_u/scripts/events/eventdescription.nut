@@ -4,7 +4,7 @@ let time = require("%scripts/time.nut")
 let { getPlayerName,
         isPlatformXboxOne,
         isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
+let { isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true)
 {
@@ -347,12 +347,6 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
     if (secToStart <= 0)
       return ::loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
     return ::loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
-  }
-
-  function isLeaderboardsAvailable()
-  {
-    return !getSeparateLeaderboardPlatformValue()
-      || ::has_feature("ConsoleSeparateEventsLeaderboards")
   }
 
   function fetchLbData()

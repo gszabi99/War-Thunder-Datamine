@@ -33,11 +33,15 @@ let function addReqParamsToWeaponry(weaponry, blk) {
   }
 }
 
-let function initPresetParams (weapon, blk) {
+let function initPresetParams(weapon, blk) {
   let weaponmask = weapon.weaponmask
-  weapon.hasBombs <- (weaponmask & BOMBS_WEAPON_MASK) != 0
   weapon.hasMines <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MINES]) != 0
-  weapon.hasTorpedoes <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.TORPEDOES]) != 0
+  weapon.bomb <- (weaponmask & BOMBS_WEAPON_MASK) != 0
+  weapon.torpedo <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.TORPEDOES]) != 0
+  weapon.cannon <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.CANNON]) != 0
+  weapon.additionalGuns <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ADD_GUN]) != 0
+  weapon.frontGun <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MACHINE_GUN]) != 0
+  weapon.rocket <- (weaponmask & ROCKETS_WEAPON_MASK) != 0
   weapon.bombsNbr <- blk?.totalBombCount ?? 0
   foreach(p in weaponWpCostProperties)
     weapon[p] <- weapon?[p] ?? blk?[p]
@@ -58,18 +62,10 @@ let function initCustomPresetParams(unit, weapon) {
           massPerSecValue += blk.mass_per_sec
         initPresetParams(weapon, blk)
       })
-    if (weapon.hasBombs)
+    if (weapon.bomb)
       bombsNbr += weapon.bombsNbr
   }
-  let weaponmask = weapon?.weaponmask ?? 0
-
   weapon.bombsNbr <- bombsNbr
-  weapon.bomb <- weapon?.hasBombs
-  weapon.torpedo <- weapon?.hasTorpedoes
-  weapon.cannon <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.CANNON]) != 0
-  weapon.additionalGuns <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ADD_GUN]) != 0
-  weapon.frontGun <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MACHINE_GUN]) != 0
-  weapon.rocket <- (weaponmask & ROCKETS_WEAPON_MASK) != 0
   weapon.mass_per_sec <- massPerSecValue
 }
 

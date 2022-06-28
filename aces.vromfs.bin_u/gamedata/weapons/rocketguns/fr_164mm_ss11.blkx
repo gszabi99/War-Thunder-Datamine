@@ -2,32 +2,32 @@
   "rocketGun": true,
   "preset_cost": 25,
   "mesh": "ss11_rocket_deployed",
-  "reloadAnimParam": "rocket_action",
   "helicopterGroup": 2,
   "shotFreq": 20.0,
-  "sound": "weapon.rocketgun_132",
+  "sound": "atgm",
   "rocket": {
     "normalizationPreset": "heat",
-    "ricochetPreset": "heat_fs",
+    "ricochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "heat_fs_tank",
-    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "bulletType": "atgm_tank",
+    "cumulativeSecondaryShattersPreset": "atgm",
     "explodeOnRendinst": true,
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/heat_fs.ivf",
+    "shellAnimation": "video/shells_animations/atgm.ivf",
     "caliber": 0.164,
     "length": 1.21,
     "explosiveType": "comp_b",
     "explosiveMass": 3.47,
     "distFromCmToStab": 0.01,
+    "distanceFuse": false,
     "operated": true,
     "operatedDist": 3500.0,
     "autoAiming": true,
@@ -119,6 +119,12 @@
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [
+      -0.5,
+      0.0,
+      0.0
+    ],
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
     "stabilityRicochetModifier": {
@@ -367,9 +373,17 @@
     },
     "cumulativeDamage": {
       "armorPower": 600.0,
-      "distance": 7.5,
-      "damage": 900.0,
+      "distance": 5.5,
+      "damage": 600.0,
       "onHitChanceMultFire": 25.0
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "152mmRed",
+        "trail": "noTrail"
+      }
     }
   }
 }

@@ -17,29 +17,10 @@ HorizontalListBox {
   include "%gui/frameHeaderTabs"
 }
 
-tdiv {
-  position:t='relative'
-  flow:t='horizontal'
+popupFilter {
   padding:t='0, 1@eSItemButtonHeight'
-
-  Button_text {
-    position:t='relative'
-    visualStyle:t='tournament'
-    text:t='#tournaments/my'
-    on_click:t = 'onMyTournaments'
-    class:t='image'
-    enable:t='no'
-    btnName:t='R3'
-    img {
-      background-image:t='#ui/gameuiskin#tournament_my.svg'
-    }
-    ButtonImg {}
-  }
-
-  popupFilter {
-    margin-top:t="1@buttonMargin"
-    margin-bottom:t="1@buttonMargin"
-  }
+  margin-top:t='1@buttonMargin'
+  margin-bottom:t='1@buttonMargin'
 }
 
 slotsScrollDiv {

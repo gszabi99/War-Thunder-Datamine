@@ -39,7 +39,6 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   presetsByRanks       = null
   lastWeapon           = null
   presetsMarkup        = null
-  collapsedPresets     = []
   presetTextWidth      = 0
   onChangeValueCb      = null
   weaponItemParams     = null
@@ -594,15 +593,6 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       }
       selIdx = newIdx != -1 ? newIdx : headerIdx
       listObj.setValue(selIdx)
-    }
-
-    if (collapsedPresets && !::u.isEmpty(itemObj?.id))
-    {
-      let idx = ::find_in_array(collapsedPresets, itemObj.id)
-      if (isShow && idx != -1)
-        collapsedPresets.remove(idx)
-      else if (!isShow && idx == -1)
-        collapsedPresets.append(itemObj.id)
     }
   }
 

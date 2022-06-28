@@ -38,7 +38,10 @@ popup_menu {
     on_click:t='<<underPopupClick>>'
     on_r_click:t='<<underPopupDblClick>>'
   }
-
+  dummy { // To avoid close menu on click outside of button but inside area
+    size:t='pw, ph'
+    position:t='absolute'
+  }
   <<#columns>>
   tdiv {
     id:t='<<typeName>>_column'

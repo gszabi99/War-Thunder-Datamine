@@ -1,5 +1,4 @@
 tdiv {
-  id:t='session_nest'
   width:t='pw'
   position:t='relative'
   padding:t='2@eSItemInterval, 1@eSItemInterval'
@@ -17,12 +16,15 @@ tdiv {
   }
 
   <<#sessions>>
-  textareaNoTab {
+  tdiv {
     id:t='<<sesId>>'
-    left:t='1@blockInterval'
-    position:t='relative'
-    text:t='<<sesNum>>'
-    visualStyle:t='<<#isSelected>>sessionSelected<</isSelected>><<^isSelected>><</isSelected>>'
+    textareaNoTab {
+      id:t='ses_num_txt'
+      left:t='1@blockInterval'
+      position:t='relative'
+      text:t='<<sesNum>>'
+      visualStyle:t='<<#isSelected>>sessionSelected<</isSelected>><<^isSelected>><</isSelected>>'
+    }
   }
   <</sessions>>
 

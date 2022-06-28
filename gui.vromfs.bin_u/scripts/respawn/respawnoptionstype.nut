@@ -144,7 +144,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
-      && (getCurrentPreset(p.unit)?.hasBombs ?? false)
+      && (getCurrentPreset(p.unit)?.bomb ?? false)
   }
   bomb_series = {
     sortIdx = idx++
@@ -186,7 +186,7 @@ options.addTypes({
     needCheckValueWhenOptionUpdate = true
     isAvailableInMission = @() !::get_option_torpedo_dive_depth_auto()
     isShowForUnit = @(p) p.unit.isShipOrBoat()
-      && (getCurrentPreset(p.unit)?.hasTorpedoes ?? false)
+      && (getCurrentPreset(p.unit)?.torpedo ?? false)
   }
   fuel_amount = {
     sortIdx = idx++

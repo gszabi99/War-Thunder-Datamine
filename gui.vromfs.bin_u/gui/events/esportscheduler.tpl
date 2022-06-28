@@ -17,7 +17,6 @@ tdiv {
   }
 
   tdiv {
-    id:t='session_nest'
     width:t='pw'
     position:t='relative'
     flow:t='horizontal'
@@ -56,6 +55,7 @@ tdiv {
   }
   <<#sessions>>
   tdiv {
+    id:t='<<sesId>>'
     width:t='pw'
     top:t='2@eSItemInterval'
     position:t='relative'
@@ -71,7 +71,7 @@ tdiv {
     }
 
     textareaNoTab {
-      id:t='<<sesId>>'
+      id:t='ses_num_txt'
       width:t='50@sf/@pf'
       pos:t='-10@sf/@pf-2@eSItemInterval, 0.5ph-0.5h'
       position:t='relative'

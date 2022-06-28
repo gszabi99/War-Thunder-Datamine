@@ -1,6 +1,7 @@
 let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 ::WwUnit <- class
 {
@@ -83,7 +84,7 @@ let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
   getShortStringView = ::kwarg(function getShortStringViewImpl(
     addIcon = true, addPreset = true, hideZeroCount = true, needShopInfo = false, hasIndent = false)
   {
-    let presetData = ::getWeaponTypeIcoByWeapon(name, addPreset ? weaponPreset : "")
+    let presetData = getWeaponTypeIcoByWeapon(name, addPreset ? weaponPreset : "")
     let presetText = !addPreset || weaponPreset == "" ? "" :
       getWeaponInfoText(unit,
         { isPrimary = false, weaponPreset = weaponPreset, detail = INFO_DETAIL.SHORT, needTextWhenNoWeapons = false })

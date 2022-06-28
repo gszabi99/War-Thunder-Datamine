@@ -8,6 +8,8 @@ const MY_TOURNAMENTS = "tournaments/favorites"
 const MY_FILTERS = "tournaments/filters"
 const NEXT_DAYS = 14
 
+let TOURNAMENT_TYPES = ["1x1", "2x2", "3x3", "4x4", "5x5", "spec", "my_only"]
+
 let DAY = {
   NEXT   = -1
   SOON   = -2
@@ -38,10 +40,16 @@ let function getTourDay(tour) {
   if (now > getTimestampFromStringUtc(tour.tickets[tour.tickets.len() - 1].stopActiveTime))
     return DAY.FINISH
 
-  let activeDay = tour.tickets.findindex(@(t) now >= getTimestampFromStringUtc(t.startActiveTime)
-    && now <= getTimestampFromStringUtc(t.stopActiveTime))
-  if (activeDay != null)
-    return activeDay
+  // Tournament is active
+  if (isInTimerangeByUtcStrings(tour.beginDate, tour.endDate)) {
+    let nearestDays = []
+    return tour.tickets.findindex(function(t){
+          let dTime = now - getTimestampFromStringUtc(t.stopActiveTime)
+          nearestDays.append(dTime)
+          return now >= getTimestampFromStringUtc(t.startActiveTime) && dTime <= 0 // Session is going now
+        })
+      ?? nearestDays.findindex(@(t) t < 0) // Nearest session. First negative value is nearest because of tickets already sorted
+  }
 
   if (tour.tickets.findindex(@(t) secondsToDays(
     getTimestampFromStringUtc(t.startActiveTime) - now) < NEXT_DAYS) != null)
@@ -55,7 +63,15 @@ let function isTournamentWndAvailable(tour) {
   return dayNum != DAY.FINISH && dayNum != DAY.SOON
 }
 
-let function getSessionParams(tour) {
+let getMatchingEventId = @(tourId, day, isTraining)
+  $"{tourId}{day ? "_day" : ""}{day ?? ""}{isTraining ? "_train" : ""}"
+
+let function getEventByDay(tourId, dayNum, isTraining = false){
+ let matchingEventId = getMatchingEventId(tourId, dayNum >= 0 ? dayNum + 1 : 1, isTraining)
+ return ::events.getEvent(matchingEventId)
+}
+
+let function getTourParams(tour) {
   let dayNum = getTourDay(tour)
   let res = {
     dayNum      = dayNum
@@ -64,6 +80,7 @@ let function getSessionParams(tour) {
     sesLen      = 0
     isTraining  = false
     isSesActive = false
+    isMyTournament = false
   }
 
   if (dayNum < DAY.NEXT)
@@ -73,10 +90,12 @@ let function getSessionParams(tour) {
   let sList = tour.scheduler[dayNum != DAY.NEXT ? dayNum : 0]
   local sTime
   local trainingTime
+  local isTraining
   res.sesLen = sList.len()
   //Session is going now
   foreach(idx, inst in sList) {
     trainingTime = getTimestampFromStringUtc(inst.train.end) - now
+    isTraining = trainingTime > 0
     sTime = isInTimerangeByUtcStrings(inst.train.start, inst.train.end)
         ? trainingTime
       : isInTimerangeByUtcStrings(inst.battle.start, inst.battle.end)
@@ -86,7 +105,8 @@ let function getSessionParams(tour) {
       res.sesTime = sTime
       res.isSesActive = true
       res.sesIdx = idx
-      res.isTraining = trainingTime > 0
+      res.isTraining = isTraining
+      res.isMyTournament = ::is_subscribed_for_tournament(tour.id)
       return res
     }
   }
@@ -96,13 +116,15 @@ let function getSessionParams(tour) {
         ? getTimestampFromStringUtc(inst.train.start)
         : 0)
       - now
+    isTraining = trainingTime > 0
     sTime = trainingTime > 0 ? trainingTime
       : !::u.isEmpty(inst.battle.start) ? getTimestampFromStringUtc(inst.battle.start) - now
       : -1
     if (sTime >= 0) {
       res.sesTime = sTime
       res.sesIdx = idx
-      res.isTraining = trainingTime > 0
+      res.isTraining = isTraining
+      res.isMyTournament = ::is_subscribed_for_tournament(tour.id)
       return res
     }
   }
@@ -141,6 +163,8 @@ let function checkByFilter(tour, filter) {
     return true
 
   return (filter.tourStates.len() == 0
+      || (filter.tourStates.findindex(@(v) v == "my_only") != null
+        && ::is_subscribed_for_tournament(tour.id))
       || filter.tourStates.findindex(@(v) v == tour.competitive_type) != null)
     && (filter.unitStates.len() == 0
       || filter.unitStates.findindex(@(v) v == tour.armyId) != null)
@@ -148,11 +172,11 @@ let function checkByFilter(tour, filter) {
 
 let getOverlayTextColor = @(isSesActive) isSesActive ? "sPlay" : "sSelected"
 
-let function getTourCommonViewParams(tour, sesParams, reverseCountries = false) {
+let function getTourCommonViewParams(tour, tourParams, reverseCountries = false) {
   let cType = tour.competitive_type
   let teamSizes = cType.split("x")
   let armyId = tour.armyId
-  let { dayNum, sesIdx, sesTime, isSesActive, isTraining } = sesParams
+  let { dayNum, sesIdx, sesTime, isSesActive, isTraining, isMyTournament } = tourParams
   let isActive = dayNum >= 0
   let isNext = dayNum == DAY.NEXT
   let isFinished = dayNum == DAY.FINISH
@@ -170,8 +194,15 @@ let function getTourCommonViewParams(tour, sesParams, reverseCountries = false) 
     })
   }
   return {
-    armyId = armyId
-    countries = countries
+    armyId
+    isNext
+    isActive
+    countries
+    isTraining
+    isFinished
+    isSesActive
+    isMyTournament
+    eventId = tour.id
     headerImg = isFinished || isSoon ? "#ui/gameuiskin#tournament_finished_header.png"
       : $"#ui/gameuiskin#tournament_{armyId}_header.png"
     itemBgr =  $"#ui/images/tournament_{armyId}.jpg"
@@ -185,14 +216,7 @@ let function getTourCommonViewParams(tour, sesParams, reverseCountries = false) 
       : isActive ? ::loc("tournaments/enumerated_day", {num = day + 1})
       : ::loc("tournaments/coming_soon")
     battlesNum = isActive ? tour.tickets[day].battleLimit : ""
-    eventId = tour.id
-    isMyTournament = tour.id in getTourUserData()?.myTournaments
-    isFinished = isFinished
-    isActive = isActive
-    isNext = isNext
     sessions = getSessionsView(sesIdx, tour.scheduler?[day] ?? [])
-    isSesActive = isSesActive
-    isTraining = isTraining
     curSesTime = sesTime <  0 ? null : secondsToString(sesTime)
     curTrainingTime = sesIdx < 0 ? null
       : getSessionTimeIntervalStr(tour.scheduler[day][sesIdx].train)
@@ -202,25 +226,36 @@ let function getTourCommonViewParams(tour, sesParams, reverseCountries = false) 
   }
 }
 
-let function isTourStateChanged(prevState, sesParams) {
-  let { dayNum, isTraining, isSesActive } = sesParams
+let function isTourStateChanged(prevState, tourParams) {
+  let { dayNum, isTraining, isSesActive, isMyTournament } = tourParams
   return prevState != null
     && (prevState.isTraining != isTraining
       || prevState.isSesActive != isSesActive
-      || prevState.dayNum != dayNum)
+      || prevState.dayNum != dayNum
+      || prevState.isMyTournament != isMyTournament)
 }
 
-let function updateTourView(tObj, tour, tourStatesList, sesParams) {
-  let { sesIdx, sesLen, isSesActive, isTraining } = sesParams
+let function setTimeText(nestObj, isTraining, isSesActive){
+  let tTimeObj = nestObj.findObject("training_time")
+  if (tTimeObj?.isValid())
+    tTimeObj.overlayTextColor = isTraining ? getOverlayTextColor(isSesActive) : ""
+
+  let sTimeObj = nestObj.findObject("start_time")
+  if (sTimeObj?.isValid())
+    sTimeObj.overlayTextColor = isTraining ? "" : getOverlayTextColor(isSesActive)
+}
+
+let function updateTourView(tObj, tour, tourStatesList, tourParams) {
+  let { sesIdx, sesLen, isSesActive, isTraining } = tourParams
   let { battleDay, isFinished, battlesNum, curSesTime, isActive,
-    curTrainingTime, curStartTime } = getTourCommonViewParams(tour, sesParams)
+    isMyTournament } = getTourCommonViewParams(tour, tourParams)
   let prevState = clone tourStatesList?[tour.id]
   let timeTxtObj = tObj.findObject("time_txt")
-  tourStatesList[tour.id] <- sesParams
+  tourStatesList[tour.id] <- tourParams
   if (!timeTxtObj?.isValid())
     return
 
-  if (!isTourStateChanged(prevState, sesParams)) {
+  if (!isTourStateChanged(prevState, tourParams)) {
     if (curSesTime)
       timeTxtObj.setValue(curSesTime)
 
@@ -237,9 +272,8 @@ let function updateTourView(tObj, tour, tourStatesList, sesParams) {
     return
 
   let battlesObj = ::showBtn("battle_nest", isActive, tObj)
-  let sessionObj = ::showBtn("session_nest", isActive, tObj)
-  let trainingObj = ::showBtn("training_nest", isActive, tObj)
-  let startObj = ::showBtn("start_nest", isActive, tObj)
+  let schedulerObj = ::showBtn("scheduler", isActive, tObj)
+  ::showBtn("my_tournament_img", isMyTournament, tObj)
   if (!isActive)
     return
 
@@ -247,25 +281,22 @@ let function updateTourView(tObj, tour, tourStatesList, sesParams) {
   battlesObj.findObject("battle_num").setValue(battlesNum)
   timeTxtObj.setValue(curSesTime)
   timeTxtObj.overlayTextColor = getOverlayTextColor(isSesActive)
-  sessionObj.findObject("session_ico")["background-image"] = iconImg
-  let tTimeObj = trainingObj.findObject("training_time")
-  let sTimeObj = startObj.findObject("start_time")
-  if (tTimeObj?.isValid()) {
-    tTimeObj.setValue(curTrainingTime)
-    tTimeObj.overlayTextColor = isTraining ? getOverlayTextColor(isSesActive) : ""
+  tObj.findObject("session_ico")["background-image"] = iconImg
+
+  setTimeText(schedulerObj, isTraining, isSesActive)
+  for (local i = 0; i < sesLen; i++) {
+    let sObj = schedulerObj.findObject($"session_{i}")
+    if (sObj?.isValid()) {
+      sObj.findObject($"ses_num_txt").visualStyle = i == sesIdx ? "sessionSelected" : ""
+      setTimeText(sObj, isTraining, isSesActive)
+    }
   }
-  if (sTimeObj?.isValid()) {
-    sTimeObj.setValue(curStartTime)
-    sTimeObj.overlayTextColor = isTraining ? "" : getOverlayTextColor(isSesActive)
-  }
-  for (local i = 0; i < sesLen; i++)
-    sessionObj.findObject($"session_{i}").visualStyle = i == sesIdx ? "sessionSelected" : ""
 }
 
 let function getTourListViewData(eList, filter) {
   let res = []
   foreach (tour in eList)
-    res.append(getTourCommonViewParams(tour, getSessionParams(tour)).__merge({
+    res.append(getTourCommonViewParams(tour, getTourParams(tour)).__merge({
       isVisible = checkByFilter(tour, filter)
     }))
 
@@ -277,9 +308,6 @@ let function removeItemFromList(value, list) {
   if (idx != null)
     list.remove(idx)
 }
-
-let getMatchingEventId = @(eventId, day, isTraining)
-  $"{eventId}{day ? "_day" : ""}{day ?? ""}{isTraining ? "_train" : ""}"
 
 let function getSeasonsList() {
   if (seasonsList.len() > 0)
@@ -351,13 +379,47 @@ let function getSeasonsList() {
   return seasonsList.sort(@(a, b) a.competitiveSeason <=> b.competitiveSeason)
 }
 
-let getCurrentSeason = @() getSeasonsList()?[0]
+let function getTourActiveTicket(eName, tourId) {
+  if (!::have_you_valid_tournament_ticket(eName))
+    return null
+  let tickets = ::ItemsManager.getInventoryList(itemType.TICKET, (@(tourId) function (item) {
+    return item.isForEvent(tourId) && item.isActive()
+  })(tourId))
+  return tickets.len() > 0 ? tickets[0] : null
+}
 
-let getTourById = @(id) getCurrentSeason()?.tournamentList.findvalue(@(v) v.id == id)
+let function getEventMission(curEvent) {
+  let list = curEvent?.mission_decl.missions_list ?? {}
+  foreach(key, val in list)
+    if (typeof(key) == "string")
+      return key
+
+  return ""
+}
+
+let getCurrentSeason = @() getSeasonsList()?[0]
+let isRewardsAvailable = @(tournament) (tournament?.awards.len() ?? 0) > 0
+
+let function getTourById(id) {
+  let tourList = getCurrentSeason()?.tournamentList
+  if (tourList != null)
+    return tourList.findvalue(@(v) v.id == id)
+
+  return null
+}
+
+let function hasAnyTickets() {
+  let tourList = getCurrentSeason()?.tournamentList
+  return tourList != null
+    && tourList.findindex(@(tour) ::is_subscribed_for_tournament(tour.id)) != null
+}
+
 
 return {
   DAY
-  getSessionParams
+  MY_FILTERS
+  TOURNAMENT_TYPES
+  getTourParams
   checkByFilter
   getTourCommonViewParams
   getTourListViewData
@@ -366,8 +428,12 @@ return {
   isTourStateChanged
   getCurrentSeason
   getTourById
+  hasAnyTickets
   updateTourView
-  MY_FILTERS
+  getEventByDay
   getTourUserData
+  getTourActiveTicket
+  getEventMission
+  isRewardsAvailable
   isTournamentWndAvailable
 }

@@ -571,7 +571,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if (!option)
       return
 
-    showOptionRow(option, !!unit && (getCurrentPreset(unit)?.hasBombs ?? false))
+    showOptionRow(option, !!unit && (getCurrentPreset(unit)?.bomb ?? false))
   }
 
   function checkBombSeriesRow()
@@ -639,7 +639,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     showOptionRow(option, !::get_option_torpedo_dive_depth_auto()
       && unit.isShipOrBoat()
-      && (getCurrentPreset(unit)?.hasTorpedoes ?? false))
+      && (getCurrentPreset(unit)?.torpedo ?? false))
   }
 
   function updateVerticalTargetingOption()

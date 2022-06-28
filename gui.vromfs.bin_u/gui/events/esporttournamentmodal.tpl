@@ -62,7 +62,7 @@ root {
       navBar {}
     }
     tdiv {// CONTENT
-      size:t='fw, ph'
+      size:t='fw, 1@eSEventContentHeight'
       flow:t='vertical'
       tdiv {
         size:t='1@eSDayBgrWidth, 1@eSDayBgrHeight'
@@ -109,10 +109,10 @@ root {
         }
       }
       tdiv {
-        size:t='(648@sf/@pf) \ 1, (108@sf/@pf) \ 1'
+        size:t='(648@sf/@pf) \ 1, 1@eSEventHeaderHeight'
         pos:t='0.5pw-0.5w, -1@eSDayBgrHeight'
         position:t='relative'
-      // HEADER COLORED BGR
+      // COLORED HEADER BGR
         tdiv {
           size:t='pw, ph'
           left:t='0.5pw-0.5w'
@@ -174,40 +174,236 @@ root {
         }
         <</countries>>
       }
-      include "%gui/events/eSportScheduler"
       tdiv {
-        id:t='queue_progress'
-        left:t='0.5pw-0.5w'
+        size:t='pw, fh'
         position:t='relative'
-        width:t='1@eSEventBtnWidth'
-        display:t='hide'
-      }
-      Button_text {
-        id:t='join_btn'
-        width:t='1@eSEventBtnWidth'
-        left:t='0.5pw-0.5w'
-        bottom:t='1@bottomMenuPanelHeight+h+1@eSItemInterval'
-        position:t='relative'
-        visualStyle:t='tournament_battle'
-        text:t = '#events/join_event'
-        display:t='<<#isFinished>>hide<</isFinished>><<^isFinished>>show<</isFinished>>'
-        _on_click:t = 'onJoinEvent'
-        ButtonImg {}
-      }
-      Button_text {
-        id:t='leave_btn'
-        width:t='1@eSEventBtnWidth'
-        left:t='0.5pw-0.5w'
-        bottom:t='1@bottomMenuPanelHeight+h+1@eSItemInterval'
-        position:t='relative'
-        visualStyle:t='tournament_battle'
-        isCancel:t='yes'
-        text:t = '#mainmenu/btnCancel'
-        display:t='hide'
-        _on_click:t = 'onLeaveEvent'
-        ButtonImg {}
+        flow:t='horizontal'
+        tdiv {// LEFT
+          size:t='0.5pw-0.5@eSItemWidth, ph'
+          top:t='1@eSItemPadding'
+          position:t='relative'
+          padding-right:t='2@eSItemPadding'
+          flow:t='vertical'
+          tdiv {
+            tdiv {
+              id:t='my_tournament_img'
+              size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+              top:t='0.5ph-0.5h'
+              position:t='relative'
+              background-image:t='#ui/gameuiskin#tournament_my.svg'
+              background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+              background-color:t='@sessionSelectedColor'
+
+              <<^isMyTournament>>
+              display:t='hide'
+              <</isMyTournament>>
+            }
+            textareaNoTab {
+              bigBoldFont:t='yes'
+              text:t='#tournaments/about'
+            }
+          }
+
+          tdiv {
+            id:t='item_desc'
+            size:t='pw, ph-1@eSItemButtonHeight-3@eSItemPadding'
+            position:t='relative'
+            flow:t='vertical'
+            css-hier-invalidate:t='yes'
+            div {
+              size:t='pw, ph'
+              overflow-y:t='auto'
+              flow:t='vertical'
+              scrollbarShortcuts:t='yes'
+              tdiv {
+                width:t='pw'
+                padding:t='0, 0, 0, 1@blockInterval'
+                flow:t='horizontal'
+                textareaNoTab {
+                  id:t='event_desc_text'
+                  width:t='pw'
+                  text:t='<<descTxt>>'
+                }
+              }
+
+              tdiv {
+                width:t='pw'
+                position:t='relative'
+                flow:t='vertical'
+
+                <<#days>>
+                tdiv {
+                  width:t='pw'
+                  position:t='relative'
+                  padding:t='0, 1@blockInterval'
+                  flow:t='vertical'
+                  collapsed:t='<<collapsed>>'
+
+                  fullSizeCollapseBtn {
+                    size:t='pw, ph'
+                    total-input-transparent:t='yes'
+                    css-hier-invalidate:t='yes'
+                    on_click:t='onCollapse'
+                    collapse_header:t='yes'
+                    activeText{}
+                    ButtonImg {}
+                    text {
+                      position:t='relative'
+                      top:t='0.5ph-0.5h'
+                      text:t='<<chapterName>>'
+                      style:t='color:@sessionSelectedColor;'
+                    }
+
+                    tdiv {
+                      right:t='0'
+                      position:t='relative'
+                      flow:t='horizontal'
+                      <<#dayCountries>>
+                      img {
+                        size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+                        margin-right:t='1@blockInterval'
+                        position:t='relative'
+                        background-image:t='<<icon>>'
+                        background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+                      }
+                      <</dayCountries>>
+                    }
+                  }
+
+                  <<#items>>
+                  tdiv {
+                    padding-left:t='1@eSItemPadding'
+                    position:t='relative'
+                    flow:t='horizontal'
+                    <<#isCollapsed>>
+                    display:t='hide'
+                    <</isCollapsed>>
+
+                    img {
+                      size:t='@checkboxSize, @checkboxSize'
+                      background-image:t='<<image>>'
+                      background-svg-size:t='@checkboxSize, @checkboxSize'
+                      shopItemType:t='<<shopItemType>>'
+                    }
+
+                    textareaNoTab {
+                      top:t='0.5ph-0.5h'
+                      position:t='relative'
+                      text:t='<<text>>'
+                      smallFont:t='yes'
+                    }
+                  }
+                  <</items>>
+                }
+                <</days>>
+              }
+            }
+          }
+        }
+        tdiv {// CENTER
+          size:t='1@eSItemWidth, ph'
+          flow:t='vertical'
+          position:t='relative'
+          include "%gui/events/eSportScheduler"
+
+          tdiv {
+            id:t='wait_time_block'
+            width:t='1@eSEventBtnWidth'
+            position:t='relative'
+            padding:t='1@eSItemPadding'
+            display:t='hide'
+            flow:t='vertical'
+
+            textAreaCentered {
+              id:t='waitText'
+              text-align:t='center'
+              class:t='active'
+              text:t=''
+            }
+
+            animated_wait_icon {
+              id:t='queue_wait_icon'
+              pos:t="0.5pw-0.5w, 0.5ph-0.5h"
+              position:t="relative"
+              background-rotation:t = '0'
+            }
+          }
+
+          tdiv {
+            left:t='0.5pw-0.5w'
+            bottom:t='1@eSItemPadding+0.5@eSEventBtnHeight-0.5@eSItemButtonHeight'
+            position:t='relative'
+            Button_text {
+              id:t='action_btn'
+              width:t='1@eSEventBtnWidth'
+              visualStyle:t='tournament_battle'
+              inactiveColor:t='no'
+              text:t = ''
+              display:t='hide'
+              _on_click:t = 'onBtnAction'
+              ButtonImg {}
+            }
+            Button_text {
+              id:t='leave_btn'
+              width:t='1@eSEventBtnWidth'
+              visualStyle:t='tournament_battle'
+              isCancel:t='yes'
+              text:t = '#mainmenu/btnCancel'
+              display:t='hide'
+              _on_click:t = 'onLeaveEvent'
+              ButtonImg {}
+            }
+          }
+        }
+        tdiv {// RIGHT
+          size:t='0.5pw-0.5@eSItemWidth, ph'
+          top:t='1@eSItemPadding'
+          position:t='relative'
+          padding-left:t='2@eSItemPadding'
+          flow:t='vertical'
+          Button_text {
+            id:t='leaderboard_btn'
+            width:t='1@eSEventBtnWidth'
+            pos:t='pw-w, 1@eSItemInterval'
+            position:t='relative'
+            visualStyle:t='tournament'
+            bigFont:t='yes'
+            text:t = '#tournaments/leaderboard'
+            <<^hasLeaderboardBtn>>
+            display:t='hide'
+            <</hasLeaderboardBtn>>
+            on_click:t = 'onLeaderboard'
+            btnName:t='RB'
+            ButtonImg {}
+            img {
+              size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+              background-image:t='#ui/gameuiskin#tournament_leaderboard.svg'
+              background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+            }
+          }
+          Button_text {
+            id:t='rewards_btn'
+            width:t='1@eSEventBtnWidth'
+            pos:t='pw-w, ph-2@eSItemButtonHeight-4@eSItemPadding-1@eSItemInterval'
+            position:t='relative'
+            visualStyle:t='tournament'
+            bigFont:t='yes'
+            text:t = '<<rewardsBtnTxt>>'
+            <<^hasRewardBtn>>
+            display:t='hide'
+            <</hasRewardBtn>>
+            on_click:t = 'onReward'
+            btnName:t='RB'
+            ButtonImg {}
+          }
+        }
       }
     }
+  }
+
+  gamercard_div {
+    id:t='chapter_gamercard'
+    include '%gui/gamercardBottomPanel.blk'
   }
 }
 

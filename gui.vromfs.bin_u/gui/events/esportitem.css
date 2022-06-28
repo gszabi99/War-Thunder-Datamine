@@ -14,13 +14,14 @@
 @const eSItemCornerSize: (69@sf/@pf) \ 1;
 @const eSItemIcoSize: (33@sf/@pf) \ 1;
 @const tournamentNameTextPos: 1@eSItemCountriesTopPos + 2@eSItemIcoSize + 2@eSItemInterval;
-@const itemUnderlineColor: #f3d02f;
 
 @const eSDayBgrWidth: (540@sf/@pf) \ 1;
 @const eSDayBgrHeight: (40@sf/@pf) \ 1;
 @const eSBtnTextPadding: (24@sf/@pf) \ 1;
 @const eSEventBtnWidth: (380@sf/@pf) \ 1;
 @const eSEventBtnHeight: (68@sf/@pf) \ 1;
+@const eSEventHeaderHeight: (108@sf/@pf) \ 1;
+@const eSEventContentHeight: sh-1@bh-0.15@rh-1@eSDayBgrHeight-1@eSEventHeaderHeight-0.75@eSItemIcoSize;
 
 eSItemDiv {
   size:1@eSItemWidth, 1@eSItemHeight;
@@ -33,7 +34,7 @@ eSItemDiv {
 
 itemUnderline {
   width:pw;
-  background-color:@itemUnderlineColor;
+  background-color:@sessionSelectedColor;
 }
 
 eSItemDiv:hover {

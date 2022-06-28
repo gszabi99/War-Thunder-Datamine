@@ -2386,19 +2386,18 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return tickets.len() > 0 ? tickets[0] : null
   }
 
-  function getEventActiveTicketText(event, valueColor = "activeTextColor")
-  {
+  function getEventActiveTicketText(event, valueColor = "activeTextColor") {
     let ticket = getEventActiveTicket(event)
     if (!ticket)
       return ""
 
-    local text = ""
-    if (ticket.getCost() > ::zero_money)
-      text += ::loc("events/ticket_cost", { cost = ::colorize(valueColor, ticket.getCost(true).getTextAccordingToBalance()) })
-    let specialText = ticket.getAvailableDefeatsText(::events.getEventEconomicName(event))
-    if (specialText != "")
-      text += "\n" + specialText
-    return text
+    return "\n".join([
+        ticket.getCost() > ::zero_money
+          ? ::loc("events/ticket_cost", {
+            cost = ::colorize(valueColor, ticket.getCost(true).getTextAccordingToBalance()) })
+          : "",
+        ticket.getAvailableDefeatsText(::events.getEventEconomicName(event))
+      ], true)
   }
 
   /**
