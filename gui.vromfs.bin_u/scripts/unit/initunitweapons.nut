@@ -33,7 +33,7 @@ let function addReqParamsToWeaponry(weaponry, blk) {
   }
 }
 
-let function initPresetParams(weapon, blk) {
+let function initPresetParams(weapon, blk = null) {
   let weaponmask = weapon.weaponmask
   weapon.hasMines <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MINES]) != 0
   weapon.bomb <- (weaponmask & BOMBS_WEAPON_MASK) != 0
@@ -60,11 +60,13 @@ let function initCustomPresetParams(unit, weapon) {
         weapon.weaponmask <- (weapon?.weaponmask ?? 0) | (blk?.weaponmask ?? 0)
         if ("mass_per_sec" in blk)
           massPerSecValue += blk.mass_per_sec
-        initPresetParams(weapon, blk)
+        foreach(p in weaponWpCostProperties)
+          weapon[p] <- weapon?[p] ?? blk?[p]
+        if ((weapon.weaponmask & BOMBS_WEAPON_MASK) != 0)
+          bombsNbr += blk?.totalBombCount ?? 0
       })
-    if (weapon.bomb)
-      bombsNbr += weapon.bombsNbr
   }
+  initPresetParams(weapon)
   weapon.bombsNbr <- bombsNbr
   weapon.mass_per_sec <- massPerSecValue
 }

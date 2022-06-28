@@ -186,30 +186,42 @@
     "AirbrakeCd": 0.09,
     "CockpitDoorCd": 0.01,
     "SweepAxisByMachAuto0": [
+      0.05,
+      0.0,
+      0.0,
+      0.99
+    ],
+    "SweepAxisByMachAuto1": [
+      0.15,
+      0.0,
+      0.0,
+      0.5
+    ],
+    "SweepAxisByMachAuto2": [
       0.35,
       0.0,
       0.0,
       0.5
     ],
-    "SweepAxisByMachAuto1": [
+    "SweepAxisByMachAuto3": [
       0.45,
       0.0,
       0.35,
       1.0
     ],
-    "SweepAxisByMachAuto2": [
+    "SweepAxisByMachAuto4": [
       0.7,
       0.0,
       0.55,
       1.0
     ],
-    "SweepAxisByMachAuto3": [
+    "SweepAxisByMachAuto5": [
       0.92,
       0.5,
       0.5,
       1.0
     ],
-    "SweepAxisByMachAuto4": [
+    "SweepAxisByMachAuto6": [
       1.0,
       0.5,
       1.0,
@@ -245,21 +257,21 @@
       "Flaps": 0.2,
       "FlapsPolarBlending": 0.2,
       "FlapsAnimation": 0.2,
-      "Stab": -0.1,
+      "Stab": 0.0,
       "Slats": 0.3
     },
     "Flaps2": {
       "Flaps": 0.4,
       "FlapsPolarBlending": 0.4,
       "FlapsAnimation": 0.4,
-      "Stab": -0.5,
+      "Stab": 0.0,
       "Slats": 0.6
     },
     "Flaps3": {
       "Flaps": 1.0,
       "FlapsPolarBlending": 1.0,
       "FlapsAnimation": 1.0,
-      "Stab": -2.0,
+      "Stab": 0.0,
       "Slats": 1.0
     },
     "WingPlaneSweep0": {
@@ -267,7 +279,7 @@
       "Span": 19.0,
       "SweptAngle": 20.0,
       "TaperRatio": 3.0,
-      "Angle": 1.0,
+      "Angle": 1.5,
       "VAngle": -1.5,
       "UseSpinLoss": true,
       "SpinCdloss": 0.22,
@@ -369,7 +381,13 @@
         "MultLineCoeff7": -0.2,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
+          0.0
+        ],
+        "ClToCmByMach1": [
+          0.4,
           0.0,
           0.0
         ],
@@ -427,14 +445,20 @@
         "MultLineCoeff7": -0.2,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.12,
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
           0.0
         ],
-        "Cl0": 0.78,
+        "ClToCmByMach1": [
+          0.3,
+          0.1,
+          0.0
+        ],
+        "Cl0": 0.85,
         "alphaCritHigh": 28.5,
         "alphaCritLow": -20.0,
-        "ClCritHigh": 2.25,
+        "ClCritHigh": 2.3,
         "ClCritLow": -0.35,
         "CdMin": 0.09
       },
@@ -1172,11 +1196,11 @@
       "Sensitivity": 0.99,
       "SensitivityMultiplier0": [
         0.0,
-        0.7
+        0.8
       ],
       "SensitivityMultiplier1": [
-        0.15,
-        1.0
+        0.2,
+        0.9
       ],
       "SensitivityMultiplier2": [
         0.3,
@@ -2216,7 +2240,7 @@
     "SinkRateMult": 0.227839,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
-    "GearOffset": -0.0,
+    "GearOffset": 0.02,
     "UseCenterOfGravity": true,
     "HasWheels": true,
     "Height": 1.5,
