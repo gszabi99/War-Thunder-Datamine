@@ -63,12 +63,12 @@ let function aircraftMainHud(isBackground) {
 }
 
 
- let aircraftGunnerHud = @(isBackground)
+let aircraftGunnerHud = @(isBackground)
   @() {
     watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated]
     children = IsGunnerHudVisible.value
       ? [
-        isTurretSightActivated.value ? aircraftTurretsComponent() : isTurretSightActivated
+        isTurretSightActivated.value ? aircraftTurretsComponent() : null
         isParamTableActivated.value ? aircraftParamsTable(isBackground) : null
       ]
       : null
