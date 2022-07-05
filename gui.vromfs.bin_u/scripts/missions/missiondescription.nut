@@ -355,10 +355,4 @@ let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorial
     if (::g_mislist_type.isUrlMission(curMission))
       ::g_url_missions.loadBlk(curMission)
   }
-
-  function onEventUrlMissionLoaded(p)
-  {
-    if (::g_mislist_type.isUrlMission(curMission))
-      update()
-  }
 }

@@ -275,10 +275,10 @@ EventRewards.getBaseVictoryReward <- function getBaseVictoryReward(event)
   return (wp || gold) ? ::Cost(wp, gold) : null
 }
 
-EventRewards.getSortedRewardsByConditions <- function getSortedRewardsByConditions(event)
+EventRewards.getSortedRewardsByConditions <- function getSortedRewardsByConditions(event, awardsBlk  = null)
 {
   let res = {}
-  let rBlk = getRewardsBlk(event)
+  let rBlk = awardsBlk ?? getRewardsBlk(event)
   if (!rBlk)
     return res
 

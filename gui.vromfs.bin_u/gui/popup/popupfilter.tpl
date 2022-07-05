@@ -15,7 +15,8 @@ tdiv {
     textarea {
       id:t='filter_button_text'
       pos:t='pw-w, 0.5ph-0.5h'
-      position:t='relative'
+      padding-right:t='1@buttonImgPadding'
+      position:t='absolute'
     }
   }
 }

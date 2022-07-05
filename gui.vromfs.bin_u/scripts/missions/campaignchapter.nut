@@ -410,6 +410,14 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     doWhenActiveOnce("updateWindow")
   }
 
+  function onEventUrlMissionLoaded(params)
+  {
+    if (params.mission != curMission.urlMission)
+      return
+    curMission.blk = params.mission.getMetaInfo()
+    missionDescWeak?.setMission(curMission)
+  }
+
   function getFavoritesSaveId()
   {
     return "wnd/isOnlyFavoriteMissions/" + misListType.id

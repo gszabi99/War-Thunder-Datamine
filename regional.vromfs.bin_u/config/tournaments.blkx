@@ -3,56 +3,48 @@
     "goldPerBattle": 100,
     "baseWpAward": 100000,
     "requiredTicket": false,
-    "awards": [
-      {
-        "pr": {
+    "awards": {
+      "pr": [
+        {
           "condition_type": "field_number",
           "fieldName": "wins",
           "value": 3.0,
           "gold": 1000
-        }
-      },
-      {
-        "pr": {
+        },
+        {
           "condition_type": "reach_value",
           "fieldName": "wins",
           "value": 3.0,
           "itemsName": "booster_shop_pub_wp_10",
           "itemsCount": 1
-        }
-      },
-      {
-        "pr": {
+        },
+        {
           "condition_type": "sequence_wins",
           "value": 3.0,
           "trophyName": "shop_trophy_test_random_skin",
           "trophyCount": 2
         }
-      }
-    ]
+      ]
+    }
   },
   "20_05_rb_defenders_day": {
     "requiredTicket": true,
-    "tickets": [
-      {
-        "sharedTicket": "ticket_test_linkage_first"
-      },
-      {
-        "sharedTicket": "ticket_test_linkage_second"
-      },
-      {
-        "ticket_20_05_rb_defenders_day": {
-          "type": "tournamentTicket",
-          "costGold": 199,
-          "iconStyle": "gold_red",
-          "locId": "tickets/ticket_20_05_rb_defenders_day",
-          "purchase_feature": "devItemShop",
-          "tournamentTicketParams": {
-            "battleLimit": 10
-          }
+    "tickets": {
+      "sharedTicket": [
+        "ticket_test_linkage_first",
+        "ticket_test_linkage_second"
+      ],
+      "ticket_20_05_rb_defenders_day": {
+        "type": "tournamentTicket",
+        "costGold": 199,
+        "iconStyle": "gold_red",
+        "locId": "tickets/ticket_20_05_rb_defenders_day",
+        "purchase_feature": "devItemShop",
+        "tournamentTicketParams": {
+          "battleLimit": 10
         }
       }
-    ]
+    }
   },
   "20_05_ab_defenders_day": {
     "requiredTicket": true,
@@ -124,67 +116,59 @@
   },
   "13_07_tank_football": {
     "requiredTicket": false,
-    "awards": [
-      {
-        "pr": {
+    "awards": {
+      "pr": [
+        {
           "condition_type": "reach_value",
           "fieldName": "ext1",
           "value": 40.0,
           "trophyName": "tank_football_tournaments_skin_trophy",
           "trophyCount": 1
-        }
-      },
-      {
-        "pr": {
+        },
+        {
           "condition_type": "reach_value",
           "fieldName": "ext2",
           "value": 20.0,
           "trophyName": "tank_football_tournaments_skin_trophy",
           "trophyCount": 1
-        }
-      },
-      {
-        "pr": {
+        },
+        {
           "condition_type": "reach_value",
           "fieldName": "rating",
           "value": 1000.0,
           "trophyName": "tank_football_tournaments_decal_trophy",
           "trophyCount": 1
         }
-      }
-    ]
+      ]
+    }
   },
   "13_07_tank_football_squads": {
     "requiredTicket": false,
-    "awards": [
-      {
-        "pr": {
+    "awards": {
+      "pr": [
+        {
           "condition_type": "reach_value",
           "fieldName": "ext1",
           "value": 40.0,
           "trophyName": "tank_football_tournaments_skin_trophy",
           "trophyCount": 1
-        }
-      },
-      {
-        "pr": {
+        },
+        {
           "condition_type": "reach_value",
           "fieldName": "ext2",
           "value": 20.0,
           "trophyName": "tank_football_tournaments_skin_trophy",
           "trophyCount": 1
-        }
-      },
-      {
-        "pr": {
+        },
+        {
           "condition_type": "reach_value",
           "fieldName": "rating",
           "value": 1000.0,
           "trophyName": "tank_football_tournaments_decal_trophy",
           "trophyCount": 1
         }
-      }
-    ]
+      ]
+    }
   },
   "11_03_2022_tank_football_tournament": {
     "requiredTicket": false

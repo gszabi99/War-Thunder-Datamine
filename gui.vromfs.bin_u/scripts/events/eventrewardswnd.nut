@@ -7,11 +7,11 @@
   event = null
   rewardsList = null
 
-  static function open(v_event)
+  static function open(v_event, awardsBlk = null)
   {
     if (!v_event)
       return
-    let rewards = ::EventRewards.getSortedRewardsByConditions(v_event)
+    let rewards = ::EventRewards.getSortedRewardsByConditions(v_event, awardsBlk)
     if (!rewards.len() && !::EventRewards.getBaseVictoryReward(v_event))
       return
 

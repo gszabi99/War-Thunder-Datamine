@@ -1,18 +1,17 @@
 tdiv {
+  id:t='session_obj'
   width:t='pw'
   position:t='relative'
   padding:t='2@eSItemInterval, 1@eSItemInterval'
   flow:t='horizontal'
   smallFont:t='yes'
-  <<^isActive>>
-  <<^isNext>>
+  <<^isTourWndAvailable>>
   display:t='hide'
-  <</isNext>>
-  <</isActive>>
+  <</isTourWndAvailable>>
 
   textareaNoTab {
     position:t='relative'
-    text:t='#tournaments/session'
+    text:t='#tournaments/schedule'
   }
 
   <<#sessions>>
@@ -62,11 +61,9 @@ tdiv {
   position:t='relative'
   padding:t='2@eSItemInterval, 1@eSItemInterval'
   flow:t='vertical'
-  <<^isActive>>
-  <<^isNext>>
+  <<^isTourWndAvailable>>
   display:t='hide'
-  <</isNext>>
-  <</isActive>>
+  <</isTourWndAvailable>>
 
   tdiv {
     id:t='training_nest'

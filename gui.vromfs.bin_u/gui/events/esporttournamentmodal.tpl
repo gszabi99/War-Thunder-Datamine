@@ -25,44 +25,12 @@ root {
         }
       }
 
-      tdiv {
-        id:t='battle_nest'
-        left:t='pw-w-1@buttonCloseHeight-1@blockInterval'
-        position:t='relative'
-        flow:t='horizontal'
-        <<^isActive>>
-        display:t='hide'
-        <</isActive>>
-        img {
-          size:t='1@fontHeightNormal, 1@fontHeightNormal'
-          pos:t='1@blockInterval, 0.5ph-0.5h'
-          position:t='relative'
-          background-image:t='#ui/gameuiskin#tournament_battles.svg'
-          background-svg-size:t='1@fontHeightNormal, 1@fontHeightNormal'
-        }
-        textareaNoTab {
-          id:t='battle_num'
-          pos:t='1@blockInterval, 0.5ph-0.5h'
-          position:t='relative'
-          normalBoldFont:t='yes'
-          text:t='<<battlesNum>>'
-        }
-        img {//!!!FIX Layered icon need
-          size:t='1@eSItemDivisionWidth, 1@eSItemDivisionHeight'
-          pos:t='1@blockInterval, 0.5ph-0.5h'
-          position:t='relative'
-          background-image:t='<<divisionImg>>'
-          background-svg-size:t='1@eSItemDivisionWidth, 1@eSItemDivisionHeight'
-          <<#isFinished>>
-          background-saturate:t='0'
-          <</isFinished>>
-        }
-      }
       Button_close { id:t = 'btn_back' }
       navBar {}
     }
     tdiv {// CONTENT
       size:t='fw, 1@eSEventContentHeight'
+      position:t='relative'
       flow:t='vertical'
       tdiv {
         size:t='1@eSDayBgrWidth, 1@eSDayBgrHeight'
@@ -89,11 +57,11 @@ root {
           text:t='|'
         }
         textareaNoTab {
-          id:t='battle_day'
+          id:t='type_txt'
           pos:t='0.5pw-0.5w, 0.5ph-0.5h'
           position:t='absolute'
           padding:t='1@eSBtnTextPadding, 0'
-          text:t='<<battleDay>>'
+          text:t='<<tournamentType>>'
         }
         textareaNoTab{
           pos:t='0.75pw, 0.5ph-0.5h'
@@ -101,11 +69,11 @@ root {
           text:t='|'
         }
         textareaNoTab {
-          id:t='type_txt'
+          id:t='battle_day'
           pos:t='pw-w, 0.5ph-0.5h'
           position:t='absolute'
           padding:t='1@eSBtnTextPadding, 0'
-          text:t='<<tournamentType>>'
+          text:t='<<battleDay>>'
         }
       }
       tdiv {
@@ -175,12 +143,13 @@ root {
         <</countries>>
       }
       tdiv {
-        size:t='pw, fh'
+        height:t='fh'
+        left:t='0.5pw-0.5w'
         position:t='relative'
+        padding:t='0, 1@eSItemPadding'
         flow:t='horizontal'
         tdiv {// LEFT
-          size:t='0.5pw-0.5@eSItemWidth, ph'
-          top:t='1@eSItemPadding'
+          size:t='1@eSEventBtnWidth+4@eSItemPadding, ph'
           position:t='relative'
           padding-right:t='2@eSItemPadding'
           flow:t='vertical'
@@ -308,7 +277,7 @@ root {
 
           tdiv {
             id:t='wait_time_block'
-            width:t='1@eSEventBtnWidth'
+            width:t='1@eSItemWidth'
             position:t='relative'
             padding:t='1@eSItemPadding'
             display:t='hide'
@@ -316,6 +285,8 @@ root {
 
             textAreaCentered {
               id:t='waitText'
+              pos:t="0.5pw-0.5w, 0.5ph-0.5h"
+              position:t="relative"
               text-align:t='center'
               class:t='active'
               text:t=''
@@ -331,7 +302,7 @@ root {
 
           tdiv {
             left:t='0.5pw-0.5w'
-            bottom:t='1@eSItemPadding+0.5@eSEventBtnHeight-0.5@eSItemButtonHeight'
+            bottom:t='2@eSItemPadding-1@buttonMargin'
             position:t='relative'
             Button_text {
               id:t='action_btn'
@@ -356,15 +327,13 @@ root {
           }
         }
         tdiv {// RIGHT
-          size:t='0.5pw-0.5@eSItemWidth, ph'
-          top:t='1@eSItemPadding'
+          size:t='1@eSEventBtnWidth+4@eSItemPadding, ph'
           position:t='relative'
-          padding-left:t='2@eSItemPadding'
           flow:t='vertical'
           Button_text {
-            id:t='leaderboard_btn'
+            id:t='leaderboard_obj'
             width:t='1@eSEventBtnWidth'
-            pos:t='pw-w, 1@eSItemInterval'
+            left:t='pw-w'
             position:t='relative'
             visualStyle:t='tournament'
             bigFont:t='yes'
@@ -384,7 +353,8 @@ root {
           Button_text {
             id:t='rewards_btn'
             width:t='1@eSEventBtnWidth'
-            pos:t='pw-w, ph-2@eSItemButtonHeight-4@eSItemPadding-1@eSItemInterval'
+            left:t='pw-w'
+            bottom:t='2@eSItemPadding'
             position:t='relative'
             visualStyle:t='tournament'
             bigFont:t='yes'

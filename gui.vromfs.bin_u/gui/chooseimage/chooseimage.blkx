@@ -29,6 +29,8 @@
         "behavior": "posNavigator",
         "navigatorShortcuts": "yes",
         "showSelect": "always",
+        "on_click": "onImageChoose",
+        "on_dbl_click": "onDblClick",
         "on_select": "onImageSelect"
       },
       "navBar": {
@@ -38,9 +40,8 @@
         "navRight": {
           "Button_text": {
             "id": "btn_select",
-            "text": "#mainmenu/btnSelect",
             "btnName": "A",
-            "_on_click": "onChoose",
+            "_on_click": "onAction",
             "visualStyle": "secondary",
             "buttonWink": {},
             "ButtonImg": {}

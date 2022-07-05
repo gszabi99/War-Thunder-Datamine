@@ -1,7 +1,7 @@
 {
   "import": [
-    "replicating",
-    "setting__attack_type"
+    "#game_pkg_dev/templates/*.blk",
+    "%danetlibs/route_prober/templates/route_prober.blk"
   ],
   "replicating": {
     "replication": {}
@@ -20,16 +20,16 @@
     "server_load_stat__load": 0.0
   },
   "unit_loader": {
-    "setting__className": "delayed_action__doAtTime",
+    "setting__className": "",
     "setting__playerNo": -1,
-    "setting__unitType": "delayed_action__doAtTime",
+    "setting__unitType": "",
     "setting__crewSkillK": -1.0,
-    "setting__weapons": "delayed_action__doAtTime",
-    "setting__skin": "delayed_action__doAtTime",
+    "setting__weapons": "",
+    "setting__skin": "",
     "setting__canChangeUnit": false,
     "setting__isPhysPredictionEnabled": false,
     "setting__loadAnim": false,
-    "setting__unit_class": "delayed_action__doAtTime",
+    "setting__unit_class": "",
     "setting__applyAllMods": false,
     "setting__closed_waypoints": false,
     "setting__tm": [
@@ -56,11 +56,11 @@
     ],
     "setting__isDelayed": false,
     "setting__shouldDrawSmallIndForMissTarget": true,
-    "setting__uniqueName": "delayed_action__doAtTime",
+    "setting__uniqueName": "",
     "setting__count": 1,
-    "setting__attack_type": "delayed_action__doAtTime",
+    "setting__attack_type": "",
     "setting__army": 0,
-    "setting__formation_type": "delayed_action__timer",
+    "setting__formation_type": "cols",
     "setting__formation_div": 1,
     "setting__formation_step": [
       1.0,
@@ -83,11 +83,11 @@
     "setting__targetableByAi": true,
     "setting__isImmortal": false,
     "setting__calmDetection": false,
-    "setting__name": "delayed_action__doAtTime",
+    "setting__name": "",
     "setting__flags": 0,
     "setting__aiReloadMult": 1.0,
     "setting__speed": 0.0,
-    "setting__routeName": "delayed_action__doAtTime",
+    "setting__routeName": "",
     "setting__toGround": false,
     "setting__bullets:list<t>": {},
     "setting__bulletsCount:list<i>": {},
@@ -116,7 +116,7 @@
         0.0
       ]
     ],
-    "spawnPointType": "delayed_action__doAtTime",
+    "spawnPointType": "",
     "missionObject:tag": {}
   },
   "backmodel_spawn_point": {
@@ -124,7 +124,7 @@
     "forPremiumVehicle": false
   },
   "route": {
-    "route__routeId": "delayed_action__doAtTime",
+    "route__routeId": "",
     "route__isLooped": false,
     "missionObject:tag": {},
     "route__wayPointsNames:list<t>": {},
@@ -153,8 +153,8 @@
         0.0
       ]
     ],
-    "way_point__name": "delayed_action__doAtTime",
-    "way_point__moveType": "delayed_action__doAtTime",
+    "way_point__name": "",
+    "way_point__moveType": "",
     "way_point__speed": 30.0,
     "way_point__radius": 5.0,
     "missionObject:tag": {}
@@ -172,7 +172,7 @@
   },
   "delayed_unit_shot": {
     "_extends": "delayed_action",
-    "delayed_unit_shot__unitName": "delayed_action__doAtTime",
+    "delayed_unit_shot__unitName": "",
     "delayed_unit_shot__triggerGroup": 0
   },
   "action_by_date": {
@@ -196,14 +196,14 @@
   },
   "unit_shot_by_date": {
     "_extends": "action_by_date",
-    "unit_shot_by_date__unitName": "delayed_action__doAtTime",
+    "unit_shot_by_date__unitName": "",
     "unit_shot_by_date__triggerGroup": 0
   },
   "ri_gpu_object": {
     "_extends": "replicating",
     "_group": {
       "_track": true,
-      "ri_gpu_object__name": "playerNo",
+      "ri_gpu_object__name": "ammunition_box_n",
       "ri_gpu_object__grid_tiling": 4,
       "ri_gpu_object__grid_size": 16,
       "ri_gpu_object__cell_size": 8.0,
@@ -235,7 +235,7 @@
         0.0,
         0.0
       ],
-      "ri_gpu_object__map": "delayed_action__doAtTime",
+      "ri_gpu_object__map": "",
       "ri_gpu_object__map_size": [
         512.0,
         512.0
@@ -257,7 +257,7 @@
         0.0
       ],
       "ri_gpu_object__hardness": 1.0,
-      "ri_gpu_object__shader_graph": "delayed_action__doAtTime",
+      "ri_gpu_object__shader_graph": "",
       "ri_gpu_object__sparse_weight": 0.0,
       "ri_gpu_object__decal": false,
       "ri_gpu_object__transparent": false,
@@ -273,11 +273,11 @@
       "ri_gpu_object__biome_params:array": {},
       "ri_gpu_object__multiple_objects:array": {},
       "ri_gpu_object__node_based_shader_preload": {
-        "_tags": "mod__name"
+        "_tags": "render"
       }
     },
     "ri_preload:GpuObjectRiResourcePreload": {
-      "_tags": "mod__name"
+      "_tags": "render"
     }
   },
   "light": {
@@ -351,10 +351,10 @@
         -1.0,
         0.0
       ],
-      "light__texture_name": "delayed_action__doAtTime"
+      "light__texture_name": ""
     },
     "omni_light": {
-      "_tags": "mod__name"
+      "_tags": "render"
     },
     "destroyable_with_rendinst:tag": {}
   },
@@ -368,12 +368,12 @@
       {
         "_track": true,
         "_replicate": true,
-        "light__texture_name": "delayed_action__doAtTime",
+        "light__texture_name": "",
         "light__max_radius": 45.0,
         "light__brightness": 100.0
       },
       {
-        "_tags": "mod__name",
+        "_tags": "render",
         "_replicate": true,
         "_track": true,
         "spot_light__inner_attenuation": 0.9,
@@ -384,7 +384,7 @@
       }
     ],
     "spot_light": {
-      "_tags": "mod__name"
+      "_tags": "render"
     },
     "destroyable_with_rendinst:tag": {}
   },
@@ -404,7 +404,7 @@
     ],
     "_replicate": true,
     "_group": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "spot_light__dynamic_obj_shadows": false,
       "spot_light__shadows": false
     }
@@ -421,7 +421,7 @@
         "light__brightness": 15.0
       },
       {
-        "_tags": "mod__name",
+        "_tags": "render",
         "spot_light__dynamic_obj_shadows": false,
         "spot_light__shadows": false
       }
@@ -435,7 +435,7 @@
     "light__max_radius": 25000.0,
     "light__brightness": 250000.0,
     "_group": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "spot_light__dynamic_obj_shadows": false,
       "spot_light__shadows": false
     }
@@ -691,7 +691,7 @@
     "light__brightness": 500.0,
     "light__color": "/2QK/w==",
     "_group": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "spot_light__dynamic_obj_shadows": false,
       "spot_light__shadows": false
     }
@@ -768,7 +768,7 @@
     "light__brightness": 60.0,
     "light__color": "/9yg/w==",
     "_group": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "spot_light__inner_attenuation": 0.5,
       "spot_light__dynamic_obj_shadows": true
     },
@@ -783,7 +783,7 @@
     "light__brightness": 15.0,
     "light__color": "//q0/w==",
     "_group": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "spot_light__inner_attenuation": 0.5,
       "spot_light__dynamic_obj_shadows": true
     },
@@ -798,7 +798,7 @@
     "light__brightness": 150.0,
     "light__color": "//q0/w==",
     "_group": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "spot_light__inner_attenuation": 0.5,
       "spot_light__dynamic_obj_shadows": true
     },
@@ -813,7 +813,7 @@
     "light__brightness": 250.0,
     "light__color": "//q0/w==",
     "_group": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "spot_light__dynamic_obj_shadows": true
     }
   },
@@ -852,7 +852,7 @@
     "floatingRiGroup__maxShiftDist": 1000.0,
     "_group": {
       "_track": true,
-      "floatingRiGroup__resName": "delayed_action__doAtTime",
+      "floatingRiGroup__resName": "",
       "floatingRiGroup__mass": 1.0,
       "floatingRiGroup__inertiaMult": [
         80.0,
@@ -860,7 +860,7 @@
         80.0
       ],
       "floatingRiGroup__volumesCount": -1,
-      "floatingRiGroup__volumePresetName": "delayed_action__doAtTime",
+      "floatingRiGroup__volumePresetName": "",
       "floatingRiGroup__geomCenterShift": [
         0.0,
         0.0,
@@ -886,13 +886,13 @@
       "replicating"
     ],
     "uid": -1,
-    "className": "delayed_action__doAtTime",
+    "className": "",
     "playerNo": -1,
     "is_local": false,
     "unitVersion": 0,
     "unitType": -1,
     "canChangeUnit": false,
-    "missionUnitName": "delayed_action__doAtTime",
+    "missionUnitName": "",
     "_replicated": "uid",
     "_tracked": "playerNo"
   },
@@ -917,20 +917,20 @@
   },
   "toolkit_ecs": {
     "_extends": "expendable_mod",
-    "mod__name": "action_by_date__yearFrom",
-    "mod__type_name": "ri_gpu_object__grid_size",
+    "mod__name": "tank_tool_kit_expendable",
+    "mod__type_name": "toolkit",
     "mod__enabled_without_mod": false
   },
   "ship_toolkit_ecs": {
     "_extends": "expendable_mod",
-    "mod__name": "ri_gpu_object__incline_delta",
-    "mod__type_name": "ri_gpu_object__grid_size",
+    "mod__name": "ship_tool_kit",
+    "mod__type_name": "toolkit",
     "mod__send_economic_spend": false
   },
   "extinguisher_ecs": {
     "_extends": "expendable_mod",
-    "mod__name": "ri_gpu_object__hardness",
-    "mod__type_name": "spot_light"
+    "mod__name": "manual_extinguisher_expendable",
+    "mod__type_name": "extinguisher"
   },
   "ship_extinguisher_ecs": {
     "_extends": "extinguisher_ecs",
@@ -938,24 +938,24 @@
   },
   "medicalkit_ecs": {
     "_extends": "expendable_mod",
-    "mod__name": "field_light_large",
-    "mod__type_name": "spot_light_green_extralarge",
+    "mod__name": "tank_medical_kit_expendable",
+    "mod__type_name": "medicalkit",
     "mod__enabled_without_mod": false,
     "mod__count_effects_mod": true
   },
   "smokescreen_ecs": {
     "_extends": "expendable_mod",
-    "mod__type_name": "sphereRad",
+    "mod__type_name": "smokescreen",
     "mod__enabled_without_mod": true,
     "mod__send_economic_spend": false
   },
   "tank_smokescreen_ecs": {
     "_extends": "smokescreen_ecs",
-    "mod__name": "delayed_action__doAtTime"
+    "mod__name": ""
   },
   "ship_smokescreen_ecs": {
     "_extends": "smokescreen_ecs",
-    "mod__name": "delayed_action__doAtTime"
+    "mod__name": ""
   },
   "ground_unit": {
     "_extends": "simple_ground_unit",
@@ -997,16 +997,16 @@
       ]
     },
     "track_sound": {
-      "_tags": "tank_smokescreen_ecs"
+      "_tags": "sound"
     },
     "physical_tracks": {
-      "_tags": "mod__name"
+      "_tags": "render"
     },
     "physical_tracks__isLeft:list<b>": {
-      "_tags": "mod__name"
+      "_tags": "render"
     },
     "physical_tracks_force_update:b": {
-      "_tags": "mod__name",
+      "_tags": "render",
       "value": true
     }
   },
@@ -1024,7 +1024,7 @@
       ]
     },
     "track_sound": {
-      "_tags": "tank_smokescreen_ecs"
+      "_tags": "sound"
     }
   },
   "controlled_hero": {
@@ -1079,10 +1079,10 @@
     "m_player": {}
   },
   "background_model": {
-    "background_model__model": "delayed_action__doAtTime",
-    "background_model__skin": "delayed_action__doAtTime",
-    "background_model__unitName": "delayed_action__doAtTime",
-    "background_model__weapon": "delayed_action__doAtTime",
+    "background_model__model": "",
+    "background_model__skin": "",
+    "background_model__unitName": "",
+    "background_model__weapon": "",
     "background_model__isPlane": false,
     "background_model__tm": [
       [
@@ -1113,11 +1113,11 @@
   },
   "level": {
     "isLocal": true,
-    "level__blk": "delayed_action__doAtTime",
-    "level__bin": "delayed_action__doAtTime",
-    "level__environment": "floatingRiGroup__geomCenterShift",
+    "level__blk": "",
+    "level__bin": "",
+    "level__environment": "Day",
     "level__loaded": false,
-    "level__weather": "floatingRiGroup__interactionType"
+    "level__weather": "hazy"
   },
   "render_view_cam": {
     "camera__active": false,
@@ -1202,7 +1202,7 @@
       "smoke__fx_id": -1
     },
     "smoke__smoke_fx": {
-      "_tags": "mod__name"
+      "_tags": "render"
     }
   },
   "camera_fx": {
@@ -1231,9 +1231,9 @@
       ]
     ],
     "camera_fx__radius": 10.0,
-    "camera_fx__res": "floatingRiGroup__riPhysFloatingModel",
+    "camera_fx__res": "unknown",
     "camera_fx": {
-      "_tags": "mod__name"
+      "_tags": "render"
     }
   },
   "disable_move": {
@@ -1269,7 +1269,7 @@
     "sand_worm__needSync": false,
     "_group": [
       {
-        "_tags": "unit_fire",
+        "_tags": "server",
         "sand_worm__delayTimer": -1.0,
         "sand_worm__radiusDecK": 1.4,
         "sand_worm__inactiveTime": 30.0,
@@ -1298,15 +1298,15 @@
         "sand_worm__excludeAreasId:list<i>": {}
       },
       {
-        "_tags": "unit_fx",
+        "_tags": "gameClient",
         "sand_worm__cameraShake": [
           15.0,
           10.0,
           10.0
         ],
         "sand_worm__cameraShakeTimer": -1.0,
-        "sand_worm__appearSound": "track_sound",
-        "sand_worm__nearSound": "torpedo_gun",
+        "sand_worm__appearSound": "desert/creature_appear",
+        "sand_worm__nearSound": "desert/creature_move",
         "sand_worm__near_dist": 600.0,
         "sand_worm__near_shake:list<p3>": {
           "n": [
@@ -1358,7 +1358,7 @@
           ]
         },
         "sand_worm__nearSoundEvent:SoundEvent": {
-          "_tags": "tank_smokescreen_ecs"
+          "_tags": "sound"
         }
       }
     ]
@@ -1412,21 +1412,21 @@
     "_replicated": "sand_worm__victimUid",
     "_group": [
       {
-        "_tags": "mod__name",
-        "worm_visual__res": "level__blk",
+        "_tags": "render",
+        "worm_visual__res": "shai_char",
         "sand_worm__animVarId": -1,
         "sand_worm__animValue": -1.0,
         "sand_worm__animTime": 10.0,
-        "sand_worm__animName": "znear",
+        "sand_worm__animName": "shai_action",
         "sand_worm__linkNodeId": -1,
-        "sand_worm__linkNodeName": "smoke__transparent_for_thermal",
-        "sand_worm__attackSfx": "camera_fx__res",
+        "sand_worm__linkNodeName": "trigger",
+        "sand_worm__attackSfx": "desert/creature_attack",
         "sand_worm__attackFxId": -1,
-        "sand_worm__attackFxName": "sand_worm__activateTime",
+        "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
         "worm_visual": {}
       },
       {
-        "_tags": "unit_fire",
+        "_tags": "server",
         "sand_worm__delayedTimer": -1.0,
         "sand_worm__delayedTime": 12.0
       }
@@ -1471,8 +1471,8 @@
     "damage_area__damage": 0.0,
     "damage_area__damageTypeId": -1,
     "damage_area__seed": 0,
-    "damage_area__fxType": "delayed_action__doAtTime",
-    "damage_area__burnFxType": "delayed_action__doAtTime",
+    "damage_area__fxType": "",
+    "damage_area__burnFxType": "",
     "damage_area__burnFxSize": 0.0,
     "damage_area__flightTime": 0.0,
     "damage_area__scorchMarginSize": 0.0,
@@ -1491,12 +1491,12 @@
         "damage_area__move": true
       },
       {
-        "_tags": "unit_fire",
+        "_tags": "server",
         "damage_area__offenderId": 0,
         "damage_area__nextUpdateTime": 0.0
       },
       {
-        "_tags": "unit_fx",
+        "_tags": "gameClient",
         "damage_area__emitterVel:list<p3>": {},
         "damage_area__emitterPos:list<p3>": {},
         "damage_area__emitterPosPrev:list<p3>": {},
@@ -1505,7 +1505,7 @@
         "damage_area__burnFxCounts:list<i>": {}
       },
       {
-        "_tags": "unit_fx",
+        "_tags": "gameClient",
         "damage_area__debugCommonId": 1,
         "damage_area__debugTraceId": 2,
         "damage_area__debugEmitterColor": "/39//w==",

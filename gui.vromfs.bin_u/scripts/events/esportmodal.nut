@@ -3,9 +3,12 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
-let { MY_FILTERS, TOURNAMENT_TYPES, getTourUserData, getCurrentSeason, checkByFilter,
-  getTourListViewData, updateTourView, getTourById, removeItemFromList, getEventByDay,
-  getTourParams, isTournamentWndAvailable, hasAnyTickets } = require("%scripts/events/eSport.nut")
+let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter,
+  getTourListViewData, getTourById, removeItemFromList, getEventByDay, getOverlayTextColor,
+  isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable,
+  setSchedulerTimeColor, hasAnyTickets } = require("%scripts/events/eSport.nut")
+
+const MY_FILTERS = "tournaments/filters"
 
 let FILTER_CHAPTERS = ["tour", "unit"]
 
@@ -22,8 +25,8 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   filterObj       = null
   eventListObj    = null
   filter          = {
-    unitStates    = null
-    tourStates    = null
+    unitStates    = []
+    tourStates    = []
   }
   unitTypes       = null
   tourTypes       = null
@@ -77,13 +80,56 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     tournamentList = currSeason.tournamentList
-    let myFilters = getTourUserData()?.myFilters
-    filter = {
-      tourStates = myFilters?.tourStates ? myFilters.tourStates % "array" : []
-      unitStates = myFilters?.unitStates ? myFilters.unitStates % "array" : []
+    if (::g_login.isProfileReceived()) {
+      let myFilters = ::load_local_account_settings(MY_FILTERS, ::DataBlock())
+      filter.__update({
+        tourStates = myFilters?.tourStates ? myFilters.tourStates % "array" : []
+        unitStates = myFilters?.unitStates ? myFilters.unitStates % "array" : []
+      })
     }
     fillUnitTypesList()
     fillTournamentTypesList()
+  }
+
+  function updateTourView(tObj, tour, tourParams) {
+    let { isSesActive, isTraining, dayNum } = tourParams
+    let { battleDay, isFinished, battlesNum, curSesTime,
+      isMyTournament } = getTourCommonViewParams(tour, tourParams)
+    let prevState = clone tourStatesList?[tour.id]
+    let timeTxtObj = tObj.findObject("time_txt")
+    tourStatesList[tour.id] <- tourParams
+    if (!timeTxtObj?.isValid())
+      return
+
+    if (!isTourStateChanged(prevState, tourParams)) {
+      if (curSesTime)
+        timeTxtObj.setValue(curSesTime)
+
+      return
+    }
+
+    if (isFinished) {
+      let bgrObj = tObj.findObject("item_bgr")
+      if (bgrObj?.isValid())
+        bgrObj["background-saturate"] = 0
+    }
+
+    tObj.findObject("battle_day").setValue(battleDay)
+    let isTourWndAvailable = isTournamentWndAvailable(dayNum)
+    let battlesObj = ::showBtn("battle_nest", isTourWndAvailable, tObj)
+    let sesObj = ::showBtn("session_obj", isTourWndAvailable, tObj)
+    ::showBtn("leaderboard_obj", isFinished, tObj)
+    ::showBtn("my_tournament_img", isMyTournament, tObj)
+
+    if (!isTourWndAvailable)
+      return
+
+    let txtColor = getOverlayTextColor(isSesActive)
+    battlesObj.findObject("battle_num").setValue(battlesNum)
+    timeTxtObj.overlayTextColor = txtColor
+    let iconImg = $"#ui/gameuiskin#{isSesActive ? "play_tour" : "clock_tour"}.svg"
+    sesObj.findObject("session_ico")["background-image"] = iconImg
+    setSchedulerTimeColor(sesObj, isTraining, txtColor)
   }
 
   function updateAllEventsByFilters() {
@@ -102,7 +148,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       let isVisible = checkByFilter(tour, filter)
       tObj.show(isVisible)
       if (isVisible)
-        updateTourView(tObj, tour, tourStatesList, getTourParams(tour))
+        updateTourView(tObj, tour, getTourParams(tour))
     }
   }
 
@@ -197,7 +243,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     let curTourParams = getTourParams(tournament)
     let curEvent = getEventByDay(tournament.id, curTourParams.dayNum, curTourParams.isTraining)
-    if (curEvent != null && isTournamentWndAvailable(tournament))
+    if (curEvent != null && isTournamentWndAvailable(curTourParams.dayNum))
       eSportTournamentModal({ tournament, curTourParams, curEvent })
   }
 

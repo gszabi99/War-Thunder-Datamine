@@ -30,7 +30,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
     local maxTextWidth = 0
     btnTitle = btnTitle ?? ::loc("tournaments/filters")
     btnWidth = ::to_pixels($"{::show_console_buttons ? 2 : 1}@buttonIconHeight+2@blockInterval")
-      + getStringWidthPx($"{btnTitle} {::loc("ui/parentheses", {text = "+99"})}", "nav_button_font")
+      + getStringWidthPx($"{btnTitle} {::loc("ui/parentheses", {text = " +99"})}", "nav_button_font")
 
     foreach (fType in filterTypes)
       foreach (cb in fType.checkbox)

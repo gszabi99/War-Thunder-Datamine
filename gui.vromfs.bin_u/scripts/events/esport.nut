@@ -4,8 +4,6 @@ let { buildTimeStr,  buildDateStrShort, isInTimerangeByUtcStrings,
 let { secondsToString } = require("%scripts/timeLoc.nut")
 let { secondsToDays } = require("%sqstd/time.nut")
 
-const MY_TOURNAMENTS = "tournaments/favorites"
-const MY_FILTERS = "tournaments/filters"
 const NEXT_DAYS = 14
 
 let TOURNAMENT_TYPES = ["1x1", "2x2", "3x3", "4x4", "5x5", "spec", "my_only"]
@@ -23,17 +21,6 @@ let TOUR_PARAM_NAMES = {
 }
 
 local seasonsList = []
-local tournamentUserData = {}
-
-let function getTourUserData() {
-  if (::g_login.isProfileReceived() && ::u.isEmpty(tournamentUserData))
-    tournamentUserData = {
-      myTournaments = ::load_local_account_settings(MY_TOURNAMENTS)
-      myFilters = ::load_local_account_settings(MY_FILTERS)
-    }
-
-  return tournamentUserData
-}
 
 let function getTourDay(tour) {
   let now = ::get_charserver_time_sec()
@@ -58,10 +45,7 @@ let function getTourDay(tour) {
   return DAY.SOON
 }
 
-let function isTournamentWndAvailable(tour) {
-  let dayNum = getTourDay(tour)
-  return dayNum != DAY.FINISH && dayNum != DAY.SOON
-}
+let isTournamentWndAvailable = @(dayNum) dayNum != DAY.FINISH && dayNum != DAY.SOON
 
 let getMatchingEventId = @(tourId, day, isTraining)
   $"{tourId}{day ? "_day" : ""}{day ?? ""}{isTraining ? "_train" : ""}"
@@ -177,7 +161,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
   let teamSizes = cType.split("x")
   let armyId = tour.armyId
   let { dayNum, sesIdx, sesTime, isSesActive, isTraining, isMyTournament } = tourParams
-  let isActive = dayNum >= 0
+  let isTourWndAvailable = isTournamentWndAvailable(dayNum)
   let isNext = dayNum == DAY.NEXT
   let isFinished = dayNum == DAY.FINISH
   let isSoon = dayNum == DAY.SOON
@@ -195,27 +179,26 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
   }
   return {
     armyId
-    isNext
-    isActive
     countries
     isTraining
     isFinished
     isSesActive
     isMyTournament
+    isTourWndAvailable
     eventId = tour.id
     headerImg = isFinished || isSoon ? "#ui/gameuiskin#tournament_finished_header.png"
       : $"#ui/gameuiskin#tournament_{armyId}_header.png"
     itemBgr =  $"#ui/images/tournament_{armyId}.jpg"
-    tournamentName = ::loc(tour.sharedeconomicName)
+    tournamentName = ::loc(tour.sharedEconomicName)
     vehicleType = ::loc($"tournaments/battle_{armyId}")
     rank = $"{::g_string.utf8ToUpper(::loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
-    tournamentType = ::loc("country/VS").join(teamSizes)
+    tournamentType = $" {::loc("country/VS")} ".join(teamSizes)
     divisionImg = "#ui/gameuiskin#icon_progress_bar_stage_07.png"//!!!FIX IMG PATH
     battleDate = getBattleDateStr(tour)
     battleDay = isFinished ? ::loc("items/craft_process/finished")
-      : isActive ? ::loc("tournaments/enumerated_day", {num = day + 1})
+      : isTourWndAvailable ? ::loc("tournaments/enumerated_day", {num = day + 1})
       : ::loc("tournaments/coming_soon")
-    battlesNum = isActive ? tour.tickets[day].battleLimit : ""
+    battlesNum = isTourWndAvailable ? tour.tickets[day].battleLimit : ""
     sessions = getSessionsView(sesIdx, tour.scheduler?[day] ?? [])
     curSesTime = sesTime <  0 ? null : secondsToString(sesTime)
     curTrainingTime = sesIdx < 0 ? null
@@ -235,62 +218,14 @@ let function isTourStateChanged(prevState, tourParams) {
       || prevState.isMyTournament != isMyTournament)
 }
 
-let function setTimeText(nestObj, isTraining, isSesActive){
+let function setSchedulerTimeColor(nestObj, isTraining, txtColor){
   let tTimeObj = nestObj.findObject("training_time")
   if (tTimeObj?.isValid())
-    tTimeObj.overlayTextColor = isTraining ? getOverlayTextColor(isSesActive) : ""
+    tTimeObj.overlayTextColor = isTraining ? txtColor : ""
 
   let sTimeObj = nestObj.findObject("start_time")
   if (sTimeObj?.isValid())
-    sTimeObj.overlayTextColor = isTraining ? "" : getOverlayTextColor(isSesActive)
-}
-
-let function updateTourView(tObj, tour, tourStatesList, tourParams) {
-  let { sesIdx, sesLen, isSesActive, isTraining } = tourParams
-  let { battleDay, isFinished, battlesNum, curSesTime, isActive,
-    isMyTournament } = getTourCommonViewParams(tour, tourParams)
-  let prevState = clone tourStatesList?[tour.id]
-  let timeTxtObj = tObj.findObject("time_txt")
-  tourStatesList[tour.id] <- tourParams
-  if (!timeTxtObj?.isValid())
-    return
-
-  if (!isTourStateChanged(prevState, tourParams)) {
-    if (curSesTime)
-      timeTxtObj.setValue(curSesTime)
-
-    return
-  }
-
-  let bgrObj = tObj.findObject("item_bgr")
-  if (bgrObj?.isValid())
-    bgrObj["background-saturate"] = isFinished ? 0 : 1
-  ::showBtn("leaderboard_img", isFinished, tObj)
-  ::showBtn("leaderboard_btn", isFinished, tObj)
-  tObj.findObject("battle_day").setValue(battleDay)
-  if (isFinished)
-    return
-
-  let battlesObj = ::showBtn("battle_nest", isActive, tObj)
-  let schedulerObj = ::showBtn("scheduler", isActive, tObj)
-  ::showBtn("my_tournament_img", isMyTournament, tObj)
-  if (!isActive)
-    return
-
-  let iconImg = $"#ui/gameuiskin#{isSesActive ? "play_tour" : "clock_tour"}.svg"
-  battlesObj.findObject("battle_num").setValue(battlesNum)
-  timeTxtObj.setValue(curSesTime)
-  timeTxtObj.overlayTextColor = getOverlayTextColor(isSesActive)
-  tObj.findObject("session_ico")["background-image"] = iconImg
-
-  setTimeText(schedulerObj, isTraining, isSesActive)
-  for (local i = 0; i < sesLen; i++) {
-    let sObj = schedulerObj.findObject($"session_{i}")
-    if (sObj?.isValid()) {
-      sObj.findObject($"ses_num_txt").visualStyle = i == sesIdx ? "sessionSelected" : ""
-      setTimeText(sObj, isTraining, isSesActive)
-    }
-  }
+    sTimeObj.overlayTextColor = isTraining ? "" : txtColor
 }
 
 let function getTourListViewData(eList, filter) {
@@ -417,7 +352,6 @@ let function hasAnyTickets() {
 
 return {
   DAY
-  MY_FILTERS
   TOURNAMENT_TYPES
   getTourParams
   checkByFilter
@@ -429,11 +363,11 @@ return {
   getCurrentSeason
   getTourById
   hasAnyTickets
-  updateTourView
   getEventByDay
-  getTourUserData
   getTourActiveTicket
+  getOverlayTextColor
   getEventMission
   isRewardsAvailable
   isTournamentWndAvailable
+  setSchedulerTimeColor
 }

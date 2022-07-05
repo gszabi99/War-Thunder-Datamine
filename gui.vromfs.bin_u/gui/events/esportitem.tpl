@@ -7,7 +7,6 @@ eSItemDiv {
   <</isVisible>>
   // CONTENT TOP
   tdiv {
-    id:t='scheduler'
     size:t='pw, 1@eSItemBgrHeight'
     top:t='1@eSItemBgrTopPos'
     position:t='absolute'
@@ -52,9 +51,9 @@ eSItemDiv {
       left:t='0.5pw-0.5w'
       position:t='relative'
       flow:t='horizontal'
-      <<^isActive>>
+      <<^isTourWndAvailable>>
       display:t='hide'
-      <</isActive>>
+      <</isTourWndAvailable>>
       img {
         size:t='1@fontHeightNormal, 1@fontHeightNormal'
         top:t='0.5ph-0.5h'
@@ -72,29 +71,35 @@ eSItemDiv {
       }
     }
     include "%gui/events/eSportSession"
-    <<#isFinished>>
-    img {
-      id:t='leaderboard_img'
-      size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
-      pos:t='0.5pw-0.5w, 4@eSItemInterval'
-      position:t='relative'
-      background-image:t='#ui/gameuiskin#tournament_leaderboard.svg'
-      background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
-    }
 
-    Button_text {
-      id:t='leaderboard_btn'
-      width:t='0.8pw'
-      pos:t='0.5pw-0.5w, 1@eSItemInterval'
-      position:t='relative'
-      visualStyle:t='tournament'
-      bigFont:t='yes'
-      text:t = '#tournaments/leaderboard'
-      on_click:t = 'onLeaderboard'
-      btnName:t='Y'
-      ButtonImg {}
+    tdid {
+      id:t='leaderboard_obj'
+      width:t='pw'
+      flow:t='vertical'
+      <<^isFinished>>
+      display:t='hide'
+      <</isFinished>>
+      img {
+        size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+        pos:t='0.5pw-0.5w, 4@eSItemInterval'
+        position:t='relative'
+        background-image:t='#ui/gameuiskin#tournament_leaderboard.svg'
+        background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+      }
+
+      Button_text {
+        width:t='0.8pw'
+        pos:t='0.5pw-0.5w, 1@eSItemInterval'
+        position:t='relative'
+        visualStyle:t='tournament'
+        bigFont:t='yes'
+        text:t= '#tournaments/leaderboard'
+        on_click:t = 'onLeaderboard'
+        btnName:t='Y'
+        ButtonImg {}
+      }
+
     }
-    <</isFinished>>
   }
   itemUnderline {
     top:t='1@eSItemHeight+1@eSItemMargin'

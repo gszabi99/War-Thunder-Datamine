@@ -461,7 +461,7 @@ local unlockConditionUnitclasses = {
   if (unlockBlk?.hidden)
     return false
 
-  if(needCheckVisibilityByPlatform && ! is_unlock_visible_on_cur_platform(unlockBlk))
+  if (needCheckVisibilityByPlatform && ! is_unlock_visible_on_cur_platform(unlockBlk))
     return false
 
   let unlockId = unlockBlk?.id
@@ -486,6 +486,7 @@ local unlockConditionUnitclasses = {
     return false
   if (::g_unlocks.isHiddenByUnlockedUnlocks(unlockBlk))
     return false
+
   return true
 }
 
@@ -1177,6 +1178,9 @@ local unlockConditionUnitclasses = {
         res.descrImage <- $"#ui/images/avatars/{id}.png"
         res.descrImageSize <- "100, 100"
         res.needFrame <- true
+
+        if (unlockBlk?.marketplaceItemdefId && !::is_unlocked_scripted(-1, id))
+          res.desc += "".concat("\n", ::colorize("userlogColoredText", ::loc("shop/pilot/coupon/info")))
       }
       break
 

@@ -1,11 +1,21 @@
-let { DAY, getTourParams, getTourCommonViewParams, updateTourView,
-  isTourStateChanged, getTourActiveTicket, getEventByDay, getEventMission,
-    isRewardsAvailable } = require("%scripts/events/eSport.nut")
+let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
+  getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor
+} = require("%scripts/events/eSport.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needShowOverrideSlotbar, isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+
+let function getActiveTicketTxt(event) {
+  let ticket = ::events.getEventActiveTicket(event)
+  if (!ticket)
+    return ""
+
+  let tournamentData = ticket.getTicketTournamentData(event?.economicName ?? "")
+  return ::loc("ui/parentheses/space",
+    {text = $"{tournamentData.battleCount}/{ticket.battleLimit}"})
+}
 
 local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
@@ -13,6 +23,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   slotbarActions       = []
   queueToShow          = null
   tourStatesList       = {}
+  isStateChanged       = false
   // Incoming params
   tournament           = null
   curEvent             = null
@@ -128,37 +139,26 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
   }
 
-  function updateDescriptionView() {
+  function updateContentView() {
+    updateApplyButton()
     let isFinished = curTourParams.dayNum == DAY.FINISH
+    if (isFinished)
+      foreach (key in ["h_left", "h_center", "h_right"]) {
+        let obj = scene.findObject(key)
+        if (obj?.isValid())
+          obj["background-saturate"] = 0
+      }
+
     let descObj = ::showBtn("item_desc", !isFinished)
     if (!descObj?.isValid() || isFinished)
       return
 
-    let { descTxt, hasLeaderboardBtn, hasRewardBtn } = getDescParams()
+    let { descTxt, hasRewardBtn, hasLeaderboardBtn } = getDescParams()
     let eventDescTextObj = descObj.findObject("event_desc_text")
     if (eventDescTextObj?.isValid())
       eventDescTextObj.setValue(descTxt)
-    ::showBtn("my_tournament_img", curTourParams.isMyTournament, scene)
-    ::showBtn("leaderboard_btn", hasLeaderboardBtn, scene)
     ::showBtn("rewards_btn", hasRewardBtn, scene)
-  }
-
-  function updateContentView() {
-    let prevState = clone tourStatesList?[tournament.id]
-    tourStatesList[tournament.id] <- curTourParams
-    if (!isTourStateChanged(prevState, curTourParams))
-      return
-
-    let isActive = curTourParams.dayNum >= 0 || curTourParams.dayNum == DAY.NEXT
-    ::showBtn("scheduler", isActive)
-    foreach (key in ["h_left", "h_center", "h_right"]) {
-      let obj = scene.findObject(key)
-      if (obj?.isValid())
-        obj["background-saturate"] = curTourParams.dayNum == DAY.FINISH ? 0 : 1
-    }
-
-    updateApplyButton()
-    updateDescriptionView()
+    ::showBtn("leaderboard_obj", hasLeaderboardBtn, scene)
   }
 
   function updateApplyButton() {
@@ -185,8 +185,39 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     let isBtnVisible = isEvent && hasActiveTicket && curTourParams.isSesActive && !isInQueue
     btnObj.show(isBtnVisible)
     btnObj["enable"] = isBtnVisible ? "yes" : "no"
-    btnObj.setValue(::loc("mainmenu/toBattle"))
+    btnObj.setValue(::loc("mainmenu/toBattle")+getActiveTicketTxt(curEvent))
     showSceneBtn("leave_btn", isInQueue)
+  }
+
+  function updateTourView() {
+    let { sesIdx, sesLen, isSesActive, isTraining } = curTourParams
+    let { battleDay, curSesTime } = getTourCommonViewParams(tournament, curTourParams)
+    let timeTxtObj = scene.findObject("time_txt")
+    if (!timeTxtObj?.isValid())
+      return
+
+    if (!isStateChanged) {
+      if (curSesTime)
+        timeTxtObj.setValue(curSesTime)
+
+      return
+    }
+
+    scene.findObject("battle_day").setValue(battleDay)
+    let txtColor = getOverlayTextColor(isSesActive)
+    timeTxtObj.overlayTextColor = txtColor
+    let iconImg = $"#ui/gameuiskin#{isSesActive ? "play_tour" : "clock_tour"}.svg"
+    scene.findObject("session_ico")["background-image"] = iconImg
+
+    let schedulerObj = scene.findObject("scheduler_obj")
+    if (schedulerObj?.isValid())
+      for (local i = 0; i < sesLen; i++) {
+        let sObj = schedulerObj.findObject($"session_{i}")
+        if (sObj?.isValid()) {
+          sObj.findObject($"ses_num_txt").visualStyle = i == sesIdx ? "sessionSelected" : ""
+          setSchedulerTimeColor(sObj, isTraining, i == sesIdx ? txtColor : "")
+        }
+      }
   }
 
   function registerForTournament(){
@@ -205,8 +236,8 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onEventTourRegistrationComplete(param) {
     curTourParams.isMyTournament = true
-    updateDescriptionView()
-    updateApplyButton()
+    ::showBtn("my_tournament_img", true, scene)
+    updateContentView()
   }
 
   function onBtnAction() {
@@ -253,7 +284,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onReward() {
-    ::gui_handlers.EventRewardsWnd.open(curEvent)
+    ::gui_handlers.EventRewardsWnd.open(curEvent, ::get_tournament_desk_blk(tournament.id).awards)
   }
 
   function updateQueueView() {
@@ -268,10 +299,18 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       iconObj, ::loc("yn1/waiting_for_game_query"))
   }
 
-  function onTimer(obj, dt) {
+  function updateWnd() {
     updateCurTournament()
-    updateTourView(scene, tournament, tourStatesList, curTourParams)
-    updateContentView()
+    let prevState = clone tourStatesList?[tournament.id]
+    tourStatesList[tournament.id] <- curTourParams
+    isStateChanged = isTourStateChanged(prevState, curTourParams)
+    updateTourView()
+    if (isStateChanged)
+      updateContentView()
+  }
+
+  function onTimer(obj, dt) {
+    updateWnd()
     updateQueueView()
   }
 

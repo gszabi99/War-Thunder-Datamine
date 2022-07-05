@@ -1,11 +1,10 @@
 <<#avatars>>
-Button_text {
+avatarImg {
   id:t='<<id>>';
   class:t='profileImg';
   selected:t='<<selected>>';
   <<#enabled>>
   enabled:t='yes';
-  on_click:t='onImageChoose';
   <</enabled>>
   <<^enabled>>
   enabled:t='no';
@@ -16,6 +15,20 @@ Button_text {
     position:t='relative'
     pos:t='50%pw-50%w,50%ph-50%h';
   }
+
+  <<#hasGjnIcon>>
+    tdiv {
+      position:t='absolute'
+      pos:t='6@dp, 1@profileUnlockIconSize - h + 2@dp'
+      size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'
+      img {
+        size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'
+        background-image:t='#ui/gameuiskin#gc.svg';
+        background-svg-size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'
+        background-repeat:t='aspect-ratio';
+      }
+    }
+  <</hasGjnIcon>>
 
   <<#unseenIcon>>
   unseenIcon {

@@ -111,11 +111,12 @@ let stdMath = require("%sqstd/math.nut")
       let item = options[i]
       let avatar = {
         id          = i
-        avatarImage = item.image
-        enabled     = item.enabled
+        avatarImage = item?.image
+        enabled     = item?.enabled
         haveCustomTooltip = haveCustomTooltip
         tooltipId   = haveCustomTooltip ? null : ::getTblValue("tooltipId", item)
         unseenIcon = item?.seenListId && bhvUnseen.makeConfigStr(item?.seenListId, item?.seenEntity)
+        hasGjnIcon = item?.marketplaceItemdefId != null && !item?.enabled
       }
       view.avatars.append(avatar)
     }
@@ -161,8 +162,12 @@ let stdMath = require("%sqstd/math.nut")
 
   function onImageChoose(obj)
   {
-    if (obj)
-      chooseImage(obj.id.tointeger())
+    let selIdx = getSelIconIdx()
+
+    if (!(options?[selIdx].enabled ?? false))
+      return
+
+    chooseImage(selIdx)
   }
 
   function onImageSelect()
@@ -171,16 +176,85 @@ let stdMath = require("%sqstd/math.nut")
       return
 
     updateButtons()
+
     let item = options?[getSelIconIdx()]
+
     if (item?.seenListId)
       seenList.get(item.seenListId).markSeen(item?.seenEntity)
   }
 
-  function onChoose()
+  function onDblClick()
   {
     let selIdx = getSelIconIdx()
-    if (selIdx >= 0)
-      chooseImage(getSelIconIdx())
+    let option = options?[selIdx]
+
+    if (!option)
+      return
+
+    if (option.enabled)
+    {
+      chooseImage(selIdx)
+      return
+    }
+
+    if (!option?.marketplaceItemdefId)
+      return
+
+    let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
+
+    if (inventoryItem != null)
+    {
+      inventoryItem.consume(::Callback(function(result) {
+        if (result?.success ?? false)
+          chooseImage(selIdx)
+      }, this), null)
+    }
+    else
+    {
+      let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
+
+      if (item)
+        goToMarketplace(item)
+    }
+  }
+
+  function goToMarketplace(item)
+  {
+    if (item?.hasLink())
+      item.openLink()
+  }
+
+  function onAction()
+  {
+    let selIdx = getSelIconIdx()
+
+    if (selIdx < 0)
+      return
+
+    let option = options?[selIdx]
+
+    if ((option?.enabled ?? false) || option?.marketplaceItemdefId == null)
+    {
+      chooseImage(selIdx)
+      return
+    }
+
+    let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
+
+    if (inventoryItem != null)
+    {
+      inventoryItem.consume(::Callback(function(result) {
+        if (result?.success ?? false)
+          chooseImage(selIdx)
+      }, this), null)
+    }
+    else
+    {
+      let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
+
+      if (item)
+        goToMarketplace(item)
+    }
   }
 
   function getSelIconIdx()
@@ -193,7 +267,25 @@ let stdMath = require("%sqstd/math.nut")
   function updateButtons()
   {
     let option = ::getTblValue(getSelIconIdx(), options)
-    this.showSceneBtn("btn_select", ::getTblValue("enabled", option, false))
+    let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
+    let btn = this.showSceneBtn("btn_select", isVisible)
+
+    if (!isVisible)
+      return
+
+    if (option?.enabled)
+    {
+      btn.setValue(::loc("mainmenu/btnSelect"))
+      return
+    }
+
+    let item = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
+
+    if (item != null)
+      btn.setValue(::loc("item/consume/coupon"))
+    else
+      btn.setValue(::loc("msgbox/btn_find_on_marketplace"))
+    return
   }
 
   function afterModalDestroy()

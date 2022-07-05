@@ -246,3 +246,49 @@ banImg {
   display:show;
   enabled:yes;
 }
+
+avatarImg {
+  input-transparent:yes;
+  reduceMinimalWidth:yes;
+  height:1@avatarButtonSize;
+  width:h;
+  background-image:#ui/gameuiskin#header_button_.png;
+  border:no;
+  margin:0;
+  padding:1@blockInterval;
+  padding-left:1@blockInterval;
+  css-hier-invalidate:yes;
+}
+
+avatarImg > img {
+  size: 1@profileUnlockIconSize, 1@profileUnlockIconSize;
+  background-svg-size: 1@profileUnlockIconSize, 1@profileUnlockIconSize;
+}
+
+avatarImg:hover {
+  background-image:#ui/gameuiskin#header_button_hover.png;
+  border:yes;
+  border-color:@buttonBorderColorFocus;
+}
+
+avatarImg:pushed {
+  background-image:#ui/gameuiskin#header_button_active.png;
+  border:yes;
+}
+
+avatarImg[enabled=no] > img {
+  background-color: @lockedDecal;
+}
+
+avatarImg[enabled=no]:hover > img {
+  background-color: @lockedDecalHover;
+}
+
+avatarImg:focus,
+avatarImg[active=yes],
+avatarImg[selected=yes] {
+  border: yes;
+  background-color: @buttonColorFocus;
+  border-color:@buttonBorderColorFocus;
+  color: @buttonFontColorFocus;
+}

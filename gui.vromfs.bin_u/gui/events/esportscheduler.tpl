@@ -1,7 +1,7 @@
 tdiv {
-  id:t='scheduler'
+  id:t='scheduler_obj'
   width:t='1@eSItemWidth'
-  pos:t='0.5pw-0.5w, 1@eSItemPadding'
+  left:t='0.5pw-0.5w'
   position:t='relative'
   padding:t='2@eSItemInterval, 1@eSItemInterval'
   <<#isFinished>>
@@ -23,7 +23,7 @@ tdiv {
     smallFont:t='yes'
     textareaNoTab {
       position:t='relative'
-      text:t='#tournaments/session'
+      text:t='#tournaments/schedule'
     }
 
     tdiv{

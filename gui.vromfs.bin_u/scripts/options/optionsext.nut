@@ -3339,12 +3339,16 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       for (local nc = 0; nc < icons.len(); nc++)
       {
         let unlockId = icons[nc]
+        let unlockItem = ::g_unlocks.getUnlockById(unlockId)
+        let isShown = ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId) || ::is_unlock_visible(unlockItem)
+          || (unlockItem?.hideFeature != null && !::has_feature(unlockItem.hideFeature))
         let item = {
           idx = nc
           image = $"#ui/images/avatars/{unlockId}.png"
-          show = ::is_unlock_visible(::g_unlocks.getUnlockById(unlockId))
+          show = isShown
           enabled = ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId)
           tooltipId = ::g_tooltip.getIdUnlock(unlockId, { showProgress = true })
+          marketplaceItemdefId = unlockItem?.marketplaceItemdefId
         }
         if (item.show && item.enabled)
         {
@@ -5405,9 +5409,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       case "editbox":
         elemTxt = ::create_option_editbox({
           id = optionData.id
-          value = optionData?.value
-          password = optionData?.password
-          maxlength = optionData?.maxlength
+          value = optionData?.value ?? ""
+          password = optionData?.password ?? false
+          maxlength = optionData?.maxlength ?? 16
           charMask = optionData?.charMask
         })
         break

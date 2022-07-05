@@ -1,4 +1,4 @@
-let { format, split_by_chars } = require("string")
+let { format } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -106,9 +106,6 @@ let weaponIconsReloadBits = {
   historyLog = null
   chatData = null
   actionBar = null
-
-  staticWidgets = [ "log_div", "map_div", "controls_div" ]
-  movingWidgets = { ["spectator_hud_damage"] = [] }
 
   supportedMsgTypes = [
     ::HUD_MSG_MULTIPLAYER_DMG,
@@ -286,7 +283,6 @@ let weaponIconsReloadBits = {
     if (!::has_feature("SpectatorUnitDmgIndicator"))
       scene.findObject("xray_render_dmg_indicator_spectator").show(false)
     reinitDmgIndicator()
-    recalculateLayout()
 
     ::g_hud_event_manager.subscribe("HudMessage", function(eventData)
       {
@@ -308,7 +304,6 @@ let weaponIconsReloadBits = {
     ::g_hud_live_stats.update()
     actionBar.reinit()
     reinitDmgIndicator()
-    recalculateLayout()
     updateTarget(true)
   }
 
@@ -564,7 +559,6 @@ let weaponIconsReloadBits = {
     ::g_hud_live_stats.show(isMultiplayer, null, spectatorWatchedHero.id)
     actionBar.reinit()
     reinitDmgIndicator()
-    recalculateLayout()
 
     setTargetInfo(player)
     return isFocused
@@ -813,7 +807,6 @@ let weaponIconsReloadBits = {
 
     updateHistoryLog(true)
     updateClientHudOffset()
-    recalculateLayout()
   }
 
   function teamIdToIndex(teamId)
@@ -1245,11 +1238,6 @@ let weaponIconsReloadBits = {
       ::game_chat_input_toggle_request(true)
   }
 
-  function onEventHudActionbarResized(params)
-  {
-    recalculateLayout()
-  }
-
   function onPlayerRequestedArtillery(userId)
   {
     let player = getPlayerByUserId(userId)
@@ -1418,59 +1406,6 @@ let weaponIconsReloadBits = {
           }
         }
       }
-  }
-
-  function recalculateLayout()
-  {
-    let staticBoxes = []
-    foreach (objId in staticWidgets)
-    {
-      let obj = scene.findObject(objId)
-      if (!::checkObj(obj))
-        continue
-      if (obj.isVisible())
-        staticBoxes.append(::GuiBox().setFromDaguiObj(obj))
-    }
-
-    foreach (objId, positions in movingWidgets)
-    {
-      let obj = scene.findObject(objId)
-      if (!::checkObj(obj))
-        continue
-
-      if (!positions.len())
-      {
-        local idx = 1
-        while (obj?["pos" + idx])
-          positions.append(obj["pos" + idx++])
-      }
-
-      local posStr = "0, 0"
-      let size = obj.getSize()
-      foreach (p in positions)
-      {
-        posStr = p
-        let pos = split_by_chars(posStr, ",")
-        if (pos.len() != 2)
-          break
-        foreach (i, v in pos)
-          pos[i] = guiScene.calcString(v, obj)
-        let b1 = ::GuiBox(pos[0], pos[1], pos[0] + size[0], pos[1] + size[1])
-        local fits = true
-        foreach(b2 in staticBoxes)
-        {
-          if (b1.isIntersect(b2))
-          {
-            fits = false
-            break
-          }
-        }
-        if (fits)
-          break
-      }
-      if (obj?.pos != posStr)
-        obj.pos = posStr
-    }
   }
 
   function getCurAnchorIdx(anchors) {
