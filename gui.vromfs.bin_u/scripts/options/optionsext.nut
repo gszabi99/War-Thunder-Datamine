@@ -34,6 +34,7 @@ let { getMaxEconomicRank } = require("%scripts/ranks_common_shared.nut")
 let { setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption,
   getCdBaseDifficulty } = ::require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -3336,19 +3337,23 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.trParams <- "iconType:t='pilot';"
       let curPilotImgId = ::get_cur_rank_info().pilotId
       let icons = avatars.getIcons()
+      let marketplaceItemdefIds = []
       for (local nc = 0; nc < icons.len(); nc++)
       {
         let unlockId = icons[nc]
         let unlockItem = ::g_unlocks.getUnlockById(unlockId)
         let isShown = ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId) || ::is_unlock_visible(unlockItem)
           || (unlockItem?.hideFeature != null && !::has_feature(unlockItem.hideFeature))
+        let marketplaceItemdefId = unlockItem?.marketplaceItemdefId
+        if (marketplaceItemdefId != null)
+          marketplaceItemdefIds.append(marketplaceItemdefId)
         let item = {
           idx = nc
           image = $"#ui/images/avatars/{unlockId}.png"
           show = isShown
           enabled = ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId)
           tooltipId = ::g_tooltip.getIdUnlock(unlockId, { showProgress = true })
-          marketplaceItemdefId = unlockItem?.marketplaceItemdefId
+          marketplaceItemdefId
         }
         if (item.show && item.enabled)
         {
@@ -3360,6 +3365,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         if (curPilotImgId == nc)
           descr.value = descr.values.len() - 1
       }
+      if (marketplaceItemdefIds.len() > 0)
+        inventoryClient.requestItemdefsByIds(marketplaceItemdefIds)
       descr.cb = "onProfileChange"
       break
 
