@@ -96,7 +96,7 @@ class CreateTemplateAnnotation : AstStructureAnnotation
         if undefType && !(arg is tString)
           field._type <- new [[TypeDecl() baseType = Type tInt]]
         else
-          field._type <- new [[TypeDecl() baseType = Type tInt, alias := (arg ? as tString) ?? typeName]]
+          field._type <- new [[TypeDecl() baseType = Type tInt, alias := (arg ?as tString) ?? typeName]]
         field.init := null
     return true
 
@@ -146,29 +146,29 @@ class CreateTemplateAnnotation : AstStructureAnnotation
         else
           let econst <- field.init |> get_const_expr
           if field._type.baseType == Type tBool
-            set(cmp, f, fieldName, (econst ? as ExprConstBool)?.value ?? false)
+            set(cmp, f, fieldName, (econst ?as ExprConstBool)?.value ?? false)
           elif field._type.baseType == Type tInt
-            set(cmp, f, fieldName, (econst ? as ExprConstInt)?.value ?? 0)
+            set(cmp, f, fieldName, (econst ?as ExprConstInt)?.value ?? 0)
           elif field._type.baseType == Type tUInt
-            set(cmp, f, fieldName, (econst ? as ExprConstUInt)?.value ?? 0u)
+            set(cmp, f, fieldName, (econst ?as ExprConstUInt)?.value ?? 0u)
           elif field._type.baseType == Type tUInt64
-            set(cmp, f, fieldName, (econst ? as ExprConstUInt64)?.value ?? uint64(0))
+            set(cmp, f, fieldName, (econst ?as ExprConstUInt64)?.value ?? uint64(0))
           elif field._type.baseType == Type tInt2
-            set(cmp, f, fieldName, (econst ? as ExprConstInt2)?.value ?? int2(0))
+            set(cmp, f, fieldName, (econst ?as ExprConstInt2)?.value ?? int2(0))
           elif field._type.baseType == Type tInt3
-            set(cmp, f, fieldName, (econst ? as ExprConstInt3)?.value ?? int3(0))
+            set(cmp, f, fieldName, (econst ?as ExprConstInt3)?.value ?? int3(0))
           elif field._type.baseType == Type tFloat
-            set(cmp, f, fieldName, (econst ? as ExprConstFloat)?.value ?? 0.)
+            set(cmp, f, fieldName, (econst ?as ExprConstFloat)?.value ?? 0.)
           elif field._type.baseType == Type tFloat2
-            set(cmp, f, fieldName, (econst ? as ExprConstFloat2)?.value ?? float2(0.))
+            set(cmp, f, fieldName, (econst ?as ExprConstFloat2)?.value ?? float2(0.))
           elif field._type.baseType == Type tFloat3
-            set(cmp, f, fieldName, (econst ? as ExprConstFloat3)?.value ?? float3(0.))
+            set(cmp, f, fieldName, (econst ?as ExprConstFloat3)?.value ?? float3(0.))
           elif field._type.baseType == Type tFloat4
-            set(cmp, f, fieldName, (econst ? as ExprConstFloat4)?.value ?? float4(0.))
+            set(cmp, f, fieldName, (econst ?as ExprConstFloat4)?.value ?? float4(0.))
           elif field._type.baseType == Type tFloat4
-            set(cmp, f, fieldName, (econst ? as ExprConstFloat4)?.value ?? float4(0.))
+            set(cmp, f, fieldName, (econst ?as ExprConstFloat4)?.value ?? float4(0.))
           elif field._type.baseType == Type tString
-            set(cmp, f, fieldName, def_string((econst ? as ExprConstString)?.value))
+            set(cmp, f, fieldName, def_string((econst ?as ExprConstString)?.value))
           elif field._type.baseType == Type tHandle
             if field._type.annotation.name == "EntityId"
               set(cmp, f, fieldName, INVALID_ENTITY_ID)

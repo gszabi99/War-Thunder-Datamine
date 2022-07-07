@@ -25612,6 +25612,27 @@
       }
     },
     {
+      "id": "wt_console_link_bonus_popup",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2022-07-07 00:00:00",
+        "endDate": "2022-08-01 00:00:00",
+        "condition": [
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "wt_console_link_bonus"
+          },
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "wt_used_console_link_bonus",
+            "invertResult": true
+          }
+        ]
+      }
+    },
+    {
       "id": "2022_07_01_swedish_air_forces_2022_decal",
       "locDescId": "2022_07_01_swedish_air_forces_2022_decal/desc",
       "userLogId": "2022_07_01_swedish_air_forces_2022_decal_trophy",

@@ -112,7 +112,7 @@ def eid_frnd(eid : EntityId)
   return float(x & 16777215u) / 16777216.f // float values are int uniform only within low 24 bits
 
 
-def push_to_array(var ecs_array : Array; b : block<(var data : auto(Type)#) : void>)
+def push_to_array(var ecs_array : Array implicit; b : block<(var data : auto(Type)#) : void>)
   using() <| $(var data : Type#)
     invoke(b, data)
     push(ecs_array, data)
@@ -131,3 +131,8 @@ def push_to_initializer(var init : ComponentsInitializer; name : string; b : blo
 
 def split_template(name : string) : array<string>
   return <- split(name, "+")
+
+def reduce(obj : Object implicit; var res : auto(T) implicit; cb : block<(res : T; elem : ChildComponent) : T>) : T
+  for it in obj
+    res = invoke(cb, res, it.value)
+  return res
