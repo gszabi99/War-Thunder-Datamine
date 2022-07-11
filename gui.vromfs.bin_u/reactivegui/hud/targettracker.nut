@@ -75,59 +75,59 @@ let targetSize = @(colorWatched, width, height, is_static_pos) function() {
   let getTargetUntrackedCommands = [
       [
         VECTOR_LINE,
-        posX - target_radius / width * 100,
-        posY - target_radius / height * 100,
-        posX - (target_radius - hd) / width * 100,
-        posY - target_radius / height * 100
+        50 - target_radius / width * 100,
+        50 - target_radius / height * 100,
+        50 - (target_radius - hd) / width * 100,
+        50 - target_radius / height * 100
       ],
       [
         VECTOR_LINE,
-        posX - target_radius / width * 100,
-        posY - target_radius / height * 100,
-        posX - target_radius / width * 100,
-        posY - (target_radius - vd) / height * 100
+        50 - target_radius / width * 100,
+        50 - target_radius / height * 100,
+        50 - target_radius / width * 100,
+        50 - (target_radius - vd) / height * 100
       ],
       [
         VECTOR_LINE,
-        posX + target_radius / width * 100,
-        posY - target_radius / height * 100,
-        posX + (target_radius - hd) / width * 100,
-        posY - target_radius / height * 100
+        50 + target_radius / width * 100,
+        50 - target_radius / height * 100,
+        50 + (target_radius - hd) / width * 100,
+        50 - target_radius / height * 100
       ],
       [
         VECTOR_LINE,
-        posX + target_radius / width * 100,
-        posY - target_radius / height * 100,
-        posX + target_radius / width * 100,
-        posY - (target_radius - vd) / height * 100
+        50 + target_radius / width * 100,
+        50 - target_radius / height * 100,
+        50 + target_radius / width * 100,
+        50 - (target_radius - vd) / height * 100
       ],
       [
         VECTOR_LINE,
-        posX + target_radius / width * 100,
-        posY + target_radius / height * 100,
-        posX + (target_radius - hd) / width * 100,
-        posY + target_radius / height * 100
+        50 + target_radius / width * 100,
+        50 + target_radius / height * 100,
+        50 + (target_radius - hd) / width * 100,
+        50 + target_radius / height * 100
       ],
       [
         VECTOR_LINE,
-        posX + target_radius / width * 100,
-        posY + target_radius / height * 100,
-        posX + target_radius / width * 100,
-        posY + (target_radius - vd) / height * 100],
+        50 + target_radius / width * 100,
+        50 + target_radius / height * 100,
+        50 + target_radius / width * 100,
+        50 + (target_radius - vd) / height * 100],
 
       [
         VECTOR_LINE,
-        posX - target_radius / width * 100,
-        posY + target_radius / height * 100,
-        posX - (target_radius - hd) / width * 100,
-        posY + target_radius / height * 100
+        50 - target_radius / width * 100,
+        50 + target_radius / height * 100,
+        50 - (target_radius - hd) / width * 100,
+        50 + target_radius / height * 100
       ],
       [
         VECTOR_LINE,
-        posX - target_radius / width * 100,
-        posY + target_radius / height * 100,
-        posX - target_radius / width * 100,
-        posY + (target_radius - vd) / height * 100
+        50 - target_radius / width * 100,
+        50 + target_radius / height * 100,
+        50 - target_radius / width * 100,
+        50 + (target_radius - vd) / height * 100
       ]
     ]
 

@@ -549,7 +549,7 @@ let isEventUnit = @(unit) unit.event != null
 }
 
 //return true when modificators already valid.
-::check_unit_mods_update <- function check_unit_mods_update(air, callBack = null, forceUpdate = false)
+::check_unit_mods_update <- function check_unit_mods_update(air, callBack = null, forceUpdate = false, needMinMaxEffectsForAllUnitTypes = false)
 {
   if (!air.isInited)
   {
@@ -580,6 +580,12 @@ let isEventUnit = @(unit) unit.event != null
           historical = effect.historical
           fullreal = effect.fullreal
         }
+
+        if (needMinMaxEffectsForAllUnitTypes) {
+          air.minChars = effect.min
+          air.maxChars = effect.max
+        }
+
         if (!air.modificatorsBase)
           air.modificatorsBase = air.modificators
       }
@@ -601,6 +607,12 @@ let isEventUnit = @(unit) unit.event != null
           historical = effect.historical
           fullreal = effect.fullreal
         }
+
+        if (needMinMaxEffectsForAllUnitTypes) {
+          air.minChars = effect.min
+          air.maxChars = effect.max
+        }
+
         if (!air.modificatorsBase) // TODO: Needs tank params _without_ user progress here.
           air.modificatorsBase = air.modificators
       }

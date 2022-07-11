@@ -88,7 +88,7 @@ let function centeredAircraftIcon(colorWatched) {
   }
 }
 
-let targetsOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0))))
+let targetsOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0) + 0.5)))
 let targetsOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
 
 let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTank = false) function() {

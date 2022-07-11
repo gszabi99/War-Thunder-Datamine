@@ -1,6 +1,7 @@
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let {UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX} = require("%scripts/unit/unitInfoType.nut")
 
 ::exportUnitInfo <- function exportUnitInfo(params)
 {
@@ -143,7 +144,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     fullBlk[BASE_GROUP] = ::DataBlock()
     fullBlk[EXTENDED_GROUP] = ::DataBlock()
 
-    unitsList = ::u.values(::all_units)
+    unitsList = ::all_units.values()
 
     updateActive()
 
@@ -212,10 +213,9 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     if (!curUnit.isInShop)
       return true
 
-    if (!curUnit.modificators)
+    if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars)
     {
-      if (curUnit.isTank())
-        return check_unit_mods_update(curUnit)
+      return check_unit_mods_update(curUnit, null, true, true)
     }
 
     let groupId = curUnit.showOnlyWhenBought? EXTENDED_GROUP : BASE_GROUP
@@ -231,16 +231,21 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
     let unitBlk = ::DataBlock()
 
-    foreach(infoType in ::g_unit_info_type.types)
-    {
-      let blk = infoType.exportToDataBlock(curUnit)
-      if(blk?.hide ?? false)
-        continue
-      unitBlk[infoType.id] = blk
-    }
+    let configurations = [UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX]
 
-    let targetBlk = fBlk.addBlock(groupId).addBlock(armyId).addBlock(countryId).addBlock(rankId)
-    targetBlk[curUnit.name] = unitBlk
+    foreach (conf in configurations) {
+      foreach(infoType in ::g_unit_info_type.types)
+      {
+        let blk = infoType.exportToDataBlock(curUnit, conf)
+        if(blk?.hide ?? false)
+          continue
+        unitBlk[infoType.id] = blk
+      }
+
+      let confGroup = conf == UNIT_CONFIGURATION_MIN ? "min" : "max"
+      let targetBlk = fBlk.addBlock(confGroup).addBlock(groupId).addBlock(armyId).addBlock(countryId).addBlock(rankId)
+      targetBlk[curUnit.name] = unitBlk
+    }
     return true
   }
 }
