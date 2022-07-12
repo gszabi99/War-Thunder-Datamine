@@ -1,4 +1,4 @@
-let { format, split_by_chars } = require("string")
+let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 
@@ -52,14 +52,15 @@ local unitTypes = {
     isAvailableForFirstChoice = function(country = null) { return this.isAvailable() }
     isFirstChosen = function()
       { return this.firstChosenTypeUnlockName != null && ::is_unlocked(-1, this.firstChosenTypeUnlockName) }
-    getTestFlightText = function() { return ::loc("mainmenu/btn" + this.testFlightName ) }
-    getTestFlightUnavailableText = function() { return ::loc("mainmenu/cant" + this.testFlightName ) }
+    getTestFlightText = function() { return ::loc($"mainmenu/btn{this.testFlightName}") }
+    getTestFlightUnavailableText = function() { return ::loc($"mainmenu/cant{this.testFlightName}") }
     getBailoutButtonText = @() ::loc($"flightmenu/{this.bailoutName}")
     getBailoutQuestionText = @() ::loc($"flightmenu/{this.bailoutQuestion}")
-    getArmyLocName = function() { return ::loc("mainmenu/" + this.armyId, "") }
+    getArmyLocId = @() $"mainmenu/{this.armyId}"
+    getArmyLocName = @() ::loc(getArmyLocId(), "")
     getCrewArmyLocName = @() ::loc("unit_type/" + (crewUnitTypeConfig?[this.crewUnitType]?.crewTag ?? ""))
     getCrewTag = @() crewUnitTypeConfig?[this.crewUnitType]?.crewTag ?? ""
-    getLocName = function() { return ::loc(format("unit_type/%s", this.tag), "") }
+    getLocName = @() ::loc($"unit_type/{this.tag}", "")
     canUseSeveralBulletsForGun = false
     modClassOrder = []
     isSkinAutoSelectAvailable = @() false

@@ -2,6 +2,9 @@ let { calcPercent } = require("%sqstd/math.nut")
 let statsd = require("statsd")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
@@ -11,7 +14,8 @@ local XboxShopPurchasableItem = class
   imagePath = null
 
   id = ""
-  mediaItemType = -1
+  entitlementId = ""
+  categoryId = [-1]
   releaseDate = 0
   price = 0.0         // Price with discount as number
   listPrice = 0.0     // Original price without discount as number
@@ -35,10 +39,19 @@ local XboxShopPurchasableItem = class
   constructor(blk)
   {
     id = blk.getBlockName()
-    mediaItemType = blk?.MediaItemType
-    isMultiConsumable = mediaItemType == xboxMediaItemType.GameConsumable
+    entitlementId = getEntitlementId(id)
+
+    let xbItemType = blk?.MediaItemType
+    isMultiConsumable = xbItemType == xboxMediaItemType.GameConsumable
     if (isMultiConsumable)
       defaultIconStyle = "reward_gold"
+
+    categoryId = [xbItemType]
+    let entConfig = getEntitlementConfig(entitlementId)
+    if ("aircraftGift" in entConfig)
+      categoryId = entConfig.aircraftGift.map(@(unitId) ::getAircraftByName(unitId)?.unitType.typeName)
+    else if (!isMultiConsumable)
+      ::dagor.debug($"[XBOX SHOP ITEM] not found aircraftGift in entitlementConfig, {entitlementId}, {id}")
 
     name = blk?.Name ?? ""
     //HACK: On GDK no param ReducedName, c++ code copy to this key original name
@@ -119,6 +132,8 @@ local XboxShopPurchasableItem = class
     needAllBoughtIcon = true
     headerText = shortName
   }.__merge(params)
+
+  getItemsView = @() getEntitlementView(entitlementId)
 
   isCanBuy = @() isPurchasable && !isBought
   isInactive = @() !isPurchasable || isBought

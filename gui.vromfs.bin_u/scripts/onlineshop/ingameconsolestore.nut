@@ -434,7 +434,8 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     obj.setValue(item?.name ?? "")
 
     obj = descObj.findObject("item_desc_div")
-    let data = getPriceBlock(item)
+    let itemsView = item?.getItemsView() ?? ""
+    let data = $"{getPriceBlock(item)}{itemsView}"
     guiScene.replaceContentFromText(obj, data, data.len(), this)
 
     obj = descObj.findObject("item_desc_under_div")

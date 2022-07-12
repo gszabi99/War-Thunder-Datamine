@@ -1,5 +1,4 @@
 let { calcPercent } = require("%sqstd/math.nut")
-
 let psnStore = require("sony.store")
 let psnUser = require("sony.user")
 let statsd = require("statsd")
@@ -7,6 +6,8 @@ let { serviceLabel } = require("%sonyLib/webApi.nut")
 let { subscribe } = require("eventbus")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
+let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 
 let IMAGE_TYPE = "TAM_JACKET"
 let BQ_DEFAULT_ACTION_ERROR = -1
@@ -67,6 +68,7 @@ local psnV2ShopPurchasableItem = class {
   imagePath = null
 
   id = ""
+  entitlementId = ""
   category = ""
   srvLabel = serviceLabel
   releaseDate = 0
@@ -94,6 +96,7 @@ local psnV2ShopPurchasableItem = class {
 
   constructor(blk, v_releaseDate) {
     id = blk.label
+    entitlementId = getEntitlementId(id)
     name = blk.displayName
     category = blk?.category ?? ""
     description = blk?.description ?? ""
@@ -188,6 +191,8 @@ local psnV2ShopPurchasableItem = class {
     headerText = shortName
     havePsPlusDiscount = havePsPlusDiscount()
   }.__merge(params)
+
+  getItemsView = @() getEntitlementView(entitlementId)
 
   isCanBuy = @() isPurchasable && !isBought
   isInactive = @() !isPurchasable || isBought

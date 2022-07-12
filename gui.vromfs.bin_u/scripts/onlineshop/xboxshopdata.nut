@@ -11,7 +11,7 @@ const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 let itemsList = persist("itemsList", @() {})
 
 let visibleSeenIds = []
-let xboxProceedItems = {}
+let xboxProceedItems = Watched({})
 
 local onReceiveCatalogCb = null
 local statsdMetric = "unknown"
@@ -29,7 +29,8 @@ local haveItemDiscount = null
 
   let xboxShopBlk = GUI.get()?.xbox_ingame_shop
   let skipItemsList = xboxShopBlk?.itemsHide ?? ::DataBlock()
-  xboxProceedItems.clear()
+
+  let xbItems = {}
   itemsList.clear()
   for (local i = 0; i < catalog.blockCount(); i++)
   {
@@ -41,11 +42,16 @@ local haveItemDiscount = null
     }
 
     let item = XboxShopPurchasableItem(itemBlock)
-    if (!(item.mediaItemType in xboxProceedItems))
-      xboxProceedItems[item.mediaItemType] <- []
-    xboxProceedItems[item.mediaItemType].append(item)
+    foreach (xbItemType in item.categoryId) {
+      if (!(xbItemType in xbItems))
+        xbItems[xbItemType] <- []
+      xbItems[xbItemType].append(item)
+    }
+
     itemsList[item.id] <- item
   }
+
+  xboxProceedItems(xbItems)
 
   if (invalidateSeenList)
   {
@@ -96,9 +102,9 @@ let canUseIngameShop = @() ::is_platform_xbox && ::has_feature("XboxIngameShop")
 
 let getVisibleSeenIds = function()
 {
-  if (!visibleSeenIds.len() && xboxProceedItems.len())
+  if (!visibleSeenIds.len() && xboxProceedItems.value.len())
   {
-    foreach (mediaType, items in xboxProceedItems)
+    foreach (_, items in xboxProceedItems.value)
       visibleSeenIds.extend(items.filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
   }
   return visibleSeenIds
@@ -118,7 +124,7 @@ let initXboxItemsListAfterLogin = function()
 
 let haveAnyItemWithDiscount = function()
 {
-  if (!xboxProceedItems.len())
+  if (!xboxProceedItems.value.len())
     return false
 
   if (haveItemDiscount != null)
@@ -152,17 +158,17 @@ subscriptions.addListenersWithoutEnv({
   ProfileUpdated = @(p) initXboxItemsListAfterLogin()
   SignOut = function(p) {
     isItemsInitedOnce = false
-    xboxProceedItems.clear()
+    xboxProceedItems({})
     visibleSeenIds.clear()
     haveItemDiscount = null
   }
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {
-  canUseIngameShop = canUseIngameShop
-  requestData = requestData
-  xboxProceedItems = xboxProceedItems
+  canUseIngameShop
+  requestData
+  xboxProceedItems
   getShopItemsTable = @() itemsList
-  haveDiscount = haveDiscount
+  haveDiscount
   getShopItem = @(id) itemsList?[id]
 }

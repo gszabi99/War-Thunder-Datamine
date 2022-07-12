@@ -4,51 +4,83 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let shopData = require("%scripts/onlineShop/xboxShopData.nut")
 let statsd = require("statsd")
 let xboxSetPurchCb = require("%scripts/onlineShop/xboxPurchaseCallback.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 
-let sheetsArray = [
+let sheetsArray = []
+shopData.xboxProceedItems.subscribe(function(val) {
+  sheetsArray.clear()
+
+  if (xboxMediaItemType.GameConsumable in val)
+    sheetsArray.append({
+      id = "xbox_game_consumation"
+      locId = "itemTypes/xboxGameConsumation"
+      getSeenId = @() $"##xbox_item_sheet_{categoryId}"
+      categoryId = xboxMediaItemType.GameConsumable
+      sortParams = [
+        {param = "price", asc = false}
+        {param = "price", asc = true}
+      ]
+      sortSubParam = "consumableQuantity"
+      contentTypes = ["eagles"]
+    })
+
+  if (xboxMediaItemType.GameContent in val)
+    sheetsArray.append({
+      id = "xbox_game_content"
+      locId = "itemTypes/xboxGameContent"
+      getSeenId = @() $"##xbox_item_sheet_{categoryId}"
+      categoryId = xboxMediaItemType.GameContent
+      sortParams = [
+        {param = "releaseDate", asc = false}
+        {param = "releaseDate", asc = true}
+        {param = "price", asc = false}
+        {param = "price", asc = true}
+        {param = "isBought", asc = false}
+        {param = "isBought", asc = true}
+      ]
+      sortSubParam = "name"
+      contentTypes = [null, ""]
+    })
+
+  unitTypes.types.each(function(unitType) {
+    if (!(unitType.typeName in val))
+      return
+
+    sheetsArray.append({
+      id = $"xbox_game_content_{unitType.typeName}"
+      locId = unitType.getArmyLocId()
+      getSeenId = @() $"##xbox_item_sheet_{unitType.typeName}"
+      categoryId = unitType.typeName
+      sortParams = [
+        {param = "releaseDate", asc = false}
+        {param = "releaseDate", asc = true}
+        {param = "price", asc = false}
+        {param = "price", asc = true}
+        {param = "isBought", asc = false}
+        {param = "isBought", asc = true}
+      ]
+      sortSubParam = "name"
+      contentTypes = [null, ""]
+    })
+  })
+
+  foreach (idx, sh in sheetsArray)
   {
-    id = "xbox_game_content"
-    locId = "itemTypes/xboxGameContent"
-    getSeenId = @() "##xbox_item_sheet_" + mediaType
-    mediaType = xboxMediaItemType.GameContent
-    sortParams = [
-      {param = "releaseDate", asc = false}
-      {param = "releaseDate", asc = true}
-      {param = "price", asc = false}
-      {param = "price", asc = true}
-      {param = "isBought", asc = false}
-      {param = "isBought", asc = true}
-    ]
-    sortSubParam = "name"
-    contentTypes = [null, ""]
-  },
-  {
-    id = "xbox_game_consumation"
-    locId = "itemTypes/xboxGameConsumation"
-    getSeenId = @() "##xbox_item_sheet_" + mediaType
-    mediaType = xboxMediaItemType.GameConsumable
-    sortParams = [
-      {param = "price", asc = false}
-      {param = "price", asc = true}
-    ]
-    sortSubParam = "consumableQuantity"
-    contentTypes = ["eagles"]
+    let sheet = sh
+    seenList.setSubListGetter(sheet.getSeenId(), @()
+      (val?[sheet.categoryId] ?? [])
+      .filter(@(it) !it.canBeUnseen())
+      .map(@(it) it.getSeenId())
+    )
   }
-]
-
-foreach (sh in sheetsArray)
-{
-  let sheet = sh
-  seenList.setSubListGetter(sheet.getSeenId(), @() (
-    shopData.xboxProceedItems?[sheet.mediaType] ?? []).filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
-}
+})
 
 ::gui_handlers.XboxShop <- class extends ::gui_handlers.IngameConsoleStore
 {
   function loadCurSheetItemsList()
   {
-    itemsList = itemsCatalog?[curSheet.mediaType] ?? []
+    itemsList = itemsCatalog?[curSheet.categoryId] ?? []
   }
 
   function onEventXboxSystemUIReturn(p)
@@ -116,15 +148,15 @@ let openIngameStore = ::kwarg(
       shopData.requestData(
         false,
         @() ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
-          itemsCatalog = shopData.xboxProceedItems
+          itemsCatalog = shopData.xboxProceedItems.value
           chapter = chapter
           curItem = shopData.getShopItem(curItemId)
-          afterCloseFunc = afterCloseFunc
+          afterCloseFunc
           titleLocId = "topmenu/xboxIngameShop"
           storeLocId = "items/openIn/XboxStore"
           seenEnumId = SEEN.EXT_XBOX_SHOP
-          seenList = seenList
-          sheetsArray = sheetsArray
+          seenList
+          sheetsArray
         }),
         true,
         statsdMetric
