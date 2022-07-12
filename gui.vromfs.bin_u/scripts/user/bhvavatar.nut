@@ -3,6 +3,7 @@ let string = require("%sqstd/string.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 const SHARPEN_SMALL_ICONS = 1.25
+const MAX_SMALL_ICON_SIZE_MUL = 8
 
 local intIconToString = @(id) ""
 local getIconPath = @(icon) icon
@@ -85,7 +86,7 @@ let class BhvAvatar
     let size = clamp(imgBlk?.size || 1.0, 0.01, 1.0)
     let x = imgBlk?.pos?.x ?? 0.0
     let y = imgBlk?.pos?.y ?? 0.0
-    let texSize = SHARPEN_SMALL_ICONS / size
+    let texSize = min(MAX_SMALL_ICON_SIZE_MUL, SHARPEN_SMALL_ICONS / size)
     obj.set_prop_latent("background-repeat",  "part")
     obj.set_prop_latent("background-position",
       format("%d,%d,%d,%d",

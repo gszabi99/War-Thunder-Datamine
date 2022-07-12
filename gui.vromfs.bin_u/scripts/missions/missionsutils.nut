@@ -7,7 +7,6 @@ let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 const COOP_MAX_PLAYERS = 4
 
 ::enable_coop_in_QMB <- false
-::enable_coop_in_DynCampaign <- false
 ::enable_coop_in_SingleMissions <- false
 ::enable_custom_battles <- false
 
@@ -24,7 +23,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::g_script_reloader.registerPersistentData("MissionsUtilsGlobals", ::getroottable(),
   [
-    "enable_coop_in_QMB", "enable_coop_in_DynCampaign", "enable_coop_in_SingleMissions", "enable_custom_battles"
+    "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
   ])
 
 ::is_mission_complete <- function is_mission_complete(chapterName, missionName) //different by mp_modes
@@ -56,8 +55,6 @@ let needCheckForVictory = ::Watched(false)
 
   if (gm == ::GM_SINGLE_MISSION)
     return ::enable_coop_in_SingleMissions
-  if (gm == ::GM_DYNAMIC)
-    return ::enable_coop_in_DynCampaign
   if (gm == ::GM_BUILDER)
     return ::enable_coop_in_QMB
   if (gm == ::GM_SKIRMISH)
@@ -352,7 +349,6 @@ let needCheckForVictory = ::Watched(false)
 ::init_coop_flags <- function init_coop_flags()
 {
   ::enable_coop_in_QMB            = ::has_feature(isPlatformSony ? "QmbCoopPs4"            : "QmbCoopPc")
-  ::enable_coop_in_DynCampaign    = ::has_feature(isPlatformSony ? "DynCampaignCoopPs4"    : "DynCampaignCoopPc")
   ::enable_coop_in_SingleMissions = ::has_feature(isPlatformSony ? "SingleMissionsCoopPs4" : "SingleMissionsCoopPc")
   ::enable_custom_battles         = ::has_feature(isPlatformSony ? "CustomBattlesPs4"      : "CustomBattlesPc")
   ::broadcastEvent("GameModesAvailability")

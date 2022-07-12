@@ -17,17 +17,21 @@
 @const battleTaskHeaderBgColor: #3C6969;
 @const battleTaskToggleButtonColorHover: #5d8282;
 @const battleTaskToggleButtonColorPushed: #305458;
+@const promoButtonWidth: 1@arrowButtonWidth + 1@contentRightPadding;
 
 promoButton {
-  css-hier-invalidate:yes;
-  total-input-transparent:yes;
-  input-transparent:yes;
-  pos: pw-w, 0;
+  css-hier-invalidate: yes;
+  total-input-transparent: yes;
+  input-transparent: yes;
   position: relative;
   margin: 0, 1@blockInterval;
   overflow: hidden;
-  hasFocusBorder:yes;
-  interactive:yes;
+  hasFocusBorder: yes;
+  interactive: yes;
+}
+
+promoButton[collapsed=yes] {
+  pos: 1@promoButtonWidth - w, 0;
 }
 
 promoButton[type=battleTask] {
@@ -43,8 +47,8 @@ promoButton > uncollapsedContainer {
 promoButton[type=battleTask] > expandable,
 promoButton[type=battlePass] > expandable {
   behaviour: button;
-  background-color:@transparent;
-  width:1@arrowButtonWidth + 1@contentRightPadding;
+  background-color: @transparent;
+  width: 1@promoButtonWidth;
   position: relative;
   padding-right: 1@contentRightPadding;
 }
@@ -60,7 +64,7 @@ promoButton[collapsed=no][type=arrowButton] {
 }
 
 promoButton[type=recentItems][collapsed=no] {
-  width: 1@arrowButtonWidth + 1@contentRightPadding;
+  width: 1@promoButtonWidth;
 }
 
 promoButton[type=recentItems] fillBlock {
@@ -110,8 +114,8 @@ promoButton fillBlock[needAnim=yes] {
 }
 
 promoButton[type=arrowButton] fillBlock {
-  height:1@arrowButtonHeight;
-  width: 1@arrowButtonWidth + 1@contentRightPadding;
+  height: 1@arrowButtonHeight;
+  width: 1@promoButtonWidth;
 }
 
 promoButton[type=battleTask] expandable > selImg > header {

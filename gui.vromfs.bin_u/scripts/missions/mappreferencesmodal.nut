@@ -218,7 +218,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
       let needPremium  = objType == "banned" && !havePremium.value
       if(needPremium)
         ::scene_msg_box("need_money", null, ::loc("mainmenu/onlyWithPremium"),
-          [ ["purchase", (@() onOnlineShopPremium()).bindenv(this)],
+          [ ["purchase", ::Callback(@() onOnlineShopPremium(), this)],
             ["cancel", null]
           ], "purchase")
       else

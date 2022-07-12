@@ -200,7 +200,7 @@ globalCallbacks.addTypes({
     }
     if (::is_multiplayer())
       curChatData = ::loadGameChatToObj(scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
-                          { selfHideInput = true, selfHideLog = true })
+        { selfHideInput = true, selfHideLog = true, selectInputIfFocusLost = true })
   }
 
   function reinitScreen(params = {})

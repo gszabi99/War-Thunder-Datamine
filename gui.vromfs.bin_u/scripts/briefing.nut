@@ -393,7 +393,7 @@ let function get_mission_desc_text(missionBlk)
 
     if (gm == ::GM_EVENT)
       ::mission_settings.coop = true;
-    else if ((gm != ::GM_SINGLE_MISSION) && (gm != ::GM_USER_MISSION) && (gm != ::GM_DYNAMIC) && (gm != ::GM_BUILDER))
+    else if ((gm != ::GM_SINGLE_MISSION) && (gm != ::GM_USER_MISSION) && (gm != ::GM_BUILDER))
       ::mission_settings.coop = false;
     else if (gm == ::GM_SINGLE_MISSION)
     {

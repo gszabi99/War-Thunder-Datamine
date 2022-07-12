@@ -1,6 +1,6 @@
 let function isGameModeCoop(gm)
 {
-  return gm == -1 || gm == ::GM_SINGLE_MISSION || gm == ::GM_DYNAMIC || gm == ::GM_BUILDER
+  return gm == -1 || gm == ::GM_SINGLE_MISSION || gm == ::GM_BUILDER
 }
 
 let function isGameModeVersus(gm)

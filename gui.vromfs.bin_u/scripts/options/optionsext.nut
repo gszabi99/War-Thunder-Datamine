@@ -426,7 +426,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     controlType = optionControlType.SLIDER
     title
     value = (get_sound_volume(sndType) * 100).tointeger()
-    cb = "onVolumeChange"
+    optionCb = "onVolumeChange"
   },
   get_volume_limits(sndType))
 
@@ -754,7 +754,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_AEROBATICS_SMOKE_TYPE:
       descr.id = "aerobatics_smoke_type"
-      descr.cb = "onTripleAerobaticsSmokeSelected"
+      descr.optionCb = "onTripleAerobaticsSmokeSelected"
 
       descr.items = []
       descr.values = []
@@ -889,8 +889,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_JOYFX:
       descr.id = "joyFX"
-      descr.hint = ::loc("options/joyFX") + "\n" +
-        ::colorize("warningTextColor", ::loc("guiHints/restart_required"))
+      descr.hint = ::loc("options/joyFX")
+      descr.needRestartClient = true
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = true
@@ -1171,7 +1171,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_option_ptt()
-      descr.cb = "onPTTChange";
+      descr.optionCb = "onPTTChange";
       break
 
     case ::USEROPT_VOICE_CHAT:
@@ -1179,7 +1179,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_option_voicechat()
-      descr.cb = "onVoicechatChange";
+      descr.optionCb = "onVoicechatChange";
       break
 
     case ::USEROPT_VOICE_DEVICE_IN:
@@ -1187,7 +1187,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = [];
       descr.values = [];
       descr.value = 0;
-      descr.cb = "onInstantOptionApply";
+      descr.optionCb = "onInstantOptionApply";
       descr.trParams <- "optionWidthInc:t='double';"
       let lastSoundDevice = soundDevice.get_last_voice_device_in()
       foreach (device in soundDevice.get_record_devices()) {
@@ -1203,7 +1203,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = [];
       descr.values = [];
       descr.value = 0;
-      descr.cb = "onInstantOptionApply";
+      descr.optionCb = "onInstantOptionApply";
       descr.trParams <- "optionWidthInc:t='double';"
       let lastSoundDevice = soundDevice.get_last_sound_device_out()
       foreach (device in soundDevice.get_out_devices()) {
@@ -1224,15 +1224,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.textUnchecked <- ::loc("#options/disabled")
       descr.hint = ::loc("options/sound")
       if(!is_sound_inited())
-        descr.hint = "".concat(descr.hint, "\n",
-           ::colorize("warningTextColor", ::loc("guiHints/restart_required")))
+        descr.needRestartClient = true
       descr.value = ::getSystemConfigOption("sound/fmod_sound_enable", true)
       break
 
     case ::USEROPT_SOUND_SPEAKERS_MODE:
       descr.id = "sound_speakers"
-      descr.hint = ::loc("options/sound_speakers") + "\n" +
-        ::colorize("warningTextColor", ::loc("guiHints/restart_required"))
+      descr.hint = ::loc("options/sound_speakers")
+      descr.needRestartClient = true
       descr.items  = ["#controls/AUTO", "#options/sound_speakers/stereo", "5.1", "7.1"]
       descr.values = ["auto", "stereo", "speakers5.1", "speakers7.1"]
       descr.value = ::find_in_array(descr.values, ::getSystemConfigOption("sound/speakerMode", "auto"), 0)
@@ -1375,7 +1374,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_GAMMA:
       descr.id = "video_gamma"
       descr.value = (::get_option_gamma() * 100).tointeger()
-      descr.cb = "onGammaChange"
+      descr.optionCb = "onGammaChange"
       break
 
     // volume settings:
@@ -1457,7 +1456,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
                             image = $"#ui/gameuiskin#{imageName}"
                           })
       }
-      descr.cb = "onSelectPreset"
+      descr.optionCb = "onSelectPreset"
       break
 
     // gui settings:
@@ -1596,7 +1595,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = false
-      descr.cb = "onOptionBotsAllowed"
+      descr.optionCb = "onOptionBotsAllowed"
       if (::SessionLobby.isInRoom())
         prevValue = ::SessionLobby.getMissionParam("isBotsAllowed", null)
       break
@@ -2129,7 +2128,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         globalEnv.EM_REALISTIC,
         globalEnv.EM_FULL_REAL
       ];
-      descr.cb = "onHelpersModeChange";
+      descr.optionCb = "onHelpersModeChange";
       defaultValue = ::g_aircraft_helpers.getOptionValue(optionId)
       break;
 
@@ -2149,7 +2148,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         globalEnv.EM_REALISTIC,
         globalEnv.EM_FULL_REAL
       ];
-      descr.cb = "onHelpersModeChange";
+      descr.optionCb = "onHelpersModeChange";
       defaultValue = ::get_option(::USEROPT_HELPERS_MODE).value
       break;
 
@@ -2211,7 +2210,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           descr.values = bullets.values
           descr.value = bullets.value
         }
-        descr.cb = "onMyWeaponOptionUpdate"
+        descr.optionCb = "onMyWeaponOptionUpdate"
       }
       else {
         ::dagor.logerr($"Options: USEROPT_BULLET{groupIndex}: get: Wrong 'aircraft_for_weapons' type")
@@ -2230,7 +2229,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = showFullList
         ? [false, true]
         : [false]
-      descr.cb = "onUserModificationsUpdate"
+      descr.optionCb = "onUserModificationsUpdate"
       descr.controlType = optionControlType.LIST
       defaultValue = false
       break
@@ -2327,7 +2326,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.step <- 1
       descr.defVal <- 0
       descr.value = ::hangar_get_tank_skin_condition().tointeger()
-      descr.cb = "onChangeTankSkinCondition"
+      descr.optionCb = "onChangeTankSkinCondition"
       break
 
     case ::USEROPT_DELAYED_DOWNLOAD_CONTENT:
@@ -2360,7 +2359,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.step <- 1
       descr.defVal <- 0
       descr.value = (::hangar_get_tank_camo_scale() * TANK_CAMO_SCALE_SLIDER_FACTOR).tointeger()
-      descr.cb = "onChangeTankCamoScale"
+      descr.optionCb = "onChangeTankCamoScale"
       break
 
     case ::USEROPT_TANK_CAMO_ROTATION:
@@ -2371,7 +2370,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.step <- 1
       descr.defVal <- 0
       descr.value = ::hangar_get_tank_camo_rotation().tointeger()
-      descr.cb = "onChangeTankCamoRotation"
+      descr.optionCb = "onChangeTankCamoRotation"
       break
 
     case ::USEROPT_DIFFICULTY:
@@ -2380,7 +2379,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       descr.diffCode <- []
-      descr.cb = "onDifficultyChange"
+      descr.optionCb = "onDifficultyChange"
 
       for(local i = 0; i < ::g_difficulty.types.len(); i++)
       {
@@ -2411,7 +2410,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       descr.idxValues <- []
-      descr.cb = "onDifficultyChange"
+      descr.optionCb = "onDifficultyChange"
 
       foreach (idx, diff in ::g_difficulty.types)
         if (diff.isAvailable())
@@ -2435,7 +2434,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "mp_mode"
       descr.items = [ "#options/any", "#mainmenu/btnDynamic", "#mainmenu/btnBuilder", "#mainmenu/btnCoop" ]
       descr.values = [ -1, ::GM_DYNAMIC, ::GM_BUILDER, ::GM_SINGLE_MISSION ]
-      descr.cb = "onGamemodeChange"
+      descr.optionCb = "onGamemodeChange"
       break
 
     case ::USEROPT_SEARCH_GAMEMODE_CUSTOM:
@@ -2446,7 +2445,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_SEARCH_PLAYERMODE:
       descr.id = "mp_mode"
-      descr.cb = "onPlayerModeChange"
+      descr.optionCb = "onPlayerModeChange"
       descr.items = ["#options/any", "#lb/pve", "#lb/pvp"]
       descr.values = [0, 1, 2]
       break
@@ -2523,7 +2522,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.items.append("" + i)
         descr.values.append(i)
       }
-      descr.cb = "onNumPlayers"
+      descr.optionCb = "onNumPlayers"
       defaultValue = 8
       break
 
@@ -2533,7 +2532,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = ["#options/countryArcade","#options/countryReal", "#options/countrySymmetric", "#options/countryCustom"]
       descr.values = [misCountries.ALL, misCountries.BY_MISSION, misCountries.SYMMETRIC, misCountries.CUSTOM]
       defaultValue = misCountries.ALL
-      descr.cb = "onMissionCountriesType"
+      descr.optionCb = "onMissionCountriesType"
 
       if (::SessionLobby.isInRoom())
         prevValue = ::SessionLobby.getPublicParam("countriesType", null)
@@ -2546,7 +2545,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.sideTag <- team == ::g_team.A ? "country_allies" : "country_axis"
       descr.controlType = optionControlType.BIT_LIST
       descr.controlName <- "multiselect"
-      descr.cb = "onInstantOptionApply"
+      descr.optionCb = "onInstantOptionApply"
 
       descr.items = []
       descr.values = []
@@ -2600,7 +2599,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "countries_set"
       descr.items = []
       descr.values = []
-      descr.cb = "onInstantOptionApply"
+      descr.optionCb = "onInstantOptionApply"
       descr.trParams <- "iconType:t='small'; optionWidthInc:t='double';"
 
       foreach (idx, countriesSet in (context?.countriesSetList ?? [])) {
@@ -2623,7 +2622,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "use_killstreaks"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onUseKillStreaks"
+      descr.optionCb = "onUseKillStreaks"
       defaultValue = false
       break
 
@@ -2633,7 +2632,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.BIT_LIST
       descr.controlName <- "multiselect"
       descr.showTitle <- true
-      descr.cb = "onInstantOptionApply"
+      descr.optionCb = "onInstantOptionApply"
       descr.items = []
       descr.values = []
       descr.hint = descr.title
@@ -2678,7 +2677,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let isMin = optionId == ::USEROPT_BR_MIN
       descr.id = isMin ? "battle_rating_min" : "battle_rating_max"
       descr.controlName <- "combobox"
-      descr.cb = "onInstantOptionApply"
+      descr.optionCb = "onInstantOptionApply"
       descr.items = []
       descr.values = []
 
@@ -2731,7 +2730,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "rank"
       descr.title = ::loc("shop/age")
       descr.controlName <- "combobox"
-      descr.cb = "onInstantOptionApply"
+      descr.optionCb = "onInstantOptionApply"
 
       descr.items = []
       descr.values = []
@@ -2815,7 +2814,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.singleOption <- true
       descr.hideTitle <- true
       descr.controlType = optionControlType.BIT_LIST
-      descr.cb = "onSelectedOptionChooseUnsapportedUnit"
+      descr.optionCb = "onSelectedOptionChooseUnsapportedUnit"
       break
 
     case ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST:
@@ -2874,7 +2873,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = descr.values[0]
       prevValue = ::get_gui_option(::USEROPT_YEAR)
       descr.value = ::find_in_array(descr.values, prevValue, 0)
-      descr.cb = "onYearChange"
+      descr.optionCb = "onYearChange"
       break
 
     case ::USEROPT_TIME_SPAWN:
@@ -2887,7 +2886,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "mp_team"
       descr.items = ["#multiplayer/teamA", "#multiplayer/teamB"]
       descr.values = [1, 2]
-      descr.cb = "onLayoutChange"
+      descr.optionCb = "onLayoutChange"
       break
 
     case ::USEROPT_MP_TEAM_COUNTRY_RAND:
@@ -2969,7 +2968,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.value = ::find_in_array(descr.values, prevValue, 0)
       }
 
-      descr.cb = "onLayoutChange"
+      descr.optionCb = "onLayoutChange"
       break
 
     case ::USEROPT_DMP_MAP:
@@ -2990,14 +2989,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           descr.values.append(gameModeMaps[modeNo].values[i])
         }
       }
-      descr.cb = "onMissionChange"
+      descr.optionCb = "onMissionChange"
       break
 
     case ::USEROPT_DYN_MAP:
       descr.id = "dyn_map"
       descr.values = []
       descr.items = []
-      descr.cb = "onLayoutChange"
+      descr.optionCb = "onLayoutChange"
       optionsUtils.fillDynMapOption(descr)
       break
 
@@ -3005,7 +3004,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "dyn_zone"
       descr.values = []
       descr.items = []
-      descr.cb = "onSectorChange"
+      descr.optionCb = "onSectorChange"
       let dynamic_zones = ::dynamic_get_zones()
       for (local i = 0; i < dynamic_zones.len(); i++)
       {
@@ -3041,7 +3040,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
                      "#options/dyncount/ally_around_ally", "#options/dyncount/ally_around_enemy",
                      "#options/dyncount/enemy_around_ally", "#options/dyncount/enemy_around_enemy",]
       descr.values = [0, 1, 2, 3, 4, 5]
-      descr.cb = "onSectorChange"
+      descr.optionCb = "onSectorChange"
       break
 
     case ::USEROPT_DYN_WINS_TO_COMPLETE:
@@ -3257,7 +3256,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           {
             descr.value = nc
           }
-        descr.cb = "onProfileChange"
+        descr.optionCb = "onProfileChange"
       }
       break
 
@@ -3367,7 +3366,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       }
       if (marketplaceItemdefIds.len() > 0)
         inventoryClient.requestItemdefsByIds(marketplaceItemdefIds)
-      descr.cb = "onProfileChange"
+      descr.optionCb = "onProfileChange"
       break
 
     case ::USEROPT_CROSSHAIR_TYPE:
@@ -3417,77 +3416,77 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           descr.values.append(diff.diffCode)
         }
 
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = getCdOption(::USEROPT_CD_ENGINE)
       break
     case ::USEROPT_CD_GUNNERY:
       descr.id = "realGunnery"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_GUNNERY)
       break
     case ::USEROPT_CD_DAMAGE:
       descr.id = "realDamageModels"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_DAMAGE)
       break
     case ::USEROPT_CD_FLUTTER:
       descr.id = "flutter"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_FLUTTER)
       break
     case ::USEROPT_CD_STALLS:
       descr.id = "stallsAndSpins"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_STALLS)
       break
     case ::USEROPT_CD_REDOUT:
       descr.id = "redOuts"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_REDOUT)
       break
     case ::USEROPT_CD_MORTALPILOT:
       descr.id = "mortalPilots"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_MORTALPILOT)
       break
     case ::USEROPT_CD_BOMBS:
       descr.id = "limitedArmament"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_BOMBS)
       break
     case ::USEROPT_CD_BOOST:
       descr.id = "noArcadeBoost"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_BOOST)
       break
     case ::USEROPT_CD_TPS:
       descr.id = "disableTpsViews"
       descr.items = ["#options/limitViewTps", "#options/limitViewFps", "#options/limitViewCockpit"]
       descr.values = [0, 1, 2]
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = getCdOption(::USEROPT_CD_TPS)
       break
     case ::USEROPT_CD_AIM_PRED:
       descr.id = "hudAimPrediction"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_AIM_PRED)
       break
     case ::USEROPT_CD_MARKERS:
@@ -3495,126 +3494,126 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "hudMarkers"
       descr.items = ["#options/no", "#options/ally", "#options/all", teamAirSb]
       descr.values = [0, 1, 2, 3]
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = getCdOption(::USEROPT_CD_MARKERS)
       break
     case ::USEROPT_CD_ARROWS:
       descr.id = "hudMarkerArrows"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_ARROWS)
       break
     case ::USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST:
       descr.id = "hudAircraftMarkersMaxDist"
       descr.items = ["#options/near", "#options/normal", "#options/far", "#options/quality_max"]
       descr.values = [0, 1, 2, 3]
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = getCdOption(::USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST)
       break
     case ::USEROPT_CD_INDICATORS:
       descr.id = "hudIndicators"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_INDICATORS)
       break
     case ::USEROPT_CD_SPEED_VECTOR:
       descr.id = "hudShowSpeedVector"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_SPEED_VECTOR)
       break
     case ::USEROPT_CD_TANK_DISTANCE:
       descr.id = "hudShowTankDistance"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_TANK_DISTANCE)
       break
     case ::USEROPT_CD_MAP_AIRCRAFT_MARKERS:
       descr.id = "hudMapAircraftMarkers"
       descr.items = ["#options/no", "#options/ally", "#options/all", "#options/player"]
       descr.values = [0, 1, 2, 3]
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = getCdOption(::USEROPT_CD_MAP_AIRCRAFT_MARKERS)
       break
     case ::USEROPT_CD_MAP_GROUND_MARKERS:
       descr.id = "hudMapGroundMarkers"
       descr.items = ["#options/no", "#options/ally", "#options/all"]
       descr.values = [0, 1, 2]
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = getCdOption(::USEROPT_CD_MAP_GROUND_MARKERS)
       break
     case ::USEROPT_CD_MARKERS_BLINK:
       descr.id = "hudMarkersBlink"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_MARKERS_BLINK)
       break
     case ::USEROPT_CD_RADAR:
       descr.id = "hudRadar"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_RADAR)
       break
     case ::USEROPT_CD_DAMAGE_IND:
       descr.id = "hudDamageIndicator"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_DAMAGE_IND)
       break
     case ::USEROPT_CD_LARGE_AWARD_MESSAGES:
       descr.id = "hudLargeAwardMessages"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_LARGE_AWARD_MESSAGES)
       break
     case ::USEROPT_CD_WARNINGS:
       descr.id = "hudWarnings"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange"
+      descr.optionCb = "onCDChange"
       descr.value = !!getCdOption(::USEROPT_CD_WARNINGS)
       break
     case ::USEROPT_CD_AIR_HELPERS:
       descr.id = "aircraftHelpers";
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange";
+      descr.optionCb = "onCDChange";
       descr.value = !!getCdOption(::USEROPT_CD_AIR_HELPERS)
       break;
     case ::USEROPT_CD_COLLECTIVE_DETECTION:
       descr.id = "collectiveDetection";
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange";
+      descr.optionCb = "onCDChange";
       descr.value = !!getCdOption(::USEROPT_CD_COLLECTIVE_DETECTION)
       break;
     case ::USEROPT_CD_DISTANCE_DETECTION:
       descr.id = "distanceDetection";
       descr.items = ["#options/near", "#options/normal", "#options/far"];
       descr.values = [0, 1, 2];
-      descr.cb = "onCDChange";
+      descr.optionCb = "onCDChange";
       descr.value = getCdOption(::USEROPT_CD_DISTANCE_DETECTION)
       break;
     case ::USEROPT_CD_ALLOW_CONTROL_HELPERS:
       descr.id = "allowControlHelpers";
       descr.items = ["#options/allHelpers", "#options/Instructor", "#options/Realistic", "#options/no"];
       descr.values = [0, 1, 2, 3];
-      descr.cb = "onCDChange";
+      descr.optionCb = "onCDChange";
       descr.value = getCdOption(::USEROPT_CD_ALLOW_CONTROL_HELPERS)
       break;
     case ::USEROPT_CD_FORCE_INSTRUCTOR:
       descr.id = "forceInstructor";
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onCDChange";
+      descr.optionCb = "onCDChange";
       descr.value = !!getCdOption(::USEROPT_CD_FORCE_INSTRUCTOR)
       break;
 
@@ -3623,7 +3622,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_internet_radio_options()?.active ?? false
-      descr.cb = "update_internet_radio";
+      descr.optionCb = "update_internet_radio";
       break;
     case ::USEROPT_INTERNET_RADIO_STATION:
       descr.id = "internet_radio_station";
@@ -3650,7 +3649,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.items.append("#options/no_internet_radio_stations")
       }
       descr.value = ::find_in_array(descr.values, ::get_internet_radio_options()?.station ?? "", 0)
-      descr.cb = "update_internet_radio";
+      descr.optionCb = "update_internet_radio";
       break;
 
     case ::USEROPT_HEADTRACK_ENABLE:
@@ -3658,7 +3657,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::ps4_headtrack_get_enable()
-      descr.cb = "onHeadtrackEnableChange"
+      descr.optionCb = "onHeadtrackEnableChange"
       break
 
     case ::USEROPT_HEADTRACK_SCALE_X:
@@ -3865,7 +3864,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.id = "rankReqTank"
         descr.title = ::loc("clan/rankReqTank")
       }
-      descr.cb = "onRankReqChange"
+      descr.optionCb = "onRankReqChange"
       descr.items = []
       descr.values = []
       for(local rank = 0; rank <= ::max_country_rank; ++rank)
@@ -3920,7 +3919,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
     case ::USEROPT_TANK_ALT_CROSSHAIR:
       descr.id = "tank_alt_crosshair"
-      descr.cb = "onTankAltCrosshair"
+      descr.optionCb = "onTankAltCrosshair"
 
       descr.items = []
       descr.values = []
@@ -3957,7 +3956,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "ps4_crossplay"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.cb = "onChangeCrossPlay"
+      descr.optionCb = "onChangeCrossPlay"
       descr.value = crossplayModule.isCrossPlayEnabled()
       descr.enabled <- !::checkIsInQueue()
       break
@@ -3974,7 +3973,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = crossplayModule.isCrossNetworkChatEnabled()
-      descr.cb = "onChangeCrossNetworkChat"
+      descr.optionCb = "onChangeCrossNetworkChat"
       break
     case ::USEROPT_DISPLAY_MY_REAL_NICK:
       descr.id = "display_my_real_nick"
@@ -4087,6 +4086,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   if (!descr.hint)
     descr.hint = ::loc("guiHints/" + descr.id, "")
 
+  if (descr.needRestartClient)
+    descr.hint = "\n".concat(descr.hint, ::colorize("warningTextColor", ::loc("guiHints/restart_required")))
+
   local valueToSet = defaultValue
   if (prevValue == null)
     prevValue = ::get_gui_option(optionId)
@@ -4094,8 +4096,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     valueToSet = prevValue
 
   descr.needShowValueText = descr.needShowValueText || descr.controlType == optionControlType.SLIDER
-  if (descr.needShowValueText && !descr.cb)
-    descr.cb = "updateOptionValueTextByObj"
+  if (descr.needShowValueText && !descr.optionCb)
+    descr.optionCb = "updateOptionValueTextByObj"
+  descr.cb <- context?.containerCb ?? descr.optionCb
 
   if (descr.controlType == optionControlType.SLIDER)
   {

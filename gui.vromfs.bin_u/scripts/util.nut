@@ -1145,10 +1145,7 @@ let function startCreateWndByGamemode(handler, obj)
   if (gm == ::GM_EVENT)
     ::gui_start_briefing()
   else if (gm == ::GM_DYNAMIC)
-  {
-    ::mission_settings.coop = true
     ::gui_start_dynamic_layouts()
-  }
   else if (gm == ::GM_BUILDER)
   {
     ::mission_settings.coop = true
@@ -1163,10 +1160,7 @@ let function startCreateWndByGamemode(handler, obj)
   else if (gm == ::GM_DOMINATION || gm == ::GM_TOURNAMENT)
     ::gui_start_mislist()
   else //any coop - create dyncampaign
-  {
-    ::mission_settings.coop = true
     ::gui_start_dynamic_layouts()
-  }
   //may be not actual with current hndler managment system
   //handler.guiScene.initCursor("%gui/cursor.blk", "normal")
   ::update_gamercards()

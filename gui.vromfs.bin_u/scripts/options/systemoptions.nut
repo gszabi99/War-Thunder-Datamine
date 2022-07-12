@@ -5,6 +5,8 @@ let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSet
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_primary_screen_info } = require("dagor.system")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
+let { applyRestartClient, isClientRestartable,canRestartClient
+} = require("%scripts/utils/restartClient.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -269,16 +271,14 @@ let function checkChanges(config1, config2) {
   return changes
 }
 
-let isClientRestartable = @() !::is_vendor_tencent()
-
-let canRestartClient = @() isClientRestartable()
-  && !(::is_in_loading_screen() || ::SessionLobby.isInRoom())
-
 let isRestartPending = @() checkChanges(mCfgStartup, mCfgCurrent).needClientRestart
 
 let isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineReload
 
 let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
+
+let canUseGraphicsOptions = @() ::is_platform_pc && ::has_feature("GraphicsOptions")
+let canShowGpuBenchmark = @() canUseGraphicsOptions() && ::target_platform != "macosx"
 
 let function updateGuiNavbar(show=true) {
   let scene = mHandler?.scene
@@ -289,14 +289,11 @@ let function updateGuiNavbar(show=true) {
   let showRestartButton = showText && canRestartClient()
   let applyText = ::loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
 
-  mHandler.showSceneBtn("btn_reset", show && isSavePending())
+  ::showBtn("btn_reset", show && isSavePending(), scene)
+  ::showBtn("restart_suggestion", showText, scene)
+  ::showBtn("btn_restart", showRestartButton, scene)
+  ::showBtn("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
 
-  let objNavbarRestartText = scene.findObject("restart_suggestion")
-  if (::check_obj(objNavbarRestartText))
-    objNavbarRestartText.show(showText)
-  let objNavbarRestartButton = scene.findObject("btn_restart")
-  if (::check_obj(objNavbarRestartButton))
-    objNavbarRestartButton.show(showRestartButton)
   let objNavbarApplyButton = scene.findObject("btn_apply")
   if (::check_obj(objNavbarApplyButton))
     objNavbarApplyButton.setValue(applyText)
@@ -1249,21 +1246,6 @@ let function configMaintain() {
   configFree()
 }
 
-let function applyRestartClient(forced=false) {
-  if (!isClientRestartable())
-    return
-
-  if (!forced && !canRestartClient()) {
-    ::showInfoMsgBox(::loc("msgbox/client_restart_rejected"), "sysopt_restart_rejected")
-    return
-  }
-
-  ::dagor.debug("[sysopt] Restarting client.")
-  ::save_profile(false)
-  ::save_short_token()
-  ::restart_game(false)
-}
-
 let function applyRestartEngine(reloadScene = false) {
   mCfgApplied = {}
   foreach (id, value in mCfgCurrent)
@@ -1412,8 +1394,6 @@ let function onGuiOptionChanged(obj) {
   updateGuiNavbar(true)
 }
 
-let canUseGraphicsOptions = @() ::is_platform_pc && ::has_feature("GraphicsOptions")
-
 let function fillGuiOptions(containerObj, handler) {
   if (!::check_obj(containerObj) || !handler)
     return
@@ -1554,4 +1534,5 @@ return {
   setQualityPreset
   localizaQualityPreset
   onConfigApplyWithoutUiUpdate
+  canShowGpuBenchmark
 }

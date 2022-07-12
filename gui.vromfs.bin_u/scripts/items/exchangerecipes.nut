@@ -51,7 +51,7 @@ local ExchangeRecipes = class {
   components = null
   generatorId = null
   requirement = null
-  mark = MARK_RECIPE.NONE
+  mark = null
 
   isUsable = false
   isMultipleItems = false
@@ -265,14 +265,15 @@ local ExchangeRecipes = class {
 
   function getMarkIcon()
   {
-    if (mark == MARK_RECIPE.NONE)
+    let curMark = getMark()
+    if (curMark == MARK_RECIPE.NONE)
       return ""
 
     let imgPrefix = "#ui/gameuiskin#"
-    if (mark == MARK_RECIPE.USED)
+    if (curMark == MARK_RECIPE.USED)
       return imgPrefix + (isFake ? "icon_primary_fail.svg" : "icon_primary_ok.svg")
 
-    if (mark == MARK_RECIPE.BY_USER)
+    if (curMark == MARK_RECIPE.BY_USER)
       return imgPrefix + "icon_primary_attention.svg"
 
     return ""
@@ -280,13 +281,14 @@ local ExchangeRecipes = class {
 
   function getMarkLocIdByPath(path)
   {
-    if (mark == MARK_RECIPE.NONE)
+    let curMark = getMark()
+    if (curMark == MARK_RECIPE.NONE)
       return ""
 
-    if (mark == MARK_RECIPE.USED)
+    if (curMark == MARK_RECIPE.USED)
       return ::loc(path + (isFake ? "fake" : "true"))
 
-    if (mark == MARK_RECIPE.BY_USER)
+    if (curMark == MARK_RECIPE.BY_USER)
       return ::loc(path + "fakeByUser")
 
     return ""
@@ -311,7 +313,11 @@ local ExchangeRecipes = class {
     return ::handyman.renderCached("%gui/items/trophyDesc", view)
   }
 
-  isRecipeLocked = @() mark == MARK_RECIPE.BY_USER || (mark == MARK_RECIPE.USED && isFake)
+  function isRecipeLocked() {
+    let curMark = getMark()
+    return curMark == MARK_RECIPE.BY_USER || (curMark == MARK_RECIPE.USED && isFake)
+  }
+
   getCantAssembleMarkedFakeLocId = @() getMarkLocIdByPath(getLocIdsList().markMsgBoxCantUsePrefix)
   function getOpenCost(componentItem) {
     local cost = ::Cost()
@@ -703,23 +709,32 @@ local ExchangeRecipes = class {
 
   function markRecipe(isUserMark = false, needSave = true)
   {
+    let curMark = getMark()
     let marker = !isUserMark ? MARK_RECIPE.USED
-      : (isUserMark && mark == MARK_RECIPE.NONE) ? MARK_RECIPE.BY_USER
+      : (isUserMark && curMark == MARK_RECIPE.NONE) ? MARK_RECIPE.BY_USER
       : MARK_RECIPE.NONE
 
-    if(mark == marker)
+    if(curMark == marker)
       return false
 
     mark = marker
     if (needSave)
-      ::save_local_account_settings(getSaveId(), mark)
+      ::save_local_account_settings(getSaveId(), curMark)
 
     return true
   }
 
   function loadStateRecipe()
   {
-    mark = ::load_local_account_settings(getSaveId(), MARK_RECIPE.NONE)
+    if (::g_login.isProfileReceived())
+      mark = ::load_local_account_settings(getSaveId(), MARK_RECIPE.NONE)
+  }
+
+  function getMark() {
+    if (mark != null)
+      return mark
+    loadStateRecipe()
+    return mark ?? MARK_RECIPE.NONE
   }
 
   getRewardTitleLocId = @(hasFakeRecipes = true) hasFakeRecipes

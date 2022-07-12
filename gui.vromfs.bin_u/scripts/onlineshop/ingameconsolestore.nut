@@ -346,9 +346,8 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   {
     let val = ::get_obj_valid_index(obj)
     lastSorting = val < 0 ? 0 : val
-    curPage = 0
     updateSorting()
-    fillPage()
+    applyFilters()
   }
 
   function updateSortingList()

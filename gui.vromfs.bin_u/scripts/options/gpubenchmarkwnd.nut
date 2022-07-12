@@ -1,7 +1,7 @@
 let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
   closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality,
   getPresetForMaxFPS, isGpuBenchmarkRunning } = require("gpuBenchmark")
-let { setQualityPreset, canUseGraphicsOptions, onConfigApplyWithoutUiUpdate,
+let { setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate,
   localizaQualityPreset } = require("%scripts/options/systemOptions.nut")
 let { secondsToString } = require("%scripts/time.nut")
 
@@ -123,12 +123,8 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.GpuBenchmarkWnd <- GpuBenchmarkWnd
 
-let function canShowGpuBenchmarkWnd() {
-  return canUseGraphicsOptions() && ::target_platform != "macosx"
-}
-
 let function checkShowGpuBenchmarkWnd() {
-  if (!canShowGpuBenchmarkWnd())
+  if (!canShowGpuBenchmark())
     return
 
   if (::load_local_account_settings("gpuBenchmark/seen", false))
@@ -138,7 +134,7 @@ let function checkShowGpuBenchmarkWnd() {
 }
 
 let function showGpuBenchmarkWnd() {
-  if (!canShowGpuBenchmarkWnd())
+  if (!canShowGpuBenchmark())
     return
 
   ::handlersManager.loadHandler(GpuBenchmarkWnd, { needUiUpdate = true })
@@ -147,5 +143,4 @@ let function showGpuBenchmarkWnd() {
 return {
   checkShowGpuBenchmarkWnd
   showGpuBenchmarkWnd
-  canShowGpuBenchmarkWnd
 }

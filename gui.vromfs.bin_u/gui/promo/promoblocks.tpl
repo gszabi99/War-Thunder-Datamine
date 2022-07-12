@@ -1,7 +1,7 @@
 <<#showAllCheckBoxEnabled>>
 CheckBox {
   id:t='checkbox_show_all_promo_blocks'
-  pos:t='pw - w, 0'
+  pos:t='1@promoButtonWidth - w, 0'
   position:t='relative'
   on_change_value:t='onShowAllCheckBoxChange'
 

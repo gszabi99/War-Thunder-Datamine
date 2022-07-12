@@ -237,10 +237,6 @@ let { format } = require("string")
     let canStart = isCurItemInFocus && (selectedMission?.descConfig.canStart ?? false)
     ::showBtn("btn_start", isCurItemInFocus && selectedMission != null, scene)
     scene.findObject("btn_start").enable(canStart)
-
-    let showSquadBtn = isCurItemInFocus && canStart
-      && ::enable_coop_in_DynCampaign && ::g_squad_manager.canInviteMember()
-    ::showBtn("btn_inviteSquad", showSquadBtn, scene)
   }
 
   function onEventSquadStatusChanged(params)
@@ -263,11 +259,7 @@ let { format } = require("string")
 
   function onStart()
   {
-    if (!::g_squad_utils.canJoinFlightMsgBox({
-        isLeaderCanJoin = ::enable_coop_in_DynCampaign
-        showOfflineSquadMembersPopup = true
-        maxSquadSize = ::get_max_players_for_gamemode(::GM_DYNAMIC)
-      }))
+    if (!::g_squad_utils.canJoinFlightMsgBox({msgId = "multiplayer/squad/cantJoinSessionWithSquad"}))
       return
 
     let index = getSelectedMission()
@@ -352,8 +344,6 @@ let { format } = require("string")
     let dynListBlk = DataBlock();
     ::mission_settings.dynlist <- ::dynamic_get_list(dynListBlk, false)
 
-    ::mission_settings.coop = ::enable_coop_in_DynCampaign
-
     local playerCountry = ""
 
     let add = []
@@ -361,8 +351,6 @@ let { format } = require("string")
     {
       let misblk = ::mission_settings.dynlist[i].mission_settings.mission
       misblk.setStr("mis_file", map)
-      if (::mission_settings.coop)
-        misblk.setBool("gt_cooperative", true);
       misblk.setStr("chapter", ::get_cur_game_mode_name());
       misblk.setStr("type", ::get_cur_game_mode_name());
       add.append(misblk)

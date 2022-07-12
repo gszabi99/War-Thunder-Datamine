@@ -1,10 +1,10 @@
 let { format } = require("string")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let { WEAPON_TYPE,
         getLinkedGunIdx,
-        getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+        getWeaponNameByBlkPath,
+        getWeaponBlkParams } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsList,
         getBulletsSetData,
         getBulletsSearchName,
@@ -364,15 +364,16 @@ options.addTypes({
       let unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
       let weapons = getUnitWeapons(unitBlk)
       let knownWeapBlkArray = []
+
       foreach (weap in weapons)
       {
         if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, knownWeapBlkArray))
           continue
         knownWeapBlkArray.append(weap.blk)
 
-        let weaponBlkPath = weap.blk
-        let weaponBlk = blkFromPath(weaponBlkPath)
+        let { weaponBlk, weaponBlkPath } = getWeaponBlkParams(weap.blk, {})
         local bulletBlk = null
+
         foreach (t in specialBulletTypes)
           bulletBlk = bulletBlk ?? weaponBlk?[t]
 

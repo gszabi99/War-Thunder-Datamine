@@ -170,9 +170,10 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
     }
 
+    local startText = "events/join_event"
     let btnObj = ::showBtn("action_btn", !curTourParams.isMyTournament, scene)
     if (!curTourParams.isMyTournament) {
-      btnObj.setValue(::loc("events/join_event"))
+      btnObj.setValue(::loc(startText))
       btnObj.inactiveColor = "no"
       showSceneBtn("leave_btn", false)
       return
@@ -181,11 +182,21 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     let isInQueue = isInEventQueue()
     let hasActiveTicket = !isEvent ? false
       : getTourActiveTicket(curEvent.economicName, tournament.id) != null
-
+    let isReady = ::g_squad_manager.isMeReady()
+    let isSquadMember = ::g_squad_manager.isSquadMember()
     let isBtnVisible = isEvent && hasActiveTicket && curTourParams.isSesActive && !isInQueue
+
     btnObj.show(isBtnVisible)
     btnObj["enable"] = isBtnVisible ? "yes" : "no"
-    btnObj.setValue(::loc("mainmenu/toBattle")+getActiveTicketTxt(curEvent))
+    if (isSquadMember) {
+      startText = isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady"
+      btnObj["isCancel"] = isReady ? "yes" : "no"
+    }
+    else {
+      startText = ::loc("mainmenu/toBattle")
+      btnObj["isCancel"] = "no"
+    }
+    btnObj.setValue($"{::loc(startText)}{getActiveTicketTxt(curEvent)}")
     showSceneBtn("leave_btn", isInQueue)
   }
 
@@ -245,17 +256,21 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     if (curTourParams.isMyTournament)
-      onJoinEvent()
+      joinEvent()
     else
       registerForTournament()
   }
 
-  function onJoinEvent() {
+  function goToBattleFromDebriefing(){
+    joinEvent("debriefing")
+  }
+
+  function joinEvent(actionPlace = "event_window") {
     if (!curEvent || !suggestAndAllowPsnPremiumFeatures())
       return
 
     let configForStatistic = {
-      actionPlace = "event_window"
+      actionPlace = actionPlace
       economicName = ::events.getEventEconomicName(curEvent)
       difficulty = curEvent?.difficulty ?? ""
       canIntoToBattle = true
@@ -271,12 +286,25 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onLeaveEvent() {
+    if (!::g_squad_utils.canJoinFlightMsgBox(
+      { isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
+      ::Callback(onLeaveEventActions, this)))
+      return
+    else
+      onLeaveEventActions()
+  }
+
+  function onLeaveEventActions() {
     let q = getCurEventQueue()
     if (!q)
       return
 
     ::queues.leaveQueue(q, { isCanceledByPlayer = true })
   }
+
+  onEventSquadStatusChanged = @(p) updateApplyButton()
+  onEventSquadSetReady = @(p) updateApplyButton()
+  onEventSquadDataUpdated = @(p) updateApplyButton()
 
   function onLeaderboard() {
     if (curEvent != null)
@@ -315,6 +343,9 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function goBackImpl() {
+    if (::g_squad_manager.isSquadMember() && getCurEventQueue())
+      return
+
     resetSlotbarOverrided()
     checkedForward(base.goBack)
   }
@@ -328,7 +359,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     ::scene_msg_box("requeue_question", null, ::loc("msg/cancel_queue_question"),
       [["ok", ::Callback(function(){
-          ::queues.leaveQueue(q, { isCanceledByPlayer = true })
+          onLeaveEvent()
           goBackImpl()
         }, this)], ["no", null]], "ok")
   }

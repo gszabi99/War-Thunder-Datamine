@@ -59,8 +59,8 @@ let create = function() {
         ::SessionLobby.setExternalId(sessionId)
         dumpSessionData(sessionId, pushContextId, pendingSessions.value[pushContextId])
       }
-
-      pendingSessions.mutate(@(v) delete v[pushContextId])
+      if (pushContextId in pendingSessions.value)
+        pendingSessions.mutate(@(v) delete v[pushContextId])
     }, this)
   )
 }
@@ -72,7 +72,8 @@ let destroy = function() {
       psnsm.destroy(
         sId,
         ::Callback(function(r, err) {
-          createdSessionData.mutate(@(v) delete v[sId])
+          if (sId in createdSessionData.value)
+            createdSessionData.mutate(@(v) delete v[sId])
         }, this)
       )
     }
@@ -119,7 +120,8 @@ addListenersWithoutEnv({
         ::Callback(function(sId, pushContextId, r, err) {
           if (!err)
             dumpSessionData(sId, pushContextId, {})
-          pendingSessions.mutate(@(v) delete v[sId])
+          if (sId in pendingSessions.value)
+            pendingSessions.mutate(@(v) delete v[sId])
         }, this)
       )
     }
@@ -156,7 +158,8 @@ addListenersWithoutEnv({
         ::Callback(function(sId, pushContextId, r, err) {
           if (!err)
             dumpSessionData(sId, pushContextId, {})
-          pendingSessions.mutate(@(v) delete v[sId])
+          if (sId in pendingSessions.value)
+            pendingSessions.mutate(@(v) delete v[sId])
         }, this)
       )
     }

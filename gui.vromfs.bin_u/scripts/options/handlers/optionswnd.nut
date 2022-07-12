@@ -11,7 +11,10 @@ let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsData.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
 let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
-let { showGpuBenchmarkWnd, canShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
+let { showGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
+let { canRestartClient } = require("%scripts/utils/restartClient.nut")
+let { isOptionReqRestartChanged, setOptionReqRestartValue
+} = require("%scripts/options/optionsUtils.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -114,8 +117,6 @@ let function openOptionsWnd(group = null) {
       fillOptions(newGroup)
 
     let groupName = optGroups[newGroup].name
-    this.showSceneBtn("btn_gpu_benchmark", groupName == "graphicsParameters"
-      && canShowGpuBenchmarkWnd())
     setupSearch()
     joinEchoChannel(false)
     ::handlersManager.setLastBaseHandlerStartFunc(@() openOptionsWnd(groupName))
@@ -493,6 +494,7 @@ let function openOptionsWnd(group = null) {
 
   function onSystemOptionsRestartClient(obj)
   {
+    applyOptions()
     onRestartClient()
   }
 
@@ -518,9 +520,11 @@ let function openOptionsWnd(group = null) {
     curGroup = group
     let config = optGroups[group]
 
-    if( ! optionsConfig)
-        optionsConfig = {}
-    optionsConfig.onTblClick <- "onTblSelect"
+    if(optionsConfig == null)
+      optionsConfig = {
+        onTblClick = "onTblSelect"
+        containerCb = "onChangeOptionValue"
+      }
 
     currentContainerName = "options_" + config.name
     let container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
@@ -532,6 +536,7 @@ let function openOptionsWnd(group = null) {
     guiScene.replaceContentFromText(scene.findObject(objName), container.tbl, container.tbl.len(), this)
     setNavigationItems()
     showOptionsSelectedNavigation()
+    updateNavbar()
     guiScene.setUpdatesEnabled(true, true)
   }
 
@@ -692,6 +697,46 @@ let function openOptionsWnd(group = null) {
   {
     reset_volumes()
     fillOptionsList(curGroup, "optionslist")
+  }
+
+  function isRestartPending() {
+    foreach (container in optionsContainers) {
+      foreach(option in container.data) {
+        if (!option.needRestartClient)
+          continue
+        let obj = scene.findObject(option.id)
+        if (!(obj?.isValid() ?? false))
+          continue
+
+        if (isOptionReqRestartChanged(option, obj.getValue()))
+          return true
+      }
+    }
+    return false
+  }
+
+  function updateNavbar() {
+    let group = optGroups?[curGroup]
+    if (group == null)
+      return
+
+    let showRestartText = isRestartPending()
+    this.showSceneBtn("restart_suggestion", showRestartText)
+    this.showSceneBtn("btn_restart", showRestartText && canRestartClient())
+  }
+
+  function onChangeOptionValue(obj) {
+    let option = get_option_by_id(obj?.id)
+    if (!option)
+      return
+
+    if (option.needRestartClient) {
+      setOptionReqRestartValue(option)
+      updateNavbar()
+    }
+
+    if (option.optionCb != null)
+      this[option.optionCb](obj)
   }
 }
 

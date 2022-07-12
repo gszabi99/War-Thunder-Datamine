@@ -7,6 +7,7 @@ let { initWeaponParams } = require("%scripts/weaponry/weaponsParams.nut")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
 
 ::all_units <- {}
 
@@ -46,7 +47,7 @@ if (showedUnit.value != null)
 {
   updateShopCountriesList()
   ::countUsageAmountOnce()
-  ::generateUnitShopInfo()
+  generateUnitShopInfo()
 
   ::dagor.debug("update_all_units called, got "+::all_units.len()+" items");
 }

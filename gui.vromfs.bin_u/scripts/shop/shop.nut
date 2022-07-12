@@ -20,6 +20,7 @@ let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { buildDateStr } = require("%scripts/time.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 local lastUnitType = null
 
@@ -51,7 +52,7 @@ shopData = [
   ::gui_start_modal_wnd(::gui_handlers.ShopCheckResearch, config)
 }
 
-::gui_handlers.ShopMenuHandler <- class extends ::gui_handlers.GenericOptions
+::gui_handlers.ShopMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopInclude.blk"
@@ -2071,11 +2072,10 @@ shopData = [
 
   function onEventShopWndAnimation(p)
   {
-    if (::getTblValue("isVisible", p, false))
-    {
-      shouldBlurSceneBg = ::getTblValue("isShow", p, false)
-      ::handlersManager.updateSceneBgBlur()
-    }
+    if (!(p?.isVisible ?? false))
+      return
+    shouldBlurSceneBg = p?.isShow ?? false
+    ::handlersManager.updateSceneBgBlur()
   }
 
   function onEventCurrentGameModeIdChanged(params)
@@ -2129,4 +2129,6 @@ shopData = [
   }
 
   checkAirShopReq = @(air) air?.shopReq ?? true
+
+  shouldBlurSceneBgFn = @() shouldBlurSceneBg && needUseHangarDof()
 }

@@ -2,6 +2,70 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local countDefaultUnitsByCountry = null
 
+let function generateUnitShopInfo()
+{
+  let blk = ::get_shop_blk()
+  let totalCountries = blk.blockCount()
+
+  for(local c = 0; c < totalCountries; c++)  //country
+  {
+    let cblk = blk.getBlock(c)
+    let totalPages = cblk.blockCount()
+
+    for(local p = 0; p < totalPages; p++)
+    {
+      let pblk = cblk.getBlock(p)
+      let totalRanges = pblk.blockCount()
+
+      for(local r = 0; r < totalRanges; r++)
+      {
+        let rblk = pblk.getBlock(r)
+        let totalAirs = rblk.blockCount()
+        local prevAir = null
+
+        for(local a = 0; a < totalAirs; a++)
+        {
+          let airBlk = rblk.getBlock(a)
+          local air = ::getAircraftByName(airBlk.getBlockName())
+
+          if (airBlk?.reqAir != null)
+            prevAir = airBlk.reqAir
+
+          if (air)
+          {
+            air.applyShopBlk(airBlk, prevAir)
+            prevAir = air.name
+          }
+          else //aircraft group
+          {
+            let groupTotal = airBlk.blockCount()
+            local firstIGroup = null
+            let groupName = airBlk.getBlockName()
+            for(local ga = 0; ga < groupTotal; ga++)
+            {
+              let gAirBlk = airBlk.getBlock(ga)
+              air = ::getAircraftByName(gAirBlk.getBlockName())
+              if (!air)
+                continue
+              air.applyShopBlk(gAirBlk, prevAir, groupName)
+              prevAir = air.name
+              if (!firstIGroup)
+                firstIGroup = air
+            }
+
+            if (firstIGroup
+                && !::isUnitSpecial(firstIGroup)
+                && !::isUnitGift(firstIGroup))
+              prevAir = firstIGroup.name
+            else
+              prevAir = null
+          }
+        }
+      }
+    }
+  }
+}
+
 let function initCache() {
   countDefaultUnitsByCountry = {}
   foreach (u in ::all_units) {
@@ -35,4 +99,5 @@ addListenersWithoutEnv({
 return {
   hasDefaultUnitsInCountry
   isCountryHaveUnitType
+  generateUnitShopInfo
 }

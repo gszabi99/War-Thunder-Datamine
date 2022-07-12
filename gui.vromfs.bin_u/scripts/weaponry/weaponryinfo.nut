@@ -138,10 +138,10 @@ let function isWeaponEnabled(unit, weapon)
              || ::g_mis_custom_state.getCurMissionRules().isUnitWeaponAllowed(unit, weapon))
 }
 
-let function getWeaponDisabledMods(unit, weapon)
-{
-  return weapon?.reqModification.filter(@(n) !::shop_is_modification_enabled(unit.name, n)) ?? []
-}
+let getWeaponDisabledMods = @(unit, weapon)
+  ::shop_is_weapon_available(unit.name, weapon.name, true, false)
+    ? []
+    : (weapon?.reqModification.filter(@(n) !::shop_is_modification_enabled(unit.name, n)) ?? [])
 
 let function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null)
 {

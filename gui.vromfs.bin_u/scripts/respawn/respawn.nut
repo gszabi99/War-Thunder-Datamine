@@ -755,8 +755,10 @@ enum ESwitchSpectatorTarget
     if (!crewsCountry)
       return res
 
-    foreach(crew in crewsCountry.crews)
+    foreach(idx, crew in crewsCountry.crews)
     {
+      if ((slotReadyAtHostMask & (1<<idx)) == 0)
+        continue
       let unit = ::g_crew.getCrewUnit(crew)
       if (unit)
         res += ::shop_get_spawn_score(unit.name, "", [])

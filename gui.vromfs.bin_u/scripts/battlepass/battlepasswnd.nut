@@ -424,12 +424,16 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onChallengeSelect(obj) {
-    curChallengeId = getSelectedChildId(obj)
-    if (::show_console_buttons && !isFillingChallengesList) {
-      guiScene.applyPendingChanges(false)
-      ::move_mouse_on_child_by_value(obj)
-    }
+    let childObj = getSelectedChild(obj)
+    curChallengeId = childObj?.id ?? ""
+    if (isFillingChallengesList || childObj == null)
+      return
+
+    guiScene.applyPendingChanges(false)
+    childObj.scrollToView()
+    ::move_mouse_on_obj(childObj)
   }
+
   function expandHoverChallenge()
   {
     let listBoxObj = scene.findObject("challenges_list")

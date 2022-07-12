@@ -50,6 +50,8 @@ let isTournamentWndAvailable = @(dayNum) dayNum != DAY.FINISH && dayNum != DAY.S
 let getMatchingEventId = @(tourId, day, isTraining)
   $"{tourId}{day ? "_day" : ""}{day ?? ""}{isTraining ? "_train" : ""}"
 
+let getSharedTourNameByEvent = @(economicName) economicName.split("_day")[0]
+
 let function getEventByDay(tourId, dayNum, isTraining = false){
  let matchingEventId = getMatchingEventId(tourId, dayNum >= 0 ? dayNum + 1 : 1, isTraining)
  return ::events.getEvent(matchingEventId)
@@ -370,4 +372,5 @@ return {
   isRewardsAvailable
   isTournamentWndAvailable
   setSchedulerTimeColor
+  getSharedTourNameByEvent
 }

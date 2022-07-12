@@ -25,6 +25,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
+let { isPlatformPC } = require("%scripts/clientState/platform.nut")
+let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -171,9 +174,19 @@ let isEventUnit = @(unit) unit.event != null
 
 ::canBuyUnitOnline <- function canBuyUnitOnline(unit)
 {
-  return !::isUnitBought(unit) && ::isUnitGift(unit) && !isEventUnit(unit)
+  let canBuy = !::isUnitBought(unit)
+    && ::isUnitGift(unit)
+    && !isEventUnit(unit)
     && unit.isVisibleInShop()
     && !::canBuyUnitOnMarketplace(unit)
+
+  if (isPlatformPC || !canBuy)
+    return canBuy
+
+  return null != unit.getEntitlements().findvalue(function(id) {
+    let bundleId = getBundleId(id)
+    return bundleId != "" && getShopItem(bundleId) != null
+  })
 }
 
 ::canBuyUnitOnMarketplace <- function canBuyUnitOnMarketplace(unit)
@@ -754,70 +767,6 @@ let isEventUnit = @(unit) unit.event != null
     )
       req--
   return max(req, 0)
-}
-
-::generateUnitShopInfo <- function generateUnitShopInfo()
-{
-  let blk = ::get_shop_blk()
-  let totalCountries = blk.blockCount()
-
-  for(local c = 0; c < totalCountries; c++)  //country
-  {
-    let cblk = blk.getBlock(c)
-    let totalPages = cblk.blockCount()
-
-    for(local p = 0; p < totalPages; p++)
-    {
-      let pblk = cblk.getBlock(p)
-      let totalRanges = pblk.blockCount()
-
-      for(local r = 0; r < totalRanges; r++)
-      {
-        let rblk = pblk.getBlock(r)
-        let totalAirs = rblk.blockCount()
-        local prevAir = null
-
-        for(local a = 0; a < totalAirs; a++)
-        {
-          let airBlk = rblk.getBlock(a)
-          local air = ::getAircraftByName(airBlk.getBlockName())
-
-          if (airBlk?.reqAir != null)
-            prevAir = airBlk.reqAir
-
-          if (air)
-          {
-            air.applyShopBlk(airBlk, prevAir)
-            prevAir = air.name
-          }
-          else //aircraft group
-          {
-            let groupTotal = airBlk.blockCount()
-            local firstIGroup = null
-            let groupName = airBlk.getBlockName()
-            for(local ga = 0; ga < groupTotal; ga++)
-            {
-              let gAirBlk = airBlk.getBlock(ga)
-              air = ::getAircraftByName(gAirBlk.getBlockName())
-              if (!air)
-                continue
-              air.applyShopBlk(gAirBlk, prevAir, groupName)
-              prevAir = air.name
-              if (!firstIGroup)
-                firstIGroup = air
-            }
-
-            if (firstIGroup
-                && !::isUnitSpecial(firstIGroup)
-                && !::isUnitGift(firstIGroup))
-              prevAir = firstIGroup.name
-            else
-              prevAir = null
-          }
-        }
-      }
-    }
-  }
 }
 
 ::getPrevUnit <- function getPrevUnit(unit)

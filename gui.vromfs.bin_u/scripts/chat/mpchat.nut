@@ -31,6 +31,7 @@ local MP_CHAT_PARAMS = {
   hiddenInput = false       // Chat is read-only
   selfHideLog = false       // Hide log on timer
   isInSpectateMode = false  // is player in spectate mode
+  selectInputIfFocusLost = false
 }
 
 ::ChatHandler <- class
@@ -251,16 +252,19 @@ local MP_CHAT_PARAMS = {
     ::handlersManager.updateControlsAllowMask()
   }
 
+  isVisibleChatInput = @(sceneData)
+    (isActive || !sceneData.selfHideInput)
+      && !sceneData.hiddenInput
+      && isChatEnabled()
+      && getCurView(sceneData) == mpChatView.CHAT
+      && hasEnableChatMode
+
   function updateChatInput(sceneData)
   {
     if (isActive && !sceneData.scene.isVisible())
       return
 
-    let show = (isActive || !sceneData.selfHideInput)
-                 && !sceneData.hiddenInput
-                 && isChatEnabled()
-                 && getCurView(sceneData) == mpChatView.CHAT
-                 && hasEnableChatMode
+    let show = isVisibleChatInput(sceneData)
     let scene = sceneData.scene
 
     ::showBtnTable(scene, {
@@ -275,22 +279,30 @@ local MP_CHAT_PARAMS = {
         chat_mod_accesskey      = show && (sceneData.isInSpectateMode || !::is_hud_visible)
     })
     if (show && sceneData.scene.isVisible())
-    {
-      let obj = scene.findObject("chat_input")
-      if (::check_obj(obj))
-      {
-        obj.getScene().performDelayed(this, function()
-        {
-          if (!::check_obj(obj))
-            return
+      delayedSelectChatEditbox(sceneData)
+  }
 
-          obj.setValue(chatInputText)
+  function selectChatInputWhenFocusLost(sceneData) {
+    if (!sceneData.selectInputIfFocusLost || !sceneData.scene.isVisible()
+        || !isVisibleChatInput(sceneData))
+      return
 
-          if (sceneData?.isInputSelected ?? true)
-            selectChatEditbox(obj)
-        })
-      }
-    }
+    delayedSelectChatEditbox(sceneData)
+  }
+
+  function delayedSelectChatEditbox(sceneData) {
+    let obj = sceneData.scene.findObject("chat_input")
+    if (!(obj?.isValid() ?? false))
+      return
+
+    obj.getScene().performDelayed(this, function() {
+      if (!(obj?.isValid() ?? false))
+        return
+
+      obj.setValue(chatInputText)
+      if (sceneData?.isInputSelected ?? true)
+        selectChatEditbox(obj)
+    })
   }
 
   function selectChatEditbox(obj)
@@ -352,6 +364,10 @@ local MP_CHAT_PARAMS = {
       sceneData.handler.onChatCancel()
     enableChatInput(false)
     ::call_darg("hudChatInputEnableUpdate", false)
+  }
+
+  function onChatEndEdit() {
+    doForAllScenes(selectChatInputWhenFocusLost)
   }
 
   function checkAndPrintDevoiceMsg()

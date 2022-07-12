@@ -81,6 +81,7 @@ let presetsList = {
 let effectTypeTemplate = {
   id = ""
   measureType = ""
+  measureSeparate = " "
   presize = 1
   shouldColorByValue = true
   isInverted = false //when isInverted, negative values are better than positive
@@ -95,9 +96,15 @@ let effectTypeTemplate = {
     local res = ""
     if (!::u.isString(measureType))
       res = countMeasure(measureType, value)
-    else
-      res = string.floatToStringRounded(stdMath.round_by_value(value, presize), presize)
-        + (measureType.len() ? ::loc("measureUnits/" + measureType) : "")
+    else {
+      let measureText = measureType != ""
+        ? "".concat(measureSeparate, ::loc($"measureUnits/{measureType}"))
+        : ""
+      res = "".concat(
+        string.floatToStringRounded(stdMath.round_by_value(value, presize), presize),
+        measureText
+      )
+    }
 
     if (value > 0 || (needAdditionToZero && value == 0))
       res = "+" + res
@@ -207,7 +214,7 @@ enums.addTypes(effectsType, [
   { id = "cdParasite",             measureType = "kgf", isInverted = true, presize = 0.00001 }
   { id = "speed",                  preset = "SPEED" }
   { id = "climb",                  preset = "CLIMB_SPEED" }
-  { id = "roll",                   measureType = "deg_per_sec", presize = 0.1 }
+  { id = "roll",                   measureType = "deg_per_sec", measureSeparate = "", presize = 0.1 }
   { id = "virage",                 measureType = "seconds", isInverted = true, presize = 0.1
     validateValue = @(value) fabs(value) < 20.0 ? value : null
   }
@@ -221,7 +228,7 @@ enums.addTypes(effectsType, [
   { id = "gunPitchSpeedK",         preset = "PERCENT_FLOAT"
     canShowForUnit = @(unit) ::has_feature("TankModEffect")
   }
-  { id = "maxInclination",         measureType = "deg"
+  { id = "maxInclination",         measureType = "deg", measureSeparate = "",
     canShowForUnit = @(unit) ::has_feature("TankModEffect")
     validateValue = @(value) value * 180.0 / PI
   }

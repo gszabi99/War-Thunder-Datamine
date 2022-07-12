@@ -101,9 +101,13 @@ local mpChatModel = {
       return
 
     if (!::g_mp_chat_mode.getModeById(modeId).isEnabled()) {
-       if (::g_mp_chat_mode.getModeById(mpChatState.currentModeId).isEnabled())
-         ::chat_set_mode(mpChatState.currentModeId, "")
-       return
+      let isEnabledCurMod = mpChatState.currentModeId != null
+        && ::g_mp_chat_mode.getModeById(mpChatState.currentModeId).isEnabled()
+      let enabledModId = isEnabledCurMod ? mpChatState.currentModeId
+        : ::g_mp_chat_mode.getNextMode(mpChatState.currentModeId)
+      if (enabledModId != null)
+        ::chat_set_mode(enabledModId, "")
+      return
     }
 
     mpChatState.currentModeId = modeId

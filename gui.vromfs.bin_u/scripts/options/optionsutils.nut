@@ -2,6 +2,8 @@ let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
+let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
+
 let checkArgument = function(id, arg, varType) {
   if (typeof arg == varType)
     return true
@@ -24,10 +26,11 @@ let createDefaultOption = function() {
     controlType = optionControlType.LIST
 
     context = null
-    cb = null
+    optionCb = null
     items = null
     values = null
     needShowValueText = false
+    needRestartClient = false
     diffCode = null
 
     getTrId = @() id + "_tr"
@@ -245,6 +248,18 @@ let fillDynMapOption = function(descr)
   }
 }
 
+let function setOptionReqRestartValue(option) {
+  if (option.type in changedOptionReqRestart.value)
+    return
+
+  changedOptionReqRestart.value[option.type] <- option.value
+}
+
+let function isOptionReqRestartChanged(option, newValue) {
+  let baseValue = changedOptionReqRestart.value?[option.type]
+  return baseValue != null && baseValue != newValue
+}
+
 return {
   checkArgument
   createDefaultOption
@@ -255,4 +270,6 @@ return {
   fillDynMapOption
   setHSVOption_ThermovisionColor
   fillHSVOption_ThermovisionColor
+  isOptionReqRestartChanged
+  setOptionReqRestartValue
 }
