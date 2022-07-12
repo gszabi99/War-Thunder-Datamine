@@ -20,7 +20,6 @@ let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { buildDateStr } = require("%scripts/time.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 local lastUnitType = null
 
@@ -2129,6 +2128,4 @@ shopData = [
   }
 
   checkAirShopReq = @(air) air?.shopReq ?? true
-
-  shouldBlurSceneBgFn = @() shouldBlurSceneBg && needUseHangarDof()
 }
