@@ -689,6 +689,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
     let chpn = chosenPresetName
     chosenPresetIdx = presets.findindex(@(w) w.name == chpn)
+    pList.sort(sortPresetsList)
     updateAll(pList)
   }
 

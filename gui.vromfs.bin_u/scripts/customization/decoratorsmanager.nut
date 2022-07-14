@@ -176,6 +176,8 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
     categories = []
     decoratorsList = {}
     fullBlk = null
+    catToGroupNames = {} // { [catName]: string[] }
+    catToGroups = {}     // { [catName]: { [groupName]: Dec[] } }
   }
 
   let blk = decType.getBlk()
@@ -202,14 +204,28 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
     }
 
     decorator.category = category
-    decorator.catIndex = result.decorators[category].len()
 
     if (decorator.getCouponItemdefId() != null && !::ItemsManager.findItemById(decorator.getCouponItemdefId()))
       waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
 
     result.decoratorsList[decorator.id] <- decorator
-    if (decorator.isVisible() || decorator.isForceVisible())
+    if (decorator.isVisible() || decorator.isForceVisible()) {
       result.decorators[category].append(decorator)
+
+      if (category not in result.catToGroups) {
+        result.catToGroups[category] <- {}
+        result.catToGroupNames[category] <- []
+      }
+
+      let group = dblk?.group ?? "other"
+      if (group not in result.catToGroups[category]) {
+        result.catToGroups[category][group] <- []
+        result.catToGroupNames[category].append(group)
+      }
+
+      decorator.catIndex = result.catToGroups[category][group].len()
+      result.catToGroups[category][group].append(decorator)
+    }
   }
 
   for (local i = result.categories.len() - 1; i > -1; i--)
@@ -452,6 +468,23 @@ let function addDecoratorToCachedData(decorator, data) {
     data.categories.append(category)
   }
   ::u.appendOnce(decorator, data.decorators[category], true, @(a, b) a?.id == b.id)
+
+  if (category not in data.catToGroups) {
+    data.catToGroups[category] <- {}
+    data.catToGroupNames[category] <- []
+  }
+
+  let group = decorator.group != "" ? decorator.group : "other"
+  if (group not in data.catToGroups[category]) {
+    data.catToGroups[category][group] <- []
+    data.catToGroupNames[category].append(group)
+  }
+
+  let groupArr = data.catToGroups[category][group]
+  if (groupArr.findindex(@(d) d.id == decorator.id) == null) {
+    decorator.catIndex = groupArr.len()
+    groupArr.append(decorator)
+  }
 }
 
 g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)

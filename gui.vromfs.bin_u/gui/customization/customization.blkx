@@ -230,45 +230,10 @@
               }
             },
             {
+              "id": "decor_menu_container",
               "left": "pw-w-1@buttonMargin",
               "position": "relative",
-              "height": "fh",
-              "id": "decals_wnd",
-              "frame": {
-                "size": "1@countDecalsInWidth * 1@customizationDecoratorBlockWidth + 1@scrollBarSize+1@buttonMargin, ph",
-                "tdiv": [
-                  {
-                    "height": "1@frameHeaderHeight",
-                    "width": "pw",
-                    "frame_header": {
-                      "activeText": {
-                        "id": "decals_wnd_header",
-                        "text": "#decals",
-                        "caption": "yes"
-                      },
-                      "Button_close": {
-                        "style": "_on_click:onBtnCloseDecalsMenu;"
-                      }
-                    }
-                  },
-                  {
-                    "id": "decals_list",
-                    "width": "pw",
-                    "margin": "@buttonMargin",
-                    "behaviour": "posNavigator",
-                    "moveX": "linear",
-                    "moveY": "linear",
-                    "navigatorShortcuts": "yes",
-                    "move-only-hover": "yes",
-                    "on_select": "onDecalCategoryActivate",
-                    "css-hier-invalidate": "yes",
-                    "flow": "vertical",
-                    "class": "decalsList",
-                    "overflow-y": "auto",
-                    "canSelectNone": "yes"
-                  }
-                ]
-              }
+              "height": "fh"
             },
             {
               "id": "previewed_decorator_div",
@@ -370,6 +335,7 @@
                       "moveX": "linear",
                       "moveY": "linear",
                       "navigatorShortcuts": "active",
+                      "move-only-hover": "yes",
                       "css-hier-invalidate": "yes",
                       "total-input-transparent": "yes",
                       "on_activate": "onDecalSlotActivate",

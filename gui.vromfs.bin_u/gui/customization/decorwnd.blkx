@@ -1,0 +1,42 @@
+{
+  "tdiv": {
+    "height": "fh",
+    "id": "decor_menu",
+    "frame": {
+      "size": "@countDecalsInWidth * @customizationDecoratorBlockWidth + @scrollBarSize + @buttonMargin, ph",
+      "tdiv": [
+        {
+          "height": "@frameHeaderHeight",
+          "width": "pw",
+          "frame_header": {
+            "activeText": {
+              "id": "decals_wnd_header",
+              "text": "#decals",
+              "caption": "yes"
+            },
+            "Button_close": {
+              "style": "_on_click:onBtnCloseDecalsMenu;"
+            }
+          }
+        },
+        {
+          "id": "categories_list",
+          "width": "pw",
+          "margin": "@buttonMargin",
+          "behaviour": "posNavigator",
+          "moveX": "linear",
+          "moveY": "linear",
+          "navigatorShortcuts": "yes",
+          "move-only-hover": "yes",
+          "on_select": "onDecorCategorySelect",
+          "on_activate": "onDecorCategoryActivate",
+          "css-hier-invalidate": "yes",
+          "flow": "vertical",
+          "class": "decalsList",
+          "overflow-y": "auto",
+          "canSelectNone": "yes"
+        }
+      ]
+    }
+  }
+}

@@ -11,7 +11,8 @@ let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let { canBuyNotResearched,
         isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
-
+let decorMenuHandler = require("%scripts/customization/decorMenuHandler.nut")
+let { getDecorLockStatusText, getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
 let { needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -140,7 +141,6 @@ enum decalTwoSidedMode
   currentType = ::g_decorator_type.UNKNOWN
 
   isLoadingRot = false
-  isDecoratorsListOpen = false
   isDecoratorItemUsed = false
 
   isUnitTank = false
@@ -158,6 +158,8 @@ enum decalTwoSidedMode
 
   unitInfoPanelWeak = null
   needForceShowUnitInfoPanel = false
+
+  decorMenu = null
 
   function initScreen()
   {
@@ -185,6 +187,8 @@ enum decalTwoSidedMode
     unitInfoPanelWeak = unitInfoPanel.weakref()
     if (needForceShowUnitInfoPanel)
       unitInfoPanelWeak.uncollapse()
+
+    decorMenu = decorMenuHandler(scene.findObject("decor_menu_container")).weakref()
 
     initPreviewMode()
     initMainParams()
@@ -292,27 +296,6 @@ enum decalTwoSidedMode
     }
 
     setSceneTitle(title)
-  }
-
-  function getCurCategoryListObj()
-  {
-    let decalsObj = scene.findObject("decals_list")
-    if (!::checkObj(decalsObj))
-      return null
-
-    let value = decalsObj.getValue()
-    if (value < 0 || value >= decalsObj.childrenCount())
-      return null
-
-    let categoryObj = decalsObj.getChild(value)
-    if (::checkObj(categoryObj))
-    {
-      let categoryListObj = categoryObj.findObject("collapse_content_" + (categoryObj?.id ?? ""))
-      if (::checkObj(categoryListObj))
-        return categoryListObj
-    }
-
-    return null
   }
 
   function updateDecalActionsTexts()
@@ -750,7 +733,7 @@ enum decalTwoSidedMode
       onDblClick = null
       onDeleteClick = null
       ratio = slotRatio
-      statusLock = slot.unlocked? getStatusLockText(decorator)
+      statusLock = slot.unlocked ? getDecorLockStatusText(decorator, unit)
         : ::has_feature("EnablePremiumPurchase") ? "noPremium_" + slotRatio
         : "achievement"
       unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
@@ -840,35 +823,35 @@ enum decalTwoSidedMode
     let usableSkinsCount = ::u.filter(skinList?.access ?? [], @(a) a.isOwn).len()
 
     ::showBtnTable(scene, {
-          btn_go_to_collection = ::show_console_buttons && !isInEditMode && isDecoratorsListOpen
-            && isCollectionItem(getSelectedDecal(decoratorType))
+          btn_go_to_collection = ::show_console_buttons && !isInEditMode && decorMenu?.isOpened
+            && isCollectionItem(decorMenu?.getSelectedDecor())
 
           btn_apply = currentState & decoratorEditState.EDITING
 
-          btn_testflight = !isInEditMode && !isDecoratorsListOpen && can_testflight
-          btn_info       = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && !access_WikiOnline
-          btn_info_online = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && access_WikiOnline
-          btn_sec_weapons    = !isInEditMode && !isDecoratorsListOpen &&
+          btn_testflight = !isInEditMode && !decorMenu?.isOpened && can_testflight
+          btn_info       = !isInEditMode && !decorMenu?.isOpened && ::isUnitDescriptionValid(unit) && !access_WikiOnline
+          btn_info_online = !isInEditMode && !decorMenu?.isOpened && ::isUnitDescriptionValid(unit) && access_WikiOnline
+          btn_sec_weapons    = !isInEditMode && !decorMenu?.isOpened &&
             needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
 
-          btn_decal_edit   = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked
-          btn_decal_delete = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked
+          btn_decal_edit   = ::show_console_buttons && !isInEditMode && !decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
+          btn_decal_delete = ::show_console_buttons && !isInEditMode && !decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
 
           btn_marketplace_consume_coupon_skin = !previewMode && canConsumeSkinCoupon
           btn_marketplace_find_skin = !previewMode && canFindSkinOnMarketplace
 
-          skins_div = !isInEditMode && !isDecoratorsListOpen && access_Skins
+          skins_div = !isInEditMode && !decorMenu?.isOpened && access_Skins
           user_skins_block = !previewMode && access_UserSkins
           tank_skin_settings = !previewMode && isUnitTank
 
           previewed_decorator_div  = !isInEditMode && decoratorPreview
           previewed_decorator_unit = !isInEditMode && decoratorPreview && initialUnitId && initialUnitId != unit?.name
 
-          decor_layout_presets = !isInEditMode && !isDecoratorsListOpen && isUnitOwn &&
+          decor_layout_presets = !isInEditMode && !decorMenu?.isOpened && isUnitOwn &&
             ::has_feature("CustomizationLayoutPresets") && usableSkinsCount > 1 &&
             !previewMode && !previewSkinId
 
-          dmg_skin_div = ::has_feature("DamagedSkinPreview") && !isInEditMode && !isDecoratorsListOpen
+          dmg_skin_div = ::has_feature("DamagedSkinPreview") && !isInEditMode && !decorMenu?.isOpened
           dmg_skin_buttons_div = isDmgSkinPreviewMode && (unit.isAir() || unit.isHelicopter())
     })
 
@@ -885,7 +868,7 @@ enum decalTwoSidedMode
     }
 
     if (unitInfoPanelWeak?.isValid() ?? false)
-      unitInfoPanelWeak.onSceneActivate(!isInEditMode && !isDecoratorsListOpen && !isDmgSkinPreviewMode)
+      unitInfoPanelWeak.onSceneActivate(!isInEditMode && !decorMenu?.isOpened && !isDmgSkinPreviewMode)
 
     if (needUpdateSlotDivs)
       updateSlotsDivsVisibility(decoratorType)
@@ -918,8 +901,7 @@ enum decalTwoSidedMode
 
     if ((currentState & decoratorEditState.SELECT) && ::show_console_buttons)
     {
-      let listObj = getCurCategoryListObj()
-      if (listObj?.isValid() && listObj.isHovered())
+      if (decorMenu?.isCurCategoryListObjHovered())
       {
         bObj.text = ::loc("mainmenu/btnCollapse")
         bObj["skip-navigation"] = "no"
@@ -1030,10 +1012,17 @@ enum decalTwoSidedMode
       let labelObj = obj.findObject("label")
       labelObj.setValue(txtApplyDecorator + ::loc("ui/colon"))
 
-      let params = { showAsTrophyContent = true }
+      let params = {
+        showAsTrophyContent = true
+        onClick = "onDecoratorItemClick"
+        onDblClick = "onDecalItemDoubleClick"
+        onCollectionBtnClick = isCollectionItem(decoratorPreview)
+          ? "onCollectionIconClick"
+          : null
+      }
       let view = {
         isTooltipByHold = ::show_console_buttons,
-        buttons = [ generateDecalButton("", decoratorPreview, currentType, params) ]
+        buttons = [ getDecorButtonView(decoratorPreview, unit, params) ]
       }
       let slotsObj = obj.findObject("decorator_preview_div")
       let markup = ::handyman.renderCached("%gui/commonParts/imageButton", view)
@@ -1128,7 +1117,7 @@ enum decalTwoSidedMode
       return
 
     let prevSlotId = actionObj.getParent().getValue()
-    if (isDecoratorsListOpen && slotId == prevSlotId)
+    if (decorMenu?.isOpened && slotId == prevSlotId)
       return
 
     setCurrentDecoratorSlot(slotId, decoratorType)
@@ -1258,131 +1247,36 @@ enum decalTwoSidedMode
         || (currentState & decoratorEditState.NONE))
       return
 
-    let wObj = scene.findObject("decals_list")
-    if (!::checkObj(wObj))
-      return
-
     currentType = decoratorType
 
-    let decCategories = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
-    let view = { collapsableBlocks = [] }
-    foreach (idx, category in decCategories)
-      view.collapsableBlocks.append({
-        id = decoratorType.categoryWidgetIdPrefix + category
-        headerText = "#" + decoratorType.categoryPathPrefix + category
-        type = "decoratorsList"
-        onSelect = "onDecoratorItemSelect"
-        onActivate = "onDecoratorItemActivate"
-        onHoverChange = "onDecoratorsListHoverChange"
-        contentParams = "on_wrap_up:t='onDecalItemHeader'; on_wrap_down:t='onDecalItemNextHeader';"
-      })
-
-    let data = ::handyman.renderCached("%gui/commonParts/collapsableBlock", view)
-    guiScene.replaceContentFromText(wObj, data, data.len(), this)
+    decorMenu?.updateHandlerData(currentType, unit, slot.decalId, preSelectDecorator?.id)
+    decorMenu?.createCategories()
 
     showDecoratorsList()
 
     local selCategoryId = ""
-    if (preSelectDecorator)
+    local selGroupId = ""
+    if (preSelectDecorator) {
       selCategoryId = preSelectDecorator.category
-    else if (slot.isEmpty)
-      selCategoryId = ::loadLocalByAccount(decoratorType.currentOpenedCategoryLocalSafePath, "")
+      selGroupId = preSelectDecorator.group == "" ? "other" : preSelectDecorator.group
+    }
+    else if (slot.isEmpty) {
+      let path = decorMenu?.getSavedPath()
+      selCategoryId = path?[0] ?? ""
+      selGroupId = path?[1] ?? ""
+    }
     else
     {
       let decal = ::g_decorator.getDecorator(slot.decalId, decoratorType)
-      selCategoryId = decal ? decal.category : ""
+      if (decal) {
+        selCategoryId = decal.category
+        selGroupId = decal.group == "" ? "other" : decal.group
+      }
     }
 
-    if (selCategoryId != "")
-    {
-      let idx = decCategories.indexof(selCategoryId) ?? -1
-      if (idx >= 0)
-        wObj.setValue(idx)
-      else
-        updateButtons(decoratorType)
-    }
-    else
+    let isSelected = decorMenu?.selectCategory(selCategoryId, selGroupId)
+    if (!isSelected)
       updateButtons(decoratorType)
-  }
-
-  function generateDecalCategoryContent(categoryId, decoratorType)
-  {
-    let curSlotDecalId = getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
-    let decoratorsData = ::g_decorator.getCachedDecoratorsDataByType(decoratorType, unit.unitType.tag)
-
-    if (!(categoryId in decoratorsData))
-      return ""
-
-    let view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
-    foreach (decorator in decoratorsData[categoryId])
-      view.buttons.append(generateDecalButton(curSlotDecalId, decorator, decoratorType))
-
-    if (!view.buttons.len())
-      return ""
-
-    return ::handyman.renderCached("%gui/commonParts/imageButton", view)
-  }
-
-  function generateDecalButton(curSlotDecalId, decorator, decoratorType, params = null)
-  {
-    let isTrophyContent = params?.showAsTrophyContent ?? false
-    let isUnlocked = decorator.canUse(unit)
-    let lockCountryImg = ::get_country_flag_img("decal_locked_" + ::getUnitCountry(unit))
-    let unitLocked = decorator.getUnitTypeLockIcon()
-    let cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
-      : decorator.canBuyCouponOnMarketplace(unit) ? ::colorize("warningTextColor", ::loc("currency/gc/sign"))
-      : null
-    let statusLock = !isTrophyContent ? getStatusLockText(decorator)
-      : isUnlocked || cost != null ? null
-      : "achievement"
-    let leftAmount = decorator.limit - decorator.getCountOfUsingDecorator(unit)
-
-    return {
-      id = "decal_" + decorator.id
-      highlighted = decorator.id == curSlotDecalId
-      onClick = "onDecoratorItemClick"
-      onDblClick = "onDecalItemDoubleClick"
-      ratio = clamp(decoratorType.getRatio(decorator), 1, 2)
-      unlocked = isUnlocked
-      image = decoratorType.getImage(decorator)
-      tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
-      rarityColor = decorator.isRare() ? decorator.getRarityColor() : null
-      leftBottomButtonCb = isCollectionItem(decorator) ? "onCollectionIconClick" : null
-      leftBottomButtonImg = "#ui/gameuiskin#collection.svg"
-      leftBottomButtonTooltip = "#collection/go_to_collection"
-      leftBottomButtonHolderId = decorator.id
-      cost = cost
-      statusLock = statusLock
-      unitLocked = unitLocked
-      leftAmount = leftAmount
-      limit = decorator.limit
-      isMax = leftAmount <= 0
-      showLimit = !isTrophyContent && decorator.limit > 0 && !statusLock && !cost && !unitLocked
-      lockCountryImg = lockCountryImg
-    }
-  }
-
-  function getStatusLockText(decorator)
-  {
-    if (!decorator)
-      return null
-
-    if (decorator.canUse(unit))
-      return null
-
-    if (decorator.isLockedByCountry(unit))
-      return "country"
-
-    if (decorator.isLockedByUnit(unit) || !decorator.isAllowedByUnitTypes(unit.unitType.tag))
-      return "achievement"
-
-    if (decorator.lockedByDLC)
-      return "noDLC"
-
-    if (!decorator.isUnlocked() && !decorator.canBuyUnlock(unit) && !decorator.canBuyCouponOnMarketplace(unit))
-      return "achievement"
-
-    return null
   }
 
   function showDecoratorAccessRestriction(decorator)
@@ -1442,15 +1336,17 @@ enum decalTwoSidedMode
     return true
   }
 
-  function onCollectionIconClick(obj)
-  {
-    openCollectionsWnd({ selectedDecoratorId = obj.holderId })
+  function openCollections(decoratorId) {
+    openCollectionsWnd({ selectedDecoratorId = decoratorId })
     updateBackButton()
   }
 
+  onEventDecorMenuCollectionIconClick = @(p) openCollections(p.decoratorId)
+  onCollectionIconClick = @(obj) openCollections(obj.holderId)
+
   function onCollectionButtonClick()
   {
-    let selectedDecorator = getSelectedDecal(currentType)
+    let selectedDecorator = decorMenu?.getSelectedDecor()
     if (!isCollectionItem(selectedDecorator))
       return
 
@@ -1458,84 +1354,18 @@ enum decalTwoSidedMode
     updateBackButton()
   }
 
-  function onDecoratorItemSelect(obj)
-  {
-    updateButtons(null, false)
-  }
+  onEventDecorMenuItemSelect = @(_) updateButtons(null, false)
+  onEventDecorMenuListHoverChange = @(_) updateBackButton()
 
-  function onDecoratorsListHoverChange()
-  {
-    updateBackButton()
-  }
-
-  function getSelectedDecal(decoratorType)
-  {
-    let listObj = getCurCategoryListObj()
-    if (!::checkObj(listObj))
-      return null
-
-    let value = listObj.getValue()
-    let decalObj = (value >= 0 && value < listObj.childrenCount()) ? listObj.getChild(value) : null
-    return getDecalInfoByObj(decalObj, decoratorType)
-  }
-
-  function getDecalInfoByObj(obj, decoratorType)
-  {
-    if (!::checkObj(obj))
-      return null
-
-    let decalId = ::getObjIdByPrefix(obj, "decal_") || ""
-
-    return ::g_decorator.getDecorator(decalId, decoratorType)
-  }
-
-  function onDecoratorItemActivate(obj)
-  {
-    let value = obj.getValue()
-    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    onDecoratorItemClick(childObj)
-  }
-
-  function collapseOpenedCategory() {
-    let wObj = scene.findObject("decals_list")
-    if (!::check_obj(wObj))
-      return
-    let prevValue = wObj.getValue()
-    wObj.setValue(-1)
-    updateBackButton()
-    guiScene.applyPendingChanges(false)
-    if (::show_console_buttons)
-      ::move_mouse_on_child(wObj, prevValue)
-  }
-
-  function moveMouseOnDecalsHeader(valueDiff = 0) {
-    let wObj = scene.findObject("decals_list")
-    if (!::check_obj(wObj))
-      return false
-    let newValue = wObj.getValue() + valueDiff
-    if (newValue < 0 || wObj.childrenCount() <= newValue)
-      return false
-    ::move_mouse_on_child(wObj.getChild(newValue), 0)
-    return true
-  }
-
-  onDecalItemHeader = @(obj) moveMouseOnDecalsHeader()
-
-  function onDecalItemNextHeader(obj) {
-    if (!moveMouseOnDecalsHeader(1))
-      ::set_dirpad_event_processed(false)
-  }
-
-  function onDecoratorItemClick(obj)
-  {
-    let decorator = getDecalInfoByObj(obj, currentType)
+  function onDecoratorItemClick(obj) {
+    let decorator = decorMenu?.getDecoratorByObj(obj, currentType)
     if (!decorator)
       return
+    onEventDecorMenuItemClick({ decorator })
+  }
 
-    let decoratorsListObj = obj.getParent()
-    if (decoratorsListObj.getValue() != decorator.catIndex)
-      decoratorsListObj.setValue(decorator.catIndex)
-
+  function onEventDecorMenuItemClick(p) {
+    let { decorator } = p
     if (!decoratorPreview && decorator.isOutOfLimit(unit))
       return ::g_popups.add("", ::loc("mainmenu/decoratorExceededLimit", {limit = decorator.limit}))
 
@@ -1578,95 +1408,23 @@ enum decalTwoSidedMode
     enterEditDecalMode(curSlotIdx, decorator)
   }
 
-  function onDecalItemDoubleClick(obj)
-  {
-    if (!checkObj(obj))
-      return
-
-    let decalId = ::getObjIdByPrefix(obj, "decal_") || ""
-
-    let decal = ::g_decorator.getDecorator(decalId, currentType)
-    if (!decal)
-      return
-
-    if (!decal.canUse(unit))
+  function onEventDecorMenuItemDblClick(p) {
+    let decor = p.decorator
+    if (!decor.canUse(unit))
       return
 
     let slotIdx = getCurrentDecoratorSlot(currentType)
     let slotInfo = getSlotInfo(slotIdx, false, currentType)
     if (!slotInfo.isEmpty)
-      enterEditDecalMode(slotIdx, decal)
+      enterEditDecalMode(slotIdx, decor)
   }
 
-  function onDecalCategoryActivate(obj)
-  {
-    let value = obj.getValue()
-    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    if (::checkObj(childObj))
-      fillDecalCategoryContent(childObj)
-  }
-
-  function fillDecalCategoryContent(obj)
-  {
-    fillDecalsCategoryContentImpl(currentType)
-  }
-
-  function fillDecalsCategoryContentImpl(decoratorType)
-  {
-    let wObj = scene.findObject("decals_list")
-    if (!::checkObj(wObj))
-      return
-    let idx = wObj.getValue()
-    if (idx < 0)
+  function onDecalItemDoubleClick(obj) {
+    let decorator = decorMenu?.getDecoratorByObj(obj, currentType)
+    if (!decorator)
       return
 
-    let categoriesOrder = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
-    let category = categoriesOrder[idx]
-    let categoryBlockId = decoratorType.categoryWidgetIdPrefix + category
-    let categoryObj = wObj.findObject(categoryBlockId)
-    if (!::checkObj(categoryObj))
-      return
-
-    let decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
-    if (!::checkObj(decalsListObj))
-      return
-
-    let data = generateDecalCategoryContent(category, decoratorType)
-    guiScene.replaceContentFromText(decalsListObj, data, data.len(), this)
-
-    ::saveLocalByAccount(decoratorType.currentOpenedCategoryLocalSafePath, category)
-
-    let decalId = preSelectDecorator ? preSelectDecorator.id :
-      getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
-    let decal = ::g_decorator.getDecorator(decalId, decoratorType)
-    let index = decal && decal.category == category? decal.catIndex : 0
-    editableDecoratorId = decal? decalId : null
-
-    decalsListObj.setValue(index)
-    scrollDecalsCategory(category, decoratorType)
-    guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(decalsListObj)
-  }
-
-  function scrollDecalsCategory(categoryId, decoratorType)
-  {
-    if (!categoryId)
-      return
-
-    let categoryBlockId = decoratorType.categoryWidgetIdPrefix + categoryId
-    let categoryObj = scene.findObject(categoryBlockId)
-    if (!::check_obj(categoryObj))
-      return
-
-    let headerObj = categoryObj.findObject("btn_" + categoryBlockId)
-    if (::check_obj(headerObj))
-      headerObj.scrollToView(true)
-
-    let decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
-    let index = (::checkObj(decalsListObj) && decalsListObj.childrenCount()) ? decalsListObj.getValue() : -1
-    let itemObj = (index >= 0) ? decalsListObj.getChild(index) : null
-    if (::checkObj(itemObj))
-      itemObj.scrollToView()
+    onEventDecorMenuItemDblClick({ decorator })
   }
 
   function onBtnAccept()
@@ -1681,9 +1439,11 @@ enum decalTwoSidedMode
 
     if (currentState & decoratorEditState.SELECT)
     {
-      let listObj = getCurCategoryListObj()
-      if (listObj?.isValid() && listObj.isHovered())
-        return collapseOpenedCategory()
+      if (decorMenu?.isCurCategoryListObjHovered()) {
+        decorMenu.collapseOpenedCategory()
+        updateBackButton()
+        return
+      }
 
       return onBtnCloseDecalsMenu()
     }
@@ -1704,33 +1464,13 @@ enum decalTwoSidedMode
 
     let afterSuccessFunc = ::Callback((@(decorator, afterPurchDo) function() {
       ::update_gamercards()
-      updateSelectedCategory(decorator)
+      decorMenu?.updateSelectedCategory(decorator)
       if (afterPurchDo)
         afterPurchDo()
     })(decorator, afterPurchDo), this)
 
     decorator.decoratorType.buyFunc(unit.name, decorator.id, cost, afterSuccessFunc)
     return true
-  }
-
-  function updateSelectedCategory(decorator)
-  {
-    if (!isDecoratorsListOpen)
-      return
-
-    let categoryBlockId = decorator.decoratorType.categoryWidgetIdPrefix + decorator.category
-    let categoryObj = getObj(categoryBlockId)
-
-    if (!::checkObj(categoryObj) || categoryObj.isVisible())
-      return
-
-    let decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
-    if (::checkObj(decalsListObj))
-    {
-      let data = generateDecalCategoryContent(decorator.category, decorator.decoratorType)
-      guiScene.replaceContentFromText(decalsListObj, data, data.len(), this)
-      decalsListObj.getChild(decalsListObj.getValue()).selected = "yes"
-    }
   }
 
   function enterEditDecalMode(slotIdx, decorator)
@@ -1835,8 +1575,13 @@ enum decalTwoSidedMode
           ::dmViewer.update()
           onFinishInstallDecoratorOnUnit(true)
         })(decorator, afterPurchDo)],
-      ["cancel", onBtnBack]
-      ], "ok", { cancel_fn = onBtnBack })
+      ["cancel", onMsgBoxCancel]
+      ], "ok", { cancel_fn = onMsgBoxCancel })
+  }
+
+  function onMsgBoxCancel() {
+    if ((currentState & decoratorEditState.SELECT) == 0)
+      onBtnBack()
   }
 
   function askMarketplaceCouponAction(decorator)
@@ -1846,7 +1591,7 @@ enum decalTwoSidedMode
     {
       inventoryItem.consume(::Callback(function(result) {
         if ((result?.success ?? false) == true)
-          updateSelectedCategory(decorator)
+          decorMenu?.updateSelectedCategory(decorator)
       }, this), null)
       return
     }
@@ -1857,8 +1602,8 @@ enum decalTwoSidedMode
     let couponName = ::colorize("activeTextColor", couponItem.getName())
     this.msgBox("go_to_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = couponName }), [
         [ "find_on_marketplace", function() { couponItem.openLink(); onBtnBack() } ],
-        [ "cancel", onBtnBack ]
-      ], "find_on_marketplace", { cancel_fn = onBtnBack })
+        [ "cancel", onMsgBoxCancel ]
+      ], "find_on_marketplace", { cancel_fn = onMsgBoxCancel })
   }
 
   function forceResetInstalledDecorators()
@@ -1892,7 +1637,7 @@ enum decalTwoSidedMode
 
   function afterStopDecalEdition()
   {
-    currentState = isDecoratorsListOpen? decoratorEditState.SELECT : decoratorEditState.NONE
+    currentState = decorMenu?.isOpened ? decoratorEditState.SELECT : decoratorEditState.NONE
     updateSceneOnEditMode(false, currentType)
   }
 
@@ -1908,7 +1653,7 @@ enum decalTwoSidedMode
     if (!isInstalled)
       return
 
-    currentState = isDecoratorsListOpen? decoratorEditState.SELECT : decoratorEditState.NONE
+    currentState = decorMenu?.isOpened ? decoratorEditState.SELECT : decoratorEditState.NONE
     updateSceneOnEditMode(false, currentType, true)
   }
 
@@ -2136,9 +1881,9 @@ enum decalTwoSidedMode
   {
     local isValid = 0 <= slotId
     local decalId = ""
-    if (checkDecalsList && isDecoratorsListOpen && slotId == getCurrentDecoratorSlot(decoratorType))
+    if (checkDecalsList && decorMenu?.isOpened && slotId == getCurrentDecoratorSlot(decoratorType))
     {
-      let decal = getSelectedDecal(decoratorType)
+      let decal = decorMenu.getSelectedDecor()
       if (decal)
         decalId = decal.id
     }
@@ -2363,7 +2108,6 @@ enum decalTwoSidedMode
   {
     let show = !!(currentState & decoratorEditState.SELECT)
 
-    isDecoratorsListOpen = show
     let slotsObj = scene.findObject(currentType.listId)
     if (::check_obj(slotsObj))
     {
@@ -2376,16 +2120,7 @@ enum decalTwoSidedMode
     }
 
     ::hangar_notify_decal_menu_visibility(show)
-
-    let mObj = scene.findObject("decals_wnd")
-    if (!::check_obj(mObj))
-      return
-
-    mObj.show(show)
-
-    let headerObj = mObj.findObject("decals_wnd_header")
-    if (::check_obj(headerObj))
-      headerObj.setValue(::loc(currentType.listHeaderLocId))
+    decorMenu?.show(show)
   }
 
   function onScreenClick()

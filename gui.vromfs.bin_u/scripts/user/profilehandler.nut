@@ -118,19 +118,10 @@ let selMedalIdx = {}
     UnlockAchievement = null
     UnlockChallenge = null
     UnlockSkin = []
-    UnlockDecal = []
-    /*
-    Unlock = [
-      {page = "Achievement"}
-      {page = "Skin"}
-      {page = "Decal"}
-    ]
-    */
   }
 
   filterTable = {
     Medal = "country"
-    UnlockDecal = "category"
     UnlockSkin = "airCountry"
   }
 
@@ -151,10 +142,6 @@ let selMedalIdx = {}
     initStatsParams()
     initSheetsList()
     initTabs()
-
-    //fill decals categories
-    if ("UnlockDecal" in unlockFilters)
-      unlockFilters.UnlockDecal = ::g_decorator.getCachedOrderByType(::g_decorator_type.DECALS)
 
     //fill skins filters
     if ("UnlockSkin" in unlockFilters)
@@ -362,14 +349,49 @@ let selMedalIdx = {}
       showSheetDiv("stats")
       fillAirStats()
     }
-    else if (sheet=="Medal" || sheet=="UnlockDecal")
+    else if (sheet == "UnlockDecal")
     {
-      let isMedal = sheet=="Medal"
-      showSheetDiv(isMedal ? "medals" : "decals", true)
+      showSheetDiv("decals", true)
 
-      let selCategory = isMedal
-        ? filterCountryName || ::get_profile_country_sq()
-        : filterGroupName || ::loadLocalByAccount("wnd/decalsCategory", "")
+      let decorCache = ::g_decorator.getCachedDataByType(::g_decorator_type.DECALS)
+      let view = { items = [] }
+      foreach (categoryId in decorCache.categories) {
+        let groups = decorCache.catToGroupNames[categoryId]
+        let hasGroups = groups.len() > 1 || groups[0] != "other"
+        view.items.append({
+          id = categoryId
+          itemTag = "campaign_item"
+          itemText = $"#decals/category/{categoryId}"
+          isCollapsable = hasGroups
+        })
+
+        if (hasGroups)  {
+          view.items.extend(groups.map(@(groupId) {
+            id = $"{categoryId}/{groupId}"
+            itemText = $"#decals/group/{groupId}"
+          }))
+        }
+      }
+
+      let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
+      let categoriesListObj = scene.findObject("decals_group_list")
+      guiScene.replaceContentFromText(categoriesListObj, data, data.len(), this)
+
+      let selCategory = filterGroupName ?? ::loadLocalByAccount("wnd/decalsCategory", "")
+      if (isDecalGroup(selCategory))
+        openDecalCategory(categoriesListObj, selCategory.split("/")[0])
+
+      let selIdx = view.items.findindex(@(c) c.id == selCategory) ?? 0
+      categoriesListObj.setValue(selIdx)
+
+      guiScene.applyPendingChanges(false)
+      categoriesListObj.getChild(selIdx).scrollToView()
+    }
+    else if (sheet == "Medal")
+    {
+      showSheetDiv("medals", true)
+
+      let selCategory = filterCountryName ?? ::get_profile_country_sq()
 
       local selIdx = 0
       let view = { items = [] }
@@ -377,15 +399,11 @@ let selMedalIdx = {}
       {
         if (filter == selCategory)
           selIdx = idx
-        if (isMedal)
-          view.items.append({ text = $"#{filter}"})
-        else
-          view.items.append({ itemText = $"#decals/category/{filter}" })
+        view.items.append({ text = $"#{filter}" })
       }
 
-      let tplPath = isMedal ? "%gui/commonParts/shopFilter" : "%gui/missions/missionBoxItemsList"
-      let data = ::handyman.renderCached(tplPath, view)
-      let pageList = scene.findObject($"{isMedal ? "medals" : "decals_group"}_list")
+      let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
+      let pageList = scene.findObject("medals_list")
       guiScene.replaceContentFromText(pageList, data, data.len(), this)
 
       let isEqualIdx = selIdx == pageList.getValue()
@@ -460,6 +478,60 @@ let selMedalIdx = {}
     this.showSceneBtn("unit_type_list", subPages)
   }
 
+  function onDecalCategorySelect(listObj) {
+    let categoryId = listObj.getChild(listObj.getValue()).id
+    openDecalCategory(listObj, categoryId)
+    ::saveLocalByAccount("wnd/decalsCategory", categoryId)
+    fillDecalsList()
+  }
+
+  function fillDecalsList() {
+    let listObj = scene.findObject("decals_group_list")
+    if (!listObj?.isValid())
+      return
+
+    let idx = listObj.getValue()
+    if (idx == -1)
+      return
+
+    let categoryObj = listObj.getChild(idx)
+    let isCollapsable = categoryObj?.collapse_header == "yes"
+    let decalsListObj = scene.findObject("decals_zone")
+    if (isCollapsable) {
+      guiScene.replaceContentFromText(decalsListObj, "", 0, null)
+      return
+    }
+
+    let [categoryId, groupId = "other"] = categoryObj.id.split("/")
+    let markup = getDecalsMarkup(categoryId, groupId)
+    guiScene.replaceContentFromText(decalsListObj, markup, markup.len(), this)
+  }
+
+  isDecalGroup = @(categoryId) categoryId.indexof("/") != null
+
+  function openDecalCategory(listObj, categoryId) {
+    if (isDecalGroup(categoryId))
+      return
+
+    local visible = false
+    let total = listObj.childrenCount()
+    for (local i = 0; i < total; ++i) {
+      let categoryObj = listObj.getChild(i)
+      if (isDecalGroup(categoryObj.id)) {
+        categoryObj.enable(visible)
+        categoryObj.show(visible)
+        continue
+      }
+
+      let isCollapsable = "collapsed" in categoryObj
+      if (!isCollapsable)
+        continue
+
+      categoryObj.collapsed = categoryObj.id == categoryId ? "no" : "yes"
+      visible = categoryObj.collapsed == "no"
+    }
+  }
+
   function onPageChange(obj)
   {
     local pageIdx = 0
@@ -469,8 +541,6 @@ let selMedalIdx = {}
 
     if(sheet=="Medal")
       pageIdx = scene.findObject("medals_list").getValue()
-    else if (sheet=="UnlockDecal")
-      pageIdx = scene.findObject("decals_group_list").getValue()
     else
       pageIdx = scene.findObject("pages_list").getValue()
 
@@ -479,9 +549,6 @@ let selMedalIdx = {}
 
     let filter = unlockFilters[sheet][pageIdx]
     curPage = ("page" in filter)? filter.page : getPageIdByName(sheet)
-
-    if (sheet == "UnlockDecal")
-      ::saveLocalByAccount("wnd/decalsCategory", filter)
 
     curFilterType = ::getTblValue(sheet, filterTable, "")
 
@@ -644,10 +711,7 @@ let selMedalIdx = {}
       : "unlocks_group_list"
     unlocksTree = {}
 
-    let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(pageTypeId)
-    if (pageTypeId == ::UNLOCKABLE_DECAL)
-      data = getDecoratorsMarkup(decoratorType)
-    else if (pageTypeId == ::UNLOCKABLE_SKIN)
+    if (pageTypeId == ::UNLOCKABLE_SKIN)
     {
       let itemsView = getSkinsView()
       data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", { items = itemsView })
@@ -793,13 +857,6 @@ let selMedalIdx = {}
       if (curFilterType == "country" && cb.getStr("country","") != curFilter)
         continue
 
-      if (curFilterType == "category")
-      {
-        let dInfo = ::g_decorator.getCachedDecoratorByUnlockId(name, ::g_decorator_type.DECALS)
-        if (!dInfo || dInfo.category != curFilter)
-          continue
-      }
-
       if (isUnlockTree)
       {
         let newChapter = cb.getStr("chapter","")
@@ -848,10 +905,13 @@ let selMedalIdx = {}
     return ::getAircraftByName(::g_unlocks.getPlaneBySkinId(skinName))
   }
 
-  function getDecoratorsMarkup(decoratorType)
+  function getDecalsMarkup(categoryId, groupId)
   {
-    let decoratorsList = ::g_decorator.getCachedDecoratorsDataByType(decoratorType)
-    let decorators = decoratorsList?[curFilter] ?? []
+    let decorCache = ::g_decorator.getCachedDataByType(::g_decorator_type.DECALS)
+    let decorators = decorCache.catToGroups?[categoryId][groupId]
+    if (!decorators || decorators.len() == 0)
+      return ""
+
     let view = {
       items = decorators.map(function(decorator) {
         local text = null
@@ -1518,31 +1578,6 @@ let selMedalIdx = {}
     fillLeaderboard()
   }
 
-  /*
-  function onDifficultyChange(obj)
-  {
-    if (obj != null)
-    {
-      local opdata = ::get_option(::USEROPT_SEARCH_DIFFICULTY)
-      local idx = obj.getValue()
-
-      if (idx in opdata.values)
-        curDifficulty = opdata.values[idx]
-      updateStats()
-    }
-  }
-
-  function onPlayerModeChange(obj)
-  {
-    if (obj != null)
-    {
-      curPlayerMode = obj.getValue()
-
-      updateStats()
-    }
-  }
-  */
-
   function onUpdate(obj, dt)
   {
     if (pending_logout && ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active())
@@ -1697,8 +1732,11 @@ let selMedalIdx = {}
 
   function onEventUnlocksCacheInvalidate(p)
   {
-    if (::isInArray(getCurSheet(), [ "UnlockAchievement", "UnlockDecal" ]))
+    let curSheet = getCurSheet()
+    if (curSheet == "UnlockAchievement")
       fillUnlocksList()
+    else if (curSheet == "UnlockDecal")
+      fillDecalsList()
   }
 
   function onEventUnlockMarkersCacheInvalidate(_) {
@@ -1708,8 +1746,11 @@ let selMedalIdx = {}
 
   function onEventInventoryUpdate(p)
   {
-    if (::isInArray(getCurSheet(), [ "UnlockAchievement", "UnlockDecal" ]))
+    let curSheet = getCurSheet()
+    if (curSheet == "UnlockAchievement")
       fillUnlocksList()
+    else if (curSheet == "UnlockDecal")
+      fillDecalsList()
   }
 
   function onOpenAchievementsUrl()

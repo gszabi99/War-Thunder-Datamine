@@ -24,7 +24,6 @@ let function memoizeByProfile(func, hashFunc = null) {
     unlockedItemType = -1
     resourceType = ""
     defaultLimitUsage = -1
-    categoryWidgetIdPrefix = ""
     listId = ""
     listHeaderLocId = ""
     currentOpenedCategoryLocalSafePath = "wnd/unknownCategory"
@@ -137,7 +136,6 @@ enums.addTypesByGlobalName("g_decorator_type", {
   DECALS = {
     unlockedItemType = ::UNLOCKABLE_DECAL
     resourceType = "decal"
-    categoryWidgetIdPrefix = "decals_category_"
     listId = "slots_list"
     listHeaderLocId = "decals"
     currentOpenedCategoryLocalSafePath = "wnd/decalsCategory"
@@ -251,7 +249,6 @@ enums.addTypesByGlobalName("g_decorator_type", {
     unlockedItemType = ::UNLOCKABLE_ATTACHABLE
     resourceType = "attachable"
     defaultLimitUsage = 1
-    categoryWidgetIdPrefix = "attachable_category_"
     listId = "slots_attachable_list"
     listHeaderLocId = "decorators"
     currentOpenedCategoryLocalSafePath = "wnd/attachablesCategory"

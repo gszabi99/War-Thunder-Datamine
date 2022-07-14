@@ -1,4 +1,4 @@
-collapsableBlock[type=decoratorsList] > content {
+decorCategory[type=decoratorsList] > content {
   behaviour:posNavigator;
   navigatorShortcuts:active;
   moveX:linear;
@@ -15,31 +15,43 @@ collapsableBlock[type=decoratorsList] > content {
   max-width: pw;
 }
 
-collapsableBlock > content {
+decorCategory[type=groupsList] > content {
+  behaviour:posNavigator;
+  navigatorShortcuts:yes;
+  move-only-hover:yes;
+  moveX:linear;
+  moveY:linear;
+  flow:vertical;
+  disableFocusParent:yes;
+  not-input-transparent:yes;
+  css-hier-invalidate:yes;
+}
+
+decorCategory > content {
   display:hide;
 }
-collapsableBlock[selected=yes] > content {
+decorCategory[selected=yes] > content {
   display:show;
 }
 
-collapsableBlock {
+decorCategory {
   width:pw;
   flow:vertical;
   input-transparent:yes;
   css-hier-invalidate:yes;
 }
-collapsableBlock > header {
+decorCategory > header {
   size:pw, @baseTrHeight;
   css-hier-invalidate:yes;
   input-transparent:yes;
   total-input-transparent:yes;
 }
-collapsableBlock > header > fullSizeCollapseBtn {
+decorCategory > header > fullSizeCollapseBtn {
   tooltip:"";
   shortcutActivate:"";
   css-hier-invalidate:yes;
 }
-collapsableBlock > header > fullSizeCollapseBtn > text {
+decorCategory > header > fullSizeCollapseBtn > text {
   behaviour:OverflowScroller;
   position:absolute;
   size:pw,ph;
@@ -48,21 +60,21 @@ collapsableBlock > header > fullSizeCollapseBtn > text {
   color: @commonMenuButtonColor;
   input-transparent:yes;
 }
-collapsableBlock > header > fullSizeCollapseBtn > activeText {
+decorCategory > header > fullSizeCollapseBtn > activeText {
   input-transparent:yes;
 }
-collapsableBlock > header > fullSizeCollapseBtn:hover,
-collapsableBlock:focus > header > fullSizeCollapseBtn,
-collapsableBlock[selected=yes] > header > fullSizeCollapseBtn {
+decorCategory > header > fullSizeCollapseBtn:hover,
+decorCategory:focus > header > fullSizeCollapseBtn,
+decorCategory[selected=yes] > header > fullSizeCollapseBtn {
   background-color:@white;
   background-image:#ui/gameuiskin#option_select_even.png;
   background-position:4,4;
   background-repeat:expand;
 }
 
-collapsableBlock > header > fullSizeCollapseBtn:hover > text,
-collapsableBlock > header:hover > fullSizeCollapseBtn > text,
-collapsableBlock[selected=yes] > header > fullSizeCollapseBtn[selected=yes] > text {
+decorCategory > header > fullSizeCollapseBtn:hover > text,
+decorCategory > header:hover > fullSizeCollapseBtn > text,
+decorCategory[selected=yes] > header > fullSizeCollapseBtn[selected=yes] > text {
   color:@activeTextColor;
 }
 
