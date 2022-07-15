@@ -72,7 +72,7 @@ let fillSheetsArray = function(bcEventParams = {}) {
     seenList.setSubListGetter(sheet.getSeenId(), function()
     {
       let res = []
-      let productsList = shopData.getData()?[sheet.categoryId].links ?? ::DataBlock()
+      let productsList = shopData.getData().getBlockByName(sheet?.categoryId ?? "")?.links ?? ::DataBlock()
       for (local i = 0; i < productsList.blockCount(); i++)
       {
         let blockName = productsList.getBlock(i).getBlockName()
@@ -116,7 +116,7 @@ subscriptions.addListenersWithoutEnv({
   function loadCurSheetItemsList()
   {
     itemsList = []
-    let itemsLinks = shopData.getData().getBlockByName(curSheet.categoryId)?.links ?? ::DataBlock()
+    let itemsLinks = shopData.getData().getBlockByName(curSheet?.categoryId ?? "")?.links ?? ::DataBlock()
     for (local i = 0; i < itemsLinks.blockCount(); i++)
     {
       let itemId = itemsLinks.getBlock(i).getBlockName()

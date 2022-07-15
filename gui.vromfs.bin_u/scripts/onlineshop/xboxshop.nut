@@ -80,7 +80,7 @@ shopData.xboxProceedItems.subscribe(function(val) {
 {
   function loadCurSheetItemsList()
   {
-    itemsList = itemsCatalog?[curSheet.categoryId] ?? []
+    itemsList = itemsCatalog?[curSheet?.categoryId] ?? []
   }
 
   function onEventXboxSystemUIReturn(p)
