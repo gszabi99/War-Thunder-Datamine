@@ -5,6 +5,7 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { requestPackageUpdateStatus } = require("sony")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
+let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 
 ::gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler
 {
@@ -15,6 +16,9 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
 
   function initScreen()
   {
+    this.guiScene.performDelayed(this, function () {
+      forceHideCursor(true)
+    })
     animBgLoad()
     setVersionText(this.scene)
     ::setProjectAwards(this)
@@ -29,8 +33,9 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
       shortcut = "A"
       funcName = "onOk"
       delayed = true
-      isToBattle = true
-      titleButtonFont = true
+      visualStyle = "noBgr"
+      mousePointerCenteringBelowText = true
+      actionParamsMarkup = "bigBoldFont:t='yes'; shadeStyle:t='shadowed'"
       isHidden = this.isAutologin
     })
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
@@ -71,6 +76,7 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
       loginStatus = ::ps4_login();
       if (loginStatus >= 0)
       {
+        forceHideCursor(false)
         let cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
         ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
@@ -103,6 +109,10 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
   function onEventPs4AutoLoginRequested(p)
   {
     this.onOk()
+  }
+
+  function onDestroy() {
+    forceHideCursor(false)
   }
 
   function goBack(obj) {}

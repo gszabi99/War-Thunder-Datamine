@@ -11,7 +11,7 @@ let { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
 } = require("%scripts/battlePass/watchObjInfoConfig.nut")
 let { openBattlePassShopWnd } = require("%scripts/battlePass/progressShop.nut")
 let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
+let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
@@ -342,7 +342,19 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function fillChallengesSheet() {
     scene.findObject("paginator_place").show(false)
-    updateChallengesSheet(scene.findObject("challenges_sheet"), curSeasonChallenges.value)
+
+    let sheetObj = scene.findObject("challenges_sheet")
+    updateChallengesSheet(sheetObj, curSeasonChallenges.value)
+
+    let listObj = sheetObj.findObject("challenges_list")
+    let idx = findChildIndex(listObj, @(i) i?.battleTaskStatus == "complete")
+    if (idx == -1)
+      return
+
+    if (idx != listObj.getValue())
+      listObj.setValue(idx)
+    else
+      onChallengeSelect(listObj)
   }
 
   function initChallengesUpdater() {

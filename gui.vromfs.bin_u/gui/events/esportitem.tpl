@@ -94,6 +94,7 @@ eSItemDiv {
         visualStyle:t='tournament'
         bigFont:t='yes'
         text:t= '#tournaments/leaderboard'
+        eventId:t='<<eventId>>'
         on_click:t = 'onLeaderboard'
         btnName:t='Y'
         ButtonImg {}

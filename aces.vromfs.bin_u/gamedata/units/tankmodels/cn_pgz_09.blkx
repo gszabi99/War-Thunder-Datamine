@@ -1914,57 +1914,24 @@
       }
     }
   },
-  "ammo": {
-    "combustionTime": 10.0,
-    "detonateProb": 0.08,
-    "detonatePortion": [
-      0.3,
-      0.9
-    ],
-    "explodeHitPower": 500.0,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
-    "explodeTreshold": 0.0001,
-    "explodeArmorPower": 30.0,
-    "explodeRadius": [
-      1.5,
-      10.0
-    ]
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_01_dm": {
+          "count": 400
+        },
+        "ammo_turret_02_dm": {
+          "count": 40
+        }
+      }
+    }
   },
   "wreckedParts": {
     "part": {

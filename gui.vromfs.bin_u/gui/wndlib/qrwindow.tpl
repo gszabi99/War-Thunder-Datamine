@@ -4,9 +4,10 @@ root {
 
   frame {
     id:t='wnd_frame'
+    min-width:t='0.6@sf'
     pos:t='50%pw-50%w, 50%ph-50%h'
     position:t='relative'
-    class:t='wnd'
+    class:t='<<#buttons>>wndNav<</buttons>><<^buttons>>wnd<</buttons>>'
     frame_header {
       activeText {
         caption:t='yes'
@@ -17,7 +18,17 @@ root {
     }
 
     tdiv {
+      width:t='pw'
       flow:t='vertical'
+      margin:t='1@blockInterval, 0'
+
+      textAreaCentered {
+        width:t='pw'
+        left:t='0.5pw-0.5w'
+        position:t='relative'
+        text:t='<<infoText>>'
+        margin-bottom:t='1@blockInterval'
+      }
       tdiv {
         id:t='wnd_content'
         left:t='0.5pw-0.5w'
@@ -27,6 +38,7 @@ root {
         <</qrCode>>
       }
 
+      <<#needShowUrlLink>>
       tdiv {
         left:t='0.5pw-0.5w'
         position:t='relative'
@@ -35,18 +47,17 @@ root {
         <<#isAllowExternalLink>>
         Button_text {
           id:t='btn_link'
-          text:t='<<urlWithoutTags>>'
+          text:t='#open_url_in_browser'
           hideText:t='yes'
           link:t='<<baseUrl>>'
           externalLink:t='yes'
-          visualStyle:t='noFrame'
           margin-top:t='1@blockInterval'
           btnName:t='X'
           on_click:t='onMsgLink'
           ButtonImg{}
           btnText {
             id:t='btn_link_text'
-            text:t='<<urlWithoutTags>>'
+            text:t='#open_url_in_browser'
             underline {}
           }
         }
@@ -57,7 +68,16 @@ root {
         }
         <</isAllowExternalLink>>
       }
+      <</needShowUrlLink>>
     }
+
+    <<#buttons>>
+    navBar {
+      navMiddle {
+        include "%gui/commonParts/buttonsList"
+      }
+    }
+    <</buttons>>
   }
 
   timer {

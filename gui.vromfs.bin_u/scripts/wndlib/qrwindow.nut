@@ -10,19 +10,25 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   headerText = ""
   baseUrl = ""
   urlWithoutTags = ""
+  additionalInfoText = ""
+  infoText = null
+
   qrSize = null
+  buttons = null
+  onEscapeCb = null
 
   needUrlWithQrRedirect = false
+  needShowUrlLink = true
 
-  function getSceneTplView()
-  {
-    return {
-      headerText = headerText
-      qrCode = getQrCodeView()
-      baseUrl = baseUrl
-      urlWithoutTags = urlWithoutTags
-      isAllowExternalLink = ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
-    }
+  getSceneTplView = @() {
+    headerText = headerText
+    qrCode = getQrCodeView()
+    baseUrl = baseUrl
+    urlWithoutTags = urlWithoutTags
+    buttons = buttons
+    needShowUrlLink = needShowUrlLink
+    isAllowExternalLink = ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
+    infoText = infoText ?? $"{::loc("qrWindow/info")} {additionalInfoText}"
   }
 
   function initScreen() {
@@ -59,6 +65,11 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onUpdate(obj, dt) {
     updateQrCode()
+  }
+
+  function goBack() {
+    onEscapeCb?()
+    base.goBack()
   }
 }
 

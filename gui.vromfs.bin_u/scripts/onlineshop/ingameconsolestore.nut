@@ -361,10 +361,10 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
       id = sortBoxId
       btnName = "Y"
       funcName = "onChangeSortParam"
-      values = curSheet.sortParams.map(@(p, idx) {
+      values = curSheet?.sortParams.map(@(p, idx) {
         text = "{0} ({1})".subst(::loc($"items/sort/{p.param}"), ::loc(p.asc? "items/sort/ascending" : "items/sort/descending"))
         isSelected = curVal == idx
-      })
+      }) ?? []
     }
 
     let data = ::handyman.renderCached("%gui/commonParts/comboBox", view)

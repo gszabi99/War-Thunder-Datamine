@@ -413,17 +413,13 @@ let function getStaminaValue(stamina) {
 }
 
 let function getFuelState(fuel, fuelState){
-  let texts = []
-  if (fuelState == TemperatureState.DEFAULT_TEMPERATURE ||
-      fuelState == TemperatureState.OVERHEAT)
-    texts.append(::string.format("%d:%02d", floor(fuel / 60), fuel % 60))
-  else if (fuelState == TemperatureState.FUEL_LEAK)
-    texts.append(::loc("HUD_FUEL_LEAK"))
-  else if (fuelState == TemperatureState.FUEL_SEALING)
-    texts.append(::loc("HUD_TANK_IS_SEALING"))
-  else if (fuelState == TemperatureState.EMPTY_TANK)
-    texts.append(::loc("HUD_TANK_IS_EMPTY"))
-  return "".join(texts)
+  if (fuelState == TemperatureState.FUEL_LEAK)
+    return ::loc("HUD_FUEL_LEAK")
+  if (fuelState == TemperatureState.FUEL_SEALING)
+    return ::loc("HUD_TANK_IS_SEALING")
+  if (fuelState == TemperatureState.EMPTY_TANK)
+    return ::loc("HUD_TANK_IS_EMPTY")
+  return ::string.format("%d:%02d", floor(fuel / 60), fuel % 60)
 }
 
 let function getFuelAlertState(fuelState){

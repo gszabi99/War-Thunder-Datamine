@@ -3,7 +3,7 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
-let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter,
+let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId,
   getTourListViewData, getTourById, removeItemFromList, getEventByDay, getOverlayTextColor,
   isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable,
   setSchedulerTimeColor, hasAnyTickets } = require("%scripts/events/eSport.nut")
@@ -18,7 +18,6 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneTplName    = "%gui/events/eSportContent"
   eventTplName    = "%gui/events/eSportItem"
 
-  seasonHeader    = ""
   currSeason      = null
   tournamentList  = null
   // Filter params
@@ -39,20 +38,13 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!currSeason)
       return {}
 
-    seasonHeader = $"{::loc("tournaments/season")} {::loc("ui/mdash")} {currSeason.competitiveSeason}"
-
     return {
+      seasonHeader = "\n".join([::g_string.utf8ToUpper(::loc("mainmenu/btnTournament")),
+        $"{::loc("tournaments/season")} {currSeason.competitiveSeason}"])
       seasonDate = "".concat(
         buildDateTimeStr(getTimestampFromStringUtc(currSeason.beginDate), false, false),
         ::loc("ui/mdash"),
         buildDateTimeStr(getTimestampFromStringUtc(currSeason.endDate), false, false))
-      tabs = [
-        {
-          tabName = "TOURNAMENTS"
-          navImagesText = ""
-          selected = true
-        }
-      ]
       items = getTourListViewData(tournamentList, filter)
     }
   }
@@ -60,7 +52,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     if (!currSeason)
       return
-    scene.findObject("header_txt")?.setValue(seasonHeader)
+
     scene.findObject("update_timer").setUserData(this)
     setBreadcrumbGoBackParams(this)
     eventListObj = scene.findObject("events_list")
@@ -247,10 +239,10 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       eSportTournamentModal({ tournament, curTourParams, curEvent })
   }
 
-  function onLeaderboard() {
-  }
-
-  function onTabChange(obj) {
+  function onLeaderboard(obj) {
+    // No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
+    if (obj?.eventId != null)
+      ::gui_modal_event_leaderboards(getMatchingEventId(obj.eventId, 1, false))
   }
 
   onTimer = @(obj, dt) (scene.getModalCounter() != 0) ? null : updateAllEventsByFilters()

@@ -1,28 +1,11 @@
-let sonyUser = require("sony.user")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-
-let countriesWithRecommendEmailRegistration = {
-  AZ = "Azerbaijan"
-  AM = "Armenia"
-  BY = "Belarus"
-  GE = "Georgia"
-  KZ = "Kazakhstan"
-  KG = "Kyrgyzstan"
-  LV = "Latvia"
-  LT = "Lithuania"
-  MD = "Moldova"
-  RU = "Russia"
-  TJ = "Tajikistan"
-  TM = "Turkmenistan"
-  UZ = "Uzbekistan"
-  UA = "Ukraine"
-  EE = "Estonia"
-}
+let { register_command } = require("console")
+let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCountry.nut")
 
 let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
   : isPlatformXboxOne ? @() havePlayerTag("livelogin") && ::has_feature("AllowXboxAccountLinking")
@@ -105,17 +88,6 @@ let function launchXboxEmailRegistration(override = {}) {
   }.__update(override))
 }
 
-let function xboxGetCountryCode() {
-  let xbox_code = ::xbox_get_region()
-  if (xbox_code != "")
-    return xbox_code.toupper()
-  return ::get_country_code()
-}
-
-let getPlayerCountryCode = isPlatformSony ? @() sonyUser?.country.toupper() ?? ::get_country_code()
-  : isPlatformXboxOne ? xboxGetCountryCode
-  : @() ::get_country_code()
-
 let function reqUnlockForStartEmailBind() {
   let unlockId = ::get_gui_regional_blk()?.unlockOnStartEmailBind
   if (unlockId == null || ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, unlockId))
@@ -123,48 +95,52 @@ let function reqUnlockForStartEmailBind() {
   ::req_unlock_by_client(unlockId, true)
 }
 
-let forceLauncheSuggestionEmailRegistration =
-  isPlatformSony ? function() {
-    let bindBtnId = "bind"
-    let msgBox = ::scene_msg_box("recommend_email_registration", null, ::loc("mainmenu/recommendEmailRegistration"),
-        [
-          [bindBtnId, function() {
-            reqUnlockForStartEmailBind()
-            launchPS4EmailRegistration()
-          }],
-          ["later", function() {}]
-        ], null)
-      if (!(msgBox?.isValid() ?? false))
-        return
-
-      local btnObj = msgBox.findObject(bindBtnId)
-      if (!::check_obj(btnObj))
-        return
-
-      btnObj.hideText = "yes"
-      local btnTextArea = "textarea { id:t='bind_text';class:t='buttonText';text:t=''}"
-      ::get_cur_gui_scene().appendWithBlk(btnObj, btnTextArea, null)
-      setColoredDoubleTextToButton(msgBox, bindBtnId, ::loc("msgbox/bind_and_recieve"))
-      return
-    }
-  : isPlatformXboxOne ? @() launchXboxEmailRegistration({
-      leftAlignedLabel = false
-      label = ::loc("mainmenu/recommendEmailRegistration")
-      okBtnText = ::loc("msgbox/bind_and_recieve")
-      okFunc = function(val) {
+let function forceLauncheSonySuggestionEmailRegistration() {
+  let bindBtnId = "bind"
+  let msgBox = ::scene_msg_box("recommend_email_registration", null,
+    ::loc("mainmenu/recommendEmailRegistration"),
+    [
+      [bindBtnId, function() {
         reqUnlockForStartEmailBind()
-        sendXboxEmailBind(val)
-      }
-    })
+        launchPS4EmailRegistration()
+      }],
+      ["later", function() {}]
+    ], null)
+  if (!(msgBox?.isValid() ?? false))
+    return
+
+  local btnObj = msgBox.findObject(bindBtnId)
+  if (!::check_obj(btnObj))
+    return
+
+  btnObj.hideText = "yes"
+  local btnTextArea = "textarea { id:t='bind_text';class:t='buttonText';text:t=''}"
+  ::get_cur_gui_scene().appendWithBlk(btnObj, btnTextArea, null)
+  setColoredDoubleTextToButton(msgBox, bindBtnId, ::loc("msgbox/bind_and_recieve"))
+}
+
+let forceLauncheXboxSuggestionEmailRegistration = @()
+  launchXboxEmailRegistration({
+    leftAlignedLabel = false
+    label = ::loc("mainmenu/recommendEmailRegistration")
+    okBtnText = ::loc("msgbox/bind_and_recieve")
+    okFunc = function(val) {
+      reqUnlockForStartEmailBind()
+      sendXboxEmailBind(val)
+    }
+  })
+
+let forceLauncheSuggestionEmailRegistration =
+  isPlatformSony ? forceLauncheSonySuggestionEmailRegistration
+  : isPlatformXboxOne ? forceLauncheXboxSuggestionEmailRegistration
   : @() null
 
 let function checkForceSuggestionEmailRegistration() {
   if (!canEmailRegistration())
     return
 
-  if (getPlayerCountryCode() not in countriesWithRecommendEmailRegistration)
-    return
-  forceLauncheSuggestionEmailRegistration()
+  if (isPlayerRecommendedEmailRegistration())
+    forceLauncheSuggestionEmailRegistration()
 }
 
 let checkAutoShowEmailRegistration = isPlatformSony ? checkAutoShowPS4EmailRegistration
@@ -199,6 +175,14 @@ addPromoButtonConfig({
     ::showBtn(promoButtonId, isVisible, scene)
   }
 })
+
+register_command(function(platform) {
+  let fn = platform == "xbox" ? forceLauncheXboxSuggestionEmailRegistration
+    : platform == "sony" ? forceLauncheSonySuggestionEmailRegistration
+    : @() console_print($"is missing suggestion for platform {platform}, available 'xbox', 'sony'")
+  fn()
+  return console_print($"show suggestion for platform {platform}")
+}, "emailRegistration.showForceSuggestion")
 
 return {
   launchEmailRegistration

@@ -5,6 +5,9 @@ let shopData = require("%scripts/onlineShop/xboxShopData.nut")
 let statsd = require("statsd")
 let xboxSetPurchCb = require("%scripts/onlineShop/xboxPurchaseCallback.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
+let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCountry.nut")
+let { targetPlatform } = require("%scripts/clientState/platform.nut")
 
 
 let sheetsArray = []
@@ -138,9 +141,12 @@ shopData.xboxProceedItems.subscribe(function(val) {
   }
 }
 
-let openIngameStore = ::kwarg(
+let isChapterSuitable = @(chapter) ::isInArray(chapter, [null, "", "eagles"])
+let getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
+
+let openIngameStoreImpl = ::kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", forceExternalShop = false) {
-    if (!::isInArray(chapter, [null, "", "eagles"]))
+    if (!isChapterSuitable(chapter))
       return false
 
     if (shopData.canUseIngameShop() && !forceExternalShop)
@@ -175,17 +181,39 @@ let openIngameStore = ::kwarg(
             ::xbox_show_marketplace(chapter == "eagles")
         }
       )
-    }, this),
-    null,
-    "isCanUseOnlineShop")
+    }, this), null, "isCanUseOnlineShop")
 
     return true
   }
 )
 
+let function openIngameStore(params) {
+  if (isChapterSuitable(params?.chapter)
+    && ::g_language.getLanguageName() == "Russian"
+    && isPlayerRecommendedEmailRegistration()) {
+    ::add_big_query_record("ingame_store_qr", targetPlatform)
+    openQrWindow({
+      headerText = params?.chapter == "eagles" ? ::loc("charServer/chapter/eagles") : ""
+      infoText = ::loc("eagles/rechargeUrlNotification")
+      baseUrl = "{0}{1}".subst(::loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")
+      needUrlWithQrRedirect = true
+      needShowUrlLink = false
+      buttons = [{
+        shortcut = "Y"
+        text = ::loc(getEntStoreLocId())
+        onClick = "goBack"
+      }]
+      onEscapeCb = @() openIngameStoreImpl(params)
+    })
+    return true
+  }
+
+  return openIngameStoreImpl(params)
+}
+
 return shopData.__merge({
   openIngameStore = openIngameStore
-  getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
+  getEntStoreLocId = getEntStoreLocId
   getEntStoreIcon = @() shopData.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
   isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
   getEntStoreUnseenIcon = @() SEEN.EXT_XBOX_SHOP

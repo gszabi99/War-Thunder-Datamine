@@ -25,8 +25,9 @@ let exitGame = require("%scripts/utils/exitGame.nut")
       shortcut = "A"
       funcName = "doLogin"
       delayed = true
-      isToBattle = true
-      titleButtonFont = true
+      visualStyle = "noBgr"
+      mousePointerCenteringBelowText = true
+      actionParamsMarkup = "bigBoldFont:t='yes'; shadeStyle:t='shadowed'"
     })
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
   }

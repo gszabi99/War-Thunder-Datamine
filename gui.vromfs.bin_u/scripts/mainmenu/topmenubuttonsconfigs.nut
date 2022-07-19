@@ -267,6 +267,7 @@ let list = {
     onClickFunc = @(obj, handler) !isPlatformPC
       ? openQrWindow({
           headerText = ::loc("topmenu/reportAnIssue")
+          additionalInfoText = ::loc("qrWindow/info/reportAnIssue")
           baseUrl = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
           needUrlWithQrRedirect = true
         })

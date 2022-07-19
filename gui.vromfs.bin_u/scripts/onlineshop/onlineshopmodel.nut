@@ -1,6 +1,7 @@
 let { format } = require("string")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { getShopItem, openIngameStore, canUseIngameShop } = require("%scripts/onlineShop/entitlementsStore.nut")
+let { getShopItem, openIngameStore, canUseIngameShop
+} = require("%scripts/onlineShop/entitlementsStore.nut")
 
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
@@ -9,6 +10,8 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
+
+
 /*
  * Search in price.blk:
  * Search param is a name of a unit

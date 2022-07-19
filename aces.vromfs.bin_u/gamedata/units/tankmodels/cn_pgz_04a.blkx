@@ -1570,7 +1570,7 @@
         }
       },
       {
-        "trigger": "gunner0",
+        "trigger": "gunner2",
         "blk": "gameData/Weapons/groundModels_weapons/25mm_PG87_PGZ_user_cannon.blk",
         "reloadTime": 4.0,
         "emitter": "bone_gun_barrel_02",
@@ -1762,7 +1762,7 @@
         }
       },
       {
-        "trigger": "gunner0",
+        "trigger": "gunner2",
         "blk": "gameData/Weapons/groundModels_weapons/25mm_PG87_PGZ_user_cannon.blk",
         "reloadTime": 4.0,
         "emitter": "bone_gun_barrel_04",
@@ -2064,57 +2064,55 @@
       }
     }
   },
-  "ammo": {
-    "combustionTime": 10.0,
-    "detonateProb": 0.15,
-    "detonatePortion": [
-      0.3,
-      0.9
-    ],
-    "explodeHitPower": 1000.0,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
-    "explodeTreshold": 0.0001,
-    "explodeArmorPower": 30.0,
-    "explodeRadius": [
-      1.5,
-      10.0
-    ]
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "ammo_turret_05_dm": {
+          "count": 516
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner2",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "ammo_turret_06_dm": {
+          "count": 516
+        }
+      }
+    },
+    "ammo3": {
+      "weaponTrigger": "gunner1",
+      "removeLoadedAmmo": false,
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "ammo_turret_01_dm": {
+          "count": 1
+        },
+        "ammo_turret_02_dm": {
+          "count": 1
+        },
+        "ammo_turret_03_dm": {
+          "count": 1
+        },
+        "ammo_turret_04_dm": {
+          "count": 1
+        }
+      }
+    }
   },
   "wreckedParts": {
     "part": {
@@ -2856,7 +2854,7 @@
               }
             },
             {
-              "trigger": "gunner0",
+              "trigger": "gunner2",
               "blk": "gameData/Weapons/groundModels_weapons/25mm_PG87_PGZ_user_cannon.blk",
               "reloadTime": 4.0,
               "emitter": "bone_gun_barrel_02",
@@ -3048,7 +3046,7 @@
               }
             },
             {
-              "trigger": "gunner0",
+              "trigger": "gunner2",
               "blk": "gameData/Weapons/groundModels_weapons/25mm_PG87_PGZ_user_cannon.blk",
               "reloadTime": 4.0,
               "emitter": "bone_gun_barrel_04",

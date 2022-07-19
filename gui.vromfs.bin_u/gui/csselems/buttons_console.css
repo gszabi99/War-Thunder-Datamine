@@ -1016,6 +1016,7 @@ DummyButton[btnName=LSUp]              { accessKey:"J:L.Thumb.Up"; }
 DummyButton[btnName=LSDown]            { accessKey:"J:L.Thumb.Down"; }
 
 Button_text[btnName=AB]                { accessKey:'J:A | J:RT | Space | Enter | NumEnter | J:B | Esc | Backspace'; }
+Button_text[btnName=AX]                { accessKey:'J:A | J:X | J:RT | Space | Enter | NumEnter'; }
 
 Button_text[btnName=A], DummyButton[btnName=A], dummy[btnName=A], mapStateBox[btnName=A]
                                         { accessKey:'J:A | J:RT | Space | Enter | NumEnter'; }
@@ -1064,16 +1065,17 @@ dummy[btnName=EnterA] { accessKey:'J:A | J:RT | Enter | NumEnter'; }
 
 
 [btnName=A] > ButtonImg, ButtonImg[btnName=A],
-[btnName=SpaceA] > ButtonImg { background-image:@control_button_a; }
+[btnName=SpaceA] > ButtonImg, [btnName=AX] > ButtonImg { background-image:@control_button_a; }
 
 [swap_ab=yes] [btnName=A] > ButtonImg, [swap_ab=yes] ButtonImg[btnName=A],
-[swap_ab=yes] [btnName=SpaceA] > ButtonImg { background-image:@control_button_b; }
+[swap_ab=yes] [btnName=SpaceA] > ButtonImg, [swap_ab=yes] [btnName=AX] > ButtonImg { background-image:@control_button_b; }
 
 [btnName=A]:pushed > ButtonImg, :pushed > ButtonImg[btnName=A],
-[btnName=SpaceA]:pushed > ButtonImg { background-image:@control_button_a_pressed; }
+[btnName=SpaceA]:pushed > ButtonImg, [btnName=AX]:pushed > ButtonImg { background-image:@control_button_a_pressed; }
 
 [swap_ab=yes] [btnName=A]:pushed > ButtonImg, [swap_ab=yes] :pushed > ButtonImg[btnName=A],
-[swap_ab=yes] [btnName=SpaceA]:pushed > ButtonImg { background-image:@control_button_b_pressed; }
+[swap_ab=yes] [btnName=SpaceA]:pushed > ButtonImg, [swap_ab=yes] [btnName=AX]:pushed > ButtonImg
+  { background-image:@control_button_b_pressed; }
 
 [btnName=B] > ButtonImg, ButtonImg[btnName=B] { background-image:@control_button_b; }
 [swap_ab=yes] [btnName=B] > ButtonImg, [swap_ab=yes] ButtonImg[btnName=B] { background-image:@control_button_a; }

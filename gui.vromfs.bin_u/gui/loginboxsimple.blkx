@@ -45,35 +45,36 @@
       },
       {
         "id": "authorization_block",
-        "pos": "50%sw-50%w, 70%sh - 50%h",
+        "pos": "50%sw-50%w, 80%sh - 50%h",
         "position": "absolute",
         "flow": "vertical",
-        "tdiv": {
-          "pos": "50%pw-50%w, 0",
-          "position": "relative",
-          "background-color": "@shadeBackgroundColor3",
-          "textAreaCentered": {
+        "textAreaCentered": [
+          {
             "id": "xbox_active_usertag",
             "caption": "yes",
-            "margin": "0.01@scrn_tgt, 0.005@scrn_tgt",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "margin-bottom": "1@blockInterval",
             "hideEmptyText": "yes",
-            "text": ""
+            "text": "",
+            "shadeStyle": "shadowed"
+          },
+          {
+            "id": "user_notify_text",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "margin-top": "1@blockInterval",
+            "max-width": "50%sw",
+            "text": "",
+            "hideEmptyText": "yes",
+            "shadeStyle": "shadowed"
           }
-        },
+        ],
         "authorizationBlock": {
           "id": "authorization_button_place",
           "pos": "50%pw-50%w, 0",
           "position": "relative",
           "flow": "vertical"
-        },
-        "textAreaCentered": {
-          "id": "user_notify_text",
-          "pos": "50%pw-50%w, 0",
-          "position": "relative",
-          "max-width": "50%sw",
-          "text": "",
-          "hideEmptyText": "yes",
-          "shadeStyle": "HudHeader3D"
         }
       }
     ],

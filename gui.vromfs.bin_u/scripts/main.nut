@@ -416,6 +416,7 @@ foreach (fn in [
   "%scripts/options/privacyOptionsManager.nut"
 
   //probably used before login on ps4
+  "%scripts/controls/guiSceneCursorVisibility.nut"
   "%scripts/controls/controlsConsts.nut"
   "%scripts/controls/rawShortcuts.nut"
   "%scripts/controls/controlsManager.nut"
@@ -541,7 +542,6 @@ local isFullScriptsLoaded = false
   require("%sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(::script_net_assert_once)
   require("%scripts/social/activityFeed/activityFeedModule.nut")
   require("%scripts/controls/controlsPseudoAxes.nut")
-  require("%scripts/controls/guiSceneCursorVisibility.nut")
   require("%scripts/utils/delayedTooltip.nut")
 
   if (platform.isPlatformXboxOne)
