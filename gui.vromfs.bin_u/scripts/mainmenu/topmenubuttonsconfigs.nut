@@ -249,12 +249,12 @@ let list = {
   TSS = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("topmenu/tss"))
     onClickFunc = function(obj, handler) {
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
+        openUrlByObj(obj)
+      else if (!isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
       else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
-      else if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
-        openUrlByObj(obj)
     }
     isDelayed = false
     link = "#url/tss"
