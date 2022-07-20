@@ -187,7 +187,7 @@ let openIngameStoreImpl = ::kwarg(
   }
 )
 
-let function openIngameStore(params) {
+let function openIngameStore(params = {}) {
   if (isChapterSuitable(params?.chapter)
     && ::g_language.getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
