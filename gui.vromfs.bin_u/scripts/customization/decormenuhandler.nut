@@ -167,8 +167,11 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let categoryObj = getSelectedObj(listObj)
-    if (!categoryObj?.isValid())
+    if (!categoryObj?.isValid()) {
+      savePath("")
+      scrollDecalsCategory()
       return
+    }
 
     let categoryId = categoryObj.categoryId
     let groupId = categoryObj.groupId
@@ -188,6 +191,8 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       let index = (decor && decor.category == categoryId) ? decor.catIndex : 0
       contentListObj.setValue(index)
     }
+    else
+      contentListObj.setValue(-1)
 
     scrollDecalsCategory()
     guiScene.applyPendingChanges(false)
