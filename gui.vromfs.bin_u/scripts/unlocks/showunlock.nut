@@ -9,6 +9,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 let { openLinkWithSource } = require("%scripts/web/webActionsForPromo.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -223,6 +224,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       actionObj.setValue(actionText)
 
     ::show_facebook_screenshot_button(scene, ::getTblValue("showShareBtn", config, false))
+
+    this.showSceneBtn("btn_get_qr", config?.qrUrl != null)
   }
 
   function onTake(unitToTake = null)
@@ -342,6 +345,13 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   function onUnitActivate(obj)
   {
     openUnitActionsList(obj.findObject(unit.name), true)
+  }
+
+  function openQR(obj) {
+    openQrWindow({
+      baseUrl = config.qrUrl
+      needUrlWithQrRedirect = true
+    })
   }
 
   function onUseDecorator() {}
