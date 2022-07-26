@@ -101,6 +101,23 @@ battlePassStage {
         }
       }
     }
+    lockButtonNest {
+      width:t='pw'
+      display:t='hide'
+      Button_text {
+        noMargin:t='yes'
+        parentWidth:t='yes'
+        <<#isFree>>isFree:t='yes'<</isFree>>
+        on_click:t='onStatusIconClick'
+        class:t='image'
+        showConsoleImage:t="no"
+        img {
+          position:t='absolute'
+          pos:t='50%(pw-w), 50%(ph-h)'
+          background-image:t='#ui/gameuiskin#stage_locked.svg'
+        }
+      }
+    }
     statusImg { display:t='hide' }
   }
 }

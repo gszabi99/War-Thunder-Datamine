@@ -1,4 +1,4 @@
-let squadronUnitAction = require("%scripts/unit/squadronUnitAction.nut")
+let { saveClanUnitResearchChosen } = require("%scripts/unit/squadronUnitAction.nut")
 
 let function repairRequest(unit, price, onSuccessCb = null)
 {
@@ -131,7 +131,7 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
     if (afterDoneFunc)
       afterDoneFunc()
     if (unit.isSquadronVehicle())
-      squadronUnitAction.saveResearchChosen(true)
+      saveClanUnitResearchChosen(true)
     ::broadcastEvent("UnitResearch", {unitName = unitName, prevUnitName = prevUnitName})
   })
 }

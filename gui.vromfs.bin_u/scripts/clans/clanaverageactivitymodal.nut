@@ -1,4 +1,4 @@
-let squadronUnitAction = require("%scripts/unit/squadronUnitAction.nut")
+let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let time = require("%scripts/time.nut")
 
@@ -47,7 +47,7 @@ let PROGRESS_PARAMS = {
           clanData.maxClanActivity)
         let roundMyExp = ::round(myExp)
         let limit = min(100.0 * limitClanActivity / maxActivity, 100)
-        let isAllVehiclesResearched = squadronUnitAction.isAllVehiclesResearched()
+        let isAllVehiclesResearched = isAllClanUnitsResearched()
         let expBoost = ::clan_get_exp_boost()/100.0
         let hasBoost = expBoost > 0
         let descrArray = clanData.nextRewardDayId != null

@@ -1,0 +1,45 @@
+titleItem {
+  re-type:text;
+  font:@nav_button_font;
+  text-align:left;
+  color:@menuButtonTextColor;
+  background-color:@transparent;
+  padding:@buttonTextPadding, @buttonImgPadding;
+  margin:@buttonMargin;
+  height:@buttonHeight;
+  min-width:@buttonWidth;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+titleItem:hover,
+titleItem[selected=yes] {
+  background-color:@menuButtonColorHover;
+  color:@menuButtonTextColorHover;
+}
+
+titleItem:pushed {
+  background-color:@menuButtonColorPushed;
+  color:@menuButtonTextColorPushed;
+}
+
+titleItem[isLocked=yes] {
+  color:#505050;
+}
+
+titleItem[isLocked=yes]:hover,
+titleItem[isLocked=yes][selected=yes] {
+  color:#909090;
+}
+
+titleItem[isLocked=yes]:pushed {
+  color:#303030;
+}
+
+titleItem[isCurrent=yes] {
+  color:@userlogColoredText;
+}
+
+titleItem[hasUnseenIcon=yes] {
+  padding-left:@newWidgetIconHeight + @blockInterval;
+}

@@ -3,7 +3,7 @@ let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getFakeBulletsModByName, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
-let { updateModType, getTierDescTbl, updateSpareType, updateWeaponTooltip
+let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 
 const INFO_DELAY = 2.0
@@ -12,6 +12,7 @@ local infoMod = null
 local infoHandler = null
 local infoParams = null
 let infoShownTiers = {}
+
 local infoTooltipTime = 0.0
 
 let lockedTimerHandler = {
@@ -99,7 +100,23 @@ let tooltipTypes = {
     }
   }
 
-  WEAPON = { //by unitName, weaponName
+  SINGLE_WEAPON = {
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, unitName, params) {
+      if (!obj?.isValid())
+        return false
+
+      let unit = getAircraftByName(unitName)
+      if (!unit)
+        return false
+
+      let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"), getSingleWeaponDescTbl(unit, params))
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
+      return true
+    }
+  }
+
+  WEAPON = { //by unitName
     getTooltipId = function(unitName, weaponName = "", params = null, p3 = null)
     {
       let p = params ? clone params : {}
@@ -107,19 +124,19 @@ let tooltipTypes = {
       return _buildId(unitName, p)
     }
     isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, unitName, params)
-    {
-      if (!::checkObj(obj))
+    fillTooltip = function(obj, handler, unitName, params) {
+      if (!obj?.isValid())
         return false
 
       let unit = getAircraftByName(unitName)
       if (!unit)
         return false
 
-      let weaponName = ::getTblValue("weaponName", params, "")
+      let weaponName = params?.weaponName ?? ""
       let { hasPlayerInfo = true, curEdiff = null } = params
       let effect = hasPlayerInfo ? null : {}
       let weapon = unit.getWeapons().findvalue(@(w) w.name == weaponName)
+
       if (!weapon)
         return false
 
@@ -128,6 +145,7 @@ let tooltipTypes = {
         curEdiff
         weaponsFilterFunc = params?.weaponBlkPath ? (@(path, blk) path == params.weaponBlkPath) : null
       }, effect)
+
       return true
     }
   }

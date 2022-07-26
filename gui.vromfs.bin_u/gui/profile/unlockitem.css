@@ -50,11 +50,11 @@ iconLayer[background-image=""] {
   background-color:@transparent;
 }
 
-layeredIconContainer[decal_locked = yes] > iconLayer{
+layeredIconContainer[effectType=darkened] > iconLayer {
   background-color: @lockedDecal;
 }
 
-layeredIconContainer[achievement_locked = yes] > iconLayer {
+layeredIconContainer[effectType=desaturated] > iconLayer {
   background-color: @gray;
   background-saturate: 0;
 }

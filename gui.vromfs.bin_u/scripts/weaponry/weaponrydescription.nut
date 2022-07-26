@@ -95,13 +95,14 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
         {
           if (isShortDesc)
           {
-            tText += ::loc($"weapons/{weaponName}/short")
-            if (weapon.ammo > 1)
-              tText += " " + format(::loc("weapons/counter/right/short"), weapon.ammo)
+            tText = "".concat(tText, ::loc($"weapons/{weaponName}/short"))
+            if (!p.isSingle && weapon.ammo > 1)
+              tText = "".concat(tText, " ", format(::loc("weapons/counter/right/short"), weapon.ammo))
           }
           else
           {
-            tText += ::loc($"weapons/{weaponName}") + format(::loc("weapons/counter"), weapon.ammo)
+            tText = "".concat(tText, ::loc($"weapons/{weaponName}"),
+              p.isSingle ? "" : format(::loc("weapons/counter"), weapon.ammo))
             if (weaponType == "torpedoes" && p.isPrimary != null &&
                 ::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])) // torpedoes drop for unit only
             {
@@ -133,8 +134,8 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
             if (weapon.num > 1)
               tText += format(::loc("weapons/counter"), weapon.num)
 
-            if (weapon.ammo > 0)
-              tText += " (" + ::loc("shop/ammo") + ::loc("ui/colon") + weapon.ammo + ")"
+            if (!p.isSingle && weapon.ammo > 0)
+              tText = "".concat(tText, " (", ::loc("shop/ammo"), ::loc("ui/colon"), weapon.ammo, ")")
 
             if (!unit.unitType.canUseSeveralBulletsForGun)
             {

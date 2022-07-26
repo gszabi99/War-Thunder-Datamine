@@ -197,25 +197,31 @@ let stdMath = require("%sqstd/math.nut")
       return
     }
 
-    if (!option?.marketplaceItemdefId)
+    if (option?.marketplaceItemdefId) {
+      let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
+      if (inventoryItem != null)
+        inventoryItem.consume(::Callback(function(result) {
+          if (result?.success ?? false)
+            chooseImage(selIdx)
+        }, this), null)
+      else {
+        let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
+        if (item)
+          goToMarketplace(item)
+      }
+      return
+    }
+
+    toggleFav(option.unlockId)
+  }
+
+  function onToggleFav() {
+    let idx = getSelIconIdx()
+    if (idx == -1)
       return
 
-    let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
-
-    if (inventoryItem != null)
-    {
-      inventoryItem.consume(::Callback(function(result) {
-        if (result?.success ?? false)
-          chooseImage(selIdx)
-      }, this), null)
-    }
-    else
-    {
-      let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
-
-      if (item)
-        goToMarketplace(item)
-    }
+    let option = options[idx]
+    toggleFav(option.unlockId)
   }
 
   function goToMarketplace(item)
@@ -270,8 +276,14 @@ let stdMath = require("%sqstd/math.nut")
     let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
     let btn = this.showSceneBtn("btn_select", isVisible)
 
-    if (!isVisible)
+    let isFavBtnVisible = !isVisible
+    let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
+    if (isFavBtnVisible) {
+      favBtnObj.setValue(::g_unlocks.isUnlockFav(option.unlockId)
+        ? ::loc("preloaderSettings/untrackProgress")
+        : ::loc("preloaderSettings/trackProgress"))
       return
+    }
 
     if (option?.enabled)
     {
@@ -285,7 +297,28 @@ let stdMath = require("%sqstd/math.nut")
       btn.setValue(::loc("item/consume/coupon"))
     else
       btn.setValue(::loc("msgbox/btn_find_on_marketplace"))
-    return
+  }
+
+  function toggleFav(unlockId) {
+    if (!unlockId)
+      return
+
+    let isFav = ::g_unlocks.isUnlockFav(unlockId)
+    if (isFav) {
+      ::g_unlocks.removeUnlockFromFavorites(unlockId)
+      updateButtons()
+      return
+    }
+
+    if (!::g_unlocks.canAddFavorite()) {
+      let num = ::g_unlocks.favoriteUnlocksLimit
+      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
+      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
+      return
+    }
+
+    ::g_unlocks.addUnlockToFavorites(unlockId)
+    updateButtons()
   }
 
   function afterModalDestroy()

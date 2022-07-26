@@ -2372,24 +2372,8 @@ Button_text.image[_isButtonWithText=yes] {
   text-align:left;
 }
 
-Button_text[visualStyle=tournament] {
-  padding-left: 0.5h;
-  padding-right: 0.5h;
-}
-Button_text[visualStyle=tournament][pc_style=no][btnName] {
-  padding-left: 1.5h;
-}
-
-Button_text.image[visualStyle=tournament][_isButtonWithText=yes] {
-  padding-left: 0.5h + 0.7@eSItemIcoSize;
-}
-
 Button_text.image[pc_style=no][btnName][_isButtonWithText=yes] {
   padding-left: 2h + 1@buttonTextPadding;
-}
-
-Button_text.image[visualStyle=tournament][pc_style=no][btnName][_isButtonWithText=yes] {
-  padding-left: 1.5h + 0.7@eSItemIcoSize;
 }
 
 Button_text.image[pc_style=no][btnName][_isButtonWithText=yes][showButtonImageOnConsole=no] {
@@ -2595,9 +2579,10 @@ Button_text[visualStyle=tournament] {
   background-color:@transparent;
   border-color:@buttonFontColor;
 }
-Button_text.image[visualStyle=tournament] > img {
+Button_text[visualStyle=tournament] > img {
   size:1@eSItemIcoSize, 1@eSItemIcoSize;
   background-svg-size:1@eSItemIcoSize, 1@eSItemIcoSize;
+  margin-left: 1@buttonTextPadding;
 }
 Button_text[visualStyle=tournament][bigFont=yes] {
   font:@fontBigBold;
@@ -2605,18 +2590,23 @@ Button_text[visualStyle=tournament][bigFont=yes] {
 Button_text[visualStyle=tournament]:disabled {
   border-color: @buttonFontColorDisabled;
 }
-Button_text.image[visualStyle=tournament]:hover > img {
+Button_text[visualStyle=tournament]:hover > img {
   background-color:@white;
 }
 Button_text[visualStyle=tournament]:hover {
   color:@white;
   border-color:@white;
 }
+Button_text[visualStyle=tournament][pc_style=no][btnName] {
+  text-align: center;
+  padding-left: h+1@buttonTextPadding;
+}
 Button_text[visualStyle=tournament_battle] {
   height:1@eSEventBtnHeight;
   background-color:@eSBattleBtnColor;
   border: no;
   font:@fontBigBold;
+  text-align: center;
 }
 Button_text[visualStyle=tournament_battle]:hover {
   color: @buttonFontColor;

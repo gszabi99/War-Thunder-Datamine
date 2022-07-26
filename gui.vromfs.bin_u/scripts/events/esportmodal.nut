@@ -194,7 +194,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
         sortId    = unitTypes.len()
         image     = "#ui/gameuiskin#all_unit_types.svg"
         isDisable = !isUnitTypeInEvents("mix")
-        text      = ::loc($"Mix battle")
+        text      = ::loc("mainmenu/mix_battles")
       }
   }
 
@@ -204,8 +204,8 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       tourTypes[tType] <- {
         id        = $"tour_{tType}"
         sortId    = idx
-        isDisable = tType != "my_only" ? !isTournamentTypeInEvents(tType) : !hasAnyTickets()
-        text  = ::loc(tType)
+        isDisable = tType != "my" ? !isTournamentTypeInEvents(tType) : !hasAnyTickets()
+        text  = ::loc($"tournaments/{tType}")
       }
   }
 

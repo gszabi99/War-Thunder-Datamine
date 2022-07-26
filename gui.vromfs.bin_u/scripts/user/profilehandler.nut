@@ -85,8 +85,6 @@ let selMedalIdx = {}
   unlockTypesToShow = [
     ::UNLOCKABLE_ACHIEVEMENT,
     ::UNLOCKABLE_CHALLENGE,
-    ::UNLOCKABLE_TITLE,
-    ::UNLOCKABLE_MEDAL,
     ::UNLOCKABLE_DECAL,
     ::UNLOCKABLE_TROPHY,
     ::UNLOCKABLE_TROPHY_PSN,
@@ -94,14 +92,12 @@ let selMedalIdx = {}
     ::UNLOCKABLE_TROPHY_STEAM
   ]
 
-  unlocksPages = {
-    achievement = ::UNLOCKABLE_ACHIEVEMENT
-    skin = ::UNLOCKABLE_SKIN
-    decal = ::UNLOCKABLE_DECAL
-    challenge = ::UNLOCKABLE_CHALLENGE
-    medal = ::UNLOCKABLE_MEDAL
-    title = ::UNLOCKABLE_TITLE
-  }
+  unlocksPages = [
+    ::UNLOCKABLE_ACHIEVEMENT
+    ::UNLOCKABLE_SKIN
+    ::UNLOCKABLE_DECAL
+    ::UNLOCKABLE_MEDAL
+  ]
 
   unlocksTree = {}
   skinsCache = null
@@ -186,7 +182,7 @@ let selMedalIdx = {}
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
 
-      if (!::isInArray(unlockTypeId, unlockTypesToShow))
+      if (!unlockTypesToShow.contains(unlockTypeId) && !unlocksPages.contains(unlockTypeId))
         continue
       if (!::is_unlock_visible(cb))
         continue
@@ -1530,10 +1526,7 @@ let selMedalIdx = {}
 
   function openChooseTitleWnd(obj)
   {
-    ::gui_handlers.ChooseTitle.open({
-      alignObj = obj
-      openTitlesListFunc = ::Callback(@() openProfileTab("UnlockAchievement", "title"), this)
-    })
+    ::gui_handlers.ChooseTitle.open()
   }
 
   function openProfileTab(tab, selectedBlock)

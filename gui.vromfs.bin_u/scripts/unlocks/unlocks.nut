@@ -428,6 +428,8 @@ local unlockConditionUnitclasses = {
     if (unit)
       return unit.getUnlockImage()
   }
+  else if (unlockType == ::UNLOCKABLE_PILOT)
+    return $"#ui/images/avatars/{unlockBlk.id}.png"
 
   if (unlockBlk?.icon == null)
     return null

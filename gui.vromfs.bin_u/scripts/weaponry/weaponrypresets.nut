@@ -110,6 +110,43 @@ let function getUnitWeapons(unitBlk) {// Pesets weapon only
   return res
 }
 
+let function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, bullets = null) {
+  let self = callee()
+  let weaponBlk = weaponBlkCache?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
+  bullets = (bullets ?? 1) * (weaponBlk?.bullets ?? 1)
+  weaponBlkCache[weaponBlkPath] <- weaponBlk
+  if (weaponBlk?.container ?? false)
+    return self(weaponBlk.blk, weaponBlkCache, bullets)
+  return {
+    weaponBlk
+    weaponBlkPath
+    bulletsCount = bullets
+  }
+}
+
+let getUnitWeaponsByTier = @(unit, blkPath, tierId)
+  unit.hasWeaponSlots
+    ? (getSlotWeapons(getUnitWeaponSlots(::get_full_unit_blk(unit.name)).findvalue(
+        @(s) s?.tier == tierId)).filter(@(w) getWeaponBlkParams(w.blk, {}).weaponBlkPath == blkPath)
+        ?? [])
+    : null
+
+let function getUnitWeaponsByPreset(unit, blkPath, presetName) {
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  if (unit.hasWeaponSlots) {
+    local res = []
+    foreach (slot in getUnitWeaponSlots(unitBlk))
+      foreach (weapon in getSlotWeapons(slot))
+        if (getWeaponBlkParams(weapon.blk, {}).weaponBlkPath == blkPath
+          && weapon.presetId == presetName)
+          res.append(weapon)
+    return res
+  }
+
+  return getPresetWeaponsByPath(unitBlk, getUnitPresets(unitBlk).findvalue(
+    @(p) p.name == presetName).blk).filter(@(w) w.blk == blkPath) ?? []
+}
+
 let function getDefaultPresetId(unitBlk) {
   foreach (block in getUnitPresets(unitBlk))
     if (block.name.indexof("default") != null || block?.tags?.free)
@@ -144,4 +181,7 @@ return {
   isCustomPreset
   getSlotWeapons
   getPresetWeaponsByPath
+  getWeaponBlkParams
+  getUnitWeaponsByTier
+  getUnitWeaponsByPreset
 }

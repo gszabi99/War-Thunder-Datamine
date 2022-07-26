@@ -6,6 +6,7 @@ let controllerState = require("controllerState")
 let { hangar_protection_map_update, set_protection_analysis_editing,
   set_protection_map_y_nulling, get_protection_map_progress } = require("hangarEventCommand")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
+let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 
 
 local switch_damage = false
@@ -164,7 +165,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     {
       let shortcuts = []
       if (::show_console_buttons)
-        shortcuts.append(::loc("xinp/R2"))
+        shortcuts.append(getAxisTextOrAxisName("fire"))
       if (controllerState?.is_mouse_connected())
         shortcuts.append(::loc("key/LMB"))
       bObj.findObject("push_to_shot").setValue(::g_string.implode(shortcuts, ::loc("ui/comma")))

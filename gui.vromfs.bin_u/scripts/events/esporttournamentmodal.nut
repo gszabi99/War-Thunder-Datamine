@@ -1,6 +1,6 @@
 let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
-  getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor
-} = require("%scripts/events/eSport.nut")
+  getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor,
+  getMatchingEventId } = require("%scripts/events/eSport.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needShowOverrideSlotbar, isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
@@ -132,6 +132,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     return {
       descTxt = "\n".join(descTxtArr, true)
+      lbBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/leaderboard"))
       rewardsBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/rewards"))
       hasLeaderboardBtn = isLeaderboardsAvailable()
       hasRewardBtn = isRewardsAvailable(tournament)
@@ -306,10 +307,8 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   onEventSquadSetReady = @(p) updateApplyButton()
   onEventSquadDataUpdated = @(p) updateApplyButton()
 
-  function onLeaderboard() {
-    if (curEvent != null)
-      ::gui_modal_event_leaderboards(curEvent.name)
-  }
+  onLeaderboard = @()
+    ::gui_modal_event_leaderboards(getMatchingEventId(tournament.id, curTourParams.dayNum, false))
 
   function onReward() {
     ::gui_handlers.EventRewardsWnd.open(curEvent, ::get_tournament_desk_blk(tournament.id).awards)

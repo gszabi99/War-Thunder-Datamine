@@ -8,15 +8,15 @@ let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
-  addWeaponsFromBlk, getWeaponBlkParams } = require("%scripts/weaponry/weaponryInfo.nut")
+  addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
 let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = ::require_native("hudActionBar")
-let { getUnitWeaponSlots, getPresetWeaponsByPath, getUnitPresets,
-  getSlotWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
 
 
+let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 let function updateModType(unit, mod)
 {
   if ("type" in mod)
@@ -58,6 +58,24 @@ let function getTierTooltipParams(weaponry, presetName, tierId)
   }
 }
 
+let function getSingleWeaponDescTbl(unit, params) {
+  let { blkPath, tType, presetName } = params
+  let weapons = addWeaponsFromBlk({}, getUnitWeaponsByPreset(unit, blkPath, presetName), unit)
+  let res = {
+    desc = getWeaponInfoText(unit, {
+      weapons
+      isPrimary = false
+      isSingle = true
+      detail = INFO_DETAIL.EXTENDED
+    })
+  }
+  if(TYPES_ARMOR_PIERCING.contains(tType)) {
+    let bulletsData = buildBulletsData(::calculate_tank_bullet_parameters(unit.name, blkPath, true, false))
+    addArmorPiercingToDesc(bulletsData, res)
+  }
+  return res
+}
+
 let function getTierDescTbl(unit, params) {
   let {tooltipLang, amountPerTier, name,
     blk, tType, ammo, isGun, addWeaponry, presetName, tierId } = params
@@ -66,19 +84,9 @@ let function getTierDescTbl(unit, params) {
 
   local header = ::loc($"weapons/{name}")
   let isBlock = amountPerTier > 1
-
-  let unitBlk = ::get_full_unit_blk(unit.name)
-  local weaponsArr = []
-  if (unit.hasWeaponSlots) {
-    let slots = getUnitWeaponSlots(unitBlk)
-    weaponsArr = getSlotWeapons(slots.findvalue(@(s) s?.tier == tierId)).filter(
-      @(w) getWeaponBlkParams(w.blk, {}).weaponBlkPath == blk)
-  }
-  else
-    weaponsArr = getPresetWeaponsByPath(unitBlk,
-      getUnitPresets(unitBlk).findvalue(@(p) p.name == presetName).blk).filter(@(w) w.blk == blk)
-
-  let weapons = addWeaponsFromBlk({}, weaponsArr ?? [], unit)
+  let weapArr = getUnitWeaponsByTier(unit, blk, tierId)
+    ?? getUnitWeaponsByPreset(unit, blk, presetName)
+  let weapons = addWeaponsFromBlk({}, weapArr, unit)
   let desc = getWeaponInfoText(unit, {
     weapons
     isPrimary = false
@@ -96,7 +104,7 @@ let function getTierDescTbl(unit, params) {
   let descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
   descArr[0] = header
   let res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
-  if(::isInArray(tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM])) {
+  if(TYPES_ARMOR_PIERCING.contains(tType)) {
     let bulletsData = buildBulletsData(::calculate_tank_bullet_parameters(unit.name, blk, true, false))
     addArmorPiercingToDesc(bulletsData, res)
   }
@@ -362,6 +370,7 @@ return {
   updateModType
   getTierTooltipParams
   getTierDescTbl
+  getSingleWeaponDescTbl
   updateSpareType
   updateWeaponTooltip
 }

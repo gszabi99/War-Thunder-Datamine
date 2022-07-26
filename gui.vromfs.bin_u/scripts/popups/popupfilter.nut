@@ -29,7 +29,8 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   function getSceneTplView() {
     local maxTextWidth = 0
     btnTitle = btnTitle ?? ::loc("tournaments/filters")
-    btnWidth = ::to_pixels($"{::show_console_buttons ? 2 : 1}@buttonIconHeight+2@blockInterval")
+    let k = ::show_console_buttons ? 2 : 1
+    btnWidth = ::to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
       + getStringWidthPx($"{btnTitle} {::loc("ui/parentheses", {text = " +99"})}", "nav_button_font")
 
     foreach (fType in filterTypes)

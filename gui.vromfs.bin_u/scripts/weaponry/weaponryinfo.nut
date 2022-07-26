@@ -1,5 +1,4 @@
 let { format } = require("string")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -10,7 +9,7 @@ let { AMMO,
         getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
 let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getUnitPresets, getWeaponsByTypes, getPresetWeapons
+let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
 } = require("%scripts/weaponry/weaponryPresets.nut")
 
 global const UNIT_WEAPONS_ZERO    = 0
@@ -105,6 +104,7 @@ let WEAPON_TEXT_PARAMS = { //const
   ediff                 = null //int. when not set, uses get_current_ediff() function
   isLocalState          = true //should apply my local parameters to unit (modifications, crew skills, etc)
   weaponsFilterFunc     = null //function. When set, only filtered weapons are collected from weaponPreset.
+  isSingle              = false //should ignore ammo count
 }
 
 let triggerGroupImageParameterById = {
@@ -247,20 +247,6 @@ let function isWeaponParamsEqual(item1, item2)
 let function isCaliberCannon(caliber_mm)
 {
   return caliber_mm >= 15
-}
-
-let function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, bullets = null) {
-  let self = callee()
-  let weaponBlk = weaponBlkCache?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
-  bullets = (bullets ?? 1) * (weaponBlk?.bullets ?? 1)
-  weaponBlkCache[weaponBlkPath] <- weaponBlk
-  if (weaponBlk?.container ?? false)
-    return self(weaponBlk.blk, weaponBlkCache, bullets)
-  return {
-    weaponBlk
-    weaponBlkPath
-    bulletsCount = bullets
-  }
 }
 
 let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, wConf = null) {
@@ -1068,5 +1054,4 @@ return {
   getWeaponDisabledMods
   getTriggerType
   isGunnerTrigger
-  getWeaponBlkParams
 }

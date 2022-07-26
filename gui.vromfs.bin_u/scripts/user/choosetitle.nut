@@ -2,44 +2,47 @@ let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let stdMath = require("%sqstd/math.nut")
-let { UNLOCK } = require("%scripts/utils/genericTooltipTypes.nut")
+let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 
 ::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/profile/chooseTitle"
 
-  align = "bottom"
-  alignObj = null
-  openTitlesListFunc = null
-
   curTitle = ""
+  ownTitles = null
   titlesList = null
 
-  static function open(params)
+  static function open()
   {
     if(!isInMenu() || !::my_stats.getStats())
       return
 
-    ::handlersManager.loadHandler(::gui_handlers.ChooseTitle, params)
+    ::handlersManager.loadHandler(::gui_handlers.ChooseTitle)
   }
 
   function getSceneTplView()
   {
-    titlesList = clone ::my_stats.getTitles()
+    ownTitles = ::my_stats.getTitles()
+    titlesList = ::g_unlocks.getAllUnlocksWithBlkOrder()
+      .filter(@(u) u?.type == "title" && ::is_unlock_visible(u))
+      .map(@(u) u.id)
     curTitle = ::my_stats.getStats().title
 
     let hasUnseen = seenTitles.getNewCount() > 0
     local titlesData = titlesList.map(function(name)
     {
       let locText = ::loc("title/" + name)
+      let isOwn = isOwnTitle(name)
       return {
-        name = name
+        name
         text = locText
         lowerText = ::g_string.utf8ToLower(locText)
-        tooltipId = UNLOCK.getTooltipId(name)
-        isSelected = name == curTitle
-        unseenIcon = hasUnseen && bhvUnseen.makeConfigStr(SEEN.TITLES, name)
+        tooltipId = UNLOCK_SHORT.getTooltipId(name)
+        isCurrent = name == curTitle
+        isLocked = !isOwn
+        unseenIcon = isOwn && hasUnseen && seenTitles.isNew(name)
+          && bhvUnseen.makeConfigStr(SEEN.TITLES, name)
       }
     }.bindenv(this))
 
@@ -69,68 +72,121 @@ let { UNLOCK } = require("%scripts/utils/genericTooltipTypes.nut")
       titleWidth = titleWidth
       titleColumns = columns
       value = titlesList.indexof(curTitle) ?? 0
-
-      hasTitlesListButton = openTitlesListFunc != null
-      hasApplyButton = ::show_console_buttons && titlesList.len() > 0
     }
   }
 
   function initScreen()
   {
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"),
-      { margin = [0, ::to_pixels("@popupOffset")] })
-    if (titlesList.len())
-      ::move_mouse_on_child_by_value(scene.findObject("titles_list"))
+    ::move_mouse_on_child_by_value(scene.findObject("titles_list"))
+    updateButtons()
+  }
+
+  isOwnTitle = @(title) ownTitles.contains(title)
+
+  function getSelTitle(listObj) {
+    if (!listObj?.isValid())
+      return null
+
+    return titlesList[listObj.getValue()]
+  }
+
+  function updateButtons() {
+    let title = getSelTitle(scene.findObject("titles_list"))
+    if (!title) {
+      this.showSceneBtn("btn_fav", false)
+      this.showSceneBtn("btn_apply", false)
+      return
+    }
+
+    let isOwn = isOwnTitle(title)
+    let favBtnObj = this.showSceneBtn("btn_fav", !isOwn)
+    if (!isOwn)
+      favBtnObj.setValue(::g_unlocks.isUnlockFav(title)
+        ? ::loc("preloaderSettings/untrackProgress")
+        : ::loc("preloaderSettings/trackProgress"))
+
+    this.showSceneBtn("btn_apply", isOwn)
+  }
+
+  function toggleFav(unlockId) {
+    if (!unlockId)
+      return
+
+    let isFav = ::g_unlocks.isUnlockFav(unlockId)
+    if (isFav) {
+      ::g_unlocks.removeUnlockFromFavorites(unlockId)
+      updateButtons()
+      return
+    }
+
+    if (!::g_unlocks.canAddFavorite()) {
+      let num = ::g_unlocks.favoriteUnlocksLimit
+      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
+      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
+      return
+    }
+
+    ::g_unlocks.addUnlockToFavorites(unlockId)
+    updateButtons()
   }
 
   function onTitleSelect(obj)
   {
-    let title = titlesList?[obj.getValue()]
-    if (title)
+    let title = getSelTitle(obj)
+    if (isOwnTitle(title)) {
       seenTitles.markSeen(title)
+      let titleObj = obj.getChild(obj.getValue())
+      titleObj.hasUnseenIcon = "no"
+    }
+
+    updateButtons()
   }
 
-  function onChooseTitle(obj)
-  {
-    setTitleAndGoBack(obj.id)
+  function onTitleActivate(obj) {
+    let title = getSelTitle(obj)
+    if (isOwnTitle(title))
+      setTitleAndGoBack(title)
+    else
+      toggleFav(title)
   }
 
-  function onActivateTitleList(obj)
-  {
-    if (titlesList.len())
-      setTitleAndGoBack(titlesList?[obj.getValue()] ?? "")
+  function onTitleClick(obj) {
+    let title = getSelTitle(obj)
+    if (isOwnTitle(title))
+      setTitleAndGoBack(title)
   }
 
-  function onApply()
-  {
-    onActivateTitleList(scene.findObject("titles_list"))
+  function onTitleClear() {
+    setTitleAndGoBack("")
   }
 
-  function setTitleAndGoBack(titleName)
-  {
-    if (titleName == curTitle)
+  function onApply() {
+    let title = getSelTitle(scene.findObject("titles_list"))
+    setTitleAndGoBack(title)
+  }
+
+  function onToggleFav() {
+    let title = getSelTitle(scene.findObject("titles_list"))
+    toggleFav(title)
+  }
+
+  function setTitleAndGoBack(titleName) {
+    if (!titleName || titleName == curTitle)
       return goBack()
 
-   ::g_tasker.addTask(
-     ::select_current_title(titleName),
-     {
-      showProgressBox = true
-      progressBoxText = ::loc("charServer/checking")
-    },
-    function ()
-    {
-      ::my_stats.clearStats()
-      ::my_stats.getStats()
-    })
-    goBack()
-  }
+    ::g_tasker.addTask(
+      ::select_current_title(titleName),
+      {
+        showProgressBox = true
+        progressBoxText = ::loc("charServer/checking")
+      },
+      function()
+      {
+       ::my_stats.clearStats()
+       ::my_stats.getStats()
+      })
 
-  function onFullTitlesList()
-  {
-    if (!openTitlesListFunc)
-      return
     goBack()
-    openTitlesListFunc()
   }
 
   function afterModalDestroy()

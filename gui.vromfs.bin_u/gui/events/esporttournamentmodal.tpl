@@ -312,6 +312,7 @@ root {
               text:t = ''
               display:t='hide'
               _on_click:t = 'onBtnAction'
+              btnName:t='X'
               ButtonImg {}
             }
             Button_text {
@@ -322,6 +323,7 @@ root {
               text:t = '#mainmenu/btnCancel'
               display:t='hide'
               _on_click:t = 'onLeaveEvent'
+              btnName:t='X'
               ButtonImg {}
             }
           }
@@ -337,17 +339,15 @@ root {
             position:t='relative'
             visualStyle:t='tournament'
             bigFont:t='yes'
-            text:t = '#tournaments/leaderboard'
+            text:t = '<<lbBtnTxt>>'
             <<^hasLeaderboardBtn>>
             display:t='hide'
             <</hasLeaderboardBtn>>
             on_click:t = 'onLeaderboard'
-            btnName:t='RB'
+            btnName:t='L3'
             ButtonImg {}
             img {
-              size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
               background-image:t='#ui/gameuiskin#tournament_leaderboard.svg'
-              background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
             }
           }
           Button_text {
@@ -363,7 +363,7 @@ root {
             display:t='hide'
             <</hasRewardBtn>>
             on_click:t = 'onReward'
-            btnName:t='RB'
+            btnName:t='R3'
             ButtonImg {}
           }
         }

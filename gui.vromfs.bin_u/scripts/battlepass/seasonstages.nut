@@ -6,7 +6,7 @@ let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { BATTLE_PASS_CHALLENGE, ITEM } = require("%scripts/utils/genericTooltipTypes.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 
-const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 5
+const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 10
 
 let overrideStagesIcon = ::Computed(@() basicUnlock.value?.meta.overrideStageIcon ?? {})
 let doubleWidthStagesIcon = ::Computed(@() basicUnlock.value?.meta.doubleWidthStageIcon ?? [])

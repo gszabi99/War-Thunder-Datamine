@@ -3359,6 +3359,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           marketplaceItemdefIds.append(marketplaceItemdefId)
         let item = {
           idx = nc
+          unlockId
           image = $"#ui/images/avatars/{unlockId}.png"
           show = isShown
           enabled = ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId)

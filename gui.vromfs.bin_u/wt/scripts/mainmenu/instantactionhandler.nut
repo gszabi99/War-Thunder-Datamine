@@ -24,6 +24,7 @@ let { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isHaveNonApprovedClanUnitResearches } = require("%scripts/unit/squadronUnitAction.nut")
 
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
@@ -1239,7 +1240,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function checkNonApprovedSquadronResearches()
   {
-    if (clanVehiclesModal.isHaveNonApprovedResearches())
+    if (isHaveNonApprovedClanUnitResearches())
       clanVehiclesModal.open()
   }
 

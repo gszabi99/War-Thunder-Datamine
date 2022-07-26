@@ -149,13 +149,7 @@ battlePassStage[stageStatus=past][prizeStatus=received] > battlePassFlag > texta
   color-factor:128;
 }
 
-battlePassStage[prizeStatus=notAvailable] > bottomBar {
-  background-color:@battlePassBottomBarColor;
-}
-
-battlePassStage[prizeStatus=notAvailable] > bottomBar > statusImg {
-  background-color:@battlePassLockedIconColor;
-  background-image:#ui/gameuiskin#stage_locked.svg;
+battlePassStage[prizeStatus=notAvailable] > bottomBar > lockButtonNest {
   display:show;
 }
 
@@ -174,6 +168,7 @@ battlePassStage[stageStatus=future] > bottomBar {
 }
 
 battlePassStage[stageStatus=future] > bottomBar > buttonNest,
+battlePassStage[stageStatus=future] > bottomBar > lockButtonNest,
 battlePassStage[stageStatus=future] > bottomBar > statusImg {
   display:hide;
 }

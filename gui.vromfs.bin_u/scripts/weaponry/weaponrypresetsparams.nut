@@ -1,12 +1,12 @@
 let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry,
-  isWeaponEnabled, isWeaponUnlocked, getWeaponBlkParams, getWeaponNameByBlkPath,
+  isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath,
   WEAPON_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
 let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX,
-  getUnitWeapons, getUnitPresets, isCustomPreset, getWeaponsByTypes
+  getUnitWeapons, getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCustomPresetByPresetBlk, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")

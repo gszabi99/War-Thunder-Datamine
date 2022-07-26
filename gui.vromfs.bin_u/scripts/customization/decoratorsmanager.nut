@@ -93,12 +93,6 @@ g_decorator.getCachedDataByType <- function getCachedDataByType(decType, unitTyp
   return data
 }
 
-g_decorator.getCachedDecoratorsDataByType <- function getCachedDecoratorsDataByType(decType, unitType = null)
-{
-  let data = ::g_decorator.getCachedDataByType(decType, unitType)
-  return data.decorators
-}
-
 g_decorator.getCachedOrderByType <- function getCachedOrderByType(decType, unitType = null)
 {
   let data = ::g_decorator.getCachedDataByType(decType, unitType)
@@ -172,7 +166,6 @@ g_decorator.getCachedDecoratorByUnlockId <- function getCachedDecoratorByUnlockI
 g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
 {
   let result = {
-    decorators = {}
     categories = []
     decoratorsList = {}
     fullBlk = null
@@ -196,47 +189,36 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
       continue
 
     let category = dblk?.category ?? prevCategory
-
-    if (!(category in result.decorators))
-    {
-      result.categories.append(category)
-      result.decorators[category] <- []
-    }
-
     decorator.category = category
 
     if (decorator.getCouponItemdefId() != null && !::ItemsManager.findItemById(decorator.getCouponItemdefId()))
       waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
 
     result.decoratorsList[decorator.id] <- decorator
-    if (decorator.isVisible() || decorator.isForceVisible()) {
-      result.decorators[category].append(decorator)
 
-      if (category not in result.catToGroups) {
-        result.catToGroups[category] <- {}
-        result.catToGroupNames[category] <- []
-      }
+    if (!decorator.isVisible())
+      continue
 
-      let group = dblk?.group ?? "other"
-      if (group not in result.catToGroups[category]) {
-        result.catToGroups[category][group] <- []
-        result.catToGroupNames[category].append(group)
-      }
-
-      decorator.catIndex = result.catToGroups[category][group].len()
-      result.catToGroups[category][group].append(decorator)
+    if (category not in result.catToGroups) {
+      result.categories.append(category)
+      result.catToGroups[category] <- {}
+      result.catToGroupNames[category] <- []
     }
+
+    let group = dblk?.group ?? "other"
+    if (group not in result.catToGroups[category]) {
+      result.catToGroups[category][group] <- []
+      result.catToGroupNames[category].append(group)
+    }
+
+    decorator.catIndex = result.catToGroups[category][group].len()
+    result.catToGroups[category][group].append(decorator)
   }
 
-  for (local i = result.categories.len() - 1; i > -1; i--)
-  {
-    let category = result.categories[i]
-    let decoratorsList = result.decorators[category]
-    if (decoratorsList.len() == 0)
-    {
-      result.categories.remove(i)
-      delete result.decorators[category]
-    }
+  foreach (groupNames in result.catToGroupNames) {
+    let idx = groupNames.indexof("other")
+    if (idx != null && idx != (groupNames.len() - 1))
+      groupNames.append(groupNames.remove(idx))
   }
 
   return result
@@ -463,13 +445,8 @@ g_decorator.onEventAttachableReceived <- function onEventAttachableReceived(p)
 
 let function addDecoratorToCachedData(decorator, data) {
   let category = decorator.category
-  if (!(category in data.decorators)) {
-    data.decorators[category] <- []
-    data.categories.append(category)
-  }
-  ::u.appendOnce(decorator, data.decorators[category], true, @(a, b) a?.id == b.id)
-
   if (category not in data.catToGroups) {
+    data.categories.append(category)
     data.catToGroups[category] <- {}
     data.catToGroupNames[category] <- []
   }
@@ -493,7 +470,7 @@ g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)
   let data = getCachedDataByType(decType)
   let decorator = data.decoratorsList?[decorId]
 
-  if (!decorator || (!decorator.isVisible() && !decorator.isForceVisible()))
+  if (!decorator || !decorator.isVisible())
     return
 
   addDecoratorToCachedData(decorator, data)

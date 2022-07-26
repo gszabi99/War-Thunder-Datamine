@@ -620,7 +620,7 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.RADAR
 
     specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(getPlayerCurUnit())
-    checkFeature = @() unitTypes.AIRCRAFT.isAvailable && ::has_feature("Sensors")
+    checkFeature = @() unitTypes.AIRCRAFT.isAvailable
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageBlkName = "%gui/help/radarAircraft.blk"
@@ -667,7 +667,7 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.RADAR
 
     specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(getPlayerCurUnit())
-    checkFeature = @() unitTypes.TANK.isAvailable && ::has_feature("Sensors")
+    checkFeature = @() unitTypes.TANK.isAvailable
     pageUnitTypeBit = unitTypes.TANK.bit
 
     pageBlkName = "%gui/help/radarTank.blk"

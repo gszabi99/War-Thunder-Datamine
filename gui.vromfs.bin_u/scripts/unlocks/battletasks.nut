@@ -658,7 +658,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     foreach (idx, unlockId in config.names) {
       if (config.type == "char_resources") {
         let decorator = ::g_decorator.getDecoratorById(unlockId)
-        if (decorator && (decorator.isVisible() || decorator.isForceVisible()))
+        if (decorator && decorator.isVisible())
           res.append({
             text = decorator.getName()
             isUnlocked = decorator.isUnlocked()

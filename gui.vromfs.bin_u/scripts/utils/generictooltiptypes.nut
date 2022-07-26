@@ -9,7 +9,6 @@ let { updateDecoratorDescription } = require("%scripts/customization/decoratorDe
 let { getChallengeView } = require("%scripts/battlePass/challenges.nut")
 let { fillItemDescr, fillDescTextAboutDiv,
   fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
-let { getUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 
@@ -95,12 +94,7 @@ let exportTypes = addTooltipTypes({
       ::build_unlock_desc(config, {showProgress = !isCompleted, showCost = !isCompleted})
       let reward = ::g_unlock_view.getRewardText(config, stage)
 
-      local header = ::loc(unlockId + "/name")
-      let locId = config?.locId??""
-      if (locId != "")
-        header = getUnlockLocName(config)
-      if (stage >= 0)
-        header += " " + ::roman_numerals[stage + 1]
+      let header = ::g_unlock_view.getUnlockTitle(config)
 
       obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
       obj.findObject("header").setValue(header)

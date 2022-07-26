@@ -93,6 +93,9 @@ let function memoizeByProfile(func, hashFunc = null) {
       foreach (feature in block % "reqFeature")
         if (!::has_feature(feature))
           return false
+      foreach (feature in block % "hideFeature")
+        if (::has_feature(feature))
+          return false
 
       if (!isPlayerHaveDecorator(decorator.id))
       {

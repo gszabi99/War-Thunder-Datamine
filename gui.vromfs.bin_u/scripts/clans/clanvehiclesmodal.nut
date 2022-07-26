@@ -1,6 +1,7 @@
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
-let squadronUnitAction = require("%scripts/unit/squadronUnitAction.nut")
+let { hasClanUnitChosenResearch, saveClanUnitResearchChosen,
+  isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 local handlerClass = class extends vehiclesModal.handlerClass
@@ -133,7 +134,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
     let afterDoneFunc = function() {
       if (unit.isSquadronVehicle() && needChosenResearchOfSquadron())
-        squadronUnitAction.saveResearchChosen(true)
+        saveClanUnitResearchChosen(true)
       if(canFlushExp)
         return unitActions.flushSquadronExp(unit,
           {afterDoneFunc = ::Callback(function() {hasSpendExpProcess = false}, this)})
@@ -156,49 +157,22 @@ local handlerClass = class extends vehiclesModal.handlerClass
     onSpendExcessExp = ::Callback(onSpendExcessExp, this)
   }
 
-  needChosenResearchOfSquadron = @() !squadronUnitAction.hasChosenResearch()
+  needChosenResearchOfSquadron = @() !hasClanUnitChosenResearch()
 
   function onBuy()
   {
     unitActions.buy(lastSelectedUnit, "clan_vehicles")
   }
 
-  static function isHaveNonApprovedResearches()
-  {
-    if (!::isInMenu() || !::has_feature("ClanVehicles")
-      || ::checkIsInQueue()
-      || squadronUnitAction.isAllVehiclesResearched())
-      return false
-
-    let researchingUnitName = ::clan_get_researching_unit()
-    if (researchingUnitName == "")
-      return false
-
-    let curSquadronExp = ::clan_get_exp()
-    let hasChosenResearchOfSquadron = squadronUnitAction.hasChosenResearch()
-    if (hasChosenResearchOfSquadron && curSquadronExp <=0)
-      return false
-
-    let unit = ::getAircraftByName(researchingUnitName)
-    if (!unit || !unit.isVisibleInShop())
-      return false
-
-    if ((hasChosenResearchOfSquadron || !::is_in_clan())
-      && (curSquadronExp <= 0 || curSquadronExp < unit.reqExp - ::getUnitExp(unit)))
-      return false
-
-    return true
-  }
-
   function onEventFlushSquadronExp(params)
   {
     let unit = params?.unit
-    let isAllResearched = squadronUnitAction.isAllVehiclesResearched()
+    let isAllResearched = isAllClanUnitsResearched()
     if (!isAllResearched && ::clan_get_exp() > 0)
       return base.onEventFlushSquadronExp(params)
 
     if (isAllResearched)
-      squadronUnitAction.saveResearchChosen(false)
+      saveClanUnitResearchChosen(false)
 
     if (unit && ::canBuyUnit(unit))
       ::buyUnit(unit)
@@ -207,7 +181,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   function onEventUnitBought(p)
   {
-    if (squadronUnitAction.isAllVehiclesResearched())
+    if (isAllClanUnitsResearched())
       return goBack()
 
     base.onEventFlushSquadronExp(p)
@@ -218,5 +192,4 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
 return {
   open = @() ::handlersManager.loadHandler(handlerClass)
-  isHaveNonApprovedResearches = handlerClass.isHaveNonApprovedResearches
 }

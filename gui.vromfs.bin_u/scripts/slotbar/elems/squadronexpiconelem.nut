@@ -2,7 +2,7 @@ let { format, split_by_chars } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { isAllVehiclesResearched } = require("%scripts/unit/squadronUnitAction.nut")
+let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { subscribe } = require("%scripts/seen/seenListEvents.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 
@@ -18,7 +18,7 @@ elemModelType.addTypes({
       && ::has_feature("ClanVehicles")
       && ::clan_get_exp() > 0
       && ::clan_get_researching_unit() != ""
-      && !isAllVehiclesResearched()
+      && !isAllClanUnitsResearched()
 
     getTooltip = @() format(::loc("mainmenu/availableFreeExpForNewResearch"),
       ::Cost().setSap(::clan_get_exp()).tostring())

@@ -14,6 +14,7 @@ let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
 let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
+let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 
 let watchObjInfoConfig = {
@@ -91,11 +92,9 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     wndObj.size = $"{sizes.windowSize[0]}, {wndObj.getSize()[1]}"
   }
 
-  function calculateCurPage() {
+  function calculateCurPage(lineupType = -1) {
     stageIndexOffsetAddedByPages = {}
-    let stagesList = seasonStages.value
-    let curStageIdx = stagesList.findvalue(@(stageData) stageData.prizeStatus == "available"
-      || stageData.stage >= seasonLevel.value)?.stage ?? 0
+    let curStageIdx = getAvailableStageIdx(lineupType)
     let middleIdx = ::ceil(stagesPerPage.tofloat() / 2) - 1
     let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < curStageIdx ? 1 : 0), 0)
     stageIndexOffset = curStageIdx <= middleIdx ? 0
@@ -103,6 +102,14 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let pageOffset = stageIndexOffset > 0 ? 0 : -1
     curPage = curStageIdx <= middleIdx ? 0
       : ::ceil((curStageIdx.tofloat() + doubleStagesCount - stageIndexOffset) / stagesPerPage).tointeger() + pageOffset
+  }
+
+  // lineupType: 0 - bp, 1 - free, -1 - any
+  function getAvailableStageIdx(lineupType = -1) {
+    return seasonStages.value.findvalue(function(stageData) {
+      return ((lineupType == -1 || stageData.isFree.tointeger() == lineupType)
+        && stageData.prizeStatus == "available") || stageData.stage >= seasonLevel.value
+    })?.stage ?? 0
   }
 
   function goToPage(obj) {
@@ -503,6 +510,27 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onEventBattlePassPurchased(p) {
     needCalculateCurPage = true
     doWhenActiveOnce("congratulationBattlePassPurchased")
+  }
+
+  function onStatusIconClick(obj) {
+    let isFree = obj?.isFree == "yes"
+    if (isFree || hasBattlePass.value) {
+      let okBtnId = "#battlePass/msgbox/gotoPrize"
+      this.msgBox("gotoPrize", ::loc("battlePass/msgbox/gotoPrizeTitle"), [
+        [okBtnId, ::Callback(@() gotoPrize(isFree.tointeger()), this)],
+        ["cancel"]], okBtnId)
+    }
+    else {
+      let okBtnId = "#battlePass/btn_buy"
+      this.msgBox("gotoBpShop", ::loc("battlePass/msgbox/gotoBpShopTitle"), [
+        [okBtnId, openBattlePassShopWnd],
+        ["cancel"]], okBtnId)
+    }
+  }
+
+  function gotoPrize(lineupType) {
+    calculateCurPage(lineupType)
+    fillStagePage()
   }
 
   function updateButtons() {

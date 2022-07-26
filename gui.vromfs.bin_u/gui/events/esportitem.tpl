@@ -93,7 +93,7 @@ eSItemDiv {
         position:t='relative'
         visualStyle:t='tournament'
         bigFont:t='yes'
-        text:t= '#tournaments/leaderboard'
+        text:t= '<<lbBtnTxt>>'
         eventId:t='<<eventId>>'
         on_click:t = 'onLeaderboard'
         btnName:t='Y'

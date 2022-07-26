@@ -38,7 +38,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
   lockedByDLC = null
 
   cost = null
-  forceShowInCustomization = null
   maxSurfaceAngle = 180
 
   isToStringForDebug = true
@@ -65,7 +64,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
     isLive = guidParser.isGuid(slashPos == null ? id : id.slice(slashPos + 1))
 
     cost = decoratorType.getCost(id)
-    forceShowInCustomization = ::getTblValue("forceShowInCustomization", blk, false)
     maxSurfaceAngle = blk?.maxSurfaceAngle ?? 180
 
     tex = blk ? ::get_decal_tex(blk, 1) : id
@@ -123,11 +121,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function isVisible()
   {
     return decoratorType.isVisible(blk, this)
-  }
-
-  function isForceVisible()
-  {
-    return forceShowInCustomization
   }
 
   function getCost()

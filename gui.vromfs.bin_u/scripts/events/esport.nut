@@ -6,7 +6,7 @@ let { secondsToDays } = require("%sqstd/time.nut")
 
 const NEXT_DAYS = 14
 
-let TOURNAMENT_TYPES = ["1x1", "2x2", "3x3", "4x4", "5x5", "spec", "my_only"]
+let TOURNAMENT_TYPES = ["1x1", "2x2", "3x3", "4x4", "5x5", "spec", "my"]
 
 let DAY = {
   NEXT   = -1
@@ -149,7 +149,7 @@ let function checkByFilter(tour, filter) {
     return true
 
   return (filter.tourStates.len() == 0
-      || (filter.tourStates.findindex(@(v) v == "my_only") != null
+      || (filter.tourStates.findindex(@(v) v == "my") != null
         && ::is_subscribed_for_tournament(tour.id))
       || filter.tourStates.findindex(@(v) v == tour.competitive_type) != null)
     && (filter.unitStates.len() == 0
@@ -208,6 +208,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     curStartTime = sesIdx < 0 ? null
       : getSessionTimeIntervalStr(tour.scheduler[day][sesIdx].battle)
     overlayTextColor = getOverlayTextColor(isSesActive)
+    lbBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/leaderboard"))
   }
 }
 

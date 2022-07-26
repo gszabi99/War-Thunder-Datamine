@@ -6,13 +6,14 @@ rootUnderPopupMenu {
 }
 
 frame {
-  id:t='main_frame'
-  position:t='root'
   class:t='wndNav'
+  max-height:t='@maxWindowHeight'
+  min-width:t='0.8@sf'
+  min-height:t='0.3@sf'
+  isCenteredUnderLogo:t='yes'
   not-input-transparent:t='yes'
   css-hier-invalidate:t='yes'
   flow:t='vertical'
-  menu_align:t='bottom'
 
   frame_header{
     activeText{
@@ -32,25 +33,26 @@ frame {
     overflow-y:t="auto"
 
     behavior:t='posNavigator'
-    navigatorShortcuts:t='active'
+    navigatorShortcuts:t='yes'
+    total-input-transparent:t='yes'
     showSelect:t='yes'
     on_select:t='onTitleSelect'
-    on_activate:t='onActivateTitleList'
+    on_activate:t='onTitleActivate'
+    on_click:t='onTitleClick'
     value:t='<<value>>'
 
     <<#titles>>
-    Button_text {
+    titleItem {
       id:t='<<name>>'
       width:t='<<titleWidth>>'
-      visualStyle:t='noFrame'
-      talign:t='left'
       text:t='<<text>>'
-      on_click:t='onChooseTitle'
-      <<#isSelected>>style:t='color:@userlogColoredText;'<</isSelected>>
+      <<#isCurrent>>isCurrent:t='yes'<</isCurrent>>
+      <<#isLocked>>isLocked:t='yes'<</isLocked>>
 
       <<#unseenIcon>>
+      hasUnseenIcon:t='yes'
       unseenIcon {
-        pos:t='pw -w - 1@buttonTextPadding, 50%ph-50%h'
+        pos:t='0, 50%ph-50%h'
         position:t='absolute'
         value:t='<<unseenIcon>>'
       }
@@ -72,6 +74,8 @@ frame {
 
   <<^hasTitles>>
   textAreaCentered {
+    position:t='absolute'
+    pos:t='50%(pw-w), 50%(ph-h)'
     width:t='2@buttonWidth + 3@buttonMargin'
     text:t='#title/no_titles'
   }
@@ -79,20 +83,10 @@ frame {
 
   navBar {
     navLeft {
-      <<#hasTitlesListButton>>
-      Button_text {
-        text:t='#title/all_titles'
-        on_click:t='onFullTitlesList'
-        btnName:t='X'
-        ButtonImg {}
-      }
-      <</hasTitlesListButton>>
-
       <<#hasTitles>>
       Button_text {
-        id:t='' //empty title
         text:t='#title/clear_title'
-        on_click:t='onChooseTitle'
+        on_click:t='onTitleClear'
         btnName:t='Y'
         ButtonImg {}
       }
@@ -100,16 +94,20 @@ frame {
     }
 
     navRight {
-      <<#hasApplyButton>>
       Button_text {
+        id:t='btn_fav'
+        text:t='#preloaderSettings/trackProgress'
+        btnName:t='A'
+        on_click:t='onToggleFav'
+        ButtonImg {}
+      }
+      Button_text {
+        id:t='btn_apply'
         text:t='#mainmenu/btnApply'
         on_click:t='onApply'
         btnName:t='A'
         ButtonImg {}
       }
-      <</hasApplyButton>>
     }
   }
-
-  popup_menu_arrow {}
 }

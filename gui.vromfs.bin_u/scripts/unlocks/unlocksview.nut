@@ -12,9 +12,11 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 
 ::g_unlock_view <- {
   function getUnlockTitle(unlockConfig) {
-    let name = unlockConfig.useSubUnlockName ? getSubUnlockLocName(unlockConfig)
+    local name = unlockConfig.useSubUnlockName ? getSubUnlockLocName(unlockConfig)
       : unlockConfig.locId != "" ? getUnlockLocName(unlockConfig)
       : ::get_unlock_name_text(unlockConfig.unlockType, unlockConfig.id)
+    if (name == "")
+      name = ::get_unlock_type_text(unlockConfig.unlockType, unlockConfig.id)
     let stage = unlockConfig.curStage >= 0
       ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
       : 0
@@ -92,17 +94,18 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
       iconStyle = (isUnlocked? "default_unlocked" : "default_locked") +
           ((isUnlocked || unlockConfig.curStage < 1)? "" : "_stage_" + unlockConfig.curStage)
 
+    let effect = unlockConfig?.isTrophyLocked ? "darkened"
+      : isUnlocked ? ""
+      : [::UNLOCKABLE_DECAL, ::UNLOCKABLE_MEDAL, ::UNLOCKABLE_PILOT].contains(unlockType) ? "darkened"
+      : unlockConfig.curStage <= 0 ? "desaturated"
+      : ""
+
     return {
       style = iconStyle
-      image = unlockType == ::UNLOCKABLE_PILOT? unlockConfig.descrImage : image
+      image = unlockType == ::UNLOCKABLE_PILOT ? (unlockConfig?.descrImage ?? image) : image
       ratio = unlockConfig?.imgRatio ?? 1.0
       params = unlockConfig?.iconParams
-      isDecalLocked = unlockConfig?.isTrophyLocked
-        || (!isUnlocked && (unlockType == ::UNLOCKABLE_DECAL
-        || unlockType == ::UNLOCKABLE_MEDAL) )
-      isAchievementLocked = !unlockConfig?.isTrophyLocked
-        && (!isUnlocked && unlockConfig.curStage <= 0
-        && unlockType != ::UNLOCKABLE_MEDAL && unlockType != ::UNLOCKABLE_DECAL)
+      effect
     }
   }
 
@@ -110,8 +113,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
   {
     let iconObj = unlockObj.findObject("achivment_ico")
     let imgConfig = getUnlockImageConfig(unlockConfig)
-    iconObj.decal_locked = imgConfig.isDecalLocked ? "yes" : "no"
-    iconObj.achievement_locked = imgConfig.isAchievementLocked ? "yes" : "no"
+    iconObj.effectType = imgConfig.effect
 
     if (unlockConfig?.iconData) {
       ::LayersIcon.replaceIconByIconData(iconObj, unlockConfig.iconData)

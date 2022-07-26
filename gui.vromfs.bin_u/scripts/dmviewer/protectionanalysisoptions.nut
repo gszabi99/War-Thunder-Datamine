@@ -3,8 +3,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let { WEAPON_TYPE,
         getLinkedGunIdx,
-        getWeaponNameByBlkPath,
-        getWeaponBlkParams } = require("%scripts/weaponry/weaponryInfo.nut")
+        getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsList,
         getBulletsSetData,
         getBulletsSearchName,
@@ -13,11 +12,11 @@ let { getBulletsList,
         getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
-let { WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { hasUnitAtRank } = require("%scripts/airInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
-let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 
 local options = {
   types = []
@@ -392,10 +391,10 @@ options.addTypes({
 
         items.append({
           text = locName
-          addDiv = WEAPON.getMarkup(unit.name, weap.presetId, {
-            hasPlayerInfo = false,
-            weaponBlkPath = weaponBlkPath,
-            shouldShowEffects = false
+          addDiv = SINGLE_WEAPON.getMarkup(unit.name, {
+            blkPath = weaponBlkPath
+            tType = weap.trigger
+            presetName = weap.presetId
           })
         })
       }
