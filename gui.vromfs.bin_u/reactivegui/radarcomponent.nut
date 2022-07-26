@@ -42,6 +42,9 @@ let styleLineForeground = {
 const AIM_LINE_WIDTH = 2.0
 const TURRET_LINE_WIDTH = 1.0
 
+let elevMaxInv = 1.0 / 1.2
+let elevMaxScreenRelSize = 0.25
+
 let compassSize = [hdpx(500), hdpx(32)]
 let compassStep = 5.0
 let compassOneElementWidth = compassSize[1]
@@ -280,6 +283,45 @@ let B_ScopeSquareAzimuthComponent = @(size, valueWatched, distWatched, halfWidth
     children = !show ? null
       : showPart1 ? part1
       : part2
+  }
+}
+
+let B_ScopeSquareElevationComp = @(size, elev_rel, elev_min, elev_max, elev_scan_min, elev_scan_max, color) function() {
+
+  let elevMaxScreenSize = 100 * elevMaxScreenRelSize
+  let elevationMin = -elev_min.value * elevMaxInv * elevMaxScreenSize + 50
+  let elevationMax = -elev_max.value * elevMaxInv * elevMaxScreenSize + 50
+  let elevationZero = 50
+  let elevation = elevationMin * (1.0 - elev_rel.value) + elevationMax * elev_rel.value
+
+  let markLen = 5
+  let markLenShort = 3
+
+  let commands = [
+    [VECTOR_LINE, 0, elevationMin,  markLen,      elevationMin],
+    [VECTOR_LINE, 0, elevationZero, markLenShort, elevationZero],
+    [VECTOR_LINE, 0, elevationMax,  markLen,      elevationMax],
+    [VECTOR_LINE, 0, elevation,     markLenShort, elevation]
+  ]
+
+  if (elev_scan_max.value > elev_scan_min.value) {
+    let elevationScanMin = -elev_scan_min.value * elevMaxInv * elevMaxScreenSize + 50
+    let elevationScanMax = -elev_scan_max.value * elevMaxInv * elevMaxScreenSize + 50
+
+    commands.append([VECTOR_LINE, 0,       elevationScanMin,  markLen, elevationScanMin])
+    commands.append([VECTOR_LINE, 0,       elevationScanMax,  markLen, elevationScanMax])
+    commands.append([VECTOR_LINE, markLen, elevationScanMin,  markLen, elevationScanMax])
+  }
+
+  return {
+    watch = [elev_rel, elev_min, elev_max, elev_scan_min, elev_scan_max]
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpx(4)
+    color = isColorOrWhite(color)
+    fillColor = 0
+    size
+    opacity = 0.42
+    commands
   }
 }
 
@@ -561,8 +603,8 @@ let offsetScaleFactor = 1.3
 
 let B_ScopeSquareMarkers = @(size, color) function() {
 
-  let res = { watch = [HasAzimuthScale, ScanAzimuthMax, ScanAzimuthMin, HasDistanceScale,
-                         IsRadarVisible, IsRadar2Visible] }
+  let res = { watch = [ HasAzimuthScale, ScanAzimuthMax, ScanAzimuthMin, HasDistanceScale,
+                        IsRadarVisible, IsRadar2Visible] }
 
   let isCollapsed = !IsRadarVisible.value && !IsRadar2Visible.value
   if (isCollapsed)
@@ -612,6 +654,30 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         text = VelocitySearch.value
           ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false)
           : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMin.value * 1000.0, true, false, false)
+      }),
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
+      : @() styleText.__merge({
+        halign = ALIGN_RIGHT
+        watch = ElevationMin
+        size = [size[0], SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXT
+        color
+        fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
+        fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
+        pos = [-size[0], (-ElevationMin.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
+        text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
+      }),
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
+      : @() styleText.__merge({
+        halign = ALIGN_RIGHT
+        watch = ElevationMax
+        size = [size[0], SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXT
+        color
+        fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
+        fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
+        pos = [-size[0], (-ElevationMax.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
+        text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       isCollapsed ? null
       : @() styleText.__merge({
@@ -685,7 +751,7 @@ let B_ScopeSquareCue = @(size, color) function() {
 let function B_ScopeSquare(size, color, hide_back) {
   let bkg = hide_back ? null : B_ScopeSquareBackground(size, color)
   let scopeTgtSectorComp = hide_back ? null : B_ScopeSquareTargetSectorComponent(size, TurretAzimuth, TargetRadarDist, TargetRadarAzimuthWidth, color)
-  let scopeSquareAzimuthComp1 = B_ScopeSquareAzimuthComponent(size, TurretAzimuth, null, null, true, color)
+  let scopeSquareAzimuthComp0 = B_ScopeSquareAzimuthComponent(size, TurretAzimuth, null, null, true, color)
   let groundReflComp = @() {
 
     size
@@ -695,19 +761,26 @@ let function B_ScopeSquare(size, color, hide_back) {
     yFragments = 10
     color = isColorOrWhite(color)
   }
-  let scopeSquareAzimuthComp2 = B_ScopeSquareAzimuthComponent(size, Azimuth, Distance, AzimuthHalfWidth, false, color)
-  let scopeSquareAzimuthComp3 = B_ScopeSquareAzimuthComponent(size, Azimuth2, Distance2, AzimuthHalfWidth2, false, color)
-  let scopeSqLaunchRangeComp = B_ScopeSquareLaunchRangeComponent(size, AamLaunchZoneDist,
-                                                        AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
+  let scopeSquareAzimuthComp1 = B_ScopeSquareAzimuthComponent(size, Azimuth, Distance, AzimuthHalfWidth, false, color)
+  let scopeSquareElevationComp1 = ::cross_call.hasFeature("RadarElevationControl") ?
+    B_ScopeSquareElevationComp(size, Elevation, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, color) : null
+  let scopeSquareAzimuthComp2 = B_ScopeSquareAzimuthComponent(size, Azimuth2, Distance2, AzimuthHalfWidth2, false, color)
+  let scopeSquareElevationComp2 = ::cross_call.hasFeature("RadarElevationControl") ?
+    B_ScopeSquareElevationComp(size, Elevation2, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, color) : null
+  let scopeSqLaunchRangeComp = B_ScopeSquareLaunchRangeComponent(size, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
   let tgts = targetsComponent(size, createTargetOnRadarSquare, color)
   let markers = B_ScopeSquareMarkers(size, color)
   let cue = B_ScopeSquareCue(size, color)
   return function() {
-    let children = [ bkg, scopeTgtSectorComp, scopeSquareAzimuthComp1, groundReflComp ]
-    if (IsRadarVisible.value)
+    let children = [ bkg, scopeTgtSectorComp, scopeSquareAzimuthComp0, groundReflComp ]
+    if (IsRadarVisible.value) {
+      children.append(scopeSquareAzimuthComp1)
+      children.append(scopeSquareElevationComp1)
+    }
+    if (IsRadar2Visible.value) {
       children.append(scopeSquareAzimuthComp2)
-    if (IsRadar2Visible.value)
-      children.append(scopeSquareAzimuthComp3)
+      children.append(scopeSquareElevationComp2)
+    }
     if (IsAamLaunchZoneVisible.value && HasDistanceScale.value)
       children.append(scopeSqLaunchRangeComp)
     children.append(tgts)
@@ -840,6 +913,46 @@ let function B_ScopeAzimuthComponent(size, valueWatched, distWatched, halfWidthW
     watch = showPart1
     size = SIZE_TO_CONTENT
     children = showPart1.value ? part1 : part2
+  }
+}
+
+let B_ScopeElevationComp = @(size, elev_rel, elev_min, elev_max, elev_scan_min, elev_scan_max, azimuth_min, color) function() {
+
+  let elevMaxScreenSize = 50 * elevMaxScreenRelSize
+  let elevationMin = elev_min.value * elevMaxInv * elevMaxScreenSize + 25
+  let elevationMax = elev_max.value * elevMaxInv * elevMaxScreenSize + 25
+  let elevationZero = 25
+  let elevation = elevationMin * (1.0 - elev_rel.value) + elevationMax * elev_rel.value
+
+  let cosa = cos(azimuth_min.value)
+  let sina = sin(azimuth_min.value)
+
+  let markLen = 3
+  let markLenShort = 2
+
+  let commands = [
+    [VECTOR_LINE, 50.0 + elevationMin  * sina, 50.0 - elevationMin  * cosa, 50.0 + elevationMin  * sina - markLen * cosa, 50.0 - elevationMin  * cosa - markLen * sina],
+    [VECTOR_LINE, 50.0 + elevationZero * sina, 50.0 - elevationZero * cosa, 50.0 + elevationZero * sina - markLenShort * cosa, 50.0 - elevationZero * cosa - markLenShort * sina],
+    [VECTOR_LINE, 50.0 + elevationMax  * sina, 50.0 - elevationMax  * cosa, 50.0 + elevationMax  * sina - markLen * cosa, 50.0 - elevationMax  * cosa - markLen * sina],
+    [VECTOR_LINE, 50.0 + elevation  * sina, 50.0 - elevation  * cosa, 50.0 + elevation  * sina - markLenShort * cosa, 50.0 - elevation  * cosa - markLenShort * sina]
+  ]
+
+  if (elev_scan_max.value > elev_scan_min.value) {
+    let elevationScanMin = elev_scan_min.value * elevMaxInv * elevMaxScreenSize + 25
+    let elevationScanMax = elev_scan_max.value * elevMaxInv * elevMaxScreenSize + 25
+    commands.append([VECTOR_LINE, 50.0 + elevationScanMin  * sina, 50.0 - elevationScanMin  * cosa, 50.0 + elevationScanMin  * sina - markLen * cosa, 50.0 - elevationScanMin  * cosa - markLen * sina])
+    commands.append([VECTOR_LINE, 50.0 + elevationScanMax  * sina, 50.0 - elevationScanMax  * cosa, 50.0 + elevationScanMax  * sina - markLen * cosa, 50.0 - elevationScanMax  * cosa - markLen * sina])
+  }
+
+  return {
+    watch = [elev_rel, elev_min, elev_max, elev_scan_min, elev_scan_max, azimuth_min]
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpx(4)
+    color = isColorOrWhite(color)
+    fillColor = 0
+    size
+    opacity = 0.42
+    commands
   }
 }
 
@@ -1396,6 +1509,38 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
                       ? "*"
                       : " "))
       })
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
+      : @() styleText.__merge({
+        halign = ALIGN_RIGHT
+        valign = ALIGN_TOP
+        watch = [ElevationMin, AzimuthMin]
+        size = [size[0], size[1]]
+        rendObj = ROBJ_TEXT
+        color
+        fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
+        fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
+        pos = [
+          (0.5 + (0.25 + 0.5 * ElevationMin.value * elevMaxInv * elevMaxScreenRelSize) * sin(AzimuthMin.value) - 0.03 * cos(AzimuthMin.value) - 1.0) * size[0],
+          (0.5 - (0.25 + 0.5 * ElevationMin.value * elevMaxInv * elevMaxScreenRelSize) * cos(AzimuthMin.value) - 0.03 * sin(AzimuthMin.value) - 0.0) * size[1]
+        ]
+        text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
+      })
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
+      : @() styleText.__merge({
+        halign = ALIGN_RIGHT
+        valign = ALIGN_TOP
+        watch = [ElevationMax, AzimuthMin]
+        size = [size[0], size[1]]
+        rendObj = ROBJ_TEXT
+        color
+        fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
+        fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
+        pos = [
+          (0.5 + (0.25 + 0.5 * ElevationMax.value * elevMaxInv * elevMaxScreenRelSize) * sin(AzimuthMin.value) - 0.03 * cos(AzimuthMin.value) - 1.0) * size[0],
+          (0.5 - (0.25 + 0.5 * ElevationMax.value * elevMaxInv * elevMaxScreenRelSize) * cos(AzimuthMin.value) - 0.03 * sin(AzimuthMin.value) - 0.0) * size[1]
+        ]
+        text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
+      })
       makeRadarModeText({
           pos = [size[0] * (0.5 - 0.15), -hdpx(20)]
         }, color)
@@ -1467,16 +1612,24 @@ let function B_ScopeHalf(size, color, fontScale) {
   let markers = B_ScopeHalfCircleMarkers(size, color, fontScale)
   let cue = B_ScopeHalfCue(size, color)
   let az1 = B_ScopeAzimuthComponent(size, Azimuth, Distance, AzimuthHalfWidth, color)
+  let el1 = ::cross_call.hasFeature("RadarElevationControl") ?
+    B_ScopeElevationComp(size, Elevation, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, AzimuthMin, color) : null
   let az2 = B_ScopeAzimuthComponent(size, Azimuth2, Distance2, AzimuthHalfWidth2, color)
+  let el2 = ::cross_call.hasFeature("RadarElevationControl") ?
+    B_ScopeElevationComp(size, Elevation2, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, AzimuthMin, color) : null
   let aamLaunch = B_ScopeHalfLaunchRangeComponent(size, AzimuthMin, AzimuthMax,
                                                       AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
   let tgts = targetsComponent(size, createTargetOnRadarPolar, color)
   return function() {
     let children = [ bkg, sector, reflections ]
-    if (IsRadarVisible.value)
+    if (IsRadarVisible.value) {
       children.append(az1)
-    if (IsRadar2Visible.value)
+      children.append(el1)
+    }
+    if (IsRadar2Visible.value) {
       children.append(az2)
+      children.append(el2)
+    }
     if (IsAamLaunchZoneVisible.value && HasDistanceScale.value)
       children.append(aamLaunch)
     children.append(tgts)

@@ -10,7 +10,7 @@ let function getUnlockLocName(config, key = "locId") {
   numRealistic = ::ceil(num.tofloat() / numRealistic)
   numHardcore = ::ceil(num.tofloat() / numHardcore)
 
-  return "".join(::g_localization.getLocIdsArray(config, key).map(@(locId) locId.len() == 1 ? locId :
+  return "".join(::g_localization.getLocIdsArray(config?[key]).map(@(locId) locId.len() == 1 ? locId :
     ::loc(locId, { num, numRealistic, numHardcore })))
 }
 

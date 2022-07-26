@@ -17,8 +17,9 @@ let activityFeedRequestLocParams = freeze({
 })
 
 ::g_localization <- {
-  function getLocIdsArray(config, key = "locId") {
-    let keyValue = config?[key] ?? ""
+  function getLocIdsArray(keyValue) {
+    if (keyValue == null)
+      return [""]
     let parsedString = split_by_chars(keyValue, "; ")
     if (parsedString.len() <= 1)
       return [keyValue]

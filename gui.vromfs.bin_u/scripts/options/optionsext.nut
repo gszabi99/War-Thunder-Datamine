@@ -35,6 +35,10 @@ let { setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption,
   getCdBaseDifficulty } = ::require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let {
+ get_option_radar_aim_elevation_control = @() false,
+ set_option_radar_aim_elevation_control = @(value) null
+} = require("controlsOptions")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -2039,6 +2043,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_option_radar_target_cycling()
+      break
+
+    case ::USEROPT_RADAR_AIM_ELEVATION_CONTROL:
+      descr.id = "radar_aim_elevation_control"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = get_option_radar_aim_elevation_control()
       break
 
     case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
@@ -4642,6 +4653,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break;
     case ::USEROPT_RADAR_TARGET_CYCLING:
       ::set_option_radar_target_cycling(value)
+      break;
+    case ::USEROPT_RADAR_AIM_ELEVATION_CONTROL:
+      set_option_radar_aim_elevation_control(value)
       break;
     case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
       ::set_option_use_radar_hud_in_cockpit(value)

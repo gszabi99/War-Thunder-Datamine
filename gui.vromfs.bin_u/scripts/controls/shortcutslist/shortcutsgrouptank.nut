@@ -259,6 +259,13 @@ return [
     checkAssign = false
   }
   {
+    id = "gm_sensor_cue_z"
+    type = CONTROL_TYPE.AXIS
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+    showFunc = @() ::has_feature("RadarElevationControl")
+  }
+  {
     id = "ID_TANK_NIGHT_VISION"
     checkGroup = ctrlGroups.TANK
     checkAssign = false

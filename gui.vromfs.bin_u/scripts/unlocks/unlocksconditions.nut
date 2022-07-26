@@ -96,7 +96,7 @@ let function getRankMultipliersTable(blk) {
   local hasAnyMulRank = false
   if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
     for (local rank = 1; rank <= ::max_country_rank; rank++) {
-      let curMul = blk?[$"mulRank{rank}"] ?? 1.0
+      let curMul = blk?[$"mulRank{rank}"]
       mulTable[rank] <- curMul
       if (!hasAnyMulRank && curMul != 1.0)
         hasAnyMulRank = true
@@ -114,7 +114,7 @@ let function getRankMultipliersTable(blk) {
     "gameModeInfoString", "missionPostfix", "modes", "events", "tournamentMode",
     "location", "operationMap", "weaponType", "ammoMass", "bulletCaliber", "difficulty",
     "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag", "playerCountry",
-    "offenderUnit", "offenderType", "offenderUnitRank", "offenderUnitMRank", "offenderTag",
+    "offenderUnit", "offenderType", "offenderUnitRank", "offenderUnitMRank", "offenderTag", "offenderSpeed",
     "targetUnit", "targetType", "targetTag",
     "crewsUnit", "crewsUnitRank", "crewsUnitMRank", "crewsTag", "usedPlayerUnit", "lastPlayerUnit",
     "activity", "minStat", "statPlaceInSession", "statScoreInSession", "statAwardDamageInSession",
@@ -723,6 +723,12 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
       : (blk?.enemy ?? false) ? "enemy" : "allied"
     res.values = $"{t}/{zoneType}Zone"
   }
+  else if (t == "offenderSpeed") {
+    res.values = {
+      value = format("%d %s", (blk?.speed ?? 0), ::loc("measureUnits/kmh"))
+      notLess = blk?.notLess ?? true
+    }
+  }
 
   let overrideCondType = getOverrideCondType(blk, unlockMode)
   if (overrideCondType)
@@ -1048,7 +1054,7 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
       text = ::loc("unlockTag/" + v)
     else if (cType == "targetDistance")
       text = format( ::loc($"conditions/{(condition.gt ? "min" : "max")}_limit"), v.tostring())
-    else if (::isInArray(cType, [ "ammoMass", "bulletCaliber" ]))
+    else if (::isInArray(cType, [ "ammoMass", "bulletCaliber", "offenderSpeed" ]))
       text = format( ::loc(v.notLess ? "conditions/min_limit" : "conditions/less"), v.value.tostring())
     else if (::isInArray(cType, [ "activity", "playerUnitRank", "offenderUnitRank", "playerUnitMRank", "offenderUnitMRank",
       "crewsUnitRank", "crewsUnitMRank", "minStat", "higherBR" ])) {
@@ -1205,14 +1211,14 @@ UnlockConditions.getMultipliersText <- function getMultipliersText(condition)
 
   local mulRankText = ""
   if (rankMultiplierTable.len() > 0) {
-    local lastAddedRank = 1
+    local lastAddedRank = null
     for (local rank = 1; rank <= ::max_country_rank; rank++) {
       let curRankMul = rankMultiplierTable[rank]
       let nextRankMul = rankMultiplierTable?[rank + 1]
-      if (nextRankMul != null && curRankMul == nextRankMul)
+      if (!curRankMul || (nextRankMul && curRankMul == nextRankMul))
         continue
-      let rankText = (rank == lastAddedRank + 1) ? ::get_roman_numeral(rank)
-        : getRangeString(::get_roman_numeral(lastAddedRank), ::get_roman_numeral(rank))
+      let rankText = (rank - 1 == lastAddedRank || rank == 1) ? ::get_roman_numeral(rank)
+        : getRangeString(::get_roman_numeral(lastAddedRank ?? 1), ::get_roman_numeral(rank))
       if (mulRankText.len() > 0)
         mulRankText = $"{mulRankText}, "
       mulRankText = $"{mulRankText}{rankText} (x{curRankMul})"

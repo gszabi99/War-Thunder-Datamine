@@ -316,6 +316,13 @@ return [
     checkAssign = false
   }
   {
+    id = "helicopter_sensor_cue_z"
+    type = CONTROL_TYPE.AXIS
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+    showFunc = @() ::has_feature("RadarElevationControl")
+  }
+  {
     id = "ID_IRCM_SWITCH_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false

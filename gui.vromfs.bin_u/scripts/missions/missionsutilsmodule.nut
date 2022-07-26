@@ -27,9 +27,9 @@ let getMissionLocIdsArray = function(missionInfo) {
   let misInfoName = missionInfo?.name ?? ""
 
   if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
-    res = ::g_localization.getLocIdsArray(missionInfo, "locNameTeamA")
+    res = ::g_localization.getLocIdsArray(missionInfo.locNameTeamA)
   else if ((missionInfo?.locName.len() ?? 0) > 0)
-    res = ::g_localization.getLocIdsArray(missionInfo, "locName")
+    res = ::g_localization.getLocIdsArray(missionInfo.locName)
   else
     res.append($"missions/{misInfoName}")
 
@@ -111,7 +111,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
   return ::handyman.renderCached("%gui/missions/missionReward", { rewards = rewards })
 }
 
-let getMissionLocName = @(config, key = "locId") "".join(::g_localization.getLocIdsArray(config, key)
+let getMissionLocName = @(config, key = "locId") "".join(::g_localization.getLocIdsArray(config?[key])
   .map(@(locId) locId.len() == 1 ? locId : ::loc(locId)))
 
 return {

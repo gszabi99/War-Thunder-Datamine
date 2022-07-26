@@ -436,6 +436,12 @@ return [
     checkAssign = false
   }
   {
+    id = "sensor_cue_z"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+    showFunc = @() ::has_feature("RadarElevationControl")
+  }
+  {
     id = "ID_SCHRAEGE_MUSIK"
     checkAssign = false
     needShowInHelp = true

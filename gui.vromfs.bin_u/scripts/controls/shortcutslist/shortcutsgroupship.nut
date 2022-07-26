@@ -286,6 +286,13 @@ return [
     checkAssign = false
   }
   {
+    id = "ship_sensor_cue_z"
+    type = CONTROL_TYPE.AXIS
+    checkGroup = ctrlGroups.SHIP
+    checkAssign = false
+    showFunc = @() ::has_feature("RadarElevationControl")
+  }
+  {
     id = "ship_zoom"
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.SHIP

@@ -312,7 +312,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
         : ::loc(awardType)
     }
 
-    local name = ::loc(locId || ("item/" + id), "")
+    local name = locId ? "".join(::g_localization.getLocIdsArray(locId).map(@(id) ::loc(id))) : ::loc(("item/" + id), "")
     let hasCustomName = name != ""
     if (!hasCustomName)
       name = ::loc("item/" + defaultLocId)

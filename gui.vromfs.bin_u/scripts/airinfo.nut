@@ -1673,7 +1673,7 @@ let isEventUnit = @(unit) unit.event != null
   if (air.event) {
     let eventLangBlk = GUI.get()?.eventLang
     let eventLang = eventLangBlk?[air.event]
-      ? "".join(::g_localization.getLocIdsArray(eventLangBlk, air.event).map(@(id) ::loc(id)))
+      ? "".join(::g_localization.getLocIdsArray(eventLangBlk?[air.event]).map(@(id) ::loc(id)))
       : ::loc($"event/{air.event}")
     addInfoTextsList.append(::colorize("chapterUnlockedColor",
       ::loc($"mainmenu/eventVehicle", { event = eventLang })))

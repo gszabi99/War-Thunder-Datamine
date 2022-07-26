@@ -108,6 +108,7 @@ let getMainOptions = function() {
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [::USEROPT_RADAR_TARGET_CYCLING, "spinner"],
+      [::USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner", ::has_feature("RadarElevationControl")],
       [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
