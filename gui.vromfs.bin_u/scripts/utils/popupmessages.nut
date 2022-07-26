@@ -138,6 +138,9 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
   if (blk?.pollId != null)
     popupTable.pollId <- blk.pollId
 
+  if (blk?.qrUrl != null)
+    popupTable.qrUrl <- blk.qrUrl
+
   let ps4ActivityFeedData = ps4ActivityFeedFromPopup(blk)
   if (ps4ActivityFeedData)
     popupTable.ps4ActivityFeedData <- ps4ActivityFeedData
