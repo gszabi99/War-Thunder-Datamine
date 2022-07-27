@@ -12291,8 +12291,12 @@
             "name": "name",
             "exactName": true,
             "value": [
+              "air_arcade",
+              "air_realistic",
               "tank_event_in_random_battles_arcade",
-              "tank_event_in_random_battles_historical"
+              "tank_event_in_random_battles_historical",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
             ],
             "locParamName": "conditions/missionType",
             "locValuePrefix": "missions/short/"
@@ -12366,8 +12370,12 @@
             "name": "name",
             "exactName": true,
             "value": [
+              "air_arcade",
+              "air_realistic",
               "tank_event_in_random_battles_arcade",
-              "tank_event_in_random_battles_historical"
+              "tank_event_in_random_battles_historical",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
             ],
             "locParamName": "conditions/missionType",
             "locValuePrefix": "missions/short/"
@@ -22571,7 +22579,28 @@
       "mode": {
         "type": "char_login_time_range",
         "beginDate": "2022-07-14 13:00:00",
-        "endDate": "2022-07-21 13:00:00",
+        "endDate": "2022-07-27 13:00:00",
+        "condition": [
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "wt_console_link_bonus"
+          },
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "wt_used_console_link_bonus",
+            "invertResult": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "wt_console_link_bonus_popup_3",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2022-07-27 13:00:00",
+        "endDate": "2022-07-30 13:00:00",
         "condition": [
           {
             "type": "char_player_has_entitlement",
