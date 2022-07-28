@@ -38,11 +38,12 @@ let PERCENT_DIFF_SUM_DECAY_FACTOR : float = 0.95 // so that two routes with a sm
 // The client evaluates the route over ECHO_HISTORY_MAX_LENGTH * DEFAULT_ECHO_PERIOD_SECONDS seconds
 let ECHO_HISTORY_MAX_LENGTH : int = 10
 let DEFAULT_ECHO_PERIOD_SECONDS : float = 1.
+let RTT_MAX : uint = uint(INT_MAX)
 
 // Echo history has timeouts just alongside regular echo responses, meaning the timeout is indistinguishable from high ping (true to life)
 def get_rtt_estimation(echo_history : UInt32List) : uint
   if length(echo_history) == 0 // Happens if the route is unavailable after less than a 1 second of the game (practically impossible)
-    return UINT_MAX
+    return RTT_MAX
   var rttSum : uint = 0u
   for rtt in echo_history
     rttSum += rtt
@@ -112,8 +113,8 @@ def get_diff_bucket_str(rtt_diff : int) : string
   return "_{buckets[lb]}" // "_" because of grafana bug: https://github.com/grafana/grafana/issues/38993
 
 def report_route_prober_statistics() : void
-  var mainRouteRtt : uint = UINT_MAX
-  var bestFromTheRest : uint = UINT_MAX
+  var mainRouteRtt : uint = RTT_MAX
+  var bestFromTheRest : uint = RTT_MAX
 
   query() <| $ [es(REQUIRE=routeStats)] (route_id : uint; rtt_estimation : uint)
     if route_id == MAIN_HOST_ROUTE_ID
@@ -183,17 +184,15 @@ def route_prober_timers(info : UpdateStageInfoAct;
                         var next_evaluation : float&;
                         var next_echo_broadcast : float&)
   if info.curTime > next_echo_broadcast
-    next_echo_broadcast = ((next_echo_broadcast > 0.) ? next_echo_broadcast : info.curTime) + echo_period_seconds
+    next_echo_broadcast = info.curTime + echo_period_seconds
     // Maybe do round-robing instead of broadcasting all at once?
     for route_id in urange(route_count)
       send_echo_msg(route_id)
   if info.curTime > next_evaluation
-    if next_evaluation == 0.
-      next_evaluation = info.curTime + evaluation_period_seconds
+    if next_evaluation != 0.
       // skip the avaluation the first time, because there is not enough echo packets were sent yet
-    else
-      next_evaluation = next_evaluation + evaluation_period_seconds
       broadcastEvent([[ChangeServerRoute currentIsUnresponsive=false]])
+    next_evaluation = info.curTime + evaluation_period_seconds
 
 [es(no_order, REQUIRE=routeStats)]
 def receive_echo_response(response : NetEchoReponse; route_id : uint; var echo_history : UInt32List&)
@@ -214,7 +213,7 @@ def evaluate_server_route(evt : ChangeServerRoute)
                                                                     var initial_best : uint&;
                                                                     var statistics_reported : bool&)
     let currentRoute : uint = get_current_server_route_id()
-    var currentRttEstimation : uint = UINT_MAX
+    var currentRttEstimation : uint = RTT_MAX
 
     query() <| $ [es(REQUIRE=routeStats)] (route_id : uint;
                                            echo_history : UInt32List;
