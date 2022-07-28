@@ -351,6 +351,7 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     openQrWindow({
       baseUrl = config.qrUrl
       needUrlWithQrRedirect = true
+      needShowUrlLink = false
     })
   }
 
