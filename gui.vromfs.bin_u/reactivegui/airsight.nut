@@ -474,7 +474,7 @@ let aircraftRocketSight = @(width, height) function() {
 
 let function laserPoint(colorWatch) {
   return {
-    size = [ph(1.5), ph(1.5)]
+    size = [hdpx(5.0), hdpx(5.0)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = colorWatch.value
     fillColor = Color(0, 0, 0, 0)
