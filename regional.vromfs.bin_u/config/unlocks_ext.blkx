@@ -22659,6 +22659,35 @@
       }
     },
     {
+      "id": "ussr_destroyer_7y_stroyny_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2022-07-30 00:00:00",
+        "endDate": "2022-08-01 06:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "ussr_destroyer_7y_stroyny_check"
+        }
+      }
+    },
+    {
+      "id": "ussr_destroyer_7y_stroyny_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "ussr_destroyer_7y_stroyny",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2022-07-30 00:00:00",
+          "endDate": "2022-08-01 06:00:00"
+        }
+      }
+    },
+    {
       "id": "il_merkava_mk_2d_check_popup",
       "type": "achievement",
       "hidden": true,
@@ -27333,6 +27362,44 @@
             "type": "timeRange",
             "beginDate": "2022-05-27 14:00:00",
             "endDate": "2022-05-30 07:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2022_08_01_pla_navy_marine_corps_emblem",
+      "locDescId": "2022_08_01_pla_navy_marine_corps_emblem/desc",
+      "userLogId": "2022_08_01_pla_navy_marine_corps_emblem_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "pla_day",
+      "costGold": 199,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_china"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-07-30 12:00:00",
+            "endDate": "2022-08-04 07:30:00"
           }
         ]
       }
