@@ -1281,6 +1281,7 @@ let selMedalIdx = {}
     ::g_unlock_view.fillUnlockTitle(itemData, unlockObj)
     ::g_unlock_view.fillUnlockFav(itemData.id, unlockObj)
     ::g_unlock_view.fillUnlockPurchaseButton(itemData, unlockObj)
+    ::g_unlock_view.updateLockStatus(itemData, unlockObj)
   }
 
   function printUnlocksList(unlocksList)

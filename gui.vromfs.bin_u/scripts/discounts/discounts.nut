@@ -15,6 +15,7 @@ let topMenuOnlineShopId = ::Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? ""
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -290,8 +291,14 @@ g_discount.updateDiscountNotifications <- function updateDiscountNotifications(s
   {
     let id = getDiscountIconId(name)
     let obj = ::checkObj(scene)? scene.findObject(id) : ::get_cur_gui_scene()[id]
-    if (::checkObj(obj))
-      obj.show(getDiscount(name))
+    if (!(obj?.isValid() ?? false))
+      continue
+
+    let discount = getDiscount(name)
+    let hasDiscount = name == "topmenu_research"
+      ? discount && !(promoteUnits.value.findvalue(@(d) d.isActive) != null)
+      : discount
+    obj.show(hasDiscount)
   }
 
   let section = ::g_top_menu_right_side_sections.getSectionByName("shop")

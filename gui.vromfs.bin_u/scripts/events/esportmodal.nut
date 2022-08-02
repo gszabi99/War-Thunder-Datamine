@@ -62,6 +62,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       scene = scene.findObject("filter_nest")
       onChangeFn = onFilterCbChange.bindenv(this)
       filterTypes = getFiltersView()
+      isNearRight = true
       visualStyle = "tournament"
     })
   }
@@ -240,9 +241,10 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onLeaderboard(obj) {
-    // No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
-    if (obj?.eventId != null)
-      ::gui_modal_event_leaderboards(getMatchingEventId(obj.eventId, 1, false))
+    let tournament = getTourById(obj.eventId)
+    if (tournament)
+      ::gui_modal_event_leaderboards(// No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
+        getMatchingEventId(tournament.id, 1, false), tournament.sharedEconomicName)
   }
 
   onTimer = @(obj, dt) (scene.getModalCounter() != 0) ? null : updateAllEventsByFilters()

@@ -1,6 +1,7 @@
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 
 
 elemModelType.addTypes({
@@ -8,6 +9,7 @@ elemModelType.addTypes({
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
 
     onEventDiscountsDataUpdated = @(p) notify([])
+    onEventPromoteUnitsChanged = @(p) notify([])
     onEventShopWndSwitched = @(p) notify([])
   }
 })
@@ -23,6 +25,7 @@ elemViewType.addTypes({
         ::g_discount.getUnitDiscountList(obj.countryId))
       let maxDiscount = discountData?.maxDiscount ?? 0
       let isVisible = topMenuShopActive.value && maxDiscount > 0
+        && promoteUnits.value.findvalue(@(u) u.unit.shopCountry == obj.countryId) == null
       obj.show(isVisible)
       if (!isVisible)
         return

@@ -99,16 +99,26 @@ let exportTypes = addTooltipTypes({
       obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
       obj.findObject("header").setValue(header)
 
+      let subunlockCfg = ::UnlockConditions.getSubunlockCfg(config.conditions)
+      local text = null
+      if (subunlockCfg)
+        text = ::UnlockConditions.getConditionsText(
+          subunlockCfg.conditions,
+          subunlockCfg.showProgress ? subunlockCfg.curVal : null,
+          subunlockCfg.maxVal,
+          { isExpired = subunlockCfg.isExpired })
+
+      text = text ?? config.text
       let dObj = obj.findObject("description")
-      dObj.setValue(config.text)
+      dObj.setValue(text)
       if (!isCompleted)
       {
         let pObj = obj.findObject("progress")
-        let progressData = config.getProgressBarData()
+        let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
         pObj.setValue(progressData.value)
         pObj.show(progressData.show)
       }
-      else if(config.text != "")
+      else if(text != "")
         obj.findObject("challenge_complete").show(true)
 
       let rObj = ::showBtn("reward", reward != "", obj)

@@ -543,6 +543,7 @@ local isFullScriptsLoaded = false
   require("%scripts/social/activityFeed/activityFeedModule.nut")
   require("%scripts/controls/controlsPseudoAxes.nut")
   require("%scripts/utils/delayedTooltip.nut")
+  require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
 
   if (platform.isPlatformXboxOne)
     require("%scripts/global/xboxCallbacks.nut")

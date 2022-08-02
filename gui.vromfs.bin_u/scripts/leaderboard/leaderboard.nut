@@ -104,9 +104,12 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   gui_start_modal_wnd(::gui_handlers.LeaderboardWindow, {lb_presets = lb_presets})
 }
 
-::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(eventId = null)
-{
-  gui_start_modal_wnd(::gui_handlers.EventsLeaderboardWindow, {eventId = eventId})
+::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(
+  eventId = null, sharedEconomicName = null) {
+    gui_start_modal_wnd(::gui_handlers.EventsLeaderboardWindow, {
+      eventId = eventId
+      sharedEconomicName = sharedEconomicName
+    })
 }
 
 ::leaderboardModel <-
@@ -599,7 +602,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   function onRewards()
   {
   }
-
+  function onTabChange() {}
   function onClanInfo()
   {
     let rowData = getSelectedRowData()
@@ -846,38 +849,56 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
 ::gui_handlers.EventsLeaderboardWindow <- class extends ::gui_handlers.LeaderboardWindow
 {
-  eventId  = null
-  inverse  = false
+  eventId = null
+  sharedEconomicName = null
 
+  inverse  = false
   request = null
 
-  function initScreen()
-  {
+  function initScreen() {
     let eventData = ::events.getEvent(eventId)
     if (!eventData)
       return goBack()
 
+    let eventName = ::events.getEventNameText(eventData)
     request = ::events.getMainLbRequest(eventData)
     if (!lbModel)
       lbModel = ::events
 
-    forClans = ::getTblValue("forClans", request, forClans)
+    forClans = request?.forClans ?? forClans
     if (lb_presets == null)
       lb_presets = ::events.eventsTableConfig
 
-    let sortLeaderboard = ::getTblValue("sort_leaderboard", eventData, null)
+    let sortLeaderboard = eventData?.sort_leaderboard
     curLbCategory = (sortLeaderboard != null)
       ? ::g_lb_category.getTypeByField(sortLeaderboard)
       : ::events.getTableConfigShortRowByEvent(eventData)
 
+    updateLeaderboard()
+    let nestObj = scene.findObject("tabs_list")
+    if (!nestObj?.isValid())
+      return
+
+    let tabsArr = [eventName, sharedEconomicName].filter(@(v) v != null)
+    let view = { tabs = []}
+    foreach (idx, tab in tabsArr)
+      if (tab)
+        view.tabs.append({
+          id = tab
+          tabName = tab
+          navImagesText = tabsArr.len() > 1 ? ::get_navigation_images_text(idx, tabsArr.len()) : ""
+          selected = idx == 0
+        })
+
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    guiScene.replaceContentFromText(nestObj, data, data.len(), this)
+  }
+
+  function updateLeaderboard() {
     setRowsInPage()
     initTable()
     initTopItems()
     fetchLbData()
-
-    let headerName = scene.findObject("lb_name")
-    headerName.setValue(::events.getEventNameText(eventData))
-
     updateButtons()
   }
 
@@ -903,6 +924,15 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!::checkObj(lbUpdateTime))
       return
     lbUpdateTime.setValue(timeStr)
+  }
+
+  function onTabChange(obj) {
+    let curTabObj = obj.getChild(obj.getValue())
+    if (!curTabObj?.isValid())
+      return
+
+    request.economicName = curTabObj.id
+    updateLeaderboard()
   }
 }
 

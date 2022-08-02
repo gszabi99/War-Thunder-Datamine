@@ -23,10 +23,15 @@ tdiv {
 
 popup_menu {
   id:t='filter_popup'
+  <<^isNearRight>>
   top:t='<<^isTop>>1@blockInterval<</isTop>><<#isTop>>-h-1@buttonHeight-1@blockInterval<</isTop>>'
   <<#isRight>>
   left:t='pw-w'
   <</isRight>>
+  <</isNearRight>>
+  <<#isNearRight>>
+  pos:t='<<btnWidth>>+1@blockInterval, -h'
+  <</isNearRight>>
   position:t='relative'
   display:t='hide'
   enable:t='no'

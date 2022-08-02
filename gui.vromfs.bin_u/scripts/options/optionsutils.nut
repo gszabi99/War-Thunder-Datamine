@@ -1,6 +1,7 @@
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { hasFeature } = require("%scripts/user/features.nut")
 
 let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
 
@@ -260,6 +261,13 @@ let function isOptionReqRestartChanged(option, newValue) {
   return baseValue != null && baseValue != newValue
 }
 
+let function isVisibleTankGunsAmmoIndicator()
+{
+  return hasFeature("MachineGunsAmmoIndicator") && ::get_option(::USEROPT_HUD_SHOW_TANK_GUNS_AMMO).value
+}
+
+::cross_call_api.isVisibleTankGunsAmmoIndicator <- @() isVisibleTankGunsAmmoIndicator()
+
 return {
   checkArgument
   createDefaultOption
@@ -272,4 +280,5 @@ return {
   fillHSVOption_ThermovisionColor
   isOptionReqRestartChanged
   setOptionReqRestartValue
+  isVisibleTankGunsAmmoIndicator
 }

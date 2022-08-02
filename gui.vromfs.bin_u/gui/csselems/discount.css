@@ -1,5 +1,7 @@
 @const unlockMarkerWidth: 29@sf/@pf;
 @const unlockMarkerHeight: 35@sf/@pf;
+@const remainingkMarkerWidth: 20@sf/@pf;
+@const remainingMarkerHeight: 20@sf/@pf;
 @const unlockMarkerColor: #FEAD4D;
 @const unlockMarkerColorLight: #FED5A5;
 
@@ -25,7 +27,7 @@ discountIcon {
 discountIcon[type=slotbarCountry] {
   min-width:0;
   pos:1@slotsHeaderBoxPadding + 0.5(1@cIco-w), -h + 1@blockInterval;
-  position:absolute;
+  position:relative;
 }
 
 discount[type=new] {
@@ -65,6 +67,15 @@ unlockUnitCellMarker {
   background-svg-size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
   not-input-transparent:yes;
   tooltip:#mainmenu/objectiveAvailable;
+}
+
+remainingTimeUnitCellMarker {
+  size:1@remainingkMarkerWidth, 1@remainingMarkerHeight;
+  background-svg-size:1@remainingkMarkerWidth, 1@remainingMarkerHeight;
+  background-image:#ui/gameuiskin#timer_icon.svg;
+  background-color:#FFFFFF;
+  input-transparent:yes;
+  tooltip:#mainmenu/promoteUnit;
 }
 
 unlockUnitCellMarker:hover {
@@ -109,7 +120,7 @@ squadronExpIcon[type=inTab] {
 
 unlockMarker[type=slotbarCountry],
 squadronExpIcon[type=slotbarCountry] {
-  position:absolute;
+  position:relative;
   pos:pw - w - 1@blockInterval + 3@sf/@pf, -h + 1@blockInterval + 3@sf/@pf;
 }
 
@@ -120,6 +131,55 @@ squadronExpIcon[type=down] {
   size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
   margin-right: 1@blockInterval;
   not-input-transparent:yes;
+}
+
+remainingTimeIconInSlotbar {
+  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  position:relative;
+  pos:0, -h + 1@blockInterval + 3@sf/@pf;
+  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  background-color:#FFFFFF;
+  background-image:#ui/gameuiskin#discount_color_icon_down.svg;
+}
+
+remainingTimeUnitPageMarker {
+  size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  position:relative;
+  pos:0, ph/2-h/2;
+  margin-left: 1@blockInterval;
+  background-svg-size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  background-color:#FFFFFF;
+  background-image:#ui/gameuiskin#timer_icon.svg;
+  tooltip:#mainmenu/promoteUnit;
+}
+
+remainingTimeIconDown {
+  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  background-image:#ui/gameuiskin#discount_color_icon_down.svg;
+  margin-right: 1@blockInterval;
+  background-color:#FFFFFF;
+  not-input-transparent:yes;
+}
+
+remainingTimeIconDown:hover,
+:hover > additionalIconsDiv > remainingTimeIconDown,
+[show_console_buttons=yes] [selected=yes] > remainingTimeIconDown,
+[show_console_buttons=yes] [selected=yes] > additionalIconsDiv > remainingTimeIconDown {
+  background-color:@unlockMarkerColorLight;
+}
+
+:pushed > additionalIconsDiv > remainingTimeIconDown {
+  background-color:@unlockMarkerColor;
+}
+
+remainingTimeTimerIcon {
+  position:absolute;
+  pos:0.5pw-0.5w, 0;
+  size:1@remainingkMarkerWidth + 5@sf/@pf, 1@remainingkMarkerWidth + 5@sf/@pf;
+  background-svg-size:1@remainingkMarkerWidth + 5@sf/@pf, 1@remainingkMarkerWidth + 5@sf/@pf;
+  background-image:#ui/gameuiskin#timer_icon.svg;
+  background-color:#FFFFFF;
 }
 
 squadronExpIcon[type=down]:hover,

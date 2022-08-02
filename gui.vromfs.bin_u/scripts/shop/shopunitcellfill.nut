@@ -7,6 +7,7 @@ let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weap
 let { getUnitShopPriceText } = require("unitCardPkg.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -118,6 +119,11 @@ let function updateCardStatus(obj, id, statusTbl) {
   setBool(showInObj(obj, "inServiceMark", needInService), "mounted", isMounted)
   showInObj(obj, "weaponStatusIcon", weaponsStatus != "").weaponsStatus = weaponsStatus
   showInObj(obj, "repairIcon", isBroken)
+
+  let remainingMarkerObj = obj.findObject("remainingMarker")
+  remainingMarkerObj.setValue(stashBhvValueConfig(
+    {viewId = "SHOP_SLOT_REMAINING_TIME_UNIT", unitName = unitName}
+  ))
 
   let markerObj = showInObj(obj, "unlockMarker", hasObjective)
   if (hasObjective)

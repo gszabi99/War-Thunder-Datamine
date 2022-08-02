@@ -1,6 +1,7 @@
 let { mkRadar} = require("radarComponent.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
+let tankGunsAmmo = require("hud/tankGunsAmmo.nut")
 let tws = require("tws.nut")
 let {IsMlwsLwsHudVisible} = require("twsState.nut")
 let sightIndicators = require("hud/tankSightIndicators.nut")
@@ -24,6 +25,8 @@ let radarPosComputed = Computed(@() [bw.value + 0.06 * rw.value, bh.value + 0.03
 let function Root() {
   let colorWacthed = Watched(greenColor)
   let colorAlertWatched = Watched(redColor)
+  let isTankGunsAmmoVisible = ::cross_call.isVisibleTankGunsAmmoIndicator()
+
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
@@ -33,6 +36,7 @@ let function Root() {
       mkRadar(radarPosComputed)
       aamAim(colorWacthed, colorAlertWatched, false)
       agmAim(colorWacthed, false)
+      isTankGunsAmmoVisible ? tankGunsAmmo : null
       IndicatorsVisible.value
         ? @() {
             children = [

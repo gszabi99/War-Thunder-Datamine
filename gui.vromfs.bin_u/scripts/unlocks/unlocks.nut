@@ -261,7 +261,7 @@ local unlockConditionUnitclasses = {
   let unlocked = ::is_unlocked_scripted(config.unlockType, id)
   ::g_unlocks.setRewardIconCfg(config, blk, unlocked)
   if (config.image == "" && !config?.iconData)
-    ::g_unlocks.setUnlockIconCfg(config, blk, unlocked)
+    ::g_unlocks.setUnlockIconCfg(config, blk)
 
   ::set_description_by_unlock_type(config, blk)
 
@@ -414,7 +414,7 @@ local unlockConditionUnitclasses = {
   return ::g_string.implode(textsList, ", ")
 }
 
-::get_icon_from_unlock_blk <- function get_icon_from_unlock_blk(unlockBlk, unlocked = true)
+::get_icon_from_unlock_blk <- function get_icon_from_unlock_blk(unlockBlk)
 {
   let unlockType = ::get_unlock_type(unlockBlk.type)
   let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
@@ -433,20 +433,7 @@ local unlockConditionUnitclasses = {
   else if (unlockType == ::UNLOCKABLE_PILOT)
     return $"#ui/images/avatars/{unlockBlk.id}.png"
 
-  if (unlockBlk?.icon == null)
-    return null
-
-  if (unlocked)
-    return unlockBlk.icon
-
-  if (unlockBlk?.iconLocked != null)
-    return unlockBlk.iconLocked
-
-  let iconName = unlockBlk.icon
-  let dotPlace = iconName.indexof(".")
-  if (dotPlace != null)
-    return iconName.slice(0, dotPlace) + "_locked" + iconName.slice(dotPlace)
-  return iconName + "_locked"
+  return unlockBlk?.icon
 }
 
 ::get_reward_cost_from_blk <- function get_reward_cost_from_blk(blk)
@@ -1398,7 +1385,7 @@ local unlockConditionUnitclasses = {
 
     if (::getTblValue("descrImage", res, "") == "")
     {
-      let icon = ::get_icon_from_unlock_blk(unlockBlk, true)
+      let icon = ::get_icon_from_unlock_blk(unlockBlk)
       if (icon)
         res.descrImage <- icon
       else if (::getTblValue("iconStyle", res, "") == "")
@@ -1708,8 +1695,8 @@ local unlockConditionUnitclasses = {
     }
   }
 
-  function setUnlockIconCfg(cfg, blk, unlocked) {
-    let icon = ::get_icon_from_unlock_blk(blk, unlocked)
+  function setUnlockIconCfg(cfg, blk) {
+    let icon = ::get_icon_from_unlock_blk(blk)
     if (icon)
       cfg.image = icon
     else

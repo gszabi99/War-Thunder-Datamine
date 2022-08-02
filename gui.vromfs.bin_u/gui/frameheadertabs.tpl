@@ -56,6 +56,17 @@ shopFilter {
   }
   <</squadronExpIconId>>
 
+  <<#remainingTimeUnitPageMarker>>
+  remainingTimeUnitPageMarker {
+    behavior:t='bhvUpdater'
+    id:t='remainingPageMarker'
+    countryId:t='<<countryId>>'
+    armyId:t='<<armyId>>'
+    value:t='{"viewId": "SHOP_PAGES_REMAINING_TIME_UNIT"}'
+    display:t='hide'
+  }
+  <</remainingTimeUnitPageMarker>>
+
   <<#seenIconCfg>>
   unlockMarker {
     type:t='inTab'

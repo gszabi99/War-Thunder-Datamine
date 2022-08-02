@@ -283,6 +283,8 @@ let defaults = ::Watched({  //def value when feature not found in game_settings.
 
   PS5HeadTracking = false
   replayRewind = false
+
+  MachineGunsAmmoIndicator = false
 })
 
 let override = ::Watched({})

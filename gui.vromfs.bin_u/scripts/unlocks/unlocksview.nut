@@ -39,7 +39,8 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
       : ""
   }
 
-  function getConditionsText(cfg) {
+  function getConditionsText(unlockCfg) {
+    let cfg = ::UnlockConditions.getSubunlockCfg(unlockCfg.conditions) ?? unlockCfg
     return ::UnlockConditions.getConditionsText(
       cfg.conditions,
       cfg.showProgress ? cfg.curVal : null,
@@ -61,6 +62,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
     fillUnlockProgressBar(unlockConfig, unlockObj)
     fillReward(unlockConfig, unlockObj)
     fillUnlockConditions(unlockConfig, unlockObj, context)
+    updateLockStatus(unlockConfig, unlockObj)
 
     let closeBtn = unlockObj.findObject("removeFromFavoritesBtn")
     if(::check_obj(closeBtn))
@@ -94,11 +96,9 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
       iconStyle = (isUnlocked? "default_unlocked" : "default_locked") +
           ((isUnlocked || unlockConfig.curStage < 1)? "" : "_stage_" + unlockConfig.curStage)
 
-    let effect = unlockConfig?.isTrophyLocked ? "darkened"
-      : isUnlocked ? ""
-      : [::UNLOCKABLE_DECAL, ::UNLOCKABLE_MEDAL, ::UNLOCKABLE_PILOT].contains(unlockType) ? "darkened"
-      : unlockConfig.curStage <= 0 ? "desaturated"
-      : ""
+    let effect = isUnlocked || needShowLockIcon(unlockConfig) ? ""
+      : unlockType == ::UNLOCKABLE_MEDAL ? "darkened"
+      : "desaturated"
 
     return {
       style = iconStyle
@@ -128,6 +128,24 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
       null/*defStyle*/,
       imgConfig.params
     )
+  }
+
+  function updateLockStatus(cfg, obj) {
+    let needLockIcon = needShowLockIcon(cfg)
+    let lockObj = obj.findObject("lock_icon")
+    lockObj.show(needLockIcon)
+  }
+
+  function needShowLockIcon(cfg) {
+    if (cfg?.isTrophyLocked)
+      return true
+
+    let unlockType = getUnlockType(cfg)
+    let isUnlocked = ::is_unlocked_scripted(unlockType, cfg.id)
+    if (isUnlocked)
+      return false
+
+    return unlockType == ::UNLOCKABLE_DECAL || unlockType == ::UNLOCKABLE_PILOT
   }
 
   function getUnitActionButtonsView(unit) {

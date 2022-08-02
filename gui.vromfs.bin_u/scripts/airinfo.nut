@@ -28,6 +28,7 @@ let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/un
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
+let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -1779,6 +1780,9 @@ let isEventUnit = @(unit) unit.event != null
     let priceText = ::colorize("activeTextColor", ::getUnitCost(air).getTextAccordingToBalance())
     addInfoTextsList.append(::colorize("userlogColoredText", ::loc("mainmenu/canBuyThisVehicle", { price = priceText })))
   }
+
+  if(needShopInfo)
+    fillPromUnitInfo(holderObj, air)
 
   let infoObj = ::showBtn("aircraft-addInfo", !showShortestUnitInfo, holderObj)
   if (::checkObj(infoObj))

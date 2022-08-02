@@ -96,6 +96,15 @@ expandable {
       flow:t='vertical'
       <</isSimpleList>>
     }
+
+    img {
+      id:t="lock_icon"
+      display:t="hide"
+      position:t="absolute"
+      background-image:t="#ui/gameuiskin#locked_white.png"
+      size:t="@mIco,@mIco"
+      background-color:t="@white"
+    }
   }
 }
 <</unlocks>>

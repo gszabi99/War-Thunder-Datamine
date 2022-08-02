@@ -14,14 +14,14 @@ textareaNoTab {
 }
 
 popupFilter {
-  margin-top:t='1@buttonMargin'
-  margin-bottom:t='1@buttonMargin'
+  top:t='1@eSItemMargin'
+  position:t='relative'
 }
 
 slotsScrollDiv {
-  size:t='pw-2@scrollArrowsSize, 1@eSItemHeight+2@eSItemMargin'
-  pos:t='0.5pw-0.5w, 0.5ph-0.5h+1@eSItemButtonHeight'
-  position:t='absolute'
+  height:t='1@eSItemHeight+2@eSItemMargin'
+  top:t='2@eSItemMargin'
+  position:t='relative'
   class:t='tournamentDiv'
   overflow-x:t='auto'
 

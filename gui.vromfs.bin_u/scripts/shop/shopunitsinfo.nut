@@ -1,6 +1,18 @@
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 
+local shopPromoteUnits = {}
 local countDefaultUnitsByCountry = null
+
+let function fillPromoteUnitsList(blk, unit) {
+  if(blk?.beginPurchaseDate != null && blk?.endPurchaseDate != null){
+    shopPromoteUnits[unit.name] <- {
+      unit = unit
+      timeStart = getTimestampFromStringUtc(blk.beginPurchaseDate)
+      timeEnd = getTimestampFromStringUtc(blk.endPurchaseDate)
+    }
+  }
+}
 
 let function generateUnitShopInfo()
 {
@@ -26,7 +38,8 @@ let function generateUnitShopInfo()
         for(local a = 0; a < totalAirs; a++)
         {
           let airBlk = rblk.getBlock(a)
-          local air = ::getAircraftByName(airBlk.getBlockName())
+          let airName = airBlk.getBlockName()
+          local air = ::getAircraftByName(airName)
 
           if (airBlk?.reqAir != null)
             prevAir = airBlk.reqAir
@@ -35,12 +48,13 @@ let function generateUnitShopInfo()
           {
             air.applyShopBlk(airBlk, prevAir)
             prevAir = air.name
+            fillPromoteUnitsList(airBlk, air)
           }
           else //aircraft group
           {
             let groupTotal = airBlk.blockCount()
             local firstIGroup = null
-            let groupName = airBlk.getBlockName()
+            let groupName = airName
             for(local ga = 0; ga < groupTotal; ga++)
             {
               let gAirBlk = airBlk.getBlock(ga)
@@ -51,6 +65,7 @@ let function generateUnitShopInfo()
               prevAir = air.name
               if (!firstIGroup)
                 firstIGroup = air
+              fillPromoteUnitsList(gAirBlk, air)
             }
 
             if (firstIGroup
@@ -100,4 +115,5 @@ return {
   hasDefaultUnitsInCountry
   isCountryHaveUnitType
   generateUnitShopInfo
+  shopPromoteUnits
 }

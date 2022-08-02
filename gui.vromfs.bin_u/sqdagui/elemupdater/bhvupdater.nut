@@ -2,6 +2,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let elemEvents = require("%sqDagui/elemUpdater/elemUpdaterEvents.nut")
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
+let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 local assertOnce = function(uniqId, errorText) { throw(errorText) }
 
@@ -29,9 +30,12 @@ let BhvUpdater = class
 
   function setValue(obj, valueTbl)
   {
-    if (setNewConfig(obj, elemViewType.buildBhvConfig(valueTbl)))
+    let value = type(valueTbl) == "integer"
+      ? popBhvValueConfig(valueTbl)
+      : valueTbl
+    if (setNewConfig(obj, elemViewType.buildBhvConfig(value)))
       updateView(obj)
-    return u.isString(valueTbl) || u.isTable(valueTbl)
+    return u.isString(value) || u.isTable(value)
   }
 
   function setNewConfig(obj, config)

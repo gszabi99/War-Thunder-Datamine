@@ -24,6 +24,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   onChangeFn           = null
   isTop                = false
   isRight              = false
+  isNearRight          = false
   visualStyle          = null
 
   function getSceneTplView() {
@@ -76,6 +77,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
       underPopupDblClick = "onShowFilterBtnClick"
       isTop = isTop
       isRight = isRight
+      isNearRight = isNearRight
       btnWidth = btnWidth
       visualStyle = visualStyle
     }

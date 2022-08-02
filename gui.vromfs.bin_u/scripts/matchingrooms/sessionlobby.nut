@@ -1941,7 +1941,8 @@ SessionLobby.invitePlayer <- function invitePlayer(uid)
     return
   }
 
-  ::invite_player_to_room({ roomId = roomId, userId = uid}, function(p) { ::checkMatchingError(p, false) })
+  let params = { roomId = roomId, userId = uid, password = password }
+  ::invite_player_to_room(params, @(p) ::checkMatchingError(p, false))
 }
 
 SessionLobby.kickPlayer <- function kickPlayer(member)

@@ -4,12 +4,16 @@ let { floor } = require("%sqstd/math.nut")
 let IndicatorsVisible = Watched(false)
 let CurrentTime = Watched(false)
 
-let CoaxialBullets = Watched(false)
-let CoaxialCartridges = Watched(false)
-let CoaxialCartridgeSize = Watched(false)
-let MachineGunBullets = Watched(false)
-let MachineGunCartridges = Watched(false)
-let MachineGunCartridgeSize = Watched(false)
+let CoaxialBullets = Watched(0)
+let CoaxialCartridges = Watched(0)
+let CoaxialCartridgeSize = Watched(0)
+let CoaxialGunStartLoadAtTime = Watched(0)
+let CoaxialGunNextShotAtTime = Watched(0)
+let MachineGunBullets = Watched(0)
+let MachineGunCartridges = Watched(0)
+let MachineGunCartridgeSize = Watched(0)
+let MachineGunStartLoadAtTime = Watched(0)
+let MachineGunNextShotAtTime = Watched(0)
 
 let IsCommanderViewAimModeActive = Watched(false)
 
@@ -48,9 +52,13 @@ let tankState = {
   CoaxialBullets
   CoaxialCartridges
   CoaxialCartridgeSize
+  CoaxialGunStartLoadAtTime
+  CoaxialGunNextShotAtTime
   MachineGunBullets
   MachineGunCartridges
   MachineGunCartridgeSize
+  MachineGunStartLoadAtTime
+  MachineGunNextShotAtTime
 }
 
 interopGen({

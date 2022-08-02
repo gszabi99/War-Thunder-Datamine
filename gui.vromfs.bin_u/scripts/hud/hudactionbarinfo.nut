@@ -57,7 +57,9 @@ let function getActionItemModificationName(item, unit) {
       return getBulletSetNameByBulletName(unit, item?.bulletName)
     case EII_BULLET:
     case EII_FORCED_GUN:
-      return item?.modificationName ?? getDefaultBulletName(unit)
+      return (item?.modificationName ?? "") != ""
+        ? item.modificationName
+        : getDefaultBulletName(unit)
   }
 
   return null

@@ -52,7 +52,8 @@ let { format } = require("string")
 
   function onEventEventBattleEnded(params)
   {
-    let event = ::events.getEvent(::getTblValue("eventId", params))
+    let eventId = params?.eventId ?? ""
+    let event = ::events.getEvent(eventId) || ::events.getEventByEconomicName(eventId)// if event name difference of its shared economic name
     if (event)
       fetchRowFromUserlog(event)
   }

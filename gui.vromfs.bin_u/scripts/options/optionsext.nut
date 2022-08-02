@@ -1964,6 +1964,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.trParams <- "optionWidthInc:t='half';"
       break
 
+    case ::USEROPT_HUD_SHOW_TANK_GUNS_AMMO:
+      descr.id = "hud_show_tank_guns_ammo"
+      descr.controlType = optionControlType.CHECKBOX;
+      descr.controlName <- "switchbox"
+      defaultValue = true
+      break
+
     case ::USEROPT_HUD_SHOW_TEMPERATURE:
       descr.id = "hud_show_temperature"
       descr.items = ["#options/auto", "#options/always"]
@@ -5146,6 +5153,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
 
 
+    case ::USEROPT_HUD_SHOW_TANK_GUNS_AMMO:
       if (descr.controlType == optionControlType.LIST)
       {
         if (typeof descr.values != "array")

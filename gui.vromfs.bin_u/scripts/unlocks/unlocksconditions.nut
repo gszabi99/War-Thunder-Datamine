@@ -297,6 +297,22 @@ let function getRankMultipliersTable(blk) {
       }
     }
   }
+
+  function getSubunlockCfg(conditions) {
+    if (conditions.len() != 1)
+      return null
+
+    let cond = conditions[0]
+    if (cond?.modeType != "char_unlocks" || cond?.values.len() != 1)
+      return null
+
+    let blk = ::g_unlocks.getUnlockById(cond.values[0])
+    if (blk?.hidden ?? false)
+      return null
+
+    let cfg = ::build_conditions_config(blk)
+    return ::build_unlock_desc(cfg)
+  }
 }
 
 
