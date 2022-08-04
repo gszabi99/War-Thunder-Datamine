@@ -29,12 +29,14 @@
         58.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 58.0,
       "period": 0.8,
       "width": 10.0,
       "barHeight": 4.1,
       "barsCount": 3,
       "rowMajor": true,
-      "barsOneWay": true
+      "barsOneWay": true,
+      "centerElevation": -2.0
     },
     "searchNarrow": {
       "type": "pyramide",
@@ -47,12 +49,14 @@
         58.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 58.0,
       "period": 2.5,
       "width": 30.0,
       "barHeight": 4.1,
       "barsCount": 3,
       "rowMajor": true,
-      "barsOneWay": true
+      "barsOneWay": true,
+      "centerElevation": -2.0
     },
     "searchWide": {
       "type": "pyramide",
@@ -65,12 +69,14 @@
         58.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 58.0,
       "period": 5.0,
       "width": 50.0,
       "barHeight": 4.1,
       "barsCount": 3,
       "rowMajor": true,
-      "barsOneWay": true
+      "barsOneWay": true,
+      "centerElevation": -2.0
     },
     "boresightLock": {
       "type": "cone",
@@ -84,6 +90,7 @@
       ],
       "period": 1.0,
       "width": 3.3,
+      "centerElevation": -2.0,
       "indicate": true
     },
     "designationLock": {
@@ -97,11 +104,13 @@
         58.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 58.0,
       "period": 0.5,
       "width": 6.2,
       "barHeight": 3.3,
       "barsCount": 2,
       "rowMajor": false,
+      "centerElevation": -2.0,
       "indicate": true
     },
     "track": {
@@ -209,7 +218,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": -2.0
+            "value": 0.0
           },
           "clearTargets": {},
           "clearTargetsOfInterest": {},
@@ -243,7 +252,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": -2.0
+            "value": 0.0
           },
           "clearTargets": {},
           "clearTargetsOfInterest": {},
@@ -333,7 +342,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": -2.0
+            "value": 0.0
           },
           "setFsmActive": {
             "fsm": "lock",
@@ -606,7 +615,16 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -646,6 +664,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

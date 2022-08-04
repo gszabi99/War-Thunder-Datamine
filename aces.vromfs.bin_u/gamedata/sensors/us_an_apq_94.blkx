@@ -42,6 +42,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 0.7,
       "width": 20.0,
       "barHeight": 3.0,
@@ -59,6 +60,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 3.0,
       "width": 45.0,
       "barHeight": 3.0,
@@ -76,6 +78,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 0.3,
       "width": 5.0,
       "barHeight": 3.0,
@@ -106,6 +109,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 0.7,
       "width": 20.0,
       "barHeight": 2.0,
@@ -124,8 +128,9 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 3.0,
-      "width": 45.0,
+      "width": 38.0,
       "barHeight": 2.0,
       "barsCount": 4,
       "rowMajor": true,
@@ -142,6 +147,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 0.3,
       "width": 5.0,
       "barHeight": 2.0,
@@ -187,6 +193,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 16.0,
+      "track": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
@@ -221,7 +228,24 @@
     "main": {
       "stateInit": "init",
       "actionsTemplates": {
+        "setRadarTargetDesignationRange": {
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -45.0,
+              45.0
+            ],
+            "elevationRange": [
+              -30.0,
+              45.0
+            ],
+            "distanceRange": [
+              0.0,
+              46000.0
+            ]
+          }
+        },
         "init": {
+          "setRadarTargetDesignationRange": {},
           "setEnabled": {
             "value": false
           }
@@ -229,6 +253,22 @@
         "setRadarModeCommon": {
           "setTransiver": {
             "transiver": "radar"
+          }
+        },
+        "setIrstTargetDesignationRange": {
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -38.0,
+              38.0
+            ],
+            "elevationRange": [
+              0.0,
+              0.0
+            ],
+            "distanceRange": [
+              0.0,
+              10000.0
+            ]
           }
         },
         "setIrstModeCommon": {
@@ -385,9 +425,6 @@
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
-          "setCenterElevation": {
-            "source": "targetDesignation"
-          },
           "setModeName": {
             "name": "IRST acquisition"
           }
@@ -461,17 +498,7 @@
           "stateTo": "radarStandby",
           "actions": {
             "init": {},
-            "setRadarStandbyMode": {},
-            "setTargetDesignationRange": {
-              "azimuthRange": [
-                -45.0,
-                45.0
-              ],
-              "distanceRange": [
-                0.0,
-                46000.0
-              ]
-            }
+            "setRadarStandbyMode": {}
           }
         },
         "radarSwitchOn": {
@@ -517,7 +544,8 @@
           "command": "typeSwitch",
           "stateTo": "irstStandby",
           "actions": {
-            "setIrstStandbyMode": {}
+            "setIrstStandbyMode": {},
+            "setIrstTargetDesignationRange": {}
           }
         },
         "irstToRadarStandby": {
@@ -525,7 +553,8 @@
           "command": "typeSwitch",
           "stateTo": "radarStandby",
           "actions": {
-            "setRadarStandbyMode": {}
+            "setRadarStandbyMode": {},
+            "setRadarTargetDesignationRange": {}
           }
         },
         "radarToIrstSearch": {
@@ -533,7 +562,8 @@
           "command": "typeSwitch",
           "stateTo": "irstSearch",
           "actions": {
-            "setIrstSearchMode": {}
+            "setIrstSearchMode": {},
+            "setIrstTargetDesignationRange": {}
           }
         },
         "irstToRadarSearch": {
@@ -541,7 +571,8 @@
           "command": "typeSwitch",
           "stateTo": "radarSearch",
           "actions": {
-            "setRadarSearchMode": {}
+            "setRadarSearchMode": {},
+            "setRadarTargetDesignationRange": {}
           }
         },
         "radarDesignationLock": {
@@ -724,7 +755,16 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -764,6 +804,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

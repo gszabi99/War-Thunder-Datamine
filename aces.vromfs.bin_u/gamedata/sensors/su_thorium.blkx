@@ -29,15 +29,16 @@
         30.0
       ],
       "elevationLimits": [
-        0.0,
-        5.0
+        -16.0,
+        26.0
       ],
       "rollStabLimit": 45.0,
       "period": 0.7,
       "width": 30.0,
       "barHeight": 32.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 5.0
     }
   },
   "signals": {
@@ -79,10 +80,6 @@
               0.0,
               15000.0
             ]
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 5.0
           }
         },
         "setStandbyMode": {
@@ -192,6 +189,12 @@
           "event": "targetDetected",
           "actions": {
             "addTarget": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         }
       }

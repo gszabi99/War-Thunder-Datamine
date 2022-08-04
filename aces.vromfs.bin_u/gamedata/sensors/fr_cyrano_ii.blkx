@@ -25,10 +25,11 @@
         60.0
       ],
       "elevationLimits": [
-        -30.0,
-        30.0
+        -35.0,
+        55.0
       ],
       "rollStabLimit": 110.0,
+      "pitchStabLimit": 60.0,
       "period": 0.75,
       "width": 60.0,
       "barHeight": 5.0,
@@ -43,10 +44,11 @@
         60.0
       ],
       "elevationLimits": [
-        -30.0,
-        30.0
+        -35.0,
+        55.0
       ],
       "rollStabLimit": 110.0,
+      "pitchStabLimit": 60.0,
       "period": 1.5,
       "width": 60.0,
       "barHeight": 5.0,
@@ -61,10 +63,11 @@
         60.0
       ],
       "elevationLimits": [
-        -30.0,
-        30.0
+        -35.0,
+        55.0
       ],
       "rollStabLimit": 110.0,
+      "pitchStabLimit": 60.0,
       "period": 0.375,
       "width": 30.0,
       "barHeight": 5.0,
@@ -79,10 +82,11 @@
         60.0
       ],
       "elevationLimits": [
-        -30.0,
-        30.0
+        -35.0,
+        55.0
       ],
       "rollStabLimit": 110.0,
+      "pitchStabLimit": 60.0,
       "period": 0.75,
       "width": 30.0,
       "barHeight": 5.0,
@@ -97,10 +101,11 @@
         60.0
       ],
       "elevationLimits": [
-        -30.0,
-        30.0
+        -35.0,
+        55.0
       ],
       "rollStabLimit": 110.0,
+      "pitchStabLimit": 60.0,
       "period": 0.5,
       "width": 5.0,
       "barHeight": 2.5,
@@ -115,8 +120,8 @@
         60.0
       ],
       "elevationLimits": [
-        -30.0,
-        30.0
+        -35.0,
+        55.0
       ]
     }
   },
@@ -185,8 +190,8 @@
               60.0
             ],
             "elevationRange": [
-              -30.0,
-              30.0
+              -35.0,
+              55.0
             ],
             "distanceRange": [
               0.0,
@@ -216,9 +221,6 @@
           },
           "setScanPatternSet": {
             "scanPatternSet": "common"
-          },
-          "setCenterStabElevation": {
-            "elevation": 0.0
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
@@ -256,9 +258,6 @@
           },
           "setScanPatternSet": {
             "scanPatternSet": "common"
-          },
-          "setCenterStabElevation": {
-            "elevation": 0.0
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
@@ -306,9 +305,6 @@
           },
           "setSignal": {
             "signal": "track"
-          },
-          "setCenterStabElevation": {
-            "elevation": 0.0
           },
           "clearTargets": {},
           "setIllumination": {
@@ -486,7 +482,25 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -526,6 +540,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

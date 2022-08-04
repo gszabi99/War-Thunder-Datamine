@@ -28,6 +28,7 @@
         -14.0,
         26.0
       ],
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 70.0,
       "period": 3.0,
       "width": 60.0,
@@ -45,6 +46,7 @@
         -14.0,
         26.0
       ],
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 70.0,
       "period": 1.5,
       "width": 30.0,
@@ -62,6 +64,7 @@
         -14.0,
         26.0
       ],
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 70.0,
       "period": 0.1,
       "width": 5.0,
@@ -79,6 +82,7 @@
         -14.0,
         26.0
       ],
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 70.0,
       "period": 0.3,
       "width": 6.0,
@@ -277,9 +281,6 @@
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
-          "setCenterElevation": {
-            "source": "targetDesignation"
-          },
           "setModeName": {
             "name": "acquisition"
           }
@@ -335,6 +336,7 @@
                 -30.0,
                 30.0
               ],
+              "azimuthWidth": 6.0,
               "distanceRange": [
                 0.0,
                 20000.0
@@ -462,7 +464,16 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -502,6 +513,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

@@ -55,7 +55,9 @@ elemViewType.addTypes({
         return
       let discountsList = ::g_discount.getUnitDiscountList(countryId)
       let haveDicsountAndRemUnit = havePromoteUnitCountry && discountsList.len() != 0
-      let tooltipText = $"{::loc("mainmenu/promoteUnit")}\n{::g_discount.generateDiscountInfo(discountsList)?.discountTooltip}"
+      let tooltipText = haveDicsountAndRemUnit
+        ? $"{::loc("mainmenu/promoteUnit")}\n{::g_discount.generateDiscountInfo(discountsList)?.discountTooltip}"
+        : ::loc("mainmenu/promoteUnit")
 
       obj.tooltip = ::loc(tooltipText)
       obj.findObject("remainingTimeTimerIcon").show(haveDicsountAndRemUnit)

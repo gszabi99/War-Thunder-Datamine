@@ -42,62 +42,88 @@
   "scanPatterns": {
     "searchWideATM": {
       "type": "cylinder",
+      "azimuthLimits": [
+        -180.0,
+        180.0
+      ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 6.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "searchMediumATM": {
       "type": "pyramide",
+      "azimuthLimits": [
+        [
+          -180.0,
+          180.0
+        ],
+        [
+          -180.0,
+          180.0
+        ]
+      ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 3.0,
       "width": 90.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "searchNarrowATM": {
       "type": "pyramide",
+      "azimuthLimits": [
+        -180.0,
+        180.0
+      ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 1.5,
       "width": 45.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "searchZoomATM": {
       "type": "pyramide",
+      "azimuthLimits": [
+        -180.0,
+        180.0
+      ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 0.75,
       "width": 22.5,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "searchWideGTM": {
       "type": "pyramide",
@@ -106,10 +132,10 @@
         45.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 1.5,
       "width": 45.0,
@@ -125,10 +151,10 @@
         45.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 0.75,
       "width": 22.5,
@@ -144,10 +170,10 @@
         45.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 0.5,
       "width": 15.0,
@@ -163,10 +189,10 @@
         45.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -25.0,
+        25.0
       ],
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 25.0,
       "rollStabLimit": 20.0,
       "period": 0.25,
       "width": 7.5,
@@ -247,20 +273,6 @@
             "source": "constant",
             "value": -6.25
           },
-          "setTargetDesignationRange": {
-            "azimuthRange": [
-              -45.0,
-              45.0
-            ],
-            "elevationRange": [
-              -20.0,
-              20.0
-            ],
-            "distanceRange": [
-              500.0,
-              8000.0
-            ]
-          },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
@@ -302,7 +314,8 @@
             }
           ],
           "setCueEnabled": {
-            "value": true
+            "value": true,
+            "updateActiveTargetUnderCue": true
           }
         },
         "resetSearchMode": {
@@ -368,10 +381,10 @@
         "scan": {
           "event": "update",
           "actions": {
-            "setCenterAzimuth": {
-              "source": "body"
-            },
-            "scan": {}
+            "doCustomActionTemplate": {
+              "fsm": "search",
+              "name": "scan"
+            }
           }
         },
         "detect": {
@@ -413,6 +426,12 @@
             "setCueDist": {}
           }
         },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
@@ -422,16 +441,56 @@
         "designateTarget": {
           "command": "selectTarget",
           "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1,
-              "selectTarget": true
-            }
+            "designateActiveDetectedTarget": [
+              {
+                "type": 0,
+                "sensorIndex": 1
+              },
+              {
+                "type": 0,
+                "self": true,
+                "sensorIndex": 0
+              }
+            ]
           }
+        }
+      },
+      "actionsTemplates": {
+        "scanGTM": {
+          "scan": {},
+          "setCenterAzimuth": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "designationCue"
+            }
+          ],
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "designationCue"
+            }
+          ]
+        },
+        "scanATM": {
+          "setCenterAzimuth": {
+            "source": "body"
+          },
+          "scan": {},
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "designationCue"
+            }
+          ]
         }
       }
     },
@@ -455,6 +514,27 @@
             "source": "constant",
             "value": -6.25
           },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -45.0,
+              45.0
+            ],
+            "azimuthRelWidthMin": 0.03,
+            "elevationRange": [
+              -20.0,
+              20.0
+            ],
+            "distanceRange": [
+              500.0,
+              8000.0
+            ],
+            "fromBody": false
+          },
+          "setCustomActionTemplate": {
+            "fsm": "search",
+            "name": "scan",
+            "actionTemplateName": "scanGTM"
+          },
           "clearTargets": {}
         },
         "setATMMode": {
@@ -473,6 +553,27 @@
           "setCenterElevation": {
             "source": "constant",
             "value": 0.0
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -180.0,
+              180.0
+            ],
+            "azimuthRelWidthMin": 0.03,
+            "elevationRange": [
+              -20.0,
+              20.0
+            ],
+            "distanceRange": [
+              500.0,
+              8000.0
+            ],
+            "fromBody": true
+          },
+          "setCustomActionTemplate": {
+            "fsm": "search",
+            "name": "scan",
+            "actionTemplateName": "scanATM"
           },
           "clearTargets": {}
         }

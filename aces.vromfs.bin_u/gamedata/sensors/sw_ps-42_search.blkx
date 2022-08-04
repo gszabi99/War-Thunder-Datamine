@@ -30,11 +30,13 @@
         60.0
       ],
       "rollStabLimit": 60.0,
+      "pitchStabLimit": 30.0,
       "period": 4.0,
       "width": 65.0,
       "barHeight": 4.0,
       "barsCount": 4,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 4.0
     },
     "searchMedium": {
       "type": "pyramide",
@@ -47,11 +49,13 @@
         60.0
       ],
       "rollStabLimit": 60.0,
+      "pitchStabLimit": 30.0,
       "period": 2.0,
       "width": 30.0,
       "barHeight": 4.0,
       "barsCount": 4,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 4.0
     },
     "searchNarrow": {
       "type": "pyramide",
@@ -64,11 +68,13 @@
         60.0
       ],
       "rollStabLimit": 60.0,
+      "pitchStabLimit": 30.0,
       "period": 0.2,
       "width": 5.0,
       "barHeight": 4.0,
       "barsCount": 2,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 4.0
     }
   },
   "signals": {
@@ -100,10 +106,7 @@
   },
   "fsms": {
     "main": {
-      "stateInit": [
-        "init",
-        "init"
-      ],
+      "stateInit": "init",
       "actionsTemplates": {
         "init": {
           "setEnabled": {
@@ -115,18 +118,14 @@
           "setSignal": {
             "signal": "search"
           },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 4.0
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -15.0,
-              15.0
+              -65.0,
+              65.0
             ],
             "elevationRange": [
-              -15.0,
-              15.0
+              -30.0,
+              60.0
             ],
             "distanceRange": [
               0.0,
@@ -164,18 +163,12 @@
           "setFsmActive": {
             "fsm": "search",
             "active": true
-          },
-          "setCueEnabled": {
-            "value": true
           }
         },
         "resetSearchMode": {
           "setFsmActive": {
             "fsm": "search",
             "active": false
-          },
-          "setCueEnabled": {
-            "value": false
           }
         }
       },
@@ -232,7 +225,16 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -253,6 +255,12 @@
           "event": "targetDetected",
           "actions": {
             "addTarget": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         }
       }

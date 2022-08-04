@@ -48,10 +48,11 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 0.25,
       "width": 10.0,
       "barHeight": 1.8,
@@ -65,10 +66,11 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 1.0,
       "width": 40.0,
       "barHeight": 1.6,
@@ -82,10 +84,11 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 1.6,
       "width": 65.0,
       "barHeight": 1.6,
@@ -99,14 +102,15 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 0.5,
       "width": 20.0,
       "barHeight": 1.6,
-      "barsCount": 5,
+      "barsCount": 4,
       "rowMajor": true,
       "preciseMinor": true
     },
@@ -117,10 +121,11 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 0.5,
       "width": 40.0,
       "barHeight": 1.8,
@@ -135,13 +140,13 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "period": 0.5,
       "width": 20.0,
-      "barHeight": 2.5,
-      "barsCount": 2,
+      "barHeight": 1.7,
+      "barsCount": 3,
       "rowMajor": false,
       "centerElevation": 5.0,
       "indicate": true
@@ -153,13 +158,13 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "period": 0.5,
       "width": 20.0,
-      "barHeight": 2.5,
-      "barsCount": 2,
+      "barHeight": 1.7,
+      "barsCount": 3,
       "rowMajor": false,
       "centerElevation": 35.0,
       "indicate": true
@@ -171,8 +176,8 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "period": 0.5,
       "width": 1.25,
@@ -185,15 +190,16 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 0.25,
-      "width": 2.5,
-      "barHeight": 1.5,
+      "width": 1.8,
+      "barHeight": 1.8,
       "barsCount": 2,
-      "rowMajor": true,
+      "rowMajor": false,
       "indicate": true
     },
     "designationLockSearch": {
@@ -203,13 +209,14 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 0.5,
-      "width": 10.0,
-      "barHeight": 1.5,
+      "width": 3.0,
+      "barHeight": 1.8,
       "barsCount": 2,
       "rowMajor": false,
       "indicate": true
@@ -221,8 +228,8 @@
         65.0
       ],
       "elevationLimits": [
-        -65.0,
-        65.0
+        -75.0,
+        55.0
       ]
     }
   },
@@ -342,11 +349,11 @@
       "scanPattern1": "twsMedium",
       "scanPattern2": "twsNarrow"
     },
-    "boresightLock": {
-      "scanPattern1": "boresightLock"
-    },
-    "verticalLock": {
-      "scanPattern1": "verticalLockLow",
+    "acmLock": {
+      "scanPattern1": [
+        "boresightLock",
+        "verticalLockLow"
+      ],
       "scanPattern2": "verticalLockHigh"
     }
   },
@@ -371,18 +378,16 @@
           "setEnabled": {
             "value": false
           },
-          "setTransiver": {
-            "transiver": "pulse"
-          },
-          "setSignal": {
-            "signal": "pulseSearch"
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -65.0,
               65.0
             ],
             "azmithWidth": 1.5,
+            "elevationRange": [
+              -25.0,
+              65.0
+            ],
             "distanceRange": [
               0.0,
               185000.0
@@ -397,6 +402,30 @@
             "dopplerSpeedRelWidthMin": 0.05
           }
         },
+        "enableSearchModes": {
+          "setFsmActive": {
+            "fsm": "searchModes",
+            "active": true
+          }
+        },
+        "disableSearchModes": {
+          "setFsmActive": {
+            "fsm": "searchModes",
+            "active": false
+          }
+        },
+        "enableTrackModes": {
+          "setFsmActive": {
+            "fsm": "trackModes",
+            "active": true
+          }
+        },
+        "disableTrackModes": {
+          "setFsmActive": {
+            "fsm": "trackModes",
+            "active": false
+          }
+        },
         "setStandbySearchTwsModeCommon": {
           "setCenterAzimuth": {
             "source": "constant",
@@ -409,14 +438,10 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
-          "setIllumination": {
-            "illumination": false
-          }
+          "enableSearchModes": {}
         },
         "setStandbyModeCommon": {
           "setStandbySearchTwsModeCommon": {},
-          "clearTargets": {},
-          "clearTargetsOfInterest": {},
           "setEnabled": {
             "value": false
           }
@@ -486,6 +511,9 @@
           "setModeName": {
             "name": "TWS standby"
           }
+        },
+        "resetStandbyMode": {
+          "disableSearchModes": {}
         },
         "setSearchTwsModeCommon": {
           "setStandbySearchTwsModeCommon": {},
@@ -570,13 +598,15 @@
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
           },
           "setCueEnabled": {
             "value": false
-          }
+          },
+          "disableSearchModes": {}
         },
         "resetTwsMode": {
           "clearTargetsOfInterest": {},
@@ -586,7 +616,8 @@
           },
           "setCueEnabled": {
             "value": false
-          }
+          },
+          "disableSearchModes": {}
         },
         "setDesignationLockModeCommon": {
           "setEnabled": {
@@ -597,15 +628,9 @@
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
-          "setCenterElevation": {
-            "source": "targetDesignation"
-          },
           "setFsmActive": {
             "fsm": "lock",
             "active": true
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setPulseDesignationLockMode": {
@@ -672,6 +697,9 @@
         },
         "setTwsDesignationLockMode": {
           "setDesignationLockModeCommon": {},
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 300.0
@@ -693,12 +721,77 @@
             "name": "TWS acquisition"
           }
         },
-        "setAcmLockModeCommon": {
+        "designatedTargetSearch": {
+          "designateTargetUnderCue": {
+            "type": 0,
+            "self": true,
+            "sensorIndex": 0
+          },
+          "designateActiveDetectedTarget": {
+            "type": 0,
+            "self": true,
+            "sensorIndex": 0
+          }
+        },
+        "designatedTargetTws": {
+          "designateActiveDetectedTarget": {
+            "type": 0,
+            "self": true,
+            "sensorIndex": 0
+          }
+        },
+        "setPulseTrackModeNameTrack": {
+          "setModeName": {
+            "name": "track"
+          }
+        },
+        "setPulseDopplerTrackModeNameTrack": {
+          "setModeName": {
+            "name": "PD track"
+          }
+        },
+        "setPulseTrackModeNameLock": {
+          "setModeName": {
+            "name": "ACM"
+          }
+        },
+        "setPulseDopplerTrackModeNameLock": {
+          "setModeName": {
+            "name": "PD ACM"
+          }
+        },
+        "setTrackModeNameTrack": {
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setPulseTrackModeName",
+              "actionTemplateName": "setPulseTrackModeNameTrack"
+            },
+            {
+              "fsm": "main",
+              "name": "setPulseDopplerTrackModeName",
+              "actionTemplateName": "setPulseDopplerTrackModeNameTrack"
+            }
+          ]
+        },
+        "setTrackModeNameLock": {
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setPulseTrackModeName",
+              "actionTemplateName": "setPulseTrackModeNameLock"
+            },
+            {
+              "fsm": "main",
+              "name": "setPulseDopplerTrackModeName",
+              "actionTemplateName": "setPulseDopplerTrackModeNameLock"
+            }
+          ]
+        },
+        "setAcmLockMode": {
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
-          "clearTargetsOfInterest": {},
           "resetScanPhase": {},
           "setCenterAzimuth": {
             "source": "constant",
@@ -712,142 +805,32 @@
             "fsm": "lock",
             "active": true
           },
+          "setScanPatternSet": {
+            "scanPatternSet": "acmLock"
+          },
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 4625.0,
+            "width": 9250.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 820.0,
+            "width": 2460.0
+          },
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
           },
-          "setIllumination": {
-            "illumination": false
+          "setTrackModeNameLock": {},
+          "enableTrackModes": {}
+        },
+        "resetLockMode": {
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
           }
         },
-        "setBoresightLockModeCommon": {
-          "setAcmLockModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "boresightLock"
-          },
-          "setDistGatePos": {
-            "source": "constRange",
-            "pos": 4625.0,
-            "width": 9250.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "constRange",
-            "pos": 820.0,
-            "width": 2460.0
-          }
-        },
-        "setPulseBoresightLockMode": {
-          "setBoresightLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulse"
-          },
-          "setSignal": {
-            "signal": "pulseSearch"
-          },
-          "setModeName": {
-            "name": "BST"
-          }
-        },
-        "setPulseDopplerVelocityBoresightLockMode": {
-          "setBoresightLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "PD VS BST"
-          }
-        },
-        "setPulseDopplerBoresightLockMode": {
-          "setBoresightLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "PD BST"
-          }
-        },
-        "setTwsBoresightLockMode": {
-          "setBoresightLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "TWS BST"
-          }
-        },
-        "setVerticalLockModeCommon": {
-          "setAcmLockModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "verticalLock"
-          },
-          "setDistGatePos": {
-            "source": "constRange",
-            "pos": 4625.0,
-            "width": 9250.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "constRange",
-            "pos": 820.0,
-            "width": 2460.0
-          }
-        },
-        "setPulseVerticalLockMode": {
-          "setVerticalLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulse"
-          },
-          "setSignal": {
-            "signal": "pulseSearch"
-          },
-          "setModeName": {
-            "name": "VSL"
-          }
-        },
-        "setPulseDopplerVelocityVerticalLockMode": {
-          "setVerticalLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "PD VS VSL"
-          }
-        },
-        "setPulseDopplerVerticalLockMode": {
-          "setVerticalLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "PD VSL"
-          }
-        },
-        "setTwsVerticalLockMode": {
-          "setVerticalLockModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "TWS VSL"
-          }
-        },
-        "setTrackModeCommon": {
+        "setTrackMode": {
           "setEnabled": {
             "value": true
           },
@@ -855,8 +838,6 @@
           "setScanPattern": {
             "scanPattern": "track"
           },
-          "clearTargets": {},
-          "clearTargetsOfInterest": {},
           "addTargetOfInterest": {},
           "setLastTargetOfInterestActive": {},
           "updateActiveTargetOfInterest": {},
@@ -880,61 +861,42 @@
           },
           "setIllumination": {
             "illumination": true
-          }
+          },
+          "setTrackModeNameTrack": {},
+          "enableTrackModes": {}
         },
         "resetTrackMode": {
           "clearTargetsOfInterest": {},
+          "setIllumination": {
+            "illumination": false
+          },
           "setFsmActive": {
             "fsm": "track",
             "active": false
           }
         },
-        "setPulseTrackMode": {
-          "setTrackModeCommon": {},
+        "setPulseTrackParams": {
           "setTransiver": {
             "transiver": "pulse"
           },
           "setSignal": {
-            "signal": "pulseSearch"
+            "signal": "pulseTrack"
           },
-          "setModeName": {
-            "name": "track"
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "setPulseTrackModeName"
           }
         },
-        "setPulseDopplerVelocityTrackMode": {
-          "setTrackModeCommon": {},
+        "setPulseDopplerTrackParams": {
           "setTransiver": {
             "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
           },
-          "setModeName": {
-            "name": "PD track"
-          }
-        },
-        "setPulseDopplerTrackMode": {
-          "setTrackModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "PD track"
-          }
-        },
-        "setTwsTrackMode": {
-          "setTrackModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerTrack"
-          },
-          "setModeName": {
-            "name": "TWS track"
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "setPulseDopplerTrackModeName"
           }
         }
       },
@@ -942,1197 +904,236 @@
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "stateTo": "pulseDopplerStandby",
+          "stateTo": "standby",
           "actions": {
             "init": {},
             "setPulseDopplerStandbyMode": {}
           }
         },
-        "pulseSwitchOn": {
-          "stateFrom": [
-            "pulseStandby",
-            "pulseVerticalStandby"
-          ],
+        "standbyToSearch": {
+          "stateFrom": "standby",
           "command": "switch",
           "event": "enable",
-          "stateTo": "pulseSearch",
+          "stateTo": "search",
           "actions": {
-            "setPulseSearchMode": {}
-          }
-        },
-        "pulseDopplerVelocitySwitchOn": {
-          "stateFrom": [
-            "pulseDopplerVelocityStandby",
-            "pulseDopplerVelocityVerticalStandby"
-          ],
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "pulseDopplerVelocitySearch",
-          "actions": {
-            "setPulseDopplerVelocitySearchMode": {}
-          }
-        },
-        "pulseDopplerSwitchOn": {
-          "stateFrom": [
-            "pulseDopplerStandby",
-            "pulseDopplerVerticalStandby"
-          ],
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "pulseDopplerSearch",
-          "actions": {
-            "setPulseDopplerSearchMode": {}
-          }
-        },
-        "twsSwitchOn": {
-          "stateFrom": [
-            "twsStandby",
-            "twsVerticalStandby"
-          ],
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "twsSearch",
-          "actions": {
-            "setTwsSearchMode": {}
-          }
-        },
-        "pulseSwitchOff": {
-          "stateFrom": "pulseSearch",
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "pulseStandby",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseStandbyMode": {}
-          }
-        },
-        "pulseDopplerVelocitySwitchOff": {
-          "stateFrom": "pulseDopplerVelocitySearch",
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "pulseDopplerVelocityStandby",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerVelocityStandbyMode": {}
-          }
-        },
-        "pulseDopplerSwitchOff": {
-          "stateFrom": "pulseDopplerSearch",
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "pulseDopplerStandby",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerStandbyMode": {}
-          }
-        },
-        "twsSwitchOff": {
-          "stateFrom": "twsSearch",
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "twsStandby",
-          "actions": {
-            "resetTwsMode": {},
-            "setTwsStandbyMode": {}
-          }
-        },
-        "pulseToPulseDopplerVelocityStandby": {
-          "stateFrom": "pulseStandby",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVelocityStandby",
-          "actions": {
-            "setPulseDopplerVelocityStandbyMode": {}
-          }
-        },
-        "pulseDopplerVelocityToPulseDopplerStandby": {
-          "stateFrom": "pulseDopplerVelocityStandby",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerStandby",
-          "actions": {
-            "setPulseDopplerStandbyMode": {}
-          }
-        },
-        "pulseDopplerToTwsStandby": {
-          "stateFrom": "pulseDopplerStandby",
-          "command": "modeSwitch",
-          "stateTo": "twsStandby",
-          "actions": {
-            "setPulseStandbyMode": {}
-          }
-        },
-        "twsToPulseStandby": {
-          "stateFrom": "twsStandby",
-          "command": "modeSwitch",
-          "stateTo": "pulseStandby",
-          "actions": {
-            "setTwsStandbyMode": {}
-          }
-        },
-        "pulseToPulseDopplerVelocityVerticalStandby": {
-          "stateFrom": "pulseVerticalStandby",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVelocityVerticalStandby",
-          "actions": {
-            "setPulseDopplerVelocityStandbyMode": {}
-          }
-        },
-        "pulseDopplerVelocityToPulseDopplerVerticalStandby": {
-          "stateFrom": "pulseDopplerVelocityVerticalStandby",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVerticalStandby",
-          "actions": {
-            "setPulseDopplerStandbyMode": {}
-          }
-        },
-        "pulseDopplerToTwsVerticalStandby": {
-          "stateFrom": "pulseDopplerVerticalStandby",
-          "command": "modeSwitch",
-          "stateTo": "twsVerticalStandby",
-          "actions": {
-            "setPulseStandbyMode": {}
-          }
-        },
-        "twsToPulseVerticalStandby": {
-          "stateFrom": "twsVerticalStandby",
-          "command": "modeSwitch",
-          "stateTo": "pulseVerticalStandby",
-          "actions": {
-            "setTwsStandbyMode": {}
-          }
-        },
-        "pulseToPulseDopplerVelocitySearch": {
-          "stateFrom": "pulseSearch",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVelocitySearch",
-          "actions": {
-            "setPulseDopplerVelocitySearchMode": {}
-          }
-        },
-        "pulseDopplerVelocityToPulseDopplerSearch": {
-          "stateFrom": "pulseDopplerVelocitySearch",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerSearch",
-          "actions": {
-            "setPulseDopplerSearchMode": {}
-          }
-        },
-        "pulseDopplerToTwsSearch": {
-          "stateFrom": "pulseDopplerSearch",
-          "command": "modeSwitch",
-          "stateTo": "twsSearch",
-          "actions": {
-            "resetSearchMode": {},
-            "setTwsSearchMode": {}
-          }
-        },
-        "twsToPulseSearch": {
-          "stateFrom": "twsSearch",
-          "command": "modeSwitch",
-          "stateTo": "pulseSearch",
-          "actions": {
-            "resetTwsMode": {},
-            "setPulseSearchMode": {}
-          }
-        },
-        "pulseToPulseDopplerVelocityBoresightLock": {
-          "stateFrom": "pulseBoresightLock",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVelocityBoresightLock",
-          "actions": {
-            "setPulseDopplerVelocityBoresightLockMode": {}
-          }
-        },
-        "pulseDopplerVelocityToPulseDopplerBoresightLock": {
-          "stateFrom": "pulseDopplerVelocityBoresightLock",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerBoresightLock",
-          "actions": {
-            "setPulseDopplerBoresightLockMode": {}
-          }
-        },
-        "pulseDopplerToTwsBoresightLock": {
-          "stateFrom": "pulseDopplerBoresightLock",
-          "command": "modeSwitch",
-          "stateTo": "twsBoresightLock",
-          "actions": {
-            "setTwsBoresightLockMode": {}
-          }
-        },
-        "twsToPulseBoresightLock": {
-          "stateFrom": "twsBoresightLock",
-          "command": "modeSwitch",
-          "stateTo": "pulseBoresightLock",
-          "actions": {
-            "setPulseBoresightLockMode": {}
-          }
-        },
-        "pulseToPulseDopplerVelocityVerticalLock": {
-          "stateFrom": "pulseVerticalLock",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVelocityVerticalLock",
-          "actions": {
-            "setPulseDopplerVelocityVerticalLockMode": {}
-          }
-        },
-        "pulseDopplerVelocityToPulseDopplerVerticalLock": {
-          "stateFrom": "pulseDopplerVelocityVerticalLock",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVerticalLock",
-          "actions": {
-            "setPulseDopplerVerticalLockMode": {}
-          }
-        },
-        "pulseDopplerToTwsVerticalLock": {
-          "stateFrom": "pulseDopplerVerticalLock",
-          "command": "modeSwitch",
-          "stateTo": "twsVerticalLock",
-          "actions": {
-            "setTwsVerticalLockMode": {}
-          }
-        },
-        "twsToPulseVerticalLock": {
-          "stateFrom": "twsVerticalLock",
-          "command": "modeSwitch",
-          "stateTo": "pulseVerticalLock",
-          "actions": {
-            "setPulseVerticalLockMode": {}
-          }
-        },
-        "pulseDesignationLock": {
-          "stateFrom": "pulseSearch",
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
+            "resetStandbyMode": {},
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSearchMode"
             }
           }
         },
-        "checkPulseDesignationType0": {
-          "stateFrom": "pulseSearch",
+        "searchToStandby": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
+          }
+        },
+        "designationLock": {
+          "stateFrom": "search",
+          "command": "selectTarget",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "designateTarget"
+            }
+          }
+        },
+        "checkDesignationType0": {
+          "stateFrom": "search",
           "command": "designateTarget",
-          "stateTo": "checkPulseDesignationType0",
+          "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
               "value": 0
             }
           }
         },
-        "pulseDesignationLockResponce": {
-          "stateFrom": "checkPulseDesignationType0",
+        "designationLockResponce": {
+          "stateFrom": "checkDesignationType0",
           "event": "designationTypeEquals",
-          "stateTo": "pulseDesignationLock",
+          "stateTo": "designationLock",
           "actions": {
-            "resetSearchMode": {},
-            "setPulseDesignationLockMode": {}
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode"
+              }
+            ]
           }
         },
-        "returnToPulseSearchMode": {
-          "stateFrom": "checkPulseDesignationType0",
+        "returnToSearchMode": {
+          "stateFrom": "checkDesignationType0",
           "event": "designationTypeNotEquals",
-          "stateTo": "pulseSearch"
+          "stateTo": "search"
         },
-        "pulseDesignationTrack": {
-          "stateFrom": "pulseDesignationLock",
+        "designationLockToDesignationTrack": {
+          "stateFrom": "designationLock",
           "event": "targetDetected",
-          "stateTo": "pulseDesignationTrack",
+          "stateTo": "designationTrack",
           "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseTrackMode": {}
+            "resetLockMode": {},
+            "setTrackMode": {}
           }
         },
-        "failedPulseDesignationLock": {
-          "stateFrom": "pulseDesignationLock",
+        "failedDesignationLock": {
+          "stateFrom": "designationLock",
           "event": "scanFinished",
-          "stateTo": "pulseSearch",
+          "stateTo": "search",
           "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseSearchMode": {}
-          }
-        },
-        "finishedDesignationTrack": [
-          {
-            "stateFrom": "pulseDesignationTrack",
-            "event": "targetsOfInterestCleanup",
-            "command": "selectTarget",
-            "stateTo": "pulseSearch",
-            "actions": {
-              "resetTrackMode": {},
-              "setPulseSearchMode": {}
-            }
-          },
-          {
-            "stateFrom": "twsDesignationTrack",
-            "event": "targetsOfInterestCleanup",
-            "command": "selectTarget",
-            "stateTo": "twsSearch",
-            "actions": {
-              "resetTrackMode": {},
-              "setTwsSearchMode": {}
-            }
-          }
-        ],
-        "pulseDopplerVelocityDesignationLock": {
-          "stateFrom": "pulseDopplerVelocitySearch",
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
+            "disableTrackModes": {},
+            "resetLockMode": {},
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSearchMode"
             }
           }
         },
-        "checkPulseDopplerVelocityDesignationType0": {
-          "stateFrom": "pulseDopplerVelocitySearch",
-          "command": "designateTarget",
-          "stateTo": "checkPulseDopplerVelocityDesignationType0",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 0
-            }
-          }
-        },
-        "pulseDopplerVelocityDesignationLockResponce": {
-          "stateFrom": "checkPulseDopplerVelocityDesignationType0",
-          "event": "designationTypeEquals",
-          "stateTo": "pulseDopplerVelocityDesignationLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerVelocityDesignationLockMode": {}
-          }
-        },
-        "returnToPulseDopplerVelocitySearchMode": {
-          "stateFrom": "checkPulseDopplerVelocityDesignationType0",
-          "event": "designationTypeNotEquals",
-          "stateTo": "pulseDopplerVelocitySearch"
-        },
-        "pulseDopplerVelocityDesignationTrack": {
-          "stateFrom": "pulseDopplerVelocityDesignationLock",
-          "event": "targetDetected",
-          "stateTo": "pulseDopplerVelocityDesignationTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerVelocityTrackMode": {}
-          }
-        },
-        "failedPulseDopplerVelocityDesignationLock": {
-          "stateFrom": "pulseDopplerVelocityDesignationLock",
-          "event": "scanFinished",
-          "stateTo": "pulseDopplerVelocitySearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerVelocitySearchMode": {}
-          }
-        },
-        "finishedPulseDopplerVelocityDesignationTrack": {
-          "stateFrom": "pulseDopplerVelocityDesignationTrack",
+        "finishedDesignationTrack": {
+          "stateFrom": "designationTrack",
           "event": "targetsOfInterestCleanup",
           "command": "selectTarget",
-          "stateTo": "pulseDopplerVelocitySearch",
+          "stateTo": "search",
           "actions": {
+            "disableTrackModes": {},
             "resetTrackMode": {},
-            "setPulseDopplerVelocitySearchMode": {}
-          }
-        },
-        "pulseDopplerDesignationLock": {
-          "stateFrom": "pulseDopplerSearch",
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSearchMode"
             }
           }
         },
-        "checkPulseDopplerDesignationType0": {
-          "stateFrom": "pulseDopplerSearch",
-          "command": "designateTarget",
-          "stateTo": "checkPulseDopplerDesignationType0",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 0
-            }
-          }
-        },
-        "pulseDopplerDesignationLockResponce": {
-          "stateFrom": "checkPulseDopplerDesignationType0",
-          "event": "designationTypeEquals",
-          "stateTo": "pulseDopplerDesignationLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerDesignationLockMode": {}
-          }
-        },
-        "returnToPulseDopplerSearchMode": {
-          "stateFrom": "checkPulseDopplerDesignationType0",
-          "event": "designationTypeNotEquals",
-          "stateTo": "pulseDopplerSearch"
-        },
-        "pulseDopplerDesignationTrack": {
-          "stateFrom": "pulseDopplerDesignationLock",
-          "event": "targetDetected",
-          "stateTo": "pulseDopplerDesignationTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerTrackMode": {}
-          }
-        },
-        "failedPulseDopplerDesignationLock": {
-          "stateFrom": "pulseDopplerDesignationLock",
-          "event": "scanFinished",
-          "stateTo": "pulseDopplerSearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerSearchMode": {}
-          }
-        },
-        "finishedPulseDopplerDesignationTrack": {
-          "stateFrom": "pulseDopplerDesignationTrack",
-          "event": "targetsOfInterestCleanup",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerSearch",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerSearchMode": {}
-          }
-        },
-        "twsDesignationLock": {
-          "stateFrom": "twsSearch",
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
-            }
-          }
-        },
-        "checkTwsDesignationType0": {
-          "stateFrom": "twsSearch",
-          "command": "designateTarget",
-          "stateTo": "checkTwsDesignationType0",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 0
-            }
-          }
-        },
-        "twsDesignationLockResponce": {
-          "stateFrom": "checkTwsDesignationType0",
-          "event": "designationTypeEquals",
-          "stateTo": "twsDesignationLock",
-          "actions": {
-            "resetTwsMode": {},
-            "setTwsDesignationLockMode": {}
-          }
-        },
-        "returnToTwsSearchMode": {
-          "stateFrom": "checkTwsDesignationType0",
-          "event": "designationTypeNotEquals",
-          "stateTo": "twsSearch"
-        },
-        "twsDesignationTrack": {
-          "stateFrom": "twsDesignationLock",
-          "event": "targetDetected",
-          "stateTo": "twsDesignationTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTwsTrackMode": {}
-          }
-        },
-        "failedTwsDesignationLock": {
-          "stateFrom": "twsDesignationLock",
-          "event": "scanFinished",
-          "stateTo": "twsSearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTwsSearchMode": {}
-          }
-        },
-        "pulseBoresightLockFromPulseSearch": {
-          "stateFrom": "pulseSearch",
+        "searchToAcmLock": {
+          "stateFrom": "search",
           "command": "acmSwitch",
-          "stateTo": "pulseBoresightLock",
+          "stateTo": "acmLock",
           "actions": {
-            "resetSearchMode": {},
-            "setPulseBoresightLockMode": {}
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setAcmLockMode": {}
           }
         },
-        "pulseBoresightLockFromPulseStandby": {
-          "stateFrom": "pulseStandby",
+        "acmStandbyToLock": {
+          "stateFrom": "standby",
           "command": [
             "selectTarget",
             "acmSwitch"
           ],
-          "stateTo": "pulseBoresightLock",
+          "stateTo": "acmLock",
           "actions": {
-            "resetSearchMode": {},
-            "setPulseBoresightLockMode": {}
+            "resetStandbyMode": {},
+            "setAcmLockMode": {}
           }
         },
-        "pulseVerticalLockFromPulseStandby": {
-          "stateFrom": "pulseVerticalStandby",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "pulseVerticalLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseVerticalLockMode": {}
-          }
-        },
-        "pulseBoresightTrack": {
-          "stateFrom": "pulseBoresightLock",
+        "acmLockToAcmTrack": {
+          "stateFrom": "acmLock",
           "event": "targetDetected",
-          "stateTo": "pulseBoresightTrack",
+          "stateTo": "acmTrack",
           "actions": {
             "setFsmActive": {
               "fsm": "lock",
               "active": false
             },
-            "setPulseTrackMode": {}
+            "setTrackMode": {}
           }
         },
-        "pulseBoresightLockToPulseSearch": {
-          "stateFrom": "pulseBoresightLock",
+        "acmLockToStandby": {
+          "stateFrom": "acmLock",
           "command": "selectTarget",
-          "stateTo": "pulseStandby",
+          "stateTo": "standby",
           "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseStandbyMode": {}
-          }
-        },
-        "pulseBoresightLockToPulseVerticalLock": {
-          "stateFrom": "pulseBoresightLock",
-          "command": "acmSwitch",
-          "stateTo": "pulseVerticalLock",
-          "actions": {
-            "setPulseVerticalLockMode": {}
-          }
-        },
-        "brokenPulseBoresightTrack": {
-          "stateFrom": "pulseBoresightTrack",
-          "event": "targetsOfInterestCleanup",
-          "stateTo": "pulseBoresightLock",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseBoresightLockMode": {}
-          }
-        },
-        "pulseBoresightTrackToPulseStandby": {
-          "stateFrom": "pulseBoresightTrack",
-          "command": "selectTarget",
-          "stateTo": "pulseStandby",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseStandbyMode": {}
-          }
-        },
-        "pulseBoresightTrackToPulseVerticalTrack": {
-          "stateFrom": "pulseBoresightTrack",
-          "command": "acmSwitch",
-          "stateTo": "pulseVerticalTrack"
-        },
-        "pulseDopplerVelocityBoresightLockFromPulseDopplerVelocitySearch": {
-          "stateFrom": "pulseDopplerVelocitySearch",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerVelocityBoresightLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerVelocityBoresightLockMode": {}
-          }
-        },
-        "pulseDopplerVelocityBoresightLockFromPulseDopplerVelocityStandby": {
-          "stateFrom": "pulseDopplerVelocityStandby",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "pulseDopplerVelocityBoresightLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerVelocityBoresightLockMode": {}
-          }
-        },
-        "pulseDopplerVelocityVerticalLockFromPulseDopplerVelocityStandby": {
-          "stateFrom": "pulseDopplerVelocityVerticalStandby",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "pulseDopplerVelocityVerticalLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerVelocityVerticalLockMode": {}
-          }
-        },
-        "pulseDopplerVelocityBoresightLockToPulseDopplerVelocityVerticalLock": [
-          {
-            "stateFrom": "pulseDopplerVelocityBoresightLock",
-            "command": "acmSwitch",
-            "stateTo": "pulseDopplerVelocityVerticalLock",
-            "actions": {
-              "setPulseDopplerVelocityVerticalLockMode": {}
-            }
-          },
-          {
-            "stateFrom": "pulseDopplerVelocityBoresightLock",
-            "command": "acmSwitch",
-            "stateTo": "pulseDopplerVelocityVerticalLock",
-            "actions": {
-              "setPulseDopplerVelocityVerticalLockMode": {}
+            "disableTrackModes": {},
+            "resetLockMode": {},
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setStandbyMode"
             }
           }
-        ],
-        "pulseDopplerVelocityBoresightTrack": {
-          "stateFrom": "pulseDopplerVelocityBoresightLock",
-          "event": "targetDetected",
-          "stateTo": "pulseDopplerVelocityBoresightTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerVelocityTrackMode": {}
-          }
         },
-        "pulseDopplerVelocityBoresightLockToPulseDopplerVelocityStandby": {
-          "stateFrom": "pulseDopplerVelocityBoresightLock",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerVelocityStandby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerVelocityStandbyMode": {}
-          }
-        },
-        "brokenPulseDopplerVelocityBoresightTrack": {
-          "stateFrom": "pulseDopplerVelocityBoresightTrack",
-          "event": "targetsOfInterestCleanup",
-          "stateTo": "pulseDopplerVelocityBoresightLock",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerVelocityBoresightLockMode": {}
-          }
-        },
-        "pulseDopplerVelocityBoresightTrackToPulseDopplerVelocityStandby": {
-          "stateFrom": "pulseDopplerVelocityBoresightTrack",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerVelocityStandby",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerVelocityStandbyMode": {}
-          }
-        },
-        "pulseDopplerVelocityBoresightTrackToPulseDopplerVelocityVerticalTrack": {
-          "stateFrom": "pulseDopplerVelocityBoresightTrack",
+        "acmLockToSearch": {
+          "stateFrom": "acmLock",
           "command": "acmSwitch",
-          "stateTo": "pulseDopplerVelocityVerticalTrack"
-        },
-        "pulseDopplerBoresightLockFromPulseDopplerSearch": {
-          "stateFrom": "pulseDopplerSearch",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerBoresightLock",
+          "stateTo": "search",
           "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerBoresightLockMode": {}
-          }
-        },
-        "pulseDopplerBoresightLockFromPulseDopplerStandby": {
-          "stateFrom": "pulseDopplerStandby",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerBoresightLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerBoresightLockMode": {}
-          }
-        },
-        "pulseDopplerBoresightLockFromPulseDopplerVerticalStandby": {
-          "stateFrom": "pulseDopplerVerticalStandby",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerVerticalLock",
-          "actions": {
-            "resetSearchMode": {},
-            "setPulseDopplerVerticalLockMode": {}
-          }
-        },
-        "pulseDopplerBoresightLockToPulseDopplerVerticalLock": [
-          {
-            "stateFrom": "pulseDopplerBoresightLock",
-            "command": "acmSwitch",
-            "stateTo": "pulseDopplerVerticalLock",
-            "actions": {
-              "setPulseDopplerVerticalLockMode": {}
-            }
-          },
-          {
-            "stateFrom": "pulseDopplerBoresightLock",
-            "command": "acmSwitch",
-            "stateTo": "pulseDopplerVerticalLock",
-            "actions": {
-              "setPulseDopplerVerticalLockMode": {}
+            "disableTrackModes": {},
+            "resetLockMode": {},
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSearchMode"
             }
           }
-        ],
-        "pulseDopplerBoresightTrack": {
-          "stateFrom": "pulseDopplerBoresightLock",
-          "event": "targetDetected",
-          "stateTo": "pulseDopplerBoresightTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerTrackMode": {}
-          }
         },
-        "pulseDopplerBoresightLockToPulseDopplerStandby": {
-          "stateFrom": "pulseDopplerBoresightLock",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerStandby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerStandbyMode": {}
-          }
-        },
-        "brokenPulseDopplerBoresightTrack": {
-          "stateFrom": "pulseDopplerBoresightTrack",
+        "acmTrackToAcmLock": {
+          "stateFrom": "acmTrack",
           "event": "targetsOfInterestCleanup",
-          "stateTo": "pulseDopplerBoresightLock",
+          "stateTo": "acmLock",
           "actions": {
             "resetTrackMode": {},
-            "setPulseDopplerBoresightLockMode": {}
+            "setAcmLockMode": {}
           }
         },
-        "pulseDopplerBoresightTrackToPulseDopplerStandby": {
-          "stateFrom": "pulseDopplerBoresightTrack",
+        "acmTrackToStandby": {
+          "stateFrom": "acmTrack",
           "command": "selectTarget",
-          "stateTo": "pulseDopplerStandby",
+          "stateTo": "standby",
           "actions": {
+            "disableTrackModes": {},
             "resetTrackMode": {},
-            "setPulseDopplerStandbyMode": {}
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setStandbyMode"
+            }
           }
         },
-        "pulseDopplerBoresightTrackToPulseDopplerVerticalTrack": {
-          "stateFrom": "pulseDopplerBoresightTrack",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerVerticalTrack"
-        },
-        "twsBoresightLockFromPulseSearch": {
-          "stateFrom": "twsSearch",
-          "command": "acmSwitch",
-          "stateTo": "twsBoresightLock",
+        "updateStandbyMode": {
+          "stateFrom": "standby",
+          "event": "fsmActivate",
           "actions": {
-            "resetTwsMode": {},
-            "setTwsBoresightLockMode": {}
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setStandbyMode"
+            }
           }
         },
-        "twsBoresightLockFromTwsStandby": {
-          "stateFrom": "twsStandby",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "twsBoresightLock",
+        "updateSearchMode": {
+          "stateFrom": "search",
+          "event": "fsmActivate",
           "actions": {
-            "resetTwsMode": {},
-            "setTwsBoresightLockMode": {}
-          }
-        },
-        "twsBoresightLockFromTwsVerticalStandby": {
-          "stateFrom": "twsVerticalStandby",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "twsVerticalLock",
-          "actions": {
-            "resetTwsMode": {},
-            "setTwsVerticalLockMode": {}
-          }
-        },
-        "twsBoresightTrack": {
-          "stateFrom": "twsBoresightLock",
-          "event": "targetDetected",
-          "stateTo": "twsBoresightTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTwsTrackMode": {}
-          }
-        },
-        "twsBoresightLockToTwsSearch": {
-          "stateFrom": "twsBoresightLock",
-          "command": "selectTarget",
-          "stateTo": "twsStandby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTwsStandbyMode": {}
-          }
-        },
-        "twsBoresightLockToTwsVerticalLock": {
-          "stateFrom": "twsBoresightLock",
-          "command": "acmSwitch",
-          "stateTo": "twsVerticalLock",
-          "actions": {
-            "setTwsVerticalLockMode": {}
-          }
-        },
-        "brokenTwsBoresightTrack": {
-          "stateFrom": "twsBoresightTrack",
-          "event": "targetsOfInterestCleanup",
-          "stateTo": "twsBoresightLock",
-          "actions": {
-            "resetTrackMode": {},
-            "setTwsBoresightLockMode": {}
-          }
-        },
-        "twsBoresightTrackToTwsStandby": {
-          "stateFrom": "twsBoresightTrack",
-          "command": "selectTarget",
-          "stateTo": "twsStandby",
-          "actions": {
-            "resetTrackMode": {},
-            "setTwsStandbyMode": {}
-          }
-        },
-        "twsBoresightTrackToTwsVerticalTrack": {
-          "stateFrom": "twsBoresightTrack",
-          "command": "acmSwitch",
-          "stateTo": "twsVerticalTrack"
-        },
-        "pulseVerticalTrack": {
-          "stateFrom": "pulseVerticalLock",
-          "event": "targetDetected",
-          "stateTo": "pulseVerticalTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseTrackMode": {}
-          }
-        },
-        "pulseVerticalLockToPulseStandby": {
-          "stateFrom": "pulseVerticalLock",
-          "command": "selectTarget",
-          "stateTo": "pulseVerticalStandby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseStandbyMode": {}
-          }
-        },
-        "pulseVerticalLockToPulseSearch": {
-          "stateFrom": "pulseVerticalLock",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "pulseSearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseSearchMode": {}
-          }
-        },
-        "brokenPulseVerticalTrack": {
-          "stateFrom": "pulseVerticalTrack",
-          "event": "targetsOfInterestCleanup",
-          "stateTo": "pulseVerticalLock",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseVerticalLockMode": {}
-          }
-        },
-        "pulseVerticalTrackToPulseStandby": {
-          "stateFrom": "pulseVerticalTrack",
-          "command": "selectTarget",
-          "stateTo": "pulseStandby",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseStandbyMode": {}
-          }
-        },
-        "pulseVerticalTrackToPulseSearch": {
-          "stateFrom": "pulseVerticalTrack",
-          "command": "acmSwitch",
-          "stateTo": "pulseSearch",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseSearchMode": {}
-          }
-        },
-        "pulseDopplerVelocityVerticalTrack": {
-          "stateFrom": "pulseDopplerVelocityVerticalLock",
-          "event": "targetDetected",
-          "stateTo": "pulseDopplerVelocityVerticalTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerVelocityTrackMode": {}
-          }
-        },
-        "pulseDopplerVelocityVerticalLockToPulseDopplerVelocityStandby": {
-          "stateFrom": "pulseDopplerVelocityVerticalLock",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerVelocityVerticalStandby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerVelocityStandbyMode": {}
-          }
-        },
-        "pulseDopplerVelocityVerticalLockToPulseDopplerVelocitySearch": {
-          "stateFrom": "pulseDopplerVelocityVerticalLock",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerVelocitySearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerVelocitySearchMode": {}
-          }
-        },
-        "brokenPulseDopplerVelocityVerticalTrack": {
-          "stateFrom": "pulseDopplerVelocityVerticalTrack",
-          "event": "targetsOfInterestCleanup",
-          "stateTo": "pulseDopplerVelocityVerticalLock",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerVelocityVerticalLockMode": {}
-          }
-        },
-        "pulseDopplerVelocityVerticalTrackToPulseDopplerVelocityStandby": {
-          "stateFrom": "pulseDopplerVelocityVerticalTrack",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerVelocityStandby",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerVelocityStandbyMode": {}
-          }
-        },
-        "pulseDopplerVelocityVerticalTrackToPulseDopplerVelocitySearch": {
-          "stateFrom": "pulseDopplerVelocityVerticalTrack",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerVelocitySearch",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerVelocitySearchMode": {}
-          }
-        },
-        "pulseDopplerVerticalTrack": {
-          "stateFrom": "pulseDopplerVerticalLock",
-          "event": "targetDetected",
-          "stateTo": "pulseDopplerVerticalTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerTrackMode": {}
-          }
-        },
-        "pulseDopplerVerticalLockToPulseDopplerStandby": {
-          "stateFrom": "pulseDopplerVerticalLock",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerVerticalStandby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerStandbyMode": {}
-          }
-        },
-        "pulseDopplerVerticalLockToPulseDopplerSearch": {
-          "stateFrom": "pulseDopplerVerticalLock",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerSearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerSearchMode": {}
-          }
-        },
-        "brokenPulseDopplerVerticalTrack": {
-          "stateFrom": "pulseDopplerVerticalTrack",
-          "event": "targetsOfInterestCleanup",
-          "stateTo": "pulseDopplerVerticalLock",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerVerticalLockMode": {}
-          }
-        },
-        "pulseDopplerVerticalTrackToPulseDopplerStandby": {
-          "stateFrom": "pulseDopplerVerticalTrack",
-          "command": "selectTarget",
-          "stateTo": "pulseDopplerStandby",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerStandbyMode": {}
-          }
-        },
-        "pulseDopplerVerticalTrackToPulseDopplerSearch": {
-          "stateFrom": "pulseDopplerVerticalTrack",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerSearch",
-          "actions": {
-            "resetTrackMode": {},
-            "setPulseDopplerSearchMode": {}
-          }
-        },
-        "twsVerticalTrack": {
-          "stateFrom": "twsVerticalLock",
-          "event": "targetDetected",
-          "stateTo": "twsVerticalTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTwsTrackMode": {}
-          }
-        },
-        "twsVerticalLockToTwsStandby": {
-          "stateFrom": "twsVerticalLock",
-          "command": "selectTarget",
-          "stateTo": "twsVerticalStandby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTwsStandbyMode": {}
-          }
-        },
-        "twsVerticalLockToTwsSearch": {
-          "stateFrom": "twsVerticalLock",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "twsSearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTwsSearchMode": {}
-          }
-        },
-        "brokenTwsVerticalTrack": {
-          "stateFrom": "twsVerticalTrack",
-          "event": "targetsOfInterestCleanup",
-          "stateTo": "twsVerticalLock",
-          "actions": {
-            "resetTrackMode": {},
-            "setTwsVerticalLockMode": {}
-          }
-        },
-        "twsVerticalTrackToTwsStandby": {
-          "stateFrom": "twsVerticalTrack",
-          "command": "selectTarget",
-          "stateTo": "twsStandby",
-          "actions": {
-            "resetTrackMode": {},
-            "setTwsStandbyMode": {}
-          }
-        },
-        "twsVerticalTrackToTwsSearch": {
-          "stateFrom": "twsVerticalTrack",
-          "command": "acmSwitch",
-          "stateTo": "twsSearch",
-          "actions": {
-            "resetTrackMode": {},
-            "setTwsSearchMode": {}
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "switchScanPattern": {
           "stateFrom": [
-            "pulseStandby",
-            "pulseDopplerStandby",
-            "pulseDopplerVelocityStandby",
-            "twsStandby",
-            "pulseVerticalStandby",
-            "pulseDopplerVerticalStandby",
-            "pulseDopplerVelocityVerticalStandby",
-            "twsVerticalStandby",
-            "pulseSearch",
-            "pulseDopplerSearch",
-            "pulseDopplerVelocitySearch",
-            "twsSearch",
-            "pulseVerticalLock",
-            "pulseDopplerVerticalLock",
-            "pulseDopplerVelocityVerticalLock",
-            "twsVerticalLock"
+            "standby",
+            "search",
+            "acmLock"
           ],
           "command": "scanPatternSwitch",
           "actions": {
@@ -2147,13 +1148,328 @@
         }
       }
     },
+    "searchModes": {
+      "stateInit": "init",
+      "transitions": {
+        "initToPulseDoppler": {
+          "stateFrom": "init",
+          "event": "fsmActivate",
+          "stateTo": "pulseDoppler",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setPulseDopplerStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setPulseDopplerSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode",
+                "actionTemplateName": "setPulseDopplerDesignationLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "setPrimaryTrackParams",
+                "actionTemplateName": "setPulseDopplerTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryTrackParams",
+                "actionTemplateName": "setPulseTrackParams"
+              }
+            ]
+          }
+        },
+        "pulseDopplerToTws": {
+          "stateFrom": "pulseDoppler",
+          "command": "modeSwitch",
+          "stateTo": "tws",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setTwsStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode",
+                "actionTemplateName": "setTwsDesignationLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetTws"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetTwsMode"
+              }
+            ],
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "twsToPulseDopplerVelocity": {
+          "stateFrom": "tws",
+          "command": "modeSwitch",
+          "stateTo": "pulseDopplerVelocity",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setPulseDopplerVelocityStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setPulseDopplerVelocitySearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode",
+                "actionTemplateName": "setPulseDopplerVelocityDesignationLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "pulseDopplerVelocityToPulse": {
+          "stateFrom": "pulseDopplerVelocity",
+          "command": "modeSwitch",
+          "stateTo": "pulse",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setPulseStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setPulseSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode",
+                "actionTemplateName": "setPulseDesignationLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "setPrimaryTrackParams",
+                "actionTemplateName": "setPulseTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryTrackParams",
+                "actionTemplateName": "setPulseDopplerTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "pulseToPulseDoppler": {
+          "stateFrom": "pulse",
+          "command": "modeSwitch",
+          "stateTo": "pulseDoppler",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setPulseDopplerStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setPulseDopplerSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setDesignationLockMode",
+                "actionTemplateName": "setPulseDopplerDesignationLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setPrimaryTrackParams",
+                "actionTemplateName": "setPulseDopplerTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryTrackParams",
+                "actionTemplateName": "setPulseTrackParams"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    "trackModes": {
+      "stateInit": "init",
+      "transitions": {
+        "enter": {
+          "event": "fsmActivate",
+          "stateTo": "primary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryTrackParams"
+            }
+          }
+        },
+        "updatePrimary": {
+          "stateFrom": "primary",
+          "event": "update",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryTrackParams"
+            }
+          }
+        },
+        "updateSecondary": {
+          "stateFrom": "secondary",
+          "event": "update",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSecondaryTrackParams"
+            }
+          }
+        },
+        "primaryToSecondary": {
+          "stateFrom": "primary",
+          "command": "modeSwitch",
+          "stateTo": "secondary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSecondaryTrackParams"
+            }
+          }
+        },
+        "pulseDopplerToPulse": {
+          "stateFrom": "secondary",
+          "command": "modeSwitch",
+          "stateTo": "primary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryTrackParams"
+            }
+          }
+        }
+      }
+    },
     "search": {
       "stateInit": "search",
       "transitions": {
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -2196,6 +1512,12 @@
             "setCueDopplerSpeed": {}
           }
         },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
@@ -2214,7 +1536,32 @@
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 8.0
-            }
+            },
+            "setCueToActiveTargetOfInterest": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              },
+              {
+                "source": "activeTargetOfInterest"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              },
+              {
+                "source": "activeTargetOfInterest"
+              }
+            ]
           }
         },
         "detect": {
@@ -2240,7 +1587,8 @@
               "radius": 1000.0,
               "blend": 0.5
             },
-            "updateActiveDetectedTarget": {}
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
           }
         },
         "switchSelectedTarget": {
@@ -2260,6 +1608,12 @@
           "actions": {
             "setCueDist": {},
             "setCueDopplerSpeed": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

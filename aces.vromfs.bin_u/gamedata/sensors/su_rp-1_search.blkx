@@ -35,15 +35,16 @@
         60.0
       ],
       "elevationLimits": [
-        0.0,
-        5.0
+        -16.0,
+        26.0
       ],
       "rollStabLimit": 50.0,
       "period": 1.33,
       "width": 60.0,
       "barHeight": 30.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 5.0
     }
   },
   "signals": {
@@ -75,10 +76,6 @@
           },
           "setScanPattern": {
             "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 5.0
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
@@ -198,6 +195,12 @@
           "event": "targetDetected",
           "actions": {
             "addTarget": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         }
       }

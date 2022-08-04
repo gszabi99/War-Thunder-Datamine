@@ -40,6 +40,7 @@
         60.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 60.0,
       "period": 0.5,
       "width": 15.0,
       "barHeight": 2.5,
@@ -57,6 +58,7 @@
         60.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 60.0,
       "period": 3.0,
       "width": 60.0,
       "barHeight": 2.6,
@@ -74,6 +76,7 @@
         60.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 60.0,
       "period": 1.0,
       "width": 60.0,
       "barHeight": 3.0,
@@ -105,6 +108,7 @@
         60.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 60.0,
       "period": 0.5,
       "width": 8.0,
       "barHeight": 2.5,
@@ -263,6 +267,10 @@
               60.0
             ],
             "azmithWidth": 2.5,
+            "elevationRange": [
+              -60.0,
+              60.0
+            ],
             "distanceRange": [
               0.0,
               92500.0
@@ -1058,7 +1066,16 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -1099,6 +1116,12 @@
           "actions": {
             "setCueDist": {},
             "setCueDopplerSpeed": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

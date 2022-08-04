@@ -41,23 +41,6 @@
     }
   },
   "scanPatterns": {
-    "search1Bar": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -45.0,
-        45.0
-      ],
-      "elevationLimits": [
-        -43.0,
-        43.0
-      ],
-      "rollStabLimit": 60.0,
-      "period": 1.0,
-      "width": 45.0,
-      "barHeight": 5.0,
-      "barsCount": 1,
-      "rowMajor": true
-    },
     "search2Bars": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -65,10 +48,11 @@
         45.0
       ],
       "elevationLimits": [
-        -43.0,
-        43.0
+        -38.0,
+        20.0
       ],
-      "rollStabLimit": 60.0,
+      "rollStabLimit": 15.0,
+      "pitchStabLimit": 38.0,
       "period": 2.0,
       "width": 45.0,
       "barHeight": 5.0,
@@ -82,8 +66,8 @@
         45.0
       ],
       "elevationLimits": [
-        -43.0,
-        43.0
+        -38.0,
+        20.0
       ],
       "period": 0.5,
       "width": 5.0,
@@ -99,10 +83,11 @@
         45.0
       ],
       "elevationLimits": [
-        -43.0,
-        43.0
+        -38.0,
+        20.0
       ],
-      "rollStabLimit": 60.0,
+      "rollStabLimit": 15.0,
+      "pitchStabLimit": 38.0,
       "period": 0.5,
       "width": 5.0,
       "barHeight": 3.3,
@@ -117,8 +102,8 @@
         45.0
       ],
       "elevationLimits": [
-        -45.0,
-        45.0
+        -38.0,
+        20.0
       ]
     }
   },
@@ -154,8 +139,7 @@
   },
   "scanPatternSets": {
     "common": {
-      "scanPattern1": "search1Bar",
-      "scanPattern2": "search2Bars"
+      "scanPattern1": "search2Bars"
     },
     "boresightLock": {
       "scanPattern1": "boresightLock"
@@ -163,9 +147,9 @@
   },
   "scopeRangeSets": {
     "common": {
-      "range1": 18500.0,
-      "range2": 37000.0,
-      "range3": 74000.0
+      "range1": 37000.0,
+      "range2": 74000.0,
+      "range3": 148000.0
     }
   },
   "fsms": {
@@ -190,6 +174,10 @@
             "azimuthRange": [
               -45.0,
               45.0
+            ],
+            "elevationRange": [
+              -38.0,
+              20.0
             ],
             "azimuthWidth": 10.0,
             "distanceRange": [
@@ -654,7 +642,16 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -694,6 +691,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

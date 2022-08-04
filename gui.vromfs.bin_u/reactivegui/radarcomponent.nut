@@ -353,7 +353,6 @@ let iffDistRelMult = 0.5
 
 let createTargetOnRadarSquare = @(index, radius, size, color) function() {
 
-
   let res = { watch = [HasAzimuthScale, HasDistanceScale, IsRadar2Visible, AzimuthHalfWidth2, AzimuthHalfWidth, DistanceGateWidthRel] }
   let target = targets[index]
 
@@ -362,13 +361,21 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
 
   let opacity = (1.0 - target.ageRel) * target.signalRel
 
-  let angleRel = HasAzimuthScale.value ? target.azimuthRel : 0.5
-  let angularWidthRel = HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
+  local angleRel = 0.5
+  local angularWidthRel = 1.0
+  if (HasAzimuthScale.value) {
+    angleRel = target.azimuthRel
+    angularWidthRel = target.azimuthWidthRel
+  }
   let angleLeft = angleRel - 0.5 * angularWidthRel
   let angleRight = angleRel + 0.5 * angularWidthRel
 
-  let distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
-  let radialWidthRel = target.distanceWidthRel
+  local distanceRel = 0.9
+  local radialWidthRel = 0.05
+  if (HasDistanceScale.value) {
+    distanceRel = target.distanceRel
+    radialWidthRel = target.distanceWidthRel
+  }
 
   local selectionFrame = null
 
@@ -411,8 +418,7 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
     )
   }
 
-  selectionFrame = target.isSelected
-    ? {
+  selectionFrame = target.isSelected ? {
       rendObj = ROBJ_VECTOR_CANVAS
       size
       lineWidth = hdpx(3)
@@ -421,8 +427,7 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
       pos = [radius, radius]
       commands = frameCommands
       animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1, duration = 0.5, play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger}]
-    }
-    : {
+    } : {
       rendObj = ROBJ_VECTOR_CANVAS
       size
       lineWidth = hdpx(3)
@@ -435,12 +440,22 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
   return res.__update({
     rendObj = ROBJ_VECTOR_CANVAS
     size
-    lineWidth = target.isSelected ? hdpx(2) : 100 * radialWidthRel
     fillColor = color
     color = isColorOrWhite(color)
     opacity = opacity
-    commands = target.isSelected ?
-      [
+    transform = {
+      pivot = [0.5, 0.5]
+      translate = [
+        -radius,
+        -radius
+      ]
+    }
+    children = selectionFrame
+  }).__update(
+    target.isSelected && HasAzimuthScale.value ?
+    {
+      lineWidth = hdpx(2)
+      commands = [
         [ VECTOR_ELLIPSE,
           100 * angleRel,
           100 * (1 - distanceRel),
@@ -451,23 +466,19 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
           100 * (1 - distanceRel),
           100 * (angleRel - target.losHorSpeed * 0.0002),
           100 * (1 - (distanceRel + target.losSpeed * 0.0002)) ]
-      ] :
-      [
+      ]
+    } :
+    {
+      lineWidth = 100 * radialWidthRel
+      commands = [
         [ VECTOR_LINE,
           100 * angleLeft,
           100 * (1 - distanceRel),
           100 * angleRight,
           100 * (1 - distanceRel) ]
       ]
-    transform = {
-      pivot = [0.5, 0.5]
-      translate = [
-        -radius,
-        -radius
-      ]
     }
-    children = selectionFrame
-  })
+  )
 }
 
 
@@ -679,7 +690,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         pos = [-size[0], (-ElevationMax.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
         text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
-      isCollapsed ? null
+      isCollapsed || !HasAzimuthScale.value ? null
       : @() styleText.__merge({
         watch = [AzimuthMin]
         rendObj = ROBJ_TEXT
@@ -689,7 +700,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         pos = [hdpx(4), hdpx(4)]
         text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
-      isCollapsed ? null
+      isCollapsed || !HasAzimuthScale.value ? null
       : @() styleText.__merge({
         halign = ALIGN_RIGHT
         watch = [AzimuthMax]
@@ -700,6 +711,18 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxColor = Color(0, 0, 0, 120)
         pos = [-hdpx(4), hdpx(4)]
         text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
+      }),
+      isCollapsed || HasAzimuthScale.value ? null
+      : @() styleText.__merge({
+        halign = ALIGN_RIGHT
+        watch = [AzimuthMax]
+        size = [size[0], SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXT
+        color = isColorOrWhite(color)
+        fontFxFactor = fontOutlineFxFactor
+        fontFxColor = Color(0, 0, 0, 120)
+        pos = [-hdpx(4), hdpx(4)]
+        text = "".concat(floor((AzimuthMax.value - AzimuthMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       isCollapsed ? null
       : makeRadarModeText({
@@ -1053,15 +1076,21 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
   if (target == null)
     return res
 
-  let angle = HasAzimuthScale.value ? AzimuthMin.value + AzimuthRange.value * target.azimuthRel - PI * 0.5 : -PI * 0.5
-  let angularWidth = AzimuthRange.value * target.azimuthWidthRel
+  local angle = -PI * 0.5
+  local angularWidth = AzimuthRange.value
+  if (HasAzimuthScale.value) {
+    angle = AzimuthMin.value + AzimuthRange.value * target.azimuthRel - PI * 0.5
+    angularWidth = AzimuthRange.value * target.azimuthWidthRel
+  }
   let angleLeftDeg = (angle - 0.5 * angularWidth) * 180.0 / PI
   let angleRightDeg = (angle + 0.5 * angularWidth) * 180.0 / PI
 
-  let distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
-  let radialWidthRel = HasAzimuthScale.value ? target.distanceWidthRel : 1.0
-
-  local selectionFrame = null
+  local distanceRel = 0.9
+  local radialWidthRel = 0.05
+  if (HasDistanceScale.value) {
+    distanceRel = target.distanceRel
+    radialWidthRel = target.distanceWidthRel
+  }
 
   let azimuthHalfWidth = IsRadar2Visible.value ? AzimuthHalfWidth2.value : AzimuthHalfWidth.value
   let angularGateWidthMult = calcAngularGateWidthPolar(distanceRel, azimuthHalfWidth)
@@ -1103,7 +1132,7 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
     )
   }
 
-  selectionFrame = target.isSelected
+  let selectionFrame = target.isSelected
     ? {
       rendObj = ROBJ_VECTOR_CANVAS
       size
@@ -1113,8 +1142,7 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
       pos = [radius, radius]
       commands = frameCommands
       animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger}]
-    }
-    : {
+    } : {
       rendObj = ROBJ_VECTOR_CANVAS
       size
       lineWidth = hdpx(3)
@@ -1127,12 +1155,23 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
   return res.__update({
     rendObj = ROBJ_VECTOR_CANVAS
     size
-    lineWidth = target.isSelected ? hdpx(2) : 100 * radialWidthRel
+    lineWidth = hdpx(2)
     color = isColorOrWhite(color)
     fillColor = 0
     opacity = (1.0 - targets[index].ageRel)
-    commands = target.isSelected ?
-      [
+    transform = {
+      pivot = [0.5, 0.5]
+      translate = [
+        -radius,
+        -radius
+      ]
+    }
+    children = selectionFrame
+  }).__update(
+    target.isSelected && HasAzimuthScale.value ?
+    {
+      lineWidth = hdpx(2)
+      commands = [
         [ VECTOR_ELLIPSE,
           50 + 50 * cosa * distanceRel,
           50 + 50 * sina * distanceRel,
@@ -1143,23 +1182,19 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
           50 + 50 * sina * distanceRel,
           50 + 50 * (cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002),
           50 + 50 * (sina * distanceRel + (sina * target.losSpeed + cosa * target.losHorSpeed) * 0.0002)]
-      ] :
-      [
+      ]
+    } :
+    {
+      lineWidth = 100 * radialWidthRel
+      commands = [
         [ VECTOR_SECTOR,
           50, 50,
           50 * distanceRel,
           50 * distanceRel,
           angleLeftDeg, angleRightDeg ]
       ]
-    transform = {
-      pivot = [0.5, 0.5]
-      translate = [
-        -radius,
-        -radius
-      ]
     }
-    children = selectionFrame
-  })
+  )
 }
 
 let B_ScopeCircleMarkers = @(size, color) function() {

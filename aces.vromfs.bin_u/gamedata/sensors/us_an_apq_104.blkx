@@ -29,6 +29,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 0.7,
       "width": 20.0,
       "barHeight": 3.0,
@@ -46,6 +47,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 3.0,
       "width": 45.0,
       "barHeight": 3.0,
@@ -63,6 +65,7 @@
         45.0
       ],
       "rollStabLimit": 50.0,
+      "pitchStabLimit": 45.0,
       "period": 0.3,
       "width": 5.0,
       "barHeight": 3.0,
@@ -108,6 +111,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 16.0,
+      "track": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
@@ -259,9 +263,6 @@
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
-          "setCenterElevation": {
-            "source": "targetDesignation"
-          },
           "setModeName": {
             "name": "acquisition"
           }
@@ -315,6 +316,10 @@
             "setTargetDesignationRange": {
               "azimuthRange": [
                 -45.0,
+                45.0
+              ],
+              "elevationRange": [
+                -30.0,
                 45.0
               ],
               "distanceRange": [
@@ -444,7 +449,16 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -484,6 +498,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

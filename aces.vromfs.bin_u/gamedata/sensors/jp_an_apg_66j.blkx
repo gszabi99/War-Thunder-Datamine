@@ -25,10 +25,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 0.35,
       "width": 10.0,
       "barHeight": 2.5,
@@ -42,10 +43,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 2.0,
       "width": 30.0,
       "barHeight": 2.5,
@@ -59,10 +61,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 2.0,
       "width": 60.0,
       "barHeight": 2.5,
@@ -90,10 +93,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 0.5,
       "width": 10.0,
       "barHeight": 2.5,
@@ -236,6 +240,10 @@
             "azimuthRange": [
               -60.0,
               60.0
+            ],
+            "elevationRange": [
+              -30.0,
+              30.0
             ],
             "distanceRange": [
               0.0,
@@ -972,7 +980,25 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -1013,6 +1039,12 @@
           "actions": {
             "setCueDist": {},
             "setCueDopplerSpeed": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

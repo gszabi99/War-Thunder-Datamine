@@ -257,15 +257,9 @@
               "value": 0.0
             }
           ],
-          "setCenterElevation": [
-            {
-              "source": "targetDesignation"
-            },
-            {
-              "source": "constant",
-              "value": 0.0
-            }
-          ],
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 1000.0
@@ -502,6 +496,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

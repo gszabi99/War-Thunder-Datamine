@@ -29,6 +29,7 @@
         45.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 45.0,
       "period": 1.0,
       "width": 45.0,
       "barHeight": 5.5,
@@ -60,6 +61,7 @@
         45.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 45.0,
       "period": 0.5,
       "width": 4.0,
       "barHeight": 5.0,
@@ -149,6 +151,10 @@
           "setTargetDesignationRange": {
             "azimuthRange": [
               -45.0,
+              45.0
+            ],
+            "elevationRange": [
+              -40.0,
               45.0
             ],
             "distanceRange": [
@@ -552,7 +558,25 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -592,6 +616,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

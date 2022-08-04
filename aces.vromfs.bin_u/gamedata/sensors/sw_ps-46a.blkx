@@ -25,10 +25,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 0.5,
       "width": 15.0,
       "barHeight": 2.5,
@@ -42,10 +43,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 3.0,
       "width": 60.0,
       "barHeight": 2.6,
@@ -59,10 +61,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 1.0,
       "width": 60.0,
       "barHeight": 3.0,
@@ -76,10 +79,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 1.0,
       "width": 20.0,
       "barHeight": 2.5,
@@ -108,10 +112,11 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
       "period": 0.5,
       "width": 8.0,
       "barHeight": 2.5,
@@ -257,6 +262,10 @@
             "azimuthRange": [
               -60.0,
               60.0
+            ],
+            "elevationRange": [
+              -30.0,
+              30.0
             ],
             "distanceRange": [
               0.0,
@@ -1279,7 +1288,25 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -1320,6 +1347,12 @@
           "actions": {
             "setCueDist": {},
             "setCueDopplerSpeed": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {
@@ -1411,7 +1444,32 @@
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 6.0
-            }
+            },
+            "setCueToActiveTargetOfInterest": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              },
+              {
+                "source": "activeTargetOfInterest"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              },
+              {
+                "source": "activeTargetOfInterest"
+              }
+            ]
           }
         },
         "detect": {
@@ -1437,7 +1495,8 @@
               "radius": 1000.0,
               "blend": 0.5
             },
-            "updateActiveDetectedTarget": {}
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
           }
         },
         "switchSelectedTarget": {
@@ -1456,6 +1515,12 @@
           "command": "cueAxisY",
           "actions": {
             "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "setSelectedTarget": {

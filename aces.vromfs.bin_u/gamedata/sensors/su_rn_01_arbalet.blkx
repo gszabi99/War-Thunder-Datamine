@@ -56,7 +56,8 @@
       "width": 60.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "searchNarrowATM": {
       "type": "pyramide",
@@ -74,7 +75,8 @@
       "width": 30.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "searchWideGTM": {
       "type": "pyramide",
@@ -187,6 +189,7 @@
               -60.0,
               60.0
             ],
+            "azimuthRelWidthMin": 0.02,
             "elevationRange": [
               -20.0,
               20.0
@@ -237,7 +240,8 @@
             }
           ],
           "setCueEnabled": {
-            "value": true
+            "value": true,
+            "updateActiveTargetUnderCue": true
           }
         },
         "resetSearchMode": {
@@ -303,10 +307,25 @@
         "scan": {
           "event": "update",
           "actions": {
-            "setCenterAzimuth": {
-              "source": "body"
-            },
-            "scan": {}
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -348,6 +367,12 @@
             "setCueDist": {}
           }
         },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
@@ -357,15 +382,17 @@
         "designateTarget": {
           "command": "selectTarget",
           "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1,
-              "selectTarget": true
-            }
+            "designateActiveDetectedTarget": [
+              {
+                "type": 0,
+                "sensorIndex": 1
+              },
+              {
+                "type": 0,
+                "self": true,
+                "sensorIndex": 0
+              }
+            ]
           }
         }
       }
