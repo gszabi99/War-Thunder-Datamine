@@ -617,10 +617,6 @@ let B_ScopeSquareMarkers = @(size, color) function() {
   let res = { watch = [ HasAzimuthScale, ScanAzimuthMax, ScanAzimuthMin, HasDistanceScale,
                         IsRadarVisible, IsRadar2Visible] }
 
-  let isCollapsed = !IsRadarVisible.value && !IsRadar2Visible.value
-  if (isCollapsed)
-    return res
-
   return res.__update({
     size = [offsetScaleFactor * size[0], offsetScaleFactor * size[1]]
     children = [
@@ -654,7 +650,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
                 : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
                 (DistanceScalesMax.value > 1 ? "*" : " "))
       }),
-      !HasDistanceScale.value || isCollapsed ? null
+      !HasDistanceScale.value ? null
       : @() styleText.__merge({
         watch = [VelocitySearch, DistanceMin ]
         rendObj = ROBJ_TEXT
@@ -690,7 +686,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         pos = [-size[0], (-ElevationMax.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
         text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
-      isCollapsed || !HasAzimuthScale.value ? null
+      !HasAzimuthScale.value ? null
       : @() styleText.__merge({
         watch = [AzimuthMin]
         rendObj = ROBJ_TEXT
@@ -700,7 +696,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         pos = [hdpx(4), hdpx(4)]
         text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
-      isCollapsed || !HasAzimuthScale.value ? null
+      !HasAzimuthScale.value ? null
       : @() styleText.__merge({
         halign = ALIGN_RIGHT
         watch = [AzimuthMax]
@@ -712,7 +708,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         pos = [-hdpx(4), hdpx(4)]
         text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
-      isCollapsed || HasAzimuthScale.value ? null
+      HasAzimuthScale.value ? null
       : @() styleText.__merge({
         halign = ALIGN_RIGHT
         watch = [AzimuthMax]
@@ -724,12 +720,10 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         pos = [-hdpx(4), hdpx(4)]
         text = "".concat(floor((AzimuthMax.value - AzimuthMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
-      isCollapsed ? null
-      : makeRadarModeText({
+      makeRadarModeText({
           pos = [size[0] * 0.5, -hdpx(20)]
         }, color),
-      isCollapsed ? null
-      : makeRadar2ModeText({
+      makeRadar2ModeText({
           pos = [size[0] * 0.5, -hdpx(50)]
         }, color),
       noiseSignal(
@@ -1201,11 +1195,6 @@ let B_ScopeCircleMarkers = @(size, color) function() {
 
   let res = { watch = [IsRadarVisible, IsRadar2Visible, HasDistanceScale,
                          HasAzimuthScale, ScanAzimuthMax, ScanAzimuthMin, ScanElevationMax, ScanElevationMin, ScanPatternsMax] }
-  let isCollapsed = !IsRadarVisible.value && !IsRadar2Visible.value
-
-  if (isCollapsed)
-    return res
-
   return res.__update({
     size = [offsetScaleFactor * size[0], offsetScaleFactor * size[1]]
     children = [
@@ -1243,8 +1232,7 @@ let B_ScopeCircleMarkers = @(size, color) function() {
                       ? "*"
                       : " "))
       }),
-      isCollapsed ? null
-        : styleText.__merge({
+      styleText.__merge({
           rendObj = ROBJ_TEXT
           pos = [size[0] * 0.5 - hdpx(4), -hdpx(18)]
           fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
@@ -1273,12 +1261,10 @@ let B_ScopeCircleMarkers = @(size, color) function() {
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         text = "".concat("270", ::loc("measureUnits/deg"))
       }),
-      isCollapsed ? @() { watch = [IsRadarVisible, IsRadar2Visible] }
-      : makeRadarModeText({
+      makeRadarModeText({
           pos = [size[0] * (0.5 - 0.15), -hdpx(20)]
         }, color),
-      isCollapsed ? @() { watch = [IsRadarVisible, IsRadar2Visible] }
-      : makeRadar2ModeText({
+      makeRadar2ModeText({
           pos = [size[0] * (0.5 + 0.05), -hdpx(20)]
         }, color),
       noiseSignal(
