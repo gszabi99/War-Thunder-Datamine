@@ -1,6 +1,170 @@
 {
   "unlockable": [
     {
+      "id": "09_08_summer_2022_air_stage",
+      "locId": "marathon_air_stage_1/name",
+      "type": "achievement",
+      "chapter": "summer_quest",
+      "group": "tasks_for_air",
+      "costGold": 999,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 40000,
+        "chardType": "char_static_progress",
+        "num": 40000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.8,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-07 11:00:00",
+            "endDate": "2022-08-11 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "09_08_summer_2022_tank_stage",
+      "locId": "marathon_tank_stage_1/name",
+      "type": "achievement",
+      "chapter": "summer_quest",
+      "group": "tasks_for_tank",
+      "costGold": 999,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 40000,
+        "chardType": "char_static_progress",
+        "num": 40000000,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.8,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-07 11:00:00",
+            "endDate": "2022-08-11 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "09_08_summer_2022_ship_stage",
+      "locId": "marathon_ship_stage_1/name",
+      "type": "achievement",
+      "chapter": "summer_quest",
+      "group": "tasks_for_ship",
+      "costGold": 999,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 40000,
+        "chardType": "char_static_progress",
+        "num": 40000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-07 11:00:00",
+            "endDate": "2022-08-11 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "gift_booster_rp_20_5mp_after_5mp_trophy",
       "userLogId": "booster_rp_20_5mp_unlock_trophy",
       "type": "trophy",
@@ -16067,6 +16231,315 @@
         "type": "char_resources",
         "num": 1,
         "resource": "ball_france"
+      }
+    },
+    {
+      "id": "type98_shin_gunto_six_gift",
+      "userLogId": "type98_shin_gunto_six_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "ija_6th_air_combat_group",
+          "jasdf_6th_sqn_emblem",
+          "hull_number_6",
+          "jmsdf_escort_division_6th",
+          "jgsdf_6th_division",
+          "jgsdf_6th_reconnaissance_unit",
+          "cyber_six_decal"
+        ]
+      }
+    },
+    {
+      "id": "cyber_six_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "cyber_six_decal_dmm",
+          "cyber_six_decal_scej"
+        ]
+      }
+    },
+    {
+      "id": "cyber_six_decal_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2022-08-09 07:00:00",
+        "endDate": "2022-11-01 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "cyber_six_decal_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2022-08-09 07:00:00",
+        "endDate": "2022-11-01 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "jgsdf_6th_division",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 6,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-09 07:00:00",
+            "endDate": "2022-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ija_6th_air_combat_group",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 6,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-09 07:00:00",
+            "endDate": "2022-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "hull_number_6",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 6,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-09 07:00:00",
+            "endDate": "2022-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jgsdf_6th_reconnaissance_unit",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 6,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-09 07:00:00",
+            "endDate": "2022-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jasdf_6th_sqn_emblem",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 6,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-09 07:00:00",
+            "endDate": "2022-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jmsdf_escort_division_6th",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 6,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 5,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-08-09 07:00:00",
+            "endDate": "2022-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
       }
     },
     {
