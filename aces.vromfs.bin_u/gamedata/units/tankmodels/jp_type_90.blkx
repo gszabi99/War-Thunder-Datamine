@@ -3183,14 +3183,15 @@
   ],
   "ammoStowages": {
     "ammo1": {
-      "removeLoadedAmmo": true,
       "weaponTrigger": "gunner0",
-      "fatalFire": false,
-      "fatalExplosion": false,
+      "removeLoadedAmmo": true,
       "replenishmentDelay": 4.0,
       "replenishmentTime": 30.0,
       "shells": [
         {
+          "fireParamsPreset": "turret_bustle",
+          "fatalFire": false,
+          "fatalExplosion": false,
           "autoLoad": true,
           "ammo_turret_01_dm": {
             "count": 1
@@ -3248,12 +3249,12 @@
           }
         },
         {
-          "reloadTimeMult": 3.0,
           "fatalFire": true,
           "fatalExplosion": true,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
+          "reloadTimeMult": 3.0,
           "ammo_turret_21_dm": {
             "count": 1
           },
