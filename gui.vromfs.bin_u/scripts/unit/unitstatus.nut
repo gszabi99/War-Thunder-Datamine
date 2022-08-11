@@ -123,18 +123,41 @@ let function isAvailablePrimaryWeapon(unit, weaponName) {
       if (commonWeapons == null)
         continue
       foreach (weap in (commonWeapons % "Weapon")) {
-        if (!weap?.blk || weap?.dummy)
-          continue
 
-        let weapBlk = blkFromPath(weap.blk)
-        if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
-          availableWeapons.flares = modName
-        if (availableWeapons!=null && (weapBlk?.rocket.isChaff ?? false))
-          availableWeapons.chaffs = modName
-        if (availableWeapons!=null && (weapBlk?.bullet.rocket.isChaff ?? false))
-          availableWeapons.chaffs = modName
-        if (availableWeapons!=null && (weapBlk?.bullet.rocket.isFlare ?? false))
-          availableWeapons.flares = modName
+        let weapons = []
+        if (unitBlk?.WeaponSlots != null) {
+          foreach (weaponSlot in (unitBlk.WeaponSlots % "WeaponSlot")) {
+            if (weap?.slot == weaponSlot?.index)
+            {
+              foreach (weaponPreset in (weaponSlot % "WeaponPreset")) {
+                if (weap?.preset == weaponPreset?.name)
+                {
+                  foreach (weapon in (weaponPreset % "Weapon"))
+                    weapons.append(weapon)
+                  break
+                }
+              }
+              break
+            }
+          }
+        }
+        else
+          weapons.append(weap)
+
+        foreach (weapon in weapons)
+        {
+           if (!weapon?.blk || weapon?.dummy)
+            continue
+          let weapBlk = blkFromPath(weapon.blk)
+          if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
+            availableWeapons.flares = modName
+          if (availableWeapons!=null && (weapBlk?.rocket.isChaff ?? false))
+            availableWeapons.chaffs = modName
+          if (availableWeapons!=null && (weapBlk?.bullet.rocket.isChaff ?? false))
+            availableWeapons.chaffs = modName
+          if (availableWeapons!=null && (weapBlk?.bullet.rocket.isFlare ?? false))
+            availableWeapons.flares = modName
+        }
       }
     }
   }

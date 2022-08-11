@@ -11,8 +11,10 @@ let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 
 let payMethodsCfg = [
+  /*
   { id = ::YU2_PAY_QIWI,        name = "qiwi" }
   { id = ::YU2_PAY_YANDEX,      name = "yandex" }
+  */
   { id = ::YU2_PAY_PAYPAL,      name = "paypal" }
   { id = ::YU2_PAY_WEBMONEY,    name = "webmoney" }
   { id = ::YU2_PAY_AMAZON,      name = "amazon" }
