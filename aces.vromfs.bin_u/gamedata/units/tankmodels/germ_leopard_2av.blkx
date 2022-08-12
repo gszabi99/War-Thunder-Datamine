@@ -56,38 +56,38 @@
       "armorClass": "leopard_2a5_turret_nera",
       "composite_armor_hull_01_dm": {
         "armorThickness": 150.0,
-        "cumulativeArmorQuality": 0.01,
-        "genericArmorQuality": 0.01
+        "cumulativeArmorQuality": 1.295,
+        "genericArmorQuality": 0.545
       },
       "composite_armor_hull_04_dm": {
         "armorThickness": 150.0,
-        "cumulativeArmorQuality": 0.01,
-        "genericArmorQuality": 0.01
+        "cumulativeArmorQuality": 1.295,
+        "genericArmorQuality": 0.545
       },
       "composite_armor_hull_05_dm": {
         "armorThickness": 170.0,
-        "cumulativeArmorQuality": 0.01,
-        "genericArmorQuality": 0.01
+        "cumulativeArmorQuality": 0.7,
+        "genericArmorQuality": 0.36
       },
       "composite_armor_hull_02_dm": {
         "armorThickness": 150.0,
-        "cumulativeArmorQuality": 0.01,
-        "genericArmorQuality": 0.01
+        "cumulativeArmorQuality": 1.295,
+        "genericArmorQuality": 0.545
       },
       "composite_armor_hull_15_dm": {
         "armorThickness": 90.0,
-        "cumulativeArmorQuality": 0.01,
-        "genericArmorQuality": 0.01
+        "cumulativeArmorQuality": 0.7,
+        "genericArmorQuality": 0.35
       },
       "composite_armor_hull_16_dm": {
         "armorThickness": 90.0,
-        "cumulativeArmorQuality": 0.01,
-        "genericArmorQuality": 0.01
+        "cumulativeArmorQuality": 0.7,
+        "genericArmorQuality": 0.35
       },
       "composite_armor_hull_17_dm": {
         "armorThickness": 90.0,
-        "cumulativeArmorQuality": 0.01,
-        "genericArmorQuality": 0.01
+        "cumulativeArmorQuality": 0.7,
+        "genericArmorQuality": 0.35
       }
     },
     "hull": {
@@ -115,7 +115,8 @@
         "createSecondaryShatters": false
       },
       "turret_02_side_dm": {
-        "armorThickness": 45.0
+        "armorThickness": 45.0,
+        "ignoreSolidDimension": true
       },
       "turret_01_front_dm": {
         "armorThickness": 45.0
@@ -154,19 +155,15 @@
         "createSecondaryShatters": false
       },
       "turret_04_side_dm": {
-        "armorThickness": 30.0,
-        "cumulativeArmorQuality": 15.3,
-        "genericArmorQuality": 6.0,
-        "genericEffectiveThicknessMax": 235.0,
-        "cumulativeEffectiveThicknessMax": 600.0
+        "armorThickness": 30.0
       },
       "turret_05_back_dm": {
-        "armorThickness": 20.0,
-        "cumulativeArmorQuality": 6.5,
-        "genericArmorQuality": 3.2
+        "armorThickness": 20.0
       },
       "turret_05_front_dm": {
-        "armorThickness": 12.7
+        "armorThickness": 12.7,
+        "createSecondaryShatters": false,
+        "ignoreSolidDimension": true
       },
       "turret_04_front_dm": {
         "armorThickness": 12.7
@@ -183,9 +180,7 @@
         "armorThickness": 30.0
       },
       "turret_05_bottom_dm": {
-        "armorThickness": 40.0,
-        "cumulativeArmorQuality": 14.5,
-        "genericArmorQuality": 5.8
+        "armorThickness": 40.0
       },
       "turret_14_bottom_dm": {
         "armorThickness": 35.0
@@ -243,6 +238,9 @@
       "composite_armor_hull_07_dm": {
         "armorThickness": 8.0,
         "hidableInXrayViewer": true
+      },
+      "turret_01_top_dm": {
+        "armorThickness": 20.0
       }
     },
     "turret": {
@@ -280,7 +278,7 @@
       "turret_03_front_dm": {
         "armorClass": "CHA_tank_modern",
         "armorThickness": 120.0,
-        "armorEffectiveThicknessMax": 250.0
+        "variableThickness": true
       },
       "turret_01_side_dm": {
         "armorClass": "CHA_tank_modern",
@@ -290,18 +288,15 @@
         "armorThickness": 18.0
       },
       "turret_10_back_dm": {
-        "armorThickness": 35.0,
-        "armorEffectiveThicknessMax": 50.0
+        "armorThickness": 35.0
       },
       "turret_10_front_dm": {
         "armorThickness": 25.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 35.0
+        "createSecondaryShatters": false
       },
       "turret_top_dm": {
         "armorThickness": 30.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 50.0
+        "createSecondaryShatters": false
       },
       "turret_front_dm": {
         "armorThickness": 30.0,
@@ -309,13 +304,11 @@
       },
       "turret_07_front_dm": {
         "armorThickness": 25.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 35.0
+        "createSecondaryShatters": false
       },
       "turret_07_back_dm": {
         "armorThickness": 25.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 35.0
+        "createSecondaryShatters": false
       },
       "turret_06_bottom_dm": {
         "armorThickness": 12.0,
@@ -327,17 +320,14 @@
       },
       "turret_13_front_dm": {
         "armorThickness": 25.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 35.0
+        "createSecondaryShatters": false
       },
       "turret_14_back_dm": {
-        "armorThickness": 25.0,
-        "armorEffectiveThicknessMax": 35.0
+        "armorThickness": 25.0
       },
       "turret_13_bottom_dm": {
         "armorThickness": 25.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 35.0
+        "createSecondaryShatters": false
       },
       "turret_06_top_dm": {
         "armorThickness": 12.7
@@ -350,13 +340,11 @@
       },
       "turret_06_back_dm": {
         "armorThickness": 12.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 50.0
+        "createSecondaryShatters": false
       },
       "turret_05_top_dm": {
         "armorThickness": 12.0,
-        "createSecondaryShatters": false,
-        "armorEffectiveThicknessMax": 50.0
+        "createSecondaryShatters": false
       },
       "turret_08_top_dm": {
         "armorThickness": 12.7
@@ -422,39 +410,29 @@
       "createSecondaryShatters": false,
       "composite_armor_turret_14_dm": {
         "armorThickness": 190.0,
-        "cumulativeArmorQuality": 1.41,
-        "genericArmorQuality": 0.585,
-        "cumulativeEffectiveThicknessMax": 350.0,
-        "genericEffectiveThicknessMax": 145.0
+        "cumulativeArmorQuality": 1.342,
+        "genericArmorQuality": 0.454
       },
       "composite_armor_turret_15_dm": {
         "armorThickness": 190.0,
-        "cumulativeArmorQuality": 1.41,
-        "genericArmorQuality": 0.585,
-        "createSecondaryShatters": true,
-        "cumulativeEffectiveThicknessMax": 350.0,
-        "genericEffectiveThicknessMax": 145.0
+        "cumulativeArmorQuality": 1.342,
+        "genericArmorQuality": 0.454,
+        "createSecondaryShatters": true
       },
       "composite_armor_turret_12_dm": {
         "armorThickness": 190.0,
-        "cumulativeArmorQuality": 1.41,
-        "genericArmorQuality": 0.585,
-        "cumulativeEffectiveThicknessMax": 350.0,
-        "genericEffectiveThicknessMax": 145.0
+        "cumulativeArmorQuality": 1.342,
+        "genericArmorQuality": 0.454
       },
       "composite_armor_turret_13_dm": {
         "armorThickness": 230.0,
-        "cumulativeArmorQuality": 1.05,
-        "genericArmorQuality": 0.56,
-        "cumulativeEffectiveThicknessMax": 700.0,
-        "genericEffectiveThicknessMax": 380.0
+        "cumulativeArmorQuality": 0.855,
+        "genericArmorQuality": 0.37
       },
       "composite_armor_turret_10_dm": {
         "armorThickness": 630.0,
-        "cumulativeArmorQuality": 0.892,
-        "genericArmorQuality": 0.412,
-        "cumulativeEffectiveThicknessMax": 740.0,
-        "genericEffectiveThicknessMax": 340.0
+        "cumulativeArmorQuality": 0.926,
+        "genericArmorQuality": 0.403
       }
     },
     "heavy_body_screens": {
@@ -496,17 +474,14 @@
         "armorThickness": 240.0,
         "armorClass": "tank_structural_steel",
         "hidableInViewer": false,
-        "variableThickness": true,
-        "armorEffectiveThicknessMax": 180.0
+        "variableThickness": true
       },
       "composite_armor_turret_09_dm": {
         "armorClass": "leopard_2a5_turret_nera",
         "armorThickness": 245.0,
         "cumulativeArmorQuality": 1.05,
         "genericArmorQuality": 0.25,
-        "createSecondaryShatters": false,
-        "cumulativeEffectiveThicknessMax": 300.0,
-        "genericEffectiveThicknessMax": 75.0
+        "createSecondaryShatters": false
       }
     },
     "body_shields": {
