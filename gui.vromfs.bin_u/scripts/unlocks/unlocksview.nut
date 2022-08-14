@@ -97,6 +97,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
           ((isUnlocked || unlockConfig.curStage < 1)? "" : "_stage_" + unlockConfig.curStage)
 
     let effect = isUnlocked || needShowLockIcon(unlockConfig) ? ""
+      : unlockConfig.lockStyle != "" ? unlockConfig.lockStyle
       : unlockType == ::UNLOCKABLE_MEDAL ? "darkened"
       : "desaturated"
 
@@ -137,7 +138,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
   }
 
   function needShowLockIcon(cfg) {
-    if (cfg?.isTrophyLocked)
+    if (cfg.lockStyle == "lock" || cfg?.isTrophyLocked)
       return true
 
     let unlockType = getUnlockType(cfg)
@@ -145,7 +146,9 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
     if (isUnlocked)
       return false
 
-    return unlockType == ::UNLOCKABLE_DECAL || unlockType == ::UNLOCKABLE_PILOT
+    return cfg.lockStyle == "lock"
+      || unlockType == ::UNLOCKABLE_DECAL
+      || unlockType == ::UNLOCKABLE_PILOT
   }
 
   function getUnitActionButtonsView(unit) {

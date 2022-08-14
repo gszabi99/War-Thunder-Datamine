@@ -1,11 +1,14 @@
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
   getFullUnitRoleText, getShipMaterialTexts } = require("%scripts/unit/unitInfoTexts.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { isBullets, getModificationInfo, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
 
@@ -71,7 +74,8 @@ enum UNIT_INFO_ORDER{
   ARMOR_THICKNESS_TOWER_BACK,
   HULL_MATERIAL,
   SUPERSTRUCTURE_MATERIAL,
-  WEAPON_INFO_TEXT
+  WEAPON_INFO_TEXT,
+  MODIFICATIONS
 }
 
 const UNIT_CONFIGURATION_MIN = "minChars"
@@ -347,8 +351,13 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
       local costMultiplier = 1.0
       if (unitConfiguration == UNIT_CONFIGURATION_MAX)
-        foreach(mod in ::get_wpcost_blk()?[unit.name]?.modifications ?? [])
-          costMultiplier += mod?.repairCostCoef ?? 0.0
+      {
+        let mods = ::get_wpcost_blk()?[unit.name]?.modifications
+        if (mods != null)
+          eachBlock(mods, function(mod, _) {
+            costMultiplier += mod?.repairCostCoef ?? 0.0
+          })
+      }
 
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
@@ -1223,6 +1232,21 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         blk.hide = true
       else
         blk.value = unit.reqAir
+    }
+  }
+  {
+    id = "modifications"
+    addToExportDataBlock = function(blk, unit, unitConfiguration)
+    {
+      let mods = ::get_wpcost_blk()?[unit.name]?.modifications
+      if (mods != null)
+        eachBlock(mods, function(_, mod_id) {
+          blk[mod_id] = ::DataBlock()
+          blk[mod_id].name <- getModificationName(unit, mod_id)
+          blk[mod_id].desc <- getModificationInfo(unit, mod_id).desc
+          let mod_info = getModificationByName(unit, mod_id)
+          blk[mod_id].isBullets <- isBullets(mod_info)
+        })
     }
   }
 ])

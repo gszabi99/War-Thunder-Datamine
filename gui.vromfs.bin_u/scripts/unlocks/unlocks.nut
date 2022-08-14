@@ -223,6 +223,7 @@ local unlockConditionUnitclasses = {
     iconStyle = ""
     iconParams = null
     image = ""
+    lockStyle = ""
     imgRatio = 1.0
     playback = null
     type = ""
@@ -257,9 +258,13 @@ local unlockConditionUnitclasses = {
   config.playback = blk?.playback
 
   config.iconStyle <- blk?.iconStyle ?? config?.iconStyle
+  config.image = blk?.icon ?? ""
+  if (config.image != "")
+    config.lockStyle = blk?.lockStyle ?? "" // lock, darkened, desaturated
 
   let unlocked = ::is_unlocked_scripted(config.unlockType, id)
-  ::g_unlocks.setRewardIconCfg(config, blk, unlocked)
+  if (config.image == "")
+    ::g_unlocks.setRewardIconCfg(config, blk, unlocked)
   if (config.image == "" && !config?.iconData)
     ::g_unlocks.setUnlockIconCfg(config, blk)
 
