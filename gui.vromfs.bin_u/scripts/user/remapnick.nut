@@ -23,6 +23,7 @@ return function(name) {
 
   let isXboxPrefix = xboxPrefixNameRegexp.match(name)
   let isPsnPrefix = psnPrefixNameRegexp.match(name)
+  let isMe = name == ::my_user_name
 
   if (isXboxPrefix || isPsnPrefix)
     name = cutPlayerNamePrefix(name)
@@ -44,6 +45,8 @@ return function(name) {
   else if (isPsnPrefix || isPsnPostfix) {
     if (!isSony)
       platformIcon = TV_ICON
+    else if (!isMe)
+      platformIcon = "⋊"
   }
   else if (!isPC)
     platformIcon = PC_ICON
