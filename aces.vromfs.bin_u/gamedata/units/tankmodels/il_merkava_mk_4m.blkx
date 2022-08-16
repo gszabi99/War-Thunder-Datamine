@@ -1951,6 +1951,7 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
+        "showBulletsInHud": false,
         "turret": {
           "head": "bone_mg_twin_01",
           "gun": "bone_mg_twin_01",
@@ -2181,6 +2182,7 @@
         "speedYaw": 1000.0,
         "speedPitch": 1000.0,
         "bullets": 1,
+        "showBulletsInHud": false,
         "turret": {
           "head": "bone_countermeasure_02_h",
           "gun": "bone_countermeasure_02_v"
@@ -2207,6 +2209,7 @@
         "speedYaw": 1000.0,
         "speedPitch": 1000.0,
         "bullets": 1,
+        "showBulletsInHud": false,
         "turret": {
           "head": "bone_countermeasure_01_h",
           "gun": "bone_countermeasure_01_v"
@@ -3247,14 +3250,13 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "removeLoadedAmmo": true,
       "weaponTrigger": "gunner0",
-      "fatalFire": true,
-      "fatalExplosion": true,
+      "removeLoadedAmmo": true,
       "replenishmentDelay": 4.0,
       "replenishmentTime": 10.0,
       "shells": [
         {
+          "fireParamsPreset": "turret_bustle",
           "fatalFire": false,
           "fatalExplosion": false,
           "firstStage": true,
@@ -3290,6 +3292,11 @@
           }
         },
         {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
           "reloadTimeMult": 1.28,
           "ammo_body_01_dm": {
             "count": 1
@@ -3556,6 +3563,7 @@
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
               "errExplTime": 0.0,
+              "showBulletsInHud": false,
               "turret": {
                 "head": "bone_mg_twin_01",
                 "gun": "bone_mg_twin_01",
@@ -3786,6 +3794,7 @@
               "speedYaw": 1000.0,
               "speedPitch": 1000.0,
               "bullets": 1,
+              "showBulletsInHud": false,
               "turret": {
                 "head": "bone_countermeasure_02_h",
                 "gun": "bone_countermeasure_02_v"
@@ -3812,6 +3821,7 @@
               "speedYaw": 1000.0,
               "speedPitch": 1000.0,
               "bullets": 1,
+              "showBulletsInHud": false,
               "turret": {
                 "head": "bone_countermeasure_01_h",
                 "gun": "bone_countermeasure_01_v"

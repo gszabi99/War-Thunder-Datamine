@@ -10,6 +10,9 @@ let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
 } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
+} = require("%scripts/clans/clanFlushExpInfoModal.nut")
+let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -511,6 +514,17 @@ local logNameByType = {
       if (blk?.body?.entName != null && entitlementRewards?[blk.body.entName] == null)
         entitlementRewards[blk.body.entName] <- true
       markDisabled = true
+    }
+    else if (blk?.type == ::EULT_CLAN_UNITS && blk.body?.optype == "flush") {
+      let needChoseResearch = (::getAircraftByName(blk.body.unit)?.isResearched() ?? false)
+        && needChooseClanUnitResearch()
+      if (!needChoseResearch && ::load_local_account_settings(SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, false))
+        markDisabled = true
+      else
+        handler.doWhenActive(function() {
+          if (!shown_userlog_notifications.contains(blk.id))
+            showClanFlushExpInfo({ userlog = blk, needChoseResearch })
+        })
     }
 
     if (markDisabled)

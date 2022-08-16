@@ -61,11 +61,9 @@
   }
   <</bottomCenterText>>
 
-  <<^unlocked>>
-    <<#statusLock>>
-    LockedImg { statusLock:t='<<statusLock>>' }
-    <</statusLock>>
-  <</unlocked>>
+  <<#statusLock>>
+  LockedImg { statusLock:t='<<statusLock>>' }
+  <</statusLock>>
 
   <<#miniIcon>>
   miniIcon {

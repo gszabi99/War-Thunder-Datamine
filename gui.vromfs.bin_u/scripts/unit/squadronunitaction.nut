@@ -24,15 +24,14 @@ let function hasClanUnitChosenResearch() {
   return _hasChosenResearch
 }
 
-let function isHaveNonApprovedClanUnitResearches() {
-  if (!::isInMenu() || !::has_feature("ClanVehicles")
-      || ::checkIsInQueue()
+let function needChooseClanUnitResearch() {
+  if (!::has_feature("ClanVehicles")
       || isAllClanUnitsResearched())
     return false
 
   let researchingUnitName = ::clan_get_researching_unit()
   if (researchingUnitName == "")
-    return false
+    return true
 
   let curSquadronExp = ::clan_get_exp()
   let hasChosenResearchOfSquadron = hasClanUnitChosenResearch()
@@ -50,9 +49,17 @@ let function isHaveNonApprovedClanUnitResearches() {
   return true
 }
 
+let function isHaveNonApprovedClanUnitResearches() {
+  if (!::isInMenu() || ::checkIsInQueue())
+    return false
+
+  return needChooseClanUnitResearch()
+}
+
 return {
   hasClanUnitChosenResearch
   saveClanUnitResearchChosen
   isAllClanUnitsResearched
   isHaveNonApprovedClanUnitResearches
+  needChooseClanUnitResearch
 }

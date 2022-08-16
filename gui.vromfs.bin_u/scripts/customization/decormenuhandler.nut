@@ -121,7 +121,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getSavedPath() {
-    return ::loadLocalByAccount(curDecorType.currentOpenedCategoryLocalSafePath, "").split(",")
+    return ::loadLocalByAccount(curDecorType.currentOpenedCategoryLocalSafePath, "").split("/")
   }
 
   function show(isShown) {
@@ -202,7 +202,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function savePath(categoryId, groupId = "") {
     let localPath = curDecorType.currentOpenedCategoryLocalSafePath
-    ::saveLocalByAccount(localPath, ",".join([categoryId, groupId], true))
+    ::saveLocalByAccount(localPath, "/".join([categoryId, groupId], true))
   }
 
   function generateDecalCategoryContent(categoryId, groupId) {

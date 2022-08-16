@@ -47,13 +47,13 @@ let function getTourDay(tour) {
 
 let isTournamentWndAvailable = @(dayNum) dayNum != DAY.FINISH && dayNum != DAY.SOON
 
-let getMatchingEventId = @(tourId, day, isTraining)
-  $"{tourId}{day ? "_day" : ""}{day ?? ""}{isTraining ? "_train" : ""}"
+let getMatchingEventId = @(tourId, dayNum, isTraining)
+  dayNum < 0 ? tourId : $"{tourId}_day{dayNum + 1}{isTraining ? "_train" : ""}"
 
 let getSharedTourNameByEvent = @(economicName) economicName.split("_day")[0]
 
 let function getEventByDay(tourId, dayNum, isTraining = false){
- let matchingEventId = getMatchingEventId(tourId, dayNum >= 0 ? dayNum + 1 : 1, isTraining)
+ let matchingEventId = getMatchingEventId(tourId, dayNum < 0 ? 0 : dayNum, isTraining)
  return ::events.getEvent(matchingEventId)
 }
 
@@ -356,6 +356,7 @@ let function hasAnyTickets() {
 return {
   DAY
   TOURNAMENT_TYPES
+  getTourDay
   getTourParams
   checkByFilter
   getTourCommonViewParams

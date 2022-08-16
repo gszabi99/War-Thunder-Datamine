@@ -468,18 +468,89 @@
               "on_select": "onDecalCategorySelect"
             },
             "chapterSeparator": {
-              "margin": "1@blockInterval, 0"
+              "margin-left": "@blockInterval"
             },
             "tdiv": {
-              "id": "decals_zone",
               "size": "fw, ph",
-              "behaviour": "posNavigator",
-              "padding": "@blockInterval",
-              "class": "hoverFrame",
-              "flow": "h-flow",
-              "flow-align": "center",
-              "overflow-y": "auto",
-              "navigatorShortcuts": "noSelect"
+              "flow": "vertical",
+              "padding": "@blockInterval, 0",
+              "tdiv": [
+                {
+                  "id": "decal_info",
+                  "width": "pw",
+                  "min-height": "0.34ph",
+                  "padding": "@blockInterval",
+                  "tdiv": [
+                    {
+                      "size": "0.34pw, ph",
+                      "padding": "2@blockInterval",
+                      "img": {
+                        "id": "decalImage",
+                        "size": "ph, ph",
+                        "position": "relative",
+                        "pos": "50%(pw-w), 0",
+                        "background-svg-size": "ph, ph",
+                        "background-repeat": "aspect-ratio"
+                      }
+                    },
+                    {
+                      "width": "fw",
+                      "margin-left": "4@blockInterval",
+                      "flow": "vertical",
+                      "textareaNoTab": [
+                        {
+                          "id": "decalTitle",
+                          "text": "",
+                          "max-width": "pw",
+                          "pare-text": "yes",
+                          "overlayTextColor": "unlockHeader"
+                        },
+                        {
+                          "id": "decalDesc",
+                          "width": "pw",
+                          "overflow": "hidden",
+                          "smallFont": "yes",
+                          "text": "",
+                          "margin-top": "2@dp"
+                        },
+                        {
+                          "id": "decalConds",
+                          "width": "pw",
+                          "overflow": "hidden",
+                          "smallFont": "yes",
+                          "text": "",
+                          "margin-top": "@blockInterval"
+                        },
+                        {
+                          "id": "decalPrice",
+                          "width": "pw",
+                          "smallFont": "yes",
+                          "text": "",
+                          "margin-top": "0.01@sf"
+                        }
+                      ],
+                      "challengeDescriptionProgress": {
+                        "id": "decalProgress",
+                        "value": "",
+                        "display": "hide"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "decals_zone",
+                  "size": "pw, fh",
+                  "behaviour": "posNavigator",
+                  "flow": "h-flow",
+                  "flow-align": "center",
+                  "overflow-y": "auto",
+                  "navigatorShortcuts": "yes",
+                  "on_select": "onDecalSelect"
+                }
+              ],
+              "rowSeparator": {
+                "margin": "0, @blockInterval"
+              }
             }
           }
         },
@@ -636,19 +707,125 @@
           "id": "paginator_place"
         },
         "navRight": {
-          "Button_text": {
-            "id": "btn_SkinPreview",
-            "text": "#mainmenu/btnPreview",
-            "tooltip": "#mainmenu/btnPreview",
-            "btnName": "L3",
-            "on_click": "onSkinPreview",
-            "showButtonImageOnConsole": "no",
-            "class": "image",
-            "img": {
-              "background-image": "#ui/gameuiskin#btn_preview.svg"
+          "Button_text": [
+            {
+              "id": "btn_fav",
+              "btnName": "Y",
+              "on_click": "onToggleFav",
+              "display": "hide",
+              "text": "#preloaderSettings/trackProgress",
+              "ButtonImg": {}
             },
-            "ButtonImg": {}
-          }
+            {
+              "id": "btn_use_decorator",
+              "btnName": "L3",
+              "_on_click": "onDecalUse",
+              "display": "hide",
+              "text": "#decorator/use/decal",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_preview",
+              "btnName": "L3",
+              "_on_click": "onDecalPreview",
+              "display": "hide",
+              "text": "#mainmenu/btnPreview",
+              "showButtonImageOnConsole": "no",
+              "class": "image",
+              "img": {
+                "background-image": "#ui/gameuiskin#btn_preview.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_go_to_collection",
+              "btnName": "R3",
+              "on_click": "onGotoCollection",
+              "display": "hide",
+              "text": "#collection/go_to_collection",
+              "showButtonImageOnConsole": "no",
+              "class": "image",
+              "img": {
+                "background-image": "#ui/gameuiskin#collection.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_store",
+              "btnName": "X",
+              "on_click": "onItemsShop",
+              "display": "hide",
+              "text": "#items/shop/emptyTab/toShopButton",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "class": "image",
+              "buttonWink": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#store_icon.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_marketplace_find_coupon",
+              "btnName": "X",
+              "on_click": "onMarketplaceFindCoupon",
+              "display": "hide",
+              "text": "#msgbox/btn_find_on_marketplace",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "class": "image",
+              "buttonWink": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_marketplace_consume_coupon",
+              "btnName": "X",
+              "on_click": "onMarketplaceConsumeCoupon",
+              "display": "hide",
+              "text": "#item/consume/coupon",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "class": "image",
+              "buttonWink": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_buy_decorator",
+              "btnName": "X",
+              "on_click": "onBuyDecorator",
+              "display": "hide",
+              "text": "#mainmenu/btnOrder",
+              "hideText": "yes",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "purchase",
+              "buttonWink": {},
+              "buttonGlance": {},
+              "ButtonImg": {},
+              "textarea": {
+                "id": "btn_buy_decorator_text",
+                "class": "buttonText"
+              }
+            },
+            {
+              "id": "btn_SkinPreview",
+              "text": "#mainmenu/btnPreview",
+              "tooltip": "#mainmenu/btnPreview",
+              "btnName": "L3",
+              "on_click": "onSkinPreview",
+              "showButtonImageOnConsole": "no",
+              "class": "image",
+              "img": {
+                "background-image": "#ui/gameuiskin#btn_preview.svg"
+              },
+              "ButtonImg": {}
+            }
+          ]
         }
       }
     },

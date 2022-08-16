@@ -1739,7 +1739,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "coaxial",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
         "emitter": "bone_gun_roller_02",
         "flash": "emtr_mg_flame_02",
@@ -1797,7 +1797,7 @@
         "speedYaw": 90.0,
         "speedPitch": 90.0,
         "fireConeAngle": 1.0,
-        "bullets": 1000,
+        "bullets": 1080,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -1891,6 +1891,7 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "forestallTime": 0.1,
+        "showBulletsInHud": false,
         "turret": {
           "head": "bone_mg_aa_h_01",
           "gun": "bone_mg_aa_v_01",
@@ -2738,11 +2739,9 @@
           }
         },
         {
-          "fatalFire": true,
-          "fatalExplosion": true,
-          "fireEvent": "ammo_fire",
-          "explosionEvent": "ammo_explosion",
-          "wreckedPartId": 0,
+          "fireParamsPreset": "turret_bustle",
+          "fatalFire": false,
+          "fatalExplosion": false,
           "reloadTimeMult": 1.5,
           "ammo_turret_25_dm": {
             "count": 1

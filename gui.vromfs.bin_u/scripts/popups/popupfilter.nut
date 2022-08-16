@@ -22,10 +22,8 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   btnName              = null
   btnTitle             = null
   onChangeFn           = null
-  isTop                = false
-  isRight              = false
-  isNearRight          = false
   visualStyle          = null
+  popupAlign           = null
 
   function getSceneTplView() {
     local maxTextWidth = 0
@@ -75,11 +73,9 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
       btnName = btnName ?? "Y"
       underPopupClick    = "onShowFilterBtnClick"
       underPopupDblClick = "onShowFilterBtnClick"
-      isTop = isTop
-      isRight = isRight
-      isNearRight = isNearRight
       btnWidth = btnWidth
       visualStyle = visualStyle
+      popupAlign = popupAlign
     }
   }
 

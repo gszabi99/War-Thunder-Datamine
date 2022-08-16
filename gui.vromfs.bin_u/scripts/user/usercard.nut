@@ -631,7 +631,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       scene = nestObj
       onChangeFn = onFilterCbChange.bindenv(this)
       filterTypes = getFiltersView()
-      isRight = true
+      popupAlign = "bottom-right"
     })
 
     airStatsInited = true

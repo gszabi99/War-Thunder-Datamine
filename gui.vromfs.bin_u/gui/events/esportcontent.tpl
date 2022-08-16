@@ -13,11 +13,6 @@ textareaNoTab {
   text:t='<<seasonDate>>'
 }
 
-popupFilter {
-  top:t='1@eSItemMargin'
-  position:t='relative'
-}
-
 slotsScrollDiv {
   height:t='1@eSItemHeight+2@eSItemMargin'
   top:t='2@eSItemMargin'
@@ -34,4 +29,9 @@ slotsScrollDiv {
 
     include "%gui/events/eSportItem"
   }
+}
+
+popupFilter {
+  pos:t='0.5pw-0.5w, 3@eSItemMargin'
+  position:t='relative'
 }

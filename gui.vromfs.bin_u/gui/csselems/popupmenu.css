@@ -34,6 +34,34 @@ popup_menu_arrow {
   background-rotation:0;
 }
 
+popup_menu[popup_align=left] {
+  pos: -w-1@blockInterval, -1@buttonHeight-2@buttonTextPadding;
+}
+
+popup_menu[popup_align=top] {
+  top: -h-1@buttonHeight-2@buttonTextPadding-1@blockInterval;
+}
+
+popup_menu[popup_align=bottom] {
+  top: 1@blockInterval;
+}
+
+popup_menu[popup_align=top-center] {
+  pos: 0.5pw-0.5w, -h-1@buttonHeight-2@buttonTextPadding-1@blockInterval;
+}
+
+popup_menu[popup_align=bottom-center] {
+  pos: 0.5pw-0.5w, 1@blockInterval;
+}
+
+popup_menu[popup_align=top-right] {
+  pos: pw-w, -h-1@buttonHeight-2@buttonTextPadding-1@blockInterval;
+}
+
+popup_menu[popup_align=bottom-right] {
+  pos: pw-w, 1@blockInterval;
+}
+
 [menu_align=top] > popup_menu_arrow {
   pos: 0.5pw - 0.5w, ph - 1@dp;
 }

@@ -37,10 +37,12 @@ itemUnderline {
   background-color:@sessionSelectedColor;
 }
 
+eSItemDiv[selected=yes],
 eSItemDiv:hover {
   top:-1@eSItemMargin;
 }
 
+eSItemDiv[selected=yes] > itemUnderline,
 eSItemDiv:hover > itemUnderline {
   display:show;
 }

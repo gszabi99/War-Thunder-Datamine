@@ -263,7 +263,8 @@ let function isOptionReqRestartChanged(option, newValue) {
 
 let function isVisibleTankGunsAmmoIndicator()
 {
-  return hasFeature("MachineGunsAmmoIndicator") && ::get_option(::USEROPT_HUD_SHOW_TANK_GUNS_AMMO).value
+  return hasFeature("MachineGunsAmmoIndicator")
+    && ::get_gui_option_in_mode(::USEROPT_HUD_SHOW_TANK_GUNS_AMMO, ::OPTIONS_MODE_GAMEPLAY, false)
 }
 
 ::cross_call_api.isVisibleTankGunsAmmoIndicator <- @() isVisibleTankGunsAmmoIndicator()

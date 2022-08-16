@@ -22,10 +22,7 @@
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
-  "autoSightDistanceCorrection": [
-    false,
-    true
-  ],
+  "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -2872,6 +2869,15 @@
     "night_vision_system": {
       "effects": {
         "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
           "driverIr": {
             "resolution": [
               800,

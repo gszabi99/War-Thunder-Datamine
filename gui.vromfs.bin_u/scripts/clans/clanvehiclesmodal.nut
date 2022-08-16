@@ -22,9 +22,6 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   function getWndTitle()
   {
-    if (::clan_get_researching_unit() == "")
-      return null
-
     local locId = "shop/distributeSquadronExp"
     let flushExp = ::clan_get_exp()
     if (flushExp <= 0 || needChosenResearchOfSquadron())
@@ -158,6 +155,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
   }
 
   needChosenResearchOfSquadron = @() !hasClanUnitChosenResearch()
+    || ::clan_get_researching_unit() == ""
 
   function onBuy()
   {

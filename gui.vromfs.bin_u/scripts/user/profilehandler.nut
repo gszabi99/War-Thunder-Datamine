@@ -8,21 +8,26 @@ let { isMeXBOXPlayer, isMePS4Player, isPlatformPC, isPlatformSony
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { canAcquireDecorator, askAcquireDecorator } = require("%scripts/customization/decoratorAcquire.nut")
+let { askPurchaseDecorator, askConsumeDecoratorCoupon,
+  findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { fillProfileSummary } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
-let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
+let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction,
+  getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
+let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { getUnlockIds, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { isCollectionItem } = require("%scripts/collections/collections.nut")
+let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 
@@ -107,6 +112,7 @@ let selMedalIdx = {}
   filterCountryName = null
   filterUnitTag = ""
   initSkinId = ""
+  initDecalId = ""
   filterGroupName = null
 
   unlockFilters = {
@@ -301,6 +307,52 @@ let selMedalIdx = {}
     return categories
   }
 
+  function updateDecalButtons(decor) {
+    if (!decor) {
+      ::showBtnTable(scene, {
+        btn_buy_decorator              = false
+        btn_fav                        = false
+        btn_preview                    = false
+        btn_use_decorator              = false
+        btn_store                      = false
+        btn_marketplace_consume_coupon = false
+        btn_marketplace_find_coupon    = false
+        btn_go_to_collection           = false
+      })
+      return
+    }
+
+    let canBuy = decor.canBuyUnlock(null)
+    let canConsumeCoupon = !canBuy && decor.canGetFromCoupon(null)
+    let canFindOnMarketplace = !canBuy && !canConsumeCoupon
+      && decor.canBuyCouponOnMarketplace(null)
+    let canFindInStore = !canBuy && !canConsumeCoupon && !canFindOnMarketplace
+      && ::ItemsManager.canGetDecoratorFromTrophy(decor)
+
+    let buyBtnObj = this.showSceneBtn("btn_buy_decorator", canBuy)
+    if (canBuy && buyBtnObj?.isValid())
+      placePriceTextToButton(scene, "btn_buy_decorator", ::loc("mainmenu/btnOrder"), decor.getCost())
+
+    let canFav = !decor.isUnlocked() && ::g_unlocks.canDo(decor.unlockBlk)
+    let favBtnObj = this.showSceneBtn("btn_fav", canFav)
+    if (canFav)
+      favBtnObj.setValue(::g_unlocks.isUnlockFav(decor.unlockId)
+        ? ::loc("preloaderSettings/untrackProgress")
+        : ::loc("preloaderSettings/trackProgress"))
+
+    let canUse = decor.isUnlocked() && canStartPreviewScene(false)
+    let canPreview = !canUse && decor.canPreview()
+
+    ::showBtnTable(scene, {
+      btn_preview                    = ::isInMenu() && canPreview
+      btn_use_decorator              = ::isInMenu() && canUse
+      btn_store                      = ::isInMenu() && canFindInStore
+      btn_go_to_collection           = ::isInMenu() && isCollectionItem(decor)
+      btn_marketplace_consume_coupon = canConsumeCoupon
+      btn_marketplace_find_coupon    = canFindOnMarketplace
+    })
+  }
+
   function updateButtons()
   {
     let sheet = getCurSheet()
@@ -322,6 +374,69 @@ let selMedalIdx = {}
 
     if (buttonsList.btn_EmailRegistration)
       scene.findObject("btn_EmailRegistration").tooltip = emailRegistrationTooltip
+
+    updateDecalButtons(getCurDecal())
+  }
+
+  function onMarketplaceFindCoupon() {
+    findDecoratorCouponOnMarketplace(getCurDecal())
+  }
+
+  function onMarketplaceConsumeCoupon() {
+    askConsumeDecoratorCoupon(getCurDecal(), null)
+  }
+
+  function onBuyDecorator() {
+    askPurchaseDecorator(getCurDecal(), null)
+  }
+
+  function onDecalPreview() {
+    getCurDecal()?.doPreview()
+  }
+
+  function onDecalUse() {
+    let decor = getCurDecal()
+    if (!decor)
+      return
+
+    let resourceType = decor.decoratorType.resourceType
+    let decorData = getDecoratorDataToUse(decor.id, resourceType)
+    if (decorData.decorator == null) {
+      showDecoratorAccessRestriction(decor, getPlayerCurUnit())
+      return
+    }
+
+    useDecorator(decor, decorData.decoratorUnit, decorData.decoratorSlot)
+  }
+
+  function onGotoCollection() {
+    openCollectionsWnd({ selectedDecoratorId = getCurDecal()?.id })
+  }
+
+  function onToggleFav() {
+    let decal = getCurDecal()
+    toggleFav(decal?.unlockId)
+    updateDecalButtons(decal)
+  }
+
+  function toggleFav(unlockId) {
+    if (!unlockId)
+      return
+
+    let isFav = ::g_unlocks.isUnlockFav(unlockId)
+    if (isFav) {
+      ::g_unlocks.removeUnlockFromFavorites(unlockId)
+      return
+    }
+
+    if (!::g_unlocks.canAddFavorite()) {
+      let num = ::g_unlocks.favoriteUnlocksLimit
+      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
+      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
+      return
+    }
+
+    ::g_unlocks.addUnlockToFavorites(unlockId)
   }
 
   function onSheetChange(obj)
@@ -495,12 +610,22 @@ let selMedalIdx = {}
     let decalsListObj = scene.findObject("decals_zone")
     if (isCollapsable) {
       guiScene.replaceContentFromText(decalsListObj, "", 0, null)
+      onDecalSelect()
       return
     }
 
     let [categoryId, groupId = "other"] = categoryObj.id.split("/")
     let markup = getDecalsMarkup(categoryId, groupId)
     guiScene.replaceContentFromText(decalsListObj, markup, markup.len(), this)
+
+    if (initDecalId != "") {
+      let decalIdx = findChildIndex(decalsListObj, @(c) c.id == initDecalId)
+      initDecalId = ""
+      decalsListObj.setValue(decalIdx != -1 ? decalIdx : 0)
+      return
+    }
+
+    decalsListObj.setValue(0)
   }
 
   isDecalGroup = @(categoryId) categoryId.indexof("/") != null
@@ -526,6 +651,85 @@ let selMedalIdx = {}
       categoryObj.collapsed = categoryObj.id == categoryId ? "no" : "yes"
       visible = categoryObj.collapsed == "no"
     }
+  }
+
+  function onDecalSelect() {
+    let decal = getCurDecal()
+    updateDecalInfo(decal)
+    updateDecalButtons(decal)
+  }
+
+  function updateDecalInfo(decor) {
+    let nestObj = this.showSceneBtn("decal_info", decor != null)
+    if (!decor)
+      return
+
+    let img = decor.decoratorType.getImage(decor)
+    let imgObj = nestObj.findObject("decalImage")
+    imgObj["background-image"] = img
+
+    let title = decor.getName()
+    nestObj.findObject("decalTitle").setValue(title)
+
+    let desc = decor.getDesc()
+    nestObj.findObject("decalDesc").setValue(desc)
+
+    let cfg = decor.unlockBlk != null
+      ? ::build_unlock_desc(::build_conditions_config(decor.unlockBlk))
+      : null
+
+    let conds = cfg
+      ? ::UnlockConditions.getConditionsText(cfg.conditions, cfg.curVal, cfg.maxVal)
+      : ""
+    nestObj.findObject("decalConds").setValue(conds)
+
+    let progressObj = nestObj.findObject("decalProgress")
+    if (cfg != null) {
+      let progressData = cfg.getProgressBarData()
+      progressObj.show(progressData.show)
+      if (progressData.show)
+        progressObj.setValue(progressData.value)
+    } else
+      progressObj.show(false)
+
+    nestObj.findObject("decalPrice").setValue(getDecalObtainInfo(decor))
+  }
+
+  function getDecalObtainInfo(decor) {
+    if (decor.isUnlocked())
+      return ""
+
+    if (decor.canBuyUnlock(null))
+      return decor.getCostText()
+
+    if (decor.canGetFromCoupon(null))
+      return " ".concat(::loc("currency/gc/sign/colored"),
+        ::colorize("currencyGCColor", ::loc("shop/object/can_get_from_coupon")))
+
+    if (decor.canBuyCouponOnMarketplace(null))
+      return " ".concat(::loc("currency/gc/sign/colored"),
+        ::colorize("currencyGCColor", ::loc("shop/object/can_be_found_on_marketplace")))
+
+    if (::ItemsManager.canGetDecoratorFromTrophy(decor))
+      return ::loc("mainmenu/itemCanBeReceived")
+
+    return ""
+  }
+
+  function getCurDecal() {
+    if (getCurSheet() != "UnlockDecal")
+      return null
+
+    let listObj = scene.findObject("decals_zone")
+    if (!listObj?.isValid())
+      return null
+
+    let idx = listObj.getValue()
+    if (idx == -1)
+      return null
+
+    let decalId = listObj.getChild(idx).id
+    return ::g_decorator.getDecorator(decalId, ::g_decorator_type.DECALS)
   }
 
   function onPageChange(obj)
@@ -701,10 +905,8 @@ let selMedalIdx = {}
     local curIndex = 0
     let lowerCurPage = curPage.tolower()
     let pageTypeId = ::get_unlock_type(lowerCurPage)
-    let itemSelectFunc  = pageTypeId == ::UNLOCKABLE_MEDAL ? onMedalSelect : null
-    let containerObjId = pageTypeId == ::UNLOCKABLE_MEDAL ? "medals_zone"
-      : pageTypeId == ::UNLOCKABLE_DECAL ? "decals_zone"
-      : "unlocks_group_list"
+    let itemSelectFunc = pageTypeId == ::UNLOCKABLE_MEDAL ? onMedalSelect : null
+    let containerObjId = pageTypeId == ::UNLOCKABLE_MEDAL ? "medals_zone" : "unlocks_group_list"
     unlocksTree = {}
 
     if (pageTypeId == ::UNLOCKABLE_SKIN)
@@ -909,31 +1111,14 @@ let selMedalIdx = {}
       return ""
 
     let view = {
-      items = decorators.map(function(decorator) {
-        local text = null
-        local status = null
-        if (decorator.isUnlocked())
-          text = null
-        else if (decorator.canBuyUnlock(null))
-          text = decorator.getCost()
-        else if (decorator.getCouponItemdefId() != null)
-          text = ::colorize("currencyGoldColor", ::loc("currency/gc/sign"))
-        else if (decorator.lockedByDLC != null)
-          status = "noDLC"
-        else
-          status = "achievement"
-
-        return {
-          id = decorator.id
-          tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decorator.decoratorType.unlockedItemType)
-          unlocked = decorator.isUnlocked()
-          image = decorator.decoratorType.getImage(decorator)
-          imgRatio = decorator.decoratorType.getRatio(decorator)
-          backlight = true
-          bottomCenterText = text
-          statusLock = status
-          onClick = "onDecalClick"
-        }
+      items = decorators.map(@(decorator) {
+        id = decorator.id
+        tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decorator.decoratorType.unlockedItemType)
+        unlocked = true
+        tag = "imgSelectable"
+        image = decorator.decoratorType.getImage(decorator)
+        imgRatio = decorator.decoratorType.getRatio(decorator)
+        statusLock = decorator.isUnlocked() ? null : "achievement"
       })
     }
     return ::handyman.renderCached("%gui/commonParts/imgFrame", view)
@@ -1391,14 +1576,6 @@ let selMedalIdx = {}
     guiScene.setUpdatesEnabled(true, true)
   }
 
-  function onDecalClick(obj)
-  {
-    let decoratorId = ::check_obj(obj) ? (obj?.id ?? "") : ""
-    let decorator = ::g_decorator.getDecoratorById(decoratorId)
-    if (canAcquireDecorator(decorator))
-      askAcquireDecorator(decorator, null)
-  }
-
   function onUnlockSelect(obj)
   {
     if (obj?.isValid())
@@ -1457,8 +1634,9 @@ let selMedalIdx = {}
   function getHandlerRestoreData() {
     let data = {
      openData = {
-        initialSheet = "UnlockSkin"
+        initialSheet = getCurSheet()
         initSkinId = initSkinId
+        initDecalId = getCurDecal()?.id ?? ""
         filterCountryName = curFilter
         filterUnitTag = filterUnitTag
       }

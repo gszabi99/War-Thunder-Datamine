@@ -2,9 +2,9 @@ let { format } = require("string")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { ceil } = require("%sqstd/math.nut")
 
 let MAX_SLOT_COUNT_X = 4
-let MAX_SLOT_COUNT_Y = 6
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
@@ -24,14 +24,15 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   slotbarActions       = [ "research", "buy", "take", "sec_weapons", "weapons", "showroom", "testflight", "info", "repair" ]
 
   actionsListOpenTime  = 0
+  maxSlotCountY = 6
 
   function getSceneTplView()
   {
     collectUnitData()
     return {
       slotCountX = MAX_SLOT_COUNT_X
-      slotCountY = min( units.len() / MAX_SLOT_COUNT_X + 1, MAX_SLOT_COUNT_Y)
-      hasScrollBar = MAX_SLOT_COUNT_X * MAX_SLOT_COUNT_Y < units.len()
+      slotCountY = min(ceil(units.len().tofloat() / MAX_SLOT_COUNT_X), maxSlotCountY)
+      hasScrollBar = MAX_SLOT_COUNT_X * maxSlotCountY < units.len()
       unitsList = getUnitsListData()
 
       wndTitle = getWndTitle()
@@ -44,7 +45,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     let listObj = scene.findObject("units_list")
     restoreLastUnitSelection(listObj)
+    initPopupFilter()
+  }
 
+  function initPopupFilter() {
     let nestObj = scene.findObject("filter_nest")
     openPopupFilter({
       scene = nestObj

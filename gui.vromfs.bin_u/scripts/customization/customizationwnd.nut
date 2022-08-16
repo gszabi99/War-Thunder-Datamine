@@ -4,7 +4,8 @@ let { acos } = require("math")
 let penalty = require("penalty")
 let decorLayoutPresets = require("%scripts/customization/decorLayoutPresetsWnd.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
-let contentPreview = require("%scripts/customization/contentPreview.nut")
+let { showResource, canStartPreviewScene,
+  showDecoratorAccessRestriction } = require("%scripts/customization/contentPreview.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
@@ -16,8 +17,8 @@ let { getDecorLockStatusText, getDecorButtonView } = require("%scripts/customiza
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
 let { needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isCollectionPrize, isCollectionItem } = require("%scripts/collections/collections.nut")
-let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
+let { isCollectionItem } = require("%scripts/collections/collections.nut")
+let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -1279,63 +1280,6 @@ enum decalTwoSidedMode
       updateButtons(decoratorType)
   }
 
-  function showDecoratorAccessRestriction(decorator)
-  {
-    if (!decorator || decorator.canUse(unit))
-      return false
-
-    let text = []
-    if (decorator.isLockedByCountry(unit))
-      text.append(::loc("mainmenu/decalNotAvailable"))
-
-    if (decorator.isLockedByUnit(unit))
-    {
-      let unitsList = []
-      foreach(unitName in decorator.units)
-        unitsList.append(::colorize("userlogColoredText", ::getUnitName(unitName)))
-      text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
-        decoratorName = ::colorize("activeTextColor", decorator.getName()),
-        unitsList = ::g_string.implode(unitsList, ",")}))
-    }
-
-    if (!decorator.isAllowedByUnitTypes(unit.unitType.tag))
-      text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnitTypes", {
-        decoratorName = ::colorize("activeTextColor", decorator.getName()),
-        unitTypesList = decorator.getLocAllowedUnitTypes()
-      }))
-
-    if (decorator.lockedByDLC != null)
-      text.append(format(::loc("mainmenu/decalNoCampaign"), ::loc("charServer/entitlement/" + decorator.lockedByDLC)))
-
-    if (text.len() != 0)
-    {
-      ::g_popups.add("", ::g_string.implode(text, ", "))
-      return true
-    }
-
-    if (decorator.isUnlocked() || decorator.canBuyUnlock(unit) || decorator.canBuyCouponOnMarketplace(unit))
-      return false
-
-    if (hasAvailableCollections() && isCollectionPrize(decorator))
-    {
-      ::g_popups.add(
-        null,
-        ::loc("mainmenu/decoratorNoCompletedCollection" {
-          decoratorName = ::colorize("activeTextColor", decorator.getName())
-        }),
-        null,
-        [{
-          id = "gotoCollection"
-          text = ::loc("collection/go_to_collection")
-          func = @() openCollectionsWnd({ selectedDecoratorId = decorator.id })
-        }])
-      return true
-    }
-
-    ::g_popups.add("", ::loc("mainmenu/decalNoAchievement"))
-    return true
-  }
-
   function openCollections(decoratorId) {
     openCollectionsWnd({ selectedDecoratorId = decoratorId })
     updateBackButton()
@@ -1373,7 +1317,7 @@ enum decalTwoSidedMode
     let isDecal = currentType == ::g_decorator_type.DECALS
     if (!decoratorPreview && isDecal)
     {
-      let isRestrictionShown = showDecoratorAccessRestriction(decorator)
+      let isRestrictionShown = showDecoratorAccessRestriction(decorator, unit)
       if (isRestrictionShown)
         return
 
@@ -1532,7 +1476,7 @@ enum decalTwoSidedMode
     if (decorator.canBuyCouponOnMarketplace(unit))
       return askMarketplaceCouponActionOnExitEditMode(decorator)
 
-    let isRestrictionShown = showDecoratorAccessRestriction(decorator)
+    let isRestrictionShown = showDecoratorAccessRestriction(decorator, unit)
     if (isRestrictionShown)
       return
 
@@ -1718,7 +1662,7 @@ enum decalTwoSidedMode
     else if (access.isDownloadable)
     {
       // Starting skin download...
-      contentPreview.showResource(skinId, "skin", ::Callback(onSkinReadyToShow, this))
+      showResource(skinId, "skin", ::Callback(onSkinReadyToShow, this))
     }
     else if (skinId != previewSkinId)
     {
@@ -1730,7 +1674,7 @@ enum decalTwoSidedMode
 
   function onSkinReadyToShow(unitId, skinId, result)
   {
-    if (!result || !contentPreview.canStartPreviewScene(true, true) ||
+    if (!result || !canStartPreviewScene(true, true) ||
       unitId != unit.name || (skinList?.values ?? []).indexof(skinId) == null)
         return
 

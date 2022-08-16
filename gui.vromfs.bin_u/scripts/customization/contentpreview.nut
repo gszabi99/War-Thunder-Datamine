@@ -3,6 +3,8 @@ let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { isCollectionPrize } = require("%scripts/collections/collections.nut")
+let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -320,6 +322,59 @@ let function getDecoratorDataToUse(resource, resourceType) {
   }
 }
 
+let function showDecoratorAccessRestriction(decorator, unit) {
+  if (!decorator || decorator.canUse(unit))
+    return false
+
+  let text = []
+  if (decorator.isLockedByCountry(unit))
+    text.append(::loc("mainmenu/decalNotAvailable"))
+
+  if (decorator.isLockedByUnit(unit)) {
+    let unitsList = []
+    foreach(unitName in decorator.units)
+      unitsList.append(::colorize("userlogColoredText", ::getUnitName(unitName)))
+    text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
+      decoratorName = ::colorize("activeTextColor", decorator.getName()),
+      unitsList = ::g_string.implode(unitsList, ",")}))
+  }
+
+  if (!decorator.isAllowedByUnitTypes(unit.unitType.tag))
+    text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnitTypes", {
+      decoratorName = ::colorize("activeTextColor", decorator.getName()),
+      unitTypesList = decorator.getLocAllowedUnitTypes()
+    }))
+
+  if (decorator.lockedByDLC != null)
+    text.append(format(::loc("mainmenu/decalNoCampaign"), ::loc($"charServer/entitlement/{decorator.lockedByDLC}")))
+
+  if (text.len() != 0) {
+    ::g_popups.add("", ::g_string.implode(text, ", "))
+    return true
+  }
+
+  if (decorator.isUnlocked() || decorator.canBuyUnlock(unit) || decorator.canBuyCouponOnMarketplace(unit))
+    return false
+
+  if (hasAvailableCollections() && isCollectionPrize(decorator)) {
+    ::g_popups.add(
+      null,
+      ::loc("mainmenu/decoratorNoCompletedCollection" {
+        decoratorName = ::colorize("activeTextColor", decorator.getName())
+      }),
+      null,
+      [{
+        id = "gotoCollection"
+        text = ::loc("collection/go_to_collection")
+        func = @() openCollectionsWnd({ selectedDecoratorId = decorator.id })
+      }])
+    return true
+  }
+
+  ::g_popups.add("", ::loc("mainmenu/decalNoAchievement"))
+  return true
+}
+
 let function useDecorator(decorator, decoratorUnit, decoratorSlot) {
   if (!decorator)
     return
@@ -387,4 +442,5 @@ return {
   getBestUnitForPreview
   getDecoratorDataToUse
   useDecorator
+  showDecoratorAccessRestriction
 }

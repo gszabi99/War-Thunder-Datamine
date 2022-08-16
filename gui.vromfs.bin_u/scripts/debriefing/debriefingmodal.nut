@@ -260,7 +260,6 @@ let statTooltipColumnParamByType = {
     initStatsMissionParams()
     ::SessionLobby.checkLeaveRoomInDebriefing()
     ::close_cur_voicemenu()
-    ::enableHangarControls(true)
 
     // Debriefing shows on on_hangar_loaded event, but looks like DoF resets in this frame too.
     // DoF changing works unstable on this frame, but works 100% good on next guiscene act.

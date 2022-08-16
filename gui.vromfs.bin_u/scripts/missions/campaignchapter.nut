@@ -1130,7 +1130,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       scene = nestObj
       onChangeFn = onFilterCbChange.bindenv(this)
       filterTypes = getFiltersView()
-      isTop = false
+      popupAlign = "bottom"
       btnName = "RB"
     })
   }

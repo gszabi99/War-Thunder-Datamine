@@ -114,7 +114,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       scene = filterObj
       onChangeFn = onFilterCbChange.bindenv(this)
       filterTypes = getFiltersView()
-      isTop = true
+      popupAlign = "top"
     })
 
     this.showSceneBtn("custom_weapons_available_txt", isCustomPresetsAvailable()

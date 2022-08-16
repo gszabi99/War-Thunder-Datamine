@@ -6,7 +6,7 @@ let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId,
   getTourListViewData, getTourById, removeItemFromList, getEventByDay, getOverlayTextColor,
   isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable,
-  setSchedulerTimeColor, hasAnyTickets } = require("%scripts/events/eSport.nut")
+  setSchedulerTimeColor, hasAnyTickets, getTourDay } = require("%scripts/events/eSport.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
@@ -56,13 +56,14 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     scene.findObject("update_timer").setUserData(this)
     setBreadcrumbGoBackParams(this)
     eventListObj = scene.findObject("events_list")
+    selectActiveTournament()
     filterObj = scene.findObject("filter_nest")
 
     openPopupFilter({
       scene = scene.findObject("filter_nest")
       onChangeFn = onFilterCbChange.bindenv(this)
       filterTypes = getFiltersView()
-      isNearRight = true
+      popupAlign = "top-center"
       visualStyle = "tournament"
     })
   }
@@ -82,6 +83,15 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
     fillUnitTypesList()
     fillTournamentTypesList()
+  }
+
+  function selectActiveTournament() {
+    if (!eventListObj?.isValid())
+      return
+
+    let idx = tournamentList.findindex(@(tour) getTourDay(tour) >= 0)
+    if (idx)
+      eventListObj.setValue(idx)
   }
 
   function updateTourView(tObj, tour, tourParams) {
@@ -244,7 +254,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     let tournament = getTourById(obj.eventId)
     if (tournament)
       ::gui_modal_event_leaderboards(// No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
-        getMatchingEventId(tournament.id, 1, false), tournament.sharedEconomicName)
+        getMatchingEventId(tournament.id, 0, false), tournament.sharedEconomicName)
   }
 
   onTimer = @(obj, dt) (scene.getModalCounter() != 0) ? null : updateAllEventsByFilters()
