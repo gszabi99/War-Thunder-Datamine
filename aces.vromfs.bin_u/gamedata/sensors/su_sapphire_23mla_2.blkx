@@ -834,9 +834,6 @@
         },
         "setDesignationLockModeCommon": {
           "setLockModeCommon": {},
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 5000.0
@@ -859,6 +856,9 @@
           "setScanPattern": {
             "scanPattern": "designationLockUp"
           },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
           "setModeName": {
             "name": "acquisition"
           }
@@ -869,6 +869,9 @@
           "setHighAltModeCommon": {},
           "setScanPattern": {
             "scanPattern": "designationLockDown"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           },
           "setModeName": {
             "name": "LD acquisition"
@@ -881,6 +884,9 @@
           "setScanPattern": {
             "scanPattern": "designationLockUp"
           },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
           "setModeName": {
             "name": "acquisition"
           }
@@ -892,17 +898,20 @@
           "setScanPattern": {
             "scanPattern": "designationLockLow"
           },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
           "setModeName": {
             "name": "MTI acquisition"
           }
         },
         "setOLSDesignationLockMode": {
           "setDesignationLockModeCommon": {},
+          "setOLSModeCommon": {},
+          "setHighAltModeCommon": {},
           "setScanPattern": {
             "scanPattern": "designationLockOLS"
           },
-          "setOLSModeCommon": {},
-          "setHighAltModeCommon": {},
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
