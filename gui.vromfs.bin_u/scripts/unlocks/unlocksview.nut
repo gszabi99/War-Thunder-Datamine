@@ -138,7 +138,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
   }
 
   function needShowLockIcon(cfg) {
-    if (cfg.lockStyle == "lock" || cfg?.isTrophyLocked)
+    if (cfg?.isTrophyLocked)
       return true
 
     let unlockType = getUnlockType(cfg)
