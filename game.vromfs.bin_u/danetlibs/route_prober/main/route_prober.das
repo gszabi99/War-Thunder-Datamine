@@ -71,13 +71,16 @@ def get_circuit_param(param : string; fallback : float) : float
       val = proberBlock |> datablock_getReal(param, fallback)
   return val
 
-def is_route_evaluation_enabled_in_settings() : bool
+def get_settings(param : string; fallback : bool) : bool
   let netBlock = dgs_get_settings() |> datablock_get_block_by_name_const("net")
-  return netBlock |> datablock_getBool("useServerRouteEvaluation", false)
+  return netBlock |> datablock_getBool(param, fallback)
 
-// Enables route evaluation with a params.routeEvaluationChance chance depending on current session id (deterministically)
-def is_route_evaluation_enabled_by_matching(params : MatchingRoomExtraParams) : bool
-  let chance : float = params.routeEvaluationChance// [0, 1]
+def get_settings(param : string; fallback : int) : int
+  let netBlock = dgs_get_settings() |> datablock_get_block_by_name_const("net")
+  return netBlock |> datablock_getInt(param, fallback)
+
+// Enables experiment with a given chance depending on current session id (deterministically)
+def is_matching_experiment_enabled(chance : float) : bool
   let session : uint64 = get_session_id()
   var seed : int = int(session)
   let r : float = _frnd(seed)// [0, 1)
@@ -88,9 +91,9 @@ def get_percent_diff(x : uint; y : uint) : int// [-100, 100]
   let m : int = max(int(x), int(y))
   return (m != 0) ? 100 * (int(x) - int(y)) / m : 0
 
-def try_launch_route_prober() : void
+def try_launch_route_prober(add_rtt : int) : void
   let routeCount : uint = get_server_route_count()
-  print("Route evaluation of {int(routeCount)} routes")
+  print("Route evaluation of {int(routeCount)} routes; add rtt {add_rtt}")
 
   if routeCount < 2u
     return
@@ -100,6 +103,7 @@ def try_launch_route_prober() : void
     init |> set("diff_sum_min", get_circuit_param("diff_sum_min", DEFAULT_PERCENT_DIFF_SUM_MIN))
     init |> set("rtt_sum_threshold", get_circuit_param("rtt_sum_threshold", DEFAULT_PERCENT_RTT_SUM_THRESHOLD))
     init |> set("echo_period_seconds", get_circuit_param("echo_period_seconds", DEFAULT_ECHO_PERIOD_SECONDS))
+    init |> set("add_rtt", uint(add_rtt))
 
   for route_id in urange(routeCount)
     createEntity("route_stats") <| $(var init : ComponentsInitializer&)
@@ -164,13 +168,14 @@ def report_final_best(initial_best : uint) : void
 
 [es(tag=netClient, no_order)]
 def try_launch_route_prober_from_settings(evt : EventOnConnectedToServer)
-  if is_route_evaluation_enabled_in_settings()
-    try_launch_route_prober()
+  if get_settings("useServerRouteEvaluation", false)
+    try_launch_route_prober(get_settings("addRtt", 0))
 
 [es(tag=netClient, no_order)]
 def try_launch_route_prober_from_matching_params(evt : MatchingRoomExtraParams)
-  if !is_route_evaluation_enabled_in_settings() && is_route_evaluation_enabled_by_matching(evt)
-    try_launch_route_prober()
+  if !get_settings("useServerRouteEvaluation", false) && is_matching_experiment_enabled(evt.routeEvaluationChance)
+    let ddosSimulationEnabled : bool = is_matching_experiment_enabled(evt.ddosSimulationChance)
+    try_launch_route_prober(ddosSimulationEnabled ? evt.ddosSimulationAddRtt : 0)
 
 [es(tag=netClient, no_order, on_disappear, REQUIRE=routeProber)]
 def cleanup_route_prober(evt : Event; initial_best : uint)
@@ -210,6 +215,7 @@ def receive_echo_response(response : NetEchoReponse; route_id : uint; var echo_h
 def evaluate_server_route(evt : ChangeServerRoute)
   let hasRouteProber = find_query() <| $ [es(REQUIRE=routeProber)] (diff_sum_min : int;
                                                                     rtt_sum_threshold : int;
+                                                                    add_rtt : uint;
                                                                     var initial_best : uint&;
                                                                     var statistics_reported : bool&)
     let currentRoute : uint = get_current_server_route_id()
@@ -219,6 +225,9 @@ def evaluate_server_route(evt : ChangeServerRoute)
                                            echo_history : UInt32List;
                                            var rtt_estimation : uint&)
       rtt_estimation = get_rtt_estimation(echo_history)
+      if route_id == MAIN_HOST_ROUTE_ID
+        rtt_estimation += add_rtt
+
       if route_id == currentRoute
         currentRttEstimation = rtt_estimation
 

@@ -127,6 +127,8 @@ struct EventOnPlayerModSpend
 [event(broadcast)]
 struct MatchingRoomExtraParams
   routeEvaluationChance : float
+  ddosSimulationChance : float
+  ddosSimulationAddRtt : int
 
 [cpp_event(broadcast, with_scheme)]
 struct ChangeServerRoute

@@ -2825,7 +2825,13 @@ foreach (notificationName, callback in
 
 ecs.register_es("on_connected_to_server_es", {
   [EventOnConnectedToServer] = function() {
-    let chance = ::SessionLobby.getRoomEvent()?.routeEvaluationChance ?? 0.0
-    ecs.g_entity_mgr.broadcastEvent(MatchingRoomExtraParams({routeEvaluationChance=chance}));
+    let routeEvaluationChance = ::SessionLobby.getRoomEvent()?.routeEvaluationChance ?? 0.0
+    let ddosSimulationChance = ::SessionLobby.getRoomEvent()?.ddosSimulationChance ?? 0.0
+    let ddosSimulationAddRtt = ::SessionLobby.getRoomEvent()?.ddosSimulationAddRtt ?? 0
+    ecs.g_entity_mgr.broadcastEvent(MatchingRoomExtraParams({
+        routeEvaluationChance = routeEvaluationChance,
+        ddosSimulationChance = ddosSimulationChance,
+        ddosSimulationAddRtt = ddosSimulationAddRtt,
+    }));
   },
 })
