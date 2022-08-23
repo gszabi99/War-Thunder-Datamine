@@ -15,8 +15,6 @@ expandable {
         size:t='0.5*@profileUnlockIconSize, 0.5*@profileUnlockIconSize';
         position:t='relative';
         pos:t='0, ph/2 - h/2';
-        decal_locked:t='no';
-        achievement_locked:t='no';
       }
 
       achievementTitle{

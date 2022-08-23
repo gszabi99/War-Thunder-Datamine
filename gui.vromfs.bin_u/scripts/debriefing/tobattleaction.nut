@@ -16,9 +16,11 @@ local goToBattleAction = function() {
         return
 
       let curTourParams = getTourParams(tournament)
-      if (isTournamentWndAvailable(curTourParams.dayNum))
+      if (isTournamentWndAvailable(curTourParams.dayNum)) {
+        ::gui_start_mainmenu()
         eSportTournamentModal({ tournament, curTourParams, curEvent = lastEvent })
           ?.goToBattleFromDebriefing()
+      }
 
       return
     }

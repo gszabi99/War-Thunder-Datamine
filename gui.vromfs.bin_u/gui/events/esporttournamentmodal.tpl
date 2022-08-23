@@ -20,7 +20,7 @@ root {
           img {}
           btnText {
             id:t='back_scene_name'
-            text:t='#mainmenu/tournaments'
+            text:t='#mainmenu/btnTournament'
           }
         }
       }
@@ -343,6 +343,7 @@ root {
             <<^hasLeaderboardBtn>>
             display:t='hide'
             <</hasLeaderboardBtn>>
+            inactiveColor:t='yes'
             on_click:t = 'onLeaderboard'
             btnName:t='L3'
             ButtonImg {}

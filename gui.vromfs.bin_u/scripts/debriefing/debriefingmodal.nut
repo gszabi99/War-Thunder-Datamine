@@ -2817,6 +2817,8 @@ let statTooltipColumnParamByType = {
         ? ::gui_start_menuUserMissions
         : ::gui_start_menuSingleMissions
     }
+    else if (::events.getEvent(::SessionLobby.lastEventName)?.chapter == "competitive")
+      ::go_debriefing_next_func = goToBattle
     else
       ::go_debriefing_next_func = ::gui_start_mainmenu
   }

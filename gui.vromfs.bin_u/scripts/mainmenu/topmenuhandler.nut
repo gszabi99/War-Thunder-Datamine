@@ -282,6 +282,15 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     shopWeak?.showUnitInShop(params.unitName)
   }
 
+  function onEventProfileUpdated(p) {
+    if (!scene.isVisible())
+      doWhenActiveOnce("updateGamercards")
+  }
+
+  function updateGamercards() {
+    ::update_gamercards()
+  }
+
   function updateOnShopWndAnim(isVisible)
   {
     let isShow = topMenuShopActive.value

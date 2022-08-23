@@ -2587,15 +2587,21 @@ Button_text[visualStyle=tournament] > img {
 Button_text[visualStyle=tournament][bigFont=yes] {
   font:@fontBigBold;
 }
-Button_text[visualStyle=tournament]:disabled {
-  border-color: @buttonFontColorDisabled;
-}
 Button_text[visualStyle=tournament]:hover > img {
   background-color:@white;
 }
 Button_text[visualStyle=tournament]:hover {
   color:@white;
   border-color:@white;
+}
+Button_text[visualStyle=tournament][inactiveColor=yes],
+Button_text[visualStyle=tournament][inactiveColor=yes]:hover {
+  border-color:@buttonBorderColorDisabled;
+  color: @buttonFontColorDisabled;
+}
+Button_text[visualStyle=tournament][inactiveColor=yes] > img ,
+Button_text[visualStyle=tournament][inactiveColor=yes]:hover > img {
+  background-color:@buttonFontColorDisabled;
 }
 Button_text[visualStyle=tournament][pc_style=no][btnName] {
   text-align: center;

@@ -22,8 +22,6 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
 
-::dagui_propid.add_name_id("achievement_locked")
-
 ::show_next_award_modetypes <- { //modeTypeName = localizationId
   char_versus_battles_end_count_and_rank_test = "battle_participate_award"
   char_login_count                            = "day_login_award"
@@ -752,7 +750,7 @@ local unlockConditionUnitclasses = {
 
   let icoObj = obj.findObject("award_image")
   if (config?.isLocked)
-    icoObj.achievement_locked = "yes"
+    icoObj.effectType = "desaturated"
 
   ::set_unlock_icon_by_config(icoObj, config, isForTooltip)
 

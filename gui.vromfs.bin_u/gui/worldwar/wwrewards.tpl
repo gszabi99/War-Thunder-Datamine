@@ -29,8 +29,6 @@ rewardItem {
       size:t='pw-4@itemPadding, ph-4@itemPadding'
       position:t='absolute'
       pos:t='0.5pw-0.5w, 0.5ph-0.5h'
-      decal_locked:t='no'
-      achievement_locked:t='no'
      <<@rewardImage>>
     }
   }

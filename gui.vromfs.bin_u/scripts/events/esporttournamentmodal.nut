@@ -117,7 +117,28 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     return res
   }
 
+  function fetchLbData() {
+    let newSelfRowRequest = ::events.getMainLbRequest(curEvent)
+    ::events.requestSelfRow(
+      newSelfRowRequest,
+      "mini_lb_self",
+      function (self_row) {
+        ::events.requestLeaderboard(::events.getMainLbRequest(curEvent),
+        "mini_lb_self",
+        function (lb_data) {
+          let isLbEnable = lb_data.rows.len() > 0
+          let lbObj = scene.findObject("leaderboard_obj")
+          if (!lbObj?.isValid())
+            return
+
+          lbObj.inactiveColor = isLbEnable ? "no" : "yes"
+          lbObj.enable(isLbEnable)
+        }, this)
+      }, this)
+  }
+
   function getDescParams() {
+    fetchLbData()
     let rangeData = ::events.getPlayersRangeTextData(curEvent)
     let missArr = [$"{::loc("mainmenu/missions")}{::loc("ui/colon")}"]
     foreach (miss, v in (curEvent.mission_decl?.missions_list ?? {}))
