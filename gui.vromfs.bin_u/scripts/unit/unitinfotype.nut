@@ -57,9 +57,9 @@ enum UNIT_INFO_ORDER{
   ARMOR_THICKNESS_TURRET_FRONT,
   ARMOR_THICKNESS_TURRET_REAR,
   ARMOR_THICKNESS_TURRET_BACK,
+  ARMOR_PIERCING_10,
   ARMOR_PIERCING_100,
   ARMOR_PIERCING_500,
-  ARMOR_PIERCING_1000,
   SHOT_FREQ,
   RELOAD_TIME,
   VISIBILITY,
@@ -839,12 +839,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     }
   }
   {
-    id = "armor_piercing_100"
-    order = UNIT_INFO_ORDER.ARMOR_PIERCING_100
+    id = "armor_piercing_10"
+    order = UNIT_INFO_ORDER.ARMOR_PIERCING_10
     compare = COMPARE_MORE_BETTER
     getHeader = function(unit)
     {
-      return format("%s (%s 100 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
+      return format("%s (%s 10 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
     }
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
@@ -869,12 +869,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     }
   }
   {
-    id = "armor_piercing_500"
-    order = UNIT_INFO_ORDER.ARMOR_PIERCING_500
+    id = "armor_piercing_100"
+    order = UNIT_INFO_ORDER.ARMOR_PIERCING_100
     compare = COMPARE_MORE_BETTER
     getHeader = function(unit)
     {
-      return format("%s (%s 500 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
+      return format("%s (%s 100 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
     }
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
@@ -899,12 +899,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     }
   }
   {
-    id = "armor_piercing_1000"
-    order = UNIT_INFO_ORDER.ARMOR_PIERCING_1000
+    id = "armor_piercing_500"
+    order = UNIT_INFO_ORDER.ARMOR_PIERCING_500
     compare = COMPARE_MORE_BETTER
     getHeader = function(unit)
     {
-      return format("%s (%s 1000 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
+      return format("%s (%s 500 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
     }
 
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK

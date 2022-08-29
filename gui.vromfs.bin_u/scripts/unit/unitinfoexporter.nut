@@ -2,6 +2,7 @@ let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let {UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX} = require("%scripts/unit/unitInfoType.nut")
+let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 
 ::exportUnitInfo <- function exportUnitInfo(params)
 {
@@ -57,7 +58,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
     path = genPath
 
-    ::get_main_gui_scene().performDelayed(this, nextLangExport)  //delay to show exporter logs
+    exportCalculationParameters()
   }
 
   function _tostring()
@@ -111,6 +112,19 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
   /********************************EXPORT PROCESS********************************/
   /******************************************************************************/
 
+  function exportCalculationParameters() {
+    debugLog("Exporter: start fetching calculation parameters")
+    let shopUnitsNames = ::all_units
+      .filter(@(unit) unit.isInShop)
+      .map(@(unit) unit.name)
+      .values()
+    export_calculations_parameters_for_wta(shopUnitsNames, function(parameters) {
+      debugLog("Exporter: calculation parameters received")
+      parameters.saveToTextFile(getCalculationParemetersFullPath())
+      ::get_main_gui_scene().performDelayed(this, startExport)
+    })
+  }
+
   function nextLangExport()
   {
     if (!langsList.len())
@@ -123,18 +137,24 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     curLang = langsList.pop()
     ::g_language.setGameLocalization(curLang, false, false)
 
-    debugLog($"Exporter: gen all units info to {getFullPath()}")
+    debugLog($"Exporter: gen all units info to {getLangFullPath()}")
     ::get_main_gui_scene().performDelayed(this, startExport) //delay to show exporter logs
   }
 
-  function getFullPath()
+  function getCalculationParemetersFullPath() {
+    let relPath = ::u.isEmpty(path) ? "" : $"{path}/"
+    return format("%scalculationParameters.blk", relPath)
+  }
+
+  function getLangFullPath()
   {
-    let relPath = ::u.isEmpty(path) ? "" : (path + "/")
+    let relPath = ::u.isEmpty(path) ? "" : $"{path}/"
     return format("%sunitInfo%s.blk", relPath, curLang)
   }
 
   function startExport()
   {
+    debugLog($"Exporter: start export for lang {curLang}")
     fullBlk = ::DataBlock()
     exportUnitType(fullBlk)
     exportCountry(fullBlk)
@@ -153,7 +173,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
   function finishExport(fBlk)
   {
-    fBlk.saveToTextFile(getFullPath())
+    fBlk.saveToTextFile(getLangFullPath())
     ::get_main_gui_scene().performDelayed(this, nextLangExport) //delay to show exporter logs
   }
 
@@ -213,8 +233,10 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     if (!curUnit.isInShop)
       return true
 
+    debugLog($"Exporter: process unit {curUnit.name}; {unitsList.len()} left")
     if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars)
     {
+      debugLog($"Exporter: wait for calculating parameters for unit {curUnit.name}")
       return check_unit_mods_update(curUnit, null, true, true)
     }
 
