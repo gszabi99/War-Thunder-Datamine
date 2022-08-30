@@ -2,7 +2,7 @@ tdiv {
   id:t='session_obj'
   width:t='pw'
   position:t='relative'
-  padding:t='2@eSItemInterval, 1@eSItemInterval'
+  padding:t='0, 1@eSItemInterval'
   flow:t='horizontal'
   smallFont:t='yes'
   <<^isTourWndAvailable>>
@@ -59,7 +59,7 @@ tdiv {
   width:t='pw'
   top:t='2@eSItemInterval'
   position:t='relative'
-  padding:t='2@eSItemInterval, 1@eSItemInterval'
+  padding:t='0, 1@eSItemInterval'
   flow:t='vertical'
   <<^isTourWndAvailable>>
   display:t='hide'

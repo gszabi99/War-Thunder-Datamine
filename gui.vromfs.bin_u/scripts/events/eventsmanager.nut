@@ -18,6 +18,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -36,6 +37,9 @@ global enum UnitRelevance
   NONE,
   MEDIUM,
   BEST,
+}
+
+let eventNameText = {
 }
 
 ::events <- null
@@ -180,7 +184,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getEventDisplayType(event)
   {
-    return ::getTblValue("_displayType", event, ::g_event_display_type.NONE)
+    return event?._displayType ?? ::g_event_display_type.NONE
   }
 
   function setEventDisplayType(event, displayType)
@@ -190,7 +194,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function isEventEnableOnDebug(event)
   {
-    return ::getTblValue("enableOnDebug", event, false) && !hasEventEndTime(event)
+    return (event?.enableOnDebug  ?? false) && !hasEventEndTime(event)
   }
 
   function isEventNeedInfoButton(event)
@@ -222,7 +226,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function isEventDisplayWide(event)
   {
-    return ::getTblValue("displayWide", event, false) && !isEventEnableOnDebug(event)
+    return (event?.displayWide ?? false) && !isEventEnableOnDebug(event)
   }
 
   function checkTankEvents()
@@ -401,20 +405,20 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     local result = 0
     if (::my_stats.isNewbieEventId(event_data.name))
       result = EVENT_TYPE.NEWBIE_BATTLES
-    else if (::getTblValue("tournament", event_data, false)
+    else if ((event_data?.tournament ?? false)
       && getEventTournamentMode(event_data) != GAME_EVENT_TYPE.TM_NONE_RACE)
         result = EVENT_TYPE.TOURNAMENT
     else
       result = EVENT_TYPE.SINGLE
 
-    if (::getTblValue("clanBattle", event_data, false))
+    if (event_data?.clanBattle ?? false)
       result = result | EVENT_TYPE.CLAN
     return result
   }
 
   function getEventTournamentMode(event)
   {
-    return ::getTblValue("tournament_mode", event, GAME_EVENT_TYPE.TM_NONE)
+    return event?.tournament_mode ?? GAME_EVENT_TYPE.TM_NONE
   }
 
   function _initEventViewData(eventData)
@@ -463,8 +467,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       res = ::g_event_display_type.NONE
     else
     {
-      let displayTypeName = ::getTblValue("displayType", event)
-      if (::u.isString(displayTypeName))
+      let displayTypeName = event?.displayType
+      if (displayTypeName != null)
         res = ::g_event_display_type.getTypeByName(displayTypeName)
     }
     return res
@@ -486,7 +490,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     setEventDisplayType(eventData, _calcEventDisplayType(eventData))
 
-    eventData.enableOnDebug <- ::getTblValue("enableOnDebug", eventData, false)
+    eventData.enableOnDebug <- eventData?.enableOnDebug ?? false
     if (("specialRequirements" in eventData) && !::u.isArray(eventData.specialRequirements))
       eventData.specialRequirements <- [eventData.specialRequirements]
 
@@ -576,7 +580,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getEventEconomicName(event)
   {
-    return ::getTblValue("economicName", event, "");
+    return event?.economicName ?? ""
   }
 
   function getEventByEconomicName(economicName)
@@ -592,12 +596,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let eventData = ::loadLocalByAccount("lastPlayedEvent", null)
     if (eventData == null)
       return null
-    let eventId = ::getTblValue("eventName", eventData, null)
-    let event = getEvent(eventId)
+    let event = getEvent(eventData?.eventName)
     if (event != null)
       return event
-    let economicName = ::getTblValue("economicName", eventData, null)
-    return getEventByEconomicName(economicName)
+    return getEventByEconomicName(eventData?.economicName)
   }
 
   /**
@@ -605,7 +607,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    */
   function isMultiCluster(event)
   {
-    return ::getTblValue("multiCluster", event, false)
+    return event?.multiCluster ?? false
   }
 
   function getEDiffByEvent(event)
@@ -626,7 +628,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getTeamData(eventData, team)
   {
-    return ::getTblValue(getTeamName(team), eventData)
+    return eventData?[getTeamName(team)]
   }
 
   function getTeamDataWithRoom(event, team, room)
@@ -640,12 +642,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   //doesnt depend on any player parameters.
   function isTeamDataPlayable(teamData)
   {
-    return ::getTblValue("maxTeamSize", teamData, 1) > 0
+    return (teamData?.maxTeamSize ?? 1) > 0
   }
 
   function initSidesOnce(event)
   {
-    if (::getTblValue("_isSidesInited", event))
+    if (event?._isSidesInited)
       return
 
     local sides = []
@@ -797,12 +799,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getCustomVideioPreviewName(event)
   {
-    return ::getTblValue("customVideoPreviewName", event)
+    return event?.customVideoPreviewName
   }
 
   function isEventEnabled(event)
   {
-    return event ? (::getTblValue("disabled", event, false) == false) : false
+    return event ? (event?.disabled ?? false) == false : false
   }
 
   function isEventMatchesType(event, typeMask)
@@ -993,7 +995,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let sidesList = getSidesList(event)
     foreach(team in sidesList)
     {
-      let countries = ::getTblValue("countries", getTeamData(event, team))
+      let countries = getTeamData(event, team)?.countries
       if (countries && ::isInArray(country, countries))
         return true
     }
@@ -1044,7 +1046,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       }
 
       if (("ranks" in rule)
-          && (unit.rank < ::getTblValue("min", rule.ranks, 0) || ::getTblValue("max", rule.ranks, ::max_country_rank) < unit.rank))
+          && (unit.rank < (rule.ranks?.min ?? 0) || (rule.ranks?.max ?? ::max_country_rank) < unit.rank))
         continue
 
       let unitType = getBaseUnitTypefromRule(rule, false)
@@ -1196,7 +1198,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getSpecialRequirements(event)
   {
-    return ::getTblValue("specialRequirements", event)
+    return event?.specialRequirements
   }
 
   function checkSpecialRequirements(event)
@@ -1330,7 +1332,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     foreach(idx, membersData in teamData.cantFlyData)
     {
-      let teamCode = ::getTblValue("team", membersData, idx)
+      let teamCode = membersData?.team ?? idx
       let stacks = stackMemberErrors(membersData.members)
       let teamLangConfig = ::u.map(
         stacks,
@@ -1486,7 +1488,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getAlowedCrafts(teamData, roomSpecialRules = null)
   {
-    local res = ::getTblValue("allowedCrafts", teamData, [])
+    local res = teamData?.allowedCrafts ?? []
     if (roomSpecialRules)
     {
       res = clone res
@@ -1497,12 +1499,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getForbiddenCrafts(teamData)
   {
-    return ::getTblValue("forbiddenCrafts", teamData, [])
+    return teamData?.forbiddenCrafts ?? []
   }
 
   function getRequiredCrafts(teamData)
   {
-    return ::getTblValue("requiredCrafts", teamData, [])
+    return teamData?.requiredCrafts ?? []
   }
 
   function hasUnitRequirements(teamData)
@@ -1537,7 +1539,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    */
   function isEventRespawnEnabled(event)
   {
-    return ::getTblValue("respawn", event, false)
+    return event?.respawn ?? false
   }
 
   /**
@@ -1546,7 +1548,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    */
   function isEventMultiSlotEnabled(event)
   {
-    return ::getTblValue("multiSlot", event, false)
+    return event?.multiSlot ?? false
   }
 
   /**
@@ -1555,9 +1557,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    */
   function getEventMaxRespawns(event)
   {
-    if (event == null)
-      return 0
-    return ::getTblValue("maxRespawns", event.mission_decl, 0)
+    return event?.mission_decl.maxRespawns ?? 0
   }
 
   function getEventRewardMuls(eventId)
@@ -1575,7 +1575,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getEventDifficulty(event)
   {
-    return g_difficulty.getDifficultyByMatchingName(getTblValue("difficulty", event, "arcade"))
+    return g_difficulty.getDifficultyByMatchingName(event?.difficulty ?? "arcade")
   }
 
   function getEventDiffCode(event)
@@ -1619,7 +1619,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getTeamSize(teamData)
   {
-    return ::getTblValue("maxTeamSize", teamData, EVENT_DEFAULT_TEAM_SIZE)
+    return teamData?.maxTeamSize ?? EVENT_DEFAULT_TEAM_SIZE
   }
 
   function hasTeamSizeHandicap(event)
@@ -1653,7 +1653,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getMinTeamSize(event)
   {
-    return ::getTblValue("minTeamSize", event) || 1
+    return (event?.minTeamSize ?? 1) || 1
   }
 
   function countEventTime(eventTime)
@@ -1673,7 +1673,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getEventUiSortPriority(event)
   {
-    return ::getTblValue("uiSortPriority", event, 0)
+    return event?.uiSortPriority ?? 0
   }
 
   function hasEventEndTime(event)
@@ -1728,7 +1728,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   //!!! function only for compatibility with version without gui_regional
   function getNameLocOldStyle(event, economicName)
   {
-    return ::getTblValue("loc_name", event, "events/" + economicName + "/name")
+    return event?.loc_name ?? $"events/{economicName}/name"
   }
 
   function getMaxBrText(event)
@@ -1757,36 +1757,26 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getEventNameText(event)
   {
-    let addText = isEventForClan(event) ? ::loc("ui/parentheses/space", { text = getMaxBrText(event) }) : ""
     let economicName = getEventEconomicName(event)
+    if (economicName in eventNameText)
+      return eventNameText[economicName]
+    let addText = isEventForClan(event) ? ::loc("ui/parentheses/space", { text = getMaxBrText(event) }) : ""
     let res = ::g_language.getLocTextFromConfig(getTextsBlock(economicName), "name", "")
-    if (res.len())
-      return $"{res}{addText}"
-    if (langCompatibility) {
-      return $"{::loc(getNameLocOldStyle(event, economicName), economicName)}{addText}"
+    if (res.len()) {
+      eventNameText[economicName] <- $"{res}{addText}"
+      return eventNameText[economicName]
     }
-    return "".concat(::loc($"events/{economicName}/name", ::loc($"events/{economicName}")), addText)
+    if (langCompatibility) {
+      eventNameText[economicName] <- $"{::loc(getNameLocOldStyle(event, economicName), economicName)}{addText}"
+      return eventNameText[economicName]
+    }
+    eventNameText[economicName] <- "".concat(::loc($"events/{economicName}/name", ::loc($"events/{economicName}")), addText)
+    return eventNameText[economicName]
   }
 
   function getNameByEconomicName(economicName)
   {
     return getEventNameText(::events.getEventByEconomicName(economicName))
-  }
-
-  function getEventShortNameText(event)
-  {
-    let economicName = getEventEconomicName(event)
-    local res = ::g_language.getLocTextFromConfig(getTextsBlock(economicName), "nameShort", "")
-    if (res.len())
-      return res
-
-    if (langCompatibility)
-    {
-      let locId = getNameLocOldStyle(event, economicName)
-      res = ::loc(locId + "/short", "")
-      return (res != "") ? res : ::loc(locId, ::loc("events/" + economicName + "/short"))
-    }
-    return getEventNameText(event)
   }
 
   function getBaseDescByEconomicName(economicName)
@@ -1798,9 +1788,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (langCompatibility)
     {
       let event = ::events.getEventByEconomicName(economicName)
-      return ::loc(::getTblValue("loc_desc", event, "events/" + economicName + "/desc"), "")
+      return ::loc(event?.loc_desc ?? $"events/{economicName}/desc", "")
     }
-    return ::loc("events/" + economicName + "/desc")
+    return ::loc($"events/{economicName}/desc")
   }
 
   function isEventForClan(event)
@@ -1895,7 +1885,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (!::leaderboardModel.checkLbRowVisibility(row, params))
       return false
 
-    local event = ::events.getEvent(::getTblValue("eventId", params))
+    local event = ::events.getEvent(params?.eventId)
     return row.isVisibleInEvent(event)
   }
 
@@ -2015,8 +2005,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     }
     if ("ranks" in rule)
     {
-      let minRank = max(1, ::getTblValue("min", rule.ranks, 1))
-      let maxRank = ::getTblValue("max", rule.ranks, ::max_country_rank)
+      let minRank = max(1, rule.ranks?.min ?? 1)
+      let maxRank = rule.ranks?.max ?? ::max_country_rank
       local rankText = ::get_roman_numeral(minRank)
                      + ((minRank != maxRank) ? " - " + ::get_roman_numeral(maxRank) : "")
       rankText = format(::loc("events/rank"), rankText)
@@ -2106,7 +2096,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let myTeam = availTeams[0]
     let otherTeam = ::u.search(teams, function(t) { return t != myTeam })
     let countTbl = ::SessionLobby.getMembersCountByTeams(room)
-    return ::getTblValue(myTeam, countTbl, 0) + membersCount <= ::getTblValue(otherTeam, countTbl, 0) + maxDisbalance
+    return (countTbl?[myTeam] ?? 0) + membersCount <= (countTbl?[otherTeam] ?? 0) + maxDisbalance
   }
 
   function hasPlaceInMyTeam(mGameMode, room)
@@ -2140,8 +2130,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         data[paramKey] <- paramValue
     }
 
-    let isFullText = ::getTblValue("isFullText", params, false)
-    let isCreationCheck = ::getTblValue("isCreationCheck", params, false)
+    let { isFullText = false, isCreationCheck = false } = params
     let mGameMode = ::events.getMGameMode(event, room)
     if (event == null)
       data.reasonText = ::loc("events/no_selected_event")
@@ -2208,7 +2197,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.activeJoinButton = true
       data.reasonText = ::loc("ticketBuyWindow/mainText")
       data.actionFunc = function (reasonData) {
-        let continueFunc = ::getTblValue("continueFunc", reasonData, null)
+        let continueFunc = reasonData?.continueFunc
         ::events.checkAndBuyTicket(event, continueFunc)
       }
     }
@@ -2482,7 +2471,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return false
     if (get_blk_value_by_path(::get_tournaments_blk(), event.name + "/allowToSwitchClan"))
       return true
-    let tournamentBlk = ::EventRewards.getTournamentInfoBlk(event)
+    let tournamentBlk = ::EventRewards.getTournamentInfoBlk(::events.getEventEconomicName(event))
     return tournamentBlk?.clanId ? ::clan_get_my_clan_id() == tournamentBlk.clanId.tostring() : true
   }
 
@@ -2549,7 +2538,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   {
     if (::events.isEventEnableOnDebug(event))
       return "test_events"
-    local chapterName = ::getTblValue("chapter", event, "basic_events")
+    local chapterName = event?.chapter ?? "basic_events"
     if (::events.isEventEnded(event) && ::isInArray(chapterName, ::events.standardChapterNames))
       chapterName += "/ended"
     return chapterName
@@ -2567,7 +2556,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let event = ::events.getEvent(eventId)
     if (event == null)
       return false
-    let disableSquads = ::getTblValue("disableSquads", event, false)
+    let { disableSquads = false } = event
     if (disableSquads)
     {
       handler.msgBox("squads_disabled", ::loc("events/squads_disabled"),
@@ -2581,14 +2570,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getEventRankCalcMode(event)
   {
-    return ::getTblValue("rankCalcMode", event, null)
+    return event?.rankCalcMode
   }
 
   function getEventIsVisible(event)
   {
     if (isEventEnabled(event))
       return true
-    return ::getTblValue("visible", event, true)
+    return event?.visible ?? true
   }
 
   function isEventVisibleInEventsWindow(event)
@@ -2605,7 +2594,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     foreach (team in ::events.getSidesList())
     {
       let teamName = getTeamName(team)
-      let teamData = ::getTblValue(teamName, teamDataByTeamName, null)
+      let teamData = teamDataByTeamName?[teamName]
       if (!teamData || !isTeamDataPlayable(teamData))
         continue
       let types = getUnitTypesByTeamDataAndName(teamData, teamName)
@@ -2670,7 +2659,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function isEventAllowSwitchClan(event)
   {
-    return ::getTblValue("allowSwitchClan", event, false)
+    return event?.allowSwitchClan ?? false
   }
 
   function getDifficultyImg(eventId)
@@ -2708,7 +2697,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getCustomRules(event)
   {
-    return ::getTblValue("customRules", event.mission_decl)
+    return event.mission_decl?.customRules
   }
 
   function getCustomRulesSetName(event)
@@ -2729,7 +2718,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getUnlockProgress(event)
   {
-    if (::getTblValue("gt_use_unlocks", event.mission_decl, true))
+    if (event.mission_decl?.gt_use_unlocks ?? true)
       return ""
     return ::loc("events/no_unlock_progress")
   }
@@ -2749,27 +2738,27 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function isEnableFriendsJoin(event)
   {
-    return ::getTblValue("enableFriendsJoin", event, false)
+    return event?.enableFriendsJoin ?? false
   }
 
   function isEventWithLobby(event)
   {
-    return ::getTblValue("withLobby", event, false)
+    return event?.withLobby ?? false
   }
 
   function getMaxLobbyDisbalance(event)
   {
-    return ::getTblValue("maxLobbyDisbalance", event, ::global_max_players_versus)
+    return event?.maxLobbyDisbalance ?? ::global_max_players_versus
   }
 
   function getEventReqFeature(event)
   {
-    return ::getTblValue("reqFeature", event, "")
+    return event?.reqFeature ?? ""
   }
 
   function getEventPVETrophyName(event)
   {
-    return ::getTblValue("pveTrophyName", event, "")
+    return event?.pveTrophyName ?? ""
   }
 
   function isEventVisibleByFeature(event)
@@ -2874,12 +2863,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getMaxSquadSize(event)
   {
-    return ::getTblValue("maxSquadSize", event, 4)
+    return event?.maxSquadSize ?? 4
   }
 
   function getMinSquadSize(event)
   {
-    return ::getTblValue("minSquadSize", event, 1)
+    return event?.minSquadSize ?? 1
   }
 
   function isGameTypeOfEvent(event, gameTypeName)
@@ -2889,7 +2878,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function onEventEventBattleEnded(params)
   {
-    let event = ::events.getEvent(::getTblValue("eventId", params))
+    let event = ::events.getEvent(params?.eventId)
     if (!event)
       return
 
@@ -2933,3 +2922,7 @@ seenEvents.setCompatibilityLoadData(function()
     ::saveLocalByAccount(savePath, null)
     return res
   })
+
+addListenersWithoutEnv({
+  GameLocalizationChanged = @(_) eventNameText.clear()
+}, CONFIG_VALIDATION)

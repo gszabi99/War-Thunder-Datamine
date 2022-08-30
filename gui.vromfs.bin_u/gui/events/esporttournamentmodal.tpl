@@ -18,10 +18,7 @@ root {
           _on_click:t='goBack'
           visualStyle:t='noBgr'
           img {}
-          btnText {
-            id:t='back_scene_name'
-            text:t='#mainmenu/btnTournament'
-          }
+          btnText { id:t='back_scene_name' }
         }
       }
 
@@ -256,7 +253,7 @@ root {
                     }
 
                     textareaNoTab {
-                      top:t='0.5ph-0.5h'
+                      pos:t='1@blockInterval, 0.5ph-0.5h'
                       position:t='relative'
                       text:t='<<text>>'
                       smallFont:t='yes'
@@ -351,6 +348,16 @@ root {
               background-image:t='#ui/gameuiskin#tournament_leaderboard.svg'
             }
           }
+          <<#hasLeaderboardBtn>>
+          tdiv {
+            id:t='top_nest'
+            width:t='1@eSEventBtnWidth'
+            left:t='pw-w'
+            position:t='relative'
+            padding:t='1@eSItemPadding'
+            flow:t='vertical'
+          }
+          <</hasLeaderboardBtn>>
           Button_text {
             id:t='rewards_btn'
             width:t='1@eSEventBtnWidth'

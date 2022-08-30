@@ -107,7 +107,8 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
     id = "sequence_wins"
     updateProgress = function (rewardBlk, event, callback, context = null)
     {
-      let progress = ::getTblValue("sequenceWinCount", EventRewards.getTournamentInfoBlk(event), 0)
+      let progress = ::EventRewards.getTournamentInfoBlk(::events.getEventEconomicName(event))
+        ?.sequenceWinCount ?? 0
       ::Callback(callback, context)(progress.tostring())
     }
     getText = ::condition_text_functions.sequenceWins
@@ -217,10 +218,9 @@ EventRewards.getRewardsBlk <- function getRewardsBlk(event)
   return get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event) + "/awards")
 }
 
-EventRewards.getTournamentInfoBlk <- function getTournamentInfoBlk(event)
-{
+EventRewards.getTournamentInfoBlk <- function getTournamentInfoBlk(eventEconomicName) {
   let blk = ::DataBlock()
-  ::get_tournament_info_blk(::events.getEventEconomicName(event), blk)
+  ::get_tournament_info_blk(eventEconomicName, blk)
   return blk
 }
 
@@ -426,9 +426,9 @@ EventRewards.getConditionLbField <- function getConditionLbField(condition)
   return ::getTblValue("lbField", condition, condition.id)
 }
 
-EventRewards.isRewardReceived <- function isRewardReceived(reward_blk, event)
+EventRewards.isRewardReceived <- function isRewardReceived(reward_blk, eventEconomicName)
 {
-  let infoBlk = ::EventRewards.getTournamentInfoBlk(event)
+  let infoBlk = ::EventRewards.getTournamentInfoBlk(eventEconomicName)
   if (!infoBlk?.awards)
     return false
 

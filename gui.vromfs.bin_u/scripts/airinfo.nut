@@ -78,7 +78,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
 ::get_es_unit_type <- function get_es_unit_type(unit)
 {
-  return ::getTblValue("esUnitType", unit, ::ES_UNIT_TYPE_INVALID)
+  return unit?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
 }
 
 ::getUnitTypeTextByUnit <- function getUnitTypeTextByUnit(unit)
@@ -109,7 +109,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
 ::getUnitCountry <- function getUnitCountry(unit)
 {
-  return ::getTblValue("shopCountry", unit, "")
+  return unit?.shopCountry ?? ""
 }
 
 ::isUnitDefault <- function isUnitDefault(unit)
@@ -141,7 +141,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
 ::canResearchUnit <- function canResearchUnit(unit)
 {
-  let isInShop = ::getTblValue("isInShop", unit)
+  let isInShop = unit?.isInShop
   if (isInShop == null)
   {
     ::debugTableData(unit)
@@ -261,7 +261,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::isUnitElite <- function isUnitElite(unit)
 {
-  let unitName = ::getTblValue("name", unit)
+  let unitName = unit?.name
   return unitName ? ::isUnitEliteByStatus(::get_unit_elite_status(unitName)) : false
 }
 
@@ -519,8 +519,8 @@ let isEventUnit = @(unit) unit.event != null
   if (!isShopTooltip)
   {
     let info = ::get_profile_info()
-    let balance = ::getTblValue("balance", info, 0)
-    let balanceG = ::getTblValue("gold", info, 0)
+    let balance = info?.balance ?? 0
+    let balanceG = info?.gold ?? 0
 
     if (special && (::wp_get_cost_gold(unit.name) > balanceG))
       return ::loc("mainmenu/notEnoughGold")
@@ -667,7 +667,7 @@ let isEventUnit = @(unit) unit.event != null
     let modsList = modName == "" ? air.modifications : [ getModificationByName(air, modName) ]
     foreach (mod in modsList)
     {
-      if (!::getTblValue("requiresModelReload", mod, false))
+      if (!(mod?.requiresModelReload ?? false))
         continue
       ::hangar_force_reload_model()
       break
@@ -1009,10 +1009,11 @@ let isEventUnit = @(unit) unit.event != null
 
   let isInFlight = ::is_in_flight()
 
-  let showLocalState   = ::getTblValue("showLocalState", params, true)
-  let needCrewModificators = params?.needCrewModificators ?? false
+  let { showLocalState = true, needCrewModificators = false, needShopInfo = false,
+    needCrewInfo = false, rentTimeHours = -1, isReceivedPrizes = false, researchExpInvest = 0
+  } = params
 
-  let getEdiffFunc = ::getTblValue("getCurrentEdiff", handler)
+  let getEdiffFunc = handler?.getCurrentEdiff
   let ediff = getEdiffFunc ? getEdiffFunc.call(handler) : ::get_current_ediff()
   let difficulty = ::get_difficulty_by_ediff(ediff)
   let diffCode = difficulty.diffCode
@@ -1031,12 +1032,8 @@ let isEventUnit = @(unit) unit.event != null
   let canResearch = ::canResearchUnit(air)
   let rBlk = ::get_ranks_blk()
   let wBlk = ::get_warpoints_blk()
-  let needShopInfo = ::getTblValue("needShopInfo", params, false)
-  let needCrewInfo = ::getTblValue("needCrewInfo", params, false)
 
   let isRented = air.isRented()
-  let rentTimeHours = ::getTblValue("rentTimeHours", params, -1)
-  let isReceivedPrizes = params?.isReceivedPrizes ??  false
   let showAsRent = (showLocalState && isRented) || rentTimeHours > 0
   let isSquadronVehicle = air.isSquadronVehicle()
   let isInClan = ::is_in_clan()
@@ -1070,7 +1067,7 @@ let isEventUnit = @(unit) unit.event != null
       let expTotal = air.reqExp
       let expInvest = isSquadronVehicle
         ? min(::clan_get_exp(), expTotal - expCur)
-        : ::getTblValue("researchExpInvest", params, 0)
+        : researchExpInvest
       let isResearching = ::isUnitInResearch(air) && (!isSquadronVehicle || isInClan || expInvest > 0)
 
       fillProgressBar(obj,
@@ -1147,11 +1144,11 @@ let isEventUnit = @(unit) unit.event != null
   let meetObj = holderObj.findObject("aircraft-chance_to_met_tr")
   if (::checkObj(meetObj))
   {
-    local erCompare = ::getTblValue("economicRankCompare", params)
+    local erCompare = params?.economicRankCompare
     if (erCompare != null)
     {
       if (typeof(erCompare) == "table")
-        erCompare = ::getTblValue(air.shopCountry, erCompare, 0.0)
+        erCompare = erCompare?[air.shopCountry] ?? 0.0
       let text = getChanceToMeetText(battleRating, ::calc_battle_rating_from_rank(erCompare))
       meetObj.findObject("aircraft-chance_to_met").setValue(text)
     }
@@ -1227,7 +1224,7 @@ let isEventUnit = @(unit) unit.event != null
   }
 
   local showReferenceText = false
-  foreach(item in ::getTblValue(unitType, modCharacteristics, {}))
+  foreach(item in (modCharacteristics?[unitType] ?? {}))
   {
     let characteristicArr = ::getCharacteristicActualValue(air, [item.id, item.id2],
       item.prepareTextFunc, difficulty.crewSkillName, showLocalState || needCrewModificators)
@@ -1382,7 +1379,7 @@ let isEventUnit = @(unit) unit.event != null
 
   if (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
   {
-    let unitTags = ::getTblValue(air.name, ::get_unittags_blk(), {})
+    let unitTags = ::get_unittags_blk()?[air.name] ?? {}
 
     // ship-displacement
     let displacementKilos = unitTags?.Shop?.displacement
@@ -1494,8 +1491,7 @@ let isEventUnit = @(unit) unit.event != null
   {
     let hasPremium  = havePremium.value
     let hasTalisman = special || ::shop_is_modification_enabled(air.name, "premExpMul")
-    let boosterEffects = ::getTblValue("boosterEffects", params,
-      getBoostersEffects(getActiveBoostersArray()))
+    let boosterEffects = params?.boosterEffects ?? getBoostersEffects(getActiveBoostersArray())
 
     let wpMuls = air.getWpRewardMulList(difficulty)
     if (showAsRent)
@@ -1635,7 +1631,7 @@ let isEventUnit = @(unit) unit.event != null
     if (!freeRepairsUnlimited)
     {
       let hours = showLocalState || needCrewModificators ? ::shop_get_full_repair_time_by_mode(air.name, egdCode)
-        : ::getTblValue("repairTimeHrs" + ::get_name_by_gamemode(egdCode, true), air, 0)
+        : (air[$"repairTimeHrs{::get_name_by_gamemode(egdCode, true)}"] ?? 0)
       let repairTimeText = time.hoursToString(hours, false)
       let label = ::loc((showLocalState || needCrewModificators) && crew ? "shop/full_repair_time_crew" : "shop/full_repair_time")
       holderObj.findObject("aircraft-full_repair_time_crew-tr").show(true)
@@ -1734,10 +1730,10 @@ let isEventUnit = @(unit) unit.event != null
       addInfoTextsList.append(::colorize("warningTextColor", ::loc("mainmenu/noLeaderboardProgress")))
   }
 
-  let warbondId = ::getTblValue("wbId", params)
+  let warbondId = params?.wbId
   if (warbondId)
   {
-    let warbond = ::g_warbonds.findWarbond(warbondId, ::getTblValue("wbListId", params))
+    let warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
     let award = warbond? warbond.getAwardById(air.name) : null
     if (award)
       addInfoTextsList.extend(award.getAdditionalTextsArray())
@@ -1964,8 +1960,8 @@ let isEventUnit = @(unit) unit.event != null
     if (!unit.unitType.isAvailable())
       continue
     let esUnitType = unit.unitType.esUnitType
-    let countryData = ::getTblValue(::getUnitCountry(unit), ::__types_for_coutries)
-    if (::getTblValue(esUnitType, countryData, true))
+    let countryData = ::__types_for_coutries?[::getUnitCountry(unit)]
+    if (countryData?[esUnitType] ?? true)
       continue
     countryData[esUnitType] <- ::isUnitBought(unit)
   }

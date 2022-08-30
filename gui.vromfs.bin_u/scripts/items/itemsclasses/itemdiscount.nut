@@ -1,4 +1,6 @@
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let { parseDiscountDescription, createDiscountDescriptionSortData,
+  sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
 
 ::items_classes.Discount <- class extends ::BaseItem
 {
@@ -7,6 +9,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
   static defaultIconStyle = "default_personal_discount"
   static typeIcon = "#ui/gameuiskin#item_type_discounts.svg"
 
+  discountDescBlk = null
   purchasesCount = 0
   purchasesMaxCount = 0
   canBuy = false
@@ -27,7 +30,6 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
   {
     canBuy = ::has_feature("CanBuyDiscountItems")
     base.constructor(blk, invBlk, slotData)
-    _initPersonalDiscountParams(blk?.personalDiscountsParams)
     purchasesCount = invBlk?.purchasesCount ?? 0
 
     showAmountInsteadPercent = blk?.showAmountInsteadPercent ?? false
@@ -36,16 +38,20 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
     specialOfferImage = blk?.specialOfferImage
     specialOfferImageRatio = blk?.specialOfferImageRatio
     needHideTextOnIcon = blk?.needHideTextOnIcon ?? false
+    purchasesMaxCount = blk?.purchasesMaxCount ?? 0
+    discountDescBlk = blk?.personalDiscountsParams.discountsDesc
+    discountDescriptionDataItems = []
   }
 
-  function _initPersonalDiscountParams(blk)
+  function _initPersonalDiscountParams()
   {
-    if (blk == null)
+    if (discountDescBlk == null)
       return
-    purchasesMaxCount = ::getTblValue("purchasesMaxCount", blk, 0)
-    discountDescriptionDataItems = ::parse_discount_description(blk?.discountsDesc)
-    let sortData = ::create_discount_description_sort_data(blk?.discountsDesc)
-    ::sort_discount_description_items(discountDescriptionDataItems, sortData)
+
+    discountDescriptionDataItems = parseDiscountDescription(discountDescBlk)
+    let sortData = createDiscountDescriptionSortData(discountDescBlk)
+    sortDiscountDescriptionItems(discountDescriptionDataItems, sortData)
+    discountDescBlk = null
   }
 
   /* override */ function doMainAction(cb, handler, params = null)
@@ -79,14 +85,15 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 
   function getName(colored = true)
   {
-    if (discountDescriptionDataItems.len() == 0)
+    let discountDescriptionData = getDiscountDescriptionDataItems()
+    if (discountDescriptionData.len() == 0)
       return base.getName(colored)
-    local item = discountDescriptionDataItems[0]
+    local item = discountDescriptionData[0]
     if (item.type == "aircraft")
     {
-      let hasMultipleVehicles = (discountDescriptionDataItems.len() > 1 &&
-        discountDescriptionDataItems[1].type == "aircraft" &&
-        discountDescriptionDataItems[1].category == discountDescriptionDataItems[0].category)
+      let hasMultipleVehicles = (discountDescriptionData.len() > 1 &&
+        discountDescriptionData[1].type == "aircraft" &&
+        discountDescriptionData[1].category == discountDescriptionData[0].category)
       if (hasMultipleVehicles)
       {
         item = {
@@ -146,7 +153,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
     if (expireText != "")
       result += expireText + "\n"
 
-    foreach (item in discountDescriptionDataItems)
+    foreach (item in getDiscountDescriptionDataItems())
     {
       if (result != "")
         result += "\n"
@@ -220,10 +227,8 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 
   function getMaxDiscountByCategoryAndType(category, dType)
   {
-    if (discountDescriptionDataItems == null)
-      return 0
     local result = 0
-    foreach (dataItem in discountDescriptionDataItems)
+    foreach (dataItem in getDiscountDescriptionDataItems())
     {
       if (dataItem.category == category && dataItem.type == dType)
         result = max(result, dataItem.discountValue)
@@ -233,7 +238,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 
   function isFixedType()
   {
-    return discountDescriptionDataItems.len() == 1
+    return getDiscountDescriptionDataItems().len() == 1
   }
 
   function canStack(item)
@@ -244,8 +249,9 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
     if (!fixedType)
       return true
 
-    let data1 = discountDescriptionDataItems[0]
-    let data2 = item.discountDescriptionDataItems[0]
+    let discountDescriptionData = getDiscountDescriptionDataItems()
+    let data1 = discountDescriptionData[0]
+    let data2 = item.getDiscountDescriptionDataItems()[0]
     foreach(p in stackBases)
       if (::getTblValue(p, data1) != ::getTblValue(p, data2))
         return false
@@ -257,7 +263,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
     if (!isFixedType())
       return
 
-    let data = discountDescriptionDataItems[0]
+    let data = getDiscountDescriptionDataItems()[0]
     if (!stackParams.len()) //stack not inited
       foreach(p in stackBases)
         stackParams[p] <- ::getTblValue(p, data)
@@ -278,10 +284,11 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 
   function getLayerText(colored = true)
   {
-    if (discountDescriptionDataItems == null)
+    let discountDescriptionData = getDiscountDescriptionDataItems()
+    if (discountDescriptionData.len() == 0)
       return getName(colored)
 
-    let itemData = discountDescriptionDataItems[0]
+    let itemData = discountDescriptionData[0]
     local discountType = $"item/discount/{itemData?.type ?? ""}"
     if (itemData?.aircraftName != null)
       discountType = $"{itemData.aircraftName}_shop"
@@ -320,7 +327,15 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 
   consume = @(cb, params) activateDiscount(cb, null)
 
-  getSpecialOfferLocParams = @() discountDescriptionDataItems.len() > 0
-    ? getLocParamsDescription(discountDescriptionDataItems[0])
-    : null
+  function getSpecialOfferLocParams() {
+    let discountDescriptionData = getDiscountDescriptionDataItems()
+    return discountDescriptionData.len() > 0
+      ? getLocParamsDescription(discountDescriptionData[0])
+      : null
+  }
+
+  function getDiscountDescriptionDataItems() {
+    _initPersonalDiscountParams()
+    return discountDescriptionDataItems
+  }
 }

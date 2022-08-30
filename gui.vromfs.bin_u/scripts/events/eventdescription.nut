@@ -522,7 +522,10 @@ let { isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
       })
     }
     else
-      ::gui_handlers.EventRewardsWnd.open(selectedEvent)
+      ::gui_handlers.EventRewardsWnd.open([{
+          header = ::loc("tournaments/rewards")
+          event = selectedEvent
+        }])
   }
 
   function onPlayersList()

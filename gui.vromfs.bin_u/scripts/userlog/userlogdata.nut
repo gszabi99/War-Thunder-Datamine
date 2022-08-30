@@ -227,7 +227,7 @@ local logNameByType = {
 
       let title = ""
       local msg = ""
-      let logName = getLogNameByType(blk?.type)
+      let logTypeName = ::getLogNameByType(blk?.type)
       if (blk?.type == ::EULT_SESSION_RESULT)
       {
         local mission = ""
@@ -235,7 +235,7 @@ local logNameByType = {
           mission = getMissionLocName(blk?.body, "locName")
         else
           mission = ::loc("missions/" + (blk?.body.mission ?? ""))
-        let nameLoc = "userlog/"+logName + (blk?.body.win? "/win":"/lose")
+        let nameLoc = "userlog/"+logTypeName + (blk?.body.win? "/win":"/lose")
         msg = format(::loc(nameLoc), mission) //need more info in log, maybe title.
         ::my_stats.markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
@@ -275,8 +275,8 @@ local logNameByType = {
         }
       }
       else
-        msg = ::loc("userlog/" + logName)
-      ::g_popups.add(title, msg)
+        msg = ::loc("userlog/" + logTypeName)
+      ::g_popups.add(title, msg, null, null, null, logTypeName)
       ::shown_userlog_notifications.append(blk?.id)
       /*---^^^^---show notifications---^^^^---*/
     }
@@ -422,7 +422,8 @@ local logNameByType = {
       {
         if (!item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))
         {
-          let locId = "userlog/" + ::getLogNameByType(blk.type)
+          let logTypeName = ::getLogNameByType(blk.type)
+          let locId = $"userlog/{logTypeName}"
           let numItems = blk.body?.quantity ?? blk.body?.amount ?? 1
           let name = ::loc(locId, {
             numItemsColored = numItems
@@ -444,14 +445,16 @@ local logNameByType = {
                   })
             }]
 
-          ::g_popups.add(name, item && item.getName() ? item.getName() : "", null, button)
+          ::g_popups.add(name, item && item.getName() ? item.getName() : "",
+            null, button, null, logTypeName)
         }
         markDisabled = true
       }
     }
     else if (blk?.type == ::EULT_TICKETS_REMINDER)
     {
-      let name = ::loc("userlog/" + ::getLogNameByType(blk.type))
+      let logTypeName = ::getLogNameByType(blk.type)
+      let name = ::loc($"userlog/{logTypeName}")
       let desc = [::colorize("userlogColoredText", ::events.getNameByEconomicName(blk?.body.name))]
       if (::getTblValue("battleLimitReminder", blk.body))
         desc.append(::loc("userlog/battleLimitReminder") + ::loc("ui/colon") + (blk?.body.battleLimitReminder ?? ""))
@@ -460,7 +463,7 @@ local logNameByType = {
       if (::getTblValue("sequenceDefeatCountReminder", blk.body))
         desc.append(::loc("userlog/sequenceDefeatCountReminder") + ::loc("ui/colon") + (blk?.body.sequenceDefeatCountReminder ?? ""))
 
-      ::g_popups.add(name, ::g_string.implode(desc, "\n"))
+      ::g_popups.add(name, ::g_string.implode(desc, "\n"), null, null, null, logTypeName)
       markDisabled = true
     }
     else if (blk?.type == ::EULT_ACTIVATE_ITEM)
@@ -501,11 +504,14 @@ local logNameByType = {
       let reason = ::getTblValue("reason", blk.body, "unknown")
       if (reason == "unknown" || reason == "consumed")
       {
-        let locId = "userlog/" + ::getLogNameByType(blk.type) + "/" + reason
+        let logTypeName = ::getLogNameByType(blk.type)
+        let locId = $"userlog/{logTypeName}/{reason}"
         let itemId = ::getTblValue("id", blk.body, "")
         let item = ::ItemsManager.findItemById(itemId)
         if (item && item.iType == itemType.TICKET)
-          ::g_popups.add("", ::loc(locId, {itemName = ::colorize("userlogColoredText", item.getName())}))
+          ::g_popups.add("",
+            ::loc(locId, {itemName = ::colorize("userlogColoredText", item.getName())}),
+            null, null, null, logTypeName)
       }
       markDisabled = true
     }

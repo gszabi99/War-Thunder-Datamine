@@ -17,6 +17,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName    = "%gui/events/eSportModal.blk"
   sceneTplName    = "%gui/events/eSportContent"
   eventTplName    = "%gui/events/eSportItem"
+  handlerLocId    = "mainmenu/btnTournament"
 
   currSeason      = null
   tournamentList  = null
@@ -90,7 +91,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let idx = tournamentList.findindex(@(tour) getTourDay(tour) >= 0)
-    if (idx)
+    if (idx != null)
       eventListObj.setValue(idx)
   }
 

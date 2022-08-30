@@ -43,7 +43,7 @@ local requestedGameModes = []
         let canRetry = __fetch_counter < MAX_FETCH_RETRIES
         if (::checkMatchingError(result, !canRetry))
         {
-          __loadGameModesFromList(::getTblValue("modes", result, []))
+          __loadGameModesFromList(result?.modes ?? [])
           __fetch_counter = 0
           return
         }
@@ -64,7 +64,7 @@ local requestedGameModes = []
 
   function getModeById(gameModeId)
   {
-    return getTblValue(gameModeId, __gameModes, null)
+    return __gameModes?[gameModeId]
   }
 
   function  onGameModesChangedNotify(added_list, removed_list, changed_list)
@@ -76,9 +76,8 @@ local requestedGameModes = []
     {
       foreach (modeInfo in removed_list)
       {
-        let gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
-        ::dagor.debug(format("matching game mode removed '%s' [%d]",
-                            ::getTblValue("name", modeInfo, ""), gameModeId))
+        let { gameModeId = -1, name = "" } = modeInfo
+        ::dagor.debug($"matching game mode removed '{name}' [{gameModeId}]")
         __removeGameMode(gameModeId)
         needNotify = true
       }
@@ -88,9 +87,8 @@ local requestedGameModes = []
     {
       foreach (modeInfo in added_list)
       {
-        let gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
-        ::dagor.debug(format("matching game mode added '%s' [%d]",
-                            ::getTblValue("name", modeInfo, ""), gameModeId))
+        let { gameModeId = -1, name = "" } = modeInfo
+        ::dagor.debug($"matching game mode added '{name}' [{gameModeId}]")
         needToFetchGmList.append(gameModeId)
       }
     }

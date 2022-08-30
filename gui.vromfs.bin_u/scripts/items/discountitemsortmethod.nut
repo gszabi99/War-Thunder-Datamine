@@ -1,5 +1,130 @@
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
+let discountPostfixArray = ["_premium", ""]
+
+let function addDiscountDescriptionAircrafts(blk, category, items) {
+  if (blk == null)
+    return
+  for (local i = 0; i < blk.paramCount(); ++i)
+  {
+    if (blk.getParamValue(i) == 0)
+      continue
+    let aircraftName = blk.getParamName(i)
+    items.append({
+      category = category
+      type = "aircraft"
+      discountValue = blk.getParamValue(i)
+      aircraftName = aircraftName
+      aircraftSortIndex = i
+    })
+  }
+}
+
+let function parseDiscountDescriptionCountryRank(blk, category) {
+  let items = {
+    country_premium     = []
+    country             = []
+    countryRank_premium = []
+    countryRank         = []
+    rank_premium        = []
+    rank                = []
+  }
+  if (blk == null)
+    return items
+  local needFillRanks = true
+  foreach (countryName in shopCountriesList) {
+    foreach (postfix in discountPostfixArray) {
+      let cName = $"{countryName}{postfix}"
+      if ((cName in blk) && blk[cName] != 0)
+        items[$"country{postfix}"].append({
+          paramName = cName
+          category = category
+          // Same as for "all" discounts
+          // because of same localization strings.
+          type = $"all{postfix}"
+          discountValue = blk[cName]
+          countryName = countryName
+        })
+      for (local i = 1; i <= ::max_country_rank; ++i) {
+        local name = $"{countryName}_rank{i}{postfix}"
+        if ((name in blk) && blk[name] != 0)
+          items[$"countryRank{postfix}"].append({
+            paramName = name
+            category = category
+            // Same as for rank-only discounts
+            // because of same localization strings.
+            type = $"rank{postfix}"
+            discountValue = blk[name]
+            rank = i
+            countryName = countryName
+          })
+        if (!needFillRanks)
+          continue
+
+        name = $"rank{i}{postfix}"
+        if ((name not in blk) || blk[name] == 0)
+          continue
+        items[$"rank{postfix}"].append({
+          paramName = name
+          category = category
+          type = $"rank{postfix}"
+          discountValue = blk[name]
+          rank = i
+        })
+      }
+      needFillRanks = false
+    }
+  }
+  return items
+}
+
+let function addDiscountDescriptionAll(blk, category, items) {
+  if (blk == null)
+    return
+  foreach (postfix in discountPostfixArray) {
+    let name = $"all{postfix}"
+    if ((name not in blk) || blk[name] == 0)
+      continue
+    items.append({
+      paramName = name
+      category = category
+      type = name
+      discountValue = blk[name]
+    })
+  }
+}
+
+let function addDiscountDescriptionEntitlements(blk, category, items) {
+  if (blk == null || category != "entitlements")
+    return
+  for (local i = 0; i < blk.paramCount(); ++i)
+    items.append({
+      category = category
+      entitlementName = blk.getParamName(i)
+      discountValue = blk.getParamValue(i)
+    })
+}
+
+let function parseDiscountDescriptionCategory(blk) {
+  if (blk == null)
+    return []
+  let category = blk.getBlockName()
+  // Order corresponds to discount priorities.
+  let items = []
+  addDiscountDescriptionAircrafts(blk?.aircrafts, category, items)
+  let descriptionCountryRank = parseDiscountDescriptionCountryRank(blk, category)
+
+  items.extend(descriptionCountryRank.countryRank_premium)
+  items.extend(descriptionCountryRank.countryRank)
+  items.extend(descriptionCountryRank.rank_premium)
+  items.extend(descriptionCountryRank.rank)
+  items.extend(descriptionCountryRank.country_premium)
+  items.extend(descriptionCountryRank.country)
+  addDiscountDescriptionAll(blk, category, items)
+  addDiscountDescriptionEntitlements(blk, category, items)
+  return items
+}
+
 /**
 * Sorts description items with following rules:
 * First items are sorted by categories. Same order
@@ -7,11 +132,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 * as in discount item blk. Last go all non-aircraft
 * items with order from blk.
 */
-::sort_discount_description_items <- function sort_discount_description_items(items, sortData)
-{
+let function sortDiscountDescriptionItems(items, sortData) {
   if (sortData == null)
     return
-  items.sort((@(sortData) function (item1, item2) {
+  items.sort(function (item1, item2) {
     if (item1.category != item2.category)
     {
       let catSortData1 = sortData[item1.category]
@@ -36,15 +160,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (index1 != index2)
       return index1 > index2 ? 1 : -1
     return 0
-  })(sortData))
+  })
 }
 
 /**
 * Creates special data object that
 * helps to sort discount data items.
 */
-::create_discount_description_sort_data <- function create_discount_description_sort_data(blk)
-{
+let function createDiscountDescriptionSortData(blk) {
   if (blk == null)
     return null
   let sortData = {}
@@ -65,155 +188,17 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 /**
 * Main parsing method.
 */
-::parse_discount_description <- function parse_discount_description(blk)
-{
+let function parseDiscountDescription(blk) {
   if (blk == null)
     return []
   let items = []
   for (local i = 0; i < blk.blockCount(); ++i)
-    items.extend(::parse_discount_description_category(blk.getBlock(i)))
+    items.extend(parseDiscountDescriptionCategory(blk.getBlock(i)))
   return items
 }
 
-::parse_discount_description_category <- function parse_discount_description_category(blk)
-{
-  if (blk == null)
-    return []
-  let category = blk.getBlockName()
-  // Order corresponds to discount priorities.
-  let items = []
-  items.extend(::parse_discount_description_aircrafts(blk?.aircrafts, category))
-  items.extend(::parse_discount_description_country_rank(blk, category, true))
-  items.extend(::parse_discount_description_country_rank(blk, category, false))
-  items.extend(::parse_discount_description_rank(blk, category, true))
-  items.extend(::parse_discount_description_rank(blk, category, false))
-  items.extend(::parse_discount_description_country(blk, category, true))
-  items.extend(::parse_discount_description_country(blk, category, false))
-  items.extend(::parse_discount_description_all(blk, category, true))
-  items.extend(::parse_discount_description_all(blk, category, false))
-  items.extend(::parse_discount_description_entitlements(blk, category))
-  return items
-}
-
-::parse_discount_description_aircrafts <- function parse_discount_description_aircrafts(blk, category)
-{
-  if (blk == null)
-    return []
-  let items = []
-  for (local i = 0; i < blk.paramCount(); ++i)
-  {
-    if (blk.getParamValue(i) == 0)
-      continue
-    let aircraftName = blk.getParamName(i)
-    items.append({
-      category = category
-      type = "aircraft"
-      discountValue = blk.getParamValue(i)
-      aircraftName = aircraftName
-      aircraftSortIndex = i
-    })
-  }
-  return items
-}
-
-::parse_discount_description_country_rank <- function parse_discount_description_country_rank(blk, category, usePremium)
-{
-  if (blk == null)
-    return []
-  let items = []
-  foreach (countryName in shopCountriesList)
-  {
-    for (local i = 1; i <= ::max_country_rank; ++i)
-    {
-      let name = countryName + "_rank" + i.tostring() + (usePremium ? "_premium" : "")
-      if (!(name in blk) || blk[name] == 0)
-        continue
-      items.append({
-        paramName = name
-        category = category
-        // Same as for rank-only discounts
-        // because of same localization strings.
-        type = "rank" + (usePremium ? "_premium" : "")
-        discountValue = blk[name]
-        rank = i
-        countryName = countryName
-      })
-    }
-  }
-  return items
-}
-
-::parse_discount_description_country <- function parse_discount_description_country(blk, category, usePremium)
-{
-  if (blk == null)
-    return []
-  let items = []
-  foreach (countryName in shopCountriesList)
-  {
-    let name = countryName + (usePremium ? "_premium" : "")
-    if (!(name in blk) || blk[name] == 0)
-      continue
-    items.append({
-      paramName = name
-      category = category
-      // Same as for "all" discounts
-      // because of same localization strings.
-      type = "all" + (usePremium ? "_premium" : "")
-      discountValue = blk[name]
-      countryName = countryName
-    })
-  }
-  return items
-}
-
-::parse_discount_description_rank <- function parse_discount_description_rank(blk, category, usePremium)
-{
-  if (blk == null)
-    return []
-  let items = []
-  for (local i = 1; i <= ::max_country_rank; ++i)
-  {
-    let name = "rank" + i.tostring() + (usePremium ? "_premium" : "")
-    if (!(name in blk) || blk[name] == 0)
-      continue
-    items.append({
-      paramName = name
-      category = category
-      type = "rank" + (usePremium ? "_premium" : "")
-      discountValue = blk[name]
-      rank = i
-    })
-  }
-  return items
-}
-
-::parse_discount_description_all <- function parse_discount_description_all(blk, category, usePremium)
-{
-  if (blk == null)
-    return []
-  let name = "all" + (usePremium ? "_premium" : "")
-  if (!(name in blk) || blk[name] == 0)
-    return []
-  return [{
-    paramName = name
-    category = category
-    type = "all" + (usePremium ? "_premium" : "")
-    discountValue = blk[name]
-  }]
-}
-
-::parse_discount_description_entitlements <- function parse_discount_description_entitlements(blk, category)
-{
-  if (blk == null || category != "entitlements")
-    return []
-  let items = []
-  for (local i = 0; i < blk.paramCount(); ++i)
-  {
-    items.append({
-      category = category
-      entitlementName = blk.getParamName(i)
-      discountValue = blk.getParamValue(i)
-    })
-  }
-  return items
+return {
+  sortDiscountDescriptionItems
+  createDiscountDescriptionSortData
+  parseDiscountDescription
 }

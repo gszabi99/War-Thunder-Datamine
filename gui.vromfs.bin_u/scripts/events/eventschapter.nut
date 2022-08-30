@@ -69,8 +69,7 @@
     return (!!event1 <=> !!event2)
         || (::events.getEventUiSortPriority(event2) <=> ::events.getEventUiSortPriority(event1))
         || (::events.getEventDiffCode(event1) <=> ::events.getEventDiffCode(event2))
-        || (::g_string.utf8ToLower(::events.getEventNameText(event1))
-          <=> ::g_string.utf8ToLower(::events.getEventNameText(event2)))
+        || (::events.getEventNameText(event1) <=> ::events.getEventNameText(event2))
         || event1.name <=> event2.name
   }
 }
@@ -119,7 +118,7 @@
 
   function getChapter(chapter_name)
   {
-    let chapterIndex = ::getTblValue(chapter_name, chapterIndexByName, -1)
+    let chapterIndex = chapterIndexByName?[chapter_name] ?? -1
     return chapterIndex < 0 ? null : chapters[chapterIndex]
   }
 

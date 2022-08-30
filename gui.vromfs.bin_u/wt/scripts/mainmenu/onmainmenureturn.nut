@@ -14,8 +14,7 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 let { checkInvitesAfterFlight } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 let { checkShowRateWnd } = require("%scripts/user/suggestionRateGame.nut")
-let { checkAutoShowEmailRegistration, checkForceSuggestionEmailRegistration
-} = require("%scripts/user/suggestionEmailRegistration.nut")
+let { checkAutoShowEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { checkShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 
 let delayed_gblk_error_popups = []
@@ -90,8 +89,6 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(@() ::g_xbox_squad_manager.checkAfterFlight() )
     handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks() )
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
-    if (isAfterLogin)
-      handler.doWhenActive(@() checkForceSuggestionEmailRegistration())
   }
 
   if(isAllowPopups && ::has_feature("Invites") && !guiScene.hasModalObject())

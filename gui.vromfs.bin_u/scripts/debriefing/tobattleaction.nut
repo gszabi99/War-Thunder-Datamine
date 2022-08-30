@@ -1,6 +1,18 @@
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
 
+let function openLastTournamentWnd(lastEvent) {
+  let tournament = getTourById(getSharedTourNameByEvent(lastEvent.economicName))
+  if (!tournament)
+    return
+
+  let curTourParams = getTourParams(tournament)
+  if (isTournamentWndAvailable(curTourParams.dayNum)) {
+    ::gui_start_mainmenu()
+    eSportTournamentModal({ tournament, curTourParams, curEvent = lastEvent })
+  }
+}
+
 local goToBattleAction = function() {
   ::get_cur_gui_scene().performDelayed({}, function() {
     if (::g_squad_manager.isSquadMember() && !::g_squad_manager.isMeReady()) {
@@ -21,7 +33,6 @@ local goToBattleAction = function() {
         eSportTournamentModal({ tournament, curTourParams, curEvent = lastEvent })
           ?.goToBattleFromDebriefing()
       }
-
       return
     }
     let eventDisplayType = ::events.getEventDisplayType(lastEvent)
@@ -49,6 +60,7 @@ local goToBattleAction = function() {
 }
 
 return {
+  openLastTournamentWnd
   getGoToBattleAction = @() goToBattleAction
   overrideGoToBattleAction = @(func) goToBattleAction = func
 }

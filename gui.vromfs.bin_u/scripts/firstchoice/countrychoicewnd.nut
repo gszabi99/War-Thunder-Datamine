@@ -101,7 +101,7 @@ enum CChoiceState {
   function checkSelection(country, unitType)
   {
     let availData = get_unit_types_in_countries()
-    return ::getTblValue(unitType.esUnitType, ::getTblValue(country, availData), false)
+    return availData?[country][unitType.esUnitType] ?? false
   }
 
   function applySelection()
@@ -119,8 +119,7 @@ enum CChoiceState {
     if (!unitType.isAvailableForFirstChoice(country))
       return false
 
-    let countryData = ::getTblValue(country, countriesUnits)
-    return ::getTblValue(unitType.esUnitType, countryData)
+    return countriesUnits?[country][unitType.esUnitType]
   }
 
   function createUnitTypeChoice()
@@ -320,7 +319,7 @@ enum CChoiceState {
 
   function onSelectCountry(obj)
   {
-    let newCountry = ::getTblValue(obj.getValue(), countries)
+    let newCountry = countries?[obj.getValue()]
     if (newCountry)
       selectedCountry = newCountry
   }
@@ -497,7 +496,7 @@ enum CChoiceState {
   {
     let res = []
     foreach (countryName, countryData in ::get_unit_types_in_countries())
-      if (::getTblValue(unitType, countryData))
+      if (countryData?[unitType])
         res.append(countryName)
 
     return res

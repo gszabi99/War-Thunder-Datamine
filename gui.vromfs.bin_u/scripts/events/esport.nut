@@ -158,6 +158,21 @@ let function checkByFilter(tour, filter) {
 
 let getOverlayTextColor = @(isSesActive) isSesActive ? "sPlay" : "sSelected"
 
+let function getBattlesNum(event) {
+  if (!event)
+    return null
+
+  let ticket = ::events.getEventActiveTicket(event)
+  if (!ticket)
+    return null
+
+  let battleCount = event?.economicName
+    ? (ticket.getTicketTournamentData(event.economicName)?.battleCount ?? 0)
+    : 0
+
+  return ticket.battleLimit - battleCount
+}
+
 let function getTourCommonViewParams(tour, tourParams, reverseCountries = false) {
   let cType = tour.competitive_type
   let teamSizes = cType.split("x")
@@ -200,7 +215,9 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     battleDay = isFinished ? ::loc("items/craft_process/finished")
       : isTourWndAvailable ? ::loc("tournaments/enumerated_day", {num = day + 1})
       : ::loc("tournaments/coming_soon")
-    battlesNum = isTourWndAvailable ? tour.tickets[day].battleLimit : ""
+    battlesNum = isTourWndAvailable
+      ? (getBattlesNum(getEventByDay(tour.id, dayNum, isTraining)) ?? tour.tickets[day].battleLimit)
+      : ""
     sessions = getSessionsView(sesIdx, tour.scheduler?[day] ?? [])
     curSesTime = sesTime <  0 ? null : secondsToString(sesTime)
     curTrainingTime = sesIdx < 0 ? null
@@ -351,7 +368,6 @@ let function hasAnyTickets() {
   return tourList != null
     && tourList.findindex(@(tour) ::is_subscribed_for_tournament(tour.id)) != null
 }
-
 
 return {
   DAY

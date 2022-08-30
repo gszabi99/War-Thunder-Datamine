@@ -1,5 +1,6 @@
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
+let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
@@ -71,7 +72,8 @@ let function getCrafts(data, country = null) {
 
      crafts.append({
        name = name
-       type = craft.expClass.expClassName
+       type = craft.expClass.expClassName // compatibility with 2.17.0.X, this parameter is replaced by craftType
+       craftType = craft.expClass.expClassName
        mrank = craft.getEconomicRank(::get_current_ediff())
        rank = craft?.rank ?? -1
      })
@@ -206,7 +208,7 @@ updateBattleRating = function(gameMode = null, brData = null) //!!FIX ME: why ou
 
 local isRequestDelayed = false
 let function updateBattleRatingDelayed() {
-  if (isRequestDelayed || ::is_in_flight()) //do not recalc while in the battle
+  if (isRequestDelayed || ::is_in_flight() || isNeedFirstCountryChoice()) //do not recalc while in the battle
     return
   isRequestDelayed = true
   ::handlersManager.doDelayed(function() {

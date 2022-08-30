@@ -129,7 +129,7 @@ let function updateFunctions() {
     local replaced = false
     foreach(table in block.replaceFunctions)
     {
-      let langsArray = ::getTblValue("language", table, [])
+      let langsArray = table?.language ?? []
       if (!::isInArray(getLanguageName(), langsArray))
         continue
 
@@ -225,7 +225,7 @@ let function checkInitList() {
 
 let function getLangInfoById(id) {
   checkInitList()
-  return ::getTblValue(id, langsById)
+  return langsById?[id]
 }
 
 ::g_language.getCurLangInfo <- function getCurLangInfo()
@@ -234,7 +234,7 @@ let function getLangInfoById(id) {
 }
 
 let function onChangeLanguage() {
-  currentSteamLanguage = ::getTblValue(currentLanguage, steamLanguages, "english");
+  currentSteamLanguage = steamLanguages?[currentLanguage] ?? "english"
   updateFunctions()
 }
 
@@ -315,7 +315,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
 ::g_language.getLangInfoByChatId <- function getLangInfoByChatId(chatId)
 {
   checkInitList()
-  return ::getTblValue(chatId, langsByChatId)
+  return langsByChatId?[chatId]
 }
 
 /*
@@ -339,7 +339,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
   if (key in config)
     res = config[key]
   else
-    res = ::getTblValue(id, config, res)
+    res = config?[id] ?? res
 
   if (typeof(res) != "string")
     return defaultValue || id
@@ -351,7 +351,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
 
 ::g_language.isAvailableForCurLang <- function isAvailableForCurLang(block)
 {
-  if (!::getTblValue("showForLangs", block))
+  if (!(block?.showForLangs ?? false))
     return true
 
   let availableForLangs = split_by_chars(block.showForLangs, ";")

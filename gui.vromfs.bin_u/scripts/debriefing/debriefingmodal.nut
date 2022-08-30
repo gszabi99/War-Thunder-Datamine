@@ -35,7 +35,8 @@ gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTabl
 } = require("%scripts/debriefing/debriefingFull.nut")
 let { needCheckForVictory } = require("%scripts/missions/missionsUtils.nut")
 let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
-let { getGoToBattleAction } = require("%scripts/debriefing/toBattleAction.nut")
+let { getGoToBattleAction,
+  openLastTournamentWnd } = require("%scripts/debriefing/toBattleAction.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
@@ -2762,10 +2763,8 @@ let statTooltipColumnParamByType = {
       return
     }
 
-    if (gm == ::GM_CAMPAIGN)
-    {
-      if (debriefingResult.isSucceed)
-      {
+    if (gm == ::GM_CAMPAIGN) {
+      if (debriefingResult.isSucceed) {
         ::dagor.debug("VIDEO: campaign = "+ ::current_campaign_id + "mission = "+ ::current_campaign_mission)
         if ((::current_campaign_mission == "jpn_guadalcanal_m4")
             || (::current_campaign_mission == "us_guadalcanal_m4"))
@@ -2773,16 +2772,17 @@ let statTooltipColumnParamByType = {
         ::select_next_avail_campaign_mission(::current_campaign_id, ::current_campaign_mission)
       }
       ::go_debriefing_next_func = ::gui_start_menuCampaign
-    } else
-    if (gm==::GM_TEST_FLIGHT)
+      return
+    }
+
+    if (gm==::GM_TEST_FLIGHT) {
       ::go_debriefing_next_func = @() ::gui_start_mainmenu_reload(true)
-    else
-    if (gm==::GM_DYNAMIC)
-    {
-      if (isMpMode)
-      {
-        if (::SessionLobby.isInRoom() && getDynamicResult() == ::MISSION_STATUS_RUNNING)
-        {
+      return
+    }
+
+    if (gm==::GM_DYNAMIC) {
+      if (isMpMode) {
+        if (::SessionLobby.isInRoom() && getDynamicResult() == ::MISSION_STATUS_RUNNING) {
           ::go_debriefing_next_func = ::gui_start_dynamic_summary
           if (is_mplayer_host())
             recalcDynamicLayout()
@@ -2792,14 +2792,12 @@ let statTooltipColumnParamByType = {
         return
       }
 
-      if (getDynamicResult() == ::MISSION_STATUS_RUNNING)
-      {
+      if (getDynamicResult() == ::MISSION_STATUS_RUNNING) {
         let settings = DataBlock();
         ::mission_settings.dynlist <- ::dynamic_get_list(settings, false)
 
         let add = []
-        for (local i = 0; i < ::mission_settings.dynlist.len(); i++)
-        {
+        for (local i = 0; i < ::mission_settings.dynlist.len(); i++) {
           let misblk = ::mission_settings.dynlist[i].mission_settings.mission
           misblk.setStr("mis_file", ::mission_settings.layout)
           misblk.setStr("chapter", ::get_cur_game_mode_name());
@@ -2810,15 +2808,22 @@ let statTooltipColumnParamByType = {
         ::go_debriefing_next_func = ::gui_start_dynamic_summary
       } else
         ::go_debriefing_next_func = ::gui_start_dynamic_summary_f
-    } else if (gm == ::GM_SINGLE_MISSION)
-    {
+
+      return
+    }
+
+    if (gm == ::GM_SINGLE_MISSION) {
       let mission = ::mission_settings?.mission ?? ::get_current_mission_info_cached()
       ::go_debriefing_next_func = ::is_user_mission(mission)
         ? ::gui_start_menuUserMissions
         : ::gui_start_menuSingleMissions
+
+      return
     }
-    else if (::events.getEvent(::SessionLobby.lastEventName)?.chapter == "competitive")
-      ::go_debriefing_next_func = goToBattle
+
+    let lastEvent = ::events.getEvent(::SessionLobby.lastEventName)
+    if (lastEvent?.chapter == "competitive")
+      ::go_debriefing_next_func = @() openLastTournamentWnd(lastEvent)
     else
       ::go_debriefing_next_func = ::gui_start_mainmenu
   }

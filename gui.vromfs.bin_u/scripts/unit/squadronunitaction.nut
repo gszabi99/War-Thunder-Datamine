@@ -1,7 +1,7 @@
 const CHOSEN_RESEARCH_SAVE_ID = "has_chosen_research_of_squadron"
 
 let isAllClanUnitsResearched = @() u.search(::all_units,
-  @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && !::isUnitResearched(unit)
+  @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && ::canResearchUnit(unit)
 ) == null
 
 local _hasChosenResearch = null
@@ -25,7 +25,7 @@ let function hasClanUnitChosenResearch() {
 }
 
 let function needChooseClanUnitResearch() {
-  if (!::has_feature("ClanVehicles")
+  if (!::is_in_clan() || !::has_feature("ClanVehicles")
       || isAllClanUnitsResearched())
     return false
 

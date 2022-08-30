@@ -121,7 +121,7 @@ let function get_gamepad_specific_localization(locId)
 
 ::getAircraftByName <- function getAircraftByName(name)
 {
-  return ::getTblValue(name, ::all_units)
+  return ::all_units?[name]
 }
 
 

@@ -6,15 +6,22 @@ let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar
 let { needShowOverrideSlotbar, isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
 let function getActiveTicketTxt(event) {
+  if (!event)
+    return ""
+
   let ticket = ::events.getEventActiveTicket(event)
   if (!ticket)
     return ""
 
-  let tournamentData = ticket.getTicketTournamentData(event?.economicName ?? "")
-  return ::loc("ui/parentheses/space",
-    {text = $"{tournamentData.battleCount}/{ticket.battleLimit}"})
+  let tournamentData = event?.economicName
+    ? ticket.getTicketTournamentData(event.economicName) : null
+
+  return tournamentData
+    ? ::loc("ui/parentheses/space", {text = $"{tournamentData.battleCount}/{ticket.battleLimit}"})
+    : ""
 }
 
 local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -35,6 +42,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     scene.findObject("update_timer").setUserData(this)
+    setModalBreadcrumbGoBackParams(this)
     updateQueueInterface()
     updateContentView()
 
@@ -50,6 +58,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       afterFullUpdate = updateApplyButton
       showAlwaysFullSlotbar = true
       needCheckUnitUnlock = showOverrideSlotbar
+      showTopPanel = false
     })
   }
 
@@ -118,12 +127,13 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function fetchLbData() {
-    let newSelfRowRequest = ::events.getMainLbRequest(curEvent)
+    let event = getEventByDay(tournament.id, curTourParams.dayNum, false)
+    let newSelfRowRequest = ::events.getMainLbRequest(event)
     ::events.requestSelfRow(
       newSelfRowRequest,
       "mini_lb_self",
       function (self_row) {
-        ::events.requestLeaderboard(::events.getMainLbRequest(curEvent),
+        ::events.requestLeaderboard(::events.getMainLbRequest(event),
         "mini_lb_self",
         function (lb_data) {
           let isLbEnable = lb_data.rows.len() > 0
@@ -133,6 +143,24 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
           lbObj.inactiveColor = isLbEnable ? "no" : "yes"
           lbObj.enable(isLbEnable)
+          if (!isLbEnable)
+            return
+
+          let topObj = scene.findObject("top_nest")
+          if (!topObj?.isValid())
+            return
+
+          let texts = []
+          foreach (idx, row in lb_data.rows) {
+            if (idx > 2)
+              break
+
+            let txt = row._id == ::my_user_id_str
+              ? ::colorize("totalTextColor", row.name) : row.name
+            texts.append({ text = $"{idx + 1} {txt}"})
+          }
+          let data = ::handyman.renderCached("%gui/commonParts/text", {texts = texts})
+          guiScene.replaceContentFromText(topObj, data, data.len(), this)
         }, this)
       }, this)
   }
@@ -333,7 +361,15 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       tournament.sharedEconomicName)
 
   function onReward() {
-    ::gui_handlers.EventRewardsWnd.open(curEvent, ::get_tournament_desk_blk(tournament.id).awards)
+    ::gui_handlers.EventRewardsWnd.open([{
+        header = ::loc("tournaments/rewards")
+        event = curEvent
+        tourId = tournament.id
+      },{
+        header = ::loc("tournaments/seasonRewards")
+        event = curEvent
+        tourId = tournament.sharedEconomicName
+      }])
   }
 
   function updateQueueView() {

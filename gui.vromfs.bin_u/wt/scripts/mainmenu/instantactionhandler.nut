@@ -1246,12 +1246,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function onEventClanChanged(params)
   {
-    doWhenActiveOnce("checkNonApprovedSquadronResearches")
+    if (!::has_feature("AutoFlushClanExp"))
+      doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
   function onEventSquadronExpChanged(params)
   {
-    doWhenActiveOnce("checkNonApprovedSquadronResearches")
+    if (!::has_feature("AutoFlushClanExp"))
+      doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
   function onEventPartnerUnlocksUpdated(p)
