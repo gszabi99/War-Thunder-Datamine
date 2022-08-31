@@ -1766,6 +1766,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       eventNameText[economicName] <- $"{res}{addText}"
       return eventNameText[economicName]
     }
+    if (event?.chapter == "competitive") {
+      eventNameText[economicName] <- ::loc($"tournament/{economicName}")
+      return eventNameText[economicName]
+    }
     if (langCompatibility) {
       eventNameText[economicName] <- $"{::loc(getNameLocOldStyle(event, economicName), economicName)}{addText}"
       return eventNameText[economicName]

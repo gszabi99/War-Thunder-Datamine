@@ -118,14 +118,13 @@ eSItemDiv {
       background-image:t='<<headerImg>>'
       background-svg-size:t='pw, ph'
     }
-    //!!!FIX 1.75@eSItemInterval & eSItemPNGHeaderHeight after PNG will be cutten
     textareaNoTab {
-      pos:t='1@eSItemPadding, 1.75@eSItemInterval+0.5@eSItemHeaderHeight-0.5h'
+      pos:t='1@eSItemPadding, 1@eSItemBgrTopPos-1@eSItemInterval-0.5h'
       position:t='absolute'
       text:t='<<rank>>'
     }
     textareaNoTab {
-      pos:t='0.5pw-0.5w, 1.75@eSItemInterval+0.5@eSItemHeaderHeight-0.5h'
+      pos:t='0.5pw-0.5w, 1@eSItemInterval+0.5@eSItemHeaderHeight-0.5h'
       position:t='absolute'
       text:t='<<tournamentType>>'
     }

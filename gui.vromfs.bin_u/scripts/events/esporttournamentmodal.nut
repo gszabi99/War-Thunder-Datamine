@@ -107,7 +107,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
         dayCountries.append({ icon = ::get_country_icon($"{::g_string.trim(country)}_round") })
         foreach (name, v in units)
           items.append({
-            text = ::getUnitName(::getAircraftByName(name), false)
+            text = ::getUnitName(::getAircraftByName(name))
             image = ::getUnitClassIco(name)
             shopItemType = getUnitRole(name)
           })

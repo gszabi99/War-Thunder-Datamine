@@ -206,7 +206,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     headerImg = isFinished || isSoon ? "#ui/gameuiskin#tournament_finished_header.png"
       : $"#ui/gameuiskin#tournament_{armyId}_header.png"
     itemBgr =  $"#ui/images/tournament_{armyId}.jpg"
-    tournamentName = ::loc(tour.sharedEconomicName)
+    tournamentName = ::loc($"tournament/{tour.id}")
     vehicleType = ::loc($"tournaments/battle_{armyId}")
     rank = $"{::g_string.utf8ToUpper(::loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
     tournamentType = $" {::loc("country/VS")} ".join(teamSizes)

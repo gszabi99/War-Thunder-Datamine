@@ -860,7 +860,6 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!eventData)
       return goBack()
 
-    let eventName = ::events.getEventNameText(eventData)
     request = ::events.getMainLbRequest(eventData)
     if (!lbModel)
       lbModel = ::events
@@ -879,16 +878,24 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!nestObj?.isValid())
       return
 
-    let tabsArr = [eventName, sharedEconomicName].filter(@(v) v != null)
+    let tabsArr = [
+      {
+        id = eventData.economicName
+        name = ::events.getEventNameText(eventData)
+      },
+      {
+        id = sharedEconomicName
+        name = ::loc($"tournament/{sharedEconomicName}")
+      }
+    ].filter(@(v) v.id != null)
     let view = { tabs = []}
     foreach (idx, tab in tabsArr)
-      if (tab)
-        view.tabs.append({
-          id = tab
-          tabName = tab
-          navImagesText = tabsArr.len() > 1 ? ::get_navigation_images_text(idx, tabsArr.len()) : ""
-          selected = idx == 0
-        })
+      view.tabs.append({
+        id = tab.id
+        tabName = tab.name
+        navImagesText = tabsArr.len() > 1 ? ::get_navigation_images_text(idx, tabsArr.len()) : ""
+        selected = idx == 0
+      })
 
     let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(nestObj, data, data.len(), this)
