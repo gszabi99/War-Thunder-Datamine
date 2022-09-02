@@ -72,34 +72,22 @@
             "flow": "vertical",
             "tdiv": [
               {
-                "size": "pw, ph",
-                "overflow": "hidden",
-                "pos": "50%pw-50%w, 0",
-                "position": "absolute",
-                "img": {
-                  "pos": "50%pw-50%w, 0",
-                  "position": "absolute",
-                  "height": "50%sh",
-                  "width": "2h",
-                  "background-image": "#ui/images/worldwar_window_bg_image.jpg?P1"
-                }
-              },
-              {
                 "id": "operation_info",
                 "width": "pw",
                 "flow": "vertical",
                 "tdiv": [
                   {
-                    "width": "pw",
+                    "size": "pw, 0.5sh",
                     "text-halign": "center",
                     "position": "relative",
-                    "background-color": "@shadeBackgroundColor3",
-                    "activeText": {
+                    "background-color": "@frameDarkBackgroundColor",
+                    "textAreaCentered": {
                       "id": "operation_name",
-                      "mediumFont": "yes",
                       "width": "pw",
-                      "pare-text": "yes",
+                      "padding-top": "1@frameHeaderPad",
+                      "mediumFont": "yes",
                       "hideEmptyText": "yes",
+                      "overlayTextColor": "active",
                       "text": ""
                     }
                   },

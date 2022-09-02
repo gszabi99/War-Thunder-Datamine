@@ -166,6 +166,9 @@ let IsAamLaunchZoneVisible = Watched(false)
 let AamLaunchZoneDist    = Watched(0.0)
 let AamLaunchZoneDistMin = Watched(0.0)
 let AamLaunchZoneDistMax = Watched(0.0)
+let AamTimeOfFlightMax = Watched(0.0)
+let AamLaunchZoneDistMinVal = Watched(0.0)
+let AamLaunchZoneDistMaxVal = Watched(0.0)
 
 let AzimuthRange = Computed(@() max(0.0, AzimuthMax.value - AzimuthMin.value))
 let AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.value : 1.0)
@@ -200,7 +203,7 @@ radarState.__update({
 
     VelocitySearch
 
-    AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv
+    AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal
   }
 )
 

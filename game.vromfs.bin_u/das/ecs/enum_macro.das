@@ -1,4 +1,4 @@
-options no_aot = true
+options no_aot
 module enum_macro shared
 
 require daslib/ast_boost

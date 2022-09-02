@@ -191,6 +191,9 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
       [::USEROPT_CD_DAMAGE_IND],
       [::USEROPT_CD_LARGE_AWARD_MESSAGES],
       [::USEROPT_CD_WARNINGS],
+      //
+
+
     ]
 }
 

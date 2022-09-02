@@ -343,7 +343,19 @@ g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConf
 g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
 {
   unlockObj.findObject("description").setValue(getUnlockDesc(unlockConfig))
-  unlockObj.findObject("conditions").setValue(getUnlockConditionsText(unlockConfig, { showMult = false }))
+
+  let curVal = ::g_unlocks.isUnlockComplete(unlockConfig) ? null : unlockConfig.curVal
+  let mainCondText = ::UnlockConditions.getMainConditionText(unlockConfig.conditions, curVal, unlockConfig.maxVal)
+  unlockObj.findObject("main_cond").setValue(mainCondText)
+
+  let mainCond = ::UnlockConditions.getMainProgressCondition(unlockConfig.conditions)
+  let mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
+  unlockObj.findObject("mult_desc").setValue(mulText)
+
+  unlockObj.findObject("conditions").setValue(getUnlockConditionsText(unlockConfig, {
+    withMainCondition = false
+    showMult = false
+  }))
 
   let showUnitsBtnObj = unlockObj.findObject("show_units_btn")
   showUnitsBtnObj.show(hasActiveUnlock(unlockConfig.id, getShopDiffCode())
@@ -353,10 +365,6 @@ g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConf
   let showPrizesBtnObj = unlockObj.findObject("show_prizes_btn")
   showPrizesBtnObj.show(unlockConfig?.trophyId != null)
   showPrizesBtnObj.trophyId = unlockConfig?.trophyId
-
-  let mainCond = ::UnlockConditions.getMainProgressCondition(unlockConfig.conditions)
-  let mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
-  unlockObj.findObject("mult_desc").setValue(mulText)
 }
 
 g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)

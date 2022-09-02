@@ -9,7 +9,7 @@ tdiv {
   display:t='hide'
   <</isTourWndAvailable>>
 
-  textareaNoTab {
+  activeText {
     position:t='relative'
     text:t='#tournaments/schedule'
   }
@@ -22,7 +22,7 @@ tdiv {
       left:t='1@blockInterval'
       position:t='relative'
       text:t='<<sesNum>>'
-      visualStyle:t='<<#isSelected>>sessionSelected<</isSelected>><<^isSelected>><</isSelected>>'
+      visualStyle:t='<<#isSelected>>sessionSelected<</isSelected>><<^isSelected>>default<</isSelected>>'
     }
   }
   <</sessions>>
@@ -72,7 +72,7 @@ tdiv {
     flow:t='horizontal'
     smallFont:t='yes'
 
-    textareaNoTab {
+    activeText {
       position:t='relative'
       text:t='#tournaments/training'
     }
@@ -83,9 +83,7 @@ tdiv {
       position:t='relative'
       text-align:t='right'
       text:t='<<curTrainingTime>>'
-      <<#isTraining>>
-      overlayTextColor:t='<<overlayTextColor>>'
-      <</isTraining>>
+      overlayTextColor:t='<<#isTraining>><<overlayTextColor>><</isTraining>><<^isTraining>>active<</isTraining>>'
     }
   }
 
@@ -96,7 +94,7 @@ tdiv {
     flow:t='horizontal'
     smallFont:t='yes'
 
-    textareaNoTab {
+    activeText {
       position:t='relative'
       text:t='#tournaments/start'
     }
@@ -107,9 +105,7 @@ tdiv {
       position:t='relative'
       text-align:t='right'
       text:t='<<curStartTime>>'
-      <<^isTraining>>
-      overlayTextColor:t='<<overlayTextColor>>'
-      <</isTraining>>
+      overlayTextColor:t='<<#isTraining>>active<</isTraining>><<^isTraining>><<overlayTextColor>><</isTraining>>'
     }
   }
 }

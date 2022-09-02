@@ -575,6 +575,10 @@
         "name": "fuse1_dm",
         "onHit": [
           {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
             "damage": 9.0,
             "wing_r_dm": 0.1,
             "wing_l_dm": 0.1
@@ -641,6 +645,10 @@
       {
         "name": "fuse_dm",
         "onHit": [
+          {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
           {
             "damage": 10.0,
             "tail_dm": 0.2
@@ -872,6 +880,10 @@
       },
       {
         "name": "tail_dm",
+        "onHit": {
+          "flame": 0.2,
+          "smoke": 0.2
+        },
         "onKill": [
           {
             "tailcontrol_dm": 1.0,
@@ -906,6 +918,7 @@
           },
           {
             "damage": 70.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -917,11 +930,13 @@
           },
           {
             "damage": 50.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -946,6 +961,7 @@
           },
           {
             "damage": 70.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -957,11 +973,13 @@
           },
           {
             "damage": 50.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -986,6 +1004,7 @@
           },
           {
             "damage": 70.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -997,11 +1016,13 @@
           },
           {
             "damage": 50.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1026,6 +1047,7 @@
           },
           {
             "damage": 70.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1037,11 +1059,13 @@
           },
           {
             "damage": 50.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1066,6 +1090,7 @@
           },
           {
             "damage": 70.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1077,11 +1102,13 @@
           },
           {
             "damage": 50.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1106,6 +1133,7 @@
           },
           {
             "damage": 70.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1117,11 +1145,13 @@
           },
           {
             "damage": 50.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
+            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1132,8 +1162,14 @@
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1142,6 +1178,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1150,6 +1188,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1158,6 +1198,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1166,6 +1208,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1176,6 +1220,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1185,6 +1231,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1194,6 +1242,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1203,6 +1253,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1212,6 +1264,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1224,8 +1278,14 @@
         "defaultEffectPart": "spar1_r_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1234,6 +1294,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1242,6 +1304,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1250,6 +1314,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1258,6 +1324,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1268,6 +1336,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1277,6 +1347,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1286,6 +1358,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1295,6 +1369,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1304,6 +1380,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1316,8 +1394,14 @@
         "defaultEffectPart": "spar2_l_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1326,6 +1410,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1334,6 +1420,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1342,6 +1430,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1350,6 +1440,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1360,6 +1452,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1369,6 +1463,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1378,6 +1474,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1387,6 +1485,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1396,6 +1496,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1408,8 +1510,14 @@
         "defaultEffectPart": "spar2_r_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1418,6 +1526,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1426,6 +1536,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1434,6 +1546,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1442,6 +1556,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1452,6 +1568,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1461,6 +1579,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1470,6 +1590,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1479,6 +1601,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1488,6 +1612,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1901,35 +2027,10 @@
     }
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": "fuse_flares"
-    },
-    "hideDmParts": {
-      "node": "radar_dm"
-    },
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA552A.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 125,
-        "spread": 1.1,
-        "traceOffset": 1,
-        "counterIndex": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA552A.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 125,
-        "spread": 1.1,
-        "traceOffset": 2
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "defa552a_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -1939,767 +2040,562 @@
       },
       {
         "name": "mirage_5f_2xr550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_2xr550_magic.blk",
-        "weaponConfig": {
-          "presetType": "AIR_TO_AIR"
-        }
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_2xr550_magic.blk"
+      },
+      {
+        "name": "mirage_5f_2xaim_9b",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_2xaim_9b.blk"
       },
       {
         "name": "mirage_5f_as30",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_as30.blk",
-        "reqModification": "nord_as_30"
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_as30.blk"
+      },
+      {
+        "name": "mirage_5f_120kg",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_120kg.blk"
       },
       {
         "name": "mirage_5f_250kg",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg.blk",
-        "reqModification": "fr_250kg_type_25c",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-            "tier": [
-              {
-                "idx": 3,
-                "amountPerTier": 4.0,
-                "iconType": "bombs_large_group_x4"
-              },
-              {
-                "idx": 4,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_large"
-              },
-              {
-                "idx": 5,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_large"
-              },
-              {
-                "idx": 7,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_large"
-              },
-              {
-                "idx": 8,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_large"
-              },
-              {
-                "idx": 9,
-                "amountPerTier": 4.0,
-                "iconType": "bombs_large_group_x4"
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg.blk"
       },
       {
         "name": "mirage_5f_400kg",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_400kg.blk",
-        "reqModification": "fr_400kg_type_21b",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
-            "tier": [
-              {
-                "idx": 5,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_special"
-              },
-              {
-                "idx": 7,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_special"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "mirage_5f_250kg_400kg",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg_400kg.blk",
-        "reqModification": [
-          "fr_250kg_type_25c",
-          "fr_400kg_type_21b"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "tier": [
-                {
-                  "idx": 3,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                },
-                {
-                  "idx": 4,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 9,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "mirage_5f_as30_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_as30_r550_magic.blk",
-        "reqModification": [
-          "nord_as_30",
-          "fr_matra_r_550_magic_1"
-        ]
-      },
-      {
-        "name": "mirage_5f_250kg_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg_r550_magic.blk",
-        "reqModification": [
-          "fr_250kg_type_25c",
-          "fr_matra_r_550_magic_1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "tier": [
-                {
-                  "idx": 3,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                },
-                {
-                  "idx": 4,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 9,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "mirage_5f_400kg_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_400kg_r550_magic.blk",
-        "reqModification": [
-          "fr_400kg_type_21b",
-          "fr_matra_r_550_magic_1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
-              "tier": [
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_special"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_special"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "mirage_5f_250kg_400kg_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg_400kg_r550_magic.blk",
-        "reqModification": [
-          "fr_250kg_type_25c",
-          "fr_400kg_type_21b",
-          "fr_matra_r_550_magic_1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "tier": [
-                {
-                  "idx": 3,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                },
-                {
-                  "idx": 4,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 9,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "mirage_5f_250kg_as30",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg_as30.blk",
-        "reqModification": [
-          "fr_250kg_type_25c",
-          "nord_as_30"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "tier": [
-                {
-                  "idx": 4,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                },
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "mirage_5f_250kg_as30_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg_as30_r550_magic.blk",
-        "reqModification": [
-          "fr_250kg_type_25c",
-          "nord_as_30",
-          "fr_matra_r_550_magic_1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "tier": [
-                {
-                  "idx": 4,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                },
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_large_group_x4"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_400kg.blk"
       },
       {
         "name": "mirage_5f_sneb",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb.blk",
-        "reqModification": "fr_jl_100r",
-        "weaponConfig": {
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb.blk"
+      },
+      {
+        "name": "mirage_5f_sneb_36",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb_36.blk"
+      },
+      {
+        "name": "mirage_5f_ffar",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_ffar.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 4000.0,
+    "maxloadMassLeftConsoles": 1751.0,
+    "maxloadMassRightConsoles": 1751.0,
+    "maxDisbalance": 1500.0,
+    "HideNodes": {
+      "node": [
+        "matra_jl100r_1",
+        "matra_jl100r_2",
+        "matra_lrf1_1",
+        "matra_lrf1_1_cap",
+        "matra_lrf1_2",
+        "matra_lrf1_2_cap",
+        "pylon_adp2_lrf1_1",
+        "pylon_adp2_lrf1_2",
+        "pylon_adp4_lm40_r550_1",
+        "pylon_adp4_lm40_r550_2",
+        "pylon_aero3b_1",
+        "pylon_aero3b_2",
+        "pylon_ces3_1",
+        "pylon_ces3_2",
+        "pylon_crp18_jl100r_1",
+        "pylon_crp18_jl100r_2",
+        "pylon_lm14_r530",
+        "pylon_lm746_as30",
+        "pylon_pm3_bomb",
+        "sepr_841_rocket",
+        "sepr_844_rocket",
+        "pylon_aero3b_001",
+        "pylon_aero3b_002",
+        "pylon_adp4_lm40_r550_001",
+        "pylon_adp4_lm40_r550_002",
+        "pylon_adp2_lrf1_001",
+        "pylon_adp2_lrf1_002",
+        "pylon_ces3_5f_001",
+        "pylon_ces3_5f_002",
+        "pylon_crp18_jl100r_001",
+        "pylon_crp18_jl100r_002",
+        "cannons",
+        "fuse_flares"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cannon1_dm",
+        "cannon2_dm",
+        "tank7_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "defa552a_common",
+          "ShowNodes": {
+            "node": "fuse_cap"
+          },
           "Weapon": [
             {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 7.0,
-              "iconType": "nar_ap_small",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552A.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 140,
+              "spread": 1.1,
+              "traceOffset": 1,
+              "counterIndex": 1
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552A.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 140,
+              "spread": 1.1,
+              "traceOffset": 2,
+              "counterIndex": 1
             }
           ]
         }
       },
       {
-        "name": "mirage_5f_sneb_as30",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb_as30.blk",
-        "reqModification": [
-          "nord_as_30",
-          "fr_jl_100r"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 7.0,
-              "iconType": "nar_ap_small",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim_9b",
+            "ShowNodes": {
+              "node": [
+                "pylon_aero3b_001",
+                "pylon_ces3_5f_001"
               ]
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
-              "tier": {
-                "idx": 6,
-                "amountPerTier": 1.0,
-                "iconType": "missile_air_to_uni_middle"
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "rocket_aim9b_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
-          ]
-        }
-      },
-      {
-        "name": "mirage_5f_sneb_as30_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb_as30_r550_magic.blk",
-        "reqModification": [
-          "fr_jl_100r",
-          "nord_as_30",
-          "fr_matra_r_550_magic_1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r_550_magic",
+            "reqModification": "fr_matra_r_550_magic_1",
+            "ShowNodes": {
+              "node": [
+                "pylon_adp4_lm40_r550_001",
+                "pylon_ces3_5f_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
               "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
-              "tier": {
-                "idx": 6,
-                "amountPerTier": 1.0,
-                "iconType": "missile_air_to_uni_middle"
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
+              "emitter": "rocket_r550_magic_001",
+              "bullets": 1
             }
-          ]
-        }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "lau_32_fz",
+            "reqModification": "us_2_75_in_ffar_lau_32",
+            "ShowNodes": {
+              "node": [
+                "pylon_ces3_5f_001",
+                "pylon_adp2_lrf1_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_32_fz.blk",
+              "emitter": "matra_lr_f1_001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "fr_120kg",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_130kg_samp_mk81.blk",
+              "emitter": "pylon_ces3_5f_001_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          }
+        ]
       },
       {
-        "name": "mirage_5f_sneb_250kg",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb_250kg.blk",
-        "reqModification": [
-          "fr_250kg_type_25c",
-          "fr_jl_100r"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 7.0,
-              "iconType": "nar_ap_small",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_middle",
+            "name": "jl_100r",
+            "reqModification": "fr_jl_100r",
+            "ShowNodes": {
+              "node": "pylon_crp18_jl100r_001"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/jl_100r_fr_matra_sneb_type23.blk",
+              "emitter": "matra_jl100r_001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "jl_100r_36",
+            "reqModification": "fr_jl_100r_36",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/matra_36r_matra_sneb_type23.blk",
+              "emitter": "matra_36r_tank_001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "ptb_bombs_middle_group_x4",
+            "name": "rpk10_fr_250_samp_type_25_x4_left_wing",
+            "reqModification": "fr_250kg_type_25c",
+            "HideNodes": {
+              "node": "pylon_crp18_jl100r_001"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_left_wing.blk",
+              "emitter": "pylon_rpk10_001",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "ptb_bombs_large_group",
+            "name": "rpk10_fr_400_samp_type_21_x2_left_wing",
+            "reqModification": "fr_400kg_type_21b",
+            "HideNodes": {
+              "node": "pylon_crp18_jl100r_001"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_left_wing.blk",
+              "emitter": "pylon_rpk10_001",
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "fr_250kg_type_25c",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
               ]
             },
-            {
+            "Weapon": {
+              "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "tier": [
-                {
-                  "idx": 4,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
+              "emitter": "pylon_5f_001_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
             }
-          ]
-        }
-      },
-      {
-        "name": "mirage_5f_sneb_400kg",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb_400kg.blk",
-        "reqModification": [
-          "fr_400kg_type_21b",
-          "fr_jl_100r"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 7.0,
-              "iconType": "nar_ap_small",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "fr_400kg_type_21b",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
               ]
             },
-            {
+            "Weapon": {
+              "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
-              "tier": [
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_special"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_special"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
+              "emitter": "pylon_5f_001_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
             }
-          ]
-        }
+          }
+        ]
       },
       {
-        "name": "mirage_5f_sneb_250kg_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb_250kg_r550_magic.blk",
-        "reqModification": [
-          "fr_250kg_type_25c",
-          "fr_jl_100r",
-          "fr_matra_r_550_magic_1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
+        "index": 4,
+        "tier": 6,
+        "order": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "pm3_fr_250",
+            "reqModification": "fr_250kg_type_25c",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25.blk",
+              "emitter": "pylon_pm3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "pm3_fr_400",
+            "reqModification": "fr_400kg_type_21b",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21.blk",
+              "emitter": "pylon_pm3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "as_30",
+            "reqModification": "nord_as_30",
+            "ShowNodes": {
+              "node": "pylon_lm746_as30"
+            },
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
+              "emitter": "rocket_as30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "fr_250kg_type_25c",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
               ]
             },
-            {
+            "Weapon": {
+              "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "tier": [
-                {
-                  "idx": 4,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_large"
-                }
+              "emitter": "pylon_5f_002_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "fr_400kg_type_21b",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
               ]
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+              "emitter": "pylon_5f_002_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
             }
-          ]
-        }
+          }
+        ]
       },
       {
-        "name": "mirage_5f_sneb_400kg_r550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb_400kg_r550_magic.blk",
-        "reqModification": [
-          "fr_400kg_type_21b",
-          "fr_jl_100r",
-          "fr_matra_r_550_magic_1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
+        "index": 6,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_middle",
+            "name": "jl_100r",
+            "reqModification": "fr_jl_100r",
+            "ShowNodes": {
+              "node": "pylon_crp18_jl100r_002"
             },
-            {
-              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
-              "tier": [
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_special"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_special"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/jl_100r_fr_matra_sneb_type23.blk",
+              "emitter": "matra_jl100r_002",
+              "external": true
             }
-          ]
-        }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "jl_100r_36",
+            "reqModification": "fr_jl_100r_36",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/matra_36r_matra_sneb_type23.blk",
+              "emitter": "matra_36r_tank_002",
+              "external": true
+            }
+          },
+          {
+            "iconType": "ptb_bombs_middle_group_x4",
+            "name": "rpk10_fr_250_samp_type_25_x4_right_wing",
+            "reqModification": "fr_250kg_type_25c",
+            "HideNodes": {
+              "node": "pylon_crp18_jl100r_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_250_samp_type_25_x4_right_wing.blk",
+              "emitter": "pylon_rpk10_002",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "ptb_bombs_large_group",
+            "name": "rpk10_fr_400_samp_type_21_x2_right_wing",
+            "reqModification": "fr_400kg_type_21b",
+            "HideNodes": {
+              "node": "pylon_crp18_jl100r_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/rpk10_fr_400_samp_type_21_x2_right_wing.blk",
+              "emitter": "pylon_rpk10_002",
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim_9b",
+            "ShowNodes": {
+              "node": [
+                "pylon_aero3b_002",
+                "pylon_ces3_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "rocket_aim9b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r_550_magic",
+            "reqModification": "fr_matra_r_550_magic_1",
+            "ShowNodes": {
+              "node": [
+                "pylon_adp4_lm40_r550_002",
+                "pylon_ces3_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
+              "emitter": "rocket_r550_magic_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "lau_32_fz",
+            "reqModification": "us_2_75_in_ffar_lau_32",
+            "ShowNodes": {
+              "node": [
+                "pylon_ces3_5f_002",
+                "pylon_adp2_lrf1_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_32_fz.blk",
+              "emitter": "matra_lr_f1_002",
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "fr_120kg",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_130kg_samp_mk81.blk",
+              "emitter": "pylon_ces3_5f_002_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          }
+        ]
       }
     ]
   },
@@ -2837,10 +2733,15 @@
     "new_cover": {
       "tier": 4
     },
+    "us_2_75_in_ffar_lau_32": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "aden_air_targets": {},
     "aden_ground_targets": {},
     "aden_stealth": {},
     "aden_belt_pack": {
+      "prevModification": "us_2_75_in_ffar_lau_32",
       "tier": 2
     },
     "aden_new_gun": {
@@ -2858,6 +2759,12 @@
     },
     "fr_jl_100r": {
       "reqModification": "fr_400kg_type_21b",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "fr_jl_100r_36": {
+      "prevModification": "fr_matra_r_550_magic_1",
+      "reqModification": "fr_jl_100r",
       "tier": 3,
       "modClass": "weapon"
     },

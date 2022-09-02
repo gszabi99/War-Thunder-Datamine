@@ -5602,6 +5602,63 @@
           }
         }
       ]
+    },
+    {
+      "name": "missionFighterAttackInBattleArea",
+      "selectStrategy": "ordered",
+      "reaction": [
+        {
+          "event": "groundAhead",
+          "name": "react-groundAhead",
+          "spiralUp": {
+            "spiralHorVertOffset": [
+              8.0,
+              8.0
+            ]
+          }
+        },
+        {
+          "event": "outsideBattleField",
+          "name": "react-outsideBattleField",
+          "spiralUp": {
+            "spiralHorVertOffset": [
+              8.0,
+              8.0
+            ]
+          }
+        }
+      ],
+      "sequencer": {
+        "name": "seq-findAndAttack",
+        "clearTargetList": {
+          "listName": "targets"
+        },
+        "ifThenElse": {
+          "isRandomTargets": {},
+          "getFromListBTB": [
+            {
+              "listName": "targets",
+              "varName": "currentTarget",
+              "indexType": "random"
+            },
+            {
+              "listName": "targets",
+              "varName": "currentTarget",
+              "indexType": "first"
+            }
+          ]
+        },
+        "setAsTarget": {
+          "varName": "currentTarget"
+        },
+        "selector": {
+          "selectStrategy": "ordered",
+          "name": "sel-fighterAttackFighter",
+          "fighterAttackFighter": {
+            "allowSpeedCheat": true
+          }
+        }
+      }
     }
   ]
 }

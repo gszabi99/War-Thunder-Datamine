@@ -1,4 +1,4 @@
-let { GO_WIN } = require_native("guiMission")
+let { GO_WIN, MISSION_CAPTURING_ZONE } = require_native("guiMission")
 
 ::dbg_msg_obj_counter <- 0
 ::hud_message_objective_debug <- function hud_message_objective_debug(show = true, alwaysShow = false, id = -1)
@@ -52,7 +52,7 @@ let { GO_WIN } = require_native("guiMission")
 {
   ::g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
     text = ::loc("NET_YOU_CAPTURING_LA")
-    eventId = ::MISSION_CAPTURING_ZONE
+    eventId = MISSION_CAPTURING_ZONE
     isMyTeam = true
     isHeroAction = true
     zoneName = "A"
@@ -64,7 +64,7 @@ let { GO_WIN } = require_native("guiMission")
 {
   ::g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
     text = ::loc("NET_TEAM_A_CAPTURING_STOP_LA")
-    eventId = ::MISSION_CAPTURING_ZONE
+    eventId = MISSION_CAPTURING_ZONE
     isMyTeam = true
     isHeroAction = true
     zoneName = "A"

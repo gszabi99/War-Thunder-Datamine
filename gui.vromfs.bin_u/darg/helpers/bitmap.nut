@@ -35,24 +35,23 @@ let function mkBitmapPicture(w, h, fillcb, prefix="") {
     b.writen(c, 'i')
   }
 
-  let function _set(_self, idx, byte) {
+  let function bufSetAt(idx, byte) {
     if (idx<0 || idx>BITMAP_SIZE)
       throw $"Invalid index {idx} for bitmap of size {w}x{h}"
     b.seek(HEADER_SIZE+idx)
     b.writen(byte, 'b')
   }
 
-  let function _get(_self, idx, _byte) {
+  let function bufGetAt(idx) {
     if (idx<0 || idx>BITMAP_SIZE)
       throw $"Invalid index {idx} for bitmap of size {w}x{h}"
     b.seek(HEADER_SIZE+idx)
     return b.readn('b')
   }
 
-  fillcb({w, h}, {}.setdelegate({setPixel, _set, _get}))
-  local b64str = encodeBlob(b)
+  fillcb({w, h}, {setPixel, bufSetAt, bufGetAt})
 
-  return Picture($"{prefix}b64://{b64str}.tga?Ac")
+  return Picture($"{prefix}b64://{encodeBlob(b)}.tga?Ac")
 }
 
 return {

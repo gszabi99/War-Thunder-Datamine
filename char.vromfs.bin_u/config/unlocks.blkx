@@ -89061,10 +89061,37 @@
       }
     },
     {
+      "id": "ussr_text_znamenskiy",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_ussr",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 50,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "ussr_t_44"
+          },
+          {
+            "type": "targetType",
+            "unitType": "tank"
+          }
+        ]
+      }
+    },
+    {
       "id": "23_06_ussr_text_znamenskiy",
       "type": "challenge",
       "chapter": "decals",
       "group": "tanks_ussr",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "num": 300,
@@ -89091,12 +89118,7 @@
       "userLogId": "ussr_text_znamenskiy_trophy",
       "type": "trophy",
       "amount_trophies": 1,
-      "hidden": true,
-      "mode": {
-        "type": "char_unlocks",
-        "num": 1,
-        "unlock": "23_06_ussr_text_znamenskiy"
-      }
+      "hidden": true
     },
     {
       "id": "ussr_text_altaec",
@@ -124744,7 +124766,7 @@
           },
           {
             "type": "char_time_range",
-            "beginDate": "2022-07-27 12:00:00",
+            "beginDate": "2022-07-18 09:00:00",
             "endDate": "2022-10-26 11:59:00"
           }
         ]

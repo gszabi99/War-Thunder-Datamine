@@ -30,7 +30,7 @@ eSItemDiv {
       overflow:t='hidden'
       css-hier-invalidate:t='yes'
 
-      textarea {
+      activeText {
         position:t='relative'
         auto-scroll:t='medium'
         smallFont:t='yes'
@@ -39,7 +39,7 @@ eSItemDiv {
       }
     }
 
-    textareaNoTab {
+    activeText {
       id:t='battle_day'
       left:t='0.5pw-0.5w'
       position:t='relative'
@@ -62,7 +62,7 @@ eSItemDiv {
         background-svg-size:t='1@fontHeightNormal, 1@fontHeightNormal'
       }
 
-      textareaNoTab {
+      activeText {
         id:t='battle_num'
         left:t='1@blockInterval'
         position:t='relative'
@@ -118,12 +118,12 @@ eSItemDiv {
       background-image:t='<<headerImg>>'
       background-svg-size:t='pw, ph'
     }
-    textareaNoTab {
+    activeText {
       pos:t='1@eSItemPadding, 1@eSItemBgrTopPos-1@eSItemInterval-0.5h'
       position:t='absolute'
       text:t='<<rank>>'
     }
-    textareaNoTab {
+    activeText {
       pos:t='0.5pw-0.5w, 1@eSItemInterval+0.5@eSItemHeaderHeight-0.5h'
       position:t='absolute'
       text:t='<<tournamentType>>'
@@ -170,7 +170,7 @@ eSItemDiv {
     <</countries>>
   }
 
-  textareaNoTab {
+  activeText {
     width:t='0.8pw'
     pos:t='1@eSItemPadding, 1@tournamentNameTextPos'
     position:t='absolute'
@@ -179,7 +179,7 @@ eSItemDiv {
     text:t='<<tournamentName>>'
   }
 
-  textareaNoTab {
+  activeText {
     left:t='1@eSItemPadding'
     bottom:t='1@eSItemPadding'
     position:t='absolute'

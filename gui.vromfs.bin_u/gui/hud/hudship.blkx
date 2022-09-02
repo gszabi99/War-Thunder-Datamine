@@ -41,11 +41,61 @@
           "hitCameraTitle": {
             "id": "title"
           },
+          "hitCameraCrew": {
+            "id": "crew_nest",
+            "pos": "1@blockInterval, 0.2ph",
+            "position": "absolute",
+            "img": {
+              "size": "1@cIco, 1@cIco",
+              "pos": "0, ph-h",
+              "position": "relative",
+              "margin-left": "1@blockInterval",
+              "background-image": "#ui/gameuiskin#ship_crew.svg",
+              "background-svg-size": "1@cIco, 1@cIco"
+            },
+            "tdiv": {
+              "pos": "0, ph-h",
+              "position": "relative",
+              "hitCameraLostCrew": {
+                "id": "lost_crew_count",
+                "pos": "pw-w, -h",
+                "position": "absolute",
+                "flow": "vertical"
+              },
+              "textareaNoTab": {
+                "id": "crew_count"
+              }
+            },
+            "textareaNoTab": {
+              "id": "max_crew_count",
+              "pos": "0, ph-h",
+              "position": "relative",
+              "overlayTextColor": "active"
+            }
+          },
           "enemyDamageStatusPanel": {
-            "id": "damageStatus"
+            "flow": "vertical",
+            "tdiv": {
+              "id": "damageStatus",
+              "pos": "0.5pw-0.5w, 0",
+              "position": "relative"
+            }
           },
           "hitCameraInfo": {
             "id": "info"
+          },
+          "tdiv": {
+            "size": "pw, ph",
+            "position": "absolute",
+            "overflow": "hidden",
+            "hitCameraCritAnim": {
+              "id": "critAnim",
+              "height": "1@hitCameraHeight",
+              "needAnim": "no",
+              "_size-timer": "0",
+              "_transp-timer": "0",
+              "color-factor": "255"
+            }
           }
         }
       },
