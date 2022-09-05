@@ -1,5 +1,6 @@
 let {editorIsActive, editorFreeCam, entitiesListUpdateTrigger, showTemplateSelect,
      showPointAction, callPointActionCallback, resetPointActionMode,
+     handleEntityCreated, handleEntityRemoved, handleEntityMoved,
      de4editMode, de4workMode} = require("state.nut")
 
 let daEditor4 = require("daEditor4")
@@ -60,8 +61,17 @@ let function setHandlers() {
       entitiesListUpdateTrigger(entitiesListUpdateTrigger.value+1)
     }
 
-    function onEntityRemoved(_eid) {
+    function onEntityRemoved(eid) {
       entitiesListUpdateTrigger(entitiesListUpdateTrigger.value+1)
+      handleEntityRemoved(eid)
+    }
+
+    function onEntityNewBySample(eid) {
+      handleEntityCreated(eid)
+    }
+
+    function onEntityMoved(eid) {
+      handleEntityMoved(eid)
     }
   })
 }

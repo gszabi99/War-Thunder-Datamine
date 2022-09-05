@@ -79,7 +79,7 @@ let destroy = function() {
     }
 }
 
-let function update(sessionId) {
+let update = function(sessionId) {
   let existSessionInfo = createdSessionData.value?[sessionId]
   let sessionData = getSessionData(existSessionInfo?.pushContextId)
   psnsm.updateInfo(
@@ -87,8 +87,6 @@ let function update(sessionId) {
     existSessionInfo?.data.gameSessions[0],
     sessionData.gameSessions[0],
     ::Callback(function(r, err) {
-      if (err != null || (sessionId not in createdSessionData.value))
-        return
       createdSessionData.mutate(@(v) v[sessionId].data = copy(sessionData))
     }, this)
   )

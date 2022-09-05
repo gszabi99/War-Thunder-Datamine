@@ -36,10 +36,11 @@
   "isBulletBelt": false,
   "bullet": {
     "bulletCount": 25,
-    "mass": 33.3,
+    "mass": 33.4,
     "explosiveType": "a_ix_2",
-    "explosiveMass": 0.115,
+    "explosiveMass": 0.125,
     "caliber": 0.13,
+    "Cx": 0.35943,
     "speed": 900.0,
     "maxDistance": 15000.0,
     "normalizationPreset": "apbc",
@@ -215,10 +216,11 @@
   "130mm_ussr_HE": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 33.7,
+      "mass": 33.4,
       "explosiveType": "tnt",
-      "explosiveMass": 2.645,
+      "explosiveMass": 3.64,
       "caliber": 0.13,
+      "Cx": 0.23899,
       "speed": 900.0,
       "maxDistance": 15000.0,
       "normalizationPreset": "heat",
@@ -264,6 +266,9 @@
           0.99
         ]
       },
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -281,9 +286,6 @@
             "destruction": 1.0
           }
         }
-      },
-      "pressureDamage": {
-        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [

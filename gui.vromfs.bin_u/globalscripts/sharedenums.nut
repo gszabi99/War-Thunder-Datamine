@@ -93,13 +93,14 @@ global enum AirParamsMain
   AAM =               18,
   GUIDED_BOMBS =      19,
   BOMBS =             20,
-  FLARES =            21,
-  CHAFFS =            22,
-  IRCM =              23,
-  RATE_OF_FIRE =      24,
-  MACHINE_GUNS_1 =    25,
-  MACHINE_GUNS_2 =    26,
-  MACHINE_GUNS_3 =    27
+  TORPEDO =           21,
+  FLARES =            22,
+  CHAFFS =            23,
+  IRCM =              24,
+  RATE_OF_FIRE =      25,
+  MACHINE_GUNS_1 =    26,
+  MACHINE_GUNS_2 =    27,
+  MACHINE_GUNS_3 =    28
 };
 
 global enum AirParamsSecondary
@@ -193,3 +194,21 @@ global enum HudColorState
   HIGH_ALERT       = 4
 };
 
+//Need recalculate wpCost if change values of mask for exist weapons
+global enum WeaponMask
+{
+  MACHINE_GUN_MASK      = 0x000001,
+  CANNON_MASK           = 0x000002,
+  GUNNER_MASK           = 0x000004,
+  BOMB_MASK             = 0x000008,
+  TORPEDO_MASK          = 0x000010,
+  ROCKET_MASK           = 0x000020,
+  ATGM_MASK             = 0x000040,
+  AAM_MASK              = 0x000080,
+  MINE_MASK             = 0x000100,
+  GUIDED_BOMB_MASK      = 0x000200,
+  ADDITIONAL_GUN_MASK   = 0x000400,
+
+  ALL_BOMBS_MASK        = 0x000208,
+  ALL_ROCKETS_MASK      = 0x0000E0
+};

@@ -735,6 +735,10 @@
       "forSource": "..\\..\\prog\\scripts\\sonyLib",
       "forVromfs": "sonyLib"
     },
+    "xboxLib": {
+      "forSource": "..\\..\\prog\\scripts\\xboxLib",
+      "forVromfs": "xboxLib"
+    },
     "scripts": {
       "forSource": "../prog/scripts/scripts",
       "forVromfs": "scripts"
@@ -787,6 +791,10 @@
       "forSource": "../develop/gameBase/lang_src/lang",
       "forVromfs": "lang"
     },
+    "langRegional": {
+      "forSource": "../develop/gameBase/config_regional/lang/lang",
+      "forVromfs": "lang"
+    },
     "guiConfig": {
       "forSource": "../prog/scripts/config",
       "forVromfs": "config"
@@ -806,22 +814,6 @@
     "mechaGui": {
       "forSource": "../prog/scripts/mecha/gui",
       "forVromfs": "mecha/gui"
-    },
-    "vrtScripts": {
-      "forSource": "../prog/scripts/vrThunder/scripts",
-      "forVromfs": "vrThunder/scripts"
-    },
-    "vrtGui": {
-      "forSource": "../prog/scripts/vrThunder/gui",
-      "forVromfs": "vrThunder/gui"
-    },
-    "vrtRGui": {
-      "forSource": "../../skyquake/prog/scripts/vrThunder/reactiveGui",
-      "forVromfs": "vrThunder/reactivegui"
-    },
-    "vrtGlobals": {
-      "forSource": "../../skyquake/prog/scripts/vrThunder/globals",
-      "forVromfs": "vrThunder/globals"
     }
   },
   "addons": {
@@ -950,7 +942,8 @@
   },
   "stub3d": {
     "autoBufferReallocate": true,
-    "bufferSize": 0
+    "bufferSize": 0,
+    "vb_ib_dataSupport": true
   },
   "sound": {
     "voice_country": "GB",

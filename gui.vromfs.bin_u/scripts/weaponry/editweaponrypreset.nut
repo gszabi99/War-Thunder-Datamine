@@ -66,7 +66,7 @@ let function openEditPresetName(name, okFunc) {
     let tierIdInt = tierId.tointeger()
     local weapons = {}
     foreach(wBlk in weaponsBlk)
-      foreach(key, val in addWeaponsFromBlk({}, [wBlk], unit))
+      foreach(key, val in (addWeaponsFromBlk({}, [wBlk], unit)?.weaponsByTypes ?? {}))
         weapons[key] <- (weapons?[key] ?? []).extend(val)
 
     let params = getTierWeaponsParams(weapons, tierIdInt)

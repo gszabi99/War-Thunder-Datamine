@@ -171,17 +171,6 @@ let function getBattlesNum(event) {
   return ticket.battleLimit - battleCount
 }
 
-let function fetchLbData(event, cb, context) {
-  let newSelfRowRequest = ::events.getMainLbRequest(event)
-  ::events.requestSelfRow(
-    newSelfRowRequest,
-    "mini_lb_self",
-    function (self_row) {
-      ::events.requestLeaderboard(::events.getMainLbRequest(event),
-      "mini_lb_self", cb, context)
-    }, this)
-}
-
 let function getTourCommonViewParams(tour, tourParams, reverseCountries = false) {
   let cType = tour.competitive_type
   let teamSizes = cType.split("x")
@@ -402,5 +391,4 @@ return {
   isTournamentWndAvailable
   setSchedulerTimeColor
   getSharedTourNameByEvent
-  fetchLbData
 }

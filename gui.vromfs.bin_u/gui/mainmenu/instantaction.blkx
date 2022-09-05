@@ -33,27 +33,46 @@
         "pos": "0.5sw-0.5w, 2@topBarHeight + 0.018@sf - @bh",
         "position": "absolute",
         "flow": "vertical",
-        "advertDiv": {
-          "id": "topmenu_advert",
-          "pos": "50%pw-50%w, 0",
-          "position": "relative",
-          "width": "0.55sw",
-          "padding": "10, 5, 10, 10",
-          "display": "hide",
-          "css-hier-invalidate": "yes",
-          "behavior": "Timer",
-          "textAreaCentered": {
-            "id": "topmenu_advert_text",
-            "pos": "50%pw-50%w, 50%ph-50%h",
+        "advertDiv": [
+          {
+            "id": "topmenu_advert",
+            "pos": "50%pw-50%w, 0",
             "position": "relative",
-            "width": "0.45sw",
-            "input-transparent": "yes",
-            "text": "",
-            "textHide": "yes",
-            "on_link_click": "onAdvertLinkClick",
-            "bqKey": "mainmenu_block_advert"
+            "width": "0.55sw",
+            "padding": "10, 5, 10, 10",
+            "display": "hide",
+            "css-hier-invalidate": "yes",
+            "behavior": "Timer",
+            "textAreaCentered": {
+              "id": "topmenu_advert_text",
+              "pos": "50%pw-50%w, 50%ph-50%h",
+              "position": "relative",
+              "width": "0.45sw",
+              "input-transparent": "yes",
+              "text": "",
+              "textHide": "yes",
+              "on_link_click": "onAdvertLinkClick",
+              "bqKey": "mainmenu_block_advert"
+            }
+          },
+          {
+            "id": "topmenu_psn_update",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "width": "0.55sw",
+            "padding": "10, 5, 10, 10",
+            "display": "hide",
+            "css-hier-invalidate": "yes",
+            "textAreaCentered": {
+              "id": "topmenu_psn_update_text",
+              "pos": "50%pw-50%w, 50%ph-50%h",
+              "position": "relative",
+              "width": "0.45sw",
+              "input-transparent": "yes",
+              "text": "#mainmenu/ps5_update_request"
+            }
           }
-        },
+        ],
         "textAreaCentered": {
           "id": "update_avail",
           "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",

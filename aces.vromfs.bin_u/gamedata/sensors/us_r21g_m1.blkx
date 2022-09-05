@@ -608,6 +608,38 @@
             "setMediumAltSearchMode": {}
           }
         },
+        "MediumAltDirectLock": {
+          "stateFrom": [
+            "MediumAltStandby",
+            "MediumAltSearch",
+            "MediumAltBoresightTrack",
+            "MediumAltDesignationTrack"
+          ],
+          "event": "lockTarget",
+          "stateTo": "MediumAltDirectLock",
+          "actions": {
+            "resetSearchMode": {},
+            "resetLockMode": {},
+            "resetTrackMode": {},
+            "knowTarget": {}
+          }
+        },
+        "MediumAltDirectLockFail": {
+          "stateFrom": "MediumAltDirectLock",
+          "event": "targetNotDetected",
+          "stateTo": "MediumAltStandby",
+          "actions": {
+            "setMediumAltStandbyMode": {}
+          }
+        },
+        "MediumAltDirectTrack": {
+          "stateFrom": "MediumAltDirectLock",
+          "event": "targetDetected",
+          "stateTo": "MediumAltDesignationTrack",
+          "actions": {
+            "setMediumAltTrackMode": {}
+          }
+        },
         "MediumAltDesignationLock": {
           "stateFrom": "MediumAltSearch",
           "command": "selectTarget",
@@ -751,6 +783,38 @@
           "actions": {
             "resetTrackMode": {},
             "setMediumAltBoresightLockMode": {}
+          }
+        },
+        "LowAltDirectLock": {
+          "stateFrom": [
+            "LowAltStandby",
+            "LowAltSearch",
+            "LowAltBoresightTrack",
+            "LowAltDesignationTrack"
+          ],
+          "event": "lockTarget",
+          "stateTo": "LowAltDirectLock",
+          "actions": {
+            "resetSearchMode": {},
+            "resetLockMode": {},
+            "resetTrackMode": {},
+            "knowTarget": {}
+          }
+        },
+        "LowAltDirectTrackFail": {
+          "stateFrom": "LowAltDirectLock",
+          "event": "targetNotDetected",
+          "stateTo": "LowAltStandby",
+          "actions": {
+            "setLowAltStandbyMode": {}
+          }
+        },
+        "LowAltDirectTrack": {
+          "stateFrom": "LowAltDirectLock",
+          "event": "targetDetected",
+          "stateTo": "LowAltDesignationTrack",
+          "actions": {
+            "setLowAltTrackMode": {}
           }
         },
         "LowAltDesignationLock": {

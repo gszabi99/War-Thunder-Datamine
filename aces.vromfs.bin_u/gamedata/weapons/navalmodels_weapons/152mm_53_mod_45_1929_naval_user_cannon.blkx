@@ -4,8 +4,8 @@
   "maxDeltaAngle": 0.23,
   "maxDeltaAngleVertical": 0.31,
   "aimMinDist": 100.0,
-  "aimMaxDist": 12000.0,
-  "attackMaxDist": 12000.0,
+  "aimMaxDist": 20000.0,
+  "attackMaxDist": 20000.0,
   "shotFreq": 0.133,
   "bullets": 1,
   "recoilOffset": 0.5,
@@ -36,7 +36,8 @@
     "type_destroyer": true,
     "type_light_cruiser": true,
     "type_heavy_cruiser": true,
-    "type_battlecruiser": true
+    "type_battlecruiser": true,
+    "type_battleship": true
   },
   "bullet": {
     "bulletCount": 25,
@@ -96,24 +97,6 @@
         30.0,
         0.99
       ]
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 5.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": {
-          "break_fuse": 1.0
-        },
-        "onKill": {
-          "destruction": 1.0
-        }
-      }
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -430,24 +413,6 @@
           30.0,
           0.99
         ]
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
       },
       "pressureDamage": {
         "damageType": "pressure"

@@ -52,7 +52,7 @@
             {
               "icontype": "transport",
               "side": "ally",
-              "target": "ships_01"
+              "target": "ships_10"
             },
             {
               "icontype": "transport",
@@ -145,6 +145,21 @@
             ],
             "lockSpeed": true,
             "waypointReachedDist": 0.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "planes_sq",
+            "targetableByAi": false,
+            "speed": 0.0,
+            "lockSpeed": true,
+            "cannotMove": true,
+            "startFullSpeed": false,
+            "enginesEnabled": false,
+            "takeoffPermission": false,
+            "stayOnGround": true
           }
         ],
         "unitSetRoute": {
@@ -486,16 +501,14 @@
             }
           }
         }
-      }
-    ],
-    "ships": [
+      },
       {
-        "name": "ships_01",
+        "name": "planes_01",
         "tm": [
           [
-            -0.74123,
+            0.707107,
             0.0,
-            0.671251
+            -0.707107
           ],
           [
             0.0,
@@ -503,17 +516,17 @@
             0.0
           ],
           [
-            -0.671251,
+            0.707107,
             0.0,
-            -0.74123
+            0.707107
           ],
           [
-            894.7,
-            23.55,
-            -10421.0
+            -218.662,
+            21.7993,
+            -12307.0
           ]
         ],
-        "unit_class": "uss_cargo_ship",
+        "unit_class": "b_18a",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -530,22 +543,711 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [
-            4.0,
-            2.0
-          ],
-          "formation_noise": [
-            0.3,
-            0.2
-          ],
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
         },
         "way": {}
       },
+      {
+        "name": "planes_02",
+        "tm": [
+          [
+            0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.707107,
+            0.0,
+            0.707107
+          ],
+          [
+            -51.8928,
+            21.7993,
+            -12133.1
+          ]
+        ],
+        "unit_class": "p-40e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_03",
+        "tm": [
+          [
+            0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.707107,
+            0.0,
+            0.707107
+          ],
+          [
+            -79.2826,
+            21.7993,
+            -12162.6
+          ]
+        ],
+        "unit_class": "p-40e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_04",
+        "tm": [
+          [
+            0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.707107,
+            0.0,
+            0.707107
+          ],
+          [
+            -106.672,
+            21.7993,
+            -12192.0
+          ]
+        ],
+        "unit_class": "p-40e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_05",
+        "tm": [
+          [
+            0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.707107,
+            0.0,
+            0.707107
+          ],
+          [
+            -134.062,
+            21.7993,
+            -12221.5
+          ]
+        ],
+        "unit_class": "p-40e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_06",
+        "tm": [
+          [
+            0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.707107,
+            0.0,
+            0.707107
+          ],
+          [
+            -161.452,
+            21.7993,
+            -12251.0
+          ]
+        ],
+        "unit_class": "p-40e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_07",
+        "tm": [
+          [
+            0.663596,
+            0.0,
+            -0.748091
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.748091,
+            0.0,
+            0.663596
+          ],
+          [
+            -591.216,
+            21.7997,
+            -9940.79
+          ]
+        ],
+        "unit_class": "b_18a",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_08",
+        "tm": [
+          [
+            0.670156,
+            0.0,
+            -0.74222
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.74222,
+            0.0,
+            0.670156
+          ],
+          [
+            -560.886,
+            21.7997,
+            -9914.06
+          ]
+        ],
+        "unit_class": "b_18a",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_09",
+        "tm": [
+          [
+            0.657583,
+            0.0,
+            -0.753382
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.753382,
+            0.0,
+            0.657583
+          ],
+          [
+            -473.531,
+            21.7998,
+            -9836.2
+          ]
+        ],
+        "unit_class": "b-17e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_10",
+        "tm": [
+          [
+            0.657583,
+            0.0,
+            -0.753382
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.753382,
+            0.0,
+            0.657583
+          ],
+          [
+            -444.889,
+            21.7998,
+            -9811.21
+          ]
+        ],
+        "unit_class": "b-17e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_11",
+        "tm": [
+          [
+            0.657583,
+            0.0,
+            -0.753382
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.753382,
+            0.0,
+            0.657583
+          ],
+          [
+            -416.248,
+            21.7998,
+            -9786.21
+          ]
+        ],
+        "unit_class": "b-17e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "planes_12",
+        "tm": [
+          [
+            0.657583,
+            0.0,
+            -0.753382
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.753382,
+            0.0,
+            0.657583
+          ],
+          [
+            -387.606,
+            21.7998,
+            -9761.21
+          ]
+        ],
+        "unit_class": "b-17e",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      }
+    ],
+    "ships": [
       {
         "name": "ships_02",
         "tm": [
@@ -565,9 +1267,9 @@
             0.508177
           ],
           [
-            158.95,
+            128.35,
             14.45,
-            -10581.6
+            -10573.0
           ]
         ],
         "unit_class": "uss_cargo_ship",
@@ -591,11 +1293,11 @@
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [
-            7.5,
-            2.0
+            4.8,
+            -1.0
           ],
           "formation_noise": [
-            0.2,
+            0.0,
             0.3
           ],
           "uniqueName": "",
@@ -701,7 +1403,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 2,
+          "count": 1,
           "formation_type": "cols",
           "formation_div": 1,
           "formation_step": [
@@ -771,63 +1473,6 @@
           ],
           "uniqueName": "",
           "attack_type": "hold_fire"
-        },
-        "way": {}
-      },
-      {
-        "name": "ships_06",
-        "tm": [
-          [
-            -0.264484,
-            0.0,
-            0.96439
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.96439,
-            0.0,
-            -0.264484
-          ],
-          [
-            790.8,
-            23.55,
-            -10608.3
-          ]
-        ],
-        "unit_class": "fishboat5",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [
-            8.0,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -907,12 +1552,12 @@
             0.52992
           ],
           [
-            -427.95,
+            -430.75,
             14.45,
-            -10862.5
+            -10859.9
           ]
         ],
-        "unit_class": "uss_dd_georgetown",
+        "unit_class": "us_destroyer_fletcher",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -933,64 +1578,7 @@
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [
-            6.7,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.2
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {}
-      },
-      {
-        "name": "ships_09",
-        "tm": [
-          [
-            -0.264484,
-            0.0,
-            0.96439
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.96439,
-            0.0,
-            -0.264484
-          ],
-          [
-            806.05,
-            23.55,
-            -10712.1
-          ]
-        ],
-        "unit_class": "fishboat5",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 2,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [
-            8.0,
+            4.9,
             2.0
           ],
           "formation_noise": [
@@ -1006,9 +1594,9 @@
         "name": "ships_10",
         "tm": [
           [
-            -0.937669,
+            0.846531,
             0.0,
-            -0.34753
+            -0.53234
           ],
           [
             0.0,
@@ -1016,17 +1604,17 @@
             0.0
           ],
           [
-            0.34753,
+            0.53234,
             0.0,
-            -0.937669
+            0.846531
           ],
           [
-            803.05,
+            635.85,
             23.55,
-            -10670.6
+            -10741.1
           ]
         ],
-        "unit_class": "fishboat2",
+        "unit_class": "us_cargo_ship_liberty",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -1043,73 +1631,16 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 2,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [
-            3.5,
+            4.0,
             2.0
           ],
           "formation_noise": [
-            0.2,
+            0.0,
             0.0
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {}
-      },
-      {
-        "name": "ships_11",
-        "tm": [
-          [
-            -0.846531,
-            0.0,
-            0.53234
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.53234,
-            0.0,
-            -0.846531
-          ],
-          [
-            196.1,
-            23.55,
-            -10678.0
-          ]
-        ],
-        "unit_class": "uss_lcvp",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [
-            8.0,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -2191,6 +2722,918 @@
             }
           }
         }
+      },
+      {
+        "name": "ships_1_01",
+        "tm": [
+          [
+            0.500001,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.500001
+          ],
+          [
+            249.75,
+            2.0,
+            -10717.3
+          ]
+        ],
+        "unit_class": "us_battleship_arizona_1931",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_02",
+        "tm": [
+          [
+            0.173649,
+            0.0,
+            0.984808
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.984808,
+            0.0,
+            0.173649
+          ],
+          [
+            -202.65,
+            2.0,
+            -10390.2
+          ]
+        ],
+        "unit_class": "us_battleship_north_dakota",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_03",
+        "tm": [
+          [
+            0.737278,
+            0.0,
+            0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            -40.8,
+            2.0,
+            -10268.8
+          ]
+        ],
+        "unit_class": "us_battleship_north_dakota",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_04",
+        "tm": [
+          [
+            0.737278,
+            0.0,
+            0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            12.65,
+            2.0,
+            -10317.5
+          ]
+        ],
+        "unit_class": "us_battleship_north_dakota",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_05",
+        "tm": [
+          [
+            0.737278,
+            0.0,
+            0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            98.25,
+            2.0,
+            -10146.3
+          ]
+        ],
+        "unit_class": "us_battleship_arizona_1931",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_06",
+        "tm": [
+          [
+            0.737278,
+            0.0,
+            0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            147.35,
+            2.0,
+            -10194.2
+          ]
+        ],
+        "unit_class": "us_battleship_wyoming_class",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_07",
+        "tm": [
+          [
+            0.737278,
+            0.0,
+            0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            309.8,
+            2.0,
+            -10049.8
+          ]
+        ],
+        "unit_class": "us_pt811",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_08",
+        "tm": [
+          [
+            0.737278,
+            0.0,
+            0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            259.25,
+            2.0,
+            -10008.2
+          ]
+        ],
+        "unit_class": "us_battleship_arizona_1931",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_09",
+        "tm": [
+          [
+            0.737278,
+            0.0,
+            0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            414.7,
+            2.0,
+            -9867.05
+          ]
+        ],
+        "unit_class": "us_battleship_north_dakota",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_10",
+        "tm": [
+          [
+            0.729631,
+            0.0,
+            0.683842
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.683842,
+            0.0,
+            0.729631
+          ],
+          [
+            -502.072,
+            2.00006,
+            -9368.54
+          ]
+        ],
+        "unit_class": "us_cruiser_brooklyn_class_brooklyn",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 4,
+          "formation_step": [
+            0.0,
+            1.3
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_11",
+        "tm": [
+          [
+            -0.087155,
+            0.0,
+            0.996195
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.996195,
+            0.0,
+            -0.087155
+          ],
+          [
+            -1261.9,
+            2.0,
+            -12518.5
+          ]
+        ],
+        "unit_class": "us_cruiser_portland_class",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_12",
+        "tm": [
+          [
+            -0.67559,
+            0.0,
+            0.737278
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.737278,
+            0.0,
+            -0.67559
+          ],
+          [
+            -1451.35,
+            2.0,
+            -9663.9
+          ]
+        ],
+        "unit_class": "us_pt811",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            3.8,
+            3.1
+          ],
+          "formation_noise": [
+            0.7,
+            0.2
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_13",
+        "tm": [
+          [
+            -0.173648,
+            0.0,
+            0.984808
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.984808,
+            0.0,
+            -0.173648
+          ],
+          [
+            918.55,
+            2.0,
+            -9592.15
+          ]
+        ],
+        "unit_class": "us_pt811",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            3.8,
+            3.1
+          ],
+          "formation_noise": [
+            0.7,
+            0.2
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_1_14",
+        "tm": [
+          [
+            0.382684,
+            0.0,
+            0.92388
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.92388,
+            0.0,
+            0.382684
+          ],
+          [
+            976.0,
+            2.0,
+            -9518.95
+          ]
+        ],
+        "unit_class": "us_pt811",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            3.8,
+            3.1
+          ],
+          "formation_noise": [
+            0.7,
+            0.2
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_11",
+        "tm": [
+          [
+            -0.815771,
+            0.0,
+            -0.578375
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.578375,
+            0.0,
+            -0.815771
+          ],
+          [
+            228.557,
+            23.5509,
+            -9296.24
+          ]
+        ],
+        "unit_class": "us_cargo_ship_liberty",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            4.0,
+            2.0
+          ],
+          "formation_noise": [
+            0.0,
+            0.0
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "ships_14",
+        "tm": [
+          [
+            -0.0377546,
+            0.0,
+            -0.999287
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999287,
+            0.0,
+            -0.0377546
+          ],
+          [
+            -1762.2,
+            23.55,
+            -9496.1
+          ]
+        ],
+        "unit_class": "us_cargo_ship_liberty",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            4.0,
+            2.0
+          ],
+          "formation_noise": [
+            0.0,
+            0.0
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
       }
     ],
     "tankModels": [
@@ -3564,6 +5007,368 @@
           "targetableByAi": false
         },
         "way": {}
+      },
+      {
+        "name": "tank_01",
+        "tm": [
+          [
+            -0.968524,
+            0.0,
+            -0.248921
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.248921,
+            0.0,
+            -0.968524
+          ],
+          [
+            -1733.07,
+            46.3268,
+            -13058.3
+          ]
+        ],
+        "unit_class": "jp_truck_type_94_isuzu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim",
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "tank_02",
+        "tm": [
+          [
+            -0.968524,
+            0.0,
+            -0.248921
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.248921,
+            0.0,
+            -0.968524
+          ],
+          [
+            -1849.91,
+            46.3267,
+            -13091.7
+          ]
+        ],
+        "unit_class": "jp_type_1_chi_he",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim",
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "tank_03",
+        "tm": [
+          [
+            -0.248921,
+            0.0,
+            0.968524
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.968524,
+            0.0,
+            -0.248921
+          ],
+          [
+            -2083.37,
+            52.7928,
+            -13055.9
+          ]
+        ],
+        "unit_class": "jp_type_95_so_ki",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim",
+          "targetableByAi": false
+        },
+        "way": {
+          "tank_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2418.26,
+                41.7918,
+                -11925.8
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "tank_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2022.1,
+                45.8105,
+                -13259.5
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "tank_04",
+        "tm": [
+          [
+            0.248922,
+            0.0,
+            -0.968524
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.968524,
+            0.0,
+            0.248922
+          ],
+          [
+            -2319.16,
+            46.3268,
+            -12200.4
+          ]
+        ],
+        "unit_class": "jp_truck_type_94_isuzu",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim",
+          "targetableByAi": false
+        },
+        "way": {
+          "tank_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2008.25,
+                45.6,
+                -13255.7
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "tank_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -2402.95,
+                41.45,
+                -11921.6
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
       }
     ],
     "infantry": [
@@ -3907,44 +5712,85 @@
         }
       }
     ],
-    "squad": {
-      "name": "non_smoking_ships",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
+    "squad": [
+      {
+        "name": "non_smoking_ships",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            902.1,
+            14.3,
+            -11516.0
+          ]
         ],
-        [
-          0.0,
-          1.0,
-          0.0
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "ships_02",
+            "ships_07",
+            "ships_08",
+            "ships_10",
+            "ships_11"
+          ]
+        }
+      },
+      {
+        "name": "planes_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -2.70795,
+            40.0684,
+            -12031.8
+          ]
         ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          902.1,
-          14.3,
-          -11516.0
-        ]
-      ],
-      "props": {
-        "object_marking": 0,
-        "squad_members": [
-          "ships_01",
-          "ships_02",
-          "ships_06",
-          "ships_07",
-          "ships_08",
-          "ships_09",
-          "ships_10",
-          "ships_11"
-        ]
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "planes_07",
+            "planes_08",
+            "planes_09",
+            "planes_10",
+            "planes_11",
+            "planes_12",
+            "planes_01",
+            "planes_02",
+            "planes_03",
+            "planes_04",
+            "planes_05",
+            "planes_06"
+          ]
+        }
       }
-    }
+    ]
   },
   "areas": {
     "airfield00": {

@@ -1,6 +1,6 @@
 let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
   getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor,
-  getMatchingEventId, fetchLbData } = require("%scripts/events/eSport.nut")
+  getMatchingEventId } = require("%scripts/events/eSport.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needShowOverrideSlotbar, isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
@@ -126,38 +126,47 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     return res
   }
 
-  function updateLbObjects(lbData) {
-    let isLbEnable = lbData.rows.len() > 0
-    let lbObj = ::showBtn("leaderboard_obj", isLeaderboardsAvailable(), scene)
-    if (!lbObj?.isValid())
-      return
+  function fetchLbData() {
+    let event = getEventByDay(tournament.id, curTourParams.dayNum, false)
+    let newSelfRowRequest = ::events.getMainLbRequest(event)
+    ::events.requestSelfRow(
+      newSelfRowRequest,
+      "mini_lb_self",
+      function (self_row) {
+        ::events.requestLeaderboard(::events.getMainLbRequest(event),
+        "mini_lb_self",
+        function (lb_data) {
+          let isLbEnable = lb_data.rows.len() > 0
+          let lbObj = ::showBtn("leaderboard_obj", isLeaderboardsAvailable(), scene)
+          if (!lbObj?.isValid())
+            return
 
-    lbObj.enable(isLbEnable)
-    lbObj.inactiveColor = isLbEnable ? "no" : "yes"
-    if (!isLbEnable)
-      return
+          lbObj.enable(isLbEnable)
+          lbObj.inactiveColor = isLbEnable ? "no" : "yes"
+          if (!isLbEnable)
+            return
 
-    let topObj = scene.findObject("top_nest")
-    if (!topObj?.isValid())
-      return
+          let topObj = scene.findObject("top_nest")
+          if (!topObj?.isValid())
+            return
 
-    let texts = []
-    foreach (idx, row in lbData.rows) {
-      if (idx > 2)
-        break
+          let texts = []
+          foreach (idx, row in lb_data.rows) {
+            if (idx > 2)
+              break
 
-      let txt = row._id == ::my_user_id_str
-        ? ::colorize("totalTextColor", row.name) : row.name
-      texts.append({ text = $"{idx + 1} {txt}"})
-    }
-    let data = ::handyman.renderCached("%gui/commonParts/text", {texts = texts})
-    guiScene.replaceContentFromText(topObj, data, data.len(), this)
+            let txt = row._id == ::my_user_id_str
+              ? ::colorize("totalTextColor", row.name) : row.name
+            texts.append({ text = $"{idx + 1} {txt}"})
+          }
+          let data = ::handyman.renderCached("%gui/commonParts/text", {texts = texts})
+          guiScene.replaceContentFromText(topObj, data, data.len(), this)
+        }, this)
+      }, this)
   }
 
   function getDescParams() {
-    fetchLbData(
-      getEventByDay(tournament.id, curTourParams.dayNum, false),
-      @(lbData) updateLbObjects(lbData), this)
+    fetchLbData()
     let rangeData = ::events.getPlayersRangeTextData(curEvent)
     let missArr = [$"{::loc("mainmenu/missions")}{::loc("ui/colon")}"]
     foreach (miss, v in (curEvent.mission_decl?.missions_list ?? {}))

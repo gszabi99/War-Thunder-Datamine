@@ -654,9 +654,8 @@ g_promo.switchBlock <- function switchBlock(obj, promoHolderObj)
   let prevValue = multiblockData[promoButtonObj.id].value
   if (prevValue >= 0)
   {
-    let prevObj = promoButtonObj.findObject(::g_promo.getActionParamsKey($"{promoButtonObj.id}_{prevValue}"))
-    if (prevObj?.isValid() ?? false)
-      prevObj.animation = "hide"
+    let prevObj = promoButtonObj.findObject(::g_promo.getActionParamsKey(promoButtonObj.id + "_" + prevValue))
+    prevObj.animation = "hide"
   }
 
   let searchId = ::g_promo.getActionParamsKey(promoButtonObj.id + "_" + value)

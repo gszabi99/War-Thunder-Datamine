@@ -120,26 +120,9 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     updateSelectedListItem()
   }
 
-  function toggleFav() {
-    if (!isValid())
-      return
-
+  function onToggleFav() {
     let unlockId = getUnlockIdByLoadingBg(selectedId)
-    let isFav = ::g_unlocks.isUnlockFav(unlockId)
-    if (isFav) {
-      ::g_unlocks.removeUnlockFromFavorites(unlockId)
-      updateButtons()
-      return
-    }
-
-    if (!::g_unlocks.canAddFavorite()) {
-      let num = ::g_unlocks.favoriteUnlocksLimit
-      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
-      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
-      return
-    }
-
-    ::g_unlocks.addUnlockToFavorites(unlockId)
+    ::g_unlocks.toggleFav(unlockId)
     updateButtons()
   }
 

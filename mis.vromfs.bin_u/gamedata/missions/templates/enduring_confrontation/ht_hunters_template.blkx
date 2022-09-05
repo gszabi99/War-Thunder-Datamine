@@ -100,8 +100,7 @@
           "triggerDisable": {
             "target": [
               "ht_t1_attack",
-              "ht_t1_retreat",
-              "ht_t1_retreat_restart_check"
+              "ht_t1_retreat"
             ]
           },
           "triggerEnable": {
@@ -348,6 +347,10 @@
           "wait": {
             "time": 1.0
           },
+          "unitLoadBehTree": {
+            "name": "missionFighter",
+            "objects": "ht_t1_hunter"
+          },
           "unitMoveTo": {
             "object_marking": 0,
             "object_var_name": "",
@@ -377,7 +380,10 @@
             ]
           },
           "triggerEnable": {
-            "target": "ht_t1_attack"
+            "target": [
+              "ht_t1_attack",
+              "ht_t1_died"
+            ]
           }
         },
         "else_actions": {}
@@ -465,7 +471,7 @@
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
           "conditionsType": "ALL",
-          "enableAfterComplete": false
+          "enableAfterComplete": true
         },
         "events": {
           "periodicEvent": {
@@ -493,17 +499,11 @@
           "unitPutToSleep": {
             "target": "ht_t1_hunter",
             "useForTriggerFiltered": true
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "ht_t1_retreat_restart_check"
           }
         },
         "else_actions": {}
       },
-      "ht_t1_retreat_restart_check": {
+      "ht_t1_died": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -522,22 +522,20 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "func": "more",
-            "value": 0,
+            "func": "less",
+            "value": 1,
             "object": "ht_t1_hunter"
           }
         },
         "actions": {
-          "triggerEnable": {
-            "target": "ht_t1_retreat"
+          "triggerDisable": {
+            "target": [
+              "ht_t1_attack",
+              "ht_t1_retreat"
+            ]
           }
         },
-        "else_actions": {
-          "varSetBool": {
-            "value": false,
-            "var": "ht_t1_is_active"
-          }
-        }
+        "else_actions": {}
       }
     },
     "ht_t2_routine": {
@@ -597,8 +595,7 @@
           "triggerDisable": {
             "target": [
               "ht_t2_attack",
-              "ht_t2_retreat",
-              "ht_t2_retreat_restart_check"
+              "ht_t2_retreat"
             ]
           },
           "triggerEnable": {
@@ -842,6 +839,10 @@
             "isStealth": true,
             "resetFormation": true
           },
+          "unitLoadBehTree": {
+            "name": "missionFighter",
+            "objects": "ht_t2_hunter"
+          },
           "wait": {
             "time": 1.0
           },
@@ -874,7 +875,10 @@
             ]
           },
           "triggerEnable": {
-            "target": "ht_t2_attack"
+            "target": [
+              "ht_t2_attack",
+              "ht_t2_died"
+            ]
           }
         },
         "else_actions": {}
@@ -962,7 +966,7 @@
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
           "conditionsType": "ALL",
-          "enableAfterComplete": false
+          "enableAfterComplete": true
         },
         "events": {
           "periodicEvent": {
@@ -990,17 +994,11 @@
           "unitPutToSleep": {
             "target": "ht_t2_hunter",
             "useForTriggerFiltered": true
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "ht_t2_retreat_restart_check"
           }
         },
         "else_actions": {}
       },
-      "ht_t2_retreat_restart_check": {
+      "ht_t2_died": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1019,22 +1017,20 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "func": "more",
-            "value": 0,
+            "func": "less",
+            "value": 1,
             "object": "ht_t2_hunter"
           }
         },
         "actions": {
-          "triggerEnable": {
-            "target": "ht_t2_retreat"
+          "triggerDisable": {
+            "target": [
+              "ht_t2_attack",
+              "ht_t2_retreat"
+            ]
           }
         },
-        "else_actions": {
-          "varSetBool": {
-            "value": false,
-            "var": "ht_t2_is_active"
-          }
-        }
+        "else_actions": {}
       }
     }
   },

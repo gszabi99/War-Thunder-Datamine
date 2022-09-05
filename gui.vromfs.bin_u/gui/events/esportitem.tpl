@@ -119,38 +119,25 @@ eSItemDiv {
       background-svg-size:t='pw, ph'
     }
     activeText {
-      pos:t='1@eSItemPadding, 0.5@eSItemBgrTopPos-0.5@eSItemMargin'
+      pos:t='1@eSItemPadding, 1@eSItemBgrTopPos-1@eSItemInterval-0.5h'
       position:t='absolute'
       text:t='<<rank>>'
     }
     activeText {
-      pos:t='0.5pw-0.5w, 0.5@eSItemBgrTopPos-0.5@eSItemMargin'
+      pos:t='0.5pw-0.5w, 1@eSItemInterval+0.5@eSItemHeaderHeight-0.5h'
       position:t='absolute'
       text:t='<<tournamentType>>'
     }
-
-    tdiv {
-      id:t='rating_nest'
-      height:t='1@eSRatingIco'
+    img {//!!!FIX Layered icon need
+      size:t='1@eSItemDivisionWidth, 1@eSItemDivisionHeight'
+      top:t='1@eSItemInterval'
       right:t='1@eSItemPadding'
       position:t='absolute'
-      flow:t='horizontal'
-      display:t='hide'
-      img {
-        size:t='ph, ph'
-        top:t='3@dp'
-        position:t='relative'
-        background-image:t="#ui/gameuiskin#lb_elo_rating.svg"
-        background-svg-size:t='ph, ph'
-      }
-
-      activeText {
-        id:t='rating_txt'
-        top:t='0.5@eSItemBgrTopPos-0.5@eSItemMargin'
-        position:t='relative'
-        smallFont:t='yes'
-        text:t=''
-      }
+      background-image:t='<<divisionImg>>'
+      background-svg-size:t='1@eSItemDivisionWidth, 1@eSItemDivisionHeight'
+      <<#isFinished>>
+      background-saturate:t='0'
+      <</isFinished>>
     }
   }
   // COUNTRIES
