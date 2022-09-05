@@ -10,6 +10,9 @@ let { isVisibleDmgIndicator, dmgIndicatorStates } = require("%rGui/hudState.nut"
 let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 let { bw, bh, rw, rh } = require("style/screenState.nut")
+//
+
+
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -82,6 +85,9 @@ let function tankDmgIndicator() {
   let children = [
     tankXrayIndicator,
     activeProtectionSystem,
+    //
+
+
   ]
   if (IsMlwsLwsHudVisible.value)
     children.append(tws({

@@ -47,9 +47,6 @@ root {
         textareaNoTab {
           id:t='no_active_battles_text'
           width:t='pw'
-          <<#hasGotoGlobalBattlesBtn>>
-          height:t='fh'
-          <</hasGotoGlobalBattlesBtn>>
           margin-top:t='0.01@scrn_tgt'
           text-align:t='center'
           text:t='#worldwar/operation/noActiveBattles'
@@ -61,34 +58,6 @@ root {
           flow:t = 'vertical'
           on_select:t='onItemSelect'
         }
-
-        <<#hasGotoGlobalBattlesBtn>>
-        tdiv {
-          width:t='pw'
-          flow:t='vertical'
-
-          textareaNoTab {
-            id:t='no_available_battles_alert_text'
-            width:t='pw'
-            padding:t='1@framePadding'
-            text-align:t='center'
-            smallFont:t='yes'
-            bgcolor:t='@surrenderPanelColorBG'
-            text:t='#worldwar/no_available_battle_in_operation'
-          }
-
-          Button_text {
-            id:t='goto_global_battles_btn'
-            width:t='pw'
-            margin-top:t='1@blockInterval'
-            text:t='#worldWar/btn_all_battles_full_text'
-            on_click:t='onOpenGlobalBattlesModal'
-            visualStyle:t='secondary'
-            btnName:t='LT'
-            ButtonImg {}
-          }
-        }
-        <</hasGotoGlobalBattlesBtn>>
 
         tdiv {
           id:t='queue_info'

@@ -1,6 +1,7 @@
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
+let { is_bit_set } = require("%sqstd/math.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let avatars = require("%scripts/user/avatars.nut")
 let { isMeXBOXPlayer, isMePS4Player, isPlatformPC, isPlatformSony
@@ -30,6 +31,9 @@ let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip
 } = require("%scripts/user/suggestionEmailRegistration.nut")
+let { getUnlockConditionsText, getUnlockMultDesc,
+  getUnlockMainCondText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { APP_ID } = require("app")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -90,7 +94,6 @@ let selMedalIdx = {}
   unlockTypesToShow = [
     ::UNLOCKABLE_ACHIEVEMENT,
     ::UNLOCKABLE_CHALLENGE,
-    ::UNLOCKABLE_DECAL,
     ::UNLOCKABLE_TROPHY,
     ::UNLOCKABLE_TROPHY_PSN,
     ::UNLOCKABLE_TROPHY_XBOXONE,
@@ -415,28 +418,8 @@ let selMedalIdx = {}
 
   function onToggleFav() {
     let decal = getCurDecal()
-    toggleFav(decal?.unlockId)
+    ::g_unlocks.toggleFav(decal?.unlockId)
     updateDecalButtons(decal)
-  }
-
-  function toggleFav(unlockId) {
-    if (!unlockId)
-      return
-
-    let isFav = ::g_unlocks.isUnlockFav(unlockId)
-    if (isFav) {
-      ::g_unlocks.removeUnlockFromFavorites(unlockId)
-      return
-    }
-
-    if (!::g_unlocks.canAddFavorite()) {
-      let num = ::g_unlocks.favoriteUnlocksLimit
-      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
-      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
-      return
-    }
-
-    ::g_unlocks.addUnlockToFavorites(unlockId)
   }
 
   function onSheetChange(obj)
@@ -660,30 +643,25 @@ let selMedalIdx = {}
   }
 
   function updateDecalInfo(decor) {
-    let nestObj = this.showSceneBtn("decal_info", decor != null)
+    let infoObj = this.showSceneBtn("decal_info", decor != null)
     if (!decor)
       return
 
     let img = decor.decoratorType.getImage(decor)
-    let imgObj = nestObj.findObject("decalImage")
+    let imgObj = infoObj.findObject("decalImage")
     imgObj["background-image"] = img
 
     let title = decor.getName()
-    nestObj.findObject("decalTitle").setValue(title)
+    infoObj.findObject("decalTitle").setValue(title)
 
     let desc = decor.getDesc()
-    nestObj.findObject("decalDesc").setValue(desc)
+    infoObj.findObject("decalDesc").setValue(desc)
 
     let cfg = decor.unlockBlk != null
       ? ::build_unlock_desc(::build_conditions_config(decor.unlockBlk))
       : null
 
-    let conds = cfg
-      ? ::UnlockConditions.getConditionsText(cfg.conditions, cfg.curVal, cfg.maxVal)
-      : ""
-    nestObj.findObject("decalConds").setValue(conds)
-
-    let progressObj = nestObj.findObject("decalProgress")
+    let progressObj = infoObj.findObject("decalProgress")
     if (cfg != null) {
       let progressData = cfg.getProgressBarData()
       progressObj.show(progressData.show)
@@ -692,7 +670,13 @@ let selMedalIdx = {}
     } else
       progressObj.show(false)
 
-    nestObj.findObject("decalPrice").setValue(getDecalObtainInfo(decor))
+    infoObj.findObject("decalMainCond").setValue(getUnlockMainCondText(cfg))
+    infoObj.findObject("decalMultDecs").setValue(getUnlockMultDesc(cfg))
+    infoObj.findObject("decalConds").setValue(getUnlockConditionsText(cfg, {
+      withMainCondition = false
+      showMult = false
+    }))
+    infoObj.findObject("decalPrice").setValue(getDecalObtainInfo(decor))
   }
 
   function getDecalObtainInfo(decor) {
@@ -1234,121 +1218,75 @@ let selMedalIdx = {}
     return ""
   }
 
-  function fillSkinDescr(name)
-  {
-    let objDesc = this.showSceneBtn("item_desc", true)
-    let unlockBlk = ::g_unlocks.getUnlockById(name)
-    let decoratorType = ::g_decorator_type.SKINS
-    let decorator = ::g_decorator.getDecoratorById(name)
-    let isAllowed = decorator.isUnlocked()
-    local config = {}
+  function getSkinDesc(decor) {
+    return "\n".join([
+      decor.getDesc(),
+      decor.getTypeDesc(),
+      decor.getLocParamsDesc(),
+      decor.getRestrictionsDesc(),
+      decor.getLocationDesc(),
+      decor.getTagsDesc()
+    ], true)
+  }
 
-    if (unlockBlk)
-      config = ::build_conditions_config(unlockBlk)
-    else
-    {
-      config = ::get_empty_conditions_config()
-      config.image = decoratorType.getImage(decorator)
-      config.imgRatio = decoratorType.getRatio(decorator)
-    }
+  function getSubUnlocksView(config) {
+    if (!config)
+      return null
 
-    let desc = []
-    desc.append(decorator.getDesc())
-    desc.append(decorator.getTypeDesc())
-    desc.append(decorator.getLocParamsDesc())
-    desc.append(decorator.getRestrictionsDesc())
-    desc.append(decorator.getLocationDesc())
-    desc.append(decorator.getTagsDesc())
-
-    let unlockDesc = decorator.getUnlockDesc()
-    if (unlockDesc.len())
-      desc.append(" ") // for visually distinguish unlock requirements from other info
-
-    desc.append(unlockDesc)
-    config.text = ::g_string.implode(desc, "\n")
-
-    let condView = []
-    append_condition_item(config, 0, condView, true, isAllowed)
-
-    if ("shortText" in config)
-      for(local i=0; i<config.stages.len(); i++)  //stages of challenge
-      {
-        let stage = config.stages[i]
-        if (stage.val != config.maxVal)
-        {
-          let curValStage = (config.curVal > stage.val)? stage.val : config.curVal
-          let isUnlockedStage = curValStage >= stage.val
-          append_condition_item({
-              text = config.progressText //do not show description for stages
-              curVal = curValStage
-              maxVal = stage.val
-            },
-            i+1, condView, false, isUnlockedStage)
+    return ::UnlockConditions.getLocForBitValues(config.type, config.names)
+      .map(function(name, i) {
+        let isUnlocked = is_bit_set(config.curVal, i)
+        let text = config?.compareOR && i > 0
+          ? $"{::loc("hints/shortcut_separator")}\n{name}"
+          : name
+        return {
+          unlocked = isUnlocked ? "yes" : "no"
+          text
         }
-      }
+      })
+  }
 
-    //missions, countries
-    let namesLoc = ::UnlockConditions.getLocForBitValues(config.type, config.names)
-    let typeOR = ("compareOR" in config) && config.compareOR
-    for(local i=0; i < namesLoc.len(); i++)
-    {
-      let isPartUnlocked = config.curVal & 1 << i
-      append_condition_item({
-            text = namesLoc[i]
-            curVal = 0
-            maxVal = 0
-          },
-          i+1, condView, false, isPartUnlocked, i > 0 && typeOR)
-    }
-
+  function fillSkinDescr(name) {
     let unitName = ::g_unlocks.getPlaneBySkinId(name)
     let unitNameLoc = (unitName != "") ? ::getUnitName(unitName) : ""
+    let unlockBlk = ::g_unlocks.getUnlockById(name)
+    let config = unlockBlk ? ::build_conditions_config(unlockBlk) : null
+    let progressData = config?.getProgressBarData()
+    let canAddFav = !!unlockBlk
+    let decorator = ::g_decorator.getDecoratorById(name)
 
-    let skinView = { skinDescription = [{
-      name0 = unitNameLoc
-      name = decorator.getName()
-      image = config.image
-      ratio = config.imgRatio
-      status = isAllowed ? "unlocked" : "locked"
-      condition = condView
-      isUnlock = !!unlockBlk
-      price = decorator.getCostText()
-    }]}
+    let skinView = {
+      unitName = unitNameLoc
+      skinName = decorator.getName()
+
+      image = config?.image ?? ::g_decorator_type.SKINS.getImage(decorator)
+      ratio = config?.imgRatio ?? ::g_decorator_type.SKINS.getRatio(decorator)
+      status = decorator.isUnlocked() ? "unlocked" : "locked"
+
+      skinDesc = getSkinDesc(decorator)
+      unlockProgress = progressData?.value
+      hasProgress = progressData?.show
+      skinPrice = decorator.getCostText()
+      mainCond = getUnlockMainCondText(config)
+      multDesc = getUnlockMultDesc(config)
+      conds = getUnlockConditionsText(config, {
+        withMainCondition = false
+        showMult = false
+      })
+      conditions = getSubUnlocksView(config)
+      canAddFav
+    }
 
     guiScene.setUpdatesEnabled(false, false)
     let markUpData = ::handyman.renderCached("%gui/profile/profileSkins", skinView)
+    let objDesc = this.showSceneBtn("item_desc", true)
     guiScene.replaceContentFromText(objDesc, markUpData, markUpData.len(), this)
 
-    if (unlockBlk)
+    if (canAddFav)
       ::g_unlock_view.fillUnlockFav(name, objDesc)
 
     this.showSceneBtn("unlocks_list", false)
     guiScene.setUpdatesEnabled(true, true)
-  }
-
-  function append_condition_item(item, idx, view, header, is_unlocked, typeOR = false)
-  {
-    let curVal = item.curVal
-    let maxVal = item.maxVal
-    let showStages = ("stages" in item) && (item.stages.len() > 1)
-
-    local unlockDesc = typeOR ? ::loc("hints/shortcut_separator") + "\n" : ""
-    unlockDesc += item.text.indexof("%d") != null ? format(item.text, curVal, maxVal) : item.text
-    if (showStages && item.curStage >= 0)
-       unlockDesc += ::g_unlock_view.getRewardText(item, item.curStage)
-
-    let progressData = item?.getProgressBarData?()
-    let hasProgress = progressData?.show
-    let progress = progressData?.value
-
-    view.append({
-      isHeader = header
-      id = "unlock_txt_" + idx
-      unlocked = is_unlocked ? "yes" : "no"
-      text = unlockDesc
-      hasProgress = hasProgress
-      progress = progress
-    })
   }
 
   unlockToFavorites = @(obj) ::g_unlocks.unlockToFavorites(obj,
@@ -1550,29 +1488,28 @@ let selMedalIdx = {}
     if (!isPageFilling)
       selMedalIdx[curFilter] <- idx
 
-    guiScene.setUpdatesEnabled(false, false)
-
-    let isUnlocked = ::is_unlocked_scripted(::get_unlock_type_by_id(name), name)
-    let config = ::build_conditions_config(unlock)
-    ::build_unlock_desc(config)
+    let config = ::build_unlock_desc(::build_conditions_config(unlock))
     let rewardText = ::get_unlock_reward(name)
-
-    let condView = []
-    append_condition_item(config, 0, condView, true, isUnlocked)
-
-    ::showBtn("checkbox_favorites", true, containerObj)
-    ::g_unlock_view.fillUnlockFav(name, containerObj)
+    let progressData = config.getProgressBarData()
 
     let view = {
       title = ::loc(name + "/name")
       image = ::get_image_for_unlockable_medal(name, true)
-      condition = condView
+      unlockProgress = progressData.value
+      hasProgress = progressData.show
+      mainCond = getUnlockMainCondText(config)
+      multDesc = getUnlockMultDesc(config)
+      conds = getUnlockConditionsText(config, {
+        withMainCondition = false
+        showMult = false
+      })
       rewardText = rewardText != "" ? rewardText : null
     }
 
     let markup = ::handyman.renderCached("%gui/profile/profileMedal", view)
+    guiScene.setUpdatesEnabled(false, false)
     guiScene.replaceContentFromText(descObj, markup, markup.len(), this)
-
+    ::g_unlock_view.fillUnlockFav(name, containerObj)
     guiScene.setUpdatesEnabled(true, true)
   }
 
@@ -1928,7 +1865,7 @@ let selMedalIdx = {}
   function onOpenAchievementsUrl()
   {
     openUrl(::loc("url/achievements",
-        { appId = ::WT_APPID, name = ::get_profile_info().name}),
+        { appId = APP_ID, name = ::get_profile_info().name}),
       false, false, "profile_page")
   }
 }

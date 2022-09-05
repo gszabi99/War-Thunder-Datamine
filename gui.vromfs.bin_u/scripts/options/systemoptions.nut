@@ -554,6 +554,16 @@ mShared = {
       setGuiValue("ssaoQuality", 1)
   }
 
+  antiaAliasingClick = function() {
+    if (getGuiValue("antialiasing") == "low_taa")
+    {
+      setGuiValue("backgroundScale", 1.0)
+      enableGuiOption("backgroundScale", false)
+    }
+    else
+      enableGuiOption("backgroundScale", true)
+  }
+
   ssaaClick = function() {
     if (getGuiValue("ssaa") == "4X") {
       let function okFunc() {
@@ -798,6 +808,7 @@ mSettings = {
     let antiAliasing = get_blk_value_by_path(blk, desc.blk, "none")
     return (antiAliasing=="high_taa") ? "low_taa" : antiAliasing
   }
+    onChanged = "antiaAliasingClick"
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
     enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
   }
@@ -891,6 +902,7 @@ mSettings = {
         val = 2.0
       return ::find_nearest(val, desc.blkValues)
     }
+    enabled = @() !getGuiValue("antialiasing") == "low_taa"
     setToBlk = function(blk, desc, val) {
       local res = ::getTblValue(val, desc.blkValues, desc.def)
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))

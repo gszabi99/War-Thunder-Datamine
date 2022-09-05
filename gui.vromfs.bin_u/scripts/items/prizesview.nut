@@ -5,12 +5,14 @@ let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getEntitlementConfig, getEntitlementName,
-   getEntitlementLocParams, getEntitlementDescription } = require("%scripts/onlineShop/entitlements.nut")
+  getEntitlementDescription, getEntitlementLocParams, premiumAccountDescriptionArr } = require("%scripts/onlineShop/entitlements.nut")
 let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
 let { UNLOCK, ITEM, UNIT, DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
+
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
 //
@@ -103,8 +105,10 @@ let prizeViewConfig = {
   },
   [PRIZE_TYPE.PREMIUM_ACCOUNT] = {
     function getDescription(_){
-      let paramEntitlement =  getEntitlementLocParams()
-      return ::loc("charServer/entitlement/PremiumAccount/desc", paramEntitlement)
+      let paramEntitlement = getEntitlementLocParams()
+      let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({text = ::loc(d.locId, paramEntitlement)}))
+
+      return formatLocalizationArrayToDescription(locArr)
     }
     getTooltipConfig = @(prize) {tooltip = ::loc($"charServer/chapter/premium")}
   },
@@ -348,7 +352,8 @@ let prizeViewConfig = {
     let maxButtonsCount = prizeListView.reduce(@(res, p) max(p?.buttonsCount ?? 0, res), 0)
     prizeListView = prizeListView.map(@(p) p.__update({
       buttonsCount = maxButtonsCount
-      buttons = (p?.buttons ?? []).resize(maxButtonsCount, { emptyButton = true })
+      buttons = p?.buttons ? p.buttons.resize(maxButtonsCount, { emptyButton = true })
+        : array(maxButtonsCount, { emptyButton = true })
     }))
 
     view.list <- prizeListView

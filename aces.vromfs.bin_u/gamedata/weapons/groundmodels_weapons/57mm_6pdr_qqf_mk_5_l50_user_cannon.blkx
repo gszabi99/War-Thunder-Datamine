@@ -258,24 +258,6 @@
           0.99
         ]
       },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
-      },
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -877,10 +859,12 @@
   "57mm_britain_6pdr_APDS": {
     "bullet": {
       "bulletCount": 20,
-      "mass": 0.453,
+      "mass": 1.025119,
       "caliber": 0.057,
-      "ballisticCaliber": 0.02794,
-      "speed": 1219.0,
+      "damageCaliber": 0.02794,
+      "ballisticCaliber": 0.03683,
+      "speed": 1158.24,
+      "Cx": 0.27283,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds",
@@ -900,7 +884,6 @@
       ],
       "shellAnimation": "video/shells_animations/apds.ivf",
       "bulletName": "57mm_shot_mk1bt",
-      "Cx": 0.001,
       "relativeVelHitShift": [
         300.0,
         1000.0

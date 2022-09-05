@@ -1,73 +1,111 @@
-<<#skinDescription>>
-  titleTextArea {
-    text-align:t='center'
-    text:t='<<name0>>'
+titleTextArea {
+  text-align:t='center'
+  text:t='<<unitName>>'
+}
+
+titleTextArea {
+  text-align:t='center'
+  text:t='<<skinName>>'
+}
+
+tdiv {
+  size:t='pw, fh'
+  flow:t='vertical'
+
+  bigMedalPlace {
+    bigMedalImg {
+      max-height:t='<<ratio>>*h'
+      max-width:t='<<ratio>>*w'
+      background-image:t='<<image>>'
+      status:t='<<status>>'
+    }
   }
 
-  titleTextArea {
-    text-align:t='center'
-    text:t='<<name>>'
-  }
-
-  tdiv{
-    size:t = 'pw, fh'
+  tdiv {
+    padding-left:t='@unlockConditionHeaderLeftPadding'
+    margin-top:t='2@blockInterval'
+    width:t='pw'
     flow:t='vertical'
-    bigMedalPlace{
-      bigMedalImg {
-        max-height:t='<<ratio>>*h'
-        max-width:t='<<ratio>>*w'
-        background-image:t='<<image>>'
-        status:t='<<status>>'
-      }
+
+    textareaNoTab {
+      text:t='<<skinDesc>>'
+      overflow:t='hidden'
+      width:t='pw'
+      smallFont:t='yes'
+      margin-top:t='2@dp'
     }
 
-    tdiv{
-      flow:t='vertical'
-      size:t='pw, 0'
-      max-height:t='ph-@bigMedalPlaceYpos-<<ratio>>*@profileMedalSize-@modStatusCheckboxHeight-3@blockInterval'
-      overflow-y:t='auto'
-      scrollbarShortcuts:t='yes'
-      total-input-transparent:t='yes'
+    <<#hasProgress>>
+    challengeDescriptionProgress {
+      value:t='<<unlockProgress>>'
+      thin:t='yes'
+    }
+    <</hasProgress>>
 
-      <<#condition>>
-        <<#isHeader>>unlockConditionHeader<</isHeader>>
-        <<^isHeader>>unlockCondition<</isHeader>>
-        {
-          unlocked:t='<<unlocked>>'
-          textarea{
-            text:t='<<text>>'
-          }
-          <<#hasProgress>>
-          challengeDescriptionProgress{
-            id:t='progress'
-            value:t='<<progress>>'
-          }
-          <</hasProgress>>
-          textarea{
-            text:t='<<price>>'
-            hideEmptyText:t='yes'
-          }
-        }
-      <</condition>>
+    textareaNoTab {
+      text:t='<<mainCond>>'
+      overflow:t='hidden'
+      width:t='pw'
+      smallFont:t='yes'
+      margin-top:t='@blockInterval'
     }
 
-    <<#isUnlock>>
-    tdiv {
-      padding-left:t='@unlockConditionHeaderLeftPadding'
-      margin-top:t='1@blockInterval'
-
-      CheckBox {
-        id:t='checkbox_favorites'
-        text:t='#mainmenu/UnlockAchievementsToFavorite'
-        smallFont:t='yes'
-        tooltip:t=''
-        on_change_value:t='unlockToFavorites'
-        unlockId:t=''
-        btnName:t='Y'
-        ButtonImg{}
-        CheckBoxImg{}
-      }
+    textareaNoTab {
+      text:t='<<multDesc>>'
+      overflow:t='hidden'
+      width:t='pw'
+      smallFont:t='yes'
     }
-    <</isUnlock>>
+
+    textareaNoTab {
+      text:t='<<conds>>'
+      overflow:t='hidden'
+      width:t='pw'
+      smallFont:t='yes'
+      margin-top:t='@blockInterval'
+    }
+
+    textareaNoTab {
+      text:t='<<skinPrice>>'
+      width:t='pw'
+      smallFont:t='yes'
+      margin-top:t='7@dp'
+    }
   }
-<</skinDescription>>
+
+  tdiv {
+    flow:t='vertical'
+    size:t='pw, 0'
+    max-height:t='ph-@bigMedalPlaceYpos-<<ratio>>*@profileMedalSize-@modStatusCheckboxHeight-3@blockInterval'
+    overflow-y:t='auto'
+    total-input-transparent:t='yes'
+
+    <<#conditions>>
+    unlockCondition {
+      unlocked:t='<<unlocked>>'
+      textarea {
+        text:t='<<text>>'
+      }
+    }
+    <</conditions>>
+  }
+
+  <<#canAddFav>>
+  tdiv {
+    padding-left:t='@unlockConditionHeaderLeftPadding'
+    margin-top:t='2@blockInterval'
+
+    CheckBox {
+      id:t='checkbox_favorites'
+      text:t='#mainmenu/UnlockAchievementsToFavorite'
+      smallFont:t='yes'
+      tooltip:t=''
+      on_change_value:t='unlockToFavorites'
+      unlockId:t=''
+      btnName:t='Y'
+      ButtonImg {}
+      CheckBoxImg {}
+    }
+  }
+  <</canAddFav>>
+}

@@ -67,23 +67,27 @@ let function Log(tostringfunc=null) {
     return @(...) dlog.acall([null, prefix].extend(vargv))  //disable: -dlog-warn
   }
 
-  local function wlog(watched, prefix = "", logger = log) {
+  local function wlog(watched, prefix = null, transform=null, logger = log) {
+    local ftransform = transform ?? @(v) v
+    local fprefix = prefix
     if (type(prefix) == "function") {
-      logger = prefix
-      prefix = ""
+      ftransform = prefix
+      fprefix = transform
     }
+    if (type(transform) == "string")
+      fprefix = transform
     if (type(watched) != "array")
       watched = [watched]
-    prefix = prefix != "" ? $"{prefix}" : null
-    if (prefix != null)
+    fprefix = fprefix != "" ? fprefix : null
+    if (fprefix != null)
       foreach (w in watched) {
-        logger(prefix, w.value)
-        w.subscribe(@(v) logger(prefix, v))
+        logger(fprefix, ftransform(w.value))
+        w.subscribe(@(v) logger(fprefix, ftransform(v)))
       }
     else
       foreach (w in watched) {
-        logger(w.value)
-        w.subscribe(logger)
+        logger(ftransform(w.value))
+        w.subscribe(@(v) logger(ftransform(v)))
       }
   }
 
@@ -103,7 +107,7 @@ let function Log(tostringfunc=null) {
     debug = dagorDebug.debug
     logerr = dagorDebug.logerr
     screenlog = dagorDebug.screenlog
-  }.setdelegate({_call = @(...) log.acall(vargv)}) //now it is callable
+  }
 }
 
 return Log

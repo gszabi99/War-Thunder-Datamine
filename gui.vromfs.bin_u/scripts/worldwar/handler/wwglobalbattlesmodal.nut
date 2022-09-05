@@ -291,10 +291,6 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     operationInfoTextObj.setValue(operation.getNameText())
   }
 
-  function updateNoAvailableBattleInfo()
-  {
-  }
-
   function getFilteredBattlesByMaxCountPerGroup()
   {
     if (battlesList.len() == 0)
@@ -317,7 +313,8 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     foreach (group in battlesByGroups)
     {
       group.sort(battlesSort)
-      res.extend(group.resize(min(group.len(), maxVisibleBattlesPerGroup)))
+      group.resize(min(group.len(), maxVisibleBattlesPerGroup))
+      res.extend(group)
     }
 
     res.sort(battlesSort)

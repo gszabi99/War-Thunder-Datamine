@@ -1,12 +1,11 @@
 let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry,
-  isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath,
-  WEAPON_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
+  isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX,
-  getUnitWeapons, getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams
+  getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams, getSlotsWeaponsForEditPreset
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCustomPresetByPresetBlk, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
@@ -54,7 +53,7 @@ let function getTypeByPurpose(weaponry)
     return "NONE"
 
   let res =[]
-  foreach (triggerType in weaponry)
+  foreach (triggerType in (weaponry?.weaponsByTypes ?? {}))
     foreach (inst in triggerType)
       foreach (w in inst.weaponBlocks) {
         // Lack of bullet types or all types that is not in PURPOSE_TYPE is AIR_TO_GROUND type
@@ -191,8 +190,8 @@ let function getWeaponryGroup(preset, groupOrder)
 {
   let res = []
   foreach (triggerType in groupOrder)
-    if (preset?[triggerType])
-      foreach (w in preset[triggerType].weaponBlocks)
+    if (preset?.weaponsByTypes[triggerType] != null)
+      foreach (w in preset.weaponsByTypes[triggerType].weaponBlocks)
         res.extend(getBlocks(w.__merge({tType = triggerType})))
   // Needs additional sort by ammo to define "heaviest" block among identical mass blocks
   return res.sort(@(a, b) b.massKg <=> a.massKg || b.ammo <=> a.ammo)
@@ -229,55 +228,55 @@ let function getPredefinedTiers(preset)
 {
   let res = []
   let filledTiers = {}
-  foreach (triggerType in TRIGGER_TYPE)
-    if (preset?[triggerType] != null)
-      foreach (weaponry in preset[triggerType].weaponBlocks)
-        if (weaponry?.tiers && !::u.isEmpty(weaponry.tiers)) // Tiers config takes effect only when all weapons in preset have tiers
+  foreach (triggerType, triggers in (preset?.weaponsByTypes ?? {}))
+    foreach (weaponry in triggers.weaponBlocks)
+      if (weaponry?.tiers && !::u.isEmpty(weaponry.tiers)) // Tiers config takes effect only when all weapons in preset have tiers
+      {
+        let amountPerTier = weaponry.amountPerTier ?? 1
+        let iconType = weaponry.iconType
+        foreach (idx, tier in weaponry.tiers)
         {
-          let amountPerTier = weaponry.amountPerTier ?? 1
-          let iconType = weaponry.iconType
-          foreach (idx, tier in weaponry.tiers)
-          {
-            let tierId = min(idx, TIERS_NUMBER-1) // To avoid possible mistakes from config with incorrect tier idx
-            let params = {
-              tierId = tierId
-              tType = triggerType
-              isBlock = (tier?.amountPerTier ?? amountPerTier) > 1
-              iconType  = tier?.iconType ?? iconType
-              tooltipLang = tier?.tooltipLang
-            }
-            if (filledTiers?[tierId])
-            {
-              // Create additional tiers info and add it on already existing tier if two weapons placed per one tier
-              let currTier = ::u.search(res, @(p) p.tierId == tierId)
-              if (currTier)
-              {
-                currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
-                  itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier)}))
-                currTier.tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unit.name,
-                  getTierTooltipParams(currTier.weaponry, preset.name, tierId))
-              }
-
-              continue
-            }
-            else
-              filledTiers[tierId] <- weaponry
-
-            res.append(createTier(weaponry.__merge(params),
-              preset.name, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
+          let tierId = min(idx, TIERS_NUMBER-1) // To avoid possible mistakes from config with incorrect tier idx
+          let params = {
+            tierId = tierId
+            tType = triggerType
+            isBlock = (tier?.amountPerTier ?? amountPerTier) > 1
+            iconType  = tier?.iconType ?? iconType
+            tooltipLang = tier?.tooltipLang
           }
-        }
-        else
-          return []
+          if (filledTiers?[tierId])
+          {
+            // Create additional tiers info and add it on already existing tier if two weapons placed per one tier
+            let currTier = ::u.search(res, @(p) p.tierId == tierId)
+            if (currTier)
+            {
+              currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
+                itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier)}))
+              currTier.tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unit.name,
+                getTierTooltipParams(currTier.weaponry, preset.name, tierId))
+            }
 
-  if (res.len()) // Add empty tiers in set if predefined tiers exist
-    for (local i = res.len(); i < TIERS_NUMBER; i++)
-      for (local j = 0; j < TIERS_NUMBER; j++)
-        if (filledTiers?[j] == null)
-        {
-          res.append({tierId = j})
-          filledTiers[j] <- {}
+            continue
+          }
+          else
+            filledTiers[tierId] <- weaponry
+
+          res.append(createTier(weaponry.__merge(params),
+            preset.name, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
         }
+      }
+
+  if (res.len() == 0)
+    return res
+
+  // Add empty tiers in set if predefined tiers exist
+  for (local i = res.len(); i < TIERS_NUMBER; i++)
+    for (local j = 0; j < TIERS_NUMBER; j++)
+      if (filledTiers?[j] == null)
+      {
+        res.append({tierId = j})
+        filledTiers[j] <- {}
+      }
 
   return res
 }
@@ -291,7 +290,7 @@ let function getTiers(unit, preset)
   {
     for (local i = 0; i < GROUP_ORDER.len(); i++)
       foreach (triggerType in GROUP_ORDER[i])
-        if (preset?[triggerType])
+        if (preset?.weaponsByTypes[triggerType])
         {
           let group = getWeaponryGroup(preset, GROUP_ORDER[i])
           for (local j = 0; j < group.len(); j++)
@@ -374,17 +373,20 @@ let function getReqRankByMod(reqMod, modifications) {
 
 let function getTierWeaponsParams(weapons, tierId) {
   let res = []
-  foreach (triggerType in WEAPON_TYPE)
-    foreach (weapon in (weapons?[triggerType] ?? []))
+  foreach (triggerType, triggers in weapons)
+    foreach (weapon in triggers)
       foreach(id, inst in weapon.weaponBlocks) {
         let tierWeaponConfig = inst.__merge({
           tType = triggerType
           iconType = inst.tiers?[tierId].iconType ?? inst.iconType
         })
+        let nameText = ::loc($"weapons/{id}")
         res.append({
           id = inst.tiers?[tierId].presetId ?? id
-          name = "".concat(::loc($"weapons/{id}"), ::loc("ui/parentheses/space",
-            {text = $"{::loc("shop/ammo")}{::loc("ui/colon")}{inst.ammo}"}))
+          name = inst.ammo > 0
+            ? "".concat(nameText, ::loc("ui/parentheses/space",
+              {text = $"{::loc("shop/ammo")}{::loc("ui/colon")}{inst.ammo}"}))
+            : nameText
           img = getTierIcon(tierWeaponConfig, inst.ammo)
         })
       }
@@ -426,20 +428,27 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
     bannedWeaponPreset = {}
     tiersView         = {}
     weaponPreset      = ::u.copy(preset)
+    weaponsByTypes    = {}
   }
-  foreach (weaponType, triggers in weaponry)
+  foreach (weaponType, triggers in (weaponry?.weaponsByTypes ?? {}))
     foreach (t in triggers) {
       let tType = weaponType == TRIGGER_TYPE.TURRETS ? weaponType : t.trigger
-      presetView[tType] <- presetView?[tType] ?? {}
-      presetView[tType].weaponBlocks <- presetView[tType]?.weaponBlocks ?? {}
-      let w = presetView[tType].weaponBlocks
+      presetView.weaponsByTypes[tType] <- presetView?.weaponsByTypes[tType] ?? {}
+      presetView.weaponsByTypes[tType].weaponBlocks <- presetView.weaponsByTypes[tType]?.weaponBlocks ?? {}
+      let w = presetView.weaponsByTypes[tType].weaponBlocks
       foreach (weaponName, weapon in t.weaponBlocks) {
         w[weaponName] <- (weapon.__merge({name = weaponName, purposeType = presetView.purposeType}))
         presetView.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
         presetView.totalMass += weapon.num * weapon.massKg
         presetView.tiers.__update(weapon.tiers)
-        presetView.dependentWeaponPreset.__update(weapon.dependentWeaponPreset)
-        presetView.bannedWeaponPreset.__update(weapon.bannedWeaponPreset)
+        foreach (dependentWeaponName, dependentWeapons in weapon.dependentWeaponPreset) {
+          let curDependentWeapons = presetView.dependentWeaponPreset?[dependentWeaponName] ?? []
+          presetView.dependentWeaponPreset[dependentWeaponName] <- curDependentWeapons.extend(dependentWeapons)
+        }
+        foreach (bannedWeaponName, bannedWeapons in weapon.bannedWeaponPreset) {
+          let curBannedWeapons = presetView.bannedWeaponPreset?[bannedWeaponName] ?? []
+          presetView.bannedWeaponPreset[bannedWeaponName] <- curBannedWeapons.extend(bannedWeapons)
+        }
       }
     }
   presetView.tiersView = getTiers(unit, presetView)
@@ -470,7 +479,7 @@ let function getWeaponryByPresetInfo(unit, chooseMenuList = null)
   let res = {
     presets = []
     favoriteArr = getFavoritePresets(unit.name)
-    availableWeapons = unit.hasWeaponSlots ? getUnitWeapons(::get_full_unit_blk(unit.name)) : null
+    availableWeapons = unit.hasWeaponSlots ? getSlotsWeaponsForEditPreset(::get_full_unit_blk(unit.name)) : null
   }
   let presetsList = getPresetsList(unit, chooseMenuList)
 

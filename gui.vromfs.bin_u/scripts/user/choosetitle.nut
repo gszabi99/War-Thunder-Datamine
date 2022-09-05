@@ -108,28 +108,6 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
     this.showSceneBtn("btn_apply", isOwn)
   }
 
-  function toggleFav(unlockId) {
-    if (!unlockId)
-      return
-
-    let isFav = ::g_unlocks.isUnlockFav(unlockId)
-    if (isFav) {
-      ::g_unlocks.removeUnlockFromFavorites(unlockId)
-      updateButtons()
-      return
-    }
-
-    if (!::g_unlocks.canAddFavorite()) {
-      let num = ::g_unlocks.favoriteUnlocksLimit
-      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
-      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
-      return
-    }
-
-    ::g_unlocks.addUnlockToFavorites(unlockId)
-    updateButtons()
-  }
-
   function onTitleSelect(obj)
   {
     let title = getSelTitle(obj)
@@ -144,10 +122,13 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 
   function onTitleActivate(obj) {
     let title = getSelTitle(obj)
-    if (isOwnTitle(title))
+    if (isOwnTitle(title)) {
       setTitleAndGoBack(title)
-    else
-      toggleFav(title)
+      return
+    }
+
+    ::g_unlocks.toggleFav(title)
+    updateButtons()
   }
 
   function onTitleClick(obj) {
@@ -167,7 +148,8 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 
   function onToggleFav() {
     let title = getSelTitle(scene.findObject("titles_list"))
-    toggleFav(title)
+    ::g_unlocks.toggleFav(title)
+    updateButtons()
   }
 
   function setTitleAndGoBack(titleName) {

@@ -83,7 +83,10 @@ let getVisibleSeenIds = function()
   {
     for (local i = 0; i < persistent.categoriesData.blockCount(); i++)
     {
-      let productsList = persistent.categoriesData.getBlock(i).links
+      let productsList = persistent.categoriesData.getBlock(i)?.links
+      if (productsList == null)
+        continue
+
       for (local j = 0; j < productsList.blockCount(); j++)
       {
         let item = getShopItem(productsList.getBlock(j).getBlockName())

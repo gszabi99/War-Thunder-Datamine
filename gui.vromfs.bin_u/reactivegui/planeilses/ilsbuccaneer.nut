@@ -1,10 +1,10 @@
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
        BombingMode} = require("%rGui/planeState/planeToolsState.nut")
-let {Speed, Roll} = require("%rGui/planeState/planeFlyState.nut");
+let {Tas, Roll} = require("%rGui/planeState/planeFlyState.nut");
 let {mpsToKnots, baseLineWidth} = require("ilsConstants.nut")
 let {cvt} = require("dagor.math")
 
-let buccaneerSpdVal = Computed(@() cvt(Speed.value * mpsToKnots, 300, 600, 0, 100).tointeger())
+let buccaneerSpdVal = Computed(@() cvt(Tas.value * mpsToKnots, 300, 600, 0, 100).tointeger())
 let buccaneerSpeed = @() {
   watch = buccaneerSpdVal
   size = [pw(20), ph(5)]

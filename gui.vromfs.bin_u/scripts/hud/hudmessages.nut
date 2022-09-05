@@ -1,4 +1,6 @@
-let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT } = require_native("guiMission")
+let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
+  MISSION_TEAM_LEAD_ZONE
+} = require_native("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
@@ -381,8 +383,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
     onMessage = function (eventData)
     {
       if (eventData.isHeroAction
-        && eventData.eventId != ::MISSION_CAPTURED_ZONE
-        && eventData.eventId != ::MISSION_TEAM_LEAD_ZONE)
+        && eventData.eventId != MISSION_CAPTURED_ZONE
+        && eventData.eventId != MISSION_TEAM_LEAD_ZONE)
         return
 
       cleanUp()

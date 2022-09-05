@@ -1,0 +1,926 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/templates/enduring_confrontation/tl_takeoff_landing_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "squad": [
+      {
+        "name": "tl_all_fields_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            17615.5,
+            3.84961,
+            -14569.4
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "tl_base_01",
+            "tl_base_02",
+            "tl_base_03",
+            "tl_base_04",
+            "tl_base_05",
+            "tl_base_06",
+            "tl_base_07",
+            "tl_base_08",
+            "tl_base_09",
+            "tl_base_10",
+            "tl_base_11",
+            "tl_base_12"
+          ]
+        }
+      },
+      {
+        "name": "tl_t1_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            18221.2,
+            3.85034,
+            -12866.4
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "tl_base_01",
+            "tl_base_02",
+            "tl_base_03",
+            "tl_base_04",
+            "tl_base_05",
+            "tl_base_06",
+            "tl_base_07",
+            "tl_base_08",
+            "tl_base_09",
+            "tl_base_10",
+            "tl_base_11",
+            "tl_base_12"
+          ],
+          "object_type": "isTeamA"
+        }
+      },
+      {
+        "name": "tl_t2_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            17428.8,
+            3.85034,
+            -16506.2
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "tl_base_01",
+            "tl_base_02",
+            "tl_base_03",
+            "tl_base_04",
+            "tl_base_05",
+            "tl_base_06",
+            "tl_base_07",
+            "tl_base_08",
+            "tl_base_09",
+            "tl_base_10",
+            "tl_base_11",
+            "tl_base_12"
+          ],
+          "object_type": "isTeamB"
+        }
+      }
+    ],
+    "objectGroups": [
+      {
+        "name": "tl_base_08",
+        "tm": [
+          [
+            -0.257747,
+            0.0,
+            0.966212
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.966212,
+            0.0,
+            -0.257747
+          ],
+          [
+            288.487,
+            156.871,
+            11264.7
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_square_a",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_09",
+        "tm": [
+          [
+            -0.385554,
+            0.0,
+            0.922685
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.922685,
+            0.0,
+            -0.385554
+          ],
+          [
+            -9745.12,
+            246.891,
+            11954.3
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_square_rounded_a",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_07",
+        "tm": [
+          [
+            0.383595,
+            0.0,
+            0.923501
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.923501,
+            0.0,
+            0.383595
+          ],
+          [
+            9255.03,
+            229.095,
+            10786.9
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_octagon_a",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_06",
+        "tm": [
+          [
+            0.196595,
+            0.0,
+            0.980484
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.980484,
+            0.0,
+            0.196595
+          ],
+          [
+            6251.35,
+            868.084,
+            5880.54
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_square_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_04",
+        "tm": [
+          [
+            -0.541026,
+            0.0,
+            0.841004
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.841004,
+            0.0,
+            -0.541026
+          ],
+          [
+            -12635.1,
+            361.335,
+            6093.3
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_circle_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_05",
+        "tm": [
+          [
+            -0.0976437,
+            0.0,
+            0.995221
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995221,
+            0.0,
+            -0.0976437
+          ],
+          [
+            -1831.73,
+            338.25,
+            7319.06
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_octagon_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_10",
+        "tm": [
+          [
+            0.0647318,
+            0.0,
+            0.997902
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.997902,
+            0.0,
+            0.0647318
+          ],
+          [
+            -15321.9,
+            102.286,
+            -5764.52
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_octagon_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_11",
+        "tm": [
+          [
+            0.250652,
+            0.0,
+            0.968077
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.968077,
+            0.0,
+            0.250652
+          ],
+          [
+            -7330.56,
+            968.385,
+            -1163.08
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_octagon_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_12",
+        "tm": [
+          [
+            0.326356,
+            0.0,
+            0.945247
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.945247,
+            0.0,
+            0.326356
+          ],
+          [
+            -3127.95,
+            983.519,
+            -5337.52
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_square_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_01",
+        "tm": [
+          [
+            -0.53571,
+            0.0,
+            0.844401
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.844401,
+            0.0,
+            -0.53571
+          ],
+          [
+            5734.36,
+            969.117,
+            -1208.83
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_circle_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_02",
+        "tm": [
+          [
+            0.201976,
+            0.0,
+            0.97939
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.97939,
+            0.0,
+            0.201976
+          ],
+          [
+            6645.4,
+            542.53,
+            -7087.15
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_square_rounded_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "tl_base_03",
+        "tm": [
+          [
+            -0.333602,
+            0.0,
+            0.942713
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.942713,
+            0.0,
+            -0.333602
+          ],
+          [
+            -4881.04,
+            1020.77,
+            2964.5
+          ]
+        ],
+        "unit_class": "dynHelipad_platform_square_a",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    ]
+  },
+  "areas": {
+    "tl_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          0.00260417,
+          0.0,
+          28672.0
+        ],
+        [
+          0.0,
+          2200.0,
+          0.0
+        ],
+        [
+          -28672.0,
+          0.0,
+          0.00260417
+        ],
+        [
+          -4096.0,
+          194.207,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "tl_zone_01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          7.78667,
+          0.0,
+          -12.8206
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          12.8206,
+          0.0,
+          7.78666
+        ],
+        [
+          5734.4,
+          949.562,
+          -1208.81
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          3.0418,
+          0.0,
+          14.6883
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -14.6883,
+          0.0,
+          3.04183
+        ],
+        [
+          6645.71,
+          505.033,
+          -7088.12
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -9.17557,
+          0.0,
+          11.8663
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -11.8663,
+          0.0,
+          -9.17555
+        ],
+        [
+          -4881.79,
+          938.845,
+          2964.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -10.6803,
+          0.0,
+          10.5324
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -10.5324,
+          0.0,
+          -10.6803
+        ],
+        [
+          -12634.8,
+          347.521,
+          6093.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_05": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1.39109,
+          0.0,
+          14.9354
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -14.9354,
+          0.0,
+          -1.39107
+        ],
+        [
+          -1832.1,
+          312.527,
+          7317.32
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_06": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1.39109,
+          0.0,
+          14.9354
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -14.9354,
+          0.0,
+          -1.39107
+        ],
+        [
+          6251.37,
+          843.87,
+          5880.23
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_07": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          9.6532,
+          0.0,
+          11.4811
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -11.4811,
+          0.0,
+          9.65321
+        ],
+        [
+          9254.79,
+          206.191,
+          10786.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_08": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          14.4913,
+          0.0,
+          3.8733
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -3.87327,
+          0.0,
+          14.4913
+        ],
+        [
+          288.311,
+          147.876,
+          11264.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_09": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          13.8262,
+          0.0,
+          5.81695
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -5.81693,
+          0.0,
+          13.8262
+        ],
+        [
+          -9745.46,
+          229.741,
+          11954.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_10": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          14.2515,
+          0.0,
+          -4.67912
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          4.67915,
+          0.0,
+          14.2515
+        ],
+        [
+          -15322.0,
+          57.7752,
+          -5765.63
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_11": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          14.2515,
+          0.0,
+          -4.67912
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          4.67915,
+          0.0,
+          14.2515
+        ],
+        [
+          -7330.88,
+          938.329,
+          -1163.36
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "tl_zone_12": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          14.2515,
+          0.0,
+          -4.67912
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          4.67915,
+          0.0,
+          14.2515
+        ],
+        [
+          -3128.2,
+          939.371,
+          -5338.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -1,4 +1,5 @@
 let avatars = require("%scripts/user/avatars.nut")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 /**
   client api:
@@ -20,66 +21,41 @@ enum userInfoEventName
   UPDATED = "UserInfoManagerDataUpdated"
 }
 
-::g_users_info_manager <- {
-  MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 600000
-  MAX_REQUESTED_UID_NUM = 4
+let MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
+let MAX_REQUESTED_UID_NUM = 4
+let usersInfo = {}
+let usersForRequest = {}
+local haveRequest = false
 
-  usersInfo = {}
-}
-
-g_users_info_manager.requestInfo <- function requestInfo(users, successCb = null, errorCb = null)
-{
-  if (users.len() > MAX_REQUESTED_UID_NUM)
-    return
-
-  let fastResponse = _getResponseWidthoutRequest(users)
-  if (fastResponse != null && successCb != null)
-    return successCb(fastResponse)
-
-  let usersList = ::g_string.implode(users, ";")
-
-  let requestBlk = DataBlock()
-  requestBlk.setStr("usersList", usersList)
-
-  let fullSuccessCb = (@(users, successCb) function(response) {
-    let parsedResponse = ::g_users_info_manager._convertServerResponse(response)
-    ::g_users_info_manager._requestDataCommonSuccessCallback(parsedResponse)
-    if (successCb != null)
-      successCb(parsedResponse)
-  })(users, successCb)
-
-  ::g_tasker.charRequestBlk("cln_get_users_terse_info", requestBlk, { showErrorMessageBox = false }, fullSuccessCb, errorCb)
-}
-
-g_users_info_manager._getResponseWidthoutRequest <- function _getResponseWidthoutRequest(users)
+let function _getResponseWidthoutRequest(users)
 {
   local fastResponse = {}
   let currentTime = ::dagor.getCurTime()
-  foreach (uid, userId in users)
+  foreach (userId in users)
   {
-    let curUserInfo = ::getTblValue(userId, usersInfo, null)
+    let curUserInfo = usersInfo?[userId]
     if (curUserInfo == null ||
         currentTime - curUserInfo.updatingLastTime > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC)
     {
       fastResponse = null
       break
     }
-    fastResponse[uid] <- curUserInfo
+    fastResponse[userId] <- curUserInfo
   }
 
   return fastResponse
 }
 
-g_users_info_manager._requestDataCommonSuccessCallback <- function _requestDataCommonSuccessCallback(response)
+let function _requestDataCommonSuccessCallback(response)
 {
   local isUpdated = false
   foreach(uid, newUserInfo in response)
   {
-    local curUserInfo = ::getTblValue(uid, usersInfo, null)
+    local curUserInfo = usersInfo?[uid]
     if (curUserInfo != null)
     {
       foreach(key, value in newUserInfo)
-        if (newUserInfo[key] != ::getTblValue(key, curUserInfo, null))
+        if (newUserInfo[key] != curUserInfo?[key])
         {
           curUserInfo[key] <- newUserInfo[key]
           isUpdated = true
@@ -101,20 +77,109 @@ g_users_info_manager._requestDataCommonSuccessCallback <- function _requestDataC
     ::broadcastEvent(userInfoEventName.UPDATED, { usersInfo = response })
 }
 
-g_users_info_manager._convertServerResponse <- function _convertServerResponse(response)
+let function _convertServerResponse(response)
 {
   let res = {}
   foreach(uid, userInfo in response)
   {
-    let pilotId = ::getTblValue("pilotId", userInfo, "")
+    let pilotId = userInfo?.pilotId ?? ""
     let convertedData = {
       uid = uid
-      name = ::getTblValue("nick", userInfo, "")
+      name = userInfo?.nick ?? ""
       pilotIcon = avatars.getIconById(pilotId)
+      title = userInfo?.title ?? ""
+      clanTag =  userInfo?.clanTag ?? ""
+      clanName =  userInfo?.clanName ?? ""
     }
 
     res[uid] <- convertedData
   }
 
   return res
+}
+
+let function clearRequestArray(users)
+{
+  foreach(uid,_ in users)
+    if(uid in usersForRequest)
+      usersForRequest.rawdelete(uid)
+}
+
+let function getUserListRequest(users = {})
+{
+  let reqList = []
+
+  foreach(uid,_ in users)
+  {
+    reqList.append(uid)
+
+    if(reqList.len() == MAX_REQUESTED_UID_NUM)
+      return reqList
+  }
+  return reqList
+}
+
+let function requestUsersInfo(users, successCb = null, errorCb = null)
+{
+  if(haveRequest)
+    return
+
+  let fastResponse = _getResponseWidthoutRequest(users)
+  if(fastResponse != null && successCb != null)
+    return successCb(fastResponse)
+
+  let usersList = ::g_string.implode(users, ";")
+
+  let requestBlk = DataBlock()
+  requestBlk.setStr("usersList", usersList)
+
+  let fullSuccessCb = function(response) {
+    let parsedResponse = _convertServerResponse(response)
+    _requestDataCommonSuccessCallback(parsedResponse)
+    clearRequestArray(parsedResponse)
+    if (successCb != null)
+      successCb(parsedResponse)
+    haveRequest = false
+  }
+
+  let fullErrorCb = function(response) {
+    errorCb()
+    haveRequest = false
+  }
+
+  haveRequest = true
+  ::g_tasker.charRequestBlk("cln_get_users_terse_info", requestBlk, { showErrorMessageBox = false }, fullSuccessCb, fullErrorCb)
+}
+
+let function updateUsersInfo()
+{
+  clearTimer(updateUsersInfo)
+  let updateUsersInfo_ = callee()
+  let errorCb = function()
+  {
+    clearTimer(updateUsersInfo_)
+    setTimeout(MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC, updateUsersInfo_)
+  }
+
+  let userListForRequestgetUser = getUserListRequest(usersForRequest)
+
+  if(userListForRequestgetUser.len() == 0)
+    return
+
+  requestUsersInfo(userListForRequestgetUser, null, errorCb)
+}
+
+let function requestUserInfoData(userId)
+{
+  clearTimer(updateUsersInfo)
+
+  if ((userId not in usersForRequest) && (userId not in usersInfo))
+    usersForRequest[userId] <- true
+
+  setTimeout(0.3, updateUsersInfo)
+}
+
+return {
+  requestUserInfoData
+  requestUsersInfo
 }

@@ -20,13 +20,14 @@ let log = logLib([
 
 let logs = {
   dlog = log.dlog //warning disable: -dlog-warn
-  log
+  log = log.log
   log_for_user = log.dlog //warning disable: -dlog-warn
   dlogsplit = log.dlogsplit //warning disable: -dlog-warn
   vlog = log.vlog
   console_print = log.console_print
+  logerr = log.logerr
   wlog = log.wlog
-  wdlog = @(watched, prefix = "") log.wlog(watched, prefix, log.dlog) //disable: -dlog-warn
+  wdlog = @(watched, prefix = null, transform=null) log.wlog(watched, prefix, transform, log.dlog) //disable: -dlog-warn
 }
 
 return require("daRg").__merge(require("frp"), require("darg_library.nut"), require("%sqstd/functools.nut"), logs)

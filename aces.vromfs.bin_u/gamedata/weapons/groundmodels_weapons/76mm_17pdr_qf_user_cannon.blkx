@@ -258,6 +258,9 @@
           0.99
         ]
       },
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -275,9 +278,6 @@
             "destruction": 1.0
           }
         }
-      },
-      "pressureDamage": {
-        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [
@@ -907,11 +907,12 @@
   "76mm_britain_17pdr_APDS": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 1.73,
+      "mass": 2.476614,
       "caliber": 0.0762,
-      "damageCaliber": 0.038,
-      "ballisticCaliber": 0.038,
-      "speed": 1203.0,
+      "damageCaliber": 0.0381,
+      "ballisticCaliber": 0.04953,
+      "speed": 1203.96,
+      "Cx": 0.25759,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds",
@@ -931,7 +932,6 @@
       ],
       "shellAnimation": "video/shells_animations/apds.ivf",
       "bulletName": "76mm_shot_sv_mk1_apds",
-      "Cx": 0.0001,
       "relativeVelHitShift": [
         300.0,
         1000.0

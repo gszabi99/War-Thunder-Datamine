@@ -35,7 +35,7 @@ local function canRefreshData(refreshDelay = null) {
   return true
 }
 
-let function onGlobalStatusReceived(newData, wasRequestTime) {
+let function onGlobalStatusReceived(newData) {
   lastUpdatetTime(::dagor.getCurTime())
   local changedListsMask = 0
   foreach(gsType in ::g_ww_global_status_type.types)
@@ -57,9 +57,8 @@ let function onGlobalStatusReceived(newData, wasRequestTime) {
 //special actions with global status in successCb
 local function actionWithGlobalStatusRequest(actionName, requestBlk, taskOptions = null, onSuccessCb = null, onErrorCb = null) {
   lastRequestTime(::dagor.getCurTime())
-  let wasRequestTime = lastRequestTime.value
   let cb = ::Callback(function(data) {
-    onGlobalStatusReceived(data, wasRequestTime)
+    onGlobalStatusReceived(data)
     if (onSuccessCb)
       onSuccessCb()
   }, this)

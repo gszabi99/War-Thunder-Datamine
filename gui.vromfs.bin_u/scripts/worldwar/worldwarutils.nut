@@ -108,22 +108,28 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
       time = nearestAvailableMapToBattle.getChangeStateTimeText()})
   }
 
-  function hasNewNearestAvailableMapToBattle()
-  {
+  function getNewNearestAvailableMapToBattle() {
     if (getLastPlayedOperation() != null)
-      return false
+      return null
 
     let nearestAvailableMapToBattle = getNearestMapToBattleShort()
     if (!nearestAvailableMapToBattle)
-      return false
+      return null
 
     let lastVisibleAvailableMap = ::load_local_account_settings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH)
     if (lastVisibleAvailableMap?.id == nearestAvailableMapToBattle.getId()
       && lastVisibleAvailableMap?.changeStateTime == nearestAvailableMapToBattle.getChangeStateTime())
+      return null
+
+    return nearestAvailableMapToBattle
+  }
+
+  function hasNewNearestAvailableMapToBattle() {
+    let nearestAvailableMapToBattle = getNewNearestAvailableMapToBattle()
+    if (!nearestAvailableMapToBattle)
       return false
 
-    ::save_local_account_settings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH,
-      {
+    ::save_local_account_settings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH, {
         id = nearestAvailableMapToBattle.getId()
         changeStateTime = nearestAvailableMapToBattle.getChangeStateTime()
       })
