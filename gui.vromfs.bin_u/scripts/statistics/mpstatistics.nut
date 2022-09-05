@@ -586,9 +586,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       case ::GT_MP_TICKETS:
         if (needPlayersTbl)
         {
-          let scoreLoc = (rounds > 0) ? ::loc("multiplayer/rounds") : ::loc("multiplayer/airfields")
           let scoreformat = "%s" + ::loc("multiplayer/tickets") + ::loc("ui/colon") + "%d" + ", " +
-                                scoreLoc + ::loc("ui/colon") + "%d"
+                                ::loc("multiplayer/airfields") + ::loc("ui/colon") + "%d"
 
           if (tbl.len() > playerTeamIdx)
           {
