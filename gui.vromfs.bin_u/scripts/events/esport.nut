@@ -46,14 +46,12 @@ let function getTourDay(tour) {
 }
 
 let isTournamentWndAvailable = @(dayNum) dayNum != DAY.FINISH && dayNum != DAY.SOON
-
 let getMatchingEventId = @(tourId, dayNum, isTraining)
-  dayNum < 0 ? tourId : $"{tourId}_day{dayNum + 1}{isTraining ? "_train" : ""}"
-
+  $"{tourId}_day{max(0, dayNum) + 1}{isTraining ? "_train" : ""}"
 let getSharedTourNameByEvent = @(economicName) economicName.split("_day")[0]
 
 let function getEventByDay(tourId, dayNum, isTraining = false){
- let matchingEventId = getMatchingEventId(tourId, dayNum < 0 ? 0 : dayNum, isTraining)
+ let matchingEventId = getMatchingEventId(tourId, dayNum, isTraining)
  return ::events.getEvent(matchingEventId)
 }
 
@@ -272,6 +270,8 @@ let function getSeasonsList() {
     let season = {tournamentList = []}
     eachParam(s, @(p, id) season[id] <- p)
     eachBlock(s, function(evnBlk, evnId){
+      // Tournament ID means matching event economicName. It's the same as tournament LEADERBOARD id
+      // Tournament sharedEconomicName means season id and tha same as SEASON LEADERBOARD id.
       let tour = {id = evnId}
       eachParam(evnBlk, @(p, id) tour[id] <- p)
       foreach (pName in TOUR_PARAM_NAMES) {

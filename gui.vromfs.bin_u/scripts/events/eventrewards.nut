@@ -1,14 +1,20 @@
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 ::condition_text_functions <- {
-  leaderboardCondition = function (rewardBlk, progress = null)
-  {
+  leaderboardCondition = function (rewardBlk, progress = null) {
     let conditionId = ::EventRewards.getRewardConditionId(rewardBlk)
     let value = ::EventRewards.getConditionValue(rewardBlk)
-    local res = ::loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, {value = value})
+    let valueMin = rewardBlk?.valueMin
+    let txtValue = valueMin
+      ? ::loc("conditions/position/from_to", {min = valueMin, max = value}) : value
+    local res = ::loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, {value = txtValue})
+    let progressTxt = progress && valueMin
+      ? $"{::loc("ui/dot")} {::loc("conditions/position/place")}{::loc("ui/colon")} {progress}"
+      : progress
+        ? "".concat(" ",
+          ::loc("ui/parentheses/space", {text = $"{progress}{::loc("ui/slash")}{value}"}))
+        : ""
 
-    if (progress != null)
-      res += " (" + progress + "/" + value + ")"
-    return res
+    return $"{res}{progressTxt}"
   }
 
   sequenceWins = function (rewardBlk, progress = null)

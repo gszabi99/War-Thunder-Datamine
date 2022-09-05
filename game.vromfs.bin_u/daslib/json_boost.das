@@ -13,7 +13,6 @@ require daslib/contracts
 require daslib/templates
 require daslib/strings_boost
 require daslib/apply
-require daslib/macro_boost
 
 def private is_json_ptr_value ( td : TypeDeclPtr )
     if td.baseType != Type tPointer
@@ -71,8 +70,12 @@ class private JsonReader : AstReaderMacro
         let seqStr = string(expr.sequence)
         var error = ""
         var json = read_json(seqStr, error)
-        macro_verify(json!=null,prog,expr.at,"json did not parse ({error})")
-        return convert_to_expression(json,expr.at)
+        if json == null
+            macro_error(prog,expr.at,"json did not parse ({error})")
+            return [[ExpressionPtr]]
+        else
+            var exx <- convert_to_expression(json,expr.at)
+            return exx
 
 [expect_any_enum(ent), template(ent)]
 def from_JV ( v:JsonValue?; ent : auto(EnumT); defV : EnumT = [[EnumT]] ) : EnumT

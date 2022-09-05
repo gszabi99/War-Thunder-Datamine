@@ -3,7 +3,7 @@ let time = require("%scripts/time.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName, getForceWeapTriggerGroup,
+let { getActionShortcutIndexByType, getActionBarUnitName, getForceWeapTriggerGroup,
   getAiGunnersState, getAutoturretState, getCurrentTriggerGroup, singleTorpedoSelected
 } = ::require_native("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
@@ -33,7 +33,6 @@ let getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup)
 }
 
 let getUnit = @() ::getAircraftByName(getActionBarUnitName())
-let getOwnerUnit = @() ::getAircraftByName(getOwnerUnitName())
 
 ::g_hud_action_bar_type.template <- {
   code = -1
@@ -572,23 +571,19 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       unit?.isTank() ? "ID_START_SUPPORT_PLANE" : "ID_START_SUPPORT_PLANE_SHIP"
     getName = @(killStreakTag = null)
       getUnit()?.isTank() ? _name
-        : getUnit()?.isAir() ? (getOwnerUnit()?.isShipOrBoat() ? "switch_to_ship" : "switch_to_tank")
+        : getUnit()?.isAir() ? "switch_to_ship"
         : "support_plane_ship"
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || getUnit()
       return unit?.isTank() ? "#ui/gameuiskin#scout_streak.png"
-        : unit?.isAir() ? (getOwnerUnit()?.isShipOrBoat()
-          ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
-          : "#ui/gameuiskin#supportPlane_to_tank_controls.png")
+        : unit?.isAir() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
         : "#ui/gameuiskin#shipSupportPlane.png"
     }
     getTitle = function(killStreakTag = null) {
       let unit = getUnit()
-      return unit?.isTank()
-        ? _title
-        : unit?.isAir()
-          ? ::loc(getOwnerUnit()?.isShipOrBoat() ? "actionBarItem/switch_to_ship" : "actionBarItem/switch_to_tank")
-          : ::loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
+      return unit?.isTank() ? _title
+        : unit?.isAir() ? ::loc("actionBarItem/switch_to_ship")
+        : ::loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
     }
   }
 

@@ -27,8 +27,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust",
-  "explosionFx": "explosion_ship_big",
-  "decorCutProps": "destroyer",
+  "explosionFx": "explosion_ship_small",
   "smokeScreenActivateTime": 2.5,
   "smokeScreenEffectTime": 20.0,
   "smokeScreenRad": 20.0,
@@ -39,7 +38,6 @@
   ],
   "smokeScreenFx": "smokescreen_no_therm_big",
   "canReloadNonGuns": true,
-  "rearmTimeOnField": 60.0,
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -429,7 +427,7 @@
       },
       "onHit": {
         "damageType": "explosion",
-        "damage": 200.0,
+        "damage": 100.0,
         "expl": 0.1
       }
     },
@@ -741,67 +739,6 @@
             "fHitCritical": false
           }
         ]
-      },
-      {
-        "name": [
-          "compartment_01_dm",
-          "compartment_02_dm",
-          "compartment_03_dm",
-          "compartment_04_dm",
-          "compartment_05_dm",
-          "compartment_06_dm",
-          "compartment_07_dm",
-          "compartment_08_dm",
-          "compartment_09_dm",
-          "compartment_10_dm"
-        ],
-        "onHit": [
-          {
-            "damageType": "explosion",
-            "damage": 15.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.15,
-              "fxEventName": "fire_after_hit_med"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 35.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.15,
-              "fxEventName": "fire_after_hit_med"
-            }
-          },
-          {
-            "damageType": "explosion",
-            "damage": 250.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.5,
-              "fxEventName": "fire_after_hit_big"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 90.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.5,
-              "fxEventName": "fire_after_hit_big"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 800.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.6,
-              "fxEventName": "fire_after_hit_huge"
-            }
-          }
-        ]
       }
     ]
   },
@@ -950,7 +887,6 @@
       "fireProtectionHp": 3.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
-        "pressureDamageMult": 4.0,
         "hp": 230.0
       },
       "radio_station_dm": {
@@ -1026,8 +962,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 3.0,
       "dmgState": 0.0,
-      "napalmDamageMult": 1.0,
-      "pressureDamageMult": 5.0
+      "napalmDamageMult": 1.0
     },
     "engine": {
       "armorThrough": 30.0,
@@ -1127,7 +1062,6 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 1.0,
       "napalmDamageMult": 1.0,
-      "pressureDamageMult": 5.3,
       "main_caliber_turret_01_dm": {
         "hp": 210.0
       },
@@ -1139,7 +1073,6 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 1.0,
       "napalmDamageMult": 1.0,
-      "pressureDamageMult": 3.5,
       "auxiliary_caliber_turret_01_dm": {
         "hp": 120.0
       },
@@ -1150,8 +1083,7 @@
     "turrets_aa_caliber": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 1.0,
-      "napalmDamageMult": 1.0,
-      "pressureDamageMult": 1.0
+      "napalmDamageMult": 1.0
     },
     "gun_main_caliber": {
       "armorClass": "tank_barrel",
@@ -2058,7 +1990,7 @@
       {
         "name": "torpedo_explosion",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_large_second",
           "centerDmgPart": false
         }
       },
@@ -2072,7 +2004,7 @@
       {
         "name": "ready_use_ammo_explosion",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_large_second",
           "centerDmgPart": false
         }
       },
@@ -2080,19 +2012,35 @@
         "name": "ammo_fire",
         "fx": [
           {
-            "name": "explosion_ship_big_ammo",
+            "name": "explosion_ship_ammo",
             "emitter": "emtr_fire_ammo_01"
           },
           {
-            "name": "explosion_ship_big_ammo_second",
+            "name": "explosion_ship_ammo",
             "emitter": "emtr_fire_ammo_02"
           },
           {
-            "name": "explosion_ship_big_ammo",
+            "name": "explosion_ship_ammo",
             "emitter": "emtr_fire_ammo_03"
           },
           {
-            "name": "explosion_ship_big_ammo_second",
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_04"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "water_explosion_medium",
             "emitter": "emtr_fire_ammo_04"
           }
         ]
@@ -2421,185 +2369,196 @@
         "name": "big_bang",
         "fx": [
           {
-            "name": "explosion_ship_big",
+            "name": "explosion_ship_large",
             "emitter": "emtr_explosion_center_01"
           },
           {
-            "name": "explosion_ship_big_second",
-            "emitter": "emtr_explosion_center_02"
-          },
-          {
-            "name": "explosion_ship_big_second",
-            "emitter": "emtr_explosion_center_03"
-          }
-        ],
-        "wreckages": {
-          "count": 8,
-          "speed": 40.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_med"
-        }
-      },
-      {
-        "name": "big_bang",
-        "fx": [
-          {
-            "name": "explosion_ship_big_ammo",
+            "name": "water_explosion_big",
             "emitter": "emtr_explosion_center_01"
           },
           {
-            "name": "explosion_ship_big_ammo_second",
+            "name": "explosion_ship_large_second",
             "emitter": "emtr_explosion_center_02"
           },
           {
-            "name": "explosion_ship_big_ammo_second",
+            "name": "explosion_ship_large_second",
             "emitter": "emtr_explosion_center_03"
           }
-        ],
-        "wreckages": {
-          "count": 12,
-          "speed": 40.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_med"
-        }
+        ]
       },
       {
         "name": "ammo_fire_1",
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_fire_2",
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_fire_3",
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_fire_4",
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_04"
         }
       },
       {
         "name": "ammo_fire_5",
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_05"
         }
       },
       {
         "name": "ammo_fire_6",
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_06"
         }
       },
       {
         "name": "ammo_explosion_1",
-        "fx": {
-          "name": "explosion_ship_big_ammo",
-          "emitter": "emtr_fire_ammo_01"
-        }
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
       },
       {
         "name": "ammo_explosion_2",
-        "fx": {
-          "name": "explosion_ship_big_ammo",
-          "emitter": "emtr_fire_ammo_02"
-        }
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_02"
+          }
+        ]
       },
       {
         "name": "ammo_explosion_3",
-        "fx": {
-          "name": "explosion_ship_big_ammo",
-          "emitter": "emtr_fire_ammo_03"
-        }
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_03"
+          }
+        ]
       },
       {
         "name": "ammo_explosion_4",
-        "fx": {
-          "name": "explosion_ship_big_ammo",
-          "emitter": "emtr_fire_ammo_04"
-        }
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_04"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        ]
       },
       {
         "name": "ammo_explosion_5",
-        "fx": {
-          "name": "explosion_ship_big_ammo",
-          "emitter": "emtr_fire_ammo_05"
-        }
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_05"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_05"
+          }
+        ]
       },
       {
         "name": "ammo_explosion_6",
-        "fx": {
-          "name": "explosion_ship_big_ammo",
-          "emitter": "emtr_fire_ammo_06"
-        }
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_06"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_fire_ammo_06"
+          }
+        ]
       },
       {
         "name": "ammo_aux_fire_1",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_aux_fire_2",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_aux_fire_3",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_aux_fire_4",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_04"
         }
       },
       {
         "name": "ammo_aux_explosion_1",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_aux_explosion_2",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_aux_explosion_3",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_aux_explosion_4",
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_ammo",
           "emitter": "emtr_fire_ammo_04"
         }
       },
@@ -2613,70 +2572,6 @@
         "name": "procedural_fire",
         "fx": {
           "name": "ship_fire_big"
-        }
-      },
-      {
-        "name": "fire_after_hit_huge",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_huge",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_huge",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_huge",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "fire_after_hit_small",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "smoke_after_hit_small",
-          "setOrientation": true
         }
       }
     ]
@@ -2791,10 +2686,7 @@
     },
     "ammo2": {
       "weaponTrigger": "gunner1",
-      "entityMunition": "aux",
       "removeLoadedAmmo": false,
-      "fatalFire": false,
-      "fatalExplosion": false,
       "explosionEvent": "ammo_aux_explosion_2",
       "fireEvent": "ammo_aux_fire_2",
       "fireParamsPreset": "ship_ammo_fire",
@@ -2858,6 +2750,8 @@
         }
       },
       "shells": {
+        "fatalFire": false,
+        "fatalExplosion": false,
         "damageEffect": "ammunition_storage",
         "ammunition_storage_aux_01_dm": {
           "count": 2000
@@ -2866,7 +2760,6 @@
     },
     "ammo3": {
       "weaponTrigger": "gunner2",
-      "entityMunition": "aux",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,
@@ -2971,7 +2864,6 @@
     },
     "ammo4": {
       "weaponTrigger": "gunner3",
-      "entityMunition": "aux",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,
@@ -3076,7 +2968,6 @@
     },
     "ammo5": {
       "weaponTrigger": "gunner4",
-      "entityMunition": "torpedo",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,
@@ -3094,7 +2985,6 @@
     },
     "ammo6": {
       "weaponTrigger": "gunner5",
-      "entityMunition": "torpedo",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,
@@ -3112,7 +3002,6 @@
     },
     "ammo7": {
       "weaponTrigger": "gunner6",
-      "entityMunition": "torpedo",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,
@@ -3130,7 +3019,6 @@
     },
     "ammo8": {
       "weaponTrigger": "gunner7",
-      "entityMunition": "torpedo",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,

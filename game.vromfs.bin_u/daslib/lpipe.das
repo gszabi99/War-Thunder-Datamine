@@ -9,7 +9,6 @@ require ast
 require rtti
 require daslib/ast_boost
 require daslib/templates_boost
-require daslib/macro_boost
 
 def lpipe_expr ( var fnCall:ExpressionPtr; var arg:ExpressionPtr ) : ExpressionPtr
     if fnCall |> is_expr_like_call()
@@ -46,7 +45,9 @@ class LpipeMacro : AstCallMacro
     //!     lpipe <|    // this block will pipe into take2
     //!         print("block2\n")
     def override visit ( prog:ProgramPtr; mod:Module?; var call:smart_ptr<ExprCallMacro> ) : ExpressionPtr
-        macro_verify(call.arguments.length==1,prog,call.at,"expecting lpipe(value)")
+        if call.arguments.length != 1
+            macro_error(prog,call.at,"expecting lpipe(value)")
+            return [[ExpressionPtr]]
         var success = false
         compiling_program() |> get_ast_context(call) <| $(valid, astc)
             if !valid

@@ -52,14 +52,13 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "object": "cnv_all_convoys_squad",
-          "targetAir": true,
-          "targetGnd": false,
-          "accuracy": 0.75,
-          "airAccuracy": 0.8,
-          "maxDeviationAngle": 10.0,
+          "accuracy": 0.1,
+          "airAccuracy": 0.1,
+          "maxDeviationAngle": 30.0,
           "checkVisibilityTarget": true,
           "visibilityTreeTransparencyThreshold": 0.01,
-          "airEffShootingRate": 0.5,
+          "effShootingRate": 0.1,
+          "airEffShootingRate": 0.1,
           "adaptiveAccuracyTime": 10.0,
           "moveSpeedKAtShooting": 0.5,
           "slowWhenEnemyNear": 0.7,
@@ -70,11 +69,8 @@
           "keep_leader_dist": true,
           "movementTraceRI": true,
           "fireRandom": true,
-          "targetChangeInterval": 6.0,
-          "targetChangeProb": 0.25,
-          "ignoreGunSpeedLimits": true,
-          "ChainfireTime": 2.0,
-          "DelayAfterShoot": 2.0
+          "targetChangeInterval": 5.0,
+          "targetChangeProb": 0.25
         },
         "unitMark": {
           "target_marking": 0,
@@ -613,7 +609,7 @@
         "actions": {
           "comment": [
             {
-              "value": "starting convoy spawn"
+              "value": "nachinaem spavn konvoya"
             },
             {
               "value": "zapominaem znachenie"
@@ -942,12 +938,14 @@
             {
               "operator": "add",
               "value": 1.0,
-              "var": "cnv_t1_generate_left_area_idx"
+              "var": "cnv_t1_generate_bottom_area_idx",
+              "use_variable": true
             },
             {
               "operator": "subAB",
               "value": 1.0,
-              "var": "cnv_t1_generate_right_area_idx"
+              "var": "cnv_t1_generate_bottom_area_idx",
+              "use_variable": true
             }
           ],
           "varSetString": [
@@ -1153,8 +1151,8 @@
             },
             {
               "var": "cnv_t1_outdated_aaa_to_spawn",
-              "from": 2,
-              "to_not_including": 4
+              "from": 1,
+              "to_not_including": 3
             }
           ],
           "triggerEnable": {
@@ -1205,12 +1203,12 @@
             },
             {
               "var": "cnv_t1_modern_aaa_to_spawn",
-              "from": 1,
-              "to_not_including": 3
+              "from": 0,
+              "to_not_including": 2
             },
             {
               "var": "cnv_t1_outdated_aaa_to_spawn",
-              "from": 2,
+              "from": 1,
               "to_not_including": 4
             }
           ],
@@ -1830,15 +1828,15 @@
           "unitMark": [
             {
               "target_marking": 2,
+              "target": "@cnv_t1_generate_cur_status_squad_name",
               "object_type": "isMarked",
-              "object_marking": 1,
-              "target": "@cnv_t1_generate_cur_status_squad_name"
+              "object_marking": 1
             },
             {
               "target_marking": 3,
+              "target": "@cnv_t1_generate_cur_status_squad_name",
               "object_type": "isMarked",
-              "object_marking": 2,
-              "target": "@cnv_t1_generate_cur_status_squad_name"
+              "object_marking": 2
             }
           ],
           "unitSetProperties": {
@@ -2952,12 +2950,14 @@
             {
               "operator": "add",
               "value": 1.0,
-              "var": "cnv_t2_generate_left_area_idx"
+              "var": "cnv_t2_generate_bottom_area_idx",
+              "use_variable": true
             },
             {
               "operator": "subAB",
               "value": 1.0,
-              "var": "cnv_t2_generate_right_area_idx"
+              "var": "cnv_t2_generate_bottom_area_idx",
+              "use_variable": true
             }
           ],
           "varSetString": [
@@ -3163,8 +3163,8 @@
             },
             {
               "var": "cnv_t2_outdated_aaa_to_spawn",
-              "from": 2,
-              "to_not_including": 4
+              "from": 1,
+              "to_not_including": 3
             }
           ],
           "triggerEnable": {
@@ -3215,12 +3215,12 @@
             },
             {
               "var": "cnv_t2_modern_aaa_to_spawn",
-              "from": 1,
-              "to_not_including": 3
+              "from": 0,
+              "to_not_including": 2
             },
             {
               "var": "cnv_t2_outdated_aaa_to_spawn",
-              "from": 2,
+              "from": 1,
               "to_not_including": 4
             }
           ],
@@ -3840,15 +3840,15 @@
           "unitMark": [
             {
               "target_marking": 2,
+              "target": "@cnv_t2_generate_cur_status_squad_name",
               "object_type": "isMarked",
-              "object_marking": 1,
-              "target": "@cnv_t2_generate_cur_status_squad_name"
+              "object_marking": 1
             },
             {
               "target_marking": 3,
+              "target": "@cnv_t2_generate_cur_status_squad_name",
               "object_type": "isMarked",
-              "object_marking": 2,
-              "target": "@cnv_t2_generate_cur_status_squad_name"
+              "object_marking": 2
             }
           ],
           "unitSetProperties": {
@@ -5671,16 +5671,16 @@
                 "value": "indeks vnutri diapazona, rabotaem"
               },
               {
-                "value": "var name that stores convoy name"
+                "value": "sozdaem imya peremennoj, hranyashchej v sebe imya konvoya"
               },
               {
-                "value": "getting convoy name"
+                "value": "pluchaem imya konvoya, kotoryj tam hranitsya"
               },
               {
-                "value": "var name for protecting task"
+                "value": "sozdaem imya permennoj, hranyashchej v sebe imya obzhektiva komandy A"
               },
               {
-                "value": "objective name for killing task"
+                "value": "sozdaem imya permennoj, hranyashchej v sebe imya obzhektiva komandy B"
               },
               {
                 "value": "obnovlyaem statusy obzhektivov"
@@ -5697,11 +5697,11 @@
                 "var": "cnv_t1_objective_update_convoy_var_name"
               },
               {
-                "value": "cnv_t1_to_t1_convoy_",
+                "value": "cnv_t1_protect_",
                 "var": "cnv_t1_to_t1_update_objective_var_name"
               },
               {
-                "value": "cnv_t1_to_t2_convoy_",
+                "value": "cnv_t2_destroy_",
                 "var": "cnv_t1_to_t2_update_objective_var_name"
               }
             ],
@@ -5727,35 +5727,15 @@
                 "var": "cnv_t1_to_t1_update_objective_var_name"
               },
               {
-                "value": "_objective_name",
-                "digits": 0,
-                "var": "cnv_t1_to_t1_update_objective_var_name"
-              },
-              {
                 "value": "@cnv_t1_objective_update_convoy_idx",
                 "digits": 2,
                 "var": "cnv_t1_to_t2_update_objective_var_name"
-              },
-              {
-                "value": "_objective_name",
-                "digits": 2,
-                "var": "cnv_t1_to_t2_update_objective_var_name"
               }
             ],
-            "varGetStringValue": [
-              {
-                "from_var_name": "@cnv_t1_objective_update_convoy_var_name",
-                "var": "cnv_t1_objective_update_convoy_name"
-              },
-              {
-                "from_var_name": "@cnv_t1_to_t1_update_objective_var_name",
-                "var": "cnv_t1_to_t1_update_objective_name"
-              },
-              {
-                "from_var_name": "@cnv_t1_to_t2_update_objective_var_name",
-                "var": "cnv_t1_to_t2_update_objective_name"
-              }
-            ],
+            "varGetStringValue": {
+              "from_var_name": "@cnv_t1_objective_update_convoy_var_name",
+              "var": "cnv_t1_objective_update_convoy_name"
+            },
             "triggerEnable": {
               "target": "cnv_t1_objective_update_protect"
             }
@@ -5792,23 +5772,18 @@
             }
           },
           "conditions": {
-            "varCompareString": {
-              "var_value": "@cnv_t1_to_t1_update_objective_name",
-              "value": "",
-              "comparasion_func": "notEqual"
+            "misObjStatus": {
+              "target": "@cnv_t1_to_t1_update_objective_var_name",
+              "status": "inProgress"
             },
             "objectExists": {
               "target": "@cnv_t1_objective_update_convoy_name",
               "type": "squad"
-            },
-            "misObjStatus": {
-              "target": "@cnv_t1_to_t1_update_objective_name",
-              "status": "inProgress"
             }
           },
           "actions": {
             "moSetObjectiveStatus": {
-              "target": "@cnv_t1_to_t1_update_objective_name",
+              "target": "@cnv_t1_to_t1_update_objective_var_name",
               "status": 1,
               "unit_type": "any",
               "object_var_comp_op": "equal",
@@ -5843,23 +5818,18 @@
             }
           },
           "conditions": {
-            "varCompareString": {
-              "var_value": "@cnv_t1_to_t2_update_objective_name",
-              "value": "",
-              "comparasion_func": "notEqual"
+            "misObjStatus": {
+              "target": "@cnv_t1_to_t2_update_objective_var_name",
+              "status": "inProgress"
             },
             "objectExists": {
               "target": "@cnv_t1_objective_update_convoy_name",
               "type": "squad"
-            },
-            "misObjStatus": {
-              "target": "@cnv_t1_to_t2_update_objective_name",
-              "status": "inProgress"
             }
           },
           "actions": {
             "moSetObjectiveStatus": {
-              "target": "@cnv_t1_to_t2_update_objective_name",
+              "target": "@cnv_t1_to_t2_update_objective_var_name",
               "status": 1,
               "object_var_comp_op": "equal",
               "object_var_name": "",
@@ -6009,7 +5979,13 @@
                 "value": "var name for protecting task"
               },
               {
-                "value": "objective name for killing task"
+                "value": "getting t2 to t2 objective name"
+              },
+              {
+                "value": "var name for killing task"
+              },
+              {
+                "value": "getting t2 to t1 objective name"
               },
               {
                 "value": "obnovlyaem statusy obzhektivov"
@@ -6121,18 +6097,13 @@
             }
           },
           "conditions": {
-            "varCompareString": {
-              "var_value": "@cnv_t2_to_t2_update_objective_name",
-              "value": "",
-              "comparasion_func": "notEqual"
+            "misObjStatus": {
+              "target": "@cnv_t2_to_t2_update_objective_name",
+              "status": "inProgress"
             },
             "objectExists": {
               "target": "@cnv_t2_objective_update_convoy_name",
               "type": "squad"
-            },
-            "misObjStatus": {
-              "target": "@cnv_t2_to_t2_update_objective_name",
-              "status": "inProgress"
             }
           },
           "actions": {
@@ -6172,18 +6143,13 @@
             }
           },
           "conditions": {
-            "varCompareString": {
-              "var_value": "@cnv_t2_to_t1_update_objective_name",
-              "value": "",
-              "comparasion_func": "notEqual"
+            "misObjStatus": {
+              "target": "@cnv_t2_to_t1_update_objective_name",
+              "status": "inProgress"
             },
             "objectExists": {
               "target": "@cnv_t2_objective_update_convoy_name",
               "type": "squad"
-            },
-            "misObjStatus": {
-              "target": "@cnv_t2_to_t1_update_objective_name",
-              "status": "inProgress"
             }
           },
           "actions": {
@@ -7217,11 +7183,6 @@
           }
         },
         "conditions": {
-          "varCompareString": {
-            "var_value": "@cnv_move_t1_to_t1_objective_name",
-            "value": "",
-            "comparasion_func": "notEqual"
-          },
           "misObjStatus": {
             "target": "@cnv_move_t1_to_t1_objective_name",
             "status": "inProgress"
@@ -7258,11 +7219,6 @@
           }
         },
         "conditions": {
-          "varCompareString": {
-            "var_value": "@cnv_move_t1_to_t1_objective_name",
-            "value": "",
-            "comparasion_func": "notEqual"
-          },
           "misObjStatus": {
             "target": "@cnv_move_t1_to_t1_objective_name",
             "status": "inProgress"
@@ -7315,11 +7271,6 @@
           }
         },
         "conditions": {
-          "varCompareString": {
-            "var_value": "@cnv_move_t1_to_t2_objective_name",
-            "value": "",
-            "comparasion_func": "notEqual"
-          },
           "misObjStatus": {
             "target": "@cnv_move_t1_to_t2_objective_name",
             "status": "inProgress"
@@ -7384,11 +7335,6 @@
           }
         },
         "conditions": {
-          "varCompareString": {
-            "var_value": "@cnv_move_t1_to_t2_objective_name",
-            "value": "",
-            "comparasion_func": "notEqual"
-          },
           "misObjStatus": {
             "target": "@cnv_move_t1_to_t2_objective_name",
             "status": "inProgress"

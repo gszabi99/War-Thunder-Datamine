@@ -1,4 +1,4 @@
-local { activateShortcut, setAxisValue, setVirtualAxisValue, changeCruiseControl } = ::require_native("controls")
+local { activateShortcut, setAxisValue, setVirtualAxisValue } = ::require_native("controls")
 
 local toggleShortcut = @(shortcutName) activateShortcut(shortcutName, true, true)
 
@@ -12,5 +12,4 @@ return {
   setShortcutOff
   setAxisValue
   setVirtualAxisValue
-  changeCruiseControl
 }

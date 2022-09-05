@@ -1,13 +1,4 @@
-let { subscribe } = require("eventbus")
 let { format } = require("string")
-let {
-  getArtilleryDispersion = @(x, y) ::artillery_dispersion(x, y), // compatibility with 2.17.0.X
-  callArtillery = @(x, y) ::call_artillery(x, y), // compatibility with 2.17.0.X
-  onArtilleryClose = @() ::on_artillery_close(), // compatibility with 2.17.0.X
-  artilleryCancel = @() ::artillery_cancel(), // compatibility with 2.17.0.X
-  getMapRelativePlayerPos = @() ::get_map_relative_player_pos(), // compatibility with 2.17.0.X
-  getArtilleryRange = @() ::artillery_range(), // compatibility with 2.17.0.X
-} = require_optional("guiArtillery")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -147,7 +138,7 @@ enum POINTING_DEVICE
       pointingDevice = curPointingice
 
     let show = mapCoords != null
-    let disp = mapCoords ? getArtilleryDispersion(mapCoords[0], mapCoords[1]) : -1
+    let disp = mapCoords ? ::artillery_dispersion(mapCoords[0], mapCoords[1]) : -1
     local valid = show && disp >= 0 && artilleryEnabled
     let dispersionRadius = valid ? (isSuperArtillery ? superStrikeRadius / mapSizeMeters : disp) : invalidTargetDispersionRadius
     valid = valid && artilleryReady
@@ -183,9 +174,9 @@ enum POINTING_DEVICE
 
   function updateMapShadeRadius()
   {
-    local avatarPos = getMapRelativePlayerPos()
+    local avatarPos = ::get_map_relative_player_pos()
     avatarPos = avatarPos.len() == 2 ? avatarPos : [ 0.5, 0.5 ]
-    let diameter  = isSuperArtillery ? 3.0 : (::is_in_flight() ? getArtilleryRange() * 2 : 1.0)
+    let diameter  = isSuperArtillery ? 3.0 : (::is_in_flight() ? ::artillery_range() * 2 : 1.0)
     let rangeSize = [ round(mapSize[0] * diameter), round(mapSize[1] * diameter) ]
     let rangePos  = [ round(mapSize[0] * avatarPos[0] - rangeSize[0] / 2), round(mapSize[1] * avatarPos[1] - rangeSize[1] / 2) ]
 
@@ -422,9 +413,9 @@ enum POINTING_DEVICE
 
   function onApply()
   {
-    if (getArtilleryStatus().ready && mapCoords && getArtilleryDispersion(mapCoords[0], mapCoords[1]) >= 0)
+    if (getArtilleryStatus().ready && mapCoords && ::artillery_dispersion(mapCoords[0], mapCoords[1]) >= 0)
     {
-      callArtillery(mapCoords[0], mapCoords[1])
+      ::call_artillery(mapCoords[0], mapCoords[1])
       doQuit()
     }
   }
@@ -432,14 +423,14 @@ enum POINTING_DEVICE
   function goBack()
   {
     if (::is_in_flight())
-      artilleryCancel()
+      ::artillery_cancel()
     else
       doQuit()
   }
 
   function doQuit()
   {
-    onArtilleryClose()
+    ::on_artillery_close()
     if (isSceneActive())
       base.goBack()
   }
@@ -468,17 +459,16 @@ enum POINTING_DEVICE
   })
 }
 
-subscribe("artilleryMapOpen", @(p) ::is_in_flight() ? ::gui_start_artillery_map(p) : null)
-subscribe("artilleryMapClose", @(_) ::broadcastEvent("CloseArtilleryRequest"))
-subscribe("artilleryCallByShortcut", function(_) {
-  let handler = ::handlersManager.getActiveBaseHandler()
-  if (handler && (handler instanceof ::gui_handlers.ArtilleryMap))
-    handler.onApplyByShortcut()
-})
+::close_artillery_map <- @() ::broadcastEvent("CloseArtilleryRequest") // called from client
 
-::on_artillery_targeting <- @(p = {}) ::is_in_flight() ? ::gui_start_artillery_map(p) : null // compatibility with 2.17.0.X
-::close_artillery_map <- @() ::broadcastEvent("CloseArtilleryRequest") // compatibility with 2.17.0.X
-::artillery_call_by_shortcut <- function artillery_call_by_shortcut() { // compatibility with 2.17.0.X
+::on_artillery_targeting <- function on_artillery_targeting(params = {}) // called from client
+{
+  if(::is_in_flight())
+    ::gui_start_artillery_map(params)
+}
+
+::artillery_call_by_shortcut <- function artillery_call_by_shortcut() // called from client
+{
   let handler = ::handlersManager.getActiveBaseHandler()
   if (handler && (handler instanceof ::gui_handlers.ArtilleryMap))
     handler.onApplyByShortcut()

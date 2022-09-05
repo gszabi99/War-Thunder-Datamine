@@ -31,15 +31,15 @@ conflictCountry {
 }
 
 Button_text {
-  id:t='btn_find_operation'
+  id:t='btn_join_battles'
   countryId:t='<<countryId>>'
   pos:t='0.5pw-0.5w, 2@blockInterval'
   position:t='relative'
   class:t='battle'
-  text:t='#worldwar/find_operation'
+  text:t='#worldwar/btnJoinBattle'
   navButtonFont:t='yes'
   hasConsoleImage:t='yes'
-  on_click:t='onFindOperationBtn'
+  on_click:t='onBattlesBtnClick'
 
   pattern{}
   buttonWink { _transp-timer:t='0' }
@@ -49,32 +49,7 @@ Button_text {
     showOnSelect:t='yes'
   }
   btnText {
-    text:t='#worldwar/find_operation'
-  }
-}
-
-Button_text {
-  id:t='btn_back_operation'
-  countryId:t='<<countryId>>'
-  pos:t='0.5pw-0.5w, 2@blockInterval'
-  position:t='relative'
-  class:t='battle'
-  text:t='#worldwar/backOperation'
-  navButtonFont:t='yes'
-  hasConsoleImage:t='yes'
-  display:t='hide'
-  enable:t='no'
-  on_click:t='onBackOperation'
-  pattern{}
-  buttonWink { _transp-timer:t='0' }
-  buttonGlance {}
-  ButtonImg {
-    btnName:t='LT'
-    showOnSelect:t='yes'
-  }
-  btnText {
-    id:t='btn_back_operation_text'
-    text:t='#worldwar/backOperation'
+    text:t='#worldwar/btnJoinBattle'
   }
 }
 
@@ -133,7 +108,7 @@ Button_text {
   pos:t='0.5pw-0.5w, 2@blockInterval'
   position:t='relative'
   class:t='battle'
-  text:t='#worldwar/joinOperation'
+  text:t='#events/join_event'
   navButtonFont:t='yes'
   hasConsoleImage:t='yes'
   display:t='hide'
@@ -155,9 +130,8 @@ Button_text {
     }
     btnText {
       id:t='btn_join_operation_text'
-      text:t='#worldwar/joinOperation'
+      text:t='#events/join_event'
     }
   }
 }
-
 <</countries>>

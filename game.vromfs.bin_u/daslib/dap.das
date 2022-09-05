@@ -38,56 +38,7 @@ struct Capabilities
     supportsExceptionOptions: bool
     supportsExceptionFilterOptions: bool
     supportsDelayedStackTraceLoading: bool
-    supportsDataBreakpoints: bool
 
-
-
-
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_SetBreakpoints
-struct SetDataBreakpointsArguments
-    breakpoints: array<DataBreakpoint>
-
-def SetDataBreakpointsArguments(data: JsonValue?)
-    var res <- [[SetDataBreakpointsArguments]]
-    var breakpoints = joj(data, "breakpoints")
-    if breakpoints != null
-        for it in breakpoints.value as _array
-            res.breakpoints |> emplace(DataBreakpoint(it))
-    return <- res
-
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_DataBreakpoint
-struct DataBreakpoint
-    dataId: string
-    accessType: string // 'read' | 'write' | 'readWrite'
-    condition: string
-    hitCondition: string
-    description: string
-    enabled: bool
-
-def DataBreakpoint(data: JsonValue?)
-    return [[DataBreakpoint dataId=jos(data, "dataId"),
-                            accessType=jos(data, "accessType"),
-                            condition=jos(data, "condition"),
-                            hitCondition=jos(data, "hitCondition"),
-                            description=jos(data, "description"),
-                            enabled=job(data, "enabled", true)
-            ]]
-
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_DataBreakpointInfo
-struct DataBreakpointInfoArguments
-    variablesReference: double
-    name: string
-
-def DataBreakpointInfoArguments(data: JsonValue?)
-    return [[DataBreakpointInfoArguments
-                variablesReference=jon(data, "variablesReference"),
-                name=jos(data, "name")
-            ]]
-
-struct DataBreakpointInfoResponse
-    dataId: string
-    description: string
-    //accessTypes: DataBreakpointAccessType[];
 
 // https://microsoft.github.io/debug-adapter-protocol/specification#Requests_SetBreakpoints
 struct SetBreakpointsArguments

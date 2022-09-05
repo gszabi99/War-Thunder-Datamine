@@ -337,9 +337,8 @@ root {
             visualStyle:t='tournament'
             bigFont:t='yes'
             text:t = '<<lbBtnTxt>>'
-            <<^hasLeaderboardBtn>>
+            enable:t='no'
             display:t='hide'
-            <</hasLeaderboardBtn>>
             inactiveColor:t='yes'
             on_click:t = 'onLeaderboard'
             btnName:t='L3'
@@ -348,7 +347,6 @@ root {
               background-image:t='#ui/gameuiskin#tournament_leaderboard.svg'
             }
           }
-          <<#hasLeaderboardBtn>>
           tdiv {
             id:t='top_nest'
             width:t='1@eSEventBtnWidth'
@@ -357,7 +355,6 @@ root {
             padding:t='1@eSItemPadding'
             flow:t='vertical'
           }
-          <</hasLeaderboardBtn>>
           Button_text {
             id:t='rewards_btn'
             width:t='1@eSEventBtnWidth'
@@ -368,6 +365,7 @@ root {
             bigFont:t='yes'
             text:t = '<<rewardsBtnTxt>>'
             <<^hasRewardBtn>>
+            enable:t='no'
             display:t='hide'
             <</hasRewardBtn>>
             on_click:t = 'onReward'

@@ -1043,8 +1043,7 @@
           },
           {
             "damageType": "fire",
-            "fire": 0.01,
-            "full_expl": 0.01,
+            "fire": 0.02,
             "expl": 0.01
           }
         ],
@@ -1052,26 +1051,22 @@
           {
             "damageType": "cumulative",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "explosion",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "secondaryShatter",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "generic",
             "expl": 0.5,
-            "full_expl": 0.1,
-            "fire": 0.4
+            "fire": 0.5
           }
         ]
       },
@@ -1292,215 +1287,6 @@
         "onKill": {
           "track_l_dm": 1.0
         }
-      },
-      {
-        "name": [
-          "body_top_dm",
-          "body_front_dm",
-          "body_side_dm",
-          "body_back_dm",
-          "body_bottom_dm",
-          "superstructure_bottom_dm",
-          "superstructure_back_dm",
-          "superstructure_top_dm",
-          "superstructure_front_dm",
-          "superstructure_side_dm",
-          "ex_armor_body_l_01_dm",
-          "ex_armor_body_l_02_dm",
-          "ex_armor_body_l_03_dm",
-          "ex_armor_body_l_04_dm",
-          "ex_armor_body_l_05_dm",
-          "ex_armor_body_l_06_dm",
-          "ex_armor_body_l_07_dm",
-          "ex_armor_body_l_08_dm",
-          "ex_armor_body_l_09_dm",
-          "ex_armor_body_l_10_dm",
-          "ex_armor_body_r_01_dm",
-          "ex_armor_body_r_02_dm",
-          "ex_armor_body_r_03_dm",
-          "ex_armor_body_r_04_dm",
-          "ex_armor_body_r_05_dm",
-          "ex_armor_body_r_06_dm",
-          "ex_armor_body_r_07_dm",
-          "ex_armor_body_r_08_dm",
-          "ex_armor_body_r_09_dm",
-          "ex_armor_body_r_10_dm",
-          "ex_armor_01_dm",
-          "ex_armor_02_dm",
-          "ex_armor_03_dm",
-          "ex_armor_04_dm",
-          "ex_armor_05_dm",
-          "ex_armor_06_dm",
-          "ex_armor_07_dm",
-          "ex_armor_08_dm",
-          "ex_armor_09_dm",
-          "ex_armor_10_dm",
-          "ex_armor_r_01_dm",
-          "ex_armor_r_02_dm",
-          "ex_armor_r_03_dm",
-          "ex_armor_r_04_dm",
-          "ex_armor_r_05_dm",
-          "ex_armor_r_06_dm",
-          "ex_armor_r_07_dm",
-          "ex_armor_r_08_dm",
-          "ex_armor_r_09_dm",
-          "ex_armor_r_10_dm",
-          "ex_armor_l_01_dm",
-          "ex_armor_l_02_dm",
-          "ex_armor_l_03_dm",
-          "ex_armor_l_04_dm",
-          "ex_armor_l_05_dm",
-          "ex_armor_l_06_dm",
-          "ex_armor_l_07_dm",
-          "ex_armor_l_08_dm",
-          "ex_armor_l_09_dm",
-          "ex_armor_l_10_dm",
-          "turret_front_dm",
-          "turret_side_dm",
-          "turret_back_dm",
-          "turret_top_dm",
-          "turret_01_bottom_dm",
-          "turret_01_front_dm",
-          "turret_01_side_dm",
-          "turret_01_back_dm",
-          "turret_01_top_dm",
-          "turret_02_bottom_dm",
-          "turret_02_front_dm",
-          "turret_02_side_dm",
-          "turret_02_back_dm",
-          "turret_02_top_dm",
-          "turret_03_bottom_dm",
-          "turret_03_front_dm",
-          "turret_03_side_dm",
-          "turret_03_back_dm",
-          "turret_03_top_dm",
-          "turret_04_bottom_dm",
-          "turret_04_front_dm",
-          "turret_04_side_dm",
-          "turret_04_back_dm",
-          "turret_04_top_dm",
-          "turret_05_bottom_dm",
-          "turret_05_front_dm",
-          "turret_05_side_dm",
-          "turret_05_back_dm",
-          "turret_05_top_dm",
-          "turret_06_bottom_dm",
-          "turret_06_front_dm",
-          "turret_06_side_dm",
-          "turret_06_back_dm",
-          "turret_06_top_dm",
-          "turret_07_bottom_dm",
-          "turret_07_front_dm",
-          "turret_07_side_dm",
-          "turret_07_back_dm",
-          "turret_07_top_dm",
-          "turret_08_bottom_dm",
-          "turret_08_front_dm",
-          "turret_08_side_dm",
-          "turret_08_back_dm",
-          "turret_08_top_dm",
-          "turret_09_bottom_dm",
-          "turret_09_front_dm",
-          "turret_09_side_dm",
-          "turret_09_back_dm",
-          "turret_09_top_dm",
-          "gun_mask_01_dm",
-          "gun_mask_02_dm",
-          "gun_mask_03_dm",
-          "gun_mask_04_dm"
-        ],
-        "onHit": [
-          {
-            "damageType": "explosion",
-            "damage": 0.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.05,
-              "fxEventName": "fire_after_hit_tiny"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 0.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.05,
-              "fxEventName": "fire_after_hit_tiny"
-            }
-          },
-          {
-            "damageType": "explosion",
-            "damage": 18.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.2,
-              "fxEventName": "fire_after_hit_small"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 30.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.2,
-              "fxEventName": "fire_after_hit_small"
-            }
-          },
-          {
-            "damageType": "explosion",
-            "damage": 30.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.4,
-              "fxEventName": "fire_after_hit_med"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 50.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.4,
-              "fxEventName": "fire_after_hit_med"
-            }
-          },
-          {
-            "damageType": "cumulative",
-            "damage": 80.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.4,
-              "fxEventName": "fire_after_hit_med"
-            }
-          },
-          {
-            "damageType": "explosion",
-            "damage": 200.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.7,
-              "fxEventName": "fire_after_hit_big"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 120.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.7,
-              "fxEventName": "fire_after_hit_big"
-            }
-          },
-          {
-            "damageType": "cumulative",
-            "damage": 200.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.7,
-              "fxEventName": "fire_after_hit_big"
-            }
-          }
-        ]
       }
     ]
   },
@@ -2121,7 +1907,11 @@
     "tracks": {
       "animationMultiplier": 0.71,
       "height": 0.06,
-      "width": 0.53
+      "width": 0.53,
+      "fricFrontal": [
+        1.4,
+        1.2
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2131,23 +1921,20 @@
     "engine": {
       "horsePowers": 560.0,
       "maxRPM": 2800.0,
-      "minRPM": 600.0
+      "minRPM": 700.0
     },
     "mechanics": {
-      "maxBrakeForce": 280000.0,
+      "maxBrakeForce": 175000.0,
       "driveGearRadius": 0.33,
-      "mainGearRatio": 6.7,
-      "sideGearRatio": 1.0,
-      "neutralGearRatio": 10.0,
+      "mainGearRatio": 3.05,
+      "sideGearRatio": 2.2,
+      "neutralGearRatio": 15.0,
       "gearRatios": {
         "ratio": [
           -4.18,
-          -10.0,
           0.0,
-          10.0,
           5.23,
           3.7,
-          2.1,
           1.85,
           1.64,
           1.15,
@@ -2742,149 +2529,15 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
+        "wreckages": {
+          "count": 3,
+          "speed": 15.0,
+          "angle": 80.0,
+          "fxName": "fire_tank_explosion_trails"
+        },
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 8,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 10,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_small",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 10,
-          "speed": 13.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 12,
-          "speed": 25.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_med"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo_small",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 14,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "full_expl",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "explosion_ship_big",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 15,
-          "speed": 30.0,
-          "angle": 40.0,
-          "fxName": "fire_trails_explosion_med"
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "fire_after_hit_small",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "smoke_after_hit_small",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_tiny",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "fire_after_hit_tiny",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_tiny",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "smoke_after_hit_tiny",
-          "setOrientation": true
         }
       }
     ],

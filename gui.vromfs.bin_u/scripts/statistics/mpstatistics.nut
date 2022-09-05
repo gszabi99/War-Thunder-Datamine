@@ -1039,6 +1039,13 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
+    if (::get_mp_rounds())
+    {
+      let rl = ::get_mp_zone_countdown()
+      if (rl > 0)
+        timeLeft = rl
+    }
+
     if (timeLeft < 0 || (gameType & ::GT_RACE))
     {
       if (!::checkObj(gameEndsObj))

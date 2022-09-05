@@ -413,7 +413,7 @@
       "breakLockMaxTime": 5.0,
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -18.0,
+        "sideLobesAttenuation": -15.0,
         "lockAngleMax": 15.0,
         "angleMax": 25.0,
         "rateMax": 12.0,
@@ -432,21 +432,20 @@
           "rangeMax": 15000.0,
           "timeGainControl": false,
           "antenna": {
-            "angleHalfSens": 13.0,
-            "sideLobesSensitivity": -16.0
+            "angleHalfSens": 12.0,
+            "sideLobesSensitivity": -15.0
           }
         },
         "dopplerSpeed": {
           "presents": true,
           "minValue": -2000.0,
           "maxValue": 2000.0,
-          "width": 30.0,
-          "refWidth": 150.0,
+          "width": 170.0,
           "signalWidthMin": 7.0
         },
         "dopplerSpeedGate": {
-          "filterAlpha": 0.15,
-          "filterBetta": 0.02,
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05,
           "dopplerSpeedGateSearchRange": 200.0
         }
       },

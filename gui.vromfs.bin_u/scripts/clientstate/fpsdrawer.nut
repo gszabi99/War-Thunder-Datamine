@@ -1,5 +1,4 @@
 let { format } = require("string")
-let { subscribe } = require("eventbus")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 
@@ -76,9 +75,8 @@ let function getCurSceneObjects() {
 
 
 //validate objects before calling this
-let function updateTexts(objects, params) {
-  let { ping, pl, sessionId, latency, latencyA, latencyR } = params
-  let fps = (params.fps + 0.5).tointeger();
+let function updateTexts(objects, fps, ping, pl, sessionId, latency, latencyA, latencyR) {
+  fps = (fps + 0.5).tointeger();
   local fpsText = ""
   let isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !::is_platform_android
   let isAllowedForUser = hasFeature("FpsCounterOverride")
@@ -120,13 +118,13 @@ let function checkVisibility(objects) {
 }
 
 
-let function updateStatus(params) {
+let function updateStatus(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR) {
   let objects = getCurSceneObjects()
   if (!objects)
     return
 
   checkVisibility(objects)
-  updateTexts(objects, params)
+  updateTexts(objects, fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 }
 
 
@@ -143,4 +141,4 @@ let function init() {
 
 init()
 
-subscribe("updateStatusString", updateStatus)
+::update_status_string <- updateStatus

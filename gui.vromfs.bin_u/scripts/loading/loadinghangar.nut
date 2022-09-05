@@ -1,4 +1,3 @@
-let { loading_is_finished, loading_press_apply } = require("loading")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
@@ -22,7 +21,7 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
 
   function onUpdate(obj, dt)
   {
-    if (loading_is_finished())
-      loading_press_apply()
+    if (::loading_is_finished())
+      ::loading_press_apply()
   }
 }

@@ -16,8 +16,6 @@ let LaserAgmSelectedCnt = Watched(-1)
 let ShellCnt = Watched(0)
 let AdlPoint = [0, 0]
 let CurWeaponName = Watched("")
-let GunBullets0 = Watched(0)
-let GunBullets1 = Watched(0)
 
 let planeState = {
   OpticAtgmSightVisible,
@@ -35,9 +33,7 @@ let planeState = {
   LaserAgmSelectedCnt,
   ShellCnt,
   AdlPoint,
-  CurWeaponName,
-  GunBullets0,
-  GunBullets1
+  CurWeaponName
 }
 
 ::interop.updateLaserPoint <- function(x, y) {

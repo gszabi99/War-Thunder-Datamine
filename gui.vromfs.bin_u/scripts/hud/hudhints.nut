@@ -1254,14 +1254,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     getLocParams = @(hintData) { missionObj = hintData.objectiveText }
   }
 
-  STOP_FOR_REPAIR = {
-    hintType  = ::g_hud_hint_types.REPAIR
-    locId     = "hints/stop_for_repair"
-    showEvent = "hint:stop_for_repair"
-    hideEvent = "hint:stop_for_repair_hide"
-    lifeTime  = 5.0
-  }
-
   OFFER_REPAIR = {
     hintType = ::g_hud_hint_types.REPAIR
     getLocId = function (data) {
@@ -1559,8 +1551,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
   OWNER_IN_FIRE = {
     hintType = ::g_hud_hint_types.COMMON
-    getLocId = @(hintData)
-      hintData?.isTank ? "hints/owner_tank_in_fire" : "hints/owner_ship_in_fire"
+    locId     = "hints/owner_in_fire"
     showEvent = "hint:owner_in_fire:show"
     lifeTime = 5.0
   }

@@ -849,6 +849,7 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
   let pieces = [mainConditionText, conditionsText]
 
   if (params?.showMult ?? true) {
+    //add multipliers text
     let mainCond = getMainProgressCondition(conditions)
     let mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
     pieces.append(mulText)

@@ -1049,8 +1049,7 @@
           },
           {
             "damageType": "fire",
-            "fire": 0.01,
-            "full_expl": 0.01,
+            "fire": 0.02,
             "expl": 0.01
           }
         ],
@@ -1058,26 +1057,22 @@
           {
             "damageType": "cumulative",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "explosion",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "secondaryShatter",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "generic",
             "expl": 0.5,
-            "full_expl": 0.1,
-            "fire": 0.4
+            "fire": 0.5
           }
         ]
       },
@@ -2043,25 +2038,25 @@
     },
     "mechanics": {
       "maxBrakeForce": 300000.0,
-      "driveGearRadius": 0.312,
-      "mainGearRatio": 4.23,
-      "sideGearRatio": 1.0,
-      "neutralGearRatio": 9.0,
+      "driveGearRadius": 0.37,
+      "mainGearRatio": 1.85,
+      "sideGearRatio": 6.25,
+      "neutralGearRatio": 5.0,
       "gearRatios": {
         "ratio": [
-          -2.209,
-          -3.3565,
-          -4.504,
-          -9.008,
+          -1.01,
+          -2.4,
+          -3.43,
+          -4.95,
           0.0,
-          9.008,
-          4.504,
-          3.3565,
-          2.209,
-          1.866,
-          1.523,
-          1.263,
-          1.003
+          4.95,
+          3.43,
+          2.4,
+          1.74,
+          1.47,
+          0.97,
+          0.68,
+          0.438
         ]
       }
     },
@@ -2650,149 +2645,15 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
+        "wreckages": {
+          "count": 3,
+          "speed": 15.0,
+          "angle": 80.0,
+          "fxName": "fire_tank_explosion_trails"
+        },
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 8,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 10,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_small",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 10,
-          "speed": 13.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 12,
-          "speed": 25.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_med"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo_small",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 14,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "full_expl",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "explosion_ship_big",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 15,
-          "speed": 30.0,
-          "angle": 40.0,
-          "fxName": "fire_trails_explosion_med"
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "fire_after_hit_small",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "smoke_after_hit_small",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_tiny",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "fire_after_hit_tiny",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_tiny",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "smoke_after_hit_tiny",
-          "setOrientation": true
         }
       }
     ],

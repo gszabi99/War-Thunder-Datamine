@@ -28,7 +28,6 @@ let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/un
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
-let { getUnitFileName } = require("vehicleModel")
 let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
 
 
@@ -2020,7 +2019,7 @@ let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = t
     if (unitName != unitCacheName)
     {
       unitCacheName = unitName
-      unitCacheBlk = blkFromPath(getUnitFileName(unitName))
+      unitCacheBlk = blkFromPath(::get_unit_file_name(unitName))
     }
     return unitCacheBlk
   }
@@ -2028,7 +2027,7 @@ let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = t
 
 ::get_fm_file <- function get_fm_file(unitId, unitBlkData = null)
 {
-  let unitPath = getUnitFileName(unitId)
+  let unitPath = ::get_unit_file_name(unitId)
   if (unitBlkData == null)
     unitBlkData = ::get_full_unit_blk(unitId)
   let nodes = split_by_chars(unitPath, "/")

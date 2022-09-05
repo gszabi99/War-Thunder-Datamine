@@ -86,9 +86,6 @@
     2.0,
     1.4
   ],
-  "AileronMaxDv": 8.0,
-  "ElevatorMaxDv": 8.0,
-  "RudderMaxDv": 8.0,
   "CockpitOpenedDoorBreakSpeed": 600.0,
   "MomentOfInertia": [
     12500.0,
@@ -481,6 +478,7 @@
       "CarbueretorType": 0,
       "CarbureutorCapacity": 4.9,
       "IsAutonomous": true,
+      "ExtinguisherNum": 0,
       "MinThrMult": 0.2,
       "MaxThrMult": 1.1,
       "IsWaterCooled": false,
@@ -888,12 +886,6 @@
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       }
-    },
-    "FireExtinguisher": {
-      "Num": 0,
-      "UseTime": 5.0,
-      "Power": 1500.0,
-      "Automatic": false
     }
   },
   "Engine1": {
@@ -928,6 +920,7 @@
       "CarbueretorType": 0,
       "CarbureutorCapacity": 4.9,
       "IsAutonomous": true,
+      "ExtinguisherNum": 0,
       "MinThrMult": 0.2,
       "MaxThrMult": 1.1,
       "IsWaterCooled": false,
@@ -1335,12 +1328,6 @@
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       }
-    },
-    "FireExtinguisher": {
-      "Num": 0,
-      "UseTime": 5.0,
-      "Power": 1500.0,
-      "Automatic": false
     }
   },
   "Propeller0": {
@@ -2114,8 +2101,8 @@
       ],
       "AngleLim": 190.0,
       "RatePID": {
-        "Kp": 1.5,
-        "Ki": 0.5,
+        "Kp": 2.0,
+        "Ki": 0.8,
         "Imax": 1.0,
         "Kd": 0.05,
         "dTau": 0.025,
@@ -2136,10 +2123,10 @@
         ]
       },
       "VelPID": {
-        "Kp": 0.08,
-        "Ki": 0.02,
+        "Kp": 0.05,
+        "Ki": 0.04,
         "Imax": 2.0,
-        "Kd": 0.005,
+        "Kd": 0.01,
         "dTau": 0.025,
         "Lim": [
           -0.35,

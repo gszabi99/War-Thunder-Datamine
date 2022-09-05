@@ -1472,8 +1472,6 @@ const AFTERBURNER_CHAMBER = 3
         }
         if ("protected_boost" in tankInfoTable)
           tankInfo.append(::loc("fuelTank/neutralGasSystem"))
-        if ("filling_polyurethane" in tankInfoTable)
-          tankInfo.append(::loc("fuelTank/fillingPolyurethane"))
         if (tankInfo.len())
           desc.append(::g_string.implode(tankInfo, ", "))
 

@@ -137,12 +137,12 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
         "mini_lb_self",
         function (lb_data) {
           let isLbEnable = lb_data.rows.len() > 0
-          let lbObj = scene.findObject("leaderboard_obj")
+          let lbObj = ::showBtn("leaderboard_obj", isLeaderboardsAvailable(), scene)
           if (!lbObj?.isValid())
             return
 
-          lbObj.inactiveColor = isLbEnable ? "no" : "yes"
           lbObj.enable(isLbEnable)
+          lbObj.inactiveColor = isLbEnable ? "no" : "yes"
           if (!isLbEnable)
             return
 
@@ -183,7 +183,6 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       descTxt = "\n".join(descTxtArr, true)
       lbBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/leaderboard"))
       rewardsBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/rewards"))
-      hasLeaderboardBtn = isLeaderboardsAvailable()
       hasRewardBtn = isRewardsAvailable(tournament)
       days = getDaysParams()
     }
@@ -203,12 +202,11 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!descObj?.isValid() || isFinished)
       return
 
-    let { descTxt, hasRewardBtn, hasLeaderboardBtn } = getDescParams()
+    let { descTxt, hasRewardBtn } = getDescParams()
     let eventDescTextObj = descObj.findObject("event_desc_text")
     if (eventDescTextObj?.isValid())
       eventDescTextObj.setValue(descTxt)
     ::showBtn("rewards_btn", hasRewardBtn, scene)
-    ::showBtn("leaderboard_obj", hasLeaderboardBtn, scene)
   }
 
   function updateApplyButton() {

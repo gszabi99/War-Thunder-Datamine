@@ -10,7 +10,6 @@ let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtil
 let { money_type } = require("%scripts/money.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { is_replay_playing } = require("replays")
-let { subscribe } = require("eventbus")
 
 global enum debrState {
   init
@@ -1130,7 +1129,7 @@ let function getMoneyFromDebriefingResult() {
   return res
 }
 
-subscribe("onQuitToDebriefing", @(_) gatherDebriefingResult())
+::gather_debriefing_result <- @() gatherDebriefingResult() // used from native code
 
 return {
   getDebriefingResult = @() debriefingResult

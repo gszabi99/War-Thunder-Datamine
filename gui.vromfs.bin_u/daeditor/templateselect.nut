@@ -2,12 +2,12 @@ from "%darg/ui_imports.nut" import *
 
 let {showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup} = require("state.nut")
 let {colors} = require("components/style.nut")
-let txt = require("%daeditor/components/text.nut").dtext
+let txt = require("%darg/components/text.nut").dtext
 
 let textButton = require("components/textButton.nut")
 let nameFilter = require("components/nameFilter.nut")
-let combobox = require("%daeditor/components/combobox.nut")
-let scrollbar = require("%daeditor/components/scrollbar.nut")
+let combobox = require("%darg/components/combobox.nut")
+let scrollbar = require("%darg/components/scrollbar.nut")
 let {mkTemplateTooltip} = require("components/templateHelp.nut")
 
 let entity_editor = require("entity_editor")
@@ -214,8 +214,11 @@ let function dialogRoot() {
     scrollHandler
     rootBase = class {
       size = flex()
-      function onAttach() {
-        scrollBySelection()
+      behavior = Behaviors.RecalcHandler
+      function onRecalcLayout(initial) {
+        if (initial) {
+          scrollBySelection()
+        }
       }
     }
   })

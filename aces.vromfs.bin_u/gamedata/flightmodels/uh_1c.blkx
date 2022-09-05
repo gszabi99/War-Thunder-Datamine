@@ -290,10 +290,6 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
-          },
-          {
             "damage": 20.0,
             "tail_dm": 0.2
           },
@@ -472,10 +468,6 @@
         "name": "tail_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
-          },
-          {
             "damage": 30.0,
             "cut": 0.25
           },
@@ -541,7 +533,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -554,13 +545,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -585,7 +574,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -598,13 +586,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -2246,11 +2232,6 @@
         ]
       },
       {
-        "dm": "blister1_dm",
-        "separateDm": true,
-        "dp": "blister%d"
-      },
-      {
         "dm": "tail_dm",
         "dp": [
           "prop01_2",
@@ -2261,7 +2242,6 @@
       },
       {
         "dm": "fin_dm",
-        "overwriteLinks": true,
         "dp": [
           "prop01_2",
           "prop02_2",
@@ -2343,7 +2323,7 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "ah_1g_M75": {
+    "ah_1g_M129": {
       "tier": 2,
       "modClass": "weapon",
       "invertEnableLogic": false,
@@ -2381,7 +2361,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/grenade_launcher_M75.blk",
+              "blk": "gameData/Weapons/grenade_launcher_M129.blk",
               "breechInCockpit": true,
               "emitter": "flare9",
               "flash": "flare9",
@@ -2402,8 +2382,8 @@
               "bullets": 150,
               "limits": {
                 "yaw": [
-                  -60.0,
-                  60.0
+                  -65.0,
+                  65.0
                 ],
                 "pitch": [
                   -35.0,
@@ -2483,8 +2463,8 @@
         }
       }
     },
-    "grenade_launcher_M75_new_gun": {
-      "reqModification": "ah_1g_M75",
+    "grenade_launcher_M129_new_gun": {
+      "reqModification": "ah_1g_M129",
       "tier": 4
     },
     "heli_night_vision_system": {
@@ -2510,11 +2490,6 @@
           }
         }
       }
-    },
-    "air_extinguisher": {
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
     }
   },
   "cutting": {
