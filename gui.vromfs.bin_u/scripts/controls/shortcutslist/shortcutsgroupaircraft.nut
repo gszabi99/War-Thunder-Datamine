@@ -294,11 +294,6 @@ return [
     checkAssign = false
   }
   {
-    id = "ID_JETTISON_SECONDARY"
-    showFunc = @() ::has_feature("WeaponJettison")
-    checkAssign = false
-  }
-  {
     id = "ID_BAY_DOOR"
     checkAssign = false
     needShowInHelp = true
@@ -996,6 +991,7 @@ return [
   }
   {
     id = "ID_TOGGLE_EXTINGUISHER"
+    showFunc = @() ::has_feature("AircraftExtinguisher")
     checkAssign = false
   }
   {

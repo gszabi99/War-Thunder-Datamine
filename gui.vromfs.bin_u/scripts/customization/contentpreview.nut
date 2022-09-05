@@ -3,7 +3,6 @@ let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { APP_ID } = require("app")
 let { isCollectionPrize } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 
@@ -251,7 +250,7 @@ let function onSkinDownloaded(unitId, skinId, result)
 
 let function marketViewItem(params)
 {
-  if (::to_integer_safe(params?.appId, 0, false) != APP_ID)
+  if (::to_integer_safe(params?.appId, 0, false) != ::WT_APPID)
     return
   let assets = ::u.filter(params?.assetClass ?? [], @(asset) asset?.name == "__itemdefid")
   if (!assets.len())

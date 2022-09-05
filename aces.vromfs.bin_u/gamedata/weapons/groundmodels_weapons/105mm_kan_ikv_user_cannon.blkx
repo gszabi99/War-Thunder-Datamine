@@ -37,7 +37,7 @@
   "bullet": {
     "bulletCount": 25,
     "mass": 10.25,
-    "explosiveType": "comp_b",
+    "explosiveType": "hexal",
     "explosiveMass": 0.95,
     "caliber": 0.105,
     "speed": 418.0,
@@ -257,7 +257,8 @@
         0.0
       ],
       "traceFreq": 1,
-      "tracer": "noColor"
+      "tracer": "30mmWhite",
+      "trail": "black"
     },
     "collisions": {
       "default": {
@@ -475,9 +476,6 @@
           0.99
         ]
       },
-      "pressureDamage": {
-        "damageType": "pressure"
-      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -495,6 +493,9 @@
             "destruction": 1.0
           }
         }
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [
@@ -780,9 +781,9 @@
   "105mm_sw_kan_HEAT": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 10.2,
+      "mass": 10.5,
       "explosiveType": "comp_b",
-      "explosiveMass": 1.08,
+      "explosiveMass": 0.97,
       "caliber": 0.105,
       "speed": 530.0,
       "maxDistance": 7000.0,
@@ -1242,6 +1243,11 @@
         0.8
       ],
       "fuseDelayDist": 0.4,
+      "shutterDamage": true,
+      "shutterDamageRadius": 18.5,
+      "shutterAmount": 130,
+      "shutterArmorPower": 7.5,
+      "shutterHit": 11.0,
       "smokeShell": true,
       "smokeFx": "smokescreen_big",
       "smokeExplosionFx": "smoke_shell_explosion",

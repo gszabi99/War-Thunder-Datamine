@@ -11,47 +11,28 @@ bigMedalPlace {
   }
 }
 
-tdiv {
-  margin-top:t='2@blockInterval'
-  padding-left:t='10@blockInterval'
-  width:t='pw'
-  flow:t='vertical'
-
-  <<#hasProgress>>
-  challengeDescriptionProgress {
-    value:t='<<unlockProgress>>'
-    thin:t='yes'
+<<#condition>>
+  <<#isHeader>>unlockConditionHeader<</isHeader>>
+  <<^isHeader>>unlockCondition<</isHeader>>
+  {
+    unlocked:t='<<unlocked>>'
+    textarea{
+      id:t='<<id>>'
+      text:t='<<text>>'
+    }
+    <<#hasProgress>>
+    challengeDescriptionProgress{
+      id:t='progress'
+      value:t='<<progress>>'
+    }
+    <</hasProgress>>
   }
-  <</hasProgress>>
+<</condition>>
 
-  textareaNoTab {
-    text:t='<<mainCond>>'
-    overflow:t='hidden'
-    width:t='pw'
-    smallFont:t='yes'
-    margin-top:t='@blockInterval'
+<<#rewardText>>
+  unlockConditionHeader {
+    textarea {
+      text:t='<<?challenge/reward>> <<rewardText>>'
+    }
   }
-
-  textareaNoTab {
-    text:t='<<multDesc>>'
-    overflow:t='hidden'
-    width:t='pw'
-    smallFont:t='yes'
-  }
-
-  textareaNoTab {
-    text:t='<<conds>>'
-    overflow:t='hidden'
-    width:t='pw'
-    smallFont:t='yes'
-    margin-top:t='@blockInterval'
-  }
-
-  <<#rewardText>>
-  textareaNoTab {
-    smallFont:t='yes'
-    margin-top:t='7@dp'
-    text:t='<<?challenge/reward>> <<rewardText>>'
-  }
-  <</rewardText>>
-}
+<</rewardText>>

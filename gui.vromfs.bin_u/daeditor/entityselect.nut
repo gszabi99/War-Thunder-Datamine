@@ -7,8 +7,8 @@ let {colors} = require("components/style.nut")
 let textButton = require("components/textButton.nut")
 let mkWindow = require("components/window.nut")
 let nameFilter = require("components/nameFilter.nut")
-let combobox = require("%daeditor/components/combobox.nut")
-let scrollbar = require("%daeditor/components/scrollbar.nut")
+let combobox = require("%darg/components/combobox.nut")
+let scrollbar = require("%darg/components/scrollbar.nut")
 let { format } = require("string")
 let entity_editor = require("entity_editor")
 
@@ -38,9 +38,6 @@ let function matchEntityByText(eid, text) {
   if (tplName==null)
     return false
   if (tplName.tolower().contains(text.tolower()))
-    return true
-  let riExtraName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
-  if (riExtraName != null && riExtraName.tolower().contains(text.tolower()))
     return true
   return false
 }
@@ -98,22 +95,21 @@ let function doCancel() {
 
 
 let function statusLine() {
-  let nMrk = numSelectedEntities.value
-  let nSel = selectedEntities.value.len()
+  let nSel = numSelectedEntities.value
 
   if (statusAnimTrigger.lastN != null && statusAnimTrigger.lastN != nSel)
     anim_start(statusAnimTrigger)
   statusAnimTrigger.lastN = nSel
 
   return {
-    watch = [numSelectedEntities, filteredEntitiesCount, selectedEntities]
+    watch = [numSelectedEntities, filteredEntitiesCount]
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     children = [
       {
          rendObj = ROBJ_TEXT
          size = [flex(), SIZE_TO_CONTENT]
-         text = format("%d %s marked, %d selected", nMrk, nMrk==1 ? "entity" : "entities", nSel)
+         text = format("%d %s selected", nSel, nSel==1 ? "entity" : "entities")
          animations = [
            { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=statusAnimTrigger }
          ]
@@ -142,22 +138,10 @@ let filter = nameFilter(filterString, {
   }
 })
 
-let function doSelectEid(eid, mod) {
-  let eids = []
-  local found = false
-  foreach (k, _v in selectedEntities.value) {
-    if (k == eid)
-      found = true
-    else if (mod)
-      eids.append(k)
-  }
-  if (!found)
-    eids.append(eid)
+let function doSelectEid(eid) {
+  let eids = [eid]
   entity_editor.get_instance().selectEntities(eids)
-  gui_scene.resetTimeout(0.1, @() selectionState.trigger())
 }
-
-let removeSelectedByEditorTemplate = @(tname) tname.replace("+daeditor_selected+","+").replace("+daeditor_selected","").replace("daeditor_selected+","")
 
 let function listRow(eid, idx) {
   return watchElemState(function(sf) {
@@ -169,14 +153,6 @@ let function listRow(eid, idx) {
     } else {
       color = (sf & S_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
     }
-
-    let riExtraName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
-    let extra = (riExtraName != null) ? $"/ {riExtraName}" : ""
-
-    local tplName = g_entity_mgr.getEntityTemplateName(eid) ?? ""
-    let name = removeSelectedByEditorTemplate(tplName)
-    let div = (tplName != name) ? "•" : "|"
-
     return {
       rendObj = ROBJ_SOLID
       size = [flex(), SIZE_TO_CONTENT]
@@ -185,45 +161,7 @@ let function listRow(eid, idx) {
       behavior = Behaviors.Button
 
       function onClick(evt) {
-        if (evt.shiftKey) {
-          local selCount = 0
-          foreach (_k, v in selectionState.value) {
-            if (v)
-              ++selCount
-          }
-          if (selCount > 0) {
-            local idx1 = -1
-            local idx2 = -1
-            foreach (i, filteredEid in filteredEntites.value) {
-              if (eid == filteredEid) {
-                idx1 = i
-                idx2 = i
-              }
-            }
-            foreach (i, filteredEid in filteredEntites.value) {
-              if (selectionState.value?[filteredEid]) {
-                if (idx1 > i)
-                  idx1 = i
-                if (idx2 < i)
-                  idx2 = i
-              }
-            }
-            if (idx1 >= 0 && idx2 >= 0) {
-              if (idx1 > idx2) {
-                let tmp = idx1
-                idx1 = idx2
-                idx2 = tmp
-              }
-              selectionState.mutate(function(value) {
-                for (local i = idx1; i <= idx2; i++) {
-                  let filteredEid = filteredEntites.value[i]
-                  value[filteredEid] <- !evt.ctrlKey
-                }
-              })
-            }
-          }
-        }
-        else if (evt.ctrlKey) {
+        if (evt.ctrlKey) {
           selectionState.mutate(function(value) {
             value[eid] <- !value?[eid]
           })
@@ -233,11 +171,11 @@ let function listRow(eid, idx) {
         }
       }
 
-      onDoubleClick = @(evt) doSelectEid(eid, evt.ctrlKey)
+      onDoubleClick = @() doSelectEid(eid)
 
       children = {
         rendObj = ROBJ_TEXT
-        text = $"{eid}  {div}  {name} {extra}"
+        text = $"{eid}  |  {g_entity_mgr.getEntityTemplateName(eid)}"
         margin = fsh(0.5)
       }
     }
@@ -298,8 +236,11 @@ let function entitySelectRoot() {
     scrollHandler
     rootBase = class {
       size = flex()
-      function onAttach() {
-        scrollBySelection()
+      behavior = Behaviors.RecalcHandler
+      function onRecalcLayout(initial) {
+        if (initial) {
+          scrollBySelection()
+        }
       }
     }
   })

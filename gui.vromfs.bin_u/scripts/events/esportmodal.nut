@@ -3,10 +3,12 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
-let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId,
+let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fetchLbData,
   getTourListViewData, getTourById, removeItemFromList, getEventByDay, getOverlayTextColor,
   isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable,
   setSchedulerTimeColor, hasAnyTickets, getTourDay } = require("%scripts/events/eSport.nut")
+let stdMath = require("%sqstd/math.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
@@ -31,6 +33,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   unitTypes       = null
   tourTypes       = null
   tourStatesList  = {}
+  ratingByTournaments = null
 
   getSceneTplContainerObj = @() scene.findObject("eSport_container")
 
@@ -57,6 +60,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     scene.findObject("update_timer").setUserData(this)
     setBreadcrumbGoBackParams(this)
     eventListObj = scene.findObject("events_list")
+    updateRatingByTournaments()
     selectActiveTournament()
     filterObj = scene.findObject("filter_nest")
 
@@ -86,6 +90,18 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     fillTournamentTypesList()
   }
 
+  function updateRatingByTournaments() {
+    ratingByTournaments = {}
+    foreach(tour in tournamentList) {
+      let curTourParams = getTourParams(tour)
+      let id = tour.id
+      fetchLbData(getEventByDay(tour.id, curTourParams.dayNum, false), function(lbData) {
+        ratingByTournaments[id] <- stdMath.round(lbData.rows.findvalue(
+          @(row) row._id == ::my_user_id_str)?.rating ?? 0)
+      }, this)
+    }
+  }
+
   function selectActiveTournament() {
     if (!eventListObj?.isValid())
       return
@@ -99,9 +115,13 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     let { isSesActive, isTraining, dayNum } = tourParams
     let { battleDay, isFinished, battlesNum, curSesTime,
       isMyTournament } = getTourCommonViewParams(tour, tourParams)
+    let rating = ratingByTournaments?[tour.id] ?? 0
     let prevState = clone tourStatesList?[tour.id]
     let timeTxtObj = tObj.findObject("time_txt")
     tourStatesList[tour.id] <- tourParams
+    let ratingObj = ::showBtn("rating_nest", rating > 0, tObj)
+    if (rating > 0)
+      ratingObj.findObject("rating_txt")?.setValue(rating.tostring())
     if (!timeTxtObj?.isValid())
       return
 
@@ -263,6 +283,10 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.ESportList <- ESportList
 
+let openESportListWnd = @() ::handlersManager.loadHandler(ESportList)
+
+addPromoAction("open_rating_battles", @(_handler, _params, _obj) openESportListWnd())
+
 return {
-  openESportListWnd = @() ::handlersManager.loadHandler(ESportList)
+  openESportListWnd
 }

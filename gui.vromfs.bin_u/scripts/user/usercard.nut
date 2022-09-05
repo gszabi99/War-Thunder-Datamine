@@ -14,7 +14,6 @@ let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
 let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { APP_ID } = require("app")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {
@@ -1137,7 +1136,7 @@ let { APP_ID } = require("app")
   function onOpenAchievementsUrl()
   {
     openUrl(::loc("url/achievements",
-        { appId = APP_ID, name = player.name}),
+        { appId = ::WT_APPID, name = player.name}),
       false, false, "profile_page")
   }
 }

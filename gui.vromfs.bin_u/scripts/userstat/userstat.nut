@@ -1,6 +1,5 @@
 let { get_time_msec } = require("dagor.time")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { APP_ID } = require("app")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -87,7 +86,7 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
   @(cb) doRequest({
     add_token = true
     headers = {
-      appid = APP_ID,
+      appid = ::WT_APPID,
       language = ::g_language.getCurrentSteamLanguage()
     }
     action = "GetUserStatDescList"
@@ -98,7 +97,7 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
 let statsUpdatable = makeUpdatable("GetStats",
   @(cb) doRequest({
       add_token = true
-      headers = { appid = APP_ID }
+      headers = { appid = ::WT_APPID }
       action = "GetStats"
     }, cb),
   {})
@@ -106,7 +105,7 @@ let statsUpdatable = makeUpdatable("GetStats",
 let unlocksUpdatable = makeUpdatable("GetUnlocks",
   @(cb) doRequest({
       add_token = true
-      headers = { appid = APP_ID }
+      headers = { appid = ::WT_APPID }
       action = "GetUnlocks"
     }, cb),
   {})
@@ -122,7 +121,7 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
   }
 
   let blk = ::DataBlock()
-  blk.addInt("appid", APP_ID)
+  blk.addInt("appid", ::WT_APPID)
 
   let taskId = ::char_send_custom_action("cln_userstat_grant_rewards",
     ::EATT_JSON_REQUEST, blk,

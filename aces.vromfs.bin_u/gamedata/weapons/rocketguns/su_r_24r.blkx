@@ -419,7 +419,7 @@
       },
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -20.0,
+        "sideLobesAttenuation": -16.0,
         "lockAngleMax": 50.0,
         "angleMax": 50.0,
         "rateMax": 20.0,
@@ -438,23 +438,20 @@
           "rangeMax": 30000.0,
           "timeGainControl": false,
           "antenna": {
-            "angleHalfSens": 12.0,
-            "sideLobesSensitivity": -17.0
+            "angleHalfSens": 10.0,
+            "sideLobesSensitivity": -16.0
           }
         },
         "dopplerSpeed": {
           "presents": true,
           "minValue": -3000.0,
           "maxValue": 3000.0,
-          "width": [
-            20.0,
-            100.0
-          ],
+          "width": 125.0,
           "signalWidthMin": 5.0
         },
         "dopplerSpeedGate": {
-          "filterAlpha": 0.25,
-          "filterBetta": 0.03,
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05,
           "dopplerSpeedGateSearchRange": 320.0
         }
       },

@@ -105,7 +105,6 @@ let getMainOptions = function() {
       [::USEROPT_AUTOREARM_ON_AIRFIELD, "spinner"],
       [::USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH, "spinner"],
       [::USEROPT_AUTO_AIMLOCK_ON_SHOOT, "spinner"],
-      [::USEROPT_AUTO_SEEKER_STABILIZATION, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [::USEROPT_RADAR_TARGET_CYCLING, "spinner"],

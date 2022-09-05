@@ -2,7 +2,6 @@ let { format, split_by_chars } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
 let mkWatched = require("%globalScripts/mkWatched.nut")
-let { APP_ID } = require("app")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -164,7 +163,7 @@ local InventoryClient = class {
 
   function request(action, headers, data, callback, progressBoxData = null)
   {
-    headers.appid <- APP_ID
+    headers.appid <- WT_APPID
     let requestData = {
       add_token = true,
       headers = headers,
@@ -179,7 +178,7 @@ local InventoryClient = class {
     if (!contentSignKeys.initialized)
       return request(action, headers, data, callback, progressBoxData)
 
-    headers.appid <- APP_ID
+    headers.appid <- WT_APPID
     let requestData = {
       content_sign_check = true,
       add_token = true,
@@ -288,7 +287,7 @@ local InventoryClient = class {
     if (!url)
       return null
 
-    return "auto_login auto_local sso_service=any " + url + "?a=" + APP_ID +
+    return "auto_login auto_local sso_service=any " + url + "?a=" + ::WT_APPID +
       (::steam_is_running()
         ? format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
         : "")

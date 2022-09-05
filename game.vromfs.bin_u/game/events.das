@@ -8,7 +8,8 @@ struct EventOnStartShooting
 
 [cpp_event(unicast)]
 struct EventOnMetaPartDamage
-  damage : uint16
+  metapartNo : int
+  metapartHp : uint16
 
 [cpp_event(unicast)]
 struct EventRepairMetaPart
@@ -126,8 +127,6 @@ struct EventOnPlayerModSpend
 [event(broadcast)]
 struct MatchingRoomExtraParams
   routeEvaluationChance : float
-  ddosSimulationChance : float
-  ddosSimulationAddRtt : int
 
 [cpp_event(broadcast, with_scheme)]
 struct ChangeServerRoute
@@ -135,11 +134,3 @@ struct ChangeServerRoute
 
 [cpp_event(broadcast)]
 struct EventOnConnectedToServer {}
-
-[cpp_event(unicast)]
-struct CmdForceMusic
-  name : das_string
-
-[cpp_event(broadcast)]
-struct CmdLockHangarMusic
-{}

@@ -2,10 +2,6 @@ let { format, split_by_chars } = require("string")
 let {
   is_mplayer_peer = @() ::is_mplayer_peer() //compatibility with 2.16.0.X
 } = require_optional("multiplayer")
-let { loading_is_finished, loading_press_apply, briefing_finish, loading_play_voice,
-  loading_stop_voice, loading_stop_voice_but_named_events, loading_get_voice_len,
-  loading_is_voice_playing, loading_play_music, loading_stop_music
-} = require("loading")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let changeStartMission = require("%scripts/missions/changeStartMission.nut")
@@ -16,8 +12,8 @@ const MIN_SLIDE_TIME = 2.0
 
 ::add_event_listener("FinishLoading", function(p) {
   ::stop_gui_sound("slide_loop")
-  loading_stop_voice()
-  loading_stop_music()
+  ::loading_stop_voice()
+  ::loading_stop_music()
 })
 
 ::gui_handlers.LoadingBrief <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -111,7 +107,7 @@ const MIN_SLIDE_TIME = 2.0
               part.event = part.event.slice(0, idx)+"_"+part.event.slice(idx+1)
               idx = part.event.indexof("/")
             }
-          part.voiceLen <- loading_get_voice_len(part.event) //-1 if there's no sound
+          part.voiceLen <- ::loading_get_voice_len(part.event) //-1 if there's no sound
           ::dagor.debug("voice "+part.event+" len "+part.voiceLen.tostring())
 
           local totalSlidesTime = 0.0
@@ -260,9 +256,9 @@ const MIN_SLIDE_TIME = 2.0
     if (waitForMap)
       showMap()
 
-    if (applyReady != loading_is_finished())
+    if (applyReady != ::loading_is_finished())
     {
-      applyReady = loading_is_finished()
+      applyReady = ::loading_is_finished()
       let showStart = !::is_multiplayer() && gm != ::GM_TRAINING && !changeStartMission
       if ((applyReady && !showStart) || finished)
         finishLoading()
@@ -284,8 +280,11 @@ const MIN_SLIDE_TIME = 2.0
       if (_tipTime < -1)
       {
         _tipTime = tipShowTime
-        tipShow = true
-        setSceneInfo(::g_tips.getTip())
+//        if (!::loading_is_finished())
+        {
+          tipShow = true
+          setSceneInfo(::g_tips.getTip())
+        }
       }
     }
   }
@@ -309,7 +308,7 @@ const MIN_SLIDE_TIME = 2.0
   function checkNextSlide()
   {
     let isLastSlideInPart = slideIdx >= partsList[partIdx].slides.len() - 1
-    if (isLastSlideInPart && loading_is_voice_playing())
+    if (isLastSlideInPart && ::loading_is_voice_playing())
       return
 
     if (!slidesStarted)
@@ -327,7 +326,7 @@ const MIN_SLIDE_TIME = 2.0
       if (partIdx >= partsList.len() || !partsList[partIdx].slides.len())
       {
         setFinished()
-        if (loading_is_finished())
+        if (::loading_is_finished())
           finishLoading()
         return
       }
@@ -335,9 +334,9 @@ const MIN_SLIDE_TIME = 2.0
       {
         slideIdx = 0
         nextSubtitles = partsList[partIdx].subtitles
-        loading_stop_voice_but_named_events()
-        loading_play_voice(partsList[partIdx].event, true)
-        ::dagor.debug($"loading_play_voice {partsList[partIdx].event.tostring()}")
+        ::loading_stop_voice_but_named_events()
+        ::loading_play_voice(partsList[partIdx].event, true)
+        ::dagor.debug("loading_play_voice "+partsList[partIdx].event.tostring())
       }
     }
 
@@ -364,9 +363,9 @@ const MIN_SLIDE_TIME = 2.0
     if (partsList.len() > 0)
     {
       setSubtitles(partsList[0].subtitles)
-      loading_play_music(music)
-      loading_play_voice(partsList[0].event, true)
-      ::dagor.debug($"loading_play_voice {partsList[0].event.tostring()}")
+      ::loading_play_music(music)
+      ::loading_play_voice(partsList[0].event, true)
+      ::dagor.debug("loading_play_voice "+partsList[0].event.tostring())
     }
     start_gui_sound("slide_loop")
   }
@@ -503,16 +502,16 @@ const MIN_SLIDE_TIME = 2.0
 
   function onApply(obj)
   {
-    loading_stop_voice()
-    loading_stop_music()
-    loading_press_apply()
+    ::loading_stop_voice()
+    ::loading_stop_music()
+    ::loading_press_apply()
   }
 
   function finishLoading()
   {
-    loading_stop_voice()
-    loading_stop_music()
-    briefing_finish()
+    ::loading_stop_voice()
+    ::loading_stop_music()
+    ::briefing_finish()
   }
 
   function onTestBack(obj)

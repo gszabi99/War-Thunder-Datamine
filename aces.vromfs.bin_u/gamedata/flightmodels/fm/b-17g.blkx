@@ -73,7 +73,7 @@
     0.7,
     0.05
   ],
-  "MaxSpeedNearGround": 510.12,
+  "MaxSpeedNearGround": 500.0,
   "MaxSpeedAtAltitude": 450.0,
   "CriticalSpeed": 41.0,
   "ArcadeHelpersSensitivity": 1.0,
@@ -221,6 +221,7 @@
           0.284,
           5.7
         ],
+        "ClToCmCoeff": 0.1,
         "SineAosMultiplier": 0.2,
         "VFocusMultiplier": 1.0,
         "FlapsShift": [
@@ -289,10 +290,6 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.0,
-          0.1
-        ],
         "Cl0": 0.01,
         "alphaCritHigh": 16.2,
         "alphaCritLow": -14.0,
@@ -347,10 +344,6 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.0,
-          0.1
-        ],
         "Cl0": 0.65,
         "alphaCritHigh": 14.3,
         "alphaCritLow": -8.0,
@@ -424,10 +417,6 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.0,
-          0.0
-        ],
         "Cl0": 0.0,
         "alphaCritHigh": 19.0,
         "alphaCritLow": -19.0,
@@ -444,7 +433,7 @@
         1.1,
         2.92
       ],
-      "FlowInertia": 0.299994,
+      "FlowInertia": 0.3,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 23.281,
@@ -496,10 +485,6 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.0,
-          0.0
-        ],
         "Cl0": 0.0,
         "alphaCritHigh": 17.0,
         "alphaCritLow": -17.0,
@@ -516,7 +501,7 @@
         2.87,
         0.0
       ],
-      "FlowInertia": 0.399992,
+      "FlowInertia": 0.4,
       "SlipStreamDistance": 9.0,
       "Areas": {
         "Main": 13.275,
@@ -568,10 +553,6 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.0,
-          0.0
-        ],
         "Cl0": 0.0,
         "alphaCritHigh": 17.0,
         "alphaCritLow": -17.0,
@@ -1049,8 +1030,8 @@
     },
     "FireExtinguisher": {
       "Num": 0,
-      "UseTime": 5.0,
-      "Power": 1500.0,
+      "UseTime": 0.0,
+      "Power": 0.0,
       "Automatic": false
     }
   },
@@ -1111,10 +1092,6 @@
       ],
       "RudderToThrust": [
         0.0,
-        0.0,
-        0.0
-      ],
-      "AirbrakeToThrust": [
         0.0,
         0.0
       ],
@@ -1194,10 +1171,6 @@
         0.0,
         0.0
       ],
-      "AirbrakeToThrust": [
-        0.0,
-        0.0
-      ],
       "VtolToThrust": [
         0.0,
         0.0
@@ -1274,10 +1247,6 @@
         0.0,
         0.0
       ],
-      "AirbrakeToThrust": [
-        0.0,
-        0.0
-      ],
       "VtolToThrust": [
         0.0,
         0.0
@@ -1351,10 +1320,6 @@
       ],
       "RudderToThrust": [
         0.0,
-        0.0,
-        0.0
-      ],
-      "AirbrakeToThrust": [
         0.0,
         0.0
       ],
@@ -1555,7 +1520,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      -180.0,
       90.0
     ],
     "Pos": [
@@ -1574,7 +1539,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      -180.0,
       90.0
     ],
     "Pos": [
@@ -1593,7 +1558,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      -180.0,
       90.0
     ],
     "Pos": [
@@ -1612,7 +1577,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      -180.0,
       90.0
     ],
     "Pos": [
@@ -1729,18 +1694,13 @@
       "tank8_system": 0,
       "tank8_external": false,
       "tank8_priority": 1,
-      "gear_c_dm": 1.56875,
       "aileron_l_dm": 165.819,
       "rudder_dm": 132.091,
-      "tailcontrol_dm": 6.33734,
       "wing_l_dm": 1148.44,
       "wing2_l_dm": 541.079,
       "wing1_l_dm": 853.439,
       "flap_l_dm": 63.7458,
       "fin_dm": 347.383,
-      "wingcontrol_l_dm": 1.90442,
-      "oil8_dm": 2.76967,
-      "oil6_dm": 2.76967,
       "oil2_dm": 58.4483,
       "cover1_dm": 500.075,
       "engine1_dm": 593.2,
@@ -1751,24 +1711,16 @@
       "spar1_l_dm": 126.682,
       "wing2_r_dm": 541.079,
       "cover4_dm": 500.075,
-      "stab1_dm": 70.637,
       "gear_l_dm": 137.279,
       "gear_r_dm": 137.279,
       "pilot_dm": 56.7463,
       "pilot1_dm": 56.7463,
-      "gunner1_dm": 2.88738,
       "cover3_dm": 772.976,
       "engine2_dm": 593.2,
       "engine3_dm": 593.2,
       "engine4_dm": 593.2,
-      "gunner7_dm": 2.92977,
       "fuse_dm": 875.996,
       "fuse1_dm": 1013.05,
-      "elevator0_dm": 15.7018,
-      "gun4_dm": 3.80875,
-      "gun2_dm": 3.42869,
-      "gun8_dm": 2.12498,
-      "gun9_dm": 2.30259,
       "spar2_r_dm": 93.1337,
       "spar1_r_dm": 126.682,
       "spar_r_dm": 112.256,
@@ -1776,32 +1728,45 @@
       "aileron_r_dm": 165.819,
       "oil1_dm": 27.5378,
       "oil3_dm": 58.4484,
-      "oil7_dm": 0.724712,
-      "oil5_dm": 0.724711,
       "tail_dm": 768.465,
       "gunner2_dm": 73.7253,
+      "wing1_r_dm": 853.439,
+      "wing_r_dm": 1148.44,
+      "gunner3_dm": 55.5563,
+      "cover5_dm": 64.0415,
+      "gunner4_dm": 55.5563,
+      "gunner5_dm": 65.0423,
+      "armor1_dm": 79.0564,
+      "gear_c_dm": 1.56875,
+      "tailcontrol_dm": 6.33734,
+      "wingcontrol_l_dm": 1.90442,
+      "oil8_dm": 2.76967,
+      "oil6_dm": 2.76967,
+      "stab1_dm": 70.637,
+      "gunner1_dm": 2.88738,
+      "gunner7_dm": 2.92977,
+      "elevator0_dm": 15.7018,
+      "gun4_dm": 3.80875,
+      "gun2_dm": 3.42869,
+      "gun8_dm": 2.12498,
+      "gun9_dm": 2.30259,
+      "oil7_dm": 0.724712,
+      "oil5_dm": 0.724711,
       "armor6_dm": 6.26752,
       "gunner8_dm": 2.97709,
       "stab2_dm": 70.7162,
-      "wing1_r_dm": 853.439,
       "wingcontrol_r_dm": 1.77012,
       "elevator1_dm": 15.7018,
-      "wing_r_dm": 1148.44,
       "cover7_dm": 4.8257,
       "gun3_dm": 6.73415,
-      "gunner3_dm": 55.5563,
-      "cover5_dm": 64.0415,
       "cover6_dm": 2.14626,
       "gunner6_dm": 2.92977,
-      "gunner4_dm": 55.5563,
-      "gunner5_dm": 65.0423,
       "gun6_dm": 3.79176,
       "gun5_dm": 2.45447,
       "cover9_dm": 3.17396,
       "gun1_dm": 3.38606,
       "cover10_dm": 4.87262,
       "armor7_dm": 1.24019,
-      "armor1_dm": 79.0564,
       "armor5_dm": 1.03922,
       "armor4_dm": 6.50788,
       "armor2_dm": 4.06991,
@@ -1832,7 +1797,7 @@
   },
   "Gear": {
     "SinkFactor": 1700.0,
-    "SinkRateMult": 0.00731133,
+    "SinkRateMult": 0.007,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
@@ -1855,8 +1820,6 @@
     "StrutL": {
       "SpringHeight": 0.32,
       "SpringCoeff": 550000.0,
-      "SpringDampCoeff": 1.0,
-      "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.66,
       "Retractable": true,
       "LeftBrake": true,
@@ -1868,8 +1831,6 @@
     "StrutR": {
       "SpringHeight": 0.32,
       "SpringCoeff": 550000.0,
-      "SpringDampCoeff": 1.0,
-      "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.66,
       "Retractable": true,
       "LeftBrake": false,
@@ -1881,8 +1842,6 @@
     "StrutC": {
       "SpringHeight": 0.15,
       "SpringCoeff": 750000.0,
-      "SpringDampCoeff": 1.0,
-      "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.32,
       "Retractable": true,
       "LeftBrake": false,

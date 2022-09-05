@@ -5,7 +5,7 @@ let {showEntitySelect, propPanelVisible, propPanelClosed, showHelp, de4editMode,
      de4workMode, de4workModes, showUIinEditor, editorTimeStop} = require("state.nut")
 
 let pictureButton = require("components/pictureButton.nut")
-let combobox = require("%daeditor/components/combobox.nut")
+let combobox = require("%darg/components/combobox.nut")
 let cursors =  require("components/cursors.nut")
 
 let daEditor4 = require("daEditor4")
@@ -99,11 +99,10 @@ let function mainToolbar() {
       toolbarButton(svg("delete"),     @() get_instance().deleteSelectedObjects(true), "Delete selected (Del)")
       separator
       modeButton(svg("surf"), DE4_MODE_MOVE_SURF, "Surf over ground (Ctrl+Alt+W)")
-      toolbarButton(svg("drop"),        @() get_instance().dropObjects(),      "Drop (Ctrl+Alt+D)")
-      toolbarButton(svg("dropnormal"),  @() get_instance().dropObjectsNorm(),  "Drop on normal (Ctrl+Alt+E)")
-      toolbarButton(svg("resetscale"),  @() get_instance().resetScale(),       "Reset scale (Ctrl+Alt+R)")
-      toolbarButton(svg("resetrotate"), @() get_instance().resetRotate(),      "Reset rotation (Ctrl+Alt+T)")
-      toolbarButton(svg("zoomcenter"),  @() get_instance().zoomAndCenter(),    "Zoom and center (Z)")
+      toolbarButton(svg("drop"),       @() get_instance().dropObjects(),      "Drop (Ctrl+Alt+D)")
+      toolbarButton(svg("dropnormal"), @() get_instance().dropObjectsNorm(),  "Drop on normal (Ctrl+Alt+E)")
+      toolbarButton(svg("resetscale"), @() get_instance().resetScale(),       "Reset scale (Ctrl+Alt+R)")
+      toolbarButton(svg("zoomcenter"), @() get_instance().zoomAndCenter(),    "Zoom and center (Z)")
       separator
       toolbarButton(svg("properties"), togglePropPanel, "Property panel (P)", propPanelVisible.value)
       toolbarButton(svg("hide"), @() get_instance().hideSelectedTemplate(), "Hide")
@@ -128,7 +127,7 @@ let function mainToolbar() {
       ["T", toggleCreateEntityMode],
       ["F1", toggleHelp],
       ["P", togglePropPanel],
-      ["L.Ctrl !L.Alt T", toggleTime],
+      ["L.Ctrl T", toggleTime],
       ["Esc", @() daEditor4.setEditMode(DE4_MODE_SELECT)]
     ]
   }

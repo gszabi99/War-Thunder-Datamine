@@ -870,6 +870,7 @@ globalCallbacks.addTypes({
   function initScreen()
   {
     base.initScreen()
+    setupTankControlStick()
     ::g_hud_event_manager.subscribe(
       "tankRepair:offerRepair",
       function (eventData) {
@@ -889,6 +890,16 @@ globalCallbacks.addTypes({
   function reinitScreen(params = {})
   {
     base.reinitScreen()
+    setupTankControlStick()
+  }
+
+  function setupTankControlStick()
+  {
+    let stickObj = scene.findObject("tank_stick")
+    if (!::checkObj(stickObj))
+      return
+
+    register_tank_control_stick(stickObj)
   }
 
   function onEventArtilleryTarget(p)

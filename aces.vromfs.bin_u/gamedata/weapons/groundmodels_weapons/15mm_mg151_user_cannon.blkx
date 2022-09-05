@@ -24,7 +24,7 @@
   "bulletsCartridge": 500,
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
-  "fxType": "muzzle_ground_15mm",
+  "fxType": "muzzle_ground_20mm",
   "fxGroundDust": "",
   "fxGrassDust": "",
   "fxSandDust": "",
@@ -46,14 +46,16 @@
       "caliber": 0.015,
       "speed": 850.0,
       "maxDistance": 4000.0,
-      "normalizationPreset": "default",
-      "ricochetPreset": "default",
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
+      "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.3,
-      "bulletType": "ap_t_ball",
+      "bulletType": "ap_i_t",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap.ivf",
       "bulletName": "15mm_pzgr",
       "onHitChanceMultFire": 3.5,
       "relativeVelHitShift": [
@@ -206,17 +208,25 @@
       "explosiveType": "np_10",
       "explosiveMass": 0.001,
       "caliber": 0.015,
-      "normalizationPreset": "default",
-      "ricochetPreset": "default",
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.3,
-      "bulletType": "he_frag_t_ball",
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "he_frag_i_t",
       "slopeEffectPreset": "ap",
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
+      "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "15mm_sprgr",
       "speed": 960.0,
-      "maxDistance": 3000.0,
+      "maxDistance": 2000.0,
       "hitPowerMult": 1.5,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
@@ -258,6 +268,9 @@
         ]
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic"
+        },
         "shatter": {
           "useRealShatters": true,
           "countPortion": 0.2,
@@ -272,9 +285,6 @@
             "countPortion": 1.0
           }
         }
-      },
-      "shatterDamage": {
-        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -370,9 +380,7 @@
       "mass": 0.057,
       "caliber": 0.015,
       "speed": 960.0,
-      "explosiveType": "np_10",
-      "explosiveMass": 0.0019,
-      "maxDistance": 3000.0,
+      "maxDistance": 2000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
@@ -390,9 +398,44 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "15mm_brsprgr",
-      "hitPowerMult": 1.5,
-      "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.0,
+      "hitPowerMult": 1.0,
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
+      "explodeTreshold": 0.3,
+      "explodeHitPower": 8.0,
+      "explodeArmorPower": 2.0,
+      "explodeRadius": [
+        0.12,
+        0.2
+      ],
+      "fuseDelayDist": 0.02,
+      "shutterDamage": true,
+      "shutterDamageRadius": 0.3,
+      "shutterAmount": 5,
+      "shutterArmorPower": 3.0,
+      "shutterHit": 2.5,
       "groundCollisionEffect": "hit_12_18mm_dirt_he",
       "ricochetEffect": "hit_12_18mm_metal_ap",
       "waterCollisionEffect": "hit_12_18mm_water",
@@ -416,38 +459,31 @@
           ]
         ]
       },
-      "hitpower": {
-        "HitPower0m": [
-          1.0,
+      "armorpower": {
+        "ArmorPower0m": [
+          2.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          2.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          1.5,
           500.0
         ],
-        "HitPower5000m": [
-          0.5,
-          5000.0
+        "ArmorPower1000m": [
+          1.0,
+          1000.0
         ],
-        "HitPower7000m": [
-          0.1,
-          7000.0
+        "ArmorPower1450m": [
+          0.5,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
         ]
-      },
-      "damage": {
-        "shatter": {
-          "useRealShatters": true,
-          "countPortion": 0.2,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
-        }
-      },
-      "shatterDamage": {
-        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -455,8 +491,7 @@
           0.0
         ],
         "traceFreq": 1,
-        "tracer": "12mmWhite",
-        "trail": "thin"
+        "tracer": "noColor"
       },
       "collisions": {
         "default": {
@@ -548,14 +583,16 @@
         "caliber": 0.015,
         "speed": 850.0,
         "maxDistance": 4000.0,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "ap_t_ball",
+        "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap.ivf",
         "bulletName": "15mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -708,17 +745,25 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.001,
         "caliber": 0.015,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "he_frag_t_ball",
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "he_frag_i_t",
         "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he.ivf",
         "bulletName": "15mm_sprgr",
         "speed": 960.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "hitPowerMult": 1.5,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -760,6 +805,9 @@
           ]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic"
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.2,
@@ -774,9 +822,6 @@
               "countPortion": 1.0
             }
           }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -878,14 +923,16 @@
         "caliber": 0.015,
         "speed": 850.0,
         "maxDistance": 4000.0,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "ap_t_ball",
+        "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap.ivf",
         "bulletName": "15mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -1038,14 +1085,16 @@
         "caliber": 0.015,
         "speed": 850.0,
         "maxDistance": 4000.0,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "ap_t_ball",
+        "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap.ivf",
         "bulletName": "15mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -1198,14 +1247,16 @@
         "caliber": 0.015,
         "speed": 850.0,
         "maxDistance": 4000.0,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "ap_t_ball",
+        "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap.ivf",
         "bulletName": "15mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -1358,17 +1409,25 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.001,
         "caliber": 0.015,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "he_frag_t_ball",
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "he_frag_i_t",
         "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he.ivf",
         "bulletName": "15mm_sprgr",
         "speed": 960.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "hitPowerMult": 1.5,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -1410,6 +1469,9 @@
           ]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic"
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.2,
@@ -1424,9 +1486,6 @@
               "countPortion": 1.0
             }
           }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1528,17 +1587,25 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.001,
         "caliber": 0.015,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "he_frag_t_ball",
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "he_frag_i_t",
         "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he.ivf",
         "bulletName": "15mm_sprgr",
         "speed": 960.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "hitPowerMult": 1.5,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -1580,6 +1647,9 @@
           ]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic"
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.2,
@@ -1594,9 +1664,6 @@
               "countPortion": 1.0
             }
           }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1694,17 +1761,25 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.001,
         "caliber": 0.015,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "he_frag_t_ball",
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "he_frag_i_t",
         "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he.ivf",
         "bulletName": "15mm_sprgr",
         "speed": 960.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "hitPowerMult": 1.5,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -1746,6 +1821,9 @@
           ]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic"
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.2,
@@ -1760,9 +1838,6 @@
               "countPortion": 1.0
             }
           }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1860,17 +1935,25 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.001,
         "caliber": 0.015,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "he_frag_t_ball",
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "he_frag_i_t",
         "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he.ivf",
         "bulletName": "15mm_sprgr",
         "speed": 960.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "hitPowerMult": 1.5,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -1912,6 +1995,9 @@
           ]
         },
         "damage": {
+          "kinetic": {
+            "damageType": "generic"
+          },
           "shatter": {
             "useRealShatters": true,
             "countPortion": 0.2,
@@ -1926,9 +2012,6 @@
               "countPortion": 1.0
             }
           }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -2026,14 +2109,16 @@
         "caliber": 0.015,
         "speed": 850.0,
         "maxDistance": 4000.0,
-        "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "ap_t_ball",
+        "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap.ivf",
         "bulletName": "15mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [

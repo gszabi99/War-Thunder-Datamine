@@ -15,20 +15,19 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
 
 let getTierIdxBySlot = @(slot) TIERS_NUMBER - 1 - slot
 
-let function addSlotWeaponsFromPreset(res, slotBlk, preset, isEqualFunc = isEqualWeapon) {
+let function addSlotWeaponsFromPreset(res, slotBlk, preset) {
   foreach (weapon in (preset % "Weapon")) {
     let slotWeapon = ::u.copy(weapon)
     slotWeapon.presetId = preset.name
     slotWeapon.slot = slotBlk.index
     slotWeapon.tier = slotBlk?.tier ?? getTierIdxBySlot(slotBlk.index)
     slotWeapon.iconType = preset?.iconType
-    slotWeapon.showInWeaponMenu  = preset?.showInWeaponMenu ?? false
     foreach (dependentWeapon in (preset % "DependentWeaponPreset"))
       slotWeapon.dependentWeaponPreset <- dependentWeapon
     foreach (bannedWeapon in (preset % "BannedWeaponPreset"))
       slotWeapon.bannedWeaponPreset  <- bannedWeapon
     slotWeapon.reqModification = preset?.reqModification
-    let idx = res.findindex(@(w) isEqualFunc(w, slotWeapon))
+    let idx = res.findindex(@(w) isEqualWeapon(w, slotWeapon))
     if (idx == null)
       res.append(slotWeapon)
     else
@@ -111,30 +110,12 @@ let function getUnitWeapons(unitBlk) {// Pesets weapon only
   return res
 }
 
-let isEqualEditSlots = @(a, b) a.slot == b.slot
-  && a.tier == b.tier
-  && a.presetId == b.presetId
-  && a?.blk == b?.blk
-
-let function getSlotsWeaponsForEditPreset(unitBlk) {
-  let res = []
-  let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
-  foreach (slot in slots) {
-    let slotWeapons = []
-    foreach (preset in (slot % "WeaponPreset"))
-      addSlotWeaponsFromPreset(slotWeapons, slot, preset, isEqualEditSlots)
-    res.extend(slotWeapons)
-  }
-
-  return res
-}
-
 let function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, bullets = null) {
   let self = callee()
   let weaponBlk = weaponBlkCache?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
   bullets = (bullets ?? 1) * (weaponBlk?.bullets ?? 1)
   weaponBlkCache[weaponBlkPath] <- weaponBlk
-  if ((weaponBlk?.container ?? false) && ("blk" in weaponBlk))
+  if (weaponBlk?.container ?? false)
     return self(weaponBlk.blk, weaponBlkCache, bullets)
   return {
     weaponBlk
@@ -203,5 +184,4 @@ return {
   getWeaponBlkParams
   getUnitWeaponsByTier
   getUnitWeaponsByPreset
-  getSlotsWeaponsForEditPreset
 }
