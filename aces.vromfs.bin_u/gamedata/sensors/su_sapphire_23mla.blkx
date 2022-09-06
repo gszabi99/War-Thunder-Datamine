@@ -259,6 +259,25 @@
       "rowMajor": true,
       "barsOneWay": false
     },
+    "searchOLST2": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -30.0,
+        30.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        8.0
+      ],
+      "rollStabLimit": 70.0,
+      "period": 0.5,
+      "centerElevation": -2.0,
+      "width": 7.5,
+      "barHeight": 2.15,
+      "barsCount": 3,
+      "rowMajor": true,
+      "barsOneWay": false
+    },
     "designationLockOLS": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -431,7 +450,8 @@
       "scanPattern1": "searchElevLow4Deg"
     },
     "searchOLS": {
-      "scanPattern1": "searchOLST1"
+      "scanPattern1": "searchOLST1",
+      "scanPattern2": "searchOLST2"
     }
   },
   "scopeRangeSets": {

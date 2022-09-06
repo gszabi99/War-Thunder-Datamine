@@ -2584,12 +2584,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return event?.visible ?? true
   }
 
-  function isEventVisibleInEventsWindow(event)
-  {
-    return getEventDisplayType(event).showInEventsWindow
-           && (checkEnableOnDebug(event) || getEventIsVisible(event))
-  }
-
+  isEventVisibleInEventsWindow = @(event) event?.chapter != "competitive"
+    && getEventDisplayType(event).showInEventsWindow
+    && (checkEnableOnDebug(event) || getEventIsVisible(event))
   /**
    * @param teamDataByTeamName This can be event or session info.
    */
