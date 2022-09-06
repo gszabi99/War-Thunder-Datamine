@@ -1,4 +1,4 @@
-let tabsBase = require("%darg/components/tabs.nut")
+let tabsBase = require("tabsBase.nut")
 let colors = require("%rGui/style/colors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 

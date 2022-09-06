@@ -85,7 +85,7 @@
     "startSpeed": 0.0,
     "endSpeed": 1500.0,
     "timeLife": 75.0,
-    "machMax": 2.9,
+    "machMax": 4.0,
     "loadFactorMax": 25.0,
     "rangeMax": 100000.0,
     "price": 3000.0,
@@ -417,7 +417,7 @@
       "breakLockMaxTime": 5.0,
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -16.0,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 15.0,
         "angleMax": 45.0,
         "rateMax": 20.0,
@@ -426,7 +426,7 @@
         "transmitter": {
           "power": 200.0,
           "antenna": {
-            "angleHalfSens": 10.0,
+            "angleHalfSens": 12.0,
             "sideLobesSensitivity": -30.0
           }
         },
@@ -436,20 +436,21 @@
           "rangeMax": 45000.0,
           "timeGainControl": false,
           "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -16.0
+            "angleHalfSens": 12.0,
+            "sideLobesSensitivity": -17.0
           }
         },
         "dopplerSpeed": {
           "presents": true,
           "minValue": -3000.0,
           "maxValue": 3000.0,
-          "width": 125.0,
+          "width": 20.0,
+          "refWidth": 100.0,
           "signalWidthMin": 5.0
         },
         "dopplerSpeedGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05,
+          "filterAlpha": 0.25,
+          "filterBetta": 0.03,
           "dopplerSpeedGateSearchRange": 300.0
         }
       },
@@ -513,9 +514,19 @@
           38000.0,
           7100.0
         ],
-        "altDiff": [
+        "timeMax": [
+          53.0,
+          27.3,
+          53.5,
+          26.5
+        ],
+        "rangeMaxAltDiff": [
           500.0,
           1200.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       },
       "table1": {
@@ -541,9 +552,19 @@
           41000.0,
           16700.0
         ],
-        "altDiff": [
+        "timeMax": [
+          43.0,
+          51.5,
+          40.5,
+          53.1
+        ],
+        "rangeMaxAltDiff": [
           500.0,
-          1200.0
+          1000.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       },
       "table2": {
@@ -569,9 +590,19 @@
           41000.0,
           20000.0
         ],
-        "altDiff": [
+        "timeMax": [
+          23.8,
+          45.3,
+          23.2,
+          52.3
+        ],
+        "rangeMaxAltDiff": [
           500.0,
           1000.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       }
     },

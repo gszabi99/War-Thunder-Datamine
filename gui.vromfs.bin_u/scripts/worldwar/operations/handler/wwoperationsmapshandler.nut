@@ -12,12 +12,17 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let wwAnimBgLoad = require("%scripts/worldWar/wwAnimBg.nut")
+let { addPopupOptList } = require("%scripts/popups/popupOptList.nut")
+
+const MY_CLUSRTERS = "ww/clusters"
 
 let WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
 ::dagui_propid.add_name_id("countryId")
 ::dagui_propid.add_name_id("mapId")
+
+let hasOperationActive = @() !::g_world_war.isCurrentOperationFinished()
 
 ::gui_handlers.WwOperationsMapsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -51,6 +56,11 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   trophiesAmount = 0
   needCheckSeasonIsOverNotice = true //need check and show notice only once on init screen
 
+  clusterOptionsSelector        = null
+  clustersList                  = null
+  isRequestCanceled             = false
+  autoselectOperationTimeout    = 0
+
   function initScreen()
   {
     backSceneFunc = ::gui_start_mainmenu
@@ -77,6 +87,12 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       if (timerObj)
         timerObj.setUserData(this)
     }
+
+    autoselectOperationTimeout = ::g_world_war.getWWConfigurableValue(
+      "autoselectOperationTimeoutSec", 10) * 1000
+    loadAndCheckMyClusters()
+    clusterOptionsSelector = createClustersList()
+    updateClustersTxt()
 
     reinitScreen()
     ::enableHangarControls(true)
@@ -506,9 +522,10 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
         onJoinQueueCb = onJoinQueue.bindenv(this)
         onLeaveQueueCb = onLeaveQueue.bindenv(this)
         onJoinClanOperationCb = onJoinClanOperation.bindenv(this)
-        onBattlesBtnClickCb = onBattlesBtnClick.bindenv(this)
+        onFindOperationBtnCb = onFindOperationBtn.bindenv(this)
         onMapSideActionCb = onMapSideAction.bindenv(this)
         onToBattlesCb = onToBattles.bindenv(this)
+        onBackOperationCb = onBackOperation.bindenv(this)
       } : null)
     descHandlerWeak = mapDescrObj.weakref()
     registerSubHandler(mapDescrObj)
@@ -521,8 +538,8 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     let hasMap = selMap != null
     let isInQueue = isMyClanInQueue()
     let isQueueJoiningEnabled =  ::WwQueue.getCantJoinAnyQueuesReasonData().canJoin
-    let isMyClanOperation = hasMap && hasClanOperation &&
-      getMyClanOperation()?.data.map == selMap?.name
+    let myClanOperation = getMyClanOperation()
+    let isMyClanOperation = hasMap && hasClanOperation && myClanOperation?.data.map == selMap?.name
 
     nearestAvailableMapToBattle = getNearestMapToBattle()
     let needShowBeginMapWaitTime = !(nearestAvailableMapToBattle?.isActive?() ?? true)
@@ -552,16 +569,33 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let sideObj = scene.findObject($"side_{side}")
       let joinQueueBtn = ::showBtn("btn_join_queue",
         selMap?.isClanQueueAvaliable() && isQueueJoiningEnabled && !isInQueue, sideObj)
-      joinQueueBtn.inactiveColor = cantJoinAnyQueues.canJoin ? "no" : "yes"
+      joinQueueBtn.inactiveColor = (cantJoinAnyQueues.canJoin && clustersList != null) ? "no" : "yes"
       let sideCountry = sideObj.countryId
-      let hasBattles = hasAvailableBattles(sideCountry)
-      sideObj.findObject("btn_join_battles").inactiveColor = hasBattles ? "no" : "yes"
+      let enable = hasOperationActive()
+      sideObj.findObject("btn_find_operation").inactiveColor = enable ? "no" : "yes"
 
-      let joinBtn = ::showBtn("btn_join_clan_operation", isMyClanOperation, sideObj)
-      if (isMyClanOperation) {
-        let myCountryId = getMyClanOperation()?.getMyClanCountry() ?? ""
+      let myLastOperation = ::g_world_war.getLastPlayedOperation()
+      let isJoinedAnotherOperation = myLastOperation && myClanOperation
+        && !myLastOperation.isEqual(myClanOperation)
+      let isJoinedMyClanOperation = myLastOperation?.isEqual(myClanOperation)
+      let isBackOperBtnVisible = isJoinedMyClanOperation || isJoinedAnotherOperation
+      let isJoinBtnVisible = isMyClanOperation && !isJoinedMyClanOperation
+
+      let backOperBtn = ::showBtn("btn_back_operation", isBackOperBtnVisible, sideObj)
+      if (isBackOperBtnVisible) {
+        let myCountryId = myLastOperation?.getMyClanCountry() ?? ""
+        let isMyClanSide = myCountryId == sideCountry
+        backOperBtn.inactiveColor = isMyClanSide ? "no" : "yes"
+        backOperBtn.findObject("btn_back_operation_text")?.setValue(
+          $"{::loc("worldwar/backOperation")}{myLastOperation.getNameText(false)}")
+      }
+      let joinBtn = ::showBtn("btn_join_clan_operation", isJoinBtnVisible, sideObj)
+      if (isJoinBtnVisible) {
+        let myCountryId = myClanOperation?.getMyClanCountry() ?? ""
         let isMyClanSide = myCountryId == sideCountry
         joinBtn.inactiveColor = isMyClanSide ? "no" : "yes"
+        joinBtn.findObject("btn_join_operation_text")?.setValue(
+          $"{::loc("worldwar/joinOperation")}{myClanOperation.getNameText(false)}")
         ::showBtn("is_clan_participate_img", isMyClanSide, joinBtn)
       }
       ::showBtn("btn_leave_queue",
@@ -673,28 +707,105 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     ::move_mouse_on_child_by_value(scene.findObject("countries_container"))
   }
 
-  function onJoinClanOperation(obj)
-  {
-    let operation = getMyClanOperation()
-    if (operation == null) {
-      ::showInfoMsgBox(::loc("worldwar/operationNotFound"), "cant_join_operation")
-      return
-    }
+  function joinOperation(operation, country) {
+    if (operation == null)
+      return ::showInfoMsgBox(::loc("worldwar/operationNotFound"), "cant_join_operation")
 
-    let country = obj.countryId
     let reasonData = operation.getCantJoinReasonData(country)
-    if (reasonData.canJoin) {
-      operation.join(country)
-      return
-    }
+    if (reasonData.canJoin)
+      return operation.join(country)
 
     ::showInfoMsgBox(::loc(reasonData.reasonText), "cant_join_operation")
   }
 
-  function onJoinQueue(obj)
-  {
+  onBackOperation = @(obj)
+    joinOperation(::g_world_war.getLastPlayedOperation(), obj.countryId)
+
+  onJoinClanOperation = @(obj) joinOperation(getMyClanOperation(), obj.countryId)
+
+
+  function loadAndCheckMyClusters() {
+    let clustersStr = ::load_local_account_settings(MY_CLUSRTERS, "")
+    if (clustersStr == "")
+      return
+
+    let myClusters = clustersStr.split(",")
+    let forbiddenClusters = ::g_world_war.getSetting("forbiddenClusters", null)?.split(",")
+    local clusters = ::get_option(::USEROPT_CLUSTER)?.items
+    if (!clusters)
+      return
+
+    clusters = forbiddenClusters
+      ? clusters.filter(@(v) !forbiddenClusters.contains(v?.name)).map(@(v) v?.name)
+      : clusters
+    let allovedClusters = myClusters.filter(@(v) clusters.contains(v))
+    clustersList = allovedClusters.len() > 0 ? ",".join(allovedClusters) : null
+  }
+
+  function createClustersList() {
+    let myClusters = clustersList?.split(",")
+    let forbiddenClusters = ::g_world_war.getSetting("forbiddenClusters", null)?.split(",")
+    let title = "".concat(::loc("worldwar/cluster"), " ", ::loc("ui/number_sign"))
+    let addText = [
+      ::loc("ui/parentheses", {text = ::loc("worldwar/max_priority")}),
+      "",
+      ::loc("ui/parentheses", {text = ::loc("worldwar/min_priority")})
+    ]
+    let optionsList = []
+    for (local i = 0; i < 3; i++)
+      optionsList.append({
+          optType = ::USEROPT_CLUSTER
+          title = $"{title}{i+1} {addText[i]}"
+          isEmptyDefault = true
+          exceptions = forbiddenClusters
+          name = myClusters?[i]
+      })
+    return addPopupOptList({
+      scene = scene.findObject("selector_nest")
+      actionText = ::loc("worldwar/cluster")
+      optionsList = optionsList
+      onActionFn = ::Callback(onClusterApply, this)
+    })
+  }
+
+  function updateClustersTxt() {
+    let clusterBtn = clusterOptionsSelector.getActionBtn()
+    if (!clusterBtn?.isValid())
+      return
+
+    local clustersTxt = ""
+    if (clustersList) {
+      let optItems = ::get_option(::USEROPT_CLUSTER).items
+      let txtList = []
+      foreach (name in clustersList.split(",")) {
+        let item = optItems.findvalue(@(v) v.name == name)
+        if (item)
+          txtList.append(item.text)
+      }
+      clustersTxt = txtList ? $"{::loc("ui/colon")} {"; ".join(txtList)}" : ""
+    }
+
+    clusterBtn.setValue($"{::loc("worldwar/cluster")}{clustersTxt}")
+  }
+
+  function onClusterApply(res) {
+    let values = res?[::USEROPT_CLUSTER]
+    clustersList = values ? ",".join(values) : null
+    ::save_local_account_settings(MY_CLUSRTERS, clustersList)
+    updateButtons()
+    updateClustersTxt()
+  }
+
+  function onJoinQueue(obj) {
+    if (!clustersList)
+      return ::scene_msg_box("cant_join_operation", null, ::loc("worldwar/must_select_cluster"),
+       [
+         ["ok", ::Callback(@() clusterOptionsSelector.onAction(), this)],
+         ["cancel", @() null]
+       ], "ok")
+
     selCountryId = obj.countryId
-    selMap.getQueue().joinQueue(selCountryId)
+    selMap.getQueue().joinQueue(selCountryId, true, clustersList)
   }
 
   function onLeaveQueue()
@@ -705,6 +816,59 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
     foreach (map in mapsTbl)
       map.getQueue().leaveQueue()
+  }
+
+  function findRandomOperationCB(data, countryId, progressBox) {
+    if (isRequestCanceled)
+      return
+
+    let { operationId = -1, country = null } = data
+    if (operationId < 0)
+      return ::g_delayed_actions.add(::Callback(@()
+        requestRandomOperationByCountry(countryId, progressBox), this), autoselectOperationTimeout)
+
+    ::destroyMsgBox(progressBox)
+    ::switch_profile_country(country)
+    ::g_world_war.joinOperationById(operationId)
+  }
+
+  function requestRandomOperationByCountry(countryId, progressBox) {
+    let requestBlk = ::DataBlock()
+    requestBlk.country = countryId
+
+    ::g_tasker.charRequestJson("cln_ww_autoselect_operation", requestBlk,
+      { clusters = clustersList },
+      ::Callback(@(data) findRandomOperationCB(data, countryId, progressBox), this))
+  }
+
+  function findRandomOperationByCountry(countryId) {
+    isRequestCanceled = false
+    let progressBox = ::scene_msg_box("join_operation", null, ::loc("worldwar/searchingOperation"),
+      [["cancel", ::Callback(@() isRequestCanceled = true, this)]], null, { waitAnim = true })
+    requestRandomOperationByCountry(countryId, progressBox)
+  }
+
+  function onFindOperationBtn(obj) {
+    if (!clustersList)
+      return ::scene_msg_box("cant_join_operation", null, ::loc("worldwar/must_select_cluster"),
+       [
+         ["ok", ::Callback(@() clusterOptionsSelector.onAction(), this)],
+         ["cancel", @() null]
+       ], "ok")
+
+    let myClanOperation = getMyClanOperation()
+    let myLastOperation = ::g_world_war.getLastPlayedOperation()
+    let isJoinedAnotherOperation = myLastOperation && myClanOperation
+      && !myLastOperation.isEqual(myClanOperation)
+    if (isJoinedAnotherOperation)
+      return ::scene_msg_box("disjoin_operation", null,
+        ::loc("worldwar/disjoin_operation", {id = myClanOperation.getMapText()}),
+       [
+         ["ok", ::Callback(@() findRandomOperationByCountry(obj.countryId), this)],
+         ["cancel", @() null]
+       ], "ok")
+
+    findRandomOperationByCountry(obj.countryId)
   }
 
   function onOperationListSwitch()
@@ -721,24 +885,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     }
     updateWindow()
     ::move_mouse_on_child_by_value(selObj)
-  }
-
-  function onBattlesBtnClick(obj)
-  {
-    if (selMap == null
-        || !(selMap.isActive() || selMap.getOpGroup().hasActiveOperations())) {
-      ::showInfoMsgBox(::loc("worldWar/globalBattles/mapNotActive"))
-      return
-    }
-
-    let country = obj.countryId
-    if (!hasAvailableBattles(country)) {
-      ::showInfoMsgBox(::loc("worldWar/globalBattles/noActiveBattlesForMap"))
-      return
-    }
-
-    ::switch_profile_country(country)
-    openGlobalBattlesModal()
   }
 
   function onStart()
@@ -1056,8 +1202,8 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       if (!::check_obj(sideObj))
         continue
 
-      let hasBattles = hasAvailableBattles(sideObj.countryId)
-      sideObj.findObject("btn_join_battles").inactiveColor = hasBattles ? "no" : "yes"
+      let enable = hasOperationActive()
+      sideObj.findObject("btn_find_operation").inactiveColor = enable ? "no" : "yes"
     }
   }
 
@@ -1090,7 +1236,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     if (!::check_obj(sideObj))
       return
 
-    onBattlesBtnClick(sideObj)
+    onFindOperationBtn(sideObj)
   }
 
   function onMapSideAction() {

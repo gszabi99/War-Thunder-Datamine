@@ -126,24 +126,20 @@ local handlerClass = class extends vehiclesModal.handlerClass
       return
 
     hasSpendExpProcess = true
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
-    let canFlushExp = flushExp > 0
 
-    let afterDoneFunc = function() {
-      if (unit.isSquadronVehicle() && needChosenResearchOfSquadron())
-        saveClanUnitResearchChosen(true)
-      if(canFlushExp)
-        return unitActions.flushSquadronExp(unit,
-          {afterDoneFunc = ::Callback(function() {hasSpendExpProcess = false}, this)})
-
-      hasSpendExpProcess = false
-      goBack()
+    let afterDoneFunc = ::Callback(function() {hasSpendExpProcess = false}, this)
+    if (!::isUnitInResearch(unit)) {
+      unitActions.setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc)
+      return
     }
 
-    if (::isUnitInResearch(unit))
-      afterDoneFunc()
-
-    unitActions.research(unit, true, ::Callback(afterDoneFunc, this) )
+    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
+    if (flushExp > 0) {
+      unitActions.flushSquadronExp(unit, { afterDoneFunc })
+      return
+    }
+    hasSpendExpProcess = false
+    goBack()
   }
 
   getParamsForActionsList = @() {
@@ -184,6 +180,12 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
     base.onEventFlushSquadronExp(p)
   }
+
+  function onEventUnitResearch(p) {
+    base.onEventUnitResearch(p)
+    onEventFlushSquadronExp(p)
+  }
+
 }
 
 ::gui_handlers.clanVehiclesModal <- handlerClass

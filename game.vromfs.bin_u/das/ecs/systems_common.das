@@ -1,20 +1,21 @@
 module systems_common shared
 require ecs
+require EcsUtils
 require strings
 
 
 def get_first_system_names(count : int)
   var systemNames : array<string>
   get_systemDB() <| $ [unused_argument(_)] (name; _)
-    systemNames |> push(name)
+    systemNames |> push(clone_string(name))
     return length(systemNames) < count
   return <- systemNames
 
 def find_system_names(str : string)
   var templateNames : array<string>
-  get_systemDB() <| $ [unused_argument(tmpl)] (name; tmpl)
+  get_systemDB() <| $ [unused_argument(_)] (name; _)
     if find(name, str) != -1
-      templateNames |> push(name)
+      templateNames |> push(clone_string(name))
     return true
   return <- templateNames
 

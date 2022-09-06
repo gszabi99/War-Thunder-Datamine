@@ -53,19 +53,13 @@ let function mfdSightHud(isBackground) {
 }
 
 
-
-let function mfdHUD(isBackground) {
-
-  return [
-    mfdSightHud(isBackground)
+let function Root() {
+  let children = [
+    mfdSightHud(true)
     mkTws
     mkRadarForMfd(MfdColor)
+    mfdSightHud(false)
   ]
-}
-
-let Root = function() {
-  let children = mfdHUD(true)
-  children.extend(mfdHUD(false))
 
   return {
     watch = [

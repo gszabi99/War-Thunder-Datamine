@@ -1,9 +1,53 @@
 let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
+let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
 }
+
+let premiumAccountDescriptionArr = [
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_1"
+    isBold = false
+    color = null
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_2"
+    isBold = true
+    color = "@userlogColoredText"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_3"
+    isBold = true
+    color = "@userlogColoredText"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_4"
+    isBold = true
+    color = "@userlogColoredText"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_5"
+    isBold = true
+    color = "@userlogColoredText"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_6"
+    isBold = false
+    color = "@highlightedTextColor"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_7"
+    isBold = false
+    color = "@highlightedTextColor"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_8"
+    isBold = false
+    color = "@highlightedTextColor"
+  }
+]
 
 let function getEntitlementConfig(name)
 {
@@ -202,12 +246,21 @@ let function getEntitlementDescription(product, productId) {
   if (product == null)
     return ""
 
-  let resArr = []
   let paramTbl =  getEntitlementLocParams()
+
+  let entLocId = getEntitlementLocId(product)
+  if (entLocId == "PremiumAccount")
+  {
+    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({text = ::loc(d.locId, paramTbl)}))
+
+    return formatLocalizationArrayToDescription(locArr)
+  }
+
+  let resArr = []
   if (product?.useGroupAmount && ("group" in product))
     paramTbl.amount <- getEntitlementAmount(product).tointeger()
 
-  let locId = "charServer/entitlement/{0}/desc".subst(getEntitlementLocId(product))
+  let locId = $"charServer/entitlement/{entLocId}/desc"
   resArr.append(::loc(locId, paramTbl))
 
   foreach(giftName in product?.entitlementGift ?? [])
@@ -253,4 +306,5 @@ return {
   isBoughtEntitlement
   getEntitlementLocParams
   canBuyEntitlement
+  premiumAccountDescriptionArr
 }

@@ -40,8 +40,8 @@
     "explosiveType": "a_ix_2",
     "explosiveMass": 0.05,
     "caliber": 0.085,
-    "ballisticCaliber": 0.07,
     "speed": 1040.0,
+    "Cx": 0.25,
     "maxDistance": 10000.0,
     "normalizationPreset": "apbc",
     "ricochetPreset": "apbc",
@@ -218,6 +218,7 @@
       "explosiveMass": 0.74,
       "caliber": 0.085,
       "speed": 1010.0,
+      "Cx": 0.25,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -262,6 +263,9 @@
           0.99
         ]
       },
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -279,9 +283,6 @@
             "destruction": 1.0
           }
         }
-      },
-      "pressureDamage": {
-        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [
@@ -569,6 +570,7 @@
       "caliber": 0.085,
       "speed": 925.0,
       "maxDistance": 7000.0,
+      "Cx": 0.82789,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",

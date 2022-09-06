@@ -1,5 +1,6 @@
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
+let { MISSION_CAPTURE_ZONE_START, MISSION_CAPTURING_ZONE } = require("guiMission")
 
 let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
@@ -33,6 +34,11 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     },
     {
       id = "rearm_machinegun_status"
+      color = "@white"
+      icon = "#ui/gameuiskin#icon_weapons_in_progress.svg"
+    },
+    {
+      id = "rearm_coaxial_status"
       color = "@white"
       icon = "#ui/gameuiskin#icon_weapons_in_progress.svg"
     },
@@ -597,7 +603,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       return
 
     let isZoneCapturing = eventData.isHeroAction
-      && (eventData.eventId == ::MISSION_CAPTURE_ZONE_START || eventData.eventId == ::MISSION_CAPTURING_ZONE)
+      && (eventData.eventId == MISSION_CAPTURE_ZONE_START || eventData.eventId == MISSION_CAPTURING_ZONE)
     placeObj.animation = isZoneCapturing ? "show" : "hide"
     curZoneCaptureName = isZoneCapturing ? eventData.zoneName : null
     if (!isZoneCapturing)

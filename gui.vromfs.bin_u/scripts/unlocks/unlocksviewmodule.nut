@@ -22,8 +22,22 @@ let function getSubUnlockLocName(config) {
     return ""
 }
 
+let function getUnlockStagesDesc(cfg) {
+  if (cfg == null)
+    return ""
+
+  let hasStages = (cfg.stages.len() ?? 0) > 1
+  if (!hasStages || ::g_unlocks.isUnlockComplete(cfg))
+    return ""
+
+  return ::loc("challenge/stage", {
+    stage = ::colorize("unlockActiveColor", cfg.curStage + 1)
+    totalStages = ::colorize("unlockActiveColor", cfg.stages.len())
+  })
+}
+
 let function getUnlockDesc(cfg, params = {}) {
-  let desc = [cfg?.stagesText ?? ""]
+  let desc = [getUnlockStagesDesc(cfg)]
 
   let hasDescInConds = cfg?.conditions.findindex(@(c) "typeLocIDWithoutValue" in c) != null
   if (!hasDescInConds)
@@ -40,6 +54,9 @@ let function getUnlockDesc(cfg, params = {}) {
 }
 
 let function getUnlockConditionsText(cfg, params = {}) {
+  if (!cfg?.conditions)
+    return ""
+
   params.isExpired <- cfg.isExpired
 
   let curVal = params?.curVal ?? (::g_unlocks.isUnlockComplete(cfg) ? null : cfg.curVal)
@@ -58,6 +75,22 @@ let function getUnlockConditionsText(cfg, params = {}) {
   return "\n".join(desc, true)
 }
 
+let function getUnlockMainCondText(cfg) {
+  if (!cfg?.conditions)
+    return ""
+
+  let curVal = ::g_unlocks.isUnlockComplete(cfg) ? null : cfg.curVal
+  return ::UnlockConditions.getMainConditionText(cfg.conditions, curVal, cfg.maxVal)
+}
+
+let function getUnlockMultDesc(cfg) {
+  if (!cfg?.conditions)
+    return ""
+
+  let mainCond = ::UnlockConditions.getMainProgressCondition(cfg.conditions)
+  return ::UnlockConditions.getMultipliersText(mainCond)
+}
+
 let function getFullUnlockDesc(cfg, params) {
   return "\n".join([
     getUnlockDesc(cfg, params),
@@ -70,4 +103,6 @@ return {
   getFullUnlockDesc
   getUnlockDesc
   getUnlockConditionsText
+  getUnlockMainCondText
+  getUnlockMultDesc
 }

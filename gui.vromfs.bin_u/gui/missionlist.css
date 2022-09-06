@@ -240,15 +240,6 @@ img[difficulty=2] {
 @const unlockHeaderIconSize: 4.44*@scrn_tgt/100.0;
 @const unlockBlockInterval: (12@sf/@pf) \ 1;
 
-unlockConditionHeader {
-  width:pw;
-  padding-left:@unlockConditionHeaderLeftPadding;
-  margin-bottom:1*@scrn_tgt/100.0;
-
-  input-transparent:no;
-  flow:vertical;
-}
-
 unlockCondition {
   width:pw-@unlockHeaderIconSize;
   margin-left:@unlockHeaderIconSize;
@@ -260,15 +251,11 @@ unlockCondition {
   flow:vertical;
 }
 
-unlockCondition > textarea, unlockConditionHeader > textarea {
+unlockCondition > textarea {
   position:relative;
   width:pw;
   paragraph-indent:0;
   overflow-y:visible;
-}
-
-unlockConditionHeader > textarea {
-  pos:0, 0.35@unlockHeaderIconSize;
 }
 
 unlockCondition[unlocked=no] > textarea {
@@ -288,10 +275,6 @@ unlockCondition[unlocked=yes] > unlockImg {
 
 hiddenDiv[isSmallView=yes] > unlockCondition > unlockImg {
   size:0.6*@unlockIconSize, 0.6*@unlockIconSize;
-}
-
-unlockConditionHeader[unlocked=yes] > unlockImg {
-  background-image:#ui/gameuiskin#favorite.png;
 }
 
 unlockImg[background-image] {
