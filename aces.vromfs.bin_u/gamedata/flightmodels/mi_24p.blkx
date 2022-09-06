@@ -315,15 +315,38 @@
         ]
       },
       {
-        "name": "fin_dm"
+        "name": "fin_dm",
+        "onHit": [
+          {
+            "damage": 30.0,
+            "cut": 0.6
+          },
+          {
+            "damage": 65.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 11.0
+          },
+          {
+            "damage": 31.0,
+            "cut": 1.0,
+            "nothing": 3.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
+        ]
       },
       {
         "name": "fuse_dm",
         "onHit": [
-          {
-            "flame": 0.2,
-            "smoke": 0.2
-          },
           {
             "damage": 20.0,
             "tail_dm": 0.2
@@ -342,16 +365,7 @@
           },
           {
             "damage": 100.0,
-            "tail_dm": 0.9
-          },
-          {
-            "damage": 200.0,
             "tail_dm": 1.0
-          },
-          {
-            "damage": 300.0,
-            "tail_dm": 1.0,
-            "expl": 1.0
           }
         ],
         "onKill": [
@@ -396,18 +410,7 @@
           },
           {
             "damage": 100.0,
-            "tail_dm": 1.0,
-            "expl": 0.5
-          },
-          {
-            "damage": 200.0,
-            "tail_dm": 1.0,
-            "expl": 0.5
-          },
-          {
-            "damage": 300.0,
-            "tail_dm": 1.0,
-            "expl": 1.0
+            "tail_dm": 1.0
           }
         ]
       },
@@ -535,10 +538,6 @@
         "name": "tail_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
-          },
-          {
             "damage": 30.0,
             "cut": 0.25
           },
@@ -604,7 +603,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -617,13 +615,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -648,7 +644,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -661,13 +656,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -692,7 +685,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -705,13 +697,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -736,7 +726,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -749,13 +738,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -795,14 +782,8 @@
         "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -811,8 +792,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -821,8 +800,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -831,8 +808,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -841,8 +816,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 0.8,
-            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -853,8 +826,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 1.0,
-            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -864,8 +835,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -875,8 +844,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -886,8 +853,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -897,8 +862,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -911,14 +874,8 @@
         "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -927,8 +884,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -937,8 +892,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -947,8 +900,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -957,8 +908,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 0.8,
-            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -969,8 +918,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 1.0,
-            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -980,8 +927,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -991,8 +936,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1002,8 +945,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1013,8 +954,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -3149,11 +3088,6 @@
         ]
       },
       {
-        "dm": "blister1_dm",
-        "separateDm": true,
-        "dp": "blister%d"
-      },
-      {
         "dm": "tail_dm",
         "dp": [
           "prop01_2",
@@ -3164,7 +3098,6 @@
       },
       {
         "dm": "fin_dm",
-        "overwriteLinks": true,
         "dp": [
           "prop01_2",
           "prop02_2",
@@ -3235,30 +3168,6 @@
     "heli_structure": {
       "tier": 2
     },
-    "heli_night_vision_system": {
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1024,
-              768
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "pilotIr": {
-            "resolution": [
-              1024,
-              768
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
     "GSh-30-2K_universal": {},
     "GSh-30-2K_ground_targets": {},
     "GSh-30-2K_air_targets": {},
@@ -3267,18 +3176,13 @@
     },
     "GSh-30-2K_new_gun": {
       "reqModification": "GSh-30-2K_belt_pack",
-      "tier": 3
-    },
-    "automatic_air_extinguisher": {
-      "prevModification": "GSh-30-2K_new_gun",
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
+      "tier": 2
     },
     "il_28sh_upk23_gunpod": {
       "deactivationIsAllowed": false,
-      "tier": 2,
-      "modClass": "weapon"
+      "tier": 3,
+      "modClass": "weapon",
+      "prevModification": "GSh-30-2K_new_gun"
     },
     "ns23_belt_pack": {
       "reqModification": "il_28sh_upk23_gunpod",
@@ -3546,6 +3450,30 @@
               "separate": false
             }
           ]
+        }
+      }
+    },
+    "heli_night_vision_system": {
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              1024,
+              768
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
+          "pilotIr": {
+            "resolution": [
+              1024,
+              768
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          }
         }
       }
     }

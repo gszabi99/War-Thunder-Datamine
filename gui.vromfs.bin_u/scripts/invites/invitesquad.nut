@@ -1,7 +1,6 @@
 let platformModule = require("%scripts/clientState/platform.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
 ::g_invites_classes.Squad <- class extends ::BaseInvite
 {
@@ -46,7 +45,7 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
                               else
                                 setDelayed(false)
                             }, this)
-      requestUsersInfo([leaderId], cb, cb)
+      ::g_users_info_manager.requestInfo([leaderId], cb, cb)
     }
     isAccepted = false
 

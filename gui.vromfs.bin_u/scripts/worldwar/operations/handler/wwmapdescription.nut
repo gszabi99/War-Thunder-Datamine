@@ -149,8 +149,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   onJoinQueue = @(obj) descParams?.onJoinQueueCb(obj)
   onLeaveQueue = @() descParams?.onLeaveQueueCb()
   onJoinClanOperation = @(obj) descParams?.onJoinClanOperationCb(obj)
-  onFindOperationBtn = @(obj) descParams?.onFindOperationBtnCb(obj)
+  onBattlesBtnClick = @(obj) descParams?.onBattlesBtnClickCb(obj)
   onMapSideAction = @() descParams?.onMapSideActionCb()
   onToBattles = @() descParams?.onToBattlesCb()
-  onBackOperation = @(obj) descParams?.onBackOperationCb(obj)
 }

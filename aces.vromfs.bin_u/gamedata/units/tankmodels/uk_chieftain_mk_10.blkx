@@ -126,13 +126,13 @@
         "armorThickness": 1.0
       },
       "composite_armor_hull_02_dm": {
-        "armorThickness": 3.0,
-        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "armorClass": "RHA_tank_modern",
         "hidableInXrayViewer": true
       },
       "composite_armor_hull_03_dm": {
-        "armorThickness": 3.0,
-        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "armorClass": "RHA_tank_modern",
         "hidableInXrayViewer": true
       }
     },
@@ -387,11 +387,7 @@
       "optic_turret_09_dm": {},
       "optic_turret_10_dm": {},
       "optic_turret_11_dm": {},
-      "optic_body_01_dm": {},
-      "ex_lantern_01_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      }
+      "optic_body_01_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -1074,8 +1070,7 @@
           },
           {
             "damageType": "fire",
-            "fire": 0.01,
-            "full_expl": 0.01,
+            "fire": 0.02,
             "expl": 0.01
           }
         ],
@@ -1083,26 +1078,22 @@
           {
             "damageType": "cumulative",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "explosion",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "secondaryShatter",
             "expl": 0.4,
-            "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.6
           },
           {
             "damageType": "generic",
             "expl": 0.5,
-            "full_expl": 0.1,
-            "fire": 0.4
+            "fire": 0.5
           }
         ]
       },
@@ -1695,7 +1686,7 @@
     "armorArrayHullSideInner": [
       {
         "xrayDmPart": "composite_armor_hull_02_dm",
-        "titleLoc": "tank_structural_steel",
+        "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_02_dm"
@@ -2619,149 +2610,15 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
+        "wreckages": {
+          "count": 3,
+          "speed": 15.0,
+          "angle": 80.0,
+          "fxName": "fire_tank_explosion_trails"
+        },
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 8,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 10,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_small",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 10,
-          "speed": 13.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 12,
-          "speed": 25.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_med"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo_small",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 14,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
-      },
-      {
-        "name": "full_expl",
-        "lifetime": 10.0,
-        "fx": {
-          "name": "explosion_ship_big",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 15,
-          "speed": 30.0,
-          "angle": 40.0,
-          "fxName": "fire_trails_explosion_med"
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_big",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_big",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "fire_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_med",
-        "lifetime": 8.0,
-        "fx": {
-          "name": "smoke_after_hit_med",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "fire_after_hit_small",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_small",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "smoke_after_hit_small",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_tiny",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "fire_after_hit_tiny",
-          "setOrientation": true
-        }
-      },
-      {
-        "name": "fire_after_hit_tiny",
-        "lifetime": 5.0,
-        "fx": {
-          "name": "smoke_after_hit_tiny",
-          "setOrientation": true
         }
       }
     ],
@@ -2783,10 +2640,10 @@
     ]
   },
   "cockpit": {
-    "zoomOutFov": 7.37,
-    "zoomInFov": 7.37,
+    "zoomOutFov": 9.2,
+    "zoomInFov": 7.2,
     "sightFov": 4.3,
-    "sightName": "chieftain_mk10_sight",
+    "sightName": "laser_rangefinder_periscope_no_IC",
     "headPos": [
       0.0,
       4.2,
@@ -2801,7 +2658,7 @@
     "detectionHeight": 2.51
   },
   "ircmProjector": {
-    "node": "ex_lantern_01",
+    "node": "ex_armor_turret_01",
     "beamRadius": [
       1500.0,
       200.0
@@ -2811,11 +2668,6 @@
       0.07
     ],
     "projectorGlowOffset": [
-      0.5,
-      0.2,
-      0.0
-    ],
-    "glowOffset": [
       0.5,
       0.2,
       0.0

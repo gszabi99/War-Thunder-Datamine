@@ -1,3 +1,4 @@
+options no_unused_function_arguments = false
 options no_aot = true//currently, as of 08.10.2021 there is a bug in AOT codegen for E3DCOLOR
 module ecs_template shared private
 require ecs
@@ -83,7 +84,7 @@ def def_string(v : das_string?)
 
 [structure_macro(name=ecs_template)]
 class CreateTemplateAnnotation : AstStructureAnnotation
-  [unused_argument(group, args, errors)] def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
+  def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     if show_completion && is_in_completion()
       return true
     for field in st.fields

@@ -55,7 +55,6 @@
       ]
     ],
     "setting__isDelayed": false,
-    "setting__active": true,
     "setting__shouldDrawSmallIndForMissTarget": true,
     "setting__uniqueName": "",
     "setting__count": 1,
@@ -818,21 +817,6 @@
       "spot_light__dynamic_obj_shadows": true
     }
   },
-  "tunnel_a_light_orange": {
-    "_extends": [
-      "omni_light",
-      "replicating"
-    ],
-    "light__max_radius": 22.0,
-    "light__brightness": 90.0,
-    "light__color": "/6Zs/w==",
-    "light__nightly": false,
-    "_group": {
-      "_tags": "render",
-      "spot_light__dynamic_obj_shadows": true,
-      "spot_light__shadows": true
-    }
-  },
   "floating_rendinst_system": {
     "_singleton": true,
     "floatingRiSystem__useRandomWaves": false,
@@ -860,13 +844,12 @@
   },
   "floating_rendinst_res_group": {
     "floatingRiGroup__wreckageFloatDuration": 15.0,
-    "floatingRiGroup__updateDistSq": 1000000.0,
+    "floatingRiGroup__updateDist": 1000.0,
     "floatingRiGroup__interactionType": 0,
-    "floatingRiGroup__interactionDistSq": 0.0,
+    "floatingRiGroup__interactionDist": 0.0,
     "floatingRiGroup__elasticity": 0.1,
     "floatingRiGroup__physUpdateDt": 0.041667,
     "floatingRiGroup__maxShiftDist": 1000.0,
-    "floatingRiGroup__wavesMul": 1.0,
     "_group": {
       "_track": true,
       "floatingRiGroup__resName": "",
@@ -962,17 +945,17 @@
   },
   "smokescreen_ecs": {
     "_extends": "expendable_mod",
-    "mod__type_name": "smokeScreen",
-    "mod__enabled_without_mod": false,
+    "mod__type_name": "smokescreen",
+    "mod__enabled_without_mod": true,
     "mod__send_economic_spend": false
   },
   "tank_smokescreen_ecs": {
     "_extends": "smokescreen_ecs",
-    "mod__name": "tank_engine_smoke_screen_system"
+    "mod__name": ""
   },
   "ship_smokescreen_ecs": {
     "_extends": "smokescreen_ecs",
-    "mod__name": "ship_smoke_screen_system_mod"
+    "mod__name": ""
   },
   "ground_unit": {
     "_extends": "simple_ground_unit",
@@ -1065,9 +1048,6 @@
   "infantry_troop": {
     "_extends": "simple_ground_unit"
   },
-  "human": {
-    "_extends": "simple_unit"
-  },
   "aircraft": {
     "_extends": "unit"
   },
@@ -1130,39 +1110,6 @@
     "background_model_res": {},
     "background_model__bullets:list<t>": {},
     "background_model__spawnEid:eid": {}
-  },
-  "destructed_model": {
-    "_extends": "replicating",
-    "_group": {
-      "_replicate": true,
-      "destructed_model__model_ind": -1,
-      "destructed_model__tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          0.0,
-          0.0,
-          0.0
-        ]
-      ]
-    },
-    "destructed_model__names:list<t>": {
-      "model": "tank_bottom"
-    },
-    "destructed_model_res": {}
   },
   "level": {
     "isLocal": true,
@@ -1241,13 +1188,7 @@
     "_extends": "replicating",
     "smoke__activate_time": 0.0,
     "smoke__time": 0.0,
-    "smoke__fx_activate_time": 0.0,
-    "smoke__fx_time": 0.0,
     "smoke__smokeFxId": -1,
-    "smoke__tFadeIn": 4.0,
-    "smoke__tFadeOut": 7.0,
-    "smoke__tFadeInMul": 0.2,
-    "smoke__tFadeOutMul": 0.9,
     "_group": {
       "_replicate": true,
       "smoke__pos": [
@@ -1572,23 +1513,5 @@
         "damage_area__debugCombustColor": "//8A/w=="
       }
     ]
-  },
-  "music": {
-    "_singleton": true,
-    "_tags": "sound",
-    "music__forced": false,
-    "music__forcedEvtName": "",
-    "music__curBattleState": -1,
-    "music__battleRadiusAirSq": 2500.0,
-    "music__battleRadiusGroundSq": 2500.0,
-    "music__battleEnemiesThreshold": 3,
-    "music__timerBattle": 0.0,
-    "music__cooldownBattle": 5.0,
-    "music__cooldownCalm": 5.0,
-    "music__curUnitRank": 0,
-    "music__curUnitType": 0,
-    "music__curHangarCountry_id": -1,
-    "music__curForcedEvtName": "",
-    "music__lockedHangar": false
   }
 }

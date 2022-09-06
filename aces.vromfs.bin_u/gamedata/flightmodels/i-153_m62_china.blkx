@@ -441,8 +441,24 @@
         "name": "fuse1_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
+            "damage": 5.0,
+            "wing_r_dm": 0.1,
+            "wing_l_dm": 0.1
+          },
+          {
+            "damage": 9.0,
+            "wing_r_dm": 0.3,
+            "wing_l_dm": 0.3
+          },
+          {
+            "damage": 10.0,
+            "wing_r_dm": 0.5,
+            "wing_l_dm": 0.5
+          },
+          {
+            "damage": 20.0,
+            "wing_r_dm": 0.7,
+            "wing_l_dm": 0.7
           },
           {
             "damage": 30.0,
@@ -491,16 +507,24 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
+            "damage": 7.0,
+            "tail_dm": 0.2
           },
           {
-            "damage": 30.0,
+            "damage": 10.0,
             "tail_dm": 0.4
           },
           {
-            "damage": 40.0,
+            "damage": 20.0,
             "tail_dm": 0.6
+          },
+          {
+            "damage": 30.0,
+            "tail_dm": 0.8
+          },
+          {
+            "damage": 40.0,
+            "tail_dm": 1.0
           }
         ],
         "onKill": [
@@ -689,42 +713,42 @@
         "name": "spar1_l_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar1_r_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar2_l_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar2_r_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar_l_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar_r_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
@@ -801,10 +825,6 @@
         "name": "tail_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
-          },
-          {
             "damage": 20.0,
             "cut": 0.25
           },
@@ -874,7 +894,6 @@
           },
           {
             "damage": 20.0,
-            "expl": 0.5,
             "fire": 0.9,
             "leak": 0.9
           }
@@ -887,13 +906,11 @@
           },
           {
             "damage": 30.0,
-            "expl": 25.0,
             "fire": 25.0,
             "leak": 25.0
           },
           {
             "damage": 50.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 30.0
           }
@@ -904,14 +921,8 @@
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 7.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -920,8 +931,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -930,8 +939,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -940,8 +947,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -950,8 +955,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.5,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -960,8 +963,6 @@
         ],
         "onKill": [
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -969,8 +970,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 3.0,
             "cut": 0.0,
             "nothing": 4.0,
@@ -980,8 +979,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 7.0,
             "cut": 0.0,
             "nothing": 3.0,
@@ -991,8 +988,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 10.0,
             "cut": 0.0,
             "nothing": 2.0,
@@ -1002,8 +997,6 @@
             }
           },
           {
-            "smoke": 0.4,
-            "flame": 0.4,
             "damage": 20.0,
             "cut": 0.0,
             "nothing": 1.0,
@@ -1013,8 +1006,6 @@
             }
           },
           {
-            "smoke": 0.8,
-            "flame": 0.8,
             "damage": 30.0,
             "cut": 0.0,
             "part": {
@@ -1029,14 +1020,8 @@
         "defaultEffectPart": "spar1_r_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 7.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1045,8 +1030,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1055,8 +1038,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1065,8 +1046,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1075,8 +1054,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.5,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1085,8 +1062,6 @@
         ],
         "onKill": [
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1094,8 +1069,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 3.0,
             "cut": 0.0,
             "nothing": 4.0,
@@ -1105,8 +1078,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 7.0,
             "cut": 0.0,
             "nothing": 3.0,
@@ -1116,8 +1087,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 10.0,
             "cut": 0.0,
             "nothing": 2.0,
@@ -1127,8 +1096,6 @@
             }
           },
           {
-            "smoke": 0.4,
-            "flame": 0.4,
             "damage": 20.0,
             "cut": 0.0,
             "nothing": 1.0,
@@ -1138,8 +1105,6 @@
             }
           },
           {
-            "smoke": 0.8,
-            "flame": 0.8,
             "damage": 30.0,
             "cut": 0.0,
             "part": {
@@ -1154,14 +1119,8 @@
         "defaultEffectPart": "spar2_l_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 7.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1170,8 +1129,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1180,8 +1137,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1190,8 +1145,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1200,8 +1153,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.5,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1210,8 +1161,6 @@
         ],
         "onKill": [
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1219,8 +1168,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 3.0,
             "cut": 0.0,
             "nothing": 4.0,
@@ -1230,8 +1177,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 7.0,
             "cut": 0.0,
             "nothing": 3.0,
@@ -1241,8 +1186,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 10.0,
             "cut": 0.0,
             "nothing": 2.0,
@@ -1252,8 +1195,6 @@
             }
           },
           {
-            "smoke": 0.4,
-            "flame": 0.4,
             "damage": 20.0,
             "cut": 0.0,
             "nothing": 1.0,
@@ -1263,8 +1204,6 @@
             }
           },
           {
-            "smoke": 0.8,
-            "flame": 0.8,
             "damage": 30.0,
             "cut": 0.0,
             "part": {
@@ -1279,14 +1218,8 @@
         "defaultEffectPart": "spar2_r_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 7.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1295,8 +1228,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1305,8 +1236,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1315,8 +1244,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1325,8 +1252,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.5,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1335,8 +1260,6 @@
         ],
         "onKill": [
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1344,8 +1267,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 3.0,
             "cut": 0.0,
             "nothing": 4.0,
@@ -1355,8 +1276,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 7.0,
             "cut": 0.0,
             "nothing": 3.0,
@@ -1366,8 +1285,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 10.0,
             "cut": 0.0,
             "nothing": 2.0,
@@ -1377,8 +1294,6 @@
             }
           },
           {
-            "smoke": 0.4,
-            "flame": 0.4,
             "damage": 20.0,
             "cut": 0.0,
             "nothing": 1.0,
@@ -1388,8 +1303,6 @@
             }
           },
           {
-            "smoke": 0.8,
-            "flame": 0.8,
             "damage": 30.0,
             "cut": 0.0,
             "part": {
@@ -1404,14 +1317,8 @@
         "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 7.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1420,8 +1327,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1430,8 +1335,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1440,8 +1343,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1450,8 +1351,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.5,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1460,8 +1359,6 @@
         ],
         "onKill": [
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1469,8 +1366,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 3.0,
             "cut": 0.0,
             "nothing": 4.0,
@@ -1480,8 +1375,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 7.0,
             "cut": 0.0,
             "nothing": 3.0,
@@ -1491,8 +1384,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 10.0,
             "cut": 0.0,
             "nothing": 2.0,
@@ -1502,8 +1393,6 @@
             }
           },
           {
-            "smoke": 0.4,
-            "flame": 0.4,
             "damage": 20.0,
             "cut": 0.0,
             "nothing": 1.0,
@@ -1513,8 +1402,6 @@
             }
           },
           {
-            "smoke": 0.8,
-            "flame": 0.8,
             "damage": 30.0,
             "cut": 0.0,
             "part": {
@@ -1529,14 +1416,8 @@
         "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 7.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1545,8 +1426,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1555,8 +1434,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1565,8 +1442,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.1,
-            "flame": 0.2,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1575,8 +1450,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.5,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1585,8 +1458,6 @@
         ],
         "onKill": [
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1594,8 +1465,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 3.0,
             "cut": 0.0,
             "nothing": 4.0,
@@ -1605,8 +1474,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 7.0,
             "cut": 0.0,
             "nothing": 3.0,
@@ -1616,8 +1483,6 @@
             }
           },
           {
-            "smoke": 0.1,
-            "flame": 0.2,
             "damage": 10.0,
             "cut": 0.0,
             "nothing": 2.0,
@@ -1627,8 +1492,6 @@
             }
           },
           {
-            "smoke": 0.4,
-            "flame": 0.4,
             "damage": 20.0,
             "cut": 0.0,
             "nothing": 1.0,
@@ -1638,8 +1501,6 @@
             }
           },
           {
-            "smoke": 0.8,
-            "flame": 0.8,
             "damage": 30.0,
             "cut": 0.0,
             "part": {

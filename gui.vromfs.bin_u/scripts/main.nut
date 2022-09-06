@@ -382,7 +382,7 @@ foreach(fn in [
   require(fn)
 
 let game = require("app").getShortAppName()
-let gameMnt = { mecha = "%mechaScripts", wt = "%wtScripts" }?[game]
+let gameMnt = { mecha = "%mechaScripts", vrThunder = "%vrtScripts", wt = "%wtScripts" }?[game]
 ::dagor.debug($"Load UI scripts by game: {game} (mnt = {gameMnt})")
 require_optional($"{gameMnt}/onScriptLoad.nut")
 

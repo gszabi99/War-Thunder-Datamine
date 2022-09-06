@@ -47,30 +47,32 @@ let function repairWithMsgBox(unit, onSuccessCb = null)
   ], "no", { cancel_fn = function() {}})
 }
 
-let function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {
+let function flushSquadronExp(unit, params = {})
+{
+  if (!unit)
+    return
+
+  let afterDoneFunc = params?.afterDoneFunc
   ::scene_msg_box("ask_flush_squadron_exp",
     null,
     ::loc("squadronExp/invest/needMoneyQuestion",
       {exp = ::Cost().setSap(min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring()}),
     [
-      ["yes", onDoneCb],
-      ["no", onCancelCb]
+      ["yes", @() ::g_tasker.addTask(::char_send_action_and_load_profile("cln_flush_clan_exp_to_unit"),
+         null,
+         function() {
+           if (afterDoneFunc)
+             afterDoneFunc()
+           ::broadcastEvent("FlushSquadronExp", {unit = unit})
+         })
+      ],
+      ["no", function() {
+        if (afterDoneFunc)
+          afterDoneFunc()
+        }
+      ]
     ],
     "yes")
-}
-
-let function flushSquadronExp(unit, params = {}) {
-  if (!unit)
-    return
-
-  let { afterDoneFunc = @() null } = params
-  let onDoneCb = @() ::g_tasker.addTask(::char_send_action_and_load_profile("cln_flush_clan_exp_to_unit"),
-    null,
-    function() {
-      afterDoneFunc()
-      ::broadcastEvent("FlushSquadronExp", {unit = unit})
-    })
-  showFlushSquadronExpMsgBox(unit, onDoneCb, afterDoneFunc)
 }
 
 let function take(unit, params={})
@@ -134,35 +136,11 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
   })
 }
 
-let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() null) {
-  let unitName = unit.name
-  ::add_big_query_record("choosed_new_research_unit", unitName)
-  let prevUnitName = ::clan_get_researching_unit()
-  let blk = ::DataBlock()
-  blk.addStr("unit", unitName)
-  blk.addBool("auto", true)
-  let taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
-  let taskCallback = function() {
-    afterDoneFunc()
-    saveClanUnitResearchChosen(true)
-    ::broadcastEvent("UnitResearch", {unitName, prevUnitName, unit})
-  }
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, taskCallback, taskCallback)
-}
-
-let function setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc = @() null) {
-  if (!::canResearchUnit(unit) || ::isUnitInResearch(unit))
-    return
-
-  showFlushSquadronExpMsgBox(unit, @() setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc), afterDoneFunc)
-}
-
 return {
-  repair
-  repairWithMsgBox
-  flushSquadronExp
-  take
-  buy
-  research
-  setResearchClanVehicleWithAutoFlush
+  repair = repair
+  repairWithMsgBox = repairWithMsgBox
+  flushSquadronExp = flushSquadronExp
+  take = take
+  buy = buy
+  research = research
 }

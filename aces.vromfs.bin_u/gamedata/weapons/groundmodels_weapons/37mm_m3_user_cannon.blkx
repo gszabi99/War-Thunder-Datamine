@@ -38,7 +38,7 @@
     "bulletCount": 40,
     "mass": 0.87,
     "caliber": 0.037,
-    "speed": 883.0,
+    "speed": 792.0,
     "maxDistance": 4000.0,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
@@ -203,6 +203,60 @@
       "stone_snow": {
         "fx": "hit_28_38mm_snow_ap"
       }
+    },
+    "armorpower": {
+      "ArmorPower0m": [
+        78.0,
+        10.0
+      ],
+      "ArmorPower100m": [
+        76.0,
+        100.0
+      ],
+      "ArmorPower250m": [
+        69.0,
+        250.0
+      ],
+      "ArmorPower500m": [
+        59.0,
+        500.0
+      ],
+      "ArmorPower750m": [
+        50.0,
+        750.0
+      ],
+      "ArmorPower1000m": [
+        43.0,
+        1000.0
+      ],
+      "ArmorPower1250m": [
+        36.0,
+        1250.0
+      ],
+      "ArmorPower1500m": [
+        31.0,
+        1500.0
+      ],
+      "ArmorPower1750m": [
+        26.0,
+        1750.0
+      ],
+      "ArmorPower2000m": [
+        22.0,
+        2000.0
+      ],
+      "ArmorPower2500m": [
+        16.0,
+        2500.0
+      ],
+      "ArmorPower3000m": [
+        12.0,
+        3000.0
+      ],
+      "ArmorPower4000m": [
+        2.0,
+        4000.0
+      ]
     }
   },
   "37mm_usa_m3_HE": {
@@ -221,7 +275,7 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "sap_hei_tank",
+      "bulletType": "he_frag_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
@@ -229,19 +283,12 @@
         2.0
       ],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/sap.ivf",
-      "guiCustomIcon": "sapcbc_tank",
+      "useEffectiveArmorThicknessForShatter": true,
+      "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "37mm_m63",
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "fuseDelayDist": 1.2,
-      "explodeTreshold": 9.0,
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
+      "hitPowerMult": 2.0,
+      "explodeTreshold": 0.1,
+      "fuseDelayDist": 0.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he",
       "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -262,27 +309,58 @@
           0.99
         ]
       },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "hitpower": {
         "HitPower0m": [
           1.0,
-          0.0
+          500.0
         ],
-        "HitPower1000m": [
-          0.9,
-          0.0
+        "HitPower5000m": [
+          0.5,
+          5000.0
         ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
+        "HitPower7000m": [
+          0.1,
+          7000.0
         ]
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic",
-          "demarrePenetrationK": 0.65,
-          "demarreSpeedPow": 1.43,
-          "demarreMassPow": 0.71,
-          "demarreCaliberPow": 1.07
+          "damageType": "generic"
+        },
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.125,
+          "segment": {
+            "radiusScale": 3.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              180.0
+            ],
+            "countPortion": 1.0
+          }
         }
       },
       "visual": {
@@ -380,7 +458,7 @@
       "bulletCount": 40,
       "mass": 0.87,
       "caliber": 0.037,
-      "speed": 883.0,
+      "speed": 792.0,
       "maxDistance": 4000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
@@ -399,7 +477,7 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/ap.ivf",
-      "bulletName": "37mm_m51b1",
+      "bulletName": "37mm_m51",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -545,6 +623,60 @@
         "stone_snow": {
           "fx": "hit_28_38mm_snow_ap"
         }
+      },
+      "armorpower": {
+        "ArmorPower0m": [
+          67.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          66.0,
+          100.0
+        ],
+        "ArmorPower250m": [
+          63.0,
+          250.0
+        ],
+        "ArmorPower500m": [
+          58.0,
+          500.0
+        ],
+        "ArmorPower750m": [
+          54.0,
+          750.0
+        ],
+        "ArmorPower1000m": [
+          50.0,
+          1000.0
+        ],
+        "ArmorPower1250m": [
+          46.0,
+          1250.0
+        ],
+        "ArmorPower1500m": [
+          43.0,
+          1500.0
+        ],
+        "ArmorPower1750m": [
+          40.0,
+          1750.0
+        ],
+        "ArmorPower2000m": [
+          37.0,
+          2000.0
+        ],
+        "ArmorPower2500m": [
+          32.0,
+          2500.0
+        ],
+        "ArmorPower3000m": [
+          27.0,
+          3000.0
+        ],
+        "ArmorPower4000m": [
+          2.0,
+          4000.0
+        ]
       }
     }
   }

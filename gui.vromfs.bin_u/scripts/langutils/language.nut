@@ -235,7 +235,6 @@ let function getLangInfoById(id) {
 
 let function onChangeLanguage() {
   currentSteamLanguage = steamLanguages?[currentLanguage] ?? "english"
-  currentLanguageW(currentLanguage)
   updateFunctions()
 }
 

@@ -82,41 +82,34 @@
     },
     "bottomline": {
       "tdiv": {
-        "width": "fw",
-        "pos": "0, ph-h",
-        "flow": "vertical",
+        "size": "fw, ph",
         "shopItemText": {
           "id": "progressText",
           "text": "",
           "progressStatus": "",
-          "position": "relative",
-          "pos": "pw-w, 0",
+          "position": "absolute",
+          "pos": "pw-w, -2/3h",
           "smallFont": "yes",
           "talign": "right",
           "shadeStyle": "textOnIcon"
         },
-        "tdiv": {
-          "width": "pw",
-          "position": "relative",
-          "pos": "0, -3@sf/@pf",
-          "airResearchProgress": [
-            {
-              "id": "progressNew",
-              "type": "new",
-              "paused": "no",
-              "value": "0",
-              "display": "hide"
-            },
-            {
-              "id": "progressOld",
-              "position": "absolute",
-              "type": "old",
-              "paused": "",
-              "value": "0",
-              "display": "hide"
-            }
-          ]
-        }
+        "airResearchProgress": [
+          {
+            "id": "progressNew",
+            "type": "new",
+            "paused": "no",
+            "value": "0",
+            "display": "hide"
+          },
+          {
+            "id": "progressOld",
+            "position": "absolute",
+            "type": "old",
+            "paused": "",
+            "value": "0",
+            "display": "hide"
+          }
+        ]
       },
       "shopItemPrice": {
         "id": "priceText",

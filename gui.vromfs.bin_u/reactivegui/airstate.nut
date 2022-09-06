@@ -1,6 +1,6 @@
 let interopGen = require("interopGen.nut")
-let { NUM_ENGINES_MAX } = require("hudState")
 
+const NUM_ENGINES_MAX = 6
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 const NUM_TURRETS_MAX = 10
@@ -87,10 +87,8 @@ let CritMach = Watched(false)
 let Ias = Watched(0)
 let CritIas = Watched(false)
 
-let CannonState = []
-for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  CannonState.append(Watched({count=0, seconds=-1, selected=false}))
-}
+let CannonCount = []
+let CannonReloadTime = []
 let CannonSelectedArray = Watched(array(NUM_CANNONS_MAX, false))
 let CannonSelected = Watched(false)
 let IsCannonEmpty = Watched(array(NUM_CANNONS_MAX, false))
@@ -132,31 +130,91 @@ let BombSightShadowLineWidthFactor = Watched(1.0)
 let TurretSightOpacity = Watched(1.0)
 let TurretSightLineWidthFactor = Watched(1.0)
 
-let MachineGunState = []
-for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  MachineGunState.append(Watched({count=0, seconds=-1, selected=false}))
-}
+let MachineGunsCount = []
+let MachineGunsReloadTime = []
 let MachineGunsSelectedArray = Watched(array(NUM_CANNONS_MAX, false))
 let IsMachineGunsEmpty = Watched(array(NUM_CANNONS_MAX, false))
 let isAllMachineGunsEmpty = Computed(@() !IsMachineGunsEmpty.value.contains(false))
 let MachineGunsMode = Watched(0)
 
-let BombsState = Watched({
-  count=0, seconds=-1, mode=0, selected=false, salvo=0, name="", actualCount=-1})
-let RocketsState = Watched({                                                      // -duplicate-assigned-expr
-  count=0, seconds=-1, mode=0, selected=false, salvo=0, name="", actualCount=-1})
-let TorpedoesState = Watched({                                                    // -duplicate-assigned-expr
-  count=0, seconds=-1, mode=0, selected=false, salvo=0, name="", actualCount=-1})
-let AdditionalCannonsState = Watched({count=0, seconds=-1, mode=0, selected=false})
-let AgmState = Watched({
-  count=0, seconds=-1, timeToHit=-1, timeToWarning=-1, selected=false, name="", actualCount=-1})
-let AamState = Watched({count=0, seconds=-1, selected=false, name="", actualCount=-1})
-let GuidedBombsState = Watched({seconds=-1, count=0, mode=0, selected=false, name="", actualCount=-1})
-let FlaresState = Watched({count=0, seconds=-1, mode=0})
-let ChaffsState = Watched({count=0, seconds=-1, mode=0})// -duplicate-assigned-expr
+//retroCompatibility
+let MachineGuns = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
 
+let CannonsAdditional = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
+
+let Rockets = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+  salvo = Watched(0)
+  name = Watched("")
+  actualCount = Watched(-1)
+}
+
+let Agm = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  timeToHit = Watched(-1)
+  timeToWarning = Watched(-1)
+  selected = Watched(false)
+  name = Watched("")
+  actualCount = Watched(-1)
+}
+
+let Aam = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  selected = Watched(false)
+  name = Watched("")
+  actualCount = Watched(-1)
+}
+
+let GuidedBombs = {
+  seconds = Watched(-1)
+  count = Watched(0)
+  mode = Watched(0)
+  selected = Watched(false)
+  name = Watched("")
+  actualCount = Watched(-1)
+}
+
+let Bombs = {
+  seconds = Watched(-1)
+  count = Watched(0)
+  mode = Watched(0)
+  selected = Watched(false)
+  salvo = Watched(0)
+  name = Watched("")
+  actualCount = Watched(-1)
+}
+
+let Flares = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
+
+let Chaffs = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
+
+let IsMachineGunEmpty = Watched(false)
 let IsCanAdditionalEmpty = Watched(false)
-let IsTrpEmpty = Watched(false)
 let IsRktEmpty = Watched(false)
 let IsAgmEmpty = Watched(false)
 let IsAamEmpty = Watched(false)
@@ -317,8 +375,8 @@ let helicopterState = {
   Ias,
   CritIas,
 
-  CannonCount = CannonState.map(@(c) Computed(@() c.value.count)),
-  CannonReloadTime = CannonState.map(@(c) Computed(@() c.value.seconds)),
+  CannonCount,
+  CannonReloadTime,
   IsCannonEmpty,
   CannonMode,
   CannonSelectedArray,
@@ -330,68 +388,18 @@ let helicopterState = {
   StaminaValue,
   StaminaState,
 
-  CannonsAdditionalCount = Computed(@() AdditionalCannonsState.value.count),
-  CannonsAdditionalSeconds = Computed(@() AdditionalCannonsState.value.seconds),
-  CannonsAdditionalMode =  Computed(@() AdditionalCannonsState.value.mode),
-  CannonsAdditionalSelected = Computed(@() AdditionalCannonsState.value.selected),
+  //retro compatibility
+  MachineGuns,
+  IsMachineGunEmpty,
 
-  AgmCount = Computed(@() AgmState.value.count),
-  AgmSeconds = Computed(@() AgmState.value.seconds),
-  AgmTimeToHit = Computed(@() AgmState.value.timeToHit),
-  AgmTimeToWarning = Computed(@() AgmState.value.timeToWarning),
-  AgmActualCount = Computed(@() AgmState.value.actualCount),
-  AgmName = Computed(@() AgmState.value.name),
-  AgmSelected = Computed(@() AgmState.value.selected),
-
-  AamCount = Computed(@() AamState.value.count),
-  AamSeconds = Computed(@() AamState.value.seconds),
-  AamActualCount = Computed(@() AamState.value.actualCount),
-  AamName = Computed(@() AamState.value.name),
-  AamSelected = Computed(@() AamState.value.selected),
-
-  GuidedBombsCount = Computed(@() GuidedBombsState.value.count),
-  GuidedBombsSeconds = Computed(@() GuidedBombsState.value.seconds),
-  GuidedBombsActualCount = Computed(@() GuidedBombsState.value.actualCount),
-  GuidedBombsName = Computed(@() GuidedBombsState.value.name),
-  GuidedBombsSelected = Computed(@() GuidedBombsState.value.selected),
-
-  FlaresCount = Computed(@() FlaresState.value.count),
-  FlaresSeconds = Computed(@() FlaresState.value.seconds),
-  FlaresMode = Computed(@() FlaresState.value.mode),
-
-  ChaffsCount = Computed(@() ChaffsState.value.count),
-  ChaffsSeconds = Computed(@() ChaffsState.value.seconds),
-  ChaffsMode = Computed(@() ChaffsState.value.mode),
-
+  MachineGunsCount,
+  MachineGunsReloadTime,
   IsMachineGunsEmpty,
-  MachineGunsSelectedArray,
   MachineGunsMode,
-  MachineGunsCount = MachineGunState.map(@(c) Computed(@() c.value.count)),
-  MachineGunsReloadTime = MachineGunState.map(@(c) Computed(@() c.value.seconds)),
+  MachineGunsSelectedArray,
 
-  BombsCount = Computed(@() BombsState.value.count),
-  BombsSeconds = Computed(@() BombsState.value.seconds),
-  BombsMode = Computed(@() BombsState.value.mode),
-  BombsSelected = Computed(@() BombsState.value.selected),
-  BombsSalvo = Computed(@() BombsState.value.salvo),
-  BombsName = Computed(@() BombsState.value.name),
-  BombsActualCount = Computed(@() BombsState.value.actualCount),
-
-  RocketsCount = Computed(@() RocketsState.value.count),
-  RocketsSeconds = Computed(@() RocketsState.value.seconds),
-  RocketsMode = Computed(@() RocketsState.value.mode),
-  RocketsSelected = Computed(@() RocketsState.value.selected),
-  RocketsSalvo = Computed(@() RocketsState.value.salvo),
-  RocketsName = Computed(@() RocketsState.value.name),
-  RocketsActualCount = Computed(@() RocketsState.value.actualCount),
-
-  TorpedoesCount = Computed(@() TorpedoesState.value.count),
-  TorpedoesSeconds = Computed(@() TorpedoesState.value.seconds),
-  TorpedoesMode = Computed(@() TorpedoesState.value.mode),
-  TorpedoesSelected = Computed(@() TorpedoesState.value.selected),
-  TorpedoesSalvo = Computed(@() TorpedoesState.value.salvo),
-  TorpedoesName = Computed(@() TorpedoesState.value.name),
-  TorpedoesActualCount = Computed(@() TorpedoesState.value.actualCount),
+  CannonsAdditional,
+  Rockets, Agm, Aam, GuidedBombs, Bombs, Flares, Chaffs
 
   IsCanAdditionalEmpty,
   IsRktEmpty,
@@ -399,7 +407,6 @@ let helicopterState = {
   IsAamEmpty,
   IsGuidedBmbEmpty,
   IsBmbEmpty,
-  IsTrpEmpty,
   IsFlrEmpty,
   IsChaffsEmpty,
 
@@ -495,33 +502,23 @@ let helicopterState = {
   TurretSightLineWidthFactor,
 }
 
-::interop.updateIsCannonEmpty <- function(index, is_empty) {
-  if (is_empty != IsCannonEmpty.value[index])
-    IsCannonEmpty.mutate(@(v) v[index] = is_empty)
+::interop.updateCannons <- function(index, count, sec = -1) {
+  CannonCount[index](count)
+  CannonReloadTime[index](sec)
 }
 
-::interop.updateCannonsArray <- function(index, count, seconds, selected, _time, _endTime) {
-  CannonState[index]({count, seconds, selected})
+::interop.updateCannonsArray <- function(index, count, sec = -1, selected = false) {
+  CannonCount[index](count)
+  CannonReloadTime[index](sec)
 
   if (selected != CannonSelectedArray.value[index])
     CannonSelectedArray.mutate(@(v) v[index] = selected)
 }
 
-::interop.updateMachineGunsArray <- function(index, count, seconds, selected, _time, _endTime) {
-  MachineGunState[index]({count, seconds, selected})
-
-  if (selected != MachineGunsSelectedArray.value[index])
-    MachineGunsSelectedArray.mutate(@(v) v[index] = selected)
+::interop.updateIsCannonEmpty <- function(index, is_empty) {
+  if (is_empty != IsCannonEmpty.value[index])
+    IsCannonEmpty.mutate(@(v) v[index] = is_empty)
 }
-
-::interop.updateBombs <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
-  BombsState({count, seconds, mode, selected, salvo, name, actualCount})
-
-::interop.updateRockets <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
-  RocketsState({count, seconds, mode, selected, salvo, name, actualCount})
-
-::interop.updateTorpedoes <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
-  TorpedoesState({count, seconds, mode, selected, salvo, name, actualCount})
 
 ::interop.updateRwrPosSize <- @(x, y, w, h = null) RwrPosSize([x, y, w, h ?? w])
 
@@ -539,33 +536,101 @@ let helicopterState = {
   IlsPosSize[3] = h
 }
 
+//retro compatibility
+::interop.updateMachineGuns <- function(count, sec = -1, mode = 0, selected = false) {
+  MachineGuns.count.update(count)
+  MachineGuns.mode.update(mode)
+  MachineGuns.seconds.update(sec)
+  MachineGuns.selected.update(selected)
+}
+
+::interop.updateMachineGunsArray <- function(index, count, sec = -1, selected = false) {
+  MachineGunsCount[index](count)
+  MachineGunsReloadTime[index](sec)
+
+  if (selected != MachineGunsSelectedArray.value[index])
+    MachineGunsSelectedArray.mutate(@(v) v[index] = selected)
+}
+
 ::interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
   if (is_empty != IsMachineGunsEmpty.value[index])
     IsMachineGunsEmpty.mutate(@(v) v[index] = is_empty)
 }
 
-::interop.updateAdditionalCannons <- function(count, seconds, mode, selected) {
-  AdditionalCannonsState({count, seconds, mode, selected})
+::interop.updateAdditionalCannons <- function(count, sec = -1, mode = 0, selected = false) {
+  CannonsAdditional.count.update(count)
+  CannonsAdditional.seconds.update(sec)
+  CannonsAdditional.mode.update(mode)
+  CannonsAdditional.selected.update(selected)
 }
 
-::interop.updateAgm <- function(count, seconds, timeToHit, timeToWarning, selected, name, actualCount) {
-  AgmState({count, seconds, timeToHit, timeToWarning, selected, name, actualCount})
+::interop.updateRockets <- function(count, sec = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1) {
+  Rockets.count.update(count)
+  Rockets.mode.update(mode)
+  Rockets.seconds.update(sec)
+  Rockets.selected.update(selected)
+  Rockets.salvo.update(salvo)
+  Rockets.name.update(name)
+  Rockets.actualCount.update(actualCount)
 }
 
-::interop.updateAam <- function(count, seconds, selected, name, actualCount) {
-  AamState({count, seconds, selected, name, actualCount})
+::interop.updateAgm <- function(count, sec, timeToHit, timeToWarning, selected = false, name = "", actualCount = -1) {
+  Agm.count.update(count)
+  Agm.seconds.update(sec)
+  Agm.timeToHit.update(timeToHit)
+  Agm.timeToWarning.update(timeToWarning)
+  Agm.selected.update(selected)
+  Agm.name.update(name)
+  Agm.actualCount.update(actualCount)
 }
 
-::interop.updateGuidedBombs <- function(count, seconds,  mode, selected, name, actualCount) {
-  GuidedBombsState({count, seconds,  mode, selected, name, actualCount})
+::interop.updateAam <- function(count, sec = -1, selected = -1, name = "", actualCount = -1) {
+  Aam.count.update(count)
+  Aam.seconds.update(sec)
+  Aam.selected.update(selected)
+  Aam.name.update(name)
+  Aam.actualCount.update(actualCount)
 }
 
-::interop.updateFlares <- function(count, mode, seconds) {
-  FlaresState({count, mode, seconds})
+::interop.updateBombs <- function(count, sec = -1,  mode = 0, selected = false, salvo = 0, name = "", actualCount = -1) {
+  Bombs.count.update(count)
+  Bombs.mode.update(mode)
+  Bombs.seconds.update(sec)
+  Bombs.selected.update(selected)
+  Bombs.salvo.update(salvo)
+  Bombs.name.update(name)
+  Bombs.actualCount.update(actualCount)
 }
 
-::interop.updateChaffs <- function(count, mode, seconds) {
-  ChaffsState({count, mode, seconds})
+::interop.updateGuidedBombs <- function(count, sec = -1,  mode = 0, selected = false, name = "", actualCount = -1) {
+  GuidedBombs.count.update(count)
+  GuidedBombs.mode.update(mode)
+  GuidedBombs.seconds.update(sec)
+  GuidedBombs.selected.update(selected)
+  GuidedBombs.name.update(name)
+  GuidedBombs.actualCount.update(actualCount)
+}
+
+::interop.updateFlares <- function(count, mode = 0, sec = -1) {
+  Flares.count.update(count)
+  Flares.mode.update(mode)
+  Flares.seconds.update(sec)
+}
+
+::interop.updateChaffs <- function(count, mode = 0, sec = -1) {
+  Chaffs.count.update(count)
+  Chaffs.mode.update(mode)
+  Chaffs.seconds.update(sec)
+}
+
+for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
+  CannonCount.append(Watched(0))
+  CannonReloadTime.append(Watched(-1))
+}
+
+for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
+  MachineGunsCount.append(Watched(0))
+  MachineGunsReloadTime.append(Watched(-1))
 }
 
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {

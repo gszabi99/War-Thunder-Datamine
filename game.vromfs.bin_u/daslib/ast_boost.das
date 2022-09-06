@@ -10,31 +10,6 @@ require ast public
 require strings
 require daslib/strings_boost
 
-def clone ( var args : dasvector`das_string; var nargs:array<string> )
-    let tot = length(nargs)
-    args |> resize ( tot )
-    for i in range(tot)
-        args[i] := nargs[i]
-    delete nargs
-
-def clone ( var args : dasvector`smart_ptr`TypeDecl; var nargs:array<TypeDeclPtr> )
-    args |> clear
-    for narg in nargs
-        args |> emplace(narg)
-    delete nargs
-
-def clone ( var args : dasvector`smart_ptr`Variable; var nargs:array<VariablePtr> )
-    args |> clear
-    for narg in nargs
-        args |> emplace(narg)
-    delete nargs
-
-def clone ( var args : dasvector`smart_ptr`Expression; var nargs:array<ExpressionPtr> )
-    args |> clear
-    for narg in nargs
-        args |> emplace(narg)
-    delete nargs
-
 def isVectorType ( typ:Type )
     return (
         typ==Type tInt2   || typ==Type tInt3   || typ==Type tInt4   ||
@@ -54,9 +29,6 @@ def describe(ann:AnnotationDeclaration)
 
 def describe(list:AnnotationList)
     return join([{ for arg in list; describe(*arg) }], ",")
-
-def describe(vvar:VariablePtr)
-    return "{vvar.name}:{describe(vvar._type)}"
 
 def describe_bitfield(bf;merger:string = "")
     static_if typeinfo(is_bitfield bf)
@@ -592,23 +564,11 @@ def private walk_and_convert ( data : uint8?; info:TypeDeclPtr; at:LineInfo ) : 
     else
         return walk_and_convert_basic(data,info,at)
 
-def convert_to_expression ( var value : auto& = const; at:LineInfo )
+def convert_to_expression ( var value : auto&; at:LineInfo )
 	let info <- typeinfo(ast_typedecl value)
     unsafe
 	    let pval = addr(value)
 	    return walk_and_convert(reinterpret<uint8?> pval, info, at)
-
-def convert_to_expression ( value : auto = const; at:LineInfo )
-	let info <- typeinfo(ast_typedecl value)
-    unsafe
-	    let pval = addr(value)
-	    return walk_and_convert(reinterpret<uint8?> pval, info, at)
-
-def convert_to_expression ( var value : auto = const )
-    return convert_to_expression(value,[[LineInfo]])
-
-def convert_to_expression ( value : auto = const )
-    return convert_to_expression(value,[[LineInfo]])
 
 def find_annotation ( mod_name,ann_name:string ) : Annotation const?
     var mod = find_compiling_module(mod_name)
@@ -621,7 +581,7 @@ def find_annotation ( mod_name,ann_name:string ) : Annotation const?
                 ann = addr(value)
     return ann
 
-def append_annotation ( mod_name,ann_name:string; args:array< tuple<argname:string;argvalue:RttiValue> > )
+def append_annotation ( var func:FunctionPtr; mod_name,ann_name:string; args:array< tuple<argname:string;argvalue:RttiValue> > )
     var ann = find_annotation(mod_name, ann_name)
     assert(ann!=null)
     var decl <- new [[AnnotationDeclaration()]]
@@ -640,20 +600,7 @@ def append_annotation ( mod_name,ann_name:string; args:array< tuple<argname:stri
             decl.arguments |> add_annotation_argument(argName, arg as tString)
         else
             panic("Invalid rtti value")
-    return <- decl
-
-def append_annotation ( var func:FunctionPtr; mod_name,ann_name:string; args:array< tuple<argname:string;argvalue:RttiValue> > )
-    var ann = find_annotation(mod_name, ann_name)
-    assert(ann!=null)
-    var decl <- append_annotation(mod_name, ann_name, args)
     add_function_annotation(func, decl)
-    decl := null
-
-def append_annotation ( var blk:smart_ptr<ExprBlock>; mod_name,ann_name:string; args:array< tuple<argname:string;argvalue:RttiValue> > )
-    var ann = find_annotation(mod_name, ann_name)
-    assert(ann!=null)
-    var decl <- append_annotation(mod_name, ann_name, args)
-    add_block_annotation(blk, decl)
     decl := null
 
 def add_annotation_argument ( var arguments:AnnotationArgumentList; argName:string; val:bool )
@@ -691,12 +638,6 @@ def get_for_source_index(expr:smart_ptr<ExprFor>; source:ExpressionPtr)
         if s==source
             return t
     return -1
-
-def visit_expression ( var expr:ExpressionPtr&; var adapter:smart_ptr<VisitorAdapter> )
-    var newExpr <- expr |> visit(adapter)
-    if newExpr != expr
-        expr := null
-    expr <- newExpr
 
 [macro_function]
 def make_static_assert_false ( text : string; at:LineInfo )

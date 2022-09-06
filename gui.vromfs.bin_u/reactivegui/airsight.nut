@@ -4,7 +4,7 @@ let {
   GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode,
   TurretsDirectionX, TurretsDirectionY, TurretsOverheat, TurretsReloading, TurretsVisible,
   FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY, FixedGunSightMode, FixedGunOverheat,
-  IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning,
+  IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, Agm,
   RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
   NoLosToATGM, AlertColorHigh, HudColor, CurrentTime,
   BombReleaseVisible, BombReleaseDirX, BombReleaseDirY, BombReleaseOpacity,
@@ -324,22 +324,22 @@ let function agmTrackZoneComponent(colorWatch, isBackground) {
   }
 }
 
-let function laserDesignatorComponent(colorWatch, posX, posY, isBackground) {
+let function laserDesignatorComponent(colorWatch, isBackground) {
   let function laserDesignator(width, height, isBackground) {
-    let color = (!isBackground && IsAgmEmpty.value) ? AlertColorHigh.value
-      : isBackground ? backgroundColor
-      : colorWatch.value
+    let lhl = 5
+    let lvl = 7
     return @() styleLineForeground.__merge({
       watch = [IsAgmEmpty, colorWatch, AlertColorHigh]
       rendObj = ROBJ_VECTOR_CANVAS
       size = [width, height]
-      color = color
-      fillColor = color
+      color = (!isBackground && IsAgmEmpty.value) ? AlertColorHigh.value
+        : isBackground ? backgroundColor
+        : colorWatch.value
       commands = [
-        [ VECTOR_ELLIPSE, 50, 50,
-          5.0 / width * 100,
-          5.0 / height * 100
-        ]
+        [VECTOR_LINE, 50 - lhl, 50 - lvl, 50 + lhl, 50 - lvl],
+        [VECTOR_LINE, 50 - lhl, 50 + lvl, 50 + lhl, 50 + lvl],
+        [VECTOR_LINE, 50 - lhl, 50 - lvl, 50 - lhl, 50 + lvl],
+        [VECTOR_LINE, 50 + lhl, 50 - lvl, 50 + lhl, 50 + lvl],
       ]
     })
   }
@@ -347,10 +347,9 @@ let function laserDesignatorComponent(colorWatch, posX, posY, isBackground) {
   let width = hdpx(150)
   let height = hdpx(100)
   return @() {
-    pos = [posX - 0.5 * width, posY - 0.5 * height]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
     watch = IsLaserDesignatorEnabled
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
     opacity = IsLaserDesignatorEnabled.value ? 100 : 0
     size = SIZE_TO_CONTENT
     children = laserDesignator(width, height, isBackground)
@@ -375,8 +374,8 @@ let function laserDesignatorStatusComponent(colorWatch, posX, posY, _isBackgroun
     pos = [posX, posY]
     halign = ALIGN_CENTER
     size = [0, 0]
-    watch = [IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning]
-    children = IsLaserDesignatorEnabled.value || (AgmTimeToHit.value > 0 && AgmTimeToWarning.value <= 0) ? laserDesignatorStatus : null
+    watch = [IsLaserDesignatorEnabled, Agm.timeToHit, Agm.timeToWarning]
+    children = IsLaserDesignatorEnabled.value || (Agm.timeToHit.value > 0 && Agm.timeToWarning.value <= 0) ? laserDesignatorStatus : null
   }
   return resCompoment
 }

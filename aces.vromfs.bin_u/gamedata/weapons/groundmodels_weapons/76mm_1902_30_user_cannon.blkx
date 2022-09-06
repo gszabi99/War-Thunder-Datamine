@@ -41,7 +41,7 @@
     "explosiveMass": 0.15,
     "caliber": 0.0762,
     "speed": 662.0,
-    "Cx": 0.35979,
+    "Cx": 0.4,
     "maxDistance": 10000.0,
     "normalizationPreset": "apbc",
     "ricochetPreset": "apbc",
@@ -218,7 +218,6 @@
       "explosiveMass": 0.621,
       "caliber": 0.0762,
       "speed": 680.0,
-      "Cx": 0.43355,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -287,9 +286,6 @@
           0.99
         ]
       },
-      "pressureDamage": {
-        "damageType": "pressure"
-      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -307,6 +303,9 @@
             "destruction": 1.0
           }
         }
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "visual": {
         "tracer": "noColor"
@@ -478,12 +477,11 @@
   "76mm_ussr_Shrapnel": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 6.44,
+      "mass": 6.2,
       "explosiveType": "tnt",
       "explosiveMass": 0.085,
       "caliber": 0.0762,
-      "speed": 618.0,
-      "Cx": 0.51805,
+      "speed": 680.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat",
@@ -503,17 +501,34 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/shrapnel.ivf",
       "bulletName": "76mm_sh_354t",
+      "hitPowerMult": 100.0,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
-      "fuseDelayDist": 1.2,
-      "explodeTreshold": 14.0,
-      "dynamicKv": true,
+      "armorFragmentsDamage": true,
+      "armorFragmentsDamageRadius": 2.5,
+      "armorFragmentsDamageAngle": 20.0,
+      "armorFragmentsAmount": 40,
+      "armorFragmentsArmorPower": 4.0,
+      "armorFragmentsHit": 10.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
       ],
+      "explodeTreshold": 8.0,
+      "explodeHitPower": 45.0,
+      "explodeArmorPower": 5.0,
+      "explodeRadius": [
+        0.3,
+        0.9
+      ],
+      "fuseDelayDist": 0.5,
+      "shutterDamage": true,
+      "shutterDamageRadius": 10.5,
+      "shutterAmount": 100,
+      "shutterArmorPower": 6.0,
+      "shutterHit": 13.0,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -550,103 +565,47 @@
           10000.0
         ]
       },
-      "pressureDamage": {
-        "damageType": "pressure"
-      },
-      "damage": {
-        "kinetic": {
-          "damageType": "generic",
-          "demarrePenetrationK": 0.37,
-          "demarreSpeedPow": 1.43,
-          "demarreMassPow": 0.71,
-          "demarreCaliberPow": 1.07
-        },
-        "shatter": {
-          "useRealShatters": true,
-          "countPortion": 0.25,
-          "segment": [
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                10.0
-              ],
-              "countPortion": 0.09
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                11.0,
-                39.0
-              ],
-              "countPortion": 0.1
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.5,
-              "angles": [
-                40.0,
-                70.0
-              ],
-              "countPortion": 0.11
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                71.0,
-                180.0
-              ],
-              "countPortion": 0.2
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                181.0,
-                289.0
-              ],
-              "countPortion": 0.2
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.5,
-              "angles": [
-                290.0,
-                320.0
-              ],
-              "countPortion": 0.11
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                321.0,
-                349.0
-              ],
-              "countPortion": 0.1
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                350.0,
-                359.0
-              ],
-              "countPortion": 0.09
-            }
-          ]
-        }
+      "armorpower": {
+        "ArmorPower0m": [
+          37.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          35.0,
+          100.0
+        ],
+        "ArmorPower500m": [
+          29.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          25.0,
+          1000.0
+        ],
+        "ArmorPower1500m": [
+          20.0,
+          1500.0
+        ],
+        "ArmorPower2000m": [
+          17.0,
+          2000.0
+        ],
+        "ArmorPower2500m": [
+          13.0,
+          2500.0
+        ],
+        "ArmorPower3000m": [
+          2.0,
+          3000.0
+        ],
+        "ArmorPower5000m": [
+          2.0,
+          5000.0
+        ],
+        "ArmorPower10000m": [
+          0.0,
+          10000.0
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -824,10 +783,10 @@
   "76mm_ussr_AP_1942": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 6.5,
+      "mass": 6.78,
       "caliber": 0.0762,
       "speed": 655.0,
-      "Cx": 0.44365,
+      "Cx": 0.4,
       "maxDistance": 10000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",

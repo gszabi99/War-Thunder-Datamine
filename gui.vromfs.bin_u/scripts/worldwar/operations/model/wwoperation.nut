@@ -349,6 +349,5 @@ enum WW_OPERATION_PRIORITY //bit enum
     return res
   }
 
-  getCluster = @() data?.cluster ?? ""
   setFinishedStatus = @(isFinish) isFinished = isFinish
 }
