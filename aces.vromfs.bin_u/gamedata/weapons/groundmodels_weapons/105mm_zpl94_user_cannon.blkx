@@ -42,7 +42,6 @@
     "caliber": 0.105,
     "speed": 1200.0,
     "maxDistance": 7000.0,
-    "Cx": 0.52416,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
@@ -136,12 +135,6 @@
         0.0,
         7000.0
       ]
-    },
-    "cumulativeDamage": {
-      "armorPower": 400.0,
-      "distance": 4.5,
-      "damage": 250.0,
-      "onHitChanceMultFire": 35.0
     },
     "armorpower": {
       "ArmorPower0m": [
@@ -251,6 +244,12 @@
     },
     "shatterDamage": {
       "breachConeAngle": 45.0
+    },
+    "cumulativeDamage": {
+      "armorPower": 400.0,
+      "distance": 4.5,
+      "damage": 250.0,
+      "onHitChanceMultFire": 35.0
     },
     "visual": {
       "range_percent_of_ammo": [
@@ -428,13 +427,12 @@
   "105mm_TYPE83_HESH": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 11.2,
+      "mass": 15.0,
       "explosiveType": "comp_a",
-      "explosiveMass": 2.99371,
+      "explosiveMass": 2.99,
       "caliber": 0.105,
       "speed": 750.0,
       "maxDistance": 10000.0,
-      "Cx": 0.69212,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",
       "secondaryShattersPreset": "ap",
@@ -802,7 +800,7 @@
   "105mm_china_APDS_FS": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 4.2,
+      "mass": 3.79,
       "caliber": 0.105,
       "damageCaliber": 0.033,
       "ballisticCaliber": 0.033,
@@ -811,7 +809,7 @@
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
-      "bulletType": "apds_fs_tungsten_l10_l15_tank",
+      "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
@@ -820,7 +818,7 @@
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "105mm_TYPE83_APDS",
-      "Cx": 0.26763,
+      "Cx": 0.24,
       "relativeVelArmorShift": [
         200.0,
         1000.0

@@ -126,15 +126,5 @@
   }
   <</discountText>>
 
-  <<#tooltipObjId>>
-  title:t='$tooltipObj'
-  tooltipObj {
-    tooltipId:t='<<tooltipObjId>>'
-    display:t='hide'
-    on_tooltip_open:t='onGenericTooltipOpen'
-    on_tooltip_close:t='onTooltipObjClose'
-  }
-  <</tooltipObjId>>
-
   ButtonImg { btnName:t='A' }
 }

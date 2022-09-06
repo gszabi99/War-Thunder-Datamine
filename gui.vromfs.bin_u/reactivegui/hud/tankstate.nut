@@ -59,12 +59,6 @@ let tankState = {
   MachineGunCartridgeSize
   MachineGunStartLoadAtTime
   MachineGunNextShotAtTime
-
-  //
-
-
-
-
 }
 
 interopGen({

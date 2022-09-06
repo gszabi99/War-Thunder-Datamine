@@ -35,7 +35,6 @@
   "fightAiBehaviour": "assault",
   "laserDesignator": true,
   "autopilotImpl": "FBW",
-  "hasMissileCommandLine": false,
   "isNuclearBomber": true,
   "customClassIco": "!#ui/gameuiskin#jaguar_a_ico.svg",
   "customImage": "!#ui/unitskin#jaguar_a",
@@ -566,18 +565,29 @@
         "name": "fuse1_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
+            "damage": 9.0,
+            "wing_r_dm": 0.1,
+            "wing_l_dm": 0.1
           },
           {
-            "damage": 30.0,
+            "damage": 10.0,
             "wing_r_dm": 0.3,
             "wing_l_dm": 0.3
           },
           {
-            "damage": 50.0,
+            "damage": 20.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 30.0,
+            "wing_r_dm": 0.7,
+            "wing_l_dm": 0.7
+          },
+          {
+            "damage": 50.0,
+            "wing_r_dm": 0.9,
+            "wing_l_dm": 0.9
           }
         ],
         "onKill": [
@@ -622,16 +632,24 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
+            "damage": 10.0,
+            "tail_dm": 0.2
           },
           {
-            "damage": 45.0,
+            "damage": 20.0,
             "tail_dm": 0.4
           },
           {
-            "damage": 40.0,
+            "damage": 30.0,
             "tail_dm": 0.6
+          },
+          {
+            "damage": 45.0,
+            "tail_dm": 0.8
+          },
+          {
+            "damage": 40.0,
+            "tail_dm": 0.9
           },
           {
             "damage": 50.0,
@@ -800,28 +818,28 @@
         "name": "spar1_l_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar1_r_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar2_l_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
         "name": "spar2_r_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 3.0
+          "cut": 4.0
         }
       },
       {
@@ -832,10 +850,6 @@
       },
       {
         "name": "tail_dm",
-        "onHit": {
-          "flame": 0.2,
-          "smoke": 0.2
-        },
         "onKill": [
           {
             "tailcontrol_dm": 1.0,
@@ -870,7 +884,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -882,13 +895,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -913,7 +924,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -925,13 +935,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -956,7 +964,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -968,13 +975,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -999,7 +1004,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1011,13 +1015,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1042,7 +1044,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1054,13 +1055,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1085,7 +1084,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1097,13 +1095,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 15.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1114,14 +1110,8 @@
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1130,8 +1120,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1140,8 +1128,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1150,8 +1136,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1160,8 +1144,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 0.8,
-            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1172,8 +1154,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 1.0,
-            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1183,8 +1163,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1194,8 +1172,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1205,8 +1181,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1216,8 +1190,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1230,14 +1202,8 @@
         "defaultEffectPart": "spar1_r_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1246,8 +1212,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1256,8 +1220,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1266,8 +1228,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1276,8 +1236,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 0.8,
-            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1288,8 +1246,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 1.0,
-            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1299,8 +1255,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1310,8 +1264,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1321,8 +1273,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1332,8 +1282,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1346,14 +1294,8 @@
         "defaultEffectPart": "spar2_l_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1362,8 +1304,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1372,8 +1312,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1382,8 +1320,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1392,8 +1328,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 0.8,
-            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1404,8 +1338,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 1.0,
-            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1415,8 +1347,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1426,8 +1356,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1437,8 +1365,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1448,8 +1374,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1462,14 +1386,8 @@
         "defaultEffectPart": "spar2_r_dm",
         "onHit": [
           {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1478,8 +1396,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1488,8 +1404,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 0.4,
-            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1498,8 +1412,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1508,8 +1420,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 0.8,
-            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1520,8 +1430,6 @@
           {
             "damage": 10.0,
             "cut": 0.0,
-            "smoke": 1.0,
-            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1531,8 +1439,6 @@
           {
             "damage": 20.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1542,8 +1448,6 @@
           {
             "damage": 30.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1553,8 +1457,6 @@
           {
             "damage": 50.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1564,8 +1466,6 @@
           {
             "damage": 70.0,
             "cut": 0.0,
-            "smoke": 2.0,
-            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1574,126 +1474,10 @@
         ]
       },
       {
-        "name": "wing_l_dm",
-        "onHit": [
-          {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
-            "damage": 10.0,
-            "smoke": 0.2,
-            "flame": 0.3
-          },
-          {
-            "damage": 20.0,
-            "smoke": 0.3,
-            "flame": 0.4
-          },
-          {
-            "damage": 30.0,
-            "smoke": 0.4,
-            "flame": 0.5
-          },
-          {
-            "damage": 50.0,
-            "smoke": 0.5,
-            "flame": 0.6
-          },
-          {
-            "damage": 70.0,
-            "smoke": 0.8,
-            "flame": 0.8
-          }
-        ],
-        "onKill": [
-          {
-            "damage": 10.0,
-            "smoke": 0.2,
-            "flame": 0.2
-          },
-          {
-            "damage": 20.0,
-            "smoke": 0.2,
-            "flame": 0.2
-          },
-          {
-            "damage": 30.0,
-            "smoke": 0.5,
-            "flame": 0.6
-          },
-          {
-            "damage": 50.0,
-            "smoke": 1.0,
-            "flame": 1.1
-          },
-          {
-            "damage": 70.0,
-            "smoke": 1.0,
-            "flame": 1.1
-          }
-        ]
+        "name": "wing_l_dm"
       },
       {
-        "name": "wing_r_dm",
-        "onHit": [
-          {
-            "smoke": 0.1,
-            "flame": 0.2
-          },
-          {
-            "damage": 10.0,
-            "smoke": 0.2,
-            "flame": 0.3
-          },
-          {
-            "damage": 20.0,
-            "smoke": 0.3,
-            "flame": 0.4
-          },
-          {
-            "damage": 30.0,
-            "smoke": 0.4,
-            "flame": 0.5
-          },
-          {
-            "damage": 50.0,
-            "smoke": 0.5,
-            "flame": 0.6
-          },
-          {
-            "damage": 70.0,
-            "smoke": 0.8,
-            "flame": 0.8
-          }
-        ],
-        "onKill": [
-          {
-            "damage": 10.0,
-            "smoke": 0.2,
-            "flame": 0.2
-          },
-          {
-            "damage": 20.0,
-            "smoke": 0.2,
-            "flame": 0.2
-          },
-          {
-            "damage": 30.0,
-            "smoke": 0.5,
-            "flame": 0.6
-          },
-          {
-            "damage": 50.0,
-            "smoke": 1.0,
-            "flame": 1.1
-          },
-          {
-            "damage": 70.0,
-            "smoke": 1.0,
-            "flame": 1.1
-          }
-        ]
+        "name": "wing_r_dm"
       },
       {
         "name": "wingcontrol_l_dm"
@@ -2154,6 +1938,68 @@
       "noiseFactor": 0.2
     }
   },
+  "commonWeapons": {
+    "hideNodes": {
+      "node": [
+        "fr_phimat_container",
+        "fr_phimat_container_cap",
+        "alkan_ll_5020_l",
+        "alkan_ll_5020_r"
+      ]
+    },
+    "Weapon": [
+      {
+        "dummy": true,
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "optic1_gun",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 200.0,
+        "speedPitch": 200.0,
+        "parkInDeadzone": true,
+        "aimForOperatedShell": true,
+        "turret": {
+          "head": "optic1_turret",
+          "gun": "optic1_gun",
+          "mainTurret": true
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -90.0,
+            90.0
+          ]
+        }
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonDEFA553.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "dm": "cannon1_dm",
+        "bullets": 150,
+        "light": false,
+        "spread": 1.2,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonDEFA553.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "cannon2_dm",
+        "bullets": 150,
+        "light": false,
+        "spread": 1.2,
+        "traceOffset": 1
+      }
+    ]
+  },
   "gunnerOpticFps": {
     "Target": {
       "pos": [
@@ -2297,6 +2143,187 @@
     "maxSpeed": 267.22,
     "turnTime": 23.0
   },
+  "modifications": {
+    "cd_98": {
+      "prevModification": "hydravlic_power",
+      "tier": 3
+    },
+    "hp_105_jet": {
+      "prevModification": "cd_98",
+      "tier": 4
+    },
+    "new_cover": {},
+    "f_4c_CdMin_Fuse": {
+      "tier": 1
+    },
+    "structure_str": {
+      "tier": 2
+    },
+    "f_4c_g_suit": {
+      "tier": 3
+    },
+    "new_compressor_jet": {
+      "tier": 1
+    },
+    "hydravlic_power": {
+      "prevModification": "new_compressor_jet",
+      "tier": 2,
+      "effects": {
+        "aileronBooster": 0.9,
+        "elevatorBooster": 0.9
+      }
+    },
+    "aden_air_targets": {},
+    "aden_ground_targets": {},
+    "aden_stealth": {},
+    "aden_belt_pack": {
+      "tier": 1
+    },
+    "aden_new_gun": {
+      "reqModification": "aden_belt_pack",
+      "tier": 3
+    },
+    "countermeasures_launcher_chaff_only": {},
+    "countermeasures_launcher_flare_only": {},
+    "countermeasures_launcher_chaff_priority": {},
+    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "countermeasures",
+      "tier": 1,
+      "effects": {
+        "commonWeapons": {
+          "hideNodes": {
+            "node": [
+              "fr_phimat_container",
+              "fr_phimat_container_cap",
+              "fuse_2"
+            ]
+          },
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 126,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 126,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
+      }
+    },
+    "fr_250kg_type_25c": {
+      "prevModification": "countermeasures_belt_pack",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "fr_400kg_type_21b": {
+      "reqModification": "fr_250kg_type_25c",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "fr_jl_100r": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "fr_lr_f1": {
+      "tier": 2,
+      "modClass": "weapon",
+      "reqModification": "fr_jl_100r"
+    },
+    "fr_lr_100_4": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fr_lr_f1"
+    },
+    "fr_matra_r_550_magic_1": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "fr_lr_100_4"
+    },
+    "fr_atlis2": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "fr_bgl400": {
+      "reqModification": "fr_atlis2",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "fr_bgl1000": {
+      "reqModification": "fr_bgl400",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "fr_as_30l": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "fr_bgl1000"
+    }
+  },
   "parachutes": {
     "emitterRange": [
       1,
@@ -2365,40 +2392,6 @@
       -5.96479,
       0.160974,
       -1.32634E-07
-    ]
-  },
-  "commonWeapons": {
-    "hideNodes": {
-      "node": [
-        "fr_phimat_container",
-        "fr_phimat_container_cap",
-        "alkan_ll_5020_l",
-        "alkan_ll_5020_r"
-      ]
-    },
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA553.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA553.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      }
     ]
   },
   "weapon_presets": {

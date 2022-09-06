@@ -11,7 +11,6 @@ require daslib/rtti
 require daslib/ast
 require daslib/ast_boost
 require daslib/templates
-require daslib/macro_boost
 
 [tag_function(new_job_tag)]
 def new_job ( var l : lambda )
@@ -37,11 +36,17 @@ class private NewJobMacro : AstFunctionAnnotation
     //! the call is replaced with `new_job_invoke` and `new_thread_invoke` accordingly.
     //! a cloning infastructure is generated for the lambda, which is invoked in the new context.
     def override transform ( var call : smart_ptr<ExprCallFunc>; var errors : das_string ) : ExpressionPtr
-        macro_verify(call.arguments[0] is ExprAscend,compiling_program(),call.at,"expecting lambda declaration, ExprAscend")
+        if !call.arguments[0] is ExprAscend
+            compiling_program() |>macro_error(call.at,"expecting lambda declaration, ExprAscend")
+            return [[ExpressionPtr]]
         var asc = call.arguments[0] as ExprAscend
-        macro_verify(asc.subexpr is ExprMakeStruct,compiling_program(),call.at,"expecting lambda declaration, ExprMakeStruct")
+        if !asc.subexpr is ExprMakeStruct
+            compiling_program() |>macro_error(call.at,"expecting lambda declaration, ExprMakeStruct")
+            return [[ExpressionPtr]]
         var mks = asc.subexpr as ExprMakeStruct
-        macro_verify(!(mks._type==null || mks._type.baseType!=Type tStructure),compiling_program(),call.at,"expecting lambda declaration, not a structure")
+        if mks._type==null || mks._type.baseType!=Type tStructure
+            compiling_program() |>macro_error(call.at,"expecting lambda declaration, not a structure")
+            return [[ExpressionPtr]]
         // clone structure type. make fields non-constant, so that they can be cloned
         var stype <- clone_structure(mks._type.structType)
         stype.name := "{stype.name}_new_job_clone"
@@ -105,22 +110,18 @@ def each ( var channel:Channel?; tinfo : auto(TT) )
             return false
 
 def public capture_jobque_channel ( ch:Channel? ) : Channel?
-    //! this function is used to capture a channel that is used by the jobque.
     ch |> add_ref
     return ch
 
-def public capture_jobque_job_status ( js:JobStatus? ) : JobStatus?
-    //! this function is used to capture a job status that is used by the jobque.
+def public capture_jobque_job_statuc ( js:JobStatus? ) : JobStatus?
     js |> add_ref
     return js
 
 def public release_capture_jobque_channel ( ch:Channel? )
-    //! this function is used to release a channel that is used by the jobque.
     if ch != null
         panic("Channel has not been released. missing channel|>release or channel|>notify_and_release")
 
 def public release_capture_jobque_job_status ( js:JobStatus? )
-    //! this function is used to release a job status that is used by the jobque.
     if js != null
         panic("JobStatus has not been released. missing status|>release or status|>notify_and_release")
 
@@ -139,22 +140,18 @@ def private isPtrToJQ ( typ:TypeDeclPtr; jqt:string ) : bool
     return true
 
 [capture_macro(name=channel_and_status_capture_macro)]
-class private ChannelAndStatusCapture : AstCaptureMacro
-    //! This macro implements capturing of the `jobque::Channel` and `jobque::JobStatus` types.
-    //! When captured reference counts are increased. When lambda is destroyed, reference counts are decreased.
+class ChannelAndStatusCapture : AstCaptureMacro
     def override captureExpression ( prog:Program?; mod:Module?; expr:ExpressionPtr; typ:TypeDeclPtr ) : ExpressionPtr
-        //! Implementation details for the capture macro.
         if typ |> isPtrToJQ("Channel")
             var pCall <- new [[ExprCall() at=expr.at, name:="jobque_boost::capture_jobque_channel"]]
             pCall.arguments |> emplace_new <| clone_expression(expr)
             return pCall
         elif typ |> isPtrToJQ("JobStatus")
-            var pCall <- new [[ExprCall() at=expr.at, name:="jobque_boost::capture_jobque_job_status"]]
+            var pCall <- new [[ExprCall() at=expr.at, name:="jobque_boost::capture_jobque_job_statuc"]]
             pCall.arguments |> emplace_new <| clone_expression(expr)
             return pCall
         return [[ExpressionPtr]]
     def override captureFunction ( prog:Program?; mod:Module?; var lcs:Structure?; var fun:FunctionPtr ) : void
-        //! Implementation details for the capture macro.
         if fun.flags._generator // generator gets finally section called every single time. nothing we can do
             return
         for fld in lcs.fields

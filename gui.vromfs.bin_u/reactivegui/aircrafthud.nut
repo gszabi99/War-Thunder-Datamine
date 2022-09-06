@@ -1,6 +1,3 @@
-let planeMfd = require("planeMfd.nut")
-let planeIls = require("planeIls.nut")
-
 let { bw, bh, rw, rh } = require("style/screenState.nut")
 let opticAtgmSight = require("opticAtgmSight.nut")
 let laserAtgmSight = require("laserAtgmSight.nut")
@@ -14,7 +11,6 @@ let {
   isCanonSightActivated, isTurretSightActivated, isParamTableActivated } = require("airState.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
-let gbuAim = require("gbuAim.nut")
 let {paramsTable, compassElem, lockSight}  = require("airHudElems.nut")
 
 let {
@@ -53,7 +49,6 @@ let function aircraftMainHud(isBackground) {
             isRocketSightActivated.value ? aircraftRocketSight(sh(10.0), sh(10.0)) : null
             isAAMSightActivated.value ? aamAim(HudColor, AlertColorHigh, isBackground) : null
             agmAim(HudColor, isBackground)
-            gbuAim(HudColor, isBackground)
             isTurretSightActivated.value ? aircraftTurretsComponent(HudColor) : null
             isCanonSightActivated.value ? fixedGunsDirection(HudColor, isBackground) : null
             isParamTableActivated.value ? aircraftParamsTable(isBackground) : null
@@ -61,7 +56,7 @@ let function aircraftMainHud(isBackground) {
           ]
             : IsBomberViewHudVisible.value
         ? [
-            aircraftParamsTable(isBackground, false)
+            aircraftParamsTable(isBackground, false, true)
           ]
             : null
   }
@@ -95,7 +90,6 @@ let weaponHud = @(isBackground)
       ? [
         aamAim(HudColor, AlertColorHigh, isBackground)
         agmAim(HudColor, isBackground)
-        gbuAim(HudColor, isBackground)
       ]
       : null
   }
@@ -161,16 +155,6 @@ let function aircraftRoot() {
     valign = ALIGN_TOP
     size = [sw(100), sh(100)]
     children
-
-    function onAttach() {
-      ::gui_scene.addPanel(0, planeMfd)
-      ::gui_scene.addPanel(1, planeIls)
-    }
-    function onDetach() {
-      ::gui_scene.removePanel(0)
-      ::gui_scene.removePanel(1)
-    }
-
   }
 }
 

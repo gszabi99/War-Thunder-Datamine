@@ -8,7 +8,6 @@ let agmAimState = {
   TrackerAngle = Watched(0.0)
 
   GuidanceLockState = Watched(-1)
-  PointIsTarget = Watched(false)
 }
 
 interopGen({

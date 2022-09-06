@@ -2,6 +2,7 @@ from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
 from "ecs" import *
 
+let {logerr} = require("dagor.debug")
 let { Point2, Point3, Point4 } = require("dagor.math")
 
 let {endswith} = require("string")
@@ -19,8 +20,8 @@ let deselectComp = function() {
 
 let entity_editor = require("entity_editor")
 let textButton = require("components/textButton.nut")
-let textInput = require("%daeditor/components/textInput.nut")
-let modalWindows = require("%daeditor/components/modalWindowsMngr.nut")({halign = ALIGN_CENTER valign = ALIGN_CENTER rendObj=ROBJ_WORLD_BLUR})
+let textInput = require("%darg/components/textInput.nut")
+let modalWindows = require("%darg/components/modalWindowsMngr.nut")({halign = ALIGN_CENTER valign = ALIGN_CENTER rendObj=ROBJ_WORLD_BLUR})
 let {addModalWindow, removeModalWindow, modalWindowsComponent} = modalWindows
 let {showMsgbox} = require("editor_msgbox.nut")
 let infoBox = @(text) showMsgbox({text})
@@ -28,14 +29,14 @@ let infoBox = @(text) showMsgbox({text})
 let cursors = require("components/cursors.nut")
 let {mkTemplateTooltip, mkCompMetaInfoText} = require("components/templateHelp.nut")
 let {getCompSqTypePropEdit, getCompNamePropEdit} = require("propPanelControls.nut")
-let scrollbar = require("%daeditor/components/scrollbar.nut")
+let scrollbar = require("%darg/components/scrollbar.nut")
 
 let fieldReadOnly = require("components/apFieldReadOnly.nut")
 let compNameFilter = require("components/apNameFilter.nut")(filterString, selectedCompName)
 
 let {riSelectShown, riSelectWindow} = require("riSelect.nut")
 
-let combobox = require("%daeditor/components/combobox.nut")
+let combobox = require("%darg/components/combobox.nut")
 
 let windowState = Watched({
   pos = [-fsh(1.1), fsh(5)]
@@ -80,9 +81,7 @@ let function makeBgToggle(initial=true) {
 
 
 let getModComps = function() {
-  if (selectedEntity.value == INVALID_ENTITY_ID)
-    return {}
-  let comps = entity_editor?.get_saved_components(selectedEntity.value)
+  let comps = entity_editor?.get_saved_components(selectedEntity.value ?? INVALID_ENTITY_ID)
   if (comps == null) // non-scene entity
     return null
   let compsObj = {}
@@ -140,8 +139,8 @@ let modifiedNoMetaPrefix    = "• "
 let transformPrefix         = "¤ "
 let modifiedSuffix          = ""
 
-let mkCompNameText = function(comp_name, comp_name_text, metaInfo, modified, group=null) {
-  let prefix = (comp_name=="transform") ? transformPrefix :
+let mkCompNameText = function(comp_name_text, metaInfo, modified, group=null) {
+  let prefix = (comp_name_text=="transform") ? transformPrefix :
                modified ? (metaInfo ? modifiedComponentPrefix : modifiedNoMetaPrefix)
                : (metaInfo ? metaComponentPrefix : "")
   let suffix = modified ? modifiedSuffix : ""
@@ -233,7 +232,7 @@ let function panelCompRow(params={}) {
           size = [flex(), gridHeight]
           flow = FLOW_HORIZONTAL
           children = [
-            mkCompNameText(comp_name, comp_name_text, metaInfo, modified, group)
+            mkCompNameText(comp_name_text, metaInfo, modified, group)
             fieldEditCtor(params.__merge({eid, obj, comp_name, rawComponentName}))
           ]
         }
@@ -244,6 +243,12 @@ let function panelCompRow(params={}) {
 
 let removeSelectedByEditorTemplate = @(tname) tname.replace("+daeditor_selected+","+").replace("+daeditor_selected","").replace("daeditor_selected+","")
 
+let function updateEntityTemplateNameCallback(recreatedEid) {
+  local tname = removeSelectedByEditorTemplate(g_entity_mgr.getEntityTemplateName(recreatedEid))
+  log("Saving entity template =", tname)
+  entity_editor.save_template(recreatedEid, tname)
+}
+
 const attrPanelAddEntityTemplateUID = "attr_panel_add_entity_template"
 
 let function doAddTemplate(templateName) {
@@ -252,10 +257,7 @@ let function doAddTemplate(templateName) {
     if (g_entity_mgr.getTemplateDB().getTemplateByName(templateName) == null) {
       infoBox("Invalid template name")
     } else {
-      recreateEntityWithTemplates({eid, addTemplates=[templateName], callback=function(recreatedEid) {
-        log("Added entity template =", templateName)
-        entity_editor.save_add_template(recreatedEid, templateName)
-      }, checkComps=false})
+      recreateEntityWithTemplates({eid, addTemplates=[templateName], callback=updateEntityTemplateNameCallback, checkComps=false})
     }
   } else {
     infoBox("Entity not selected")
@@ -303,10 +305,7 @@ let function doDelTemplate(templateName) {
     } else if (g_entity_mgr.getTemplateDB().getTemplateByName(templateName) == null) {
       infoBox("Invalid template name")
     } else {
-      recreateEntityWithTemplates({eid, removeTemplates=[templateName], callback=function(recreatedEid) {
-        log("Removed entity template =", templateName)
-        entity_editor.save_del_template(recreatedEid, templateName)
-      }, checkComps=false})
+      recreateEntityWithTemplates({eid, removeTemplates=[templateName], callback=updateEntityTemplateNameCallback, checkComps=false})
     }
   } else {
     infoBox("Entity not selected")
@@ -345,7 +344,7 @@ let function openDelTemplateDialog() {
 
 let templateTooltip = Watched(null)
 
-let function panelCaption(text, tpl_name) {
+let function panelCaption(text, tpl_name, non_scene) {
   return {
     size = [flex(), SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
@@ -357,37 +356,12 @@ let function panelCaption(text, tpl_name) {
     eventPassThrough = true
     behavior = [Behaviors.Marquee, Behaviors.Button]
     onHover = @(on) templateTooltip(on && tpl_name ? mkTemplateTooltip(tpl_name) : null)
-    onClick = function() {
-      if (selectedEntities.value.len() > 1) {
-        selectedEntity(INVALID_ENTITY_ID)
-        entity_editor?.get_instance()?.setFocusedEntity(INVALID_ENTITY_ID)
-      }
-    }
 
     children = {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       rendObj = ROBJ_TEXT
-      text = text
-      margin = [hdpx(5), 0]
-    }
-  }
-}
-
-let function warningGenerated() {
-  return {
-    size = [flex(), SIZE_TO_CONTENT]
-    rendObj = ROBJ_BOX
-    fillColor = Color(0,10,10,210)
-    padding = [0,hdpx(5)]
-
-    children = {
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      rendObj = ROBJ_TEXT
-      color = Color(192,150,150)
-      fontSize = hdpx(12)
-      text = " BEWARE : Generated entities are never saved to scene file, all changes will be lost upon restart"
+      text = non_scene ? $"[generated] {text}" : text
       margin = [hdpx(5), 0]
     }
   }
@@ -420,7 +394,7 @@ let function panelButtons() {
 }
 
 let autoOpenClosePropPanel = function(_) {
-  local show = selectedEntity.value != INVALID_ENTITY_ID || selectedEntities.value.len() > 0
+  local show = selectedEntity.value != INVALID_ENTITY_ID && selectedEntities.value.len() == 1
   if (show && propPanelClosed.value)
     return
   propPanelVisible(show)
@@ -679,6 +653,9 @@ let function doContainerOp(eid, comp_name, cont_path, op) {
     dpath.pop()
     selectedCompComp(comp_name)
     selectedCompPath(cpath)
+    local strpath = clone comp_name
+    foreach (key in cpath)
+      strpath = $"{strpath}.{key}"
     doContainerOp(eid, comp_name, dpath, "delete")
     selectedCompName.trigger()
     return
@@ -1051,57 +1028,6 @@ let filteredCurComponents = Computed(function(){
   return res
 })
 
-
-let function mkEntityRow(eid,_v,is_odd) {
-  let group = ElemGroup()
-  let stateFlags = Watched(0)
-
-  let riExtraName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
-  let extra = (riExtraName != null) ? $"/ {riExtraName}" : ""
-
-  local tplName = g_entity_mgr.getEntityTemplateName(eid) ?? ""
-  let name = removeSelectedByEditorTemplate(tplName)
-  let div = (tplName != name) ? "•" : "|"
-
-  return {
-    size = [flex(), gridHeight]
-    behavior = Behaviors.Button
-
-    onClick = function() {
-      if (selectedEntities.value.len() > 1) {
-        selectedEntity(eid)
-        entity_editor?.get_instance()?.setFocusedEntity(eid)
-      }
-    }
-    onHover = @(_on) null
-    eventPassThrough = true
-    onElemState = @(sf) stateFlags.update(sf & S_HOVER)
-    group = group
-
-    children = [
-      @(){
-        size = [flex(), gridHeight]
-        rendObj = ROBJ_SOLID
-        watch = stateFlags
-        color = panelRowColorC(name, stateFlags.value, "", is_odd)
-        group
-      }
-      @(){
-        rendObj = ROBJ_TEXT
-        text = $"{eid}  {div}  {name} {extra}"
-        size = [flex(), fontH(100)]
-        margin = fsh(0.5)
-        group = group
-        behavior = Behaviors.Marquee
-        scrollOnHover = true
-        delay = 1.0
-        speed = 50
-      }
-    ]
-  }
-}
-
-
 let function compPanel() {
 
   if (!propPanelVisible.value) {
@@ -1113,9 +1039,6 @@ let function compPanel() {
     updateModComps()
 
     toggleBg = makeBgToggle() // achtung!: implicit state reset - better pass it via arguments
-
-    let showComps = !riSelectShown.value && selectedEntity.value != INVALID_ENTITY_ID
-    let showList  = !riSelectShown.value && !showComps && selectedEntities.value.len() > 1
 
     let eid = selectedEntity.value
     let rows = filteredCurComponents.value.map(function(v) {
@@ -1135,37 +1058,10 @@ let function compPanel() {
       })
     }
 
-    let nonSceneEntity = isNonSceneEntity()
-    local captionPrefix = nonSceneEntity ? "[generated] " : ""
-    if (eid!=INVALID_ENTITY_ID && selectedEntities.value.len() > 1)
-      captionPrefix = $"{selectedEntities.value.len()} entities | {captionPrefix}"
-
-    let templName = eid!=INVALID_ENTITY_ID ? removeSelectedByEditorTemplate(g_entity_mgr.getEntityTemplateName(eid) ?? "") : null
-    let uiTemplName = eid!=INVALID_ENTITY_ID ? entity_editor.get_template_name_for_ui(eid) : null
-    let captionText = eid!=INVALID_ENTITY_ID ? "{0}{1}: {2}".subst(captionPrefix, eid, uiTemplName) :
+    let templName = eid!=INVALID_ENTITY_ID ? removeSelectedByEditorTemplate(g_entity_mgr.getEntityTemplateName(eid)) : null
+    let captionText = eid!=INVALID_ENTITY_ID ? "{0}: {1}".subst(eid, templName) :
       selectedEntities.value.len() == 0 ? "No entity selected"
       : $"{selectedEntities.value.len()} entities selected"
-
-    local listRows = []
-    if (showList) {
-      local odd = true
-      foreach (k,v in selectedEntities.value) {
-        listRows.append(mkEntityRow(k,v,odd))
-        odd = !odd
-      }
-    }
-    let scrolledList = {
-      size = flex()
-      rendObj = ROBJ_SOLID
-      color = Color(50,50,50,100)
-      children = scrollbar.makeVertScroll(listRows, {
-        rootBase = class {
-          size = flex()
-          flow = FLOW_VERTICAL
-          behavior = Behaviors.Pannable
-        }
-      })
-    }
 
     return {
       watch = [
@@ -1202,12 +1098,10 @@ let function compPanel() {
 
               flow = FLOW_VERTICAL
               children = [
-                panelCaption(captionText, templName)
-                nonSceneEntity ? warningGenerated() : null
-                showComps && isCurEntityComponents.value ? compNameFilter : null
-                showComps ? scrolledGrid : null
-                showComps ? panelButtons : null
-                showList  ? scrolledList : null
+                panelCaption(captionText, templName, isNonSceneEntity())
+                !riSelectShown.value && isCurEntityComponents.value ? compNameFilter : null
+                !riSelectShown.value ? scrolledGrid : null
+                !riSelectShown.value ? panelButtons : null
               ]
             }
             riSelectShown.value ? riSelectWindow : null

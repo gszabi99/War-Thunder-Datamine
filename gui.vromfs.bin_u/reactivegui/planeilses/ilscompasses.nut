@@ -278,39 +278,6 @@ let generateCompassMarkF14 = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkVE130 = function(num, _elemWidth) {
-  return {
-    size = [pw(15), ph(100)]
-    flow = FLOW_VERTICAL
-    children = [
-      @() {
-        watch = IlsColor
-        rendObj = ROBJ_TEXT
-        color = IlsColor.value
-        hplace = ALIGN_CENTER
-        fontSize = 45
-        font = Fonts.hud
-        text = num % 10 == 0 ? (num / 10).tostring() : ""
-      },
-      (num % 10 == 0 ? null : @() {
-        size = [baseLineWidth * IlsLineScale.value, baseLineWidth * 3]
-        rendObj = ROBJ_SOLID
-        color = Color(0, 0, 0, 0)
-        lineWidth = baseLineWidth * IlsLineScale.value
-        hplace = ALIGN_CENTER
-      }),
-      @() {
-        watch = IlsColor
-        size = [baseLineWidth * IlsLineScale.value, baseLineWidth * (num % 10 == 0 ? 4 : 1)]
-        rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        hplace = ALIGN_CENTER
-      }
-    ]
-  }
-}
-
 let function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5.0, is_circle = false, elemWidth = -1) {
   return {
     size = [width * 0.6 * scale, height * 0.2]
@@ -331,5 +298,4 @@ return {
   generateCompassMarkJ8
   generateCompassTCSFMark
   generateCompassMarkF14
-  generateCompassMarkVE130
 }

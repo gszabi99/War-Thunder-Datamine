@@ -2,8 +2,8 @@ let { format } = require("string")
 let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
-let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
 
 ::contacts_handler <- null
 ::contacts_sizes <- null
@@ -54,11 +54,11 @@ foreach (fn in [
 
 g_contacts.onEventUserInfoManagerDataUpdated <- function onEventUserInfoManagerDataUpdated(params)
 {
-  let usersInfoData = ::getTblValue("usersInfo", params, null)
-  if (usersInfoData == null)
+  let usersInfo = ::getTblValue("usersInfo", params, null)
+  if (usersInfo == null)
     return
 
-  ::update_contacts_by_list(usersInfoData)
+  ::update_contacts_by_list(usersInfo)
 }
 
 g_contacts.onEventUpdateExternalsIDs <- function onEventUpdateExternalsIDs(params)
@@ -295,18 +295,16 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     ::contacts_handler.switchScene(obj, owner)
 }
 
-::getContact <- function getContact(uid, nick = null, clanTag = null, forceUpdate = false)
+::getContact <- function getContact(uid, nick = null, clanTag = "", forceUpdate = false)
 {
   if(!uid)
     return null
 
-  requestUserInfoData(uid)
-
   if (!(uid in ::contacts_players))
   {
-    if (nick != null)
+    if (::u.isString(nick))
     {
-      let contact = Contact({ name = nick, uid = uid })
+      let contact = Contact({ name = nick, uid = uid , clanTag = clanTag})
       ::contacts_players[uid] <- contact
       if(uid in ::missed_contacts_data)
         contact.update(::missed_contacts_data.rawdelete(uid))
@@ -316,10 +314,10 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   }
 
   let contact = ::contacts_players[uid]
-  if (nick != null && (forceUpdate || contact.name == ""))
+  if (::u.isString(nick) && (forceUpdate || contact.name == ""))
     contact.name = nick
 
-  if (clanTag != null && (forceUpdate || !isEqual(contact.clanTag, clanTag)))
+  if (::u.isString(clanTag) && (forceUpdate || !isEqual(contact.clanTag, clanTag)))
     contact.setClanTag(clanTag)
 
   return contact
@@ -340,7 +338,11 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::update_contacts_by_list <- function update_contacts_by_list(list, needEvent = true)
 {
+  if (::u.isArray(list))
     foreach(config in list)
+      updateContact(config)
+  else if (::u.isTable(list))
+    foreach(key, config in list)
       updateContact(config)
 
   if (needEvent)
@@ -443,20 +445,14 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::fillContactTooltip <- function fillContactTooltip(obj, contact, handler)
 {
-  let fullName = ::has_feature("Clans") && contact.clanTag != ""
-    ? $"{contact.clanTag} {contact.getName()}"
-    : contact.getName()
-
-  let title = contact.title != "" && contact.title != null
-    ? ::loc($"title/{contact.title}")
-    : ""
-
   let view = {
-    name = fullName
-    presenceText = ::colorize(contact.presence.getIconColor(), contact.getPresenceText())
+    name = contact.getName()
+    presenceText = contact.getPresenceText()
+    presenceIcon = contact.presence.getIcon()
+    presenceIconColor = contact.presence.getIconColor()
     icon = contact.pilotIcon
-    hasUnitList = false
-    title = title
+    wins = contact.getWinsText()
+    rank = contact.getRankText()
   }
 
   let squadStatus = ::g_squad_manager.getPlayerStatusInMySquad(contact.uid)
@@ -465,55 +461,54 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     let memberData = ::g_squad_manager.getMemberData(contact.uid)
     if (memberData)
     {
-      let memberDataAirs = memberData?.crewAirs[memberData.country] ?? []
-      let gameModeId = ::g_squad_manager.getLeaderGameModeId()
-      let event = ::events.getEvent(gameModeId)
-      let difficulty = ::events.getEventDifficulty(event)
-      let ediff = difficulty.getEdiff()
       view.unitList <- []
-      view.hasUnitList = memberDataAirs.len() != 0
 
       if (memberData?.country != null && ::checkCountry(memberData.country, $"memberData of contact = {contact.uid}")
-          && memberDataAirs.len() != 0)
+          && (memberData?.crewAirs[memberData.country] ?? []).len() != 0)
       {
-        view.unitList.append({ header = ::loc("conditions/playerTag") })
-        if(!event?.multiSlot){
-          let unitName = memberData.selAirs[memberData.country]
+        view.unitList.append({ header = ::loc("mainmenu/arcadeInstantAction") })
+        foreach(unitName in memberData.crewAirs[memberData.country])
+        {
           let unit = ::getAircraftByName(unitName)
           view.unitList.append({
-            rank = format("%.1f", unit.getBattleRating(ediff))
+            countryIcon = ::get_country_icon(memberData.country)
+            rank = ::is_default_aircraft(unitName) ? ::loc("shop/reserve/short") : unit.rank
             unit = unitName
-            icon = ::getUnitClassIco(unit)
           })
-        } else {
-          foreach(id, unitName in memberDataAirs)
+        }
+      }
+
+      if ("selAirs" in memberData)
+      {
+        view.unitList.append({ header = ::loc("mainmenu/instantAction") })
+        foreach(country in shopCountriesList)
+        {
+          let countryIcon = ::get_country_icon(country)
+          ::debugTableData(memberData.selAirs)
+          let unitName = memberData.selAirs?[country] ?? ""
+          let unit = ::getAircraftByName(unitName)
+          if (unit != null)
           {
-            let unit = ::getAircraftByName(unitName)
             view.unitList.append({
-              rank = format("%.1f", unit.getBattleRating(ediff))
+              countryIcon = countryIcon
+              rank = ::is_default_aircraft(unitName) ? ::loc("shop/reserve/short") : unit.rank
               unit = unitName
-              icon = ::getUnitClassIco(unit)
-              even = id % 2 == 0
+            })
+          }
+          else
+          {
+            view.unitList.append({
+              countryIcon = countryIcon
+              noUnit = true
             })
           }
         }
-        if(memberDataAirs.len() != 0)
-          view.hint <- $"{::loc("shop/all_info_relevant_to_current_game_mode")}: {difficulty.getLocName()}"
       }
     }
   }
 
   let blk = ::handyman.renderCached("%gui/contacts/contactTooltip", view)
-  let guiScene = obj.getScene()
-  guiScene.replaceContentFromText(obj, blk, blk.len(), handler)
-
-  if(!view.hasUnitList)
-    return
-
-  guiScene.applyPendingChanges(false)
-  let contactObj = obj.findObject("contact_tooltip")
-  let contactAircraftsObj = contactObj.findObject("contact-aircrafts")
-  contactAircraftsObj.size = $"{contactObj.getSize()[0]}, {contactAircraftsObj.getSize()[1]}"
+  obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
 }
 
 ::collectMissedContactData <- function collectMissedContactData (uid, key, val)

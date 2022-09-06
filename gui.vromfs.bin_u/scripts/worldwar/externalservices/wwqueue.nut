@@ -184,7 +184,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     return res
   }
 
-  function joinQueue(country, isSilence = true, clusters = null)
+  function joinQueue(country, isSilence = true)
   {
     let cantJoinReason = getCantJoinQueueReasonData(country)
     if (!cantJoinReason.canJoin)
@@ -194,16 +194,15 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       return false
     }
 
-    return _joinQueue(country, clusters)
+    return _joinQueue(country)
   }
 
-  function _joinQueue(country, clusters = null)
+  function _joinQueue(country)
   {
     let requestBlk = ::DataBlock()
     requestBlk.mapName = map.name
     requestBlk.country = country
-    actionWithGlobalStatusRequest("cln_clan_register_ww_army_group", requestBlk,
-      { showProgressBox = true, clusters = clusters })
+    actionWithGlobalStatusRequest("cln_clan_register_ww_army_group", requestBlk, { showProgressBox = true })
   }
 
   function getCantLeaveQueueReasonData()

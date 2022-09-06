@@ -6,10 +6,10 @@ let DataBlock = require("DataBlock")
 
 let nameFilter = require("components/nameFilter.nut")
 let textButton = require("%daeditor/components/textButton.nut")
-let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
+let {makeVertScroll} = require("%darg/components/scrollbar.nut")
 
 let entity_editor = require_optional("entity_editor")
-let {propPanelVisible, selectedEntity, editorUnpause} = require("state.nut")
+let {propPanelVisible, selectedEntity} = require("state.nut")
 let {registerPerCompPropEdit} = require("%daeditor/propPanelControls.nut")
 
 let {floor} = require("math")
@@ -190,8 +190,8 @@ let riSelectWindow = function() {
       )
       hflow(
         HCenter,
-        textButton("Cancel", @() riSelectChangeAndClose(riSelectSaved.value), {vplace = ALIGN_BOTTOM}),
-        textButton("Accept", @() riSelectShown(false), {hotkeys = [["Esc"]], vplace = ALIGN_BOTTOM})
+        textButton("Cancel", @() riSelectChangeAndClose(riSelectSaved.value), {hotkeys = [["Esc"]], vplace = ALIGN_BOTTOM}),
+        textButton("Accept",   @() riSelectShown(false), {hotkeys = [["Esc"]], vplace = ALIGN_BOTTOM})
       )
     )
   }
@@ -208,7 +208,7 @@ let function openSelectRI(selectedRI, onSelect=null) {
 let riSelectEid = Watched(INVALID_ENTITY_ID)
 propPanelVisible.subscribe(function(v) {
   if (v && selectedEntity.value != riSelectEid.value && riSelectShown.value)
-    riSelectShown(false)
+    riSelectChangeAndClose(riSelectSaved.value)
 })
 
 let function initRISelect(file) {
@@ -222,10 +222,8 @@ let function initRISelect(file) {
         obsolete_dbg_set_comp_val(eid, "ri_extra__name", v)
         entity_editor?.save_component(eid, "ri_extra__name")
         let newEid = entity_editor?.get_instance().reCreateEditorEntity(eid)
-        if (newEid != INVALID_ENTITY_ID) {
+        if (newEid != INVALID_ENTITY_ID)
           riSelectEid(newEid)
-          editorUnpause(2.5)
-        }
       }
     }
     return @() {

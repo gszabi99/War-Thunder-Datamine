@@ -1630,9 +1630,7 @@ let sortChatUsers = @(a, b) a.name <=> b.name
 
         if (roomRegexp.match(value))
           value = roomType.getRoomName(value)
-        else if (i == 0 && (errorName == chatErrorName.CANNOT_JOIN_CHANNEL_NO_INVITATION
-          || errorName == chatErrorName.USER_ALREADY_IN_CHANNEL)
-        )
+        else if (i == 0 && errorName == chatErrorName.CANNOT_JOIN_CHANNEL_NO_INVITATION)
           value = getPlayerName(value)
 
         locParams[key] <- value

@@ -110,10 +110,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       return
 
     let curOperation = getOperationById(::ww_get_operation_id())
-    headerObj.setValue(curOperation
-      ? "".concat(curOperation.getNameText(), "\n",
-        ::loc("worldwar/cluster"), ::loc("ui/colon"), ::loc($"cluster/{curOperation.getCluster()}"))
-      : "")
+    headerObj.setValue(curOperation? curOperation.getNameText() : "")
   }
 
   function initControlBlockVisibiltiySwitch()

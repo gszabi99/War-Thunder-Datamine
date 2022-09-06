@@ -1,1 +1,1 @@
-return require("%daeditor/components/mkMsgbox.nut")("editor_")
+return require("%darg/components/mkMsgbox.nut")("editor_")

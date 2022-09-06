@@ -1,4 +1,4 @@
-let textInput = require("textInputBase.nut")
+let textInput = require("%darg/components/textInput.nut")
 let colors = require("%rGui/style/colors.nut")
 let focusBorder = require("%rGui/components/focusBorder.nut")
 

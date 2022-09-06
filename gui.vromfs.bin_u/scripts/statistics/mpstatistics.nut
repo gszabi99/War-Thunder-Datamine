@@ -584,10 +584,14 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         break
 
       case ::GT_MP_TICKETS:
+        let rounds = ::get_mp_rounds()
+        let curRound = ::get_mp_current_round()
+
         if (needPlayersTbl)
         {
+          let scoreLoc = (rounds > 0) ? ::loc("multiplayer/rounds") : ::loc("multiplayer/airfields")
           let scoreformat = "%s" + ::loc("multiplayer/tickets") + ::loc("ui/colon") + "%d" + ", " +
-                                ::loc("multiplayer/airfields") + ::loc("ui/colon") + "%d"
+                                scoreLoc + ::loc("ui/colon") + "%d"
 
           if (tbl.len() > playerTeamIdx)
           {
@@ -601,6 +605,14 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
           }
         }
 
+        let statObj = scene.findObject("gc_mp_tickets_rounds")
+        if (::checkObj(statObj))
+        {
+          local text = ""
+          if (rounds > 0)
+            text = ::loc("multiplayer/curRound", { round = curRound+1, total = rounds })
+          statObj.setValue(text)
+        }
         break
     }
   }
@@ -1025,6 +1037,13 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         if (::checkObj(obj))
           obj.setValue("")
       return
+    }
+
+    if (::get_mp_rounds())
+    {
+      let rl = ::get_mp_zone_countdown()
+      if (rl > 0)
+        timeLeft = rl
     }
 
     if (timeLeft < 0 || (gameType & ::GT_RACE))

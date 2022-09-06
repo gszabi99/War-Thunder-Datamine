@@ -443,16 +443,13 @@ shopData = [
     local alarmTooltip = ""
     if (isFutureReqAir) {
       let endReleaseDate = reqAir.getEndRecentlyReleasedTime()
-      if (endReleaseDate > 0) {
-        let hasReqAir = (air?.reqAir ?? "") != ""
-        let locId = hasReqAir ? "shop/futureReqAir/desc" : "shop/futureReqAir/desc/withoutReqAir"
-        alarmTooltip = ::g_string.stripTags(::loc(locId, {
+      if (endReleaseDate > 0)
+        alarmTooltip = ::g_string.stripTags(::loc("shop/futureReqAir/desc", {
           futureReqAir = getUnitName(air.futureReqAir)
           curAir = getUnitName(air)
-          reqAir = hasReqAir ? getUnitName(air.reqAir) : ""
+          reqAir = getUnitName(air.reqAir)
           date = buildDateStr(endReleaseDate)
         }))
-      }
     }
     let alarmIconFormat = "".concat("shopAlarmIcon { pos:t='%s, %s'; tooltip:t='",
       alarmTooltip, "'; } ")
@@ -464,7 +461,7 @@ shopData = [
     if (c0 == c1)
     {//vertical
       let offset = isLineParallelFutureReqLine ? -0.1
-        : isLineShiftedToRight ? 0.1
+        : isFutureReqAir || isLineShiftedToRight ? 0.1
         : 0
       let posX = $"{(c0 + 0.5 + offset)}@shop_width - 0.5@modArrowWidth"
       let height = $"{pad1} + {pad2} + {(r1 - r0 - 1)}@shop_height"
@@ -480,7 +477,7 @@ shopData = [
     else if (r0==r1)
     {//horizontal
       let offset = isLineParallelFutureReqLine ? -0.1
-        : isLineShiftedToRight ? 0.1
+        : isFutureReqAir || isLineShiftedToRight ? 0.1
         : 0
       let posX = $"{(c0 + 1)}@shop_width - {interval1}"
       let width = $"{(c1 - c0 - 1)}@shop_width + {interval1} + {interval2}"
