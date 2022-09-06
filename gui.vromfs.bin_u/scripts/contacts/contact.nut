@@ -27,6 +27,7 @@ subscribe("playerProfileDialogClosed", function(r) {
   uid = ""
   uidInt64 = null
   clanTag = ""
+  title = ""
 
   presence = ::g_contact_presence.UNKNOWN
   forceOffline = false
@@ -46,8 +47,6 @@ subscribe("playerProfileDialogClosed", function(r) {
   facebookName = ""
 
   pilotIcon = "cardicon_bot"
-  wins = -1
-  expTotal = -1
 
   afterSuccessUpdateFunc = null
 
@@ -225,21 +224,6 @@ subscribe("playerProfileDialogClosed", function(r) {
   function needCheckXboxId()
   {
     return isPlayerFromXboxOne(name) && xboxId == ""
-  }
-
-  function getWinsText()
-  {
-    return wins >= 0? wins : ::loc("leaderboards/notAvailable")
-  }
-
-  function getRank()
-  {
-    return ::get_rank_by_exp(expTotal > 0? expTotal : 0)
-  }
-
-  function getRankText()
-  {
-    return expTotal >= 0? getRank().tostring() : ::loc("leaderboards/notAvailable")
   }
 
   getName = @() getPlayerName(name)

@@ -65,6 +65,25 @@ editorTimeStop.subscribe(function(v) {
     console?.command($"app.timeSpeed 1")
 })
 
+let editorUnpauseData = {timerRunning = false}
+let function editorUnpauseEnd() {
+  editorUnpauseData.timerRunning = false
+  editorTimeStop(true)
+}
+let function editorUnpause(time) {
+  if (time <= 0) {
+    editorTimeStop(false)
+    gui_scene.clearTimer(editorUnpauseEnd)
+    editorUnpauseData.timerRunning = false
+    return
+  }
+  if (editorTimeStop.value || editorUnpauseData.timerRunning) {
+    editorTimeStop(false)
+    editorUnpauseData.timerRunning = true
+    gui_scene.resetTimeout(time, editorUnpauseEnd)
+  }
+}
+
 let showPointAction = mkWatched(persist, "showPointAction", false)
 let typePointAction = mkWatched(persist, "typePointAction", "")
 let namePointAction = mkWatched(persist, "namePointAction", "")
@@ -92,6 +111,36 @@ let function resetPointActionMode() {
   funcPointAction = null
 }
 
+let funcsEntityCreated = []
+let function addEntityCreatedCallback(cb) {
+  funcsEntityCreated.append(cb)
+}
+let function handleEntityCreated(eid) {
+  foreach (func in funcsEntityCreated) {
+    func?(eid)
+  }
+}
+
+let funcsEntityRemoved = []
+let function addEntityRemovedCallback(cb) {
+  funcsEntityRemoved.append(cb)
+}
+let function handleEntityRemoved(eid) {
+  foreach (func in funcsEntityRemoved) {
+    func?(eid)
+  }
+}
+
+let funcsEntityMoved = []
+let function addEntityMovedCallback(cb) {
+  funcsEntityMoved.append(cb)
+}
+let function handleEntityMoved(eid) {
+  foreach (func in funcsEntityMoved) {
+    func?(eid)
+  }
+}
+
 return {
   showUIinEditor = mkWatched(persist, "showUIinEditor", false)
   editorIsActive = Watched(is_editor_activated?())
@@ -115,7 +164,9 @@ return {
   initWorkModes
   proceedWithSavingUnsavedChanges
   showDebugButtons = Watched(true)
+
   editorTimeStop
+  editorUnpause
 
   showPointAction
   typePointAction
@@ -124,5 +175,12 @@ return {
   updatePointActionPreview
   callPointActionCallback
   resetPointActionMode
+
+  addEntityCreatedCallback
+  addEntityRemovedCallback
+  addEntityMovedCallback
+  handleEntityCreated
+  handleEntityRemoved
+  handleEntityMoved
 }
 

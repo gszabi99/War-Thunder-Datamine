@@ -32,7 +32,7 @@ let function updatePromoteUnits() {
 
     nextChangeTime = min(nextChangeTime ?? nextTime, nextTime)
     activPromUnits[unit.name] <- promoteUnit.__merge({
-      isActive = timeStart < currentTime && timeEnd > currentTime
+      isActive = timeStart <= currentTime && timeEnd > currentTime
     })
   }
   if (nextChangeTime != null && nextChangeTime > currentTime)

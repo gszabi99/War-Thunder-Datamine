@@ -3,7 +3,6 @@ from "ecs" import *
 let { regexp, strip, format } = require("string")
 let dagorMath = require("dagor.math")
 let {tostring_r} = require("%sqstd/string.nut")
-let {logerr} = require("dagor.debug")
 let {command} = require("console")
 
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")

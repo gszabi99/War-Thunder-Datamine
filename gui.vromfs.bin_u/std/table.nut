@@ -1,3 +1,5 @@
+let NO_VALUE = freeze({})
+
 let function setValInTblPath(table, path, value){
   let pathLen = path.len()
   local curTbl = table
@@ -11,16 +13,17 @@ let function setValInTblPath(table, path, value){
     }
   }
 }
-local function getValInTblPath(table, path, startIdx=0){
+
+let function getValInTblPath(table, path, startIdx=0){
   local curTbl = table
   if (path==null)
     return null
   if (startIdx > 0)
     path = path.slice(startIdx)
   foreach (pathPart in path){
-    curTbl = curTbl?[pathPart]
-    if (curTbl==null)
-      return null
+    if (pathPart not in curTbl)
+      return NO_VALUE
+    curTbl = curTbl[pathPart]
   }
   return curTbl
 }
@@ -28,14 +31,15 @@ local function getValInTblPath(table, path, startIdx=0){
 let function tryGetValInTblPath(table, path){
   foreach (idx, _ in path) {
     let val = getValInTblPath(table, path, idx)
-    if (val != null)
+    if (val != NO_VALUE)
       return val
   }
-  return null
+  return NO_VALUE
 }
 
 return {
   tryGetValInTblPath
   setValInTblPath
   getValInTblPath
+  NO_VALUE
 }

@@ -40,12 +40,8 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
   if (::u.isEmpty(weapons) && p.needTextWhenNoWeapons)
     text += getTextNoWeapons(unit, p.isPrimary)
   let stackableWeapons = [WEAPON_TYPE.TURRETS]
-  foreach (index, weaponType in WEAPON_TYPE)
+  foreach (weaponType, triggers in (weapons?.weaponsByTypes ?? {}))
   {
-    if (!(weaponType in weapons))
-      continue
-
-    let triggers = weapons[weaponType]
     triggers.sort(@(a, b) b.caliber <=> a.caliber)
 
     if (::isInArray(weaponType, stackableWeapons))
@@ -186,9 +182,9 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
       {
         let gunsTxt = []
         foreach(name, count in gunNames)
-          gunsTxt.append("".concat(::loc($"weapons/{name}"), ::nbsp, count > 1
-            ? format(::loc("weapons/counter/right/short"), count) : ""))
-        text = $"{text} {(::loc("ui/comma")).join(gunsTxt)}"
+          gunsTxt.append("".concat(::loc($"weapons/{name}"), count > 1
+            ? $"{::nbsp}{format(::loc("weapons/counter/right/short"), count)}" : ""))
+        text = $"{text}{(::loc("ui/comma")).join(gunsTxt)}"
       }
     }
     else
@@ -214,7 +210,7 @@ let function getWeaponXrayDescText(weaponBlk, unit, ediff)
   let weaponsArr = []
   ::u.appendOnce((::u.copy(weaponBlk)), weaponsArr)
   let weaponTypes = addWeaponsFromBlk({}, weaponsArr, unit)
-  foreach (weaponType, weaponTypeList in weaponTypes)
+  foreach (weaponType, weaponTypeList in (weaponTypes?.weaponsByTypes ?? {}))
     foreach (weapons in weaponTypeList)
       foreach (weapon in weapons.weaponBlocks)
         return getWeaponExtendedInfo(weapon, weaponType, unit, ediff, "\n")
@@ -233,14 +229,13 @@ let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
   let curWeapon = unit.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
   weaponTypes = addWeaponsFromBlk(weaponTypes, getPresetWeapons(unitBlk, curWeapon), unit)
 
-  if (weaponTypes?[triggerGroup])
-    foreach (weapons in weaponTypes[triggerGroup])
-      foreach (weaponName, weapon in weapons.weaponBlocks)
-        return "".concat(
-          ::loc($"weapons/{weaponName}"),
-          format(::loc("weapons/counter"), weapon.ammo),
-          getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(::nbsp))
-        )
+  foreach (weapons in (weaponTypes?.weaponsByTypes[triggerGroup] ?? []))
+    foreach (weaponName, weapon in weapons.weaponBlocks)
+      return "".concat(
+        ::loc($"weapons/{weaponName}"),
+        format(::loc("weapons/counter"), weapon.ammo),
+        getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(::nbsp))
+      )
   return ""
 }
 

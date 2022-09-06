@@ -1,0 +1,2021 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/templates/enduring_confrontation/afp_airfields_pads_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "afp_mission_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "naznachaem tipy aerodromam"
+          },
+          {
+            "value": "naznachaem armiyu aerodromam"
+          },
+          {
+            "value": "ukazyvaem defoltnye sostoyaniya aerodromam"
+          },
+          {
+            "value": "zapolnyaem pozicii aerodromov"
+          },
+          {
+            "value": "ustanivalivaem maksimal'no kolichestvo aerodromov dlya komandy 1"
+          },
+          {
+            "value": "ustanivalivaem maksimal'no kolichestvo aerodromov dlya komandy 2"
+          },
+          {
+            "value": "zadaem obshchee kolichestvo aerodromov"
+          },
+          {
+            "value": "marking t2 pads as hidden"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "pad",
+            "var": "afp_field_type_01"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_02"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_03"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_04"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_05"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_06"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_07"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_08"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_09"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_10"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_11"
+          },
+          {
+            "value": "pad",
+            "var": "afp_field_type_12"
+          }
+        ],
+        "varSetInt": [
+          {
+            "value": 2,
+            "var": "afp_field_army_01"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_02"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_03"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_04"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_05"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_06"
+          },
+          {
+            "value": 1,
+            "var": "afp_field_army_07"
+          },
+          {
+            "value": 1,
+            "var": "afp_field_army_08"
+          },
+          {
+            "value": 1,
+            "var": "afp_field_army_09"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_10"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_11"
+          },
+          {
+            "value": 2,
+            "var": "afp_field_army_12"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_01"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_02"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_03"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_04"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_05"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_06"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_06"
+          },
+          {
+            "value": 1,
+            "var": "afp_field_state_07"
+          },
+          {
+            "value": 1,
+            "var": "afp_field_state_08"
+          },
+          {
+            "value": 1,
+            "var": "afp_field_state_09"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_10"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_11"
+          },
+          {
+            "value": -1,
+            "var": "afp_field_state_12"
+          },
+          {
+            "value": 12,
+            "var": "afp_field_max_count"
+          }
+        ],
+        "__varSetString": [
+          {
+            "value": "near",
+            "var": [
+              "afp_field_position_01",
+              "afp_field_position_02",
+              "afp_field_position_03",
+              "afp_field_position_10",
+              "afp_field_position_11",
+              "afp_field_position_12"
+            ]
+          },
+          {
+            "value": "middle",
+            "var": [
+              "afp_field_position_04",
+              "afp_field_position_05",
+              "afp_field_position_06"
+            ]
+          },
+          {
+            "value": "far",
+            "var": [
+              "afp_field_position_07",
+              "afp_field_position_08",
+              "afp_field_position_09"
+            ]
+          }
+        ],
+        "__varSetInt": [
+          {
+            "value": 3,
+            "var": "afp_field_t1_max_near_count"
+          },
+          {
+            "value": 3,
+            "var": "afp_field_t1_max_middle_count"
+          },
+          {
+            "value": 3,
+            "var": "afp_field_t1_max_far_count"
+          },
+          {
+            "value": 3,
+            "var": "afp_field_t2_max_near_count"
+          },
+          {
+            "value": 3,
+            "var": "afp_field_t2_max_middle_count"
+          },
+          {
+            "value": 3,
+            "var": "afp_field_t2_max_far_count"
+          }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "afp_t2_hidden"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "squad": [
+      {
+        "name": "afp_all_dummies_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            15105.4,
+            90.4886,
+            18061.7
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "afp_dummy_01",
+            "afp_dummy_02",
+            "afp_dummy_03",
+            "afp_dummy_04",
+            "afp_dummy_05",
+            "afp_dummy_06",
+            "afp_dummy_07",
+            "afp_dummy_08",
+            "afp_dummy_09",
+            "afp_dummy_10",
+            "afp_dummy_11",
+            "afp_dummy_12"
+          ]
+        }
+      },
+      {
+        "name": "afp_all_fields_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            17615.5,
+            3.84961,
+            -14569.4
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "afp_base_01",
+            "afp_base_02",
+            "afp_base_03",
+            "afp_base_04",
+            "afp_base_05",
+            "afp_base_06",
+            "afp_base_07",
+            "afp_base_08",
+            "afp_base_09",
+            "afp_base_10",
+            "afp_base_11",
+            "afp_base_12"
+          ]
+        }
+      },
+      {
+        "name": "afp_t1_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            18221.2,
+            3.85034,
+            -12866.4
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "afp_base_01",
+            "afp_base_02",
+            "afp_base_03",
+            "afp_base_04",
+            "afp_base_05",
+            "afp_base_06",
+            "afp_base_07",
+            "afp_base_08",
+            "afp_base_09",
+            "afp_base_10",
+            "afp_base_11",
+            "afp_base_12"
+          ],
+          "object_type": "isTeamA"
+        }
+      },
+      {
+        "name": "afp_t2_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            -5.96046E-08
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.96046E-08,
+            0.0,
+            -1.0
+          ],
+          [
+            17428.8,
+            3.85034,
+            -16506.2
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "afp_base_01",
+            "afp_base_02",
+            "afp_base_03",
+            "afp_base_04",
+            "afp_base_05",
+            "afp_base_06",
+            "afp_base_07",
+            "afp_base_08",
+            "afp_base_09",
+            "afp_base_10",
+            "afp_base_11",
+            "afp_base_12"
+          ],
+          "object_type": "isTeamB"
+        }
+      }
+    ],
+    "objectGroups": [
+      {
+        "name": "afp_base_08",
+        "tm": [
+          [
+            -0.257747,
+            0.0,
+            0.966212
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.966212,
+            0.0,
+            -0.257747
+          ],
+          [
+            1062.98,
+            156.871,
+            13330.9
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_09",
+        "tm": [
+          [
+            -0.385554,
+            0.0,
+            0.922685
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.922685,
+            0.0,
+            -0.385554
+          ],
+          [
+            -10790.2,
+            131.019,
+            13458.1
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_07",
+        "tm": [
+          [
+            0.383595,
+            0.0,
+            0.923501
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.923501,
+            0.0,
+            0.383595
+          ],
+          [
+            8777.39,
+            229.095,
+            12012.6
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_06",
+        "tm": [
+          [
+            0.196595,
+            0.0,
+            0.980484
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.980484,
+            0.0,
+            0.196595
+          ],
+          [
+            8193.02,
+            728.236,
+            8211.46
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_04",
+        "tm": [
+          [
+            -0.541026,
+            0.0,
+            0.841004
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.841004,
+            0.0,
+            -0.541026
+          ],
+          [
+            -12652.1,
+            315.841,
+            7119.23
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_05",
+        "tm": [
+          [
+            -0.0976437,
+            0.0,
+            0.995221
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995221,
+            0.0,
+            -0.0976437
+          ],
+          [
+            257.534,
+            787.973,
+            8308.56
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_10",
+        "tm": [
+          [
+            0.0647318,
+            0.0,
+            0.997902
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.997902,
+            0.0,
+            0.0647318
+          ],
+          [
+            -14786.9,
+            102.286,
+            -5236.75
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_usa",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_11",
+        "tm": [
+          [
+            0.250652,
+            0.0,
+            0.968077
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.968077,
+            0.0,
+            0.250652
+          ],
+          [
+            -9698.05,
+            959.933,
+            -2142.58
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_usa",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_12",
+        "tm": [
+          [
+            0.326356,
+            0.0,
+            0.945247
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.945247,
+            0.0,
+            0.326356
+          ],
+          [
+            -2263.3,
+            700.138,
+            -3826.71
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_usa",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_01",
+        "tm": [
+          [
+            -0.53571,
+            0.0,
+            0.844401
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.844401,
+            0.0,
+            -0.53571
+          ],
+          [
+            5488.11,
+            969.117,
+            1445.76
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_02",
+        "tm": [
+          [
+            0.201976,
+            0.0,
+            0.97939
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.97939,
+            0.0,
+            0.201976
+          ],
+          [
+            5816.35,
+            715.918,
+            -5624.35
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      },
+      {
+        "name": "afp_base_03",
+        "tm": [
+          [
+            -0.333602,
+            0.0,
+            0.942713
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.942713,
+            0.0,
+            -0.333602
+          ],
+          [
+            -4975.74,
+            1020.77,
+            4757.95
+          ]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    ],
+    "structures": [
+      {
+        "name": "afp_dummy_07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8777.39,
+            229.095,
+            12012.6
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1062.93,
+            156.87,
+            13330.9
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -10790.2,
+            131.019,
+            13458.1
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -12652.1,
+            315.841,
+            7119.23
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8193.02,
+            728.236,
+            8211.46
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            257.534,
+            787.973,
+            8308.56
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -14786.9,
+            102.296,
+            -5236.78
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_11",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -9698.05,
+            959.933,
+            -2142.6
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_12",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -2263.3,
+            700.138,
+            -3826.68
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_01",
+        "tm": [
+          [
+            0.790186,
+            0.0,
+            0.612867
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.612867,
+            0.0,
+            0.790186
+          ],
+          [
+            5488.11,
+            969.117,
+            1445.76
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            5816.34,
+            715.918,
+            -5624.36
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "afp_dummy_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -4975.74,
+            1020.77,
+            4757.95
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      }
+    ],
+    "armada": {
+      "name": "ft_armada",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -10202.3,
+          2679.9,
+          -1389.1
+        ]
+      ],
+      "unit_class": "a-20g",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "afp_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          0.00260417,
+          0.0,
+          28672.0
+        ],
+        [
+          0.0,
+          2200.0,
+          0.0
+        ],
+        [
+          -28672.0,
+          0.0,
+          0.00260417
+        ],
+        [
+          -4096.0,
+          194.207,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "afp_zone_01": {
+      "type": "Box",
+      "tm": [
+        [
+          311.467,
+          0.0,
+          -512.824
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          512.824,
+          0.0,
+          311.466
+        ],
+        [
+          5482.86,
+          939.867,
+          1507.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_02": {
+      "type": "Box",
+      "tm": [
+        [
+          121.672,
+          0.0,
+          587.534
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -587.533,
+          0.0,
+          121.673
+        ],
+        [
+          5816.5,
+          663.118,
+          -5634.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_03": {
+      "type": "Box",
+      "tm": [
+        [
+          -367.023,
+          0.0,
+          474.652
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -474.652,
+          0.0,
+          -367.022
+        ],
+        [
+          -4964.44,
+          984.721,
+          4764.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_04": {
+      "type": "Box",
+      "tm": [
+        [
+          -427.211,
+          0.0,
+          421.297
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -421.297,
+          0.0,
+          -427.21
+        ],
+        [
+          -12650.8,
+          279.841,
+          7126.73
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_05": {
+      "type": "Box",
+      "tm": [
+        [
+          -55.6435,
+          0.0,
+          597.414
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -597.414,
+          0.0,
+          -55.6426
+        ],
+        [
+          254.034,
+          758.223,
+          8311.36
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_06": {
+      "type": "Box",
+      "tm": [
+        [
+          -55.6435,
+          0.0,
+          597.414
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -597.414,
+          0.0,
+          -55.6426
+        ],
+        [
+          8200.77,
+          690.036,
+          8225.61
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_07": {
+      "type": "Box",
+      "tm": [
+        [
+          386.128,
+          0.0,
+          459.244
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -459.243,
+          0.0,
+          386.128
+        ],
+        [
+          8780.39,
+          209.115,
+          12016.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_08": {
+      "type": "Box",
+      "tm": [
+        [
+          579.652,
+          0.0,
+          154.932
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -154.931,
+          0.0,
+          579.652
+        ],
+        [
+          1065.13,
+          156.866,
+          13339.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_09": {
+      "type": "Box",
+      "tm": [
+        [
+          553.047,
+          0.0,
+          232.678
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          -232.677,
+          0.0,
+          553.047
+        ],
+        [
+          -10789.7,
+          118.969,
+          13464.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_10": {
+      "type": "Box",
+      "tm": [
+        [
+          570.061,
+          0.0,
+          -187.165
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          187.166,
+          0.0,
+          570.06
+        ],
+        [
+          -14784.1,
+          30.8864,
+          -5221.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_11": {
+      "type": "Box",
+      "tm": [
+        [
+          570.061,
+          0.0,
+          -187.165
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          187.166,
+          0.0,
+          570.06
+        ],
+        [
+          -9697.55,
+          940.933,
+          -2145.93
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "afp_zone_12": {
+      "type": "Box",
+      "tm": [
+        [
+          570.061,
+          0.0,
+          -187.165
+        ],
+        [
+          0.0,
+          250.0,
+          0.0
+        ],
+        [
+          187.166,
+          0.0,
+          570.06
+        ],
+        [
+          -2255.6,
+          651.388,
+          -3820.48
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

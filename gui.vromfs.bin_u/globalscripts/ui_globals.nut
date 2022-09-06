@@ -5,7 +5,7 @@ let realRoot = ::getroottable()
 realRoot.loc <- require("dagor.localize").loc
 realRoot.utf8 <- require("utf8")
 
-realRoot.wdlog <- @(watched, prefix = "") wlog(watched, prefix, dlog) //disable: -dlog-warn
+realRoot.wdlog <- @(watched, prefix = "", transform = null) wlog(watched, prefix, transform, dlog) //disable: -dlog-warn
 realRoot.console_print <- console_print
 
 realRoot.dlog <- dlog

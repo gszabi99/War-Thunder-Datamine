@@ -39,15 +39,6 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
       : ""
   }
 
-  function getConditionsText(unlockCfg) {
-    let cfg = ::UnlockConditions.getSubunlockCfg(unlockCfg.conditions) ?? unlockCfg
-    return ::UnlockConditions.getConditionsText(
-      cfg.conditions,
-      cfg.showProgress ? cfg.curVal : null,
-      cfg.maxVal,
-      { isExpired = cfg.isExpired })
-  }
-
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
     let isShowUnlock = unlockBlk != null && ::is_unlock_visible(unlockBlk)
     unlockObj.show(isShowUnlock)
@@ -57,7 +48,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
     let unlockConfig = ::build_conditions_config(unlockBlk)
     ::build_unlock_desc(unlockConfig)
 
-    let title = fillUnlockTitle(unlockConfig, unlockObj)
+    fillUnlockTitle(unlockConfig, unlockObj)
     fillUnlockImage(unlockConfig, unlockObj)
     fillUnlockProgressBar(unlockConfig, unlockObj)
     fillReward(unlockConfig, unlockObj)
@@ -68,21 +59,10 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
     if(::check_obj(closeBtn))
       closeBtn.unlockId = unlockBlk.id
 
-    unlockObj.tooltip = "\n".join([::colorize("unlockHeaderColor", title),
-      getChapterAndGroupText(unlockBlk),
-      unlockConfig?.stagesText ?? "",
-      getConditionsText(unlockConfig)
-    ], true)
-  }
-
-  function getUnlockTooltipById(id) {
-    let blk = ::g_unlocks.getUnlockById(id)
-    let cfg = ::build_unlock_desc(::build_conditions_config(blk))
-    return "\n".join([::colorize("unlockHeaderColor", getUnlockTitle(cfg)),
-      getChapterAndGroupText(blk),
-      cfg?.stagesText ?? "",
-      getConditionsText(cfg)
-    ], true)
+    let tooltipObj = unlockObj.findObject("unlock_tooltip")
+    tooltipObj.tooltipId = UNLOCK_SHORT.getTooltipId(unlockConfig.id, {
+      showChapter = true
+    })
   }
 
   function getUnlockImageConfig(unlockConfig)
@@ -343,7 +323,19 @@ g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConf
 g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
 {
   unlockObj.findObject("description").setValue(getUnlockDesc(unlockConfig))
-  unlockObj.findObject("conditions").setValue(getUnlockConditionsText(unlockConfig, { showMult = false }))
+
+  let curVal = ::g_unlocks.isUnlockComplete(unlockConfig) ? null : unlockConfig.curVal
+  let mainCondText = ::UnlockConditions.getMainConditionText(unlockConfig.conditions, curVal, unlockConfig.maxVal)
+  unlockObj.findObject("main_cond").setValue(mainCondText)
+
+  let mainCond = ::UnlockConditions.getMainProgressCondition(unlockConfig.conditions)
+  let mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
+  unlockObj.findObject("mult_desc").setValue(mulText)
+
+  unlockObj.findObject("conditions").setValue(getUnlockConditionsText(unlockConfig, {
+    withMainCondition = false
+    showMult = false
+  }))
 
   let showUnitsBtnObj = unlockObj.findObject("show_units_btn")
   showUnitsBtnObj.show(hasActiveUnlock(unlockConfig.id, getShopDiffCode())
@@ -353,10 +345,6 @@ g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConf
   let showPrizesBtnObj = unlockObj.findObject("show_prizes_btn")
   showPrizesBtnObj.show(unlockConfig?.trophyId != null)
   showPrizesBtnObj.trophyId = unlockConfig?.trophyId
-
-  let mainCond = ::UnlockConditions.getMainProgressCondition(unlockConfig.conditions)
-  let mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
-  unlockObj.findObject("mult_desc").setValue(mulText)
 }
 
 g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
@@ -431,7 +419,6 @@ g_unlock_view.fillUnlockTitle <- function fillUnlockTitle(unlockConfig, unlockOb
 {
   let title = getUnlockTitle(unlockConfig)
   unlockObj.findObject("achivment_title").setValue(title)
-  return title
 }
 
 g_unlock_view.getRewardText <- function getRewardText(unlockConfig, stageNum)

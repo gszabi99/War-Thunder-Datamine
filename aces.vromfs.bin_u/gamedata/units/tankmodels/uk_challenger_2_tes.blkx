@@ -198,7 +198,7 @@
       }
     },
     "turret_cha": {
-      "armorClass": "CHA_tank_modern",
+      "armorClass": "RHA_tank_modern",
       "gun_mask_01_dm": {
         "armorThickness": 30.0,
         "solidArmorTestDepth": 50.0
@@ -281,7 +281,8 @@
         "armorEffectiveThicknessMax": 210.0
       },
       "turret_01_top_dm": {
-        "armorThickness": 60.0
+        "armorThickness": 60.0,
+        "armorClass": "CHA_tank_modern"
       },
       "turret_05_front_dm": {
         "armorThickness": 20.0
@@ -356,7 +357,7 @@
         "createSecondaryShatters": false
       },
       "turret_commander_dm": {
-        "armorThickness": 60.0
+        "armorThickness": 25.0
       },
       "turret_bottom_dm": {
         "armorThickness": 200.0,
@@ -375,6 +376,10 @@
         "armorClass": "leopard_2a5_turret_nera",
         "variableThickness": true
       },
+      "ex_armor_06_dm": {
+        "armorThickness": 6.35,
+        "armorClass": "tank_structural_steel"
+      },
       "ex_armor_l_02_dm": {
         "armorThickness": 6.35,
         "armorClass": "tank_structural_steel"
@@ -384,7 +389,8 @@
         "armorClass": "tank_structural_steel"
       },
       "turret_09_side_dm": {
-        "armorThickness": 60.0
+        "armorThickness": 60.0,
+        "armorClass": "CHA_tank_modern"
       }
     },
     "grille": {
@@ -415,6 +421,14 @@
       "variableThickness": true,
       "turret_05_bottom_dm": {
         "armorThickness": 40.0,
+        "armorQuality": 0.635
+      },
+      "ex_armor_r_01_dm": {
+        "armorThickness": 80.0,
+        "armorQuality": 0.635
+      },
+      "ex_armor_l_01_dm": {
+        "armorThickness": 80.0,
         "armorQuality": 0.635
       },
       "ex_armor_l_04_dm": {
@@ -1253,7 +1267,8 @@
           },
           {
             "damageType": "fire",
-            "fire": 0.02,
+            "fire": 0.01,
+            "full_expl": 0.01,
             "expl": 0.01
           }
         ],
@@ -1261,22 +1276,26 @@
           {
             "damageType": "cumulative",
             "expl": 0.4,
-            "fire": 0.6
+            "full_expl": 0.1,
+            "fire": 0.5
           },
           {
             "damageType": "explosion",
             "expl": 0.4,
-            "fire": 0.6
+            "full_expl": 0.1,
+            "fire": 0.5
           },
           {
             "damageType": "secondaryShatter",
             "expl": 0.4,
-            "fire": 0.6
+            "full_expl": 0.1,
+            "fire": 0.5
           },
           {
             "damageType": "generic",
             "expl": 0.5,
-            "fire": 0.5
+            "full_expl": 0.1,
+            "fire": 0.4
           }
         ]
       },
@@ -3126,15 +3145,149 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
-        "wreckages": {
-          "count": 3,
-          "speed": 15.0,
-          "angle": 80.0,
-          "fxName": "fire_tank_explosion_trails"
-        },
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 8,
+          "speed": 20.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 10,
+          "speed": 20.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion_small",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 10,
+          "speed": 13.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion_ammo",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 12,
+          "speed": 25.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_med"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion_ammo_small",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 14,
+          "speed": 20.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "full_expl",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "explosion_ship_big",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 15,
+          "speed": 30.0,
+          "angle": 40.0,
+          "fxName": "fire_trails_explosion_med"
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_tiny",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_tiny",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_tiny",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_tiny",
+          "setOrientation": true
         }
       }
     ],

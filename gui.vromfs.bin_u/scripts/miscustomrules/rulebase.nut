@@ -143,6 +143,12 @@ let { GUI } = require("%scripts/utils/configs.nut")
       unitLimits = [] //::g_unit_limit_classes.LimitBase
     }
   */
+
+  function clearUnitsLimitData()
+  {
+    fullUnitsLimitData = null
+  }
+
   function getFullUnitLimitsData()
   {
     if (!fullUnitsLimitData)

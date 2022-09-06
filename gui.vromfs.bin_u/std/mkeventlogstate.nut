@@ -1,5 +1,5 @@
 let { Watched } = require("frp")
-let { setTimeout } = require("dagor.workcycle")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { kwarg } = require("%sqstd/functools.nut")
 let { get_time_msec } = require("dagor.time")
 
@@ -23,15 +23,25 @@ let function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEven
       curEvents.mutate(@(list) list.remove(idx))
   }
 
+  let timersCb = {}
   let function startRemoveTimer(event) {
     local { ttl = defTtl, uid, removeMsec = null } = event
+    if (uid in timersCb) {
+      clearTimer(timersCb[uid])
+      delete timersCb[uid]
+    }
     if (ttl <= 0)
       return
     if (removeMsec == null) {
       removeMsec = get_time_msec() + (1000 * ttl).tointeger()
       event.removeMsec <- removeMsec
     }
-    setTimeout(max(0.001 * (removeMsec - get_time_msec()), 0.01), @() removeEvent(uid))
+    timersCb[uid] <- function() {
+      removeEvent(uid)
+      if (uid in timersCb)
+        delete timersCb[uid]
+    }
+    setTimeout(max(0.001 * (removeMsec - get_time_msec()), 0.01), timersCb[uid])
   }
   curEvents.value.each(startRemoveTimer)
 
@@ -64,14 +74,28 @@ let function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEven
     startRemoveTimer(event)
   }
 
+  let function modifyOrAddEvent(eventExt, isEventToModify) {
+    let idx = curEvents.value.findindex(isEventToModify)
+    if (idx == null) {
+      addEvent(eventExt)
+      return
+    }
+
+    curEvents.mutate(function(list) {
+      list[idx] = eventExt.__merge({ uid = list[idx].uid })
+    })
+    startRemoveTimer(curEvents.value[idx])
+  }
+
   let clearEvents = @() curEvents([])
 
-  foreach(func in [addEvent, removeEvent, clearEvents])
+  foreach(func in [addEvent, modifyOrAddEvent, removeEvent, clearEvents])
     curEvents.whiteListMutatorClosure(func)
 
   return {
     curEvents
     addEvent
+    modifyOrAddEvent
     removeEvent
     clearEvents
   }

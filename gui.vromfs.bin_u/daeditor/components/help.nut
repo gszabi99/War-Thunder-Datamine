@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 let {colors} = require("style.nut")
-let scrollbar = require("%darg/components/scrollbar.nut")
+let scrollbar = require("%daeditor/components/scrollbar.nut")
 let textButton = require("textButton.nut")
 
 
@@ -31,6 +31,7 @@ Ctrl+Alt+D - Drop objects
 Ctrl+Alt+E - Drop objects on normal
 Ctrl+Alt+W - Surf over ground mode
 Ctrl+Alt+R - Reset scale
+Ctrl+Alt+T - Reset rotation
 
 Space - Free camera mode (WASD + mouse, E up, C down, LShift faster, Q/Z focus)
 

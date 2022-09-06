@@ -118,18 +118,25 @@ shopItem {
 
   bottomline {
     tdiv {
-      size:t='fw, ph'
+      width:t='fw'
+      pos:t='0, ph-h'
+      flow:t='vertical'
 
       shopItemText {
         text:t='<<progressText>>'
         progressStatus:t='<<progressStatus>>'
-        position:t='absolute'
-        pos:t='pw-w, -2/3h'
+        position:t='relative'
+        pos:t='pw-w, 0'
         smallFont:t='yes'
         talign:t='right'
         shadeStyle:t='textOnIcon'
       }
-      <<@progressBlk>>
+      tdiv {
+        width:t='pw'
+        position:t='relative'
+        pos:t='0, -3@sf/@pf'
+        <<@progressBlk>>
+      }
     }
 
     shopItemPrice {

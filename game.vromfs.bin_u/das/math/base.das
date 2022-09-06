@@ -52,6 +52,14 @@ def move_to_scalar(from, to, dt, vel : float)
     return from - d
   return from + d
 
+[generic]
+def move_to(from, to, dt, vel : float)
+  let d = vel * dt
+  if abs(from - to) < d
+    return to
+
+  return to < from ? from - d : from + d
+
 // move_to version for vector types
 [generic]
 def move_to(from, to : auto(algebraic); dt, vel : float)

@@ -86,13 +86,8 @@ expandable {
       id:t='hidden_block'
       isSmallView:t = 'yes'
       padding:t='0, 0, 1*@scrn_tgt/100.0, 0'
-      <<^isSimpleList>>
       width:t='pw'
       flow:t='h-flow'
-      <</isSimpleList>>
-      <<#isSimpleList>>
-      flow:t='vertical'
-      <</isSimpleList>>
     }
 
     img {
@@ -103,6 +98,14 @@ expandable {
       size:t="@mIco,@mIco"
       background-color:t="@white"
     }
+  }
+
+  title:t='$tooltipObj'
+  tooltipObj {
+    id:t='unlock_tooltip'
+    display:t='hide'
+    on_tooltip_open:t='onGenericTooltipOpen'
+    on_tooltip_close:t='onTooltipObjClose'
   }
 }
 <</unlocks>>
