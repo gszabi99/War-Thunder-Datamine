@@ -1,5 +1,5 @@
 let eventbus = require("eventbus")
-let log = require("%sqstd/log.nut")()
+let {log} = require("%sqstd/log.nut")()
 let {isEqual} = require("%sqstd/underscore.nut")
 let {Watched} = require("frp")
 

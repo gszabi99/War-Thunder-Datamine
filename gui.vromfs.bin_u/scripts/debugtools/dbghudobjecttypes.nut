@@ -1,5 +1,6 @@
 let { format } = require("string")
-let { GO_FAIL, GO_WIN } = require_native("guiMission")
+let { GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP
+} = require_native("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_dbg_hud_object_type <- {
   types = []
@@ -118,17 +119,17 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
     eventChance = 30
 
     hudEventsTbl= {
-      [::MISSION_CAPTURED_ZONE] = {
+      [MISSION_CAPTURED_ZONE] = {
         locId = "NET_TEAM1_CAPTURED_LA"
         isHeroAction = @() ::math.frnd() < 0.2
         captureProgress = 1
       },
-      [::MISSION_CAPTURING_ZONE] = {
+      [MISSION_CAPTURING_ZONE] = {
         locId = "NET_YOU_CAPTURING_LA"
         isHeroAction = true
         captureProgress = @() 2.0 * ::math.frnd() - 1
       },
-      [::MISSION_CAPTURING_STOP] = {
+      [MISSION_CAPTURING_STOP] = {
         locId = "NET_TEAM_A_CAPTURING_STOP_LA"
         isHeroAction = true
         captureProgress = @() 2.0 * ::math.frnd() - 1
@@ -137,9 +138,9 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
 
     genNewEvent = function() {
       let drop = math.frnd()
-      let eventId = drop < 0.7 ? ::MISSION_CAPTURING_ZONE
-        : drop < 0.9 ? ::MISSION_CAPTURED_ZONE
-        : ::MISSION_CAPTURING_STOP
+      let eventId = drop < 0.7 ? MISSION_CAPTURING_ZONE
+        : drop < 0.9 ? MISSION_CAPTURED_ZONE
+        : MISSION_CAPTURING_STOP
 
       let hudEventData = { eventId = eventId }
       let data = hudEventsTbl[eventId]

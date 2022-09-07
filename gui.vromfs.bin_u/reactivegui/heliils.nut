@@ -35,7 +35,7 @@ let mfdPilotParamsTablePos = Watched([0, 300])
 let mfdPilotParamsTable = paramsTable(IlsMask, SecondaryMask,
   800, 50,
   mfdPilotParamsTablePos,
-  10,  false, true)
+  10,  false)
 
 let function compassComponent(style, size, pos) {
   return @() {

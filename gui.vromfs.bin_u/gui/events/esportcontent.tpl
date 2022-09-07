@@ -14,14 +14,21 @@ textareaNoTab {
 }
 
 slotsScrollDiv {
-  id:t='events_list'
   height:t='1@eSItemHeight+2@eSItemMargin'
   top:t='2@eSItemMargin'
   position:t='relative'
   class:t='tournamentDiv'
   overflow-x:t='auto'
 
-  include "%gui/events/eSportItem"
+  slotbarTable {
+    id:t='events_list'
+    behavior:t='ActivateSelect'
+    position:t='relative'
+    navigatorShortcuts:t='yes'
+    activateChoosenItemByShortcut:t='yes'
+
+    include "%gui/events/eSportItem"
+  }
 }
 
 popupFilter {

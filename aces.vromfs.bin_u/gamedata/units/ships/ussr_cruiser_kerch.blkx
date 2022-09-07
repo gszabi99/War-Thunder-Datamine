@@ -27,7 +27,8 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_large",
-  "explosionFx": "explosion_ship_small",
+  "explosionFx": "explosion_ship_large",
+  "decorCutProps": "battleship",
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
   "smokeScreenRad": 60.0,
@@ -1758,19 +1759,181 @@
     },
     "belt_armor": {
       "fireProtectionHp": 120.0,
+      "armorClass": "ship_STS",
+      "armorThickness": 40.0,
+      "hidableInViewer": true,
+      "fireDamageMult": 0.1
+    },
+    "citadel_armor_plates": {
+      "fireProtectionHp": 120.0,
+      "armorClass": "ship_RHA",
+      "armorThickness": 40.0,
+      "hidableInXrayViewer": true,
+      "fireDamageMult": 0.001,
+      "shatterDamageMult": 0.001,
+      "stopChanceOnDeadPart": 0.5,
+      "ignoreDeadWithSplash": true,
+      "restrainDamage": 1.0,
+      "splashPenetrationToArmorThreshold": 0.113,
+      "kineticPenetrationToArmorThreshold": 0.5,
+      "armor_cit_l_01_dm": {
+        "armorThickness": 40.0,
+        "hp": 1200.0
+      },
+      "armor_cit_l_02_dm": {
+        "armorThickness": 40.0,
+        "hp": 1200.0
+      },
+      "armor_cit_r_01_dm": {
+        "armorThickness": 40.0,
+        "hp": 1200.0
+      },
+      "armor_cit_r_02_dm": {
+        "armorThickness": 40.0,
+        "hp": 1200.0
+      },
+      "armor_cit_l_03_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      },
+      "armor_cit_l_04_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      },
+      "armor_cit_l_05_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      },
+      "armor_cit_l_06_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      },
+      "armor_cit_r_03_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      },
+      "armor_cit_r_04_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      },
+      "armor_cit_r_05_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      },
+      "armor_cit_r_06_dm": {
+        "armorThickness": 35.0,
+        "hp": 1200.0
+      }
+    },
+    "belt_armor_plates": {
+      "fireProtectionHp": 120.0,
       "armorClass": "ship_RHA",
       "armorThickness": 40.0,
       "hidableInViewer": true,
-      "fireDamageMult": 0.1,
-      "armor_belt_01_dm": {
-        "hidableInViewer": true,
-        "armorThickness": 20.0,
-        "hp": 10000.0
-      },
-      "armor_belt_02_dm": {
-        "hidableInViewer": true,
+      "hidableInXrayViewer": true,
+      "fireDamageMult": 0.001,
+      "shatterDamageMult": 0.001,
+      "explosionDamageMult": 1.5,
+      "stopChanceOnDeadPart": 0.5,
+      "ignoreDeadWithSplash": true,
+      "restrainDamage": 0.5,
+      "splashPenetrationToArmorThreshold": 0.113,
+      "kineticPenetrationToArmorThreshold": 0.5,
+      "armor_belt_l_01_dm": {
         "armorThickness": 70.0,
-        "hp": 10000.0
+        "hp": 2000.0
+      },
+      "armor_belt_l_02_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_03_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_04_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_05_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_06_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_01_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_02_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_03_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_04_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_05_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_06_dm": {
+        "armorThickness": 70.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_07_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_08_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_09_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_10_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_11_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_l_12_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_07_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_08_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_09_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_10_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_11_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_belt_r_12_dm": {
+        "armorThickness": 20.0,
+        "hp": 2000.0
       }
     },
     "turret_armor": {
@@ -2809,6 +2972,67 @@
             "damageType": "generic",
             "fire": 0.15,
             "damage": 1500.0
+          }
+        ]
+      },
+      {
+        "name": [
+          "cover_01_dm",
+          "cover_02_dm",
+          "cover_03_dm",
+          "cover_04_dm",
+          "cover_05_dm",
+          "cover_06_dm",
+          "cover_07_dm",
+          "cover_08_dm",
+          "cover_09_dm",
+          "cover_10_dm"
+        ],
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "damage": 15.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.15,
+              "fxEventName": "fire_after_hit_med"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 35.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.15,
+              "fxEventName": "fire_after_hit_med"
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.5,
+              "fxEventName": "fire_after_hit_big"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 90.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.5,
+              "fxEventName": "fire_after_hit_big"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 800.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.6,
+              "fxEventName": "fire_after_hit_huge"
+            }
           }
         ]
       }
@@ -4640,7 +4864,7 @@
         "limits": {
           "yaw": [
             -180.0,
-            0.0
+            180.0
           ],
           "pitch": [
             -5.0,
@@ -4650,20 +4874,80 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -152.0,
-            43.0,
+            -165.0,
+            7.0,
             85.0
           ],
           "lim2": [
-            -152.0,
-            -7.0,
+            -165.0,
+            -8.0,
             -5.0,
             85.0
           ],
           "lim3": [
-            -7.0,
+            -8.0,
             0.0,
+            8.0,
+            85.0
+          ],
+          "lim4": [
             0.0,
+            22.0,
+            25.0,
+            85.0
+          ],
+          "lim5": [
+            22.0,
+            26.0,
+            15.0,
+            85.0
+          ],
+          "lim6": [
+            26.0,
+            36.0,
+            7.0,
+            85.0
+          ],
+          "lim7": [
+            36.0,
+            39.0,
+            0.0,
+            85.0
+          ],
+          "lim8": [
+            39.0,
+            81.0,
+            -3.0,
+            85.0
+          ],
+          "lim9": [
+            81.0,
+            123.0,
+            4.0,
+            85.0
+          ],
+          "lim10": [
+            123.0,
+            127.0,
+            -2.0,
+            85.0
+          ],
+          "lim11": [
+            127.0,
+            141.0,
+            4.0,
+            85.0
+          ],
+          "lim12": [
+            141.0,
+            177.0,
+            66.0,
+            85.0
+          ],
+          "lim13": [
+            177.0,
+            180.0,
+            7.0,
             85.0
           ]
         },
@@ -4730,7 +5014,7 @@
         "limits": {
           "yaw": [
             -180.0,
-            0.0
+            180.0
           ],
           "pitch": [
             -5.0,
@@ -4740,20 +5024,80 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -152.0,
-            43.0,
+            -165.0,
+            7.0,
             85.0
           ],
           "lim2": [
-            -152.0,
-            -7.0,
+            -165.0,
+            -8.0,
             -5.0,
             85.0
           ],
           "lim3": [
-            -7.0,
+            -8.0,
             0.0,
+            8.0,
+            85.0
+          ],
+          "lim4": [
             0.0,
+            22.0,
+            25.0,
+            85.0
+          ],
+          "lim5": [
+            22.0,
+            26.0,
+            15.0,
+            85.0
+          ],
+          "lim6": [
+            26.0,
+            36.0,
+            7.0,
+            85.0
+          ],
+          "lim7": [
+            36.0,
+            39.0,
+            0.0,
+            85.0
+          ],
+          "lim8": [
+            39.0,
+            81.0,
+            -3.0,
+            85.0
+          ],
+          "lim9": [
+            81.0,
+            123.0,
+            4.0,
+            85.0
+          ],
+          "lim10": [
+            123.0,
+            127.0,
+            -2.0,
+            85.0
+          ],
+          "lim11": [
+            127.0,
+            141.0,
+            4.0,
+            85.0
+          ],
+          "lim12": [
+            141.0,
+            177.0,
+            66.0,
+            85.0
+          ],
+          "lim13": [
+            177.0,
+            180.0,
+            7.0,
             85.0
           ]
         },
@@ -4819,7 +5163,7 @@
         },
         "limits": {
           "yaw": [
-            0.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -4829,21 +5173,81 @@
         },
         "limitsTable": {
           "lim1": [
-            0.0,
+            -180.0,
+            -177.0,
             7.0,
-            0.0,
             85.0
           ],
           "lim2": [
-            7.0,
-            152.0,
-            -5.0,
+            -177.0,
+            -141.0,
+            66.0,
             85.0
           ],
           "lim3": [
-            152.0,
+            -141.0,
+            -127.0,
+            4.0,
+            85.0
+          ],
+          "lim4": [
+            -127.0,
+            -123.0,
+            -2.0,
+            85.0
+          ],
+          "lim5": [
+            -123.0,
+            -81.0,
+            4.0,
+            85.0
+          ],
+          "lim6": [
+            -81.0,
+            -39.0,
+            -3.0,
+            85.0
+          ],
+          "lim7": [
+            -39.0,
+            -36.0,
+            0.0,
+            85.0
+          ],
+          "lim8": [
+            -36.0,
+            -26.0,
+            7.0,
+            85.0
+          ],
+          "lim9": [
+            -26.0,
+            -22.0,
+            15.0,
+            85.0
+          ],
+          "lim10": [
+            -22.0,
+            0.0,
+            25.0,
+            85.0
+          ],
+          "lim11": [
+            0.0,
+            8.0,
+            8.0,
+            85.0
+          ],
+          "lim12": [
+            8.0,
+            165.0,
+            -5.0,
+            85.0
+          ],
+          "lim13": [
+            165.0,
             180.0,
-            43.0,
+            7.0,
             85.0
           ]
         },
@@ -4909,7 +5313,7 @@
         },
         "limits": {
           "yaw": [
-            0.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -4919,21 +5323,81 @@
         },
         "limitsTable": {
           "lim1": [
-            0.0,
+            -180.0,
+            -177.0,
             7.0,
-            0.0,
             85.0
           ],
           "lim2": [
-            7.0,
-            152.0,
-            -5.0,
+            -177.0,
+            -141.0,
+            66.0,
             85.0
           ],
           "lim3": [
-            152.0,
+            -141.0,
+            -127.0,
+            4.0,
+            85.0
+          ],
+          "lim4": [
+            -127.0,
+            -123.0,
+            -2.0,
+            85.0
+          ],
+          "lim5": [
+            -123.0,
+            -81.0,
+            4.0,
+            85.0
+          ],
+          "lim6": [
+            -81.0,
+            -39.0,
+            -3.0,
+            85.0
+          ],
+          "lim7": [
+            -39.0,
+            -36.0,
+            0.0,
+            85.0
+          ],
+          "lim8": [
+            -36.0,
+            -26.0,
+            7.0,
+            85.0
+          ],
+          "lim9": [
+            -26.0,
+            -22.0,
+            15.0,
+            85.0
+          ],
+          "lim10": [
+            -22.0,
+            0.0,
+            25.0,
+            85.0
+          ],
+          "lim11": [
+            0.0,
+            8.0,
+            8.0,
+            85.0
+          ],
+          "lim12": [
+            8.0,
+            165.0,
+            -5.0,
+            85.0
+          ],
+          "lim13": [
+            165.0,
             180.0,
-            43.0,
+            7.0,
             85.0
           ]
         },
@@ -5000,7 +5464,7 @@
         "limits": {
           "yaw": [
             -180.0,
-            0.0
+            180.0
           ],
           "pitch": [
             -5.0,
@@ -5010,20 +5474,74 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -177.0,
-            0.0,
+            -170.0,
+            11.0,
             85.0
           ],
           "lim2": [
-            -177.0,
-            -10.0,
+            -170.0,
+            -15.0,
             -5.0,
             85.0
           ],
           "lim3": [
-            -10.0,
-            0.0,
+            -15.0,
+            2.0,
+            8.0,
+            85.0
+          ],
+          "lim4": [
+            2.0,
             17.0,
+            25.0,
+            85.0
+          ],
+          "lim5": [
+            17.0,
+            21.0,
+            12.0,
+            85.0
+          ],
+          "lim6": [
+            21.0,
+            27.0,
+            6.0,
+            85.0
+          ],
+          "lim7": [
+            27.0,
+            28.0,
+            0.0,
+            85.0
+          ],
+          "lim8": [
+            28.0,
+            57.0,
+            -1.0,
+            85.0
+          ],
+          "lim9": [
+            57.0,
+            71.0,
+            4.0,
+            85.0
+          ],
+          "lim10": [
+            71.0,
+            118.0,
+            9.0,
+            85.0
+          ],
+          "lim11": [
+            118.0,
+            175.0,
+            66.0,
+            85.0
+          ],
+          "lim12": [
+            175.0,
+            180.0,
+            11.0,
             85.0
           ]
         },
@@ -5090,7 +5608,7 @@
         "limits": {
           "yaw": [
             -180.0,
-            0.0
+            180.0
           ],
           "pitch": [
             -5.0,
@@ -5100,20 +5618,74 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -177.0,
-            0.0,
+            -170.0,
+            11.0,
             85.0
           ],
           "lim2": [
-            -177.0,
-            -10.0,
+            -170.0,
+            -15.0,
             -5.0,
             85.0
           ],
           "lim3": [
-            -10.0,
-            0.0,
+            -15.0,
+            2.0,
+            8.0,
+            85.0
+          ],
+          "lim4": [
+            2.0,
             17.0,
+            25.0,
+            85.0
+          ],
+          "lim5": [
+            17.0,
+            21.0,
+            12.0,
+            85.0
+          ],
+          "lim6": [
+            21.0,
+            27.0,
+            6.0,
+            85.0
+          ],
+          "lim7": [
+            27.0,
+            28.0,
+            0.0,
+            85.0
+          ],
+          "lim8": [
+            28.0,
+            57.0,
+            -1.0,
+            85.0
+          ],
+          "lim9": [
+            57.0,
+            71.0,
+            4.0,
+            85.0
+          ],
+          "lim10": [
+            71.0,
+            118.0,
+            9.0,
+            85.0
+          ],
+          "lim11": [
+            118.0,
+            175.0,
+            66.0,
+            85.0
+          ],
+          "lim12": [
+            175.0,
+            180.0,
+            11.0,
             85.0
           ]
         },
@@ -5179,7 +5751,7 @@
         },
         "limits": {
           "yaw": [
-            0.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -5189,21 +5761,75 @@
         },
         "limitsTable": {
           "lim1": [
-            0.0,
-            10.0,
-            17.0,
+            -180.0,
+            -175.0,
+            11.0,
             85.0
           ],
           "lim2": [
-            10.0,
-            177.0,
-            -5.0,
+            -175.0,
+            -118.0,
+            66.0,
             85.0
           ],
           "lim3": [
-            177.0,
-            180.0,
+            -118.0,
+            -71.0,
+            9.0,
+            85.0
+          ],
+          "lim4": [
+            -71.0,
+            -57.0,
+            4.0,
+            85.0
+          ],
+          "lim5": [
+            -57.0,
+            -28.0,
+            -1.0,
+            85.0
+          ],
+          "lim6": [
+            -28.0,
+            -27.0,
             0.0,
+            85.0
+          ],
+          "lim7": [
+            -27.0,
+            -21.0,
+            6.0,
+            85.0
+          ],
+          "lim8": [
+            -21.0,
+            -17.0,
+            12.0,
+            85.0
+          ],
+          "lim9": [
+            -17.0,
+            -2.0,
+            25.0,
+            85.0
+          ],
+          "lim10": [
+            -2.0,
+            15.0,
+            8.0,
+            85.0
+          ],
+          "lim11": [
+            15.0,
+            170.0,
+            -5.0,
+            85.0
+          ],
+          "lim12": [
+            170.0,
+            180.0,
+            11.0,
             85.0
           ]
         },
@@ -5269,7 +5895,7 @@
         },
         "limits": {
           "yaw": [
-            0.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -5279,21 +5905,75 @@
         },
         "limitsTable": {
           "lim1": [
-            0.0,
-            10.0,
-            17.0,
+            -180.0,
+            -175.0,
+            11.0,
             85.0
           ],
           "lim2": [
-            10.0,
-            177.0,
-            -5.0,
+            -175.0,
+            -118.0,
+            66.0,
             85.0
           ],
           "lim3": [
-            177.0,
-            180.0,
+            -118.0,
+            -71.0,
+            9.0,
+            85.0
+          ],
+          "lim4": [
+            -71.0,
+            -57.0,
+            4.0,
+            85.0
+          ],
+          "lim5": [
+            -57.0,
+            -28.0,
+            -1.0,
+            85.0
+          ],
+          "lim6": [
+            -28.0,
+            -27.0,
             0.0,
+            85.0
+          ],
+          "lim7": [
+            -27.0,
+            -21.0,
+            6.0,
+            85.0
+          ],
+          "lim8": [
+            -21.0,
+            -17.0,
+            12.0,
+            85.0
+          ],
+          "lim9": [
+            -17.0,
+            -2.0,
+            25.0,
+            85.0
+          ],
+          "lim10": [
+            -2.0,
+            15.0,
+            8.0,
+            85.0
+          ],
+          "lim11": [
+            15.0,
+            170.0,
+            -5.0,
+            85.0
+          ],
+          "lim12": [
+            170.0,
+            180.0,
+            11.0,
             85.0
           ]
         },
@@ -5370,56 +6050,32 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -171.0,
-            7.0,
+            -121.0,
+            78.0,
             85.0
           ],
           "lim2": [
-            -171.0,
-            -147.0,
-            -3.0,
+            -121.0,
+            -116.0,
+            0.0,
             85.0
           ],
           "lim3": [
-            -147.0,
-            -134.0,
-            7.0,
+            -116.0,
+            -100.0,
+            5.0,
             85.0
           ],
           "lim4": [
-            -134.0,
-            -127.0,
-            14.0,
+            -100.0,
+            87.0,
+            -2.0,
             85.0
           ],
           "lim5": [
-            -127.0,
-            -96.0,
-            39.0,
-            85.0
-          ],
-          "lim6": [
-            -96.0,
-            -84.0,
-            17.0,
-            85.0
-          ],
-          "lim7": [
-            -84.0,
-            -66.0,
-            11.0,
-            85.0
-          ],
-          "lim8": [
-            -66.0,
-            23.0,
-            -5.0,
-            85.0
-          ],
-          "lim9": [
-            23.0,
+            87.0,
             90.0,
-            16.0,
+            20.0,
             85.0
           ]
         },
@@ -5496,56 +6152,32 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -23.0,
-            16.0,
+            -87.0,
+            20.0,
             85.0
           ],
           "lim2": [
-            -23.0,
-            66.0,
-            -5.0,
+            -87.0,
+            100.0,
+            -2.0,
             85.0
           ],
           "lim3": [
-            66.0,
-            84.0,
-            11.0,
+            100.0,
+            116.0,
+            5.0,
             85.0
           ],
           "lim4": [
-            84.0,
-            96.0,
-            17.0,
+            116.0,
+            121.0,
+            0.0,
             85.0
           ],
           "lim5": [
-            96.0,
-            127.0,
-            39.0,
-            85.0
-          ],
-          "lim6": [
-            127.0,
-            134.0,
-            14.0,
-            85.0
-          ],
-          "lim7": [
-            134.0,
-            147.0,
-            7.0,
-            85.0
-          ],
-          "lim8": [
-            147.0,
-            171.0,
-            -3.0,
-            85.0
-          ],
-          "lim9": [
-            171.0,
+            121.0,
             180.0,
-            7.0,
+            78.0,
             85.0
           ]
         },
@@ -5622,47 +6254,33 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -173.0,
-            6.0,
+            -168.0,
+            8.0,
             85.0
           ],
           "lim2": [
-            -173.0,
-            -109.0,
-            -3.0,
+            -168.0,
+            62.0,
+            -1.0,
             85.0
           ],
           "lim3": [
-            -109.0,
-            -103.0,
-            -1.0,
+            62.0,
+            75.0,
+            5.0,
             85.0
           ],
           "lim4": [
-            -103.0,
-            -86.0,
-            13.0,
+            75.0,
+            78.0,
+            8.0,
             85.0
           ],
           "lim5": [
-            -86.0,
-            61.0,
-            -1.0,
+            78.0,
+            90.0,
+            38.0,
             85.0
-          ],
-          "lim6": [
-            [
-              61.0,
-              73.0,
-              7.0,
-              85.0
-            ],
-            [
-              73.0,
-              90.0,
-              40.0,
-              85.0
-            ]
           ]
         },
         "gunStabilizer": {
@@ -5738,44 +6356,32 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -73.0,
-            40.0,
+            -78.0,
+            38.0,
             85.0
           ],
           "lim2": [
-            -73.0,
-            -61.0,
-            7.0,
+            -78.0,
+            -75.0,
+            8.0,
             85.0
           ],
           "lim3": [
-            -61.0,
-            86.0,
-            -1.0,
+            -75.0,
+            -62.0,
+            5.0,
             85.0
           ],
           "lim4": [
-            86.0,
-            103.0,
-            13.0,
-            85.0
-          ],
-          "lim5": [
-            103.0,
-            109.0,
+            -62.0,
+            168.0,
             -1.0,
             85.0
           ],
-          "lim6": [
-            109.0,
-            173.0,
-            -3.0,
-            85.0
-          ],
-          "lim7": [
-            173.0,
+          "lim5": [
+            168.0,
             180.0,
-            6.0,
+            8.0,
             85.0
           ]
         },
@@ -5842,7 +6448,7 @@
         "limits": {
           "yaw": [
             -180.0,
-            75.0
+            90.0
           ],
           "pitch": [
             -5.0,
@@ -5852,32 +6458,38 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -166.0,
-            11.0,
+            -159.0,
+            36.0,
             85.0
           ],
           "lim2": [
-            -166.0,
-            -125.0,
-            -5.0,
+            -159.0,
+            -109.0,
+            64.0,
             85.0
           ],
           "lim3": [
-            -125.0,
-            -112.0,
-            7.0,
+            -109.0,
+            -65.0,
+            51.0,
             85.0
           ],
           "lim4": [
-            -112.0,
-            64.0,
-            1.0,
+            -65.0,
+            62.0,
+            -3.0,
             85.0
           ],
           "lim5": [
-            64.0,
-            75.0,
-            28.0,
+            62.0,
+            77.0,
+            0.0,
+            85.0
+          ],
+          "lim6": [
+            77.0,
+            90.0,
+            1.0,
             85.0
           ]
         },
@@ -5943,7 +6555,7 @@
         },
         "limits": {
           "yaw": [
-            -75.0,
+            -90.0,
             180.0
           ],
           "pitch": [
@@ -5953,33 +6565,39 @@
         },
         "limitsTable": {
           "lim1": [
-            -75.0,
-            -64.0,
-            28.0,
-            85.0
-          ],
-          "lim2": [
-            -64.0,
-            112.0,
+            -90.0,
+            -77.0,
             1.0,
             85.0
           ],
+          "lim2": [
+            -77.0,
+            -62.0,
+            0.0,
+            85.0
+          ],
           "lim3": [
-            112.0,
-            125.0,
-            7.0,
+            -62.0,
+            65.0,
+            -3.0,
             85.0
           ],
           "lim4": [
-            125.0,
-            166.0,
-            -5.0,
+            65.0,
+            109.0,
+            51.0,
             85.0
           ],
           "lim5": [
-            166.0,
+            109.0,
+            159.0,
+            64.0,
+            85.0
+          ],
+          "lim6": [
+            159.0,
             180.0,
-            11.0,
+            36.0,
             85.0
           ]
         },
@@ -6244,7 +6862,7 @@
       {
         "name": "torpedo_explosion",
         "fx": {
-          "name": "explosion_ship_large_second",
+          "name": "explosion_ship_small_ammo",
           "centerDmgPart": true
         }
       },
@@ -6258,7 +6876,7 @@
       {
         "name": "ready_use_ammo_explosion",
         "fx": {
-          "name": "explosion_ship_large_second",
+          "name": "explosion_ship_small_ammo",
           "centerDmgPart": true
         }
       },
@@ -6266,19 +6884,19 @@
         "name": "ammo_fire",
         "fx": [
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_01"
           },
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_big_ammo_second",
             "emitter": "emtr_fire_ammo_02"
           },
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_03"
           },
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_big_ammo_second",
             "emitter": "emtr_fire_ammo_04"
           }
         ]
@@ -6607,205 +7225,273 @@
         "name": "big_bang",
         "fx": [
           {
+            "name": "explosion_ship_big",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "explosion_ship_big_second",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "explosion_ship_big_second",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": {
+          "count": 8,
+          "speed": 50.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_big"
+        }
+      },
+      {
+        "name": "big_bang",
+        "fx": [
+          {
+            "name": "explosion_ship_big_ammo",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "explosion_ship_big_ammo_second",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "explosion_ship_big_ammo_second",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": {
+          "count": 10,
+          "speed": 50.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_big"
+        }
+      },
+      {
+        "name": "big_bang",
+        "fx": [
+          {
             "name": "explosion_ship_large",
             "emitter": "emtr_explosion_center_01"
           },
           {
-            "name": "water_explosion_big",
-            "emitter": "emtr_explosion_center_01"
-          },
-          {
             "name": "explosion_ship_large_second",
             "emitter": "emtr_explosion_center_02"
           },
           {
             "name": "explosion_ship_large_second",
-            "emitter": "emtr_explosion_center_03"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_explosion_center_02"
-          },
-          {
-            "name": "water_explosion_medium",
             "emitter": "emtr_explosion_center_03"
           }
-        ]
+        ],
+        "wreckages": {
+          "count": 14,
+          "speed": 50.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_big"
+        }
       },
       {
         "name": "ammo_fire_1",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_fire_2",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_fire_3",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_fire_4",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_04"
         }
       },
       {
         "name": "ammo_fire_5",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_05"
         }
       },
       {
         "name": "ammo_fire_6",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_06"
         }
       },
       {
         "name": "ammo_explosion_1",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_01"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_01"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_big_ammo",
+          "emitter": "emtr_fire_ammo_01"
+        }
       },
       {
         "name": "ammo_explosion_2",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_02"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_02"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_big_ammo",
+          "emitter": "emtr_fire_ammo_02"
+        }
       },
       {
         "name": "ammo_explosion_3",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_03"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_03"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_big_ammo",
+          "emitter": "emtr_fire_ammo_03"
+        }
       },
       {
         "name": "ammo_explosion_4",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_04"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_04"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_big_ammo",
+          "emitter": "emtr_fire_ammo_04"
+        }
       },
       {
         "name": "ammo_explosion_5",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_05"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_05"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_big_ammo",
+          "emitter": "emtr_fire_ammo_05"
+        }
       },
       {
         "name": "ammo_explosion_6",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_06"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_06"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_big_ammo",
+          "emitter": "emtr_fire_ammo_06"
+        }
       },
       {
         "name": "ammo_aux_fire_1",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_aux_fire_2",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_aux_fire_3",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_aux_fire_4",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_04"
         }
       },
       {
         "name": "ammo_aux_explosion_1",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_aux_explosion_2",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_aux_explosion_3",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_aux_explosion_4",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_small_ammo",
           "emitter": "emtr_fire_ammo_04"
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
         }
       }
     ],

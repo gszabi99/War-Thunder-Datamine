@@ -3,8 +3,7 @@
   "bin_dump_file": "",
   "mission_settings": {
     "player": {
-      "army": 1,
-      "wing": ""
+      "army": 1
     },
     "player_teamB": {
       "army": 2
@@ -13,11 +12,8 @@
       "type": "singleMission",
       "level": "levels/water.bin",
       "environment": "Day",
-      "weather": "hazy",
-      "restoreType": "attempts",
-      "optionalTakeOff": false
-    },
-    "spectator_points": {}
+      "weather": "hazy"
+    }
   },
   "imports": {
     "import_record": [
@@ -176,6 +172,9 @@
           },
           {
             "value": "setting team A convoys as hidden"
+          },
+          {
+            "value": "game mode"
           }
         ],
         "varSetInt": [
@@ -188,7 +187,7 @@
             "var": "cnv_t2_max_convoys_num"
           },
           {
-            "value": 23,
+            "value": 31,
             "var": "cnv_max_roads"
           },
           {
@@ -196,13 +195,17 @@
             "var": "cnv_t1_max_roads"
           },
           {
-            "value": 23,
+            "value": 31,
             "var": "cnv_t2_max_roads"
           }
         ],
         "varSetBool": {
           "value": true,
           "var": "cnv_t1_hidden"
+        },
+        "varSetString": {
+          "value": "pve",
+          "var": "cnv_game_mode"
         }
       },
       "else_actions": {}
@@ -760,9 +763,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.833215,
+          0.370071,
           0.0,
-          -0.55295
+          -0.929004
         ],
         [
           0.0,
@@ -770,14 +773,14 @@
           0.0
         ],
         [
-          0.55295,
+          0.929004,
           0.0,
-          -0.833215
+          0.370071
         ],
         [
-          -4494.84,
-          783.76,
-          12199.4
+          -4984.68,
+          658.539,
+          11387.6
         ]
       ],
       "objLayer": 0,
@@ -910,9 +913,9 @@
           -0.842875
         ],
         [
-          -12046.5,
-          215.15,
-          11882.0
+          -12379.0,
+          159.931,
+          11515.8
         ]
       ],
       "objLayer": 0,
@@ -937,9 +940,9 @@
           0.40541
         ],
         [
-          -10242.3,
-          364.721,
-          11671.7
+          -10256.2,
+          342.154,
+          11424.1
         ]
       ],
       "objLayer": 0,
@@ -976,9 +979,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.721282,
+          -0.899152,
           0.0,
-          -0.692641
+          0.437635
         ],
         [
           0.0,
@@ -986,14 +989,14 @@
           0.0
         ],
         [
-          0.692641,
+          -0.437635,
           0.0,
-          -0.721282
+          -0.899152
         ],
         [
-          -4581.06,
-          20.1553,
-          7742.23
+          -4846.46,
+          18.7357,
+          7365.34
         ]
       ],
       "objLayer": 0,
@@ -1003,9 +1006,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.053925,
+          0.758702,
           0.0,
-          -0.998545
+          -0.651438
         ],
         [
           0.0,
@@ -1013,14 +1016,14 @@
           0.0
         ],
         [
-          0.998545,
+          0.651438,
           0.0,
-          -0.053925
+          0.758702
         ],
         [
-          -8430.33,
-          124.6,
-          7743.92
+          -8381.81,
+          103.698,
+          7513.76
         ]
       ],
       "objLayer": 0,
@@ -1084,9 +1087,9 @@
       "type": "Point",
       "tm": [
         [
-          0.917855,
+          0.618297,
           0.0,
-          -0.396916
+          -0.785945
         ],
         [
           0.0,
@@ -1094,14 +1097,14 @@
           0.0
         ],
         [
-          0.396916,
+          0.785945,
           0.0,
-          0.917855
+          0.618297
         ],
         [
-          -13879.4,
+          -13753.7,
           40.4325,
-          7702.9
+          7630.95
         ]
       ],
       "objLayer": 0,
@@ -1138,9 +1141,9 @@
       "type": "Point",
       "tm": [
         [
-          0.951158,
+          0.249568,
           0.0,
-          -0.308705
+          -0.968357
         ],
         [
           0.0,
@@ -1148,14 +1151,14 @@
           0.0
         ],
         [
-          0.308705,
+          0.968357,
           0.0,
-          0.951158
+          0.249568
         ],
         [
-          -9045.78,
+          -8972.32,
           30.1595,
-          3525.12
+          3417.44
         ]
       ],
       "objLayer": 0,
@@ -1165,9 +1168,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.495655,
+          0.00942507,
           0.0,
-          -0.86852
+          -0.999956
         ],
         [
           0.0,
@@ -1175,14 +1178,14 @@
           0.0
         ],
         [
-          0.86852,
+          0.999956,
           0.0,
-          -0.495655
+          0.00942507
         ],
         [
-          -5197.78,
+          -5237.13,
           87.8618,
-          3564.99
+          3040.17
         ]
       ],
       "objLayer": 0,
@@ -1192,9 +1195,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.709251,
+          0.0241842,
           0.0,
-          -0.704956
+          -0.999707
         ],
         [
           0.0,
@@ -1202,14 +1205,14 @@
           0.0
         ],
         [
-          0.704956,
+          0.999707,
           0.0,
-          -0.709251
+          0.0241842
         ],
         [
-          -11155.7,
+          -11199.0,
           13.5902,
-          3526.51
+          3338.1
         ]
       ],
       "objLayer": 0,
@@ -1241,6 +1244,222 @@
       ],
       "objLayer": 0,
       "props": {}
+    },
+    "cnv_t2_road_23_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.340392,
+          0.0,
+          -0.940284
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.940284,
+          0.0,
+          -0.340392
+        ],
+        [
+          -6210.15,
+          69.4872,
+          -1909.51
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cnv_t2_road_24_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          0.0277456,
+          0.0,
+          -0.999615
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999615,
+          0.0,
+          0.0277456
+        ],
+        [
+          -7970.9,
+          85.6627,
+          -2092.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cnv_t2_road_25_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          0.0311594,
+          0.0,
+          -0.999514
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999514,
+          0.0,
+          0.0311594
+        ],
+        [
+          -8908.12,
+          74.6904,
+          -2165.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cnv_t2_road_26_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          0.0153877,
+          0.0,
+          -0.999882
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999882,
+          0.0,
+          0.0153877
+        ],
+        [
+          -10430.9,
+          23.0993,
+          -1950.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cnv_t2_road_27_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          0.517002,
+          0.0,
+          -0.855984
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.855984,
+          0.0,
+          0.517002
+        ],
+        [
+          -15735.9,
+          17.5362,
+          -1590.67
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cnv_t2_road_28_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          0.169782,
+          0.0,
+          -0.985482
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.985482,
+          0.0,
+          0.169782
+        ],
+        [
+          -17825.6,
+          16.1665,
+          -1706.28
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cnv_t2_road_29_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.0300036,
+          0.0,
+          -0.99955
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.99955,
+          0.0,
+          -0.0300036
+        ],
+        [
+          -6758.12,
+          70.916,
+          -1849.58
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cnv_t2_road_30_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          0.026535,
+          0.0,
+          -0.999648
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999648,
+          0.0,
+          0.026535
+        ],
+        [
+          -6517.95,
+          28.0923,
+          3134.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {
@@ -1255,7 +1474,7 @@
         "enabled": true
       },
       {
-        "enabled": true
+        "enabled": false
       },
       {
         "enabled": false
@@ -18196,47 +18415,15 @@
               1.0
             ],
             [
-              -4690.65,
-              751.947,
-              12051.9
+              -4876.31,
+              720.02,
+              11230.5
             ]
           ],
           "props": {
             "speed": 30.0,
             "tas": false,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cnv_t2_road_04_wp_11": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -5120.53,
-              656.259,
-              11974.0
-            ]
-          ],
-          "props": {
-            "speed": 30.0,
-            "tas": false,
-            "moveType": "USE_SPLINES",
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -29246,9 +29433,9 @@
               1.0
             ],
             [
-              -12174.3,
-              204.302,
-              11822.5
+              -12511.3,
+              169.032,
+              11456.4
             ]
           ],
           "props": {
@@ -30853,9 +31040,9 @@
               1.0
             ],
             [
-              -10208.2,
-              358.6,
-              11602.0
+              -10233.9,
+              337.565,
+              11367.7
             ]
           ],
           "props": {
@@ -34931,47 +35118,15 @@
               1.0
             ],
             [
-              -4840.29,
+              -4896.65,
               17.4162,
-              7533.38
+              7389.09
             ]
           ],
           "props": {
             "speed": 30.0,
             "tas": false,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cnv_t2_road_13_wp_01": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -4904.1,
-              16.5567,
-              7399.38
-            ]
-          ],
-          "props": {
-            "speed": 30.0,
-            "tas": false,
-            "moveType": "USE_SPLINES",
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -36570,9 +36725,9 @@
               1.0
             ],
             [
-              -8441.15,
-              103.7,
-              7571.45
+              -8330.68,
+              101.277,
+              7465.12
             ]
           ],
           "props": {
@@ -42095,47 +42250,15 @@
               1.0
             ],
             [
-              -13740.6,
-              40.533,
-              7654.36
+              -13723.5,
+              42.6503,
+              7595.3
             ]
           ],
           "props": {
             "speed": 30.0,
             "tas": false,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cnv_t2_road_17_wp_47": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -13716.8,
-              37.5159,
-              7585.42
-            ]
-          ],
-          "props": {
-            "speed": 30.0,
-            "tas": false,
-            "moveType": "USE_SPLINES",
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -45732,41 +45855,9 @@
               1.0
             ],
             [
-              -8987.59,
+              -8950.23,
               30.7773,
-              3489.87
-            ]
-          ],
-          "props": {
-            "speed": 30.0,
-            "tas": false,
-            "moveType": "GATHER_TO",
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cnv_t2_road_20_wp_01": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -8950.07,
-              32.3134,
-              3341.87
+              3344.01
             ]
           ],
           "props": {
@@ -47115,9 +47206,9 @@
               1.0
             ],
             [
-              -5239.27,
-              80.4694,
-              3488.14
+              -5237.94,
+              68.6299,
+              2866.13
             ]
           ],
           "props": {
@@ -48114,9 +48205,9 @@
               1.0
             ],
             [
-              -11199.7,
+              -11197.7,
               13.7835,
-              3492.37
+              3273.27
             ]
           ],
           "props": {
@@ -49045,6 +49136,4382 @@
               -8607.87,
               88.8695,
               -12266.8
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_23": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6223.88,
+              71.537,
+              -1954.45
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6739.55,
+              84.4395,
+              -2050.52
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6756.02,
+              85.1043,
+              -2063.19
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6755.37,
+              89.3828,
+              -2128.89
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7908.94,
+              117.801,
+              -5415.99
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7915.1,
+              119.011,
+              -5408.23
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8076.21,
+              118.462,
+              -5349.76
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8101.36,
+              119.049,
+              -5347.34
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8107.46,
+              119.224,
+              -5342.73
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8103.31,
+              118.485,
+              -5127.65
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8095.93,
+              118.283,
+              -5120.1
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7968.94,
+              115.251,
+              -5118.85
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7958.62,
+              115.023,
+              -5131.56
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7961.82,
+              115.16,
+              -5187.19
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7970.88,
+              115.527,
+              -5252.78
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8539.48,
+              78.1034,
+              -7218.03
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8533.96,
+              78.4864,
+              -7268.44
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8197.25,
+              85.2834,
+              -10304.2
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_23_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8132.64,
+              84.8064,
+              -10379.3
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_24": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7969.91,
+              85.0644,
+              -2129.28
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_24_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8539.37,
+              78.0928,
+              -7217.34
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_24_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8532.57,
+              78.4781,
+              -7270.73
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_24_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8559.72,
+              107.565,
+              -8427.37
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_24_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8519.98,
+              113.982,
+              -8709.42
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_24_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8523.64,
+              114.028,
+              -8718.08
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_24_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9593.55,
+              115.684,
+              -10254.9
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_24_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9661.75,
+              115.516,
+              -10281.5
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_25": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8907.94,
+              74.4013,
+              -2226.73
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10358.2,
+              103.088,
+              -7126.37
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10367.1,
+              102.975,
+              -7124.33
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10531.6,
+              103.776,
+              -7171.58
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10562.6,
+              104.302,
+              -7175.65
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10603.8,
+              104.681,
+              -7157.76
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10621.9,
+              104.475,
+              -7125.0
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10624.9,
+              104.024,
+              -7088.34
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10601.7,
+              103.312,
+              -7057.03
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10570.5,
+              104.105,
+              -7047.71
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10537.9,
+              105.11,
+              -7055.9
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10508.6,
+              104.851,
+              -7087.09
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10455.9,
+              103.399,
+              -7170.06
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10435.4,
+              104.521,
+              -7239.13
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10385.2,
+              109.743,
+              -7606.55
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10373.3,
+              110.793,
+              -7711.82
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9453.55,
+              107.187,
+              -11192.8
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_25_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9444.21,
+              105.477,
+              -11271.0
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_26": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10431.2,
+              24.2184,
+              -2029.56
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_26_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10385.7,
+              109.702,
+              -7603.68
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_26_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10373.2,
+              110.797,
+              -7712.45
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_26_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9248.55,
+              100.724,
+              -11348.8
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_26_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9232.78,
+              98.8188,
+              -11431.6
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_27": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -15715.2,
+              16.8387,
+              -1627.86
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -14612.9,
+              16.2254,
+              -3360.98
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -14610.2,
+              15.7658,
+              -3398.24
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -14636.4,
+              15.9665,
+              -3444.82
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -14643.4,
+              15.9695,
+              -3463.59
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13229.1,
+              65.9473,
+              -5101.73
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13236.3,
+              27.3013,
+              -5793.85
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13248.6,
+              26.5085,
+              -5807.42
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13294.7,
+              26.2646,
+              -5807.54
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13306.3,
+              26.2393,
+              -5816.0
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13304.7,
+              25.4359,
+              -6134.97
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13295.7,
+              25.5769,
+              -6144.52
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13241.1,
+              25.5466,
+              -6144.9
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13230.4,
+              25.69,
+              -6154.69
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13236.3,
+              70.8188,
+              -6821.42
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13224.9,
+              72.1038,
+              -6833.29
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13082.1,
+              69.2696,
+              -6832.44
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13073.6,
+              70.4189,
+              -6842.81
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13072.9,
+              81.975,
+              -6934.21
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_19": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13074.8,
+              84.0115,
+              -6950.01
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_20": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13072.3,
+              94.3755,
+              -7156.91
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_21": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13061.2,
+              94.9263,
+              -7167.82
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_22": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -12644.5,
+              88.3231,
+              -7169.94
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_23": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -12638.2,
+              89.4,
+              -7173.55
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_24": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -12024.4,
+              98.65,
+              -7859.95
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_27_wp_25": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -12008.6,
+              90.15,
+              -7944.05
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_28": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -17810.0,
+              18.4,
+              -1812.55
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_28_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -14651.8,
+              16.2,
+              -3461.95
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_28_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -13228.1,
+              66.1,
+              -5109.4
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_28_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10441.5,
+              63.45,
+              -5150.4
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_28_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10385.8,
+              109.8,
+              -7609.65
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_28_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10373.5,
+              110.6,
+              -7686.3
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_28_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10241.0,
+              109.75,
+              -10116.6
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_28_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10266.9,
+              108.3,
+              -10152.0
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_29": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6757.6,
+              72.9075,
+              -1878.25
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7817.22,
+              114.906,
+              -5391.16
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7857.59,
+              116.166,
+              -5424.38
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7856.8,
+              107.959,
+              -5798.97
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7847.19,
+              107.88,
+              -5809.06
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7784.48,
+              108.05,
+              -5810.0
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7774.4,
+              107.506,
+              -5820.88
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7773.94,
+              100.56,
+              -6133.91
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7780.76,
+              100.85,
+              -6144.0
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7904.79,
+              104.208,
+              -6142.92
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7914.06,
+              104.528,
+              -6151.52
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7913.85,
+              98.1827,
+              -6371.59
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7922.04,
+              94.2827,
+              -6480.53
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7924.07,
+              93.5985,
+              -6500.33
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7928.6,
+              89.1456,
+              -6823.74
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7950.76,
+              88.268,
+              -6840.18
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7952.75,
+              73.6252,
+              -7051.76
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8385.24,
+              112.191,
+              -8694.98
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8385.42,
+              112.18,
+              -8699.03
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_19": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7758.3,
+              83.7426,
+              -10944.0
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_29_wp_20": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7748.57,
+              82.802,
+              -11021.4
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cnv_t2_road_30": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6517.19,
+              28.4415,
+              3056.22
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6739.77,
+              22.2745,
+              71.8107
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6741.66,
+              21.9979,
+              34.1156
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6764.17,
+              22.0378,
+              -68.8512
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6780.27,
+              21.9184,
+              -109.776
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6774.0,
+              51.7194,
+              -1353.12
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6766.05,
+              56.8204,
+              -1451.86
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6765.89,
+              56.79,
+              -1624.85
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6760.53,
+              56.7894,
+              -1628.11
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7452.01,
+              107.378,
+              -4817.29
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7466.73,
+              107.1,
+              -4863.68
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7500.14,
+              107.413,
+              -4935.13
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7498.67,
+              107.351,
+              -4944.17
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7293.09,
+              102.393,
+              -5128.74
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7296.15,
+              82.0544,
+              -5798.62
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7286.49,
+              81.4524,
+              -5806.81
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7170.65,
+              77.0817,
+              -5809.08
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7161.44,
+              76.4959,
+              -5817.29
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7162.66,
+              73.7923,
+              -5909.98
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_19": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7160.27,
+              73.7217,
+              -5926.59
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_20": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7161.06,
+              80.1976,
+              -6135.2
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_21": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7152.88,
+              80.1263,
+              -6143.06
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_22": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7097.18,
+              78.612,
+              -6144.03
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_23": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7085.96,
+              78.4643,
+              -6152.26
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_24": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7090.42,
+              79.1007,
+              -6482.97
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_25": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7092.5,
+              79.5011,
+              -6500.53
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_26": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7093.4,
+              87.833,
+              -6834.01
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "GATHER_TO",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_27": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7271.55,
+              91.5016,
+              -11329.1
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_28": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7361.1,
+              95.0048,
+              -11479.5
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cnv_t2_road_30_wp_29": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7411.06,
+              95.5562,
+              -11521.9
             ]
           ],
           "props": {

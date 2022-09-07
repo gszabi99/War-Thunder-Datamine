@@ -5,6 +5,8 @@ let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
+let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
+let { isRunningOnPS5 = @() false } = require_optional("sony")
 
 local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -71,6 +73,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
         },
         "nav-topMenu"
       )
+
+      showSceneBtn("topmenu_psn_update", isPlatformPS4 && isRunningOnPS5())
     }
   }
 

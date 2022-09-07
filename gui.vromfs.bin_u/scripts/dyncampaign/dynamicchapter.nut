@@ -1,4 +1,5 @@
 let { format } = require("string")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 ::dynamic_req_country_rank <- 1
 
 ::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts()
@@ -83,18 +84,13 @@ let { format } = require("string")
 
       local isAnyCountryUnlocked = false
       local isAnyYearUnlocked = false
-      local blk = ""
       local lockReason = ""
       foreach (idx, country in misDescr.countries)
       {
         let countryId = misDescr.id + "_" + country
         local isCountryUnlocked = ::is_unlocked_scripted(::UNLOCKABLE_DYNCAMPAIGN, countryId)
         if (!isCountryUnlocked)
-        {
-          blk = build_conditions_config(::g_unlocks.getUnlockById(countryId))
-          ::build_unlock_desc(blk)
-          lockReason += (lockReason.len() ? "\n" : "") + blk.text + "\n"
-        }
+          lockReason += (lockReason.len() ? "\n" : "") + getFullUnlockDescByName(countryId) + "\n"
         else
         {
           foreach (year in yearsArray)
@@ -108,16 +104,10 @@ let { format } = require("string")
             }
             misDescr.unlocks.years[yearId] <- is_unlocked
           }
+
           if (!isAnyYearUnlocked)
-          {
-            let yearUnlock = ::g_unlocks.getUnlockById($"country_{country}_{yearsArray[0]}")
-            if (yearUnlock)
-            {
-              blk = build_conditions_config(yearUnlock)
-              ::build_unlock_desc(blk)
-              lockReason += blk.text
-            }
-          }
+            lockReason += getFullUnlockDescByName($"country_{country}_{yearsArray[0]}")
+
           isAnyCountryUnlocked = isAnyYearUnlocked
           isCountryUnlocked = isAnyYearUnlocked
         }

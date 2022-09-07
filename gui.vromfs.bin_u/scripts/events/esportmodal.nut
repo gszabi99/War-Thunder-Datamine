@@ -107,13 +107,8 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let idx = tournamentList.findindex(@(tour) getTourDay(tour) >= 0)
-    if (idx == null)
-      return
-
-    let tObj = eventListObj.getChild(idx)
-    if (!(tObj?.isValid() ?? false))
-      return
-    tObj.scrollToView(true)
+    if (idx != null)
+      eventListObj.setValue(idx)
   }
 
   function updateTourView(tObj, tour, tourParams) {

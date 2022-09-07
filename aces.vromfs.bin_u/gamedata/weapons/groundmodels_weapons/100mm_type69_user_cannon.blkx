@@ -36,25 +36,25 @@
   "isBulletBelt": false,
   "bullet": {
     "bulletCount": 25,
-    "mass": 4.7,
+    "mass": 3.05,
     "caliber": 0.1,
-    "damageCaliber": 0.038,
-    "ballisticCaliber": 0.08,
+    "damageCaliber": 0.04,
+    "ballisticCaliber": 0.04,
     "speed": 1505.0,
     "maxDistance": 10000.0,
     "normalizationPreset": "apcr",
-    "ricochetPreset": "apds_fs",
+    "ricochetPreset": "apds_fs_full_body_steel",
     "secondaryShattersPreset": "apds_fs",
-    "bulletType": "apds_fs_tank",
-    "slopeEffectPreset": "apds_fs",
+    "bulletType": "apds_fs_full_body_steel_tank",
+    "slopeEffectPreset": "apds_fs_full_body_steel",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
+    "shellAnimation": "video/shells_animations/apfsds_early_ussr.ivf",
     "bulletName": "100mm_1_72_85",
-    "Cx": 0.01,
+    "Cx": 0.452,
     "onHitChanceMultExplFuel": 0.1,
     "relativeVelHitShift": [
       300.0,
@@ -139,98 +139,41 @@
     },
     "armorpower": {
       "ArmorPower0m": [
-        220.0,
+        219.3,
         10.0
       ],
       "ArmorPower100m": [
-        213.0,
+        212.8,
         100.0
       ],
       "ArmorPower500m": [
-        193.0,
+        193.8,
         500.0
       ],
       "ArmorPower1000m": [
-        173.0,
+        170.4,
         1000.0
       ],
       "ArmorPower1500m": [
-        156.0,
+        146.6,
         1500.0
       ],
       "ArmorPower2000m": [
-        140.0,
+        125.6,
         2000.0
       ],
-      "ArmorPower2500m": [
-        128.0,
-        2500.0
-      ],
       "ArmorPower3000m": [
-        115.0,
+        84.0,
         3000.0
       ],
-      "ArmorPower3500m": [
-        108.0,
-        3500.0
-      ],
-      "ArmorPower4000m": [
-        95.0,
-        4000.0
-      ],
-      "ArmorPower4500m": [
-        81.0,
-        4500.0
-      ],
       "ArmorPower10000m": [
-        0.0,
+        10.0,
         10000.0
+      ],
+      "ArmorPower20000m": [
+        0.0,
+        20000.0
       ]
-    },
-    "ballistics": {
-      "slopeEffect": {
-        "table": {
-          "t1": {
-            "caliberToArmor": 1.0,
-            "slopeEffect0deg": [
-              0.0,
-              20.0
-            ],
-            "slopeEffect10deg": [
-              10.0,
-              5.7
-            ],
-            "slopeEffect20deg": [
-              20.0,
-              2.7
-            ],
-            "slopeEffect30deg": [
-              30.0,
-              1.73
-            ],
-            "slopeEffect50deg": [
-              50.0,
-              1.305
-            ],
-            "slopeEffect60deg": [
-              60.0,
-              1.07
-            ],
-            "slopeEffect70deg": [
-              70.0,
-              1.06
-            ],
-            "slopeEffect80deg": [
-              80.0,
-              1.03
-            ],
-            "slopeEffect90deg": [
-              90.0,
-              1.0
-            ]
-          }
-        }
-      }
     },
     "visual": {
       "range_percent_of_ammo": [
@@ -349,6 +292,7 @@
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "100mm_1_71_74",
+      "Cx": 0.69,
       "hitPowerMult": 2.0,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
@@ -374,6 +318,9 @@
           0.99
         ]
       },
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -391,9 +338,6 @@
             "destruction": 1.0
           }
         }
-      },
-      "pressureDamage": {
-        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [
@@ -685,6 +629,7 @@
       "caliber": 0.1,
       "speed": 1000.0,
       "maxDistance": 7000.0,
+      "Cx": 0.93,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",

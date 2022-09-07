@@ -5,6 +5,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -521,10 +522,8 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
         let unlockBlk = ::g_unlocks.getUnlockById(yearId)
         if (unlockBlk)
         {
-          let blk = build_conditions_config(unlockBlk)
-          ::build_unlock_desc(blk)
           enabled = ::is_unlocked_scripted(::UNLOCKABLE_YEAR, yearId)
-          tooltip = enabled? "" : blk.text
+          tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))
         }
       }
 

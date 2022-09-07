@@ -9,6 +9,8 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
+let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
+let { sendSystemInvite } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 
 enum squadEvent
 {
@@ -821,7 +823,7 @@ g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null, cb = n
       })
     }
 
-    ::g_xbox_squad_manager.sendSystemInvite(uid, name)
+    sendSystemInvite(uid, name)
 
     ::g_squad_manager.requestSquadData(cb)
   }
@@ -1198,7 +1200,7 @@ g_squad_manager.updateInvitedData <- function updateInvitedData(invites)
     else
       newInvitedData[uid] <- SquadMember(uid, true)
 
-    ::g_users_info_manager.requestInfo([uid])
+    requestUsersInfo([uid])
   }
 
   squadData.invitedPlayers = newInvitedData
@@ -1211,7 +1213,7 @@ g_squad_manager.addInvitedPlayers <- function addInvitedPlayers(uid)
 
   squadData.invitedPlayers[uid] <- SquadMember(uid, true)
 
-  ::g_users_info_manager.requestInfo([uid])
+  requestUsersInfo([uid])
 
   ::broadcastEvent(squadEvent.PLAYER_INVITED, { uid = uid })
   ::broadcastEvent(squadEvent.INVITES_CHANGED)
@@ -1240,7 +1242,7 @@ g_squad_manager.updateApplications <- function updateApplications(applications)
       newApplicationsData[uid] <- SquadMember(uid.tostring(), false, true)
       hasNewApplication = true
     }
-    ::g_users_info_manager.requestInfo([uid.tostring()])
+    requestUsersInfo([uid.tostring()])
   }
   if (!newApplicationsData)
     hasNewApplication = false
@@ -1253,7 +1255,7 @@ g_squad_manager.addApplication <- function addApplication(uid)
     return
 
   squadData.applications[uid] <- SquadMember(uid.tostring(), false, true)
-  ::g_users_info_manager.requestInfo([uid.tostring()])
+  requestUsersInfo([uid.tostring()])
   checkNewApplications()
   if (isSquadLeader())
     ::g_popups.add(null, ::colorize("chatTextInviteColor",

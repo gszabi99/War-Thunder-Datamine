@@ -501,6 +501,11 @@ def mark_token_context(var ctx: FormatterCtx)
                 if ctx |> eq(j, "=")
                     ctx.tokens[j].dontAddSpacesAround = true
 
+    let macroEscapes <- {{ /*ident*/"i"; /*value*/"v"; /*expr*/"e"; /*call*/"c"; /*type*/"t"; /*field*/"f"; /*block*/"b"; /*array*/"a" }}
+    for i in range(1, length(ctx.tokens))
+        if !new_line_before(ctx, i) && ctx |> eq(i - 1, "$") && key_exists(macroEscapes, ctx.tokens[i].str)
+            ctx.tokens[i - 1].dontAddSpacesAround = true
+
 
 def fmt_function_arguments(var ctx: FormatterCtx)
     // function arguments
@@ -701,13 +706,17 @@ def fmt_spaces_around_operators(var ctx: FormatterCtx)
                 ctx |> make_spaces_around(i)
 
 
-let space_after_keywords <- [[auto "if"; "elif"; "while"; "switch"; "with"; "return";
+let space_after_keywords <- [[auto "if"; "elif"; "while"; "switch"; "with";
         "yield"; "catch"; "static_if"; "static_elif"; "for"
     ]]
 
 def fmt_space_after_keyword(var ctx: FormatterCtx)
     for i in range(1, length(ctx.tokens) - 1)
         if space_after_keywords |> find_index(ctx.tokens[i].str) >= 0
+            if !new_line_before(ctx, i + 1)
+                ctx |> add_space_before(i + 1)
+        // add space only after `return <expr>` expression
+        if ctx.tokens[i].str == "return" && length(ctx.tokens[i+1].str) > 0
             if !new_line_before(ctx, i + 1)
                 ctx |> add_space_before(i + 1)
 

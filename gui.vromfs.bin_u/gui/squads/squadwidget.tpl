@@ -36,8 +36,25 @@ Button_text {
   }
 }
 
-animated_wait_icon
-{
+Button_text {
+  id:t='btn_world_war'
+  class:t='image'
+  tooltip:t=''
+  on_click:t='onWorldWar'
+  <<^isWorldWarShow>>
+  display:t='hide'
+  enable:t='no'
+  <</isWorldWarShow>>
+
+  btnText {
+    style:t='font:@fontBigBold'
+    pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+    position:t='absolute'
+    text:t='#icon/worldWar'
+  }
+}
+
+animated_wait_icon {
   id:t='wait_icon'
   pos:t='0, 50%(ph-h)'
   position:t="relative"

@@ -76,10 +76,29 @@ let function setVersionText(scene=null) {
     verObj.setValue(format(::loc("mainmenu/version"), get_game_version_str()))
 }
 
+let function formatLocalizationArrayToDescription(locArr) {
+  local descr = ""
+
+  foreach (idx, loc in locArr)
+  {
+    local str = loc.text
+
+    if (loc.isBold)
+      str = "".concat("<b>", str, "</b>")
+    if (loc.color != null)
+      str = "".concat($"<color={loc.color}>", str, "</color>")
+
+    descr = "".concat(descr, idx != 0 ? "\u2022 " : "", str, "\n")
+  }
+
+  return descr
+}
+
 return {
   setDoubleTextToButton = setDoubleTextToButton
   setColoredDoubleTextToButton = setColoredDoubleTextToButton
   placePriceTextToButton = placePriceTextToButton
   setHelpTextOnLoading = setHelpTextOnLoading
   setVersionText = setVersionText
+  formatLocalizationArrayToDescription
 }

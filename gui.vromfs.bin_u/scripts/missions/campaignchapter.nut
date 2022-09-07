@@ -8,6 +8,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 let { saveTutorialToCheckReward } = require("%scripts/tutorials/tutorialsData.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -508,7 +509,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       if (showMsgbox)
       {
         let unlockId = curMission.blk.chapter + "/" + curMission.blk.name
-        let msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(unlockId, 1)
+        let msg = ::loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(unlockId, 1)
         ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false

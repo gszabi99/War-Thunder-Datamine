@@ -432,20 +432,21 @@
           "rangeMax": 30000.0,
           "antenna": {
             "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -15.0
+            "sideLobesSensitivity": -16.0
           }
         },
         "distance": {
           "presents": true,
-          "minValue": 300.0,
-          "maxValue": 38000.0,
-          "width": 300.0,
-          "signalWidthMin": 150.0,
-          "refWidth": 1500.0
+          "minValue": 150.0,
+          "maxValue": 75000.0,
+          "width": 150.0,
+          "signalWidthMin": 75.0,
+          "refWidth": 750.0
         },
         "distGate": {
           "filterAlpha": 0.8,
-          "filterBetta": 0.05
+          "filterBetta": 0.05,
+          "distAccelLimit": 60.0
         }
       },
       "guidanceAutopilot": {

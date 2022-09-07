@@ -17,6 +17,8 @@ let J8IIHK = require("planeIlses/ilsJ8IIhk.nut")
 let KaiserA10 = require("planeIlses/ilsKaiserA10.nut")
 let F14 = require("planeIlses/ilsF14Tomcat.nut")
 let mig17 = require("planeIlses/ilsMig17pf.nut")
+let TCSFVE130 = require("planeIlses/ilsTcsfVE130.nut")
+let SU145 = require("planeIlses/ilsSu145.nut")
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -38,6 +40,8 @@ let ilsSetting = Computed(function() {
     isKaiserA10 = false
     isF14 = false
     isMig17pf = false
+    isTcsfVe130 = false
+    isSu145 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -64,6 +68,8 @@ let ilsSetting = Computed(function() {
     isKaiserA10 = blk.getBool("ilsKaiserA10", false)
     isF14 = blk.getBool("ilsF14", false)
     isMig17pf = blk.getBool("ilsMig17pf", false)
+    isTcsfVe130 = blk.getBool("ilsTCSFVE130", false)
+    isSu145 = blk.getBool("ilsSU145", false)
   }
 })
 
@@ -73,7 +79,7 @@ let planeIls = @(width, height) function() {
 
   let {isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
-    isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf} = ilsSetting.value
+    isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145} = ilsSetting.value
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
     children = [
@@ -99,7 +105,9 @@ let planeIls = @(width, height) function() {
       (isJ8HK ? J8IIHK(width, height) : null),
       (isKaiserA10 ? KaiserA10(width, height) : null),
       (isF14 ? F14(width, height) : null),
-      (isMig17pf ? mig17(width, height) : null)
+      (isMig17pf ? mig17(width, height) : null),
+      (isTcsfVe130 ? TCSFVE130(width, height) : null),
+      (isSu145 ? SU145(width, height) : null)
     ]
   }
 }

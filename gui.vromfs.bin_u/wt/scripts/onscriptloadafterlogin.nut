@@ -191,7 +191,6 @@ foreach (fn in [
   "%scripts/customization/customizationWnd.nut"
 
   "%scripts/myStats.nut"
-  "%scripts/user/usersInfoManager.nut"
   "%scripts/user/partnerUnlocks.nut"
   "%scripts/user/userCard.nut"
   "%scripts/user/profileHandler.nut"

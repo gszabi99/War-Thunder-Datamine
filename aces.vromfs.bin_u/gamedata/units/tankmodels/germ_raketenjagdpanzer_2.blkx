@@ -607,7 +607,8 @@
           },
           {
             "damageType": "fire",
-            "fire": 0.02,
+            "fire": 0.01,
+            "full_expl": 0.01,
             "expl": 0.01
           }
         ],
@@ -615,22 +616,26 @@
           {
             "damageType": "cumulative",
             "expl": 0.4,
-            "fire": 0.6
+            "full_expl": 0.1,
+            "fire": 0.5
           },
           {
             "damageType": "explosion",
             "expl": 0.4,
-            "fire": 0.6
+            "full_expl": 0.1,
+            "fire": 0.5
           },
           {
             "damageType": "secondaryShatter",
             "expl": 0.4,
-            "fire": 0.6
+            "full_expl": 0.1,
+            "fire": 0.5
           },
           {
             "damageType": "generic",
             "expl": 0.5,
-            "fire": 0.5
+            "full_expl": 0.1,
+            "fire": 0.4
           }
         ]
       },
@@ -1249,7 +1254,7 @@
         "parkInDeadzone": false,
         "speedYaw": 90.0,
         "speedPitch": 90.0,
-        "bullets": 3000,
+        "bullets": 2600,
         "isBulletBelt": true,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -1930,15 +1935,149 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
-        "wreckages": {
-          "count": 3,
-          "speed": 15.0,
-          "angle": 80.0,
-          "fxName": "fire_tank_explosion_trails"
-        },
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 8,
+          "speed": 20.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 10,
+          "speed": 20.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion_small",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 10,
+          "speed": 13.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion_ammo",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 12,
+          "speed": 25.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_med"
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "tank_explosion_ammo_small",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 14,
+          "speed": 20.0,
+          "angle": 35.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "full_expl",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "explosion_ship_big",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": {
+          "count": 15,
+          "speed": 30.0,
+          "angle": 40.0,
+          "fxName": "fire_trails_explosion_med"
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_tiny",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_tiny",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_tiny",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_tiny",
+          "setOrientation": true
         }
       }
     ],
@@ -2216,7 +2355,7 @@
               "parkInDeadzone": false,
               "speedYaw": 90.0,
               "speedPitch": 90.0,
-              "bullets": 3000,
+              "bullets": 2600,
               "isBulletBelt": true,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,

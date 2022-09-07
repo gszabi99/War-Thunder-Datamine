@@ -43,27 +43,6 @@ let TRIGGER_TYPE = {
   GUNNER          = "gunner"
 }
 
-let TRIGGER_TYPE_TO_BIT = {
-  [TRIGGER_TYPE.MACHINE_GUN]      = 1<<0,
-  [TRIGGER_TYPE.CANNON]           = 1<<1,
-  [TRIGGER_TYPE.GUNNER]           = 1<<2,
-  [TRIGGER_TYPE.BOMBS]            = 1<<3,
-  [TRIGGER_TYPE.TORPEDOES]        = 1<<4,
-  [TRIGGER_TYPE.ROCKETS]          = 1<<5,
-  [TRIGGER_TYPE.ATGM]             = 1<<6,
-  [TRIGGER_TYPE.AAM]              = 1<<7,
-  [TRIGGER_TYPE.MINES]            = 1<<8,
-  [TRIGGER_TYPE.GUIDED_BOMBS]     = 1<<9,
-  [TRIGGER_TYPE.ADD_GUN]          = 1<<10,
-}
-
-let ROCKETS_WEAPON_MASK = TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ROCKETS]
-  | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ATGM]
-  | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.AAM]
-
-let BOMBS_WEAPON_MASK = TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.BOMBS]
-  | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.GUIDED_BOMBS]
-
 let WEAPON_TYPE = {
   GUNS            = "guns"
   CANNON          = "cannon"
@@ -79,6 +58,7 @@ let WEAPON_TYPE = {
   AAM             = "aam"       // Air-to-Air Missiles
   AGM             = "agm"       // Air-to-Ground Missile, Anti-Tank Guided Missiles
   GUIDED_BOMBS    = "guided bombs"
+  CONTAINER_ITEM  = "container_item"
 }
 
 let CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.GUIDED_BOMBS,
@@ -233,13 +213,13 @@ let function getWeaponNameByBlkPath(weaponBlkPath)
   return weaponBlkPath.slice(idxStart, idxEnd)
 }
 
+let skipWeaponParams = { num = true, ammo = true, tiers = true }
 let function isWeaponParamsEqual(item1, item2)
 {
   if (!item1?.len() || !item2?.len())
     return false
-  let skipParams = [ "num", "ammo" ]
-  foreach (idx, val in item1)
-    if (!::isInArray(idx, skipParams) && !::u.isEqual(val, item2?[idx]))
+  foreach (key, val in item1)
+    if ((key not in skipWeaponParams) && !::u.isEqual(val, item2?[key]))
       return false
   return true
 }
@@ -265,7 +245,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     if (weaponsFilterFunc?(weaponBlkPath, weaponBlk) == false)
       continue
 
-    local currentTypeName = WEAPON_TYPE.TURRETS
+    local currentTypeName =  weapon?.turret != null ? WEAPON_TYPE.TURRETS : WEAPON_TYPE.CONTAINER_ITEM
     local weaponTag = WEAPON_TAG.BULLET
 
     if (weaponBlk?.rocketGun)
@@ -315,7 +295,8 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
           && isCaliberCannon(1000 * ::getTblValue("caliber", weaponBlk?.bullet, 0)))
         currentTypeName = WEAPON_TYPE.CANNON
     }
-    else if (weaponBlk?.fuelTankGun || weaponBlk?.boosterGun || weaponBlk?.airDropGun || weaponBlk?.undercarriageGun)
+    else if (!(weapon?.showInWeaponMenu ?? false)
+        && (weaponBlk?.fuelTankGun || weaponBlk?.boosterGun || weaponBlk?.airDropGun || weaponBlk?.undercarriageGun))
       continue
 
     let isTurret = currentTypeName == WEAPON_TYPE.TURRETS
@@ -539,12 +520,13 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       item.turret = ::u.isDataBlock(turretInfo) ? turretInfo.head : turretInfo
     }
 
-    if (!(currentTypeName in weapons))
-      weapons[ currentTypeName ] <- []
+    weapons.weaponsByTypes <- weapons?.weaponsByTypes ?? {}
+    if (!(currentTypeName in weapons.weaponsByTypes))
+      weapons.weaponsByTypes[ currentTypeName ] <- []
 
     local weaponName = getWeaponNameByBlkPath(weaponBlkPath)
     local trIdx = -1
-    foreach(idx, t in weapons[currentTypeName])
+    foreach(idx, t in weapons.weaponsByTypes[currentTypeName])
       if (weapon.trigger == t.trigger || isWeaponParamsEqual(item, t?.weaponBlocks[weaponName]))
       {
         trIdx = idx
@@ -553,8 +535,8 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     // Merging duplicating weapons with different weaponName
     // (except guns, because there exists different guns with equal params)
-    if (trIdx >= 0 && (weaponName not in weapons[currentTypeName][trIdx]?.weaponBlocks) && weaponTag != WEAPON_TAG.BULLET)
-      foreach (name, existingItem in weapons[currentTypeName][trIdx].weaponBlocks)
+    if (trIdx >= 0 && (weaponName not in weapons.weaponsByTypes[currentTypeName][trIdx]?.weaponBlocks) && weaponTag != WEAPON_TAG.BULLET)
+      foreach (name, existingItem in weapons.weaponsByTypes[currentTypeName][trIdx].weaponBlocks)
         if (isWeaponParamsEqual(item, existingItem))
         {
           weaponName = name
@@ -563,11 +545,11 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     if (trIdx < 0)
     {
-      weapons[currentTypeName].append({ trigger = weapon.trigger, caliber = 0 })
-      trIdx = weapons[currentTypeName].len() - 1
+      weapons.weaponsByTypes[currentTypeName].append({ trigger = weapon.trigger, caliber = 0 })
+      trIdx = weapons.weaponsByTypes[currentTypeName].len() - 1
     }
 
-    let currentType = weapons[currentTypeName][trIdx]
+    let currentType = weapons.weaponsByTypes[currentTypeName][trIdx]
 
     if (weaponName not in currentType?.weaponBlocks)
     {
@@ -577,7 +559,16 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         currentType.caliber = item.caliber
     }
     else if (hasWeaponSlots) {
-      currentType.weaponBlocks[weaponName].tiers.__update(item.tiers)
+      foreach (tierIdx, tier in item.tiers) {
+        let tierPreset = currentType.weaponBlocks[weaponName].tiers?[tierIdx]
+        if (tierPreset == null) {
+          currentType.weaponBlocks[weaponName].tiers[tierIdx] <- tier
+          continue
+        }
+
+        if (tierPreset.presetId == tier.presetId && tierPreset.slot == tier.slot && tierPreset.iconType == tier.iconType)
+          tierPreset.amountPerTier += tier.amountPerTier
+      }
       foreach (dependentWeaponName, dependentWeapon in item.dependentWeaponPreset) {
         let dependentWeaponPreset = currentType.weaponBlocks[weaponName].dependentWeaponPreset?[dependentWeaponName] ?? []
         currentType.weaponBlocks[weaponName].dependentWeaponPreset[dependentWeaponName] <-
@@ -590,7 +581,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       }
     }
 
-    currentType.weaponBlocks[weaponName].ammo += bulletCount
+    currentType.weaponBlocks[weaponName].ammo += currentTypeName == WEAPON_TYPE.CONTAINER_ITEM ? 0 : bulletCount
     currentType.weaponBlocks[weaponName].num += 1
   }
 
@@ -1021,9 +1012,6 @@ return {
   WEAPON_TAG
   CONSUMABLE_TYPES
   WEAPON_TEXT_PARAMS
-  TRIGGER_TYPE_TO_BIT
-  ROCKETS_WEAPON_MASK
-  BOMBS_WEAPON_MASK
   getLastWeapon
   validateLastWeapon
   setLastWeapon

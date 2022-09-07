@@ -215,19 +215,19 @@
       {
         "event": "aircraft_new_players_battle_coop",
         "kills": 10,
-        "timePlayed": 2400
+        "timePlayed": 10800
       }
     ],
     "tank": [
       {
         "event": "tank_new_players_battle_single",
-        "kills": 1,
-        "timePlayed": 150
+        "kills": 5,
+        "timePlayed": 300
       },
       {
         "event": "tank_new_players_battle_coop",
         "kills": 20,
-        "timePlayed": 2400
+        "timePlayed": 10800
       }
     ],
     "ship": [
@@ -239,7 +239,7 @@
       {
         "event": "ship_new_players_battle_coop",
         "kills": 10,
-        "timePlayed": 1800
+        "timePlayed": 10800
       }
     ],
     "additionalUnitTypes": {
@@ -364,6 +364,7 @@
     "operationAnnounceTimeSec": 86400,
     "afkLoseTimeShowSec": 180,
     "joinBattleDelayTimeSec": 300,
+    "forbiddenClusters": "SA",
     "refreshGlobalStatusMinTimeMsec": 180000,
     "refreshShortGlobalStatusMinTimeMsec": 600000,
     "dailyTrophies": {
@@ -2044,15 +2045,6 @@
     "QmbCoopPc": {},
     "QmbCoopPs4": {},
     "QmbCoop": {},
-    "DynCampaignCoopPc": {
-      "condition": ""
-    },
-    "DynCampaignCoopPs4": {
-      "condition": ""
-    },
-    "DynCampaignCoop": {
-      "condition": ""
-    },
     "SingleMissionsCoopPc": {
       "condition": ""
     },
@@ -2166,11 +2158,7 @@
       "condition": ""
     },
     "AircraftExtinguisher": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER"
-      ]
+      "condition": ""
     },
     "ShowDamageReport": {
       "condition": [
@@ -2603,7 +2591,11 @@
       "condition": "wt_events_snailcup"
     },
     "ESport": {
-      "condition": ""
+      "condition": [
+        "wt_events_snailcup",
+        "role_GAIJIN",
+        "role_DEVELOPER"
+      ]
     },
     "Tournaments": {
       "condition": ""
@@ -3153,12 +3145,22 @@
     "WeaponryCustomPresets": {
       "condition": ""
     },
-    "BattleAutoStart": {},
+    "BattleAutoStart": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
     "TestTankActionTutorial": {
       "condition": "ab_test_tank_action_tutorial_hidden"
     },
     "PS5HeadTracking": {
-      "condition": ""
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
     },
     "replayRewind": {
       "condition": ""
@@ -3171,9 +3173,9 @@
     },
     "AutoFlushClanExp": {
       "condition": [
+        "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_TESTER"
       ]
     }
   }

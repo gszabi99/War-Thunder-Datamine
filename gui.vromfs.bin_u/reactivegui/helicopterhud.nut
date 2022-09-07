@@ -1,4 +1,7 @@
-let {bw, bh, rw, rh} = require("style/screenState.nut")
+let mfdHud = require("mfd.nut")
+let heliIlsHud = require("heliIls.nut")
+
+let {bw, bh, rw, rh, safeAreaSizeHud} = require("style/screenState.nut")
 let {IsRadarHudVisible} = require("radarState.nut")
 let {
   IndicatorsVisible, MainMask, SecondaryMask, SightMask, EmptyMask, IsArbiterHudVisible,
@@ -8,6 +11,8 @@ let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
 let {paramsTable, taTarget, compassElem, rocketAim, vertSpeed, horSpeed, turretAngles, agmLaunchZone,
   launchDistanceMax, lockSight, targetSize, sight, rangeFinder, detectAlly} = require("airHudElems.nut")
+let hudLogs = require("hudLogs.nut")
+let voiceChat = require("chat/voiceChat.nut")
 
 let {
   gunDirection, fixedGunsDirection, helicopterCCRP, agmTrackerStatusComponent, bombSightComponent,
@@ -81,7 +86,7 @@ let function helicopterSightHud(isBackground) {
       targetSize(HudColor, sw(100), sh(100))
       agmTrackZoneComponent(HudColor, isBackground)
       agmTrackerStatusComponent(HudColor, sw(50), sh(41), isBackground)
-      laserDesignatorComponent(HudColor, isBackground)
+      laserDesignatorComponent(HudColor, sw(50), sh(42), isBackground)
       laserDesignatorStatusComponent(HudColor, sw(50), sh(38), isBackground)
       sight(HudColor, sw(50), sh(50), hdpx(500), isBackground)
       rangeFinder(HudColor, sw(50), sh(59), isBackground)
@@ -131,8 +136,7 @@ let function helicopterArbiterHud(isBackground) {
   }
 }
 
-let function helicopterHUDs(isBackground) {
-
+let function mkHelicopterIndicators(isBackground) {
   return @() {
     watch = [IsRadarHudVisible, IsMfdEnabled, HudColor]
     children = [
@@ -149,19 +153,50 @@ let function helicopterHUDs(isBackground) {
   }
 }
 
+let helicopterIndicators = mkHelicopterIndicators(false)
+let helicopterIndicatorsBackground = mkHelicopterIndicators(true)
 
-let function helicopterRoot() {
-  let children = [helicopterHUDs(true), helicopterHUDs(false)]
+let indicatorsCtor = @() {
+  watch = [
+    IndicatorsVisible
+    IsMfdEnabled
+  ]
+  size = flex()
+  halign = ALIGN_LEFT
+  valign = ALIGN_TOP
+  children = (IndicatorsVisible.value || IsMfdEnabled.value)
+    ? [helicopterIndicatorsBackground, helicopterIndicators]
+    : null
+ }
 
-  return {
-    watch = [
-      IndicatorsVisible
-      IsMfdEnabled
-    ]
-    halign = ALIGN_LEFT
-    valign = ALIGN_TOP
-    size = [sw(100), sh(100)]
-    children = (IndicatorsVisible.value || IsMfdEnabled.value) ? children : null
+let chatCtor = @() {
+  watch = safeAreaSizeHud
+  size = [SIZE_TO_CONTENT, hdpx(350)]
+  margin = safeAreaSizeHud.value.borders
+  flow = FLOW_VERTICAL
+  valign = ALIGN_BOTTOM
+  halign = ALIGN_LEFT
+  gap = hdpx(10)
+  children = [
+    voiceChat
+    hudLogs
+  ]
+}
+
+let helicopterRoot = {
+  size = [sw(100), sh(100)]
+  children = [
+    chatCtor
+    indicatorsCtor
+  ]
+
+  function onAttach() {
+    ::gui_scene.addPanel(0, mfdHud)
+    ::gui_scene.addPanel(1, heliIlsHud)
+  }
+  function onDetach() {
+    ::gui_scene.removePanel(0)
+    ::gui_scene.removePanel(1)
   }
 }
 

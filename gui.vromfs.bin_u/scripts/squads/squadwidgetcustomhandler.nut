@@ -2,8 +2,12 @@ let platformModule = require("%scripts/clientState/platform.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
+
+let isWorldWarBtnShow = @() ::is_worldwar_enabled() && ::g_squad_manager.isInSquad()
+  && !::g_squad_manager.isSquadLeader() && ::g_squad_manager.getWwOperationId() > 0
 
 ::init_squad_widget_handler <- function init_squad_widget_handler(nestObj)
 {
@@ -33,6 +37,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     let notReadyTextWidth = daguiFonts.getStringWidthPx(notReadyText, "fontNormal", guiScene)
     let view = {
       readyBtnHiddenText = readyTextWidth > notReadyTextWidth ? readyText : notReadyText
+      isWorldWarShow = isWorldWarBtnShow()
       members = []
     }
 
@@ -136,6 +141,12 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
     let btnSquadLeave = this.showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
     btnSquadLeave.tooltip = ::loc("squadAction/leave")
+    let wwBtnObj = this.showSceneBtn("btn_world_war", isWorldWarBtnShow())
+    if (wwBtnObj?.isValid()) {
+      let operation = getOperationById(::g_squad_manager.getWwOperationId().tointeger())
+      wwBtnObj.tooltip = "".concat(::loc("worldwar/squadLeaderInOperation"), " ",
+        ::loc("ui/quotes", { text = operation ? operation.getNameText() : ""}))
+    }
 
     scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
   }
@@ -243,5 +254,11 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
   function checkActiveForDelayedAction()
   {
     return isSceneActive()
+  }
+
+  function onWorldWar() {
+    let operationId = ::g_squad_manager.getWwOperationId()
+    if (operationId >= 0)
+      ::g_world_war.joinOperationById(operationId.tointeger())
   }
 }

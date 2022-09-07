@@ -94,7 +94,7 @@ let getStateByValue = function(cur, vMax, crit, vMin)
   id = "" // filled by type name
   unitTypesMask = 0
   parts         = []
-  isUpdateOnKnownPartKillsOnly = true
+  isUpdateByEnemyDamageState = false
   getInfo = @(camInfo, unitInfo, partName = null, dmgParams = null) null
 }
 
@@ -142,16 +142,14 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
 
   TANK_CREW = {
     unitTypesMask = unitTypes.TANK.bit
-    parts    = [ "tank_commander", "tank_driver", "tank_gunner", "tank_loader", "tank_machine_gunner" ]
+    isUpdateByEnemyDamageState = true
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
-      let total = ::getTblValue("crewTotal", camInfo, 0)
+      let total = dmgParams?.crewTotalCount ?? camInfo?.crewTotal ?? 0
       if (!total)
         return null
-      let alive = dmgParams ? ::getTblValue("crewAliveCount", dmgParams, 0)
-        : ::getTblValue("crewAlive", camInfo, 0)
-      let aliveMin = ::getTblValue("crewAliveMin", camInfo, 0)
-
+      let alive = dmgParams?.crewAliveCount ?? camInfo?.crewAlive ?? 0
+      let aliveMin = dmgParams?.crewAliveMin ?? camInfo?.crewAliveMin ?? 0
       let isKill = unitInfo.isKilled
       local totalText = ::loc("ui/slash") + total
       if (!isKill)
@@ -166,9 +164,10 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
 
   SHIP_BUOYANCY = {
     unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
+    isUpdateByEnemyDamageState = true
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
-      let value = ::getTblValue("buoyancy", camInfo)
+      let value = dmgParams?.buoyancy ?? camInfo?.buoyancy
       if (value == null)
         return null
       if (value > 0.995)
@@ -205,15 +204,14 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
 
   SHIP_CREW = {
     unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
-    isUpdateOnKnownPartKillsOnly = false
+    isUpdateByEnemyDamageState = true
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
-      let total = ::getTblValue("crewTotal", camInfo, 0)
+      let total = dmgParams?.crewTotalCount ?? camInfo?.crewTotal ?? 0
       if (!total)
         return null
-      let alive = dmgParams ? ::getTblValue("crewAliveCount", dmgParams, 0)
-        : ::getTblValue("crewAlive", camInfo, 0)
-      let minCrewCount = camInfo?.crewAliveMin ?? 0
+      let alive = dmgParams?.crewAliveCount ?? camInfo?.crewAlive ?? 0
+      let minCrewCount = dmgParams?.crewAliveMin ?? camInfo?.crewAliveMin ?? 0
       let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
 
       let maxCrewLeftPercent = 1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / total
