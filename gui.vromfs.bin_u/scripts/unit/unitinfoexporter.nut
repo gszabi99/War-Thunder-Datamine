@@ -2,7 +2,7 @@ let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let {UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX} = require("%scripts/unit/unitInfoType.nut")
-let { export_calculations_parameters_for_wta } = require("unitCalculcation")
+let { export_calculations_parameters_for_wta = @(requiredUnitsArray, callback) null } = require("unitCalculcation")
 
 ::exportUnitInfo <- function exportUnitInfo(params)
 {

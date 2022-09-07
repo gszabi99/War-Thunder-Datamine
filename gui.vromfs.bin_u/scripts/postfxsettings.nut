@@ -164,6 +164,7 @@ const firstColumnWidth = 0.45
 
     createObjects();
     ::move_mouse_on_child(scene.findObject("postfx_table"), 0)
+    ::enable_menu_gradient(false);
   }
 
   function onResetToDefaults(obj)
@@ -218,6 +219,7 @@ const firstColumnWidth = 0.45
   function goBack()
   {
     ::save_profile(false);
+    ::enable_menu_gradient(true);
     base.goBack();
   }
 

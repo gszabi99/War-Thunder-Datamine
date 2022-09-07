@@ -106,23 +106,31 @@
       "inertialNavigation": false,
       "inertialNavigationDriftSpeed": 3.5,
       "laserSeeker": {
-        "range": 7000.0,
+        "range": 10000.0,
         "rangeMax": 12000.0,
-        "fov": 20.0,
-        "lockAngleMax": 0.0,
-        "angleMax": 0.0,
-        "rateMax": 10.0,
+        "fov": 45.0,
+        "lockAngleMax": 45.0,
+        "angleMax": 45.0,
+        "rateMax": 8.0,
         "prolongationTimeMax": 1.0,
         "filterAlpha": 0.85,
         "filterBetta": 0.2
       },
       "guidanceAutopilot": {
         "timeToGain0": [
-          60.0,
+          0.0,
           1.0
         ],
         "timeToGain1": [
+          60.0,
+          1.0
+        ],
+        "timeToGain2": [
           60.1,
+          0.0
+        ],
+        "timeToGain3": [
+          70.0,
           0.0
         ],
         "baseIndSpeed": 1300.0,

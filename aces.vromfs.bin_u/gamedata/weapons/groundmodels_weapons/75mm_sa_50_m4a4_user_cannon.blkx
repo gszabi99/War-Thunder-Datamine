@@ -42,8 +42,8 @@
     "speed": 1000.0,
     "Cx": 0.4,
     "maxDistance": 10000.0,
-    "normalizationPreset": "ap",
-    "ricochetPreset": "ap",
+    "normalizationPreset": "apbc",
+    "ricochetPreset": "apbc",
     "secondaryShattersPreset": "ap_large_caliber",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -51,8 +51,8 @@
     "stabilityReductionAfterPenetration": 0.0,
     "stucking": 0.7,
     "stuckingAngle": 45.0,
-    "bulletType": "apbc_usa_tank",
-    "slopeEffectPreset": "ap",
+    "bulletType": "apc_solid_medium_caliber_tank",
+    "slopeEffectPreset": "apc",
     "fresnel": [
       0.23,
       0.1,
@@ -215,8 +215,8 @@
       "speed": 1000.0,
       "Cx": 0.4,
       "maxDistance": 10000.0,
-      "normalizationPreset": "ap",
-      "ricochetPreset": "ap",
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -224,8 +224,8 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apbc_usa_tank",
-      "slopeEffectPreset": "ap",
+      "bulletType": "apc_solid_medium_caliber_tank",
+      "slopeEffectPreset": "apc",
       "fresnel": [
         0.23,
         0.1,
@@ -606,9 +606,6 @@
           0.99
         ]
       },
-      "pressureDamage": {
-        "damageType": "pressure"
-      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -626,6 +623,9 @@
             "destruction": 1.0
           }
         }
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [

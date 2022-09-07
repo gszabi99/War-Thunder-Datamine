@@ -40,22 +40,22 @@
     "mass": 3.6,
     "caliber": 0.09,
     "damageCaliber": 0.04,
-    "ballisticCaliber": 0.04,
+    "ballisticCaliber": 0.08,
     "speed": 1570.0,
     "maxDistance": 20000.0,
     "normalizationPreset": "apcr",
-    "ricochetPreset": "apds_fs_full_body_steel",
+    "ricochetPreset": "apds_fs",
     "secondaryShattersPreset": "apds_fs",
-    "bulletType": "apds_fs_full_body_steel_tank",
-    "slopeEffectPreset": "apds_fs_full_body_steel",
+    "bulletType": "apds_fs_tank",
+    "slopeEffectPreset": "apds_fs",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/apfsds_early_ussr.ivf",
+    "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
     "bulletName": "90mm_t320",
-    "Cx": 0.305,
+    "Cx": 0.01,
     "onHitChanceMultExplFuel": 0.1,
     "relativeVelHitShift": [
       300.0,
@@ -140,40 +140,56 @@
     },
     "armorpower": {
       "ArmorPower0m": [
-        292.9,
+        300.0,
         10.0
       ],
       "ArmorPower100m": [
-        287.9,
+        297.0,
         100.0
       ],
       "ArmorPower500m": [
-        275.4,
+        279.0,
         500.0
       ],
       "ArmorPower1000m": [
-        258.6,
+        260.0,
         1000.0
       ],
       "ArmorPower1500m": [
-        240.9,
+        244.0,
         1500.0
       ],
       "ArmorPower2000m": [
-        223.8,
+        239.0,
         2000.0
       ],
+      "ArmorPower2500m": [
+        232.0,
+        2500.0
+      ],
       "ArmorPower3000m": [
-        190.8,
+        217.0,
         3000.0
       ],
-      "ArmorPower10000m": [
-        10.0,
-        10000.0
+      "ArmorPower3500m": [
+        206.0,
+        3500.0
       ],
-      "ArmorPower20000m": [
+      "ArmorPower4000m": [
+        167.0,
+        4000.0
+      ],
+      "ArmorPower4500m": [
+        146.0,
+        4500.0
+      ],
+      "ArmorPower8000m": [
+        30.0,
+        8000.0
+      ],
+      "ArmorPower10000m": [
         0.0,
-        20000.0
+        10000.0
       ]
     },
     "visual": {
@@ -272,22 +288,22 @@
       "mass": 3.6,
       "caliber": 0.09,
       "damageCaliber": 0.04,
-      "ballisticCaliber": 0.04,
+      "ballisticCaliber": 0.08,
       "speed": 1570.0,
       "maxDistance": 20000.0,
       "normalizationPreset": "apcr",
-      "ricochetPreset": "apds_fs_full_body_steel",
+      "ricochetPreset": "apds_fs",
       "secondaryShattersPreset": "apds_fs",
-      "bulletType": "apds_fs_full_body_steel_tank",
-      "slopeEffectPreset": "apds_fs_full_body_steel",
+      "bulletType": "apds_fs_tank",
+      "slopeEffectPreset": "apds_fs",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/apfsds_early_ussr.ivf",
+      "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "90mm_t320",
-      "Cx": 0.305,
+      "Cx": 0.01,
       "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [
         300.0,
@@ -372,40 +388,56 @@
       },
       "armorpower": {
         "ArmorPower0m": [
-          292.9,
+          300.0,
           10.0
         ],
         "ArmorPower100m": [
-          287.9,
+          297.0,
           100.0
         ],
         "ArmorPower500m": [
-          275.4,
+          279.0,
           500.0
         ],
         "ArmorPower1000m": [
-          258.6,
+          260.0,
           1000.0
         ],
         "ArmorPower1500m": [
-          240.9,
+          244.0,
           1500.0
         ],
         "ArmorPower2000m": [
-          223.8,
+          239.0,
           2000.0
         ],
+        "ArmorPower2500m": [
+          232.0,
+          2500.0
+        ],
         "ArmorPower3000m": [
-          190.8,
+          217.0,
           3000.0
         ],
-        "ArmorPower10000m": [
-          10.0,
-          10000.0
+        "ArmorPower3500m": [
+          206.0,
+          3500.0
         ],
-        "ArmorPower20000m": [
+        "ArmorPower4000m": [
+          167.0,
+          4000.0
+        ],
+        "ArmorPower4500m": [
+          146.0,
+          4500.0
+        ],
+        "ArmorPower8000m": [
+          30.0,
+          8000.0
+        ],
+        "ArmorPower10000m": [
           0.0,
-          20000.0
+          10000.0
         ]
       },
       "visual": {
@@ -551,9 +583,6 @@
           0.99
         ]
       },
-      "pressureDamage": {
-        "damageType": "pressure"
-      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -571,6 +600,9 @@
             "destruction": 1.0
           }
         }
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [

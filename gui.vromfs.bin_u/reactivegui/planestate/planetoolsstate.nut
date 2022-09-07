@@ -22,7 +22,6 @@ let IlsAtgmTrackerVisible = Watched(false)
 let IlsAtgmTargetPos = [0, 0]
 let IlsAtgmLocked = Watched(false)
 let RwrScale = Watched(1.0)
-let RadarTargetDistRate = Watched(0.0)
 let RadarTargetDist = Watched(0.0)
 let RadarTargetPosValid = Watched(false)
 let RadarTargetPos = [0, 0]
@@ -63,7 +62,6 @@ let planeState = {
   RadarTargetDist,
   RadarTargetPosValid,
   RadarTargetPos,
-  RadarTargetDistRate,
   AamAccelLock,
   MfdRadarWithNavVis,
   MfdRadarNavPosSize,

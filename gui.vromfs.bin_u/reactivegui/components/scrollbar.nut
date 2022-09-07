@@ -1,4 +1,4 @@
-let scrollbarBase = require("scrollbarBase.nut")
+let scrollbarBase = require("%darg/components/scrollbar.nut")
 let colors = require("%rGui/style/colors.nut")
 
 

@@ -1,16 +1,24 @@
 let { format } = require("string")
-
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 ::hudEnemyDamage <- {
   // HitCamera HUE color range is: 160 (100%hp) - 0 (0%hp).
-  tankThresholdShowHp = 0.25
+  thresholdShowHealthBelow = 0.25
   hueHpMax = 60
-  hueHpMin = 0
+  hueHpMin = 40
   hueKill  =  0
   brightnessHpMax = 0.6
   brightnessHpMin = 0.75
-  tankBrightnessKill  = 1.0
+  brightnessKill  = 1.0
+  minAliveCrewCount = 2
 
   partsOrder = [
+    {
+      id = "status"
+      isStatus = true
+      parts = [
+        "crew_count"
+      ]
+    },
     {
       id = "crew"
       parts = [
@@ -82,6 +90,7 @@ let { format } = require("string")
   lastTargetVersion = null
   lastTargetType = ::ES_UNIT_TYPE_INVALID
   lastTargetKilled = false
+  lastTargetCrew = -1
   partsConfig = {}
 
   listObj   = null
@@ -94,6 +103,8 @@ let { format } = require("string")
     scene = nest
     guiScene = scene.getScene()
     listObj = scene.findObject("hud_enemy_damage")
+
+    minAliveCrewCount = getMinAliveCrewCount()
 
     ::g_hud_event_manager.subscribe("EnemyPartDamage", function (damageData) {
         onEnemyPartDamage(damageData)
@@ -121,16 +132,18 @@ let { format } = require("string")
     lastTargetVersion = null
     lastTargetType = ::ES_UNIT_TYPE_INVALID
     lastTargetKilled = false
+    lastTargetCrew = -1
 
     partsConfig = {}
     foreach (sectionIdx, section in partsOrder)
-      foreach (partId in section.parts)
-        partsConfig[partId] <- {
-          section = section.id
-          sectionIdx = sectionIdx
-          dmParts = {}
-          show = false
-        }
+      if (!::getTblValue("isStatus", section, false))
+        foreach (partId in section.parts)
+          partsConfig[partId] <- {
+            section = section.id
+            sectionIdx = sectionIdx
+            dmParts = {}
+            show = false
+          }
   }
 
   function rebuildWidgets()
@@ -141,10 +154,11 @@ let { format } = require("string")
     local markup = ""
     foreach (sectionIdx, section in partsOrder)
     {
+      let isStatus = ::getTblValue("isStatus", section, false)
       foreach (partId in section.parts)
         markup += ::handyman.renderCached(("%gui/hud/hudEnemyDamage"), {
           id = partId
-          text = ::loc($"dmg_msg_short/{partId}")
+          text = isStatus ? "" : ::loc("dmg_msg_short/" + partId)
         })
     }
     guiScene.replaceContentFromText(listObj, markup, markup.len(), this)
@@ -170,10 +184,12 @@ let { format } = require("string")
       partNo - decimal index of part
       partDmName - string with dm name
       partName - string with localization name
-      partHp - float of 0..1 calculated as hp/maxHp
+      partHpCur - float of 0..1 calculated as hp/maxHp (may be absent)
       partDmg - float in range of 0..1 with applied damage
       partDead - bool flag indicating that part was dead before the shot occured
       partKilled - bool flag, true if part was kiled by current shot
+      crewAliveCount - integer, alive crew members count
+      crewTotalCount - integer, total crew members count
     }
 
     data {
@@ -184,46 +200,88 @@ let { format } = require("string")
     }
     */
 
-    let { unitId, unitVersion, partName = null } = data
-    if (unitId != lastTargetId || unitVersion != lastTargetVersion)
+    let targetId = ::getTblValue("unitId", data)
+    let targetVersion = ::getTblValue("unitVersion", data)
+    if (targetId != lastTargetId || targetVersion != lastTargetVersion)
     {
       if (!isAllAnimationsFinished())
         resetWidgets()
 
       resetTargetData()
-      lastTargetId = unitId
-      lastTargetVersion = unitVersion
-      lastTargetType = data?.unitType ?? ::ES_UNIT_TYPE_INVALID
-      lastTargetKilled = data?.unitKilled ?? false
+      lastTargetId = targetId
+      lastTargetVersion = targetVersion
+      lastTargetType = ::getTblValue("unitType", data, ::ES_UNIT_TYPE_INVALID)
+      lastTargetKilled = ::getTblValue("unitKilled", data, false)
     }
     else
     {
-      lastTargetKilled = data?.unitKilled ?? lastTargetKilled
+      lastTargetKilled = ::getTblValue("unitKilled", data, lastTargetKilled)
     }
 
-    if (partName == null || (partName not in partsConfig))
-      return
+    let partName = ::getTblValue("partName", data)
+    if (partName && (partName in partsConfig))
+    {
+      let cfg = partsConfig[partName]
+      if (!(data.partDmName in cfg.dmParts))
+        cfg.dmParts[data.partDmName] <- data
+      else
+      {
+        let prevData = cfg.dmParts[data.partDmName]
+        foreach (i, v in data)
+          prevData[i] <- v
+      }
 
-    let cfg = partsConfig[partName]
-    cfg.dmParts[data.partDmName] <- (cfg.dmParts?[data.partDmName] ?? {}).__merge(data)
-    let { partDead = false, partKilled = false, partHp = 1.0, partDmg = 0.0
-    } = cfg.dmParts[data.partDmName]
-    let showHp = (partDead || partKilled) ? 0.0 : partHp
-    cfg.dmParts[data.partDmName].partHp <- showHp
+      local showHp = 1.0
+      foreach(dmPart in cfg.dmParts)
+      {
+        let partDead   = ::getTblValue("partDead", dmPart, false)
+        let partKilled = ::getTblValue("partKilled", dmPart, false)
+        let partHpCur  = ::getTblValue("partHpCur", dmPart, 1.0)
+        dmPart.partHp <- (partDead || partKilled) ? 0.0 : partHpCur
+        showHp = min(showHp, dmPart.partHp)
+      }
 
-    let isHit = partKilled || partDmg > 0
-    let isTank = lastTargetType == ::ES_UNIT_TYPE_TANK
-    let thresholdShowHealthBelow = isTank ? tankThresholdShowHp : 1.0
-    let brightnessKill = isTank ? tankBrightnessKill : 0.0
-    cfg.show = isHit && showHp < thresholdShowHealthBelow
-    if (!cfg.show)
-      return
+      let partKilled = ::getTblValue("partKilled", data, false)
+      let partDmg = ::getTblValue("partDmg", data, 0.0)
+      let isHit = partKilled || partDmg > 0
+      cfg.show = isHit && showHp < thresholdShowHealthBelow
 
-    let value = 1.0 / thresholdShowHealthBelow * showHp
-    let hue =  showHp ? (hueHpMin + (hueHpMax - hueHpMin) * value) : hueKill
-    let brightness =  showHp ? (brightnessHpMin - (brightnessHpMin - brightnessHpMax) * value) : brightnessKill
-    let color = format("#%s", ::get_color_from_hsv(hue, 1, brightness))
-    showPart(partName, color, !showHp)
+      if (cfg.show)
+      {
+        let value = 1.0 / thresholdShowHealthBelow * showHp
+        let hue =  showHp ? (hueHpMin + (hueHpMax - hueHpMin) * value) : hueKill
+        let brightness =  showHp ? (brightnessHpMin - (brightnessHpMin - brightnessHpMax) * value) : brightnessKill
+        let color = format("#%s", ::get_color_from_hsv(hue, 1, brightness))
+        showPart(partName, color, !showHp)
+      }
+
+      minAliveCrewCount = ::getTblValue("crewAliveMin", data, minAliveCrewCount)
+      let crewCount = ::getTblValue("crewAliveCount", data, -1)
+      let crewCountTotal = ::getTblValue("crewTotalCount", data, -1)
+      let isCrewChanged = crewCount != -1 && lastTargetCrew != crewCount
+      let isShowCrew = !lastTargetKilled && isCrewChanged
+        && (lastTargetType == ::ES_UNIT_TYPE_SHIP
+          || (!::has_feature("HitCameraTargetStateIconsTank") && cfg.section == "crew" && cfg.show && partKilled))
+
+      if (isShowCrew)
+      {
+        lastTargetCrew = crewCount
+
+        showPart("crew_count", "#FFFFFF", true)
+        let obj = listObj.findObject("crew_count")
+        if (::check_obj(obj))
+        {
+          local text = ::colorize("commonTextColor", ::loc("mainmenu/btnCrew") + ::loc("ui/colon")) +
+            ::colorize(crewCount <= minAliveCrewCount ? "warningTextColor" : "activeTextColor", crewCount)
+          if (crewCountTotal > 0)
+            text += ::colorize("commonTextColor", ::loc("ui/slash")) + ::colorize("activeTextColor", crewCountTotal)
+          obj.setValue(text)
+        }
+      }
+    }
+
+    if (lastTargetKilled || lastTargetCrew < minAliveCrewCount)
+      hidePart("crew_count")
   }
 
   function onHitcamTargetKilled(params)
@@ -282,5 +340,14 @@ let { format } = require("string")
       if (cfg.show)
         return false
     return true
+  }
+
+  function getMinAliveCrewCount()
+  {
+    let diffCode = ::get_mission_difficulty_int()
+    let settingsName = ::g_difficulty.getDifficultyByDiffCode(diffCode).settingsName
+    let path = "difficulty_settings/baseDifficulty/" + settingsName + "/changeCrewTime"
+    let changeCrewTime = get_blk_value_by_path(::dgs_get_game_params(), path)
+    return changeCrewTime != null ? 1 : 2
   }
 }

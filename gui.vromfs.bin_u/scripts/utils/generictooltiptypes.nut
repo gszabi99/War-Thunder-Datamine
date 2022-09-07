@@ -11,8 +11,6 @@ let { fillItemDescr, fillDescTextAboutDiv,
   fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
-let { getUnlockDesc, getUnlockConditionsText, getUnlockMultDesc,
-  getUnlockMainCondText } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 let tooltipTypes = {
   types = []
@@ -85,45 +83,47 @@ let exportTypes = addTooltipTypes({
       if (!::checkObj(obj))
         return false
 
+      local config = null
+      let stage = (params?.stage??-1).tointeger()
       let unlock = ::g_unlocks.getUnlockById(unlockId)
-      if (unlock == null)
+      if (unlock==null)
         return false
+      config = ::build_conditions_config(unlock, stage)
 
-      let stage = params?.stage.tointeger() ?? -1
-      let config = ::build_conditions_config(unlock, stage)
-      let subunlockCfg = ::UnlockConditions.getSubunlockCfg(config.conditions)
-
-      obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
+      let isCompleted = ::is_unlocked(-1, unlockId)
+      ::build_unlock_desc(config, {showProgress = !isCompleted, showCost = !isCompleted})
+      let reward = ::g_unlock_view.getRewardText(config, stage)
 
       let header = ::g_unlock_view.getUnlockTitle(config)
+
+      obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
       obj.findObject("header").setValue(header)
 
-      if (params?.showChapter ?? false)
-        obj.findObject("chapter").setValue(::g_unlock_view.getChapterAndGroupText(unlock))
+      let subunlockCfg = ::UnlockConditions.getSubunlockCfg(config.conditions)
+      local text = null
+      if (subunlockCfg)
+        text = ::UnlockConditions.getConditionsText(
+          subunlockCfg.conditions,
+          subunlockCfg.showProgress ? subunlockCfg.curVal : null,
+          subunlockCfg.maxVal,
+          { isExpired = subunlockCfg.isExpired })
 
-      let mainCond = getUnlockMainCondText(subunlockCfg ?? config)
-      let conds = getUnlockConditionsText(subunlockCfg ?? config, {
-        withMainCondition = false
-        showMult = false
-      })
-      obj.findObject("desc_text").setValue(getUnlockDesc(subunlockCfg ?? config))
-      obj.findObject("mainCond").setValue(mainCond)
-      obj.findObject("multDecs").setValue(getUnlockMultDesc(subunlockCfg ?? config))
-      obj.findObject("conds").setValue(conds)
-
-      let hasMainCond = mainCond != ""
-      let hasAnyCond = hasMainCond || conds != ""
-      if (hasMainCond && !::is_unlocked_scripted(-1, unlockId)) {
+      text = text ?? config.text
+      let dObj = obj.findObject("description")
+      dObj.setValue(text)
+      if (!isCompleted)
+      {
         let pObj = obj.findObject("progress")
         let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
         pObj.setValue(progressData.value)
         pObj.show(progressData.show)
       }
-      else if (hasAnyCond)
+      else if(text != "")
         obj.findObject("challenge_complete").show(true)
 
-      let reward = ::g_unlock_view.getRewardText(config, stage)
-      obj.findObject("reward").setValue(reward)
+      let rObj = ::showBtn("reward", reward != "", obj)
+      rObj.setValue(reward)
+
       return true
     }
   }

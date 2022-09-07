@@ -1,6 +1,5 @@
 let abs = @(v) v> 0 ? v.tointeger() : -v.tointeger()
 let { logerr } = require("dagor.debug")
-//let { log } = require("log.nut")()
 
 let callableTypes = ["function","table","instance"]
 let function isCallable(v) {
@@ -203,202 +202,45 @@ let function curry(fn) {
   Memoizes a given function by caching the computed result. Useful for speeding up slow-running computations.
   If passed an optional hashFunction, it will be used to compute the hash key for storing the result, based on the arguments to the original function.
   The default hashFunction just uses the first argument to the memoized function as the key.
-  heavily optimized for most common cases - memoize by first argument, or by any amount
-
-  NOTES:
-  memoize works 20% faster with try catch instead of if to check if there is value in cache
-  but 5 times slower on cache population.
-  we also need to check if cache is overcrowded and clean it on
-  and it would be better to not clean external cache
 */
-let NullKey = persist("NullKey", @() {})
-let Leaf = persist("Leaf", @() {})
-let NO_VALUE = persist("NO_VALUE", @() {})
-
-let function setValInCacheVargved(path, value, cache) {
-  local curTbl = cache
-  foreach (p in path){
-    local pathPart = p ?? NullKey
-    if (pathPart not in curTbl)
-      curTbl[pathPart] <- {}
-    curTbl = curTbl[pathPart]
+let function checkFuncArgumentsNum(func, numMinMandatoryParams){
+  let funcinfos = func.getfuncinfos()
+  if (funcinfos?.native) {
+    local paramscheck = funcinfos.paramscheck
+    if (paramscheck<0)
+      paramscheck = -paramscheck
+    if (paramscheck >= numMinMandatoryParams)
+      return true
+    return false
   }
-  return curTbl[Leaf] <- value
+  if ((funcinfos.parameters.len()-1) >= numMinMandatoryParams)
+    return true
+  if (funcinfos.varargs > 0 )
+    return true
+  return false
 }
 
-let function getValInCacheVargved(path, cache) {
-  local curTbl = cache
-  foreach (p in path) {
-    let key = p ?? NullKey
-    if (key in curTbl)
-      curTbl = curTbl[p ?? NullKey]
-    else
-      return NO_VALUE
-  }
-  return curTbl[Leaf]
-}
-
-let function setValInCache(path, value, cache) {
-  local curTbl = cache
-  let n = path.len()-1
-  foreach (idx, p in path){
-    local pathPart = p ?? NullKey
-    if (idx == n)
-      return curTbl[pathPart] <- value
-    if (pathPart not in curTbl)
-      curTbl[pathPart] <- {}
-    curTbl = curTbl[pathPart]
-  }
-  return value
-}
-
-let function getValInCache(path, cache) {
-  local curTbl = cache
-  foreach (p in path) {
-    let key = p ?? NullKey
-    if (key in curTbl)
-      curTbl = curTbl[p ?? NullKey]
-    else
-      return NO_VALUE
-  }
-  return curTbl
-}
-
-const DEF_MAX_CACHE_ENTRIES = 10000
-let function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_CACHE_ENTRIES) {
-  let cache = cacheExternal ?? {}
-  local simpleCache = null
-  local simpleCacheUsed = false
-  let {parameters=null, varargs=0, defparams=null} = func.getfuncinfos()
-  let isVarargved = (varargs > 0) || ((defparams.len() ?? 0) > 0)
-  let parametersNum = (parameters?.len() ?? 0)-1
-  let isOneParam = (parametersNum == 1) && !isVarargved
-  let isNoParams = (parametersNum == 0) && !isVarargved
-  local cacheValues = 0
-  if (type(hashfunc)=="function")
-    return function memoizedfuncHash(...){
-      let args = [null].extend(vargv)
-      let hashKey = hashfunc.acall(args) ?? NullKey
-      if (hashKey in cache)
-        return cache[hashKey]
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
-        cache.clear()
-      return cache[hashKey] <- func.acall(args)
-//      try { return cache[hashKey] }
-//      catch(e) { return cache[hashKey] <- func.acall(args) }
+local function memoize(func, hashfunc=null, cacheExternal=null, nullCache=null){
+  let cacheDefault = cacheExternal ?? {}
+  let cacheForNull = nullCache ?? {}
+  assert(checkFuncArgumentsNum(func, 1))
+  hashfunc = hashfunc ?? function(...) {
+    return vargv[0]
+ }
+  let function memoizedfunc(...){
+    let args = [null].extend(vargv)
+    let rawHash = hashfunc.acall(args)
+    //index cannot be null. use different cache to avoid collision
+    let hash = rawHash ?? 0
+    let cache = rawHash != null ? cacheDefault : cacheForNull
+    if (hash in cache) {
+      return cache[hash]
     }
-  else if (isOneParam) {
-    return function memoizedfuncOne(v){
-      let k = v ?? NullKey
-      if (k in cache)
-        return cache[k]
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
-        cache.clear()
-      return cache[k] <- func(v)
-//      try { return cache[v ?? NullKey] }
-//      catch(e) { return cache[v ?? NullKey] <- func(v) }
-    }
+    let result = func.acall(args)
+    cache[hash] <- result
+    return result
   }
-  else if (hashfunc==1) {
-    return function memoizedfunc1(...){
-      let key = vargv[0] ?? NullKey
-      if (key in cache)
-        return cache[key]
-      if (vargv.len()>0) {
-        cacheValues+=1
-        if (cacheValues > maxCacheNum)
-          cache.clear()
-        return cache[key] <- func.acall([null].extend(vargv))
-      }
-      if (simpleCacheUsed)
-        return simpleCache
-      simpleCache = func.acall([null].extend(vargv))
-      simpleCacheUsed = true
-      return simpleCache
-//      try { return cache[vargv[0] ?? NullKey] }
-//      catch(e) {
-//        if (vargv.len()>0)
-//          return cache[vargv[0] ?? NullKey] <- func.acall([null].extend(vargv))
-//        if (simpleCacheUsed)
-//          return simpleCache
-//        simpleCache = func.acall([null].extend(vargv))
-//        simpleCacheUsed = true
-//        return simpleCache
-//      }
-    }
-  }
-  else if (isNoParams)
-    return function memoizedfuncNo() {
-      if (simpleCacheUsed)
-        return simpleCache
-      simpleCache = func()
-      simpleCacheUsed = true
-      return simpleCache
-    }
-  else if (hashfunc==0) {
-    return function memoizedfunc0(...){
-      if (simpleCacheUsed)
-        return simpleCache
-      simpleCache = func.acall([null].extend(vargv))
-      simpleCacheUsed = true
-      return simpleCache
-    }
-  }
-  else if (type(hashfunc)=="integer") {
-    if (isVarargved) {
-      return function memoizedfuncInt(...){
-        let path = vargv.slice(0, hashfunc)
-        let cached = getValInCacheVargved(path, cache)
-        if (cached != NO_VALUE)
-          return cached
-        cacheValues+=1
-        if (cacheValues > maxCacheNum)
-          cache.clear()
-        return setValInCacheVargved(path, func.acall([null].extend(vargv)), cache)
-//        try { return getValInCacheVargved(path, cache) }
-//        catch(e) { return setValInCacheVargved(path, func.acall([null].extend(vargv)), cache) }
-      }
-    }
-    return function(...){
-      let path = vargv.slice(0, hashfunc)
-      let cached = getValInCache(path, cache)
-      if (cached != NO_VALUE)
-        return cached
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
-        cache.clear()
-      return setValInCache(path, func.acall([null].extend(vargv)), cache)
-//      try { return getValInCache(path, cache) }
-//      catch(e) { return setValInCache(path, func.acall([null].extend(vargv)), cache) }
-    }
-  }
-  assert(hashfunc == null, "hash function should be null, function or integer of arguments of function")
-  if (isVarargved) {
-    return function memoizedfunc(...){
-      let cached = getValInCacheVargved(vargv, cache)
-      if (cached != NO_VALUE)
-        return cached
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
-        cache.clear()
-      return setValInCacheVargved(vargv, func.acall([null].extend(vargv)), cache)
-//      try { return getValInCacheVargved(vargv, cache) }
-//      catch(e) { return setValInCacheVargved(vargv, func.acall([null].extend(vargv)), cache) }
-    }
-  }
-  return function memoizedfunc(...){
-    let cached = getValInCache(vargv, cache)
-    if (cached != NO_VALUE)
-      return cached
-    cacheValues+=1
-    if (cacheValues > maxCacheNum)
-      cache.clear()
-    return setValInCache(vargv, func.acall([null].extend(vargv)), cache)
-//    try { return getValInCache(vargv, cache) }
-//    catch(e) { return setValInCache(vargv, func.acall([null].extend(vargv)), cache) }
-  }
+  return memoizedfunc
 }
 //the same function as in underscore.js
 //Creates a version of the function that can only be called one time.
@@ -491,31 +333,6 @@ local function breakable_reduce(obj, func, memo=MemoNotInited()) {
 */
 let combine = @(...) @() vargv.each(@(v) v.call(null))
 
-
-//creates function that will do map 'set' ({key:key}) to table with provided function
-//function result will be cached for each key, until key disappears, than cache result for this key would be cleaned
-
-let function mkMemoizedMapSet(func){
-  let cache = {}
-  let funcParams = func.getfuncinfos().parameters.len()-1
-  return function memoizedMapSet(set){
-    foreach (k, v in set){
-      if (k in cache)
-        continue
-      cache[k] <- funcParams == 1 ? func(k) : func(k, v)
-    }
-    let toDelete = []
-    foreach(k, _ in cache) {
-      if (k not in set)
-        toDelete.append(k)
-    }
-    foreach(k in toDelete)
-      delete cache[k]
-    return cache
-  }
-}
-
-
 return {
   partial
   pipe
@@ -533,5 +350,4 @@ return {
 //  BreakValue
   combine
   tryCatch
-  mkMemoizedMapSet
 }

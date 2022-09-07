@@ -1,20 +1,15 @@
 let {floor, round_by_value} = require("%sqstd/math.nut")
 
-let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount, IsCannonEmpty,
+let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
   EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, FuelState, IsCompassVisible,
-  IsMachineGunsEmpty, MachineGunsSelectedArray, MachineGunsCount, MachineGunsReloadTime, MachineGunsMode,
-  CannonsAdditionalCount, CannonsAdditionalSeconds, CannonsAdditionalMode, CannonsAdditionalSelected, IsCanAdditionalEmpty,
-  AgmCount, AgmSeconds, AgmTimeToHit, AgmTimeToWarning, AgmActualCount, AgmName, AgmSelected, IsAgmEmpty,
-  AamCount, AamSeconds, AamActualCount, AamName, AamSelected, IsAamEmpty,
-  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
-  FlaresCount, FlaresSeconds, FlaresMode, IsFlrEmpty,
-  ChaffsCount, ChaffsSeconds, ChaffsMode, IsChaffsEmpty,
-  RocketsCount, RocketsSeconds, RocketsActualCount, RocketsSalvo, RocketsMode, RocketsName, RocketsSelected, IsRktEmpty,
-  IsSightHudVisible, DetectAllyProgress, DetectAllyState,
-  BombsCount, BombsSeconds, BombsActualCount, BombsSalvo, BombsMode, BombsName, BombsSelected, IsBmbEmpty,
-  IsTrpEmpty, TorpedoesCount, TorpedoesSeconds, TorpedoesActualCount, TorpedoesSalvo, TorpedoesMode, TorpedoesName, TorpedoesSelected,
-  IsHighRateOfFire, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
+  MachineGuns, IsMachineGunEmpty, // <= retro compatibility
+  MachineGunsMode, MachineGunsSelectedArray, MachineGunsReloadTime, MachineGunsCount, IsMachineGunsEmpty,
+  CannonsAdditional, IsCanAdditionalEmpty, Rockets,
+  IsRktEmpty, IsSightHudVisible, Agm, IsAgmEmpty,
+  DetectAllyProgress, DetectAllyState, Bombs, IsBmbEmpty,
+  IsHighRateOfFire, Aam, IsAamEmpty, GuidedBombs, IsGuidedBmbEmpty,
+  IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
   AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
   AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, IsZoomedAgmLaunchZoneVisible,
   IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsRangefinderEnabled, RangefinderDist,
@@ -22,10 +17,10 @@ let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCo
   AlertColorLow, AlertColorMedium, AlertColorHigh, OilAlert,
   PassivColor, IsLaserDesignatorEnabled, IsInsideLaunchZoneDist, GunInDeadZone,
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
-  RocketAimX, RocketAimY, TATargetVisible, IRCMState,
+  RocketAimX, RocketAimY, TATargetVisible, IRCMState, IsCannonEmpty,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced,IsEnginesControled, ThrottleState, isEngineControled,
-  DistanceToGround, IsMfdEnabled, VerticalSpeed, HudParamColor, MfdColor,
-  ParamTableShadowFactor, ParamTableShadowOpacity
+  IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, IsMfdEnabled, VerticalSpeed, HudParamColor, MfdColor,
+  TargetPodHudColor, ParamTableShadowFactor, ParamTableShadowOpacity
 } = require("airState.nut")
 
 let {backgroundColor, isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor} = require("style/airHudStyle.nut")
@@ -36,16 +31,11 @@ let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 let { isInitializedMeasureUnits } = require("options/optionsMeasureUnits.nut")
 
 let aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
-
-let agmAimState = require("agmAimState.nut")
-let agmGuidanceLockState = agmAimState.GuidanceLockState
-let agmGuidancePointIsTarget = agmAimState.PointIsTarget
-let guidedBombsAimState =  require("guidedBombsAimState.nut")
-let guidedBombsGuidanceLockState = guidedBombsAimState.GuidanceLockState
-let guidedBombsGuidancePointIsTarget = guidedBombsAimState.PointIsTarget
+let agmGuidanceLockState =  require("agmAimState.nut").GuidanceLockState
+let guidedBombsGuidanceLockState =  require("guidedBombsAimState.nut").GuidanceLockState
 let compass = require("compass.nut")
 
-const NUM_VISIBLE_ENGINES_MAX = 6
+const NUM_ENGINES_MAX = 6
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 
@@ -213,7 +203,7 @@ let generateAgmBulletsTextFunction = function(count, seconds, timeToHit, _timeTo
   }
   else if (count >= 0)
     txts = [count]
-  if (actualCount >= 0)
+  if (actualCount > 0)
     txts.append("/", actualCount)
   if (timeToHit > 0)
     txts.append(::string.format("[%d]", timeToHit))
@@ -273,7 +263,7 @@ let function getThrottleCaption(mode, isControled, idx) {
   return "".join(texts)
 }
 
-let function getAGCaption(guidanceLockState, pointIsTarget) {
+let function getAGCaption(guidanceLockState) {
   let texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
     texts.append(::loc("HUD/TXT_AGM_SHORT"))
@@ -284,7 +274,7 @@ let function getAGCaption(guidanceLockState, pointIsTarget) {
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
     texts.append(::loc("HUD/TXT_AGM_LOCK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(::loc(!pointIsTarget ? "HUD/TXT_AGM_TRACK" : "HUD/TXT_AGM_TRACK_POINT"))
+    texts.append(::loc("HUD/TXT_AGM_TRACK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
     texts.append(::loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH"))
   return "".join(texts)
@@ -307,7 +297,7 @@ let function getAACaption(guidanceLockState) {
   return "".join(texts)
 }
 
-let function getGBCaption(guidanceLockState, pointIsTarget) {
+let function getGBCaption(guidanceLockState) {
   let texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
     texts.append(::loc("HUD/TXT_GUIDED_BOMBS_SHORT"))
@@ -318,7 +308,7 @@ let function getGBCaption(guidanceLockState, pointIsTarget) {
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
     texts.append(::loc("HUD/TXT_GUIDED_BOMBS_LOCK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(::loc(!pointIsTarget ? "HUD/TXT_GUIDED_BOMBS_TRACK" : "HUD/TXT_GUIDED_BOMBS_POINT_TRACK"))
+    texts.append(::loc("HUD/TXT_GUIDED_BOMBS_TRACK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
     texts.append(::loc("HUD/TXT_GUIDED_BOMBS_LOCK_AFTER_LAUNCH"))
   return "".join(texts)
@@ -389,20 +379,6 @@ let function getBombCaption(mode){
   return "".join(texts)
 }
 
-let function getTorpedoCaption(mode) {
-  let texts = [::loc("HUD/TORPEDOES_SHORT")," "]
-
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
-    texts.append(::loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
-    texts.append(::loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
-    texts.append(::loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
-    texts.append(::loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
-  return "".join(texts)
-}
-
 let function getCannonsCaption(mode){
   let texts = [::loc("HUD/CANNONS_SHORT"), " "]
   texts.append(getModeCaption(mode))
@@ -452,17 +428,18 @@ let function getFuelAlertState(fuelState){
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
-let function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false) {
+let function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false, isTargetPodView = false) {
   let {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
     additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed, titleSizeFactor} = param
 
-  let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor) {
+  let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor, targetPodColor) {
     return (state == HudColorState.PASSIV) ? passivColor
       : (state == HudColorState.LOW_ALERT) ? lowAlertColor
       : (state == HudColorState.MEDIUM_ALERT) ? mediumAlertColor
       : (state == HudColorState.HIGH_ALERT) ? highAlertColor
       : isBackground ? backgroundColor
       : isBomberView ? isColorOrWhite(activeColor)
+      : isTargetPodView ? targetPodColor
       : activeColor
   }
 
@@ -482,7 +459,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
   let finalTitleSizeX = max(captionSizeX() + 0.06 * width, 0.2 * width)
 
   let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
-    AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value), 255))
+    AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value, TargetPodHudColor.value), 255))
 
   let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.value, HudParamColor.value, ParamTableShadowOpacity.value))
 
@@ -513,7 +490,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
   let valueSizeX = @() ::calc_comp_size({rendObj = ROBJ_TEXT, size = SIZE_TO_CONTENT, text = valueComputed.value, watch = valueComputed})[0]
 
   let valueColor = Computed(@() for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
-    AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value))
+    AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value, TargetPodHudColor.value))
 
   let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.value, HudParamColor.value, ParamTableShadowOpacity.value))
 
@@ -560,6 +537,69 @@ let function createParam(param, width, height, isBackground, style, needCaption 
 //thoses local values are used for direct subscription
 //Rpm
 let TrtModeForRpm = TrtMode[0]
+
+//MachineGuns RetroCompatibility
+let MachineGunCount = MachineGuns.count
+let MachineGunMode = MachineGuns.mode
+let MachineGunSeconds = MachineGuns.seconds
+let MachineGunSelected = MachineGuns.selected
+
+//additionalComputed Cannons
+let CannonsAdditionalCount = CannonsAdditional.count
+let CannonsAdditionalSeconds = CannonsAdditional.seconds
+let CannonsAdditionalMode = CannonsAdditional.mode
+let CannonsAdditionalSelected = CannonsAdditional.selected
+
+//Rockets
+let RocketsCount = Rockets.count
+let RocketsSeconds = Rockets.seconds
+let RocketsActualCount = Rockets.actualCount
+let RocketsSalvo = Rockets.salvo
+let RocketsMode = Rockets.mode
+let RocketsName = Rockets.name
+let RocketsSelected = Rockets.selected
+
+// Agm
+let AgmCount = Agm.count
+let AgmSeconds = Agm.seconds
+let AgmTimeToHit = Agm.timeToHit
+let AgmTimeToWarning = Agm.timeToWarning
+let AgmActualCount = Agm.actualCount
+let AgmName = Agm.name
+let AgmSelected = Agm.selected
+
+// Aam
+let AamCount = Aam.count
+let AamSeconds = Aam.seconds
+let AamActualCount = Aam.actualCount
+let AamName = Aam.name
+let AamSelected = Aam.selected
+
+//Guided Bombs
+let GuidedBombsCount = GuidedBombs.count
+let GuidedBombsSeconds = GuidedBombs.seconds
+let GuidedBombsActualCount = GuidedBombs.actualCount
+let GuidedBombsName = GuidedBombs.name
+let GuidedBombsSelected = GuidedBombs.selected
+
+//Bombs
+let BombsCount = Bombs.count
+let BombsSeconds = Bombs.seconds
+let BombsActualCount = Bombs.actualCount
+let BombsSalvo = Bombs.salvo
+let BombsMode = Bombs.mode
+let BombsName = Bombs.name
+let BombsSelected = Bombs.selected
+
+//Flares
+let FlaresCount = Flares.count
+let FlaresSeconds = Flares.seconds
+let FlaresMode = Flares.mode
+
+//Chaffs
+let ChaffsCount = Chaffs.count
+let ChaffsSeconds = Chaffs.seconds
+let ChaffsMode = Chaffs.mode
 
 let agmBlinkComputed = Computed(@() (IsSightHudVisible.value && IsAgmLaunchZoneVisible.value &&
   (!IsInsideLaunchZoneYawPitch.value || (IsRangefinderEnabled.value && !IsInsideLaunchZoneDist.value))))
@@ -612,6 +652,16 @@ let textParamsMapMain = {
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
     titleSizeFactor = 1.0
   },
+  //retro compatibility
+  [AirParamsMain.MACHINE_GUN] = {
+    titleComputed = Computed(@() getMachineGunCaption(MachineGunMode.value))
+    valueComputed = Computed(@() generateBulletsTextFunction(MachineGunCount.value, MachineGunSeconds.value))
+    selectedComputed = Computed(@() MachineGunSelected.value ? ">" : "")
+    additionalComputed = Computed (@() "")
+    alertStateCaptionComputed = Computed(@() IsMachineGunEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    alertValueStateComputed = Computed(@() IsMachineGunEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
+  },
   [AirParamsMain.CANNON_ADDITIONAL] = {
     titleComputed = Computed(@() getAdditionalCannonCaption(CannonsAdditionalMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonsAdditionalCount.value, CannonsAdditionalSeconds.value))
@@ -633,7 +683,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.AGM] = {
     titleComputed = Computed(@() AgmCount.value <= 0 ? ::loc("HUD/TXT_AGM_SHORT") :
-      getAGCaption(agmGuidanceLockState.value, agmGuidancePointIsTarget.value))
+      getAGCaption(agmGuidanceLockState.value))
     valueComputed = Computed(@() generateAgmBulletsTextFunction(AgmCount.value, AgmSeconds.value,
        AgmTimeToHit.value, AgmTimeToWarning.value, AgmActualCount.value))
     selectedComputed = Computed(@() AgmSelected.value ? ">" : "")
@@ -652,16 +702,6 @@ let textParamsMapMain = {
     additionalComputed = Computed(@() ::loc(BombsName.value))
     alertStateCaptionComputed = Computed(@() IsBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
-    titleSizeFactor = 1.0
-  },
-  [AirParamsMain.TORPEDO] = {
-    titleComputed = Computed(@() getTorpedoCaption(TorpedoesMode.value))
-    valueComputed = Computed(@() generateBulletsTextFunction(TorpedoesCount.value, TorpedoesSeconds.value,
-      TorpedoesSalvo.value, TorpedoesActualCount.value))
-    selectedComputed = Computed(@() TorpedoesSelected.value ? ">" : "")
-    additionalComputed = Computed(@() ::loc(TorpedoesName.value))
-    alertStateCaptionComputed = Computed(@() IsTrpEmpty.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
-    alertValueStateComputed = Computed(@() IsTrpEmpty.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     titleSizeFactor = 1.0
   },
   [AirParamsMain.RATE_OF_FIRE] = {
@@ -684,7 +724,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.GUIDED_BOMBS] = {
     titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? ::loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
-      getGBCaption(guidedBombsGuidanceLockState.value, guidedBombsGuidancePointIsTarget.value))
+      getGBCaption(guidedBombsGuidanceLockState.value))
     valueComputed = Computed(@() generateBulletsTextFunction(GuidedBombsCount.value, GuidedBombsSeconds.value, 0, GuidedBombsActualCount.value))
     selectedComputed = Computed(@() GuidedBombsSelected.value ? ">" : "")
     additionalComputed = Computed(@() ::loc(GuidedBombsName.value))
@@ -722,7 +762,7 @@ let textParamsMapMain = {
   },
 }
 
-for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
+foreach (i, _ in isEngineControled) {
   let trtModeComputed = TrtMode[i]
   let trtComputed = Trt[i]
   let isEngineControledComputed = isEngineControled[i]
@@ -778,7 +818,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
 let numParamPerEngine = 3
 let textParamsMapSecondary = {}
 
-for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
+for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
 
   let indexStr = (i+1).tostring()
   let oilStateComputed = OilState[i]
@@ -870,12 +910,12 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 let fuelKeyId = AirParamsSecondary.FUEL
 
 let function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
-  let function getChildren(isBackground, style, isBomberView = false) {
+  let function getChildren(isBackground, style, isBomberView = false, isTargetPod = false) {
     let children = []
 
     foreach(key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
-        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView, isTargetPod))
       if (key == AirParamsMain.ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_TEXT
@@ -887,7 +927,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
     local secondaryMaskValue = secondaryMask.value
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, isBackground, style, needCaption, forIls, isBomberView, isTargetPod))
         secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
       }
     }
@@ -902,13 +942,13 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
 
     foreach(key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView, isTargetPod))
     }
 
     return children
   }
 
-  return function(isBackground, isBomberView = false, style = styleText ) {
+  return function(isBackground, isTargetPod = false, isBomberView = false, style = styleText ) {
     return {
       children = @() style.__merge({
         watch = [mainMask, secondaryMask, posWatched]
@@ -916,7 +956,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
         size = [width, SIZE_TO_CONTENT]
         flow = FLOW_VERTICAL
         gap = gap
-        children = getChildren(isBackground, style, isBomberView)
+        children = getChildren(isBackground, style, isBomberView, isTargetPod)
       })
     }
   }

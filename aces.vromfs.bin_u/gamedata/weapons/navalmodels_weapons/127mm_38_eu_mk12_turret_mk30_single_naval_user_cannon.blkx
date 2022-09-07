@@ -4,8 +4,8 @@
   "maxDeltaAngle": 0.17,
   "maxDeltaAngleVertical": 0.26,
   "aimMinDist": 0.05,
-  "aimMaxDist": 15000.0,
-  "attackMaxDist": 15000.0,
+  "aimMaxDist": 10000.0,
+  "attackMaxDist": 10000.0,
   "shotFreq": 0.36,
   "recoilOffset": 0.38,
   "recoilTimes": [
@@ -34,9 +34,7 @@
     "type_frigate": true,
     "type_destroyer": true,
     "type_light_cruiser": true,
-    "type_heavy_cruiser": true,
-    "type_battlecruiser": true,
-    "type_battleship": true
+    "type_heavy_cruiser": true
   },
   "127mm_usa_mk34_common_he": {
     "bullet": {
@@ -93,6 +91,24 @@
           30.0,
           0.99
         ]
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -1293,6 +1309,24 @@
         0.99
       ]
     },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": {
+          "break_fuse": 1.0
+        },
+        "onKill": {
+          "destruction": 1.0
+        }
+      }
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -1600,6 +1634,24 @@
           30.0,
           0.99
         ]
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "pressureDamage": {
         "damageType": "pressure"

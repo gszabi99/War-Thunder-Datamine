@@ -229,6 +229,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     updateSlotbar()
     updateButtons()
     updateDurationTimer()
+    updateNoAvailableBattleInfo()
   }
 
   function updateTitle()
@@ -253,6 +254,23 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
 
     battleDurationTimer = ::Timer(scene, 1,
       @() updateBattleStatus(operationBattle.getView(getPlayerSide())), this, true)
+  }
+
+  function updateNoAvailableBattleInfo()
+  {
+    if (currViewMode != WW_BATTLE_VIEW_MODES.BATTLE_LIST)
+      this.showSceneBtn("no_available_battles_alert_text", false)
+    else
+    {
+      let country = ::g_world_war.curOperationCountry
+      let availableBattlesList = ::g_world_war.getBattles().filter(
+        function(battle) {
+          return ::g_world_war.isBattleAvailableToPlay(battle)
+            && isBattleAvailableToMatching(battle, country)
+        }.bindenv(this))
+
+      this.showSceneBtn("no_available_battles_alert_text", !availableBattlesList.len())
+    }
   }
 
   function isBattleAvailableToMatching(battle, country)
@@ -600,6 +618,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   {
     let isViewBattleList = currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST
     this.showSceneBtn("btn_battles_filters", hasBattleFilter && isViewBattleList)
+    this.showSceneBtn("goto_global_battles_btn", isViewBattleList)
     this.showSceneBtn("invite_squads_button",
       hasSquadsInviteButton && ::g_world_war.isSquadsInviteEnable())
 
@@ -813,6 +832,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
         isSelectedBattleActive = true
         updateDescription()
         updateButtons()
+        updateNoAvailableBattleInfo()
       }
     }
 
@@ -836,6 +856,16 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   {
     ::gui_handlers.WwMyClanSquadInviteModal.open(
       ::ww_get_operation_id(), operationBattle.id, ::get_profile_country_sq())
+  }
+
+  function onOpenGlobalBattlesModal(obj)
+  {
+    this.msgBox("ask_leave_operation", ::loc("worldwar/gotoGlobalBattlesMsgboxText"),
+      [
+        ["yes", function() { ::g_world_war.openOperationsOrQueues(true) }],
+        ["no", @() null]
+      ],
+      "yes", { cancel_fn = @() null })
   }
 
   function onEventWWUpdateWWQueues(params)
@@ -1094,6 +1124,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       updateDescription()
 
     updateButtons()
+    updateNoAvailableBattleInfo()
 
     if (prevCurrViewMode == WW_BATTLE_VIEW_MODES.SQUAD_INFO &&
         prevCurrViewMode != currViewMode &&
@@ -1117,6 +1148,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     updateViewMode()
     refreshSelBattle()
     updateButtons()
+    updateNoAvailableBattleInfo()
   }
 
   function onEventSlotbarPresetLoaded(params)
@@ -1279,6 +1311,9 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       },
       { obj = ["btn_leave_battle"]
         msgId = "hint_btn_leave_battle"
+      },
+      { obj = ["goto_global_battles_btn"]
+        msgId = "hint_goto_global_battles_btn"
       },
       { obj = ["tactical_map_block"]
         msgId = "hint_tactical_map_block"

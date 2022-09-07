@@ -5,16 +5,8 @@ let {
   updateMultiplayerPrivilege
 } = require("%scripts/user/xboxFeatures.nut")
 
-
-let function onLogout() {
-  ::xbox_on_logout(function(_) {
-    resetMultiplayerPrivilege()
-  })
-}
-
-
 addListenersWithoutEnv({
-  SignOut = @(_) onLogout()
+  SignOut = @(p) resetMultiplayerPrivilege()
   XboxSystemUIReturn = @(p) updateMultiplayerPrivilege()
   LoginComplete = @(p) updateMultiplayerPrivilege()
 })

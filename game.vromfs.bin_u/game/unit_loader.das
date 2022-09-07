@@ -3,7 +3,7 @@ require Mission
 require DagorDataBlock
 require DagorSystem
 
-def components_to_blk(var blk : DataBlock implicit; eid : EntityId)
+def components_to_blk(var blk : DataBlock; eid : EntityId)
   ecs::query(eid) <| $ [es] (setting__crewSkillK : float;
                              setting__weapons : string;
                              setting__isPhysPredictionEnabled : bool;
@@ -15,7 +15,6 @@ def components_to_blk(var blk : DataBlock implicit; eid : EntityId)
                              setting__bulletsCount : IntList;
                              setting__flags : int;
                              setting__isDelayed : bool;
-                             setting__active : bool;
                              setting__skin : string;
                              setting__canChangeUnit : bool;
                              setting__shouldDrawSmallIndForMissTarget : bool;
@@ -62,39 +61,38 @@ def components_to_blk(var blk : DataBlock implicit; eid : EntityId)
       datablock_addStr(blk, "bullets{i}", bullet)
     for i in range(0, length(setting__bulletsCount))
       datablock_addInt(blk, "bulletsCount{i}", setting__bulletsCount[i])
-    datablock_add_block(blk, "props") <| $(prop)
-      datablock_addBool(prop, "isDelayed", setting__isDelayed)
-      datablock_addBool(prop, "active", setting__active)
-      datablock_addStr(prop, "skin", setting__skin)
-      datablock_addBool(prop, "shouldDrawSmallIndForMissTarget", setting__shouldDrawSmallIndForMissTarget)
-      datablock_addStr(prop, "uniqueName", setting__uniqueName)
-      datablock_addInt(prop, "count", setting__count)
-      datablock_addStr(prop, "attack_type", setting__attack_type)
-      datablock_addInt(prop, "army", setting__army)
-      datablock_addStr(prop, "formation_type", setting__formation_type)
-      datablock_addInt(prop, "formation_div", setting__formation_div)
-      datablock_addPoint2(prop, "formation_step", setting__formation_step)
-      datablock_addPoint2(prop, "formation_noise", setting__formation_noise)
-      datablock_addReal(prop, "stealthRadius", setting__stealthRadius)
-      datablock_addInt(prop, "supportUnitType", setting__supportUnitType)
-      datablock_addBool(prop, "targetAir", setting__targetAir)
-      datablock_addBool(prop, "targetGnd", setting__targetGnd)
-      datablock_addBool(prop, "targetAAA", setting__targetAAA)
-      datablock_addReal(prop, "maxDeviationAngle", setting__maxDeviationAngle)
-      datablock_addReal(prop, "accuracy", setting__accuracy)
-      datablock_addReal(prop, "effShootingRate", setting__effShootingRate)
-      datablock_addBool(prop, "lightlyArmored", setting__lightlyArmored)
-      datablock_addBool(prop, "avoidObstacles", setting__avoidObstacles)
-      datablock_addBool(prop, "targetableByAi", setting__targetableByAi)
-      datablock_addBool(prop, "isImmortal", setting__isImmortal)
-      datablock_addBool(prop, "calmDetection", setting__calmDetection)
-      datablock_addReal(prop, "aiReloadMult", setting__aiReloadMult)
-      datablock_addReal(prop, "speed", setting__speed)
-      datablock_addStr(prop, "name", setting__name)
-    datablock_add_block(blk, "targetList") <| $(tBlk)
-      for i in range(0, length(setting__unit_target_list))
-        let target = string(setting__unit_target_list[i])
-        datablock_addStr(tBlk, "t", target)
+    var prop = datablock_add_block(blk, "props")
+    datablock_addBool(prop, "isDelayed", setting__isDelayed)
+    datablock_addStr(prop, "skin", setting__skin)
+    datablock_addBool(prop, "shouldDrawSmallIndForMissTarget", setting__shouldDrawSmallIndForMissTarget)
+    datablock_addStr(prop, "uniqueName", setting__uniqueName)
+    datablock_addInt(prop, "count", setting__count)
+    datablock_addStr(prop, "attack_type", setting__attack_type)
+    datablock_addInt(prop, "army", setting__army)
+    datablock_addStr(prop, "formation_type", setting__formation_type)
+    datablock_addInt(prop, "formation_div", setting__formation_div)
+    datablock_addPoint2(prop, "formation_step", setting__formation_step)
+    datablock_addPoint2(prop, "formation_noise", setting__formation_noise)
+    datablock_addReal(prop, "stealthRadius", setting__stealthRadius)
+    datablock_addInt(prop, "supportUnitType", setting__supportUnitType)
+    datablock_addBool(prop, "targetAir", setting__targetAir)
+    datablock_addBool(prop, "targetGnd", setting__targetGnd)
+    datablock_addBool(prop, "targetAAA", setting__targetAAA)
+    datablock_addReal(prop, "maxDeviationAngle", setting__maxDeviationAngle)
+    datablock_addReal(prop, "accuracy", setting__accuracy)
+    datablock_addReal(prop, "effShootingRate", setting__effShootingRate)
+    datablock_addBool(prop, "lightlyArmored", setting__lightlyArmored)
+    datablock_addBool(prop, "avoidObstacles", setting__avoidObstacles)
+    datablock_addBool(prop, "targetableByAi", setting__targetableByAi)
+    datablock_addBool(prop, "isImmortal", setting__isImmortal)
+    datablock_addBool(prop, "calmDetection", setting__calmDetection)
+    datablock_addReal(prop, "aiReloadMult", setting__aiReloadMult)
+    datablock_addReal(prop, "speed", setting__speed)
+    datablock_addStr(prop, "name", setting__name)
+    var tBlk = datablock_add_block(blk, "targetList")
+    for i in range(0, length(setting__unit_target_list))
+      let target = string(setting__unit_target_list[i])
+      datablock_addStr(tBlk, "t", target)
 
 [es(on_event=EventLevelLoaded)]
 def unit_loader_init(evt : Event;
@@ -102,26 +100,26 @@ def unit_loader_init(evt : Event;
                      setting__unitType, setting__className : string;
                      setting__tm : float3x4;
                      setting__playerNo, setting__flags : int)
-  using() <| $(var settingsBlk : DataBlock#)
-    components_to_blk(settingsBlk, eid)
+  var settingsBlk : DataBlock?
+  settingsBlk = datablock_init()
+  components_to_blk(*settingsBlk, eid)
 
-    if setting__unitType == "ship"
-      create_ship(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
-    elif setting__unitType == "tank"
-      create_tank(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
-    elif setting__unitType == "lightVehicle"
-      create_light_vehicle(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
-    elif setting__unitType == "barrageBalloon"
-      create_barrage_balloon(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
-    elif setting__unitType == "walker"
-      create_walker(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
-    elif setting__unitType == "infantry"
-      create_infantry(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
-    elif setting__unitType == "fortification"
-      create_fortification(setting__className, setting__tm, settingsBlk, setting__playerNo, setting__flags)
-    elif setting__unitType == "aircraft"
-      create_aircraft(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
-    elif setting__unitType == "objectGroups"
-      create_object_group(setting__tm, settingsBlk)
+  if setting__unitType == "ship"
+    create_ship(setting__className, setting__tm, *settingsBlk, setting__playerNo, 0)
+  elif setting__unitType == "tank"
+    create_tank(setting__className, setting__tm, *settingsBlk, setting__playerNo, 0)
+  elif setting__unitType == "lightVehicle"
+    create_light_vehicle(setting__className, setting__tm, *settingsBlk, setting__playerNo, 0)
+  elif setting__unitType == "barrageBalloon"
+    create_barrage_balloon(setting__className, setting__tm, *settingsBlk, setting__playerNo, 0)
+  elif setting__unitType == "walker"
+    create_walker(setting__className, setting__tm, *settingsBlk, setting__playerNo, 0)
+  elif setting__unitType == "infantry"
+    create_infantry(setting__className, setting__tm, *settingsBlk, setting__playerNo, 0)
+  elif setting__unitType == "fortification"
+    create_fortification(setting__className, setting__tm, *settingsBlk, setting__playerNo, setting__flags)
+  elif setting__unitType == "aircraft"
+    create_aircraft(setting__className, setting__tm, *settingsBlk, setting__playerNo, 0)
 
   destroyEntity(eid)
+  datablock_delete(settingsBlk)

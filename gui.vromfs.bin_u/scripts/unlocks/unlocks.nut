@@ -12,8 +12,8 @@ let { isLoadingBgUnlock,
         getLoadingBgName,
         getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let { statsTanks } = require("%scripts/user/userInfoStats.nut")
-let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockConditionsText,
-  getUnlockMultDesc, getUnlockMainCondText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockLocName, getSubUnlockLocName,
+  getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
 
@@ -106,8 +106,22 @@ local unlockConditionUnitclasses = {
 
 ::build_unlock_desc <- function build_unlock_desc(item, params = {})
 {
+  let showStages = "stages" in item && item.stages.len() > 1
+  if (!showStages && item.maxVal < 0)
+    return item
+
+  let isComplete = ::g_unlocks.isUnlockComplete(item)
+  if (showStages && !isComplete)
+    item.stagesText <- ::loc("challenge/stage", {
+                         stage = ::colorize("unlockActiveColor", item.curStage + 1)
+                         totalStages = ::colorize("unlockActiveColor", item.stages.len())
+                       })
+
   let progressText = ::UnlockConditions.getMainConditionText(item.conditions, item.curVal, item.maxVal, params)
+                       //to generate progress text for stages
   item.showProgress <- (params?.showProgress ?? true) && (progressText != "")
+  item.progressText <- progressText
+  item.shortText <- ::g_string.implode([item.text, item.progressText], "\n")
 
   let showAsContent = ::getTblValue("showAsContent", params, false)
   if (showAsContent && ::getTblValue("isRevenueShare", item))
@@ -757,31 +771,21 @@ local unlockConditionUnitclasses = {
     obj.findObject("mult_awards_text").setValue(repeatText)
   }
 
-  if (config?.isUnlockDesc ?? false) {
-    obj.findObject("desc_text").setValue(getUnlockDesc(config.unlockCfg))
-    obj.findObject("mainCond").setValue(getUnlockMainCondText(config.unlockCfg))
-    obj.findObject("multDecs").setValue(getUnlockMultDesc(config.unlockCfg))
-    obj.findObject("conds").setValue(getUnlockConditionsText(config.unlockCfg, {
-      withMainCondition = false
-      showMult = false
-    }))
-    obj.findObject("obtain_info").setValue(config?.obtainInfo ?? "")
-  }
-  else if (config?.type == ::UNLOCKABLE_STREAK) {
+  let dObj = obj.findObject("desc_text")
+  local desc = "desc" in config ? config.desc : ""
+  if (config?.type == ::UNLOCKABLE_STREAK)
+  {
     local cond = ""
     if (config?.minVal && config.maxVal)
-      cond = format(::loc("streaks/min_max_limit"), config.minVal, config.maxVal)
+      cond += format(::loc("streaks/min_max_limit"), config.minVal, config.maxVal)
     else if (config?.minVal)
-      cond = format(::loc("streaks/min_limit"), config.minVal)
+      cond += format(::loc("streaks/min_limit"), config.minVal)
     else if (config.maxVal)
-      cond = format(::loc("streaks/max_limit"), config.maxVal)
+      cond += format(::loc("streaks/max_limit"), config.maxVal)
 
-    let desc = ::g_string.implode([config?.desc ?? "", cond,
-      ::UnlockConditions.getMultipliersText(config)], "\n")
-    obj.findObject("desc_text").setValue(desc)
+    desc = ::g_string.implode([desc, cond, ::UnlockConditions.getMultipliersText(config)], "\n")
   }
-  else
-    obj.findObject("desc_text").setValue(config?.desc ?? "")
+  dObj.setValue(desc)
 
   if (("progressBar" in config) && config.progressBar.show)
   {
@@ -802,9 +806,7 @@ local unlockConditionUnitclasses = {
   }
 
   let rObj = obj.findObject("award_text")
-  rObj.setValue((config?.rewardText ?? "") != ""
-    ? $"{::loc("challenge/reward")} {config.rewardText}"
-    : "")
+  rObj.setValue(("rewardText" in config && config.rewardText != "")? (::loc("challenge/reward") + " " + config.rewardText) : "")
 
   let awMultObj = obj.findObject("award_multiplier")
   if (::checkObj(awMultObj))
@@ -1059,7 +1061,7 @@ local unlockConditionUnitclasses = {
   let isMultiStage = unlockBlk?.isMultiStage ? true : false // means stages are auto-generated (used only for streaks).
   let id = config?.displayId ?? realId
 
-  res.desc = null
+  res.desc = ""
   local cond = {}
   if (unlockBlk)
   {
@@ -1069,10 +1071,13 @@ local unlockConditionUnitclasses = {
     let haveProgress = ::getTblValue("show", progressData, false)
     if (haveProgress)
       res.progressBar <- progressData
-    cond = ::build_unlock_desc(cond, {showProgress = haveProgress})
-    res.link = cond.link
-    res.forceExternalBrowser = cond.forceExternalBrowser
+    let description = ::build_unlock_desc(cond, {showProgress = haveProgress})
+    res.desc = description.text
+    res.link = ::g_language.getLocTextFromConfig(unlockBlk, "link", "")
+    res.forceExternalBrowser = unlockBlk?.forceExternalBrowser ?? false
   }
+  if (res.desc == "" && id != realId)
+    res.desc = ::loc(id + "/desc", "")
 
   res.id = id
   res.type = uType
@@ -1167,6 +1172,9 @@ local unlockConditionUnitclasses = {
         res.descrImage <- $"#ui/images/avatars/{id}.png"
         res.descrImageSize <- "100, 100"
         res.needFrame <- true
+
+        if (unlockBlk?.marketplaceItemdefId && !::is_unlocked_scripted(-1, id))
+          res.desc += "".concat("\n", ::colorize("userlogColoredText", ::loc("shop/pilot/coupon/info")))
       }
       break
 
@@ -1303,25 +1311,8 @@ local unlockConditionUnitclasses = {
     res.name = getSubUnlockLocName(unlockBlk)
   else if (unlockBlk?.locId)
     res.name = getUnlockLocName(unlockBlk)
-
   if ((unlockBlk?.customDescription ?? "") != "")
     res.desc = ::loc(unlockBlk.customDescription, "")
-
-  if (res.desc == null)
-    if ((cond?.text ?? "") != "") {
-      res.desc = cond.text
-      res.isUnlockDesc <- true
-      res.unlockCfg <- cond
-    }
-    else
-      res.desc = (id != realId) ? ::loc($"{id}/desc", "") : ""
-
-  if (uType == ::UNLOCKABLE_PILOT
-      && unlockBlk?.marketplaceItemdefId
-      && id != "" && !::is_unlocked_scripted(-1, id)) {
-    res.obtainInfo <- ::colorize("userlogColoredText", ::loc("shop/pilot/coupon/info"))
-    res.desc = "\n".join([res.desc, res.obtainInfo], true)
-  }
 
   let rewards = {wp = "amount_warpoints", exp = "amount_exp", gold = "amount_gold"}
   local rewardsWasLoadedFromLog = false;
@@ -1624,26 +1615,6 @@ local unlockConditionUnitclasses = {
   getTotalFavoriteCount = @() ::g_unlocks.getFavoriteUnlocks().blockCount() + favoriteInvisibleUnlocks.blockCount()
   canAddFavorite = @() getTotalFavoriteCount() < favoriteUnlocksLimit
   isUnlockFav = @(id) id in getFavoriteUnlocks()
-
-  function toggleFav(unlockId) {
-    if (!unlockId)
-      return
-
-    let isFav = isUnlockFav(unlockId)
-    if (isFav) {
-      removeUnlockFromFavorites(unlockId)
-      return
-    }
-
-    if (!canAddFavorite()) {
-      let num = favoriteUnlocksLimit
-      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
-      ::showInfoMsgBox(msg)
-      return
-    }
-
-    addUnlockToFavorites(unlockId)
-  }
 
   function getTimeCondition(unlockBlk) {
     let conds = getUnlockConditions(unlockBlk?.mode)

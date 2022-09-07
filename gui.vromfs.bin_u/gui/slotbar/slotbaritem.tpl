@@ -30,7 +30,6 @@ massTransp {
         position:t='relative'
         behaviour:t='<<#slotbarBehavior>><<slotbarBehavior>><</slotbarBehavior>><<^slotbarBehavior>>ActivateSelect<</slotbarBehavior>>'
         navigatorShortcuts:t='yes'
-        activateChoosenItemByShortcut:t='yes'
         alwaysShowBorder:t='<<alwaysShowBorder>>'
 
         on_select:t = 'onSlotbarSelect'
