@@ -240,8 +240,12 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
+            "damage": 20.0,
+            "tail_dm": 0.2
+          },
+          {
+            "damage": 30.0,
+            "tail_dm": 0.4
           },
           {
             "damage": 50.0,
@@ -438,10 +442,6 @@
         "name": "tail_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
-          },
-          {
             "damage": 30.0,
             "cut": 0.25
           },
@@ -507,7 +507,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -520,13 +519,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -551,7 +548,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -564,13 +560,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -595,7 +589,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -608,13 +601,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -639,7 +630,6 @@
           },
           {
             "damage": 70.0,
-            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -652,13 +642,11 @@
           },
           {
             "damage": 50.0,
-            "expl": 45.0,
             "fire": 45.0,
             "leak": 25.0
           },
           {
             "damage": 70.0,
-            "expl": 50.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -1914,11 +1902,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2006,11 +1990,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2098,11 +2078,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2181,11 +2157,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2269,11 +2241,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2357,11 +2325,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2445,11 +2409,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2533,11 +2493,7 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
           "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2978,11 +2934,6 @@
         ]
       },
       {
-        "dm": "blister1_dm",
-        "separateDm": true,
-        "dp": "blister%d"
-      },
-      {
         "dm": "tail_dm",
         "dp": [
           "prop01_2",
@@ -2993,7 +2944,6 @@
       },
       {
         "dm": "fin_dm",
-        "overwriteLinks": true,
         "dp": [
           "prop01_2",
           "prop02_2",
@@ -3041,19 +2991,14 @@
     "new_heli_cover": {},
     "heli_flak_jacket": {},
     "heli_structure": {},
-    "air_extinguisher": {
-      "prevModification": "heli_structure",
-      "tier": 3,
-      "invertEnableLogic": false
-    },
     "Oerlikon_KAD_air_targets": {},
     "Oerlikon_KAD_armor_targets": {},
     "Oerlikon_KAD_belt_pack": {
-      "tier": 1
+      "tier": 2
     },
     "Oerlikon_KAD_new_gun": {
       "reqModification": "Oerlikon_KAD_belt_pack",
-      "tier": 3
+      "tier": 4
     },
     "ah_1_TOW": {
       "deactivationIsAllowed": false,
@@ -3089,12 +3034,6 @@
       "reqModification": "ah_1_TOW2_2",
       "modClass": "weapon",
       "tier": 4
-    },
-    "stinger_aam": {
-      "prevModification": "countermeasures_belt_pack",
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2
     },
     "countermeasures_launcher_chaff_only": {},
     "countermeasures_launcher_flare_only": {},
@@ -3166,10 +3105,13 @@
         }
       }
     },
-    "heli_night_vision_system": {
-      "prevModification": "stinger_aam",
+    "stinger_aam": {
+      "deactivationIsAllowed": false,
+      "reqModification": "countermeasures_belt_pack",
       "modClass": "weapon",
-      "tier": 3,
+      "tier": 2
+    },
+    "heli_night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight.png",
       "effects": {
         "nightVision": {

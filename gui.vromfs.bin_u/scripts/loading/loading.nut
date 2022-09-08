@@ -1,12 +1,12 @@
-let { loading_is_finished, loading_press_apply, loading_get_briefing } = require("loading")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_loading <- function gui_start_loading(isMissionLoading = false)
 {
-  let briefing = loading_get_briefing()
-  if (::g_login.isLoggedIn() && isMissionLoading && (briefing.blockCount() > 0))
+  let briefing = ::DataBlock()
+  if (::g_login.isLoggedIn() && isMissionLoading
+      && ::loading_get_briefing(briefing) && (briefing.blockCount() > 0))
   {
     ::dagor.debug("briefing loaded, place = "+briefing.getStr("place_loc", ""))
     ::handlersManager.loadHandler(::gui_handlers.LoadingBrief, { briefing = briefing })
@@ -37,7 +37,7 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
 
   function onUpdate(obj, dt)
   {
-    if (loading_is_finished())
-      loading_press_apply()
+    if (::loading_is_finished())
+      ::loading_press_apply()
   }
 }

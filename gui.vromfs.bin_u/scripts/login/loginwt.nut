@@ -17,6 +17,7 @@ let { isNeedFirstCountryChoice,
   isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
+let bqClient     = require("%scripts/bigQuery/bigQueryClient.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -33,6 +34,8 @@ let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
 
 ::gui_start_startscreen <- function gui_start_startscreen()
 {
+  bqClient.start()
+
   ::dagor.debug("target_platform is '" + ::target_platform + "'")
   ::pause_game(false);
 

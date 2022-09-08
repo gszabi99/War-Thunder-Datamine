@@ -46,10 +46,6 @@
       }
     <</smallHueColor>>
 
-    <<#optName>>
-      optName:t='<<optName>>'
-    <</optName>>
-
     <<#text>>
       optiontext {
         id:t='option_text'

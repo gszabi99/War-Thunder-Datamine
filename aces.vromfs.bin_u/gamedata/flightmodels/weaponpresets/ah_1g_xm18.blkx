@@ -1,12 +1,56 @@
 {
+  "hideNodes": {
+    "node": [
+      "pylon_bomb1",
+      "pylon_bomb2",
+      "pylon_bomb3",
+      "pylon_bomb4",
+      "aero_6_b1",
+      "aero_6_b2",
+      "aero_6_b3",
+      "aero_6_b4",
+      "aero_7_l_b001",
+      "aero_7_l_b002",
+      "aero_7_l_b003",
+      "aero_7_l_b004",
+      "us_xm_35",
+      "us_xm_35_barrel1",
+      "flare7"
+    ]
+  },
+  "hideDmParts": {
+    "node": "cannon3_dm"
+  },
   "Weapon": [
     {
-      "slot": 2,
-      "preset": "xm_18_left_wing"
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/gunM134_Minigun.blk",
+      "emitter": "flare3",
+      "flash": "flare3",
+      "shell": "emtr_shellrejection3",
+      "bullets": 1500,
+      "gunDm": "gun5_dm",
+      "partsDP": "gun5_dm",
+      "spread": 1.5,
+      "traceOffset": 1,
+      "counterIndex": 1,
+      "external": true,
+      "rotationAnimScale": "gun_rotate_01:CRS"
     },
     {
-      "slot": 3,
-      "preset": "xm_18_right_wing"
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/gunM134_Minigun.blk",
+      "emitter": "flare4",
+      "flash": "flare4",
+      "shell": "emtr_shellrejection4",
+      "bullets": 1500,
+      "gunDm": "gun6_dm",
+      "partsDP": "gun6_dm",
+      "spread": 1.5,
+      "traceOffset": 1,
+      "counterIndex": 1,
+      "external": true,
+      "rotationAnimScale": "gun_rotate_01:CRS"
     }
   ]
 }

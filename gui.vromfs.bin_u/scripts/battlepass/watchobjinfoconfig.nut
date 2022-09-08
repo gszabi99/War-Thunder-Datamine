@@ -88,8 +88,11 @@ let mediumDailyTaskProgressWatchObj = {
 let seasonTasksProgressWatchObj = {
   watch = mainChallengeOfSeason
   updateFunc = function(obj, challenge) {
-    //fixme: there must be a more easy way to get a progress.
-    let unlockConfig = challenge ? ::build_conditions_config(challenge) : null
+    local unlockConfig = null
+    if (challenge) { //fixme: there must be a more easy way to get a progress.
+      unlockConfig = ::build_conditions_config(challenge)
+      ::build_unlock_desc(unlockConfig)
+    }
     local { curVal = 0, maxVal = 0 } = unlockConfig
     let isVisible = maxVal > 0
     obj.show(isVisible)

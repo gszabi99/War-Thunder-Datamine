@@ -1,8 +1,6 @@
 let { sqrt } = require("math")
 let { format } = require("string")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
-let { getUnlockConditionsText, getUnlockMultDesc,
-  getUnlockMainCondText } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
@@ -74,8 +72,8 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   let isReceivedPrizes = params?.receivedPrizes      ?? false
 
   local canBuy = false
-  let hasDecor = decoratorType.isPlayerHaveDecorator(searchId)
-  if (!hasDecor)
+  let isAllowed = decoratorType.isPlayerHaveDecorator(searchId)
+  if (!isAllowed)
   {
     let cost = decorator.getCost()
     let hasPrice = !isTrophyContent && !isReceivedPrizes && !cost.isZero()
@@ -91,7 +89,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local canConsumeCoupon = false
   local canFindOnMarketplace = false
-  if (!hasDecor && decorator.getCouponItemdefId() != null)
+  if (!isAllowed && decorator.getCouponItemdefId() != null)
   {
     let inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
     if (inventoryItem?.canConsume() ?? false)
@@ -100,67 +98,64 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   }
 
   //fill unlock info
-  let canShowUnlockDesc = !isTrophyContent && !isReceivedPrizes
-  let mainCond = canShowUnlockDesc ? getUnlockMainCondText(config) : ""
-  let multDesc = canShowUnlockDesc ? getUnlockMultDesc(config) : ""
-  let conds = canShowUnlockDesc ? getUnlockConditionsText(config, {
-    withMainCondition = false
-    showMult = false
-  }) : ""
-
   let cObj = obj.findObject("conditions")
-  cObj.findObject("mainCond").setValue(mainCond)
-  cObj.findObject("multDesc").setValue(multDesc)
-  cObj.findObject("conds").setValue(conds)
+  cObj.show(true)
 
-  local obtainInfo = ""
-  let hasNoConds = mainCond == "" && conds == ""
-  if (!isDefaultSkin && hasNoConds)
+  local iconName = isDefaultSkin ? ""
+    : isAllowed ? "favorite.png"
+    : "locked.svg"
+
+  let canShowProgress = !isTrophyContent && !isReceivedPrizes
+  local conditionsText = canShowProgress && config ?
+    ::UnlockConditions.getConditionsText(config.conditions, config.curVal, config.maxVal) : ""
+
+  if (!isDefaultSkin && conditionsText == "")
   {
-    if (hasDecor)
+    if (isAllowed)
     {
-      obtainInfo = ::loc("mainmenu/itemReceived")
+      conditionsText = ::loc("mainmenu/itemReceived")
       if (isTrophyContent && !isReceivedPrizes)
-        obtainInfo += "\n" + ::colorize("badTextColor",
+        conditionsText += "\n" + ::colorize("badTextColor",
           ::loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"))
     }
     else if (isTrophyContent)
-      obtainInfo = ::loc("mainmenu/itemCanBeReceived")
+      conditionsText = ::loc("mainmenu/itemCanBeReceived")
     else if (canBuy)
-      obtainInfo = ::loc("shop/object/can_be_purchased")
+      conditionsText = ::loc("shop/object/can_be_purchased")
     else if (canConsumeCoupon)
-      obtainInfo = " ".concat(::loc("currency/gc/sign/colored"),
+      conditionsText = " ".concat(::loc("currency/gc/sign/colored"),
         ::colorize("currencyGCColor", ::loc("shop/object/can_get_from_coupon")))
     else if (canFindOnMarketplace)
-      obtainInfo = " ".concat(::loc("currency/gc/sign/colored"),
+      conditionsText = " ".concat(::loc("currency/gc/sign/colored"),
         ::colorize("currencyGCColor", ::loc("shop/object/can_be_found_on_marketplace")))
     else
-      obtainInfo = ::loc("multiplayer/notAvailable")
+      conditionsText = ::loc("multiplayer/notAvailable")
   }
-  cObj.findObject("obtain_info").setValue(obtainInfo)
 
-  let canShowProgressBar = !hasDecor && canShowUnlockDesc && config
+  local dObj = cObj.findObject("unlock_description")
+  dObj.setValue(conditionsText)
+
+  local canShowProgressBar = !isAllowed && canShowProgress && config
   if (canShowProgressBar)
   {
     let progressData = config.getProgressBarData()
-    let pObj = ::showBtn("progress", progressData.show, cObj)
-    if (progressData.show)
+    canShowProgressBar = progressData.show
+    let pObj = ::showBtn("progress", canShowProgressBar, cObj)
+    if (canShowProgressBar)
       pObj.setValue(progressData.value)
-  }
-  else
+  } else
     ::showBtn("progress", false, cObj)
 
-  let iconName = isDefaultSkin ? ""
-    : hasDecor ? "#ui/gameuiskin#favorite.png"
-    : "#ui/gameuiskin#locked.svg"
+  if (iconName != "")
+    iconName = format("#ui/gameuiskin#%s", iconName)
   cObj.findObject("state")["background-image"] = iconName
 
-  let markup = params?.additionalDescriptionMarkup
-  let dObj = ::showBtn("additional_description", markup != null, obj)
-  if (markup != null)
-    dObj.getScene().replaceContentFromText(dObj, markup, markup.len(), handler)
+  let additionalDescriptionMarkup = params?.additionalDescriptionMarkup
+  dObj = ::showBtn("additional_description", additionalDescriptionMarkup != null, obj)
+  if (additionalDescriptionMarkup != null)
+    dObj.getScene().replaceContentFromText(dObj, additionalDescriptionMarkup, additionalDescriptionMarkup.len(), handler)
 }
 
 return {
-  updateDecoratorDescription
+  updateDecoratorDescription = updateDecoratorDescription
 }

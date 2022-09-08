@@ -16,7 +16,6 @@ let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nucl
 let { checkShowRateWnd } = require("%scripts/user/suggestionRateGame.nut")
 let { checkAutoShowEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { checkShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
-let { checkAfterFlight } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -87,7 +86,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(::gui_handlers.FontChoiceWnd.openIfRequired)
 
     handler.doWhenActive(@() checkInvitesAfterFlight() )
-    handler.doWhenActive(checkAfterFlight)
+    handler.doWhenActive(@() ::g_xbox_squad_manager.checkAfterFlight() )
     handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks() )
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }

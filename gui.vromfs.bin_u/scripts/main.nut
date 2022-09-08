@@ -382,7 +382,7 @@ foreach(fn in [
   require(fn)
 
 let game = require("app").getShortAppName()
-let gameMnt = { mecha = "%mechaScripts", wt = "%wtScripts" }?[game]
+let gameMnt = { mecha = "%mechaScripts", vrThunder = "%vrtScripts", wt = "%wtScripts" }?[game]
 ::dagor.debug($"Load UI scripts by game: {game} (mnt = {gameMnt})")
 require_optional($"{gameMnt}/onScriptLoad.nut")
 
@@ -474,7 +474,7 @@ foreach (fn in [
   "%scripts/debugTools/dbgCrewLock.nut"
 
   //used before xbox login
-  "%scripts/social/xboxSquadManager/xboxSquadManager.nut"
+  "%scripts/social/xboxSquadManager.nut"
 
   //used for SSO login
   "%scripts/onlineShop/browserWnd.nut"

@@ -1,9 +1,6 @@
 let platformModule = require("%scripts/clientState/platform.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { needProceedSquadInvitesAccept,
-  isPlayerFromXboxSquadList } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 
 ::g_invites_classes.Squad <- class extends ::BaseInvite
 {
@@ -48,7 +45,7 @@ let { needProceedSquadInvitesAccept,
                               else
                                 setDelayed(false)
                             }, this)
-      requestUsersInfo([leaderId], cb, cb)
+      ::g_users_info_manager.requestInfo([leaderId], cb, cb)
     }
     isAccepted = false
 
@@ -80,7 +77,7 @@ let { needProceedSquadInvitesAccept,
     if (!::is_platform_xbox
         || !leaderContact
         || (haveRestrictions() && !::isInMenu())
-        || !needProceedSquadInvitesAccept()
+        || !::g_xbox_squad_manager.needProceedSquadInvitesAccept()
       )
       return
 
@@ -91,7 +88,7 @@ let { needProceedSquadInvitesAccept,
   }
 
   function autoacceptXboxInvite(leaderXboxId = "") {
-    if (!isPlayerFromXboxSquadList(leaderXboxId))
+    if (!::g_xbox_squad_manager.isPlayerFromXboxSquadList(leaderXboxId))
       return autorejectInvite()
 
     checkAutoAcceptInvite()

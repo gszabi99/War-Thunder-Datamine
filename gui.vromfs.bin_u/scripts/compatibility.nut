@@ -13,4 +13,5 @@
 //----------------------------wop_2_15_1_X---------------------------------//
 ::apply_compatibilities({
   load_local_settings = @() null
+  get_tournament_desk_blk = @(eventName) null
 })

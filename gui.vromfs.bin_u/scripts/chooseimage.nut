@@ -212,8 +212,7 @@ let stdMath = require("%sqstd/math.nut")
       return
     }
 
-    ::g_unlocks.toggleFav(option.unlockId)
-    updateButtons()
+    toggleFav(option.unlockId)
   }
 
   function onToggleFav() {
@@ -222,8 +221,7 @@ let stdMath = require("%sqstd/math.nut")
       return
 
     let option = options[idx]
-    ::g_unlocks.toggleFav(option.unlockId)
-    updateButtons()
+    toggleFav(option.unlockId)
   }
 
   function goToMarketplace(item)
@@ -299,6 +297,28 @@ let stdMath = require("%sqstd/math.nut")
       btn.setValue(::loc("item/consume/coupon"))
     else
       btn.setValue(::loc("msgbox/btn_find_on_marketplace"))
+  }
+
+  function toggleFav(unlockId) {
+    if (!unlockId)
+      return
+
+    let isFav = ::g_unlocks.isUnlockFav(unlockId)
+    if (isFav) {
+      ::g_unlocks.removeUnlockFromFavorites(unlockId)
+      updateButtons()
+      return
+    }
+
+    if (!::g_unlocks.canAddFavorite()) {
+      let num = ::g_unlocks.favoriteUnlocksLimit
+      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
+      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
+      return
+    }
+
+    ::g_unlocks.addUnlockToFavorites(unlockId)
+    updateButtons()
   }
 
   function afterModalDestroy()

@@ -402,6 +402,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let unlockConfig = ::build_conditions_config(mainChallengeOfSeason)
+    ::build_unlock_desc(unlockConfig)
 
     local curValue = unlockConfig.curVal
     local maxValue = unlockConfig.maxVal
@@ -480,8 +481,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!::check_obj(listBoxObj))
       return null
 
-    return ::build_conditions_config(
+    let unlockConfig = ::build_conditions_config(
       curSeasonChallenges.value?[listBoxObj.getValue()])
+    ::build_unlock_desc(unlockConfig)
+    return unlockConfig
   }
 
   function onViewBattleTaskRequirements() {

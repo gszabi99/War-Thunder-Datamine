@@ -37,13 +37,19 @@
       },
       "conditions": {},
       "actions": {
+        "varSetReal": [
+          {
+            "value": 0.0,
+            "var": "lbt_battle_t1_advantage",
+            "fromDescriptor": "t1_battle_advantage"
+          },
+          {
+            "value": 0.0,
+            "var": "lbt_battle_t2_advantage",
+            "fromDescriptor": "t2_battle_advantage"
+          }
+        ],
         "comment": [
-          {
-            "value": "marking all units as non aaa by default"
-          },
-          {
-            "value": ""
-          },
           {
             "value": "wait for 30 seconds and start all procedures"
           },
@@ -58,26 +64,6 @@
           },
           {
             "value": "counting active batles amount (for other templates)"
-          }
-        ],
-        "unitSetVar": {
-          "object_var_name": "aaa",
-          "object": [
-            "lbt_battle_t1_battle_squad",
-            "lbt_battle_t2_battle_squad"
-          ],
-          "object_var_value": 0
-        },
-        "varSetReal": [
-          {
-            "value": 0.0,
-            "var": "lbt_battle_t1_advantage",
-            "fromDescriptor": "t1_battle_advantage"
-          },
-          {
-            "value": 0.0,
-            "var": "lbt_battle_t2_advantage",
-            "fromDescriptor": "t2_battle_advantage"
           }
         ],
         "wait": {
@@ -319,7 +305,7 @@
             },
             {
               "var_value": "lbt_matching_rank",
-              "value": 50,
+              "value": 30,
               "comparasion_func": "less"
             }
           ]
@@ -1928,10 +1914,10 @@
                 "value": "reseting current battle time"
               },
               {
-                "value": "enable shooting and set visibility for non aaa"
+                "value": "enable shooting and set visibility for NON AAA units"
               },
               {
-                "value": "disabling shooting for aaa"
+                "value": "enable shooting and set visibility for AAA units"
               },
               {
                 "value": ""
@@ -2139,49 +2125,56 @@
                 "input_var": "lbt_battle_to_idx"
               }
             ],
-            "unitSetProperties": [
-              {
-                "object_marking": 0,
-                "object_var_name": "aaa",
-                "object_var_comp_op": "equal",
-                "object_var_value": 0,
-                "object": [
-                  "@lbt_battle_t1_army_squad_name",
-                  "@lbt_battle_t2_army_squad_name"
-                ],
-                "object_type": "isUnitVar",
-                "stealthRadius": 128000.0,
-                "attack_type": "fire_at_will",
-                "targetAir": true,
-                "targetGnd": true,
-                "accuracy": 0.0,
-                "airAccuracy": 1.5,
-                "checkVisibilityTarget": false,
-                "effShootingRate": 0.0,
-                "airEffShootingRate": 0.5,
-                "adaptiveAccuracyTime": 10.0,
-                "fireRandom": true,
-                "targetChangeInterval": 5.0,
-                "targetChangeProb": 0.25,
-                "ignoreGunSpeedLimits": true
-              },
-              {
-                "object_marking": 0,
-                "object_var_name": "aaa",
-                "object_var_comp_op": "equal",
-                "object_var_value": 1,
-                "object": [
-                  "@lbt_battle_t1_army_squad_name",
-                  "@lbt_battle_t2_army_squad_name"
-                ],
-                "object_type": "isUnitVar",
-                "stealthRadius": 128000.0,
-                "attack_type": "hold_fire",
-                "targetAir": false,
-                "targetGnd": false,
-                "checkVisibilityTarget": false
-              }
-            ],
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "aaa",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "@lbt_battle_t1_army_squad_name",
+                "@lbt_battle_t2_army_squad_name"
+              ],
+              "object_type": "isUnitVar",
+              "stealthRadius": 128000.0,
+              "attack_type": "fire_at_will",
+              "targetAir": true,
+              "targetGnd": true,
+              "accuracy": 0.0,
+              "airAccuracy": 0.75,
+              "checkVisibilityTarget": false,
+              "effShootingRate": 0.0,
+              "airEffShootingRate": 1.0,
+              "adaptiveAccuracyTime": 10.0,
+              "fireRandom": true,
+              "targetChangeInterval": 5.0,
+              "targetChangeProb": 0.25
+            },
+            "__unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "aaa",
+              "object_var_comp_op": "equal",
+              "object_var_value": 1,
+              "object": [
+                "@lbt_battle_t1_army_squad_name",
+                "@lbt_battle_t2_army_squad_name"
+              ],
+              "object_type": "isUnitVar",
+              "stealthRadius": 128000.0,
+              "attack_type": "fire_at_will",
+              "targetAir": true,
+              "targetGnd": true,
+              "accuracy": 0.0,
+              "airAccuracy": 0.75,
+              "maxDeviationAngle": 10.0,
+              "checkVisibilityTarget": true,
+              "visibilityTreeTransparencyThreshold": 0.1,
+              "effShootingRate": 0.0,
+              "airEffShootingRate": 1.0,
+              "adaptiveAccuracyTime": 10.0,
+              "fireRandom": true,
+              "targetChangeInterval": 5.0,
+              "targetChangeProb": 0.25
+            },
             "unitSetStealth": {
               "set": true,
               "radius": 128000.0,
@@ -2312,99 +2305,10 @@
           },
           "events": {
             "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "varCompareString": {
-              "var_value": "lbt_game_mode",
-              "value": "pvp",
-              "comparasion_func": "equal"
-            }
-          },
-          "actions": {
-            "comment": {
-              "value": "it's regular EC"
-            },
-            "triggerActivate": [
-              {
-                "target": "lbt_aaa_pvp_matching_0_3",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              },
-              {
-                "target": "lbt_aaa_pvp_matching_4_7",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              },
-              {
-                "target": "lbt_aaa_pvp_matching_8_11",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              },
-              {
-                "target": "lbt_aaa_pvp_matching_12_16",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              },
-              {
-                "target": "lbt_aaa_pvp_matching_17_50",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              }
-            ]
-          },
-          "else_actions": {
-            "comment": {
-              "value": "it's helicopter's PVE"
-            },
-            "triggerActivate": [
-              {
-                "target": "lbt_aaa_pve_matching_0_23",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              },
-              {
-                "target": "lbt_aaa_pve_matching_24_26",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              },
-              {
-                "target": "lbt_aaa_pve_matching_27_50",
-                "activate_type": "checkConidtions",
-                "check_trigger_status": false,
-                "after_activation": "disable"
-              }
-            ]
-          }
-        },
-        "lbt_aaa_pvp_matching_0_3": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
               "time": 30.0
             }
           },
-          "conditions": {
-            "varCompareInt": {
-              "var_value": "lbt_matching_rank",
-              "value": 4,
-              "comparasion_func": "less"
-            }
-          },
+          "conditions": {},
           "actions": {
             "unitSetProperties": {
               "object_marking": 0,
@@ -2420,423 +2324,17 @@
               "attack_type": "fire_at_will",
               "targetAir": true,
               "targetGnd": false,
-              "accuracy": 0.75,
+              "accuracy": 0.0,
               "airAccuracy": 0.75,
               "maxDeviationAngle": 10.0,
               "checkVisibilityTarget": true,
               "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.5,
-              "adaptiveAccuracyTime": 12.0,
-              "fireRandom": true,
-              "targetChangeInterval": 6.0,
-              "targetChangeProb": 0.25,
-              "ignoreGunSpeedLimits": true,
-              "ChainfireTime": 2.0,
-              "DelayAfterShoot": 2.0
-            }
-          },
-          "else_actions": {}
-        },
-        "lbt_aaa_pvp_matching_4_7": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 30.0
-            }
-          },
-          "conditions": {
-            "varCompareInt": [
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 3,
-                "comparasion_func": "more"
-              },
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 8,
-                "comparasion_func": "less"
-              }
-            ]
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "aaa",
-              "object_var_comp_op": "equal",
-              "object_var_value": 1,
-              "object": [
-                "@lbt_battle_t1_army_squad_name",
-                "@lbt_battle_t2_army_squad_name"
-              ],
-              "object_type": "isUnitVar",
-              "stealthRadius": 128000.0,
-              "attack_type": "fire_at_will",
-              "targetAir": true,
-              "targetGnd": false,
-              "accuracy": 0.75,
-              "airAccuracy": 0.75,
-              "maxDeviationAngle": 10.0,
-              "checkVisibilityTarget": true,
-              "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.5,
-              "adaptiveAccuracyTime": 12.0,
-              "fireRandom": true,
-              "targetChangeInterval": 6.0,
-              "targetChangeProb": 0.25,
-              "ignoreGunSpeedLimits": true,
-              "ChainfireTime": 2.0,
-              "DelayAfterShoot": 2.0
-            }
-          },
-          "else_actions": {}
-        },
-        "lbt_aaa_pvp_matching_8_11": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 30.0
-            }
-          },
-          "conditions": {
-            "varCompareInt": [
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 7,
-                "comparasion_func": "more"
-              },
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 12,
-                "comparasion_func": "less"
-              }
-            ]
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "aaa",
-              "object_var_comp_op": "equal",
-              "object_var_value": 1,
-              "object": [
-                "@lbt_battle_t1_army_squad_name",
-                "@lbt_battle_t2_army_squad_name"
-              ],
-              "object_type": "isUnitVar",
-              "stealthRadius": 128000.0,
-              "attack_type": "fire_at_will",
-              "targetAir": true,
-              "targetGnd": false,
-              "accuracy": 0.75,
-              "airAccuracy": 0.75,
-              "maxDeviationAngle": 10.0,
-              "checkVisibilityTarget": true,
-              "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.75,
+              "effShootingRate": 0.0,
+              "airEffShootingRate": 1.0,
               "adaptiveAccuracyTime": 10.0,
               "fireRandom": true,
               "targetChangeInterval": 5.0,
-              "targetChangeProb": 0.25,
-              "ignoreGunSpeedLimits": true,
-              "ChainfireTime": 2.5,
-              "DelayAfterShoot": 1.5
-            }
-          },
-          "else_actions": {}
-        },
-        "lbt_aaa_pvp_matching_12_16": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 30.0
-            }
-          },
-          "conditions": {
-            "varCompareInt": [
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 11,
-                "comparasion_func": "more"
-              },
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 17,
-                "comparasion_func": "less"
-              }
-            ]
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "aaa",
-              "object_var_comp_op": "equal",
-              "object_var_value": 1,
-              "object": [
-                "@lbt_battle_t1_army_squad_name",
-                "@lbt_battle_t2_army_squad_name"
-              ],
-              "object_type": "isUnitVar",
-              "stealthRadius": 128000.0,
-              "attack_type": "fire_at_will",
-              "targetAir": true,
-              "targetGnd": false,
-              "accuracy": 0.75,
-              "airAccuracy": 0.75,
-              "maxDeviationAngle": 10.0,
-              "checkVisibilityTarget": true,
-              "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.75,
-              "adaptiveAccuracyTime": 10.0,
-              "fireRandom": true,
-              "targetChangeInterval": 5.0,
-              "targetChangeProb": 0.25,
-              "ignoreGunSpeedLimits": true,
-              "ChainfireTime": 2.5,
-              "DelayAfterShoot": 1.5
-            }
-          },
-          "else_actions": {}
-        },
-        "lbt_aaa_pvp_matching_17_50": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 30.0
-            }
-          },
-          "conditions": {
-            "varCompareInt": [
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 16,
-                "comparasion_func": "more"
-              },
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 50,
-                "comparasion_func": "less"
-              }
-            ]
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "aaa",
-              "object_var_comp_op": "equal",
-              "object_var_value": 1,
-              "object": [
-                "@lbt_battle_t1_army_squad_name",
-                "@lbt_battle_t2_army_squad_name"
-              ],
-              "object_type": "isUnitVar",
-              "stealthRadius": 128000.0,
-              "attack_type": "fire_at_will",
-              "targetAir": true,
-              "targetGnd": false,
-              "accuracy": 0.75,
-              "airAccuracy": 0.75,
-              "maxDeviationAngle": 10.0,
-              "checkVisibilityTarget": true,
-              "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.5,
-              "adaptiveAccuracyTime": 10.0,
-              "fireRandom": true,
-              "targetChangeInterval": 5.0,
-              "targetChangeProb": 0.25,
-              "ignoreGunSpeedLimits": true,
-              "ChainfireTime": 2.5,
-              "DelayAfterShoot": 1.5
-            }
-          },
-          "else_actions": {}
-        },
-        "lbt_aaa_pve_matching_0_23": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 30.0
-            }
-          },
-          "conditions": {
-            "varCompareInt": {
-              "var_value": "lbt_matching_rank",
-              "value": 24,
-              "comparasion_func": "less"
-            }
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "aaa",
-              "object_var_comp_op": "equal",
-              "object_var_value": 1,
-              "object": [
-                "@lbt_battle_t1_army_squad_name",
-                "@lbt_battle_t2_army_squad_name"
-              ],
-              "object_type": "isUnitVar",
-              "stealthRadius": 128000.0,
-              "attack_type": "fire_at_will",
-              "targetAir": true,
-              "targetGnd": false,
-              "accuracy": 0.75,
-              "airAccuracy": 0.85,
-              "maxDeviationAngle": 10.0,
-              "checkVisibilityTarget": true,
-              "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.5,
-              "adaptiveAccuracyTime": 6.0,
-              "fireRandom": true,
-              "targetChangeInterval": 9.0,
-              "targetChangeProb": 0.25,
-              "ChainfireTime": 3.0,
-              "DelayAfterShoot": 1.5
-            }
-          },
-          "else_actions": {}
-        },
-        "lbt_aaa_pve_matching_24_26": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 30.0
-            }
-          },
-          "conditions": {
-            "varCompareInt": [
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 23,
-                "comparasion_func": "more"
-              },
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 27,
-                "comparasion_func": "less"
-              }
-            ]
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "aaa",
-              "object_var_comp_op": "equal",
-              "object_var_value": 1,
-              "object": [
-                "@lbt_battle_t1_army_squad_name",
-                "@lbt_battle_t2_army_squad_name"
-              ],
-              "object_type": "isUnitVar",
-              "stealthRadius": 128000.0,
-              "attack_type": "fire_at_will",
-              "targetAir": true,
-              "targetGnd": false,
-              "accuracy": 0.75,
-              "airAccuracy": 0.8,
-              "maxDeviationAngle": 10.0,
-              "checkVisibilityTarget": true,
-              "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.5,
-              "adaptiveAccuracyTime": 6.0,
-              "fireRandom": true,
-              "targetChangeInterval": 9.0,
-              "targetChangeProb": 0.25,
-              "ChainfireTime": 3.0,
-              "DelayAfterShoot": 1.5
-            }
-          },
-          "else_actions": {}
-        },
-        "lbt_aaa_pve_matching_27_50": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 30.0
-            }
-          },
-          "conditions": {
-            "varCompareInt": [
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 26,
-                "comparasion_func": "more"
-              },
-              {
-                "var_value": "lbt_matching_rank",
-                "value": 50,
-                "comparasion_func": "less"
-              }
-            ]
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "aaa",
-              "object_var_comp_op": "equal",
-              "object_var_value": 1,
-              "object": [
-                "@lbt_battle_t1_army_squad_name",
-                "@lbt_battle_t2_army_squad_name"
-              ],
-              "object_type": "isUnitVar",
-              "stealthRadius": 128000.0,
-              "attack_type": "fire_at_will",
-              "targetAir": true,
-              "targetGnd": false,
-              "accuracy": 0.75,
-              "airAccuracy": 0.75,
-              "maxDeviationAngle": 10.0,
-              "checkVisibilityTarget": true,
-              "visibilityTreeTransparencyThreshold": 0.1,
-              "airEffShootingRate": 0.5,
-              "adaptiveAccuracyTime": 5.0,
-              "fireRandom": true,
-              "targetChangeInterval": 7.5,
-              "targetChangeProb": 0.25,
-              "ignoreGunSpeedLimits": true,
-              "ChainfireTime": 2.5,
-              "DelayAfterShoot": 1.5
+              "targetChangeProb": 0.25
             }
           },
           "else_actions": {}

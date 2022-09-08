@@ -34,14 +34,11 @@ let { getMaxEconomicRank } = require("%scripts/ranks_common_shared.nut")
 let { setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption,
   getCdBaseDifficulty } = ::require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let {
  get_option_radar_aim_elevation_control = @() false,
- set_option_radar_aim_elevation_control = @(value) null,
- get_option_seeker_auto_stabilization = @() true,
- set_option_seeker_auto_stabilization = @(value) null
+ set_option_radar_aim_elevation_control = @(value) null
 } = require("controlsOptions")
-let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -63,6 +60,7 @@ setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
 ::game_mode_maps <- []
 ::dynamic_layouts <- []
+::current_tag <- null
 ::aircraft_for_weapons <- null
 ::cur_aircraft_name <- null
 ::bullets_locId_by_caliber <- []
@@ -74,6 +72,12 @@ setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 ::crosshair_icons <- []
 ::crosshair_colors <- []
 ::thermovision_colors <- []
+::num_players_for_private <- 0
+::PlayersMissionType <- {
+  MissionTypeSingle = 0,
+  MissionTypeLocal = 1,
+  MissionTypeOnline = 2,
+};
 
 ::KG_TO_TONS <- 0.001
 
@@ -95,6 +99,8 @@ setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 }
 
 ::mission_name_for_takeoff <- ""
+
+::available_mission_types <- ::PlayersMissionType.MissionTypeSingle;
 
 ::g_script_reloader.registerPersistentData("OptionsExtGlobals", ::getroottable(),
   [
@@ -242,9 +248,6 @@ local isWaitMeasureEvent = false
 
     if ("rgb" in item)
       opt.hueColor <- item.rgb
-
-    if ("name" in item)
-      opt.optName <- item.name
 
     if (typeof(item?.image) == "string") {
       opt.images <- [{ image = item.image }]
@@ -2028,13 +2031,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = true
       break
 
-    case ::USEROPT_AUTO_SEEKER_STABILIZATION:
-      descr.id = "auto_seeker_stabilization"
-      descr.controlType = optionControlType.CHECKBOX;
-      descr.controlName <- "switchbox"
-      descr.value = get_option_seeker_auto_stabilization()
-      break
-
     case ::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN:
       descr.id = "activate_airborne_radar_on_spawn"
       descr.controlType = optionControlType.CHECKBOX
@@ -2880,8 +2876,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           let blk = ::g_unlocks.getUnlockById(yearId)
           if (blk)
           {
+            let config = build_conditions_config(blk)
+            ::build_unlock_desc(config)
             enabled = ::is_unlocked_scripted(::UNLOCKABLE_YEAR, yearId)
-            tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(blk))
+            tooltip = enabled? "" : config.text
           }
           descr.items.append({
             text = yearsArray[i].tostring()
@@ -2956,10 +2954,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
               ::dagor.assertf(false, ("Not found unlock " + countryId))
             else
             {
+              let blk = build_conditions_config(unlock)
+              ::build_unlock_desc(blk)
+
               text = "#country_" + ::current_campaign.countries[i]
               image = ::get_country_icon("country_" + ::current_campaign.countries[i], true)
               enabled = ::is_unlocked_scripted(::UNLOCKABLE_DYNCAMPAIGN, countryId)
-              tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlock))
+              tooltip = enabled? "" : blk?.text
             }
           }
 
@@ -3294,7 +3295,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           let isUnstable = cluster.isUnstable
           descr.items.append({
             text = ::g_clusters.getClusterLocName(cluster.name)
-            name = cluster.name
             enable = true
             image = isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
             tooltip = isUnstable ? ::loc("multiplayer/cluster_connection_unstable") : null
@@ -4095,16 +4095,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       }
       break
 
-    //
-
-
-
-
-
-
-
-
-
     default:
       let optionName = ::user_option_name_by_idx?[optionId] ?? ""
       ::dagor.assertf(false, $"[ERROR] Options: Get: Unsupported type {optionId} ({optionName})")
@@ -4663,9 +4653,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH:
       ::set_enable_laser_designatior_before_launch(value)
       break;
-    case ::USEROPT_AUTO_SEEKER_STABILIZATION:
-      set_option_seeker_auto_stabilization(value)
-      break
     case ::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN:
       ::set_option_activate_airborne_radar_on_spawn(value)
       break;
@@ -4930,9 +4917,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_CD_COLLECTIVE_DETECTION:
     case ::USEROPT_RANK:
     case ::USEROPT_REPLAY_LOAD_COCKPIT:
-    //
-
-
       local optionValue = null
       if (descr.controlType == optionControlType.CHECKBOX)
       {

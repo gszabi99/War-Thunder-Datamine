@@ -4,7 +4,6 @@ let { format } = require("string")
 let avatars = require("%scripts/user/avatars.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
-let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::max_player_rank <- 100
 ::max_country_rank <- 7
@@ -356,7 +355,7 @@ let function haveCountryRankAir(country, rank)
     {
       if (!silent)
       {
-        let msg = ::loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(tbl.unlock, 1)
+        let msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(tbl.unlock, 1)
         ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false

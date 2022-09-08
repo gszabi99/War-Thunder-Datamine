@@ -9,15 +9,16 @@ let {tostring_r} = require("%sqstd/string.nut")
 //===== DARG specific methods=====
   this function create element that has internal basic stateFlags (S_HOVER S_ACTIVE S_DRAG)
 */
-let function watchElemState(builder, params={}) {
-  let stateFlags = params?.stateFlags ?? Watched(0)
+let function watchElemState(builder) {
+  let stateFlags = Watched(0)
   let onElemState = @(sf) stateFlags.update(sf)
   return function() {
     let desc = builder(stateFlags.value)
     local watch = desc?.watch ?? []
     if (type(watch) != "array")
       watch = [watch]
-    desc.watch <- [stateFlags].extend(watch)
+    watch.append(stateFlags)
+    desc.watch <- watch
     desc.onElemState <- onElemState
     return desc
   }

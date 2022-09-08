@@ -64,11 +64,8 @@ g_mis_custom_state.onMissionStateChanged <- function onMissionStateChanged()
 
 g_mis_custom_state.onUserStateChanged <- function onUserStateChanged(userId64)
 {
-  if (userId64 != ::my_user_id_int64)
-    return
-
-  getCurMissionRules().clearUnitsLimitData()
-  ::broadcastEvent("MyCustomStateChanged")
+  if (userId64 == ::my_user_id_int64)
+    ::broadcastEvent("MyCustomStateChanged")
   //::broadcastEvent("UserCustomStateChanged", { userId64 = userId64 }) //not used ATM but maybe needed in future
 }
 
