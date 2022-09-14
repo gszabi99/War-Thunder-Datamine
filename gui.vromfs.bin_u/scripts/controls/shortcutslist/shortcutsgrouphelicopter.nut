@@ -205,6 +205,12 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_JETTISON_SECONDARY_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+    showFunc = @() ::has_feature("WeaponJettison")
+  }
+  {
     id = "ID_BOMBS_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     needShowInHelp = true
@@ -362,6 +368,7 @@ return [
     id = "ID_GUIDED_BOMBS_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     needShowInHelp = true
+    checkAssign = false
   }
   {
     id = "helicopter_atgm_aim_x"

@@ -128,6 +128,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     isOpened = isShown
     scene.show(isShown)
     scene.enable(isShown)
+    ::enableHangarControls(!scene.findObject("hangar_control_tracking").isHovered())
   }
 
   // private
@@ -331,6 +332,8 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (!moveMouseOnDecalsHeader(parentList, 1))
       ::set_dirpad_event_processed(false)
   }
+
+  onDecorMenuHoverChange = @(obj) ::enableHangarControls(!obj.isHovered())
 }
 
 ::gui_handlers.DecorMenuHandler <- DecorMenuHandler

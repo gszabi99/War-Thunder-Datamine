@@ -9,17 +9,19 @@ tdiv {
   tooltipDesc {
     text:t='<<desc>>'
   }
-  <<#bulletAnimation>>
+  <<#hasBulletAnimation>>
   tdiv {
     margin-top:t='1@blockInterval'
     movie {
       size:t='1@bulletAnimationWidth ,1@bulletAnimationHeight'
-      movie-load='<<bulletAnimation>>'
+      <<#bulletAnimations>>
+      movie-load<<loadIdPosfix>>:t='<<fileName>>'
+      <</bulletAnimations>>
       movie-autoStart:t='yes'
       movie-loop:t='yes'
     }
   }
-  <</bulletAnimation>>
+  <</hasBulletAnimation>>
   tdiv {
     pos:t='0, @blockInterval'
     position:t='relative'

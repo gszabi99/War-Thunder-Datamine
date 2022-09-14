@@ -1,7 +1,7 @@
 let { isWeaponAux, getLastWeapon, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 
-let function getUnitMassPerSecValue(unit, showLocalState = true)
+let function getUnitMassPerSecValue(unit, showLocalState = true, lastWeapon = null)
 {
   let lastPrimaryWeaponName = showLocalState ? getLastPrimaryWeapon(unit) : ""
   let lastPrimaryWeapon = getModificationByName(unit, lastPrimaryWeaponName)
@@ -12,7 +12,7 @@ let function getUnitMassPerSecValue(unit, showLocalState = true)
   if (weapons.len() == 0)
     return massPerSecValue
 
-  let lastWeapon = showLocalState ? getLastWeapon(unit.name) : ""
+  lastWeapon = lastWeapon ?? (showLocalState ? getLastWeapon(unit.name) : "")
 
   foreach(idx, weapon in weapons)
   {
@@ -20,6 +20,7 @@ let function getUnitMassPerSecValue(unit, showLocalState = true)
       continue
     if ("mass_per_sec" in weapon)
       return massPerSecValue + weapon.mass_per_sec
+    break
   }
 
   if (lastWeapon == "")

@@ -330,7 +330,7 @@ options.addTypes({
               local bSet = bulletsSet.__merge({ bullets = [bulletName] })
               let bData = bulletsSet.bulletDataByType[bulletName]
 
-              foreach(param in ["explosiveType", "explosiveMass", "bulletAnimation"])
+              foreach(param in ["explosiveType", "explosiveMass", "bulletAnimations"])
               {
                 bSet[param] <- bData?[param]
               }

@@ -214,12 +214,8 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "damage": 20.0,
-            "tail_dm": 0.2
-          },
-          {
-            "damage": 30.0,
-            "tail_dm": 0.4
+            "flame": 0.2,
+            "smoke": 0.2
           },
           {
             "damage": 50.0,
@@ -446,6 +442,10 @@
         "name": "tail_dm",
         "onHit": [
           {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
             "damage": 30.0,
             "cut": 0.25
           },
@@ -510,7 +510,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -527,7 +528,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -551,7 +552,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -568,7 +570,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -592,7 +594,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -609,7 +612,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -1286,12 +1289,12 @@
     "new_compressor_heli": {
       "tier": 1
     },
+    "cd_98_main_rotor": {
+      "tier": 2
+    },
     "hp_105_jet": {
       "tier": 3,
-      "prevModification": "new_compressor_heli"
-    },
-    "cd_98_main_rotor": {
-      "tier": 3
+      "prevModification": "cd_98_main_rotor"
     },
     "new_heli_cover": {},
     "heli_flak_jacket": {},
@@ -1322,6 +1325,8 @@
       "modClass": "weapon"
     },
     "heli_night_vision_system": {
+      "tier": 3,
+      "modClass": "weapon",
       "effects": {
         "nightVision": {
           "gunnerIr": {

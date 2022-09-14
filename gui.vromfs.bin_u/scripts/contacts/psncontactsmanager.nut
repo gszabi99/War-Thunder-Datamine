@@ -149,7 +149,7 @@ let function proceedPlayersList() {
   requestUnknownPSNIds(
     playersList.map(@(u) u.accountId),
     knownUsers,
-    ::Callback(psnUpdateContactsList, this)
+    psnUpdateContactsList
   )
 }
 
@@ -235,7 +235,7 @@ let function updateContacts(needIgnoreInitedFlag = false) {
   psn.subscribe.blocklist(function() {
     updateContacts(true)
   })
-}, this)
+})
 
 ::add_event_listener("SignOut", function(p) {
   pendingContactsChanges.clear()

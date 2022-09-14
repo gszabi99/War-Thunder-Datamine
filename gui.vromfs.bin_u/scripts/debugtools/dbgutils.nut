@@ -15,6 +15,7 @@ let { getDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
 
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -184,6 +185,7 @@ let function _charAddAllItemsHelper(params) {
             { weaponPreset = weapon.name, detail = INFO_DETAIL.FULL }), "\n")
           foreach(row in rowsList)
             blk[weapon.name + "_full"] <- row
+          blk[$"{weapon.name}_massPerSec"] <- getUnitMassPerSecValue(unit, true, weapon.name)
         }
       return { key = unit.name, value = blk }
     }

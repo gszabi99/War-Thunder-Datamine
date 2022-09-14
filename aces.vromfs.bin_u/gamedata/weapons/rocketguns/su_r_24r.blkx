@@ -25,7 +25,7 @@
     "maxDeltaAngle": 0.0,
     "dragCx": 0.018,
     "length": 4.487,
-    "distFromCmToStab": 0.06,
+    "distFromCmToStab": 0.133,
     "wingAreaMult": 1.35,
     "CxK": 2.1,
     "WdK": [
@@ -33,8 +33,9 @@
       0.1,
       0.1
     ],
-    "finsAoaHor": 0.12,
-    "finsAoaVer": 0.12,
+    "finsAoaHor": 0.28,
+    "finsAoaVer": 0.28,
+    "finsLatAccel": 21.9,
     "force": 50000.0,
     "timeFire": 3.0,
     "fireDelay": 0.0,
@@ -419,7 +420,7 @@
       },
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -16.0,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 50.0,
         "angleMax": 50.0,
         "rateMax": 20.0,
@@ -438,20 +439,21 @@
           "rangeMax": 30000.0,
           "timeGainControl": false,
           "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -16.0
+            "angleHalfSens": 12.0,
+            "sideLobesSensitivity": -17.0
           }
         },
         "dopplerSpeed": {
           "presents": true,
           "minValue": -3000.0,
           "maxValue": 3000.0,
-          "width": 125.0,
+          "width": 20.0,
+          "refWidth": 100.0,
           "signalWidthMin": 5.0
         },
         "dopplerSpeedGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05,
+          "filterAlpha": 0.25,
+          "filterBetta": 0.03,
           "dopplerSpeedGateSearchRange": 320.0
         }
       },
@@ -494,11 +496,11 @@
         ],
         "propNavMult": 4.0,
         "reqAccelMax": 24.0,
-        "baseIndSpeed": 1580.0,
-        "accelControlProp": 0.04,
-        "accelControlIntg": 0.02,
-        "accelControlIntgLim": 0.8,
-        "accelControlDiff": 0.002
+        "accelControlProp": 0.0025,
+        "accelControlIntg": 0.0236,
+        "accelControlDiff": 0.0006,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 0.0,
@@ -614,8 +616,8 @@
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
+      "finsAoaHor": 0.3,
+      "finsAoaVer": 0.3
     },
     "proximityFuse": {
       "timeOut": 1.7,

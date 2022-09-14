@@ -161,7 +161,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
     return this.color4ToDaguiString(this.daguiStringToColor4(colorStr) * multiplier)
   }
 
-  function setObjPosition(obj, _reqPos, _border) {
+  function setObjPosition(obj, reqPos_, border_) {
     if (!::check_obj(obj))
       return
 
@@ -172,8 +172,8 @@ let DEFAULT_OVERRIDE_PARAMS = {
 
     let objSize = obj.getSize()
     let screenSize = [ ::screen_width(), ::screen_height() ]
-    let reqPos = [toPixels(guiScene, _reqPos[0], obj), toPixels(guiScene, _reqPos[1], obj)]
-    let border = [toPixels(guiScene, _border[0], obj), toPixels(guiScene, _border[1], obj)]
+    let reqPos = [toPixels(guiScene, reqPos_[0], obj), toPixels(guiScene, reqPos_[1], obj)]
+    let border = [toPixels(guiScene, border_[0], obj), toPixels(guiScene, border_[1], obj)]
 
     let posX = clamp(reqPos[0], border[0], screenSize[0] - border[0] - objSize[0])
     let posY = clamp(reqPos[1], border[1], screenSize[1] - border[1] - objSize[1])
@@ -194,15 +194,15 @@ let DEFAULT_OVERRIDE_PARAMS = {
    * @param {daguiObj|array(2)|null}  parentObjOrPos - Menu source - dagui object, or position.
    *                                  Position must be array(2) of numbers or strings.
    *                                  Use null for mouse pointer position.
-   * @param {string} _align - recommended align (see ALIGN enum)
+   * @param {string} defAlign - recommended align (see ALIGN enum)
    * @param {daguiObj} menuObj - dagui object to be aligned.
    * @param {table} [params] - optional extra paramenters.
      * param.margin {array(2)} - add interval outside of parent.
    * @return {string} - align which was applied to menuObj (see ALIGN enum).
    */
-  function setPopupMenuPosAndAlign(parentObjOrPos, _align, menuObj, params = null) {
+  function setPopupMenuPosAndAlign(parentObjOrPos, defAlign, menuObj, params = null) {
     if (!::check_obj(menuObj))
-      return _align
+      return defAlign
 
     let {toPixels} = this //-ident-hides-ident
 
@@ -241,7 +241,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
     let screenEnd   = [ ::screen_width().tointeger() - bw, ::screen_height().tointeger() - bh ]
 
     local checkAligns = []
-    switch (_align)
+    switch (defAlign)
     {
       case ALIGN.BOTTOM: checkAligns = [ ALIGN.BOTTOM, ALIGN.TOP, ALIGN.RIGHT, ALIGN.LEFT, ALIGN.BOTTOM ]; break
       case ALIGN.TOP:    checkAligns = [ ALIGN.TOP, ALIGN.BOTTOM, ALIGN.RIGHT, ALIGN.LEFT, ALIGN.TOP ]; break
@@ -350,7 +350,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
       return align
     }
 
-    return _align
+    return defAlign
   }
 
   function getFirstActiveChild(sceneObj) {

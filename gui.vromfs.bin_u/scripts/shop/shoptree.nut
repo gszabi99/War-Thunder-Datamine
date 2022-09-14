@@ -329,36 +329,47 @@ let function getReqAirs(page)
 let function fillLinesInPage(page)
 {
   let reqAirs = getReqAirs(page)
+  let futureReqAirsByBranch = []
 
-  for(local i = page.tree.len() - 1; i >= 0; i--)
-    for(local j = page.tree[i].len() - 1; j >= 0; j--)
+  for(local i = page.tree.len() - 1; i >= 0; i--) {
+    let branchsCount = page.tree[i].len()
+    for(local j = branchsCount - 1; j >= 0; j--)
     {
       if(page.tree[i][j] == null)
         continue
-      if(typeof(page.tree[i][j]) == "integer")
+      if(typeof(page.tree[i][j]) == "integer") {
         page.tree[i][j] = null
-      else
-      {
-        let air = page.tree[i][j]
-        let searchName = ::isUnitGroup(air) ? air?.searchReqName : air.name
-        if (searchName in reqAirs)
-        {
-          let arrowCount = reqAirs[searchName].len()
-          let hasNextFutureReqLine = arrowCount > 1
-            && reqAirs[searchName].findvalue(@(req) req.air?.futureReqAir != null) != null
-          foreach (req in reqAirs[searchName])
-            page.lines.append({
-              air = req.air,
-              line = [i, j, req.pos[0], req.pos[1]]
-              group = [::isUnitGroup(air), ::isUnitGroup(req.air)]
-              reqAir = air
-              arrowCount = arrowCount
-              hasNextFutureReqLine
-            })
-          reqAirs.rawdelete(searchName)
-        }
+        continue
       }
+
+      let air = page.tree[i][j]
+      if (futureReqAirsByBranch.len() < branchsCount)
+        futureReqAirsByBranch.resize(branchsCount)
+      let searchName = ::isUnitGroup(air) ? air?.searchReqName : air.name
+      if (searchName not in reqAirs) {
+        futureReqAirsByBranch[j] = searchName == futureReqAirsByBranch[j] ? null
+          : air?.futureReqAir != null ? (air?.reqAir ?? futureReqAirsByBranch[j])
+          : futureReqAirsByBranch[j]
+        continue
+      }
+
+      let arrowCount = reqAirs[searchName].len()
+      let hasNextFutureReqLine = futureReqAirsByBranch[j] != null
+      foreach (req in reqAirs[searchName])
+        page.lines.append({
+          air = req.air,
+          line = [i, j, req.pos[0], req.pos[1]]
+          group = [::isUnitGroup(air), ::isUnitGroup(req.air)]
+          reqAir = air
+          arrowCount
+          hasNextFutureReqLine
+        })
+      reqAirs.rawdelete(searchName)
+      futureReqAirsByBranch[j] = air?.futureReqAir != null && air?.reqAir != "" ? (air?.reqAir ?? futureReqAirsByBranch[j])
+        : searchName == futureReqAirsByBranch[j] ? null
+        : futureReqAirsByBranch[j]
     }
+  }
 }
 
 let function generatePageTreeByRank(page)

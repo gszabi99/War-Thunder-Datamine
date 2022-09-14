@@ -1,6 +1,7 @@
 let { format } = require("string")
 let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
 let { DECORATION, SPECIAL_TASK } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_wb_award_type<- {
@@ -197,7 +198,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     }
     getDescText = function(blk)
     {
-      return ::get_unlock_description(blk?.name ?? "")
+      return getFullUnlockDescByName(blk?.name ?? "")
     }
 
     canPreview = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.SKINS)?.canPreview() ?? false
@@ -230,7 +231,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     }
     getDescText = function(blk)
     {
-      return ::get_unlock_description(blk?.name ?? "")
+      return getFullUnlockDescByName(blk?.name ?? "")
     }
 
     canPreview = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.DECALS)?.canPreview() ?? false
@@ -265,7 +266,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     }
     getDescText = function(blk)
     {
-      return ::get_unlock_description(blk?.name ?? "")
+      return getFullUnlockDescByName(blk?.name ?? "")
     }
 
     canPreview = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.ATTACHABLES)?.canPreview() ?? false

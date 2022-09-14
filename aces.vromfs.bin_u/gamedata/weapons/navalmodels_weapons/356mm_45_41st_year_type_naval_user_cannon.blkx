@@ -4,8 +4,8 @@
   "maxDeltaAngle": 0.32,
   "maxDeltaAngleVertical": 0.39,
   "aimMinDist": 500.0,
-  "aimMaxDist": 15000.0,
-  "attackMaxDist": 15000.0,
+  "aimMaxDist": 20000.0,
+  "attackMaxDist": 20000.0,
   "shotFreq": 0.0333,
   "bullets": 1,
   "recoilOffset": 1.2,
@@ -72,7 +72,7 @@
       1000.0
     ],
     "rendinstDamageRadius": 15.0,
-    "explodeTreshold": 12.0,
+    "explodeTreshold": 26.0,
     "fuseDelay": 0.01,
     "hpThresholdForFuse": 1E-06,
     "fuseOnWater": true,
@@ -370,7 +370,7 @@
         1000.0
       ],
       "rendinstDamageRadius": 15.0,
-      "explodeTreshold": 12.0,
+      "explodeTreshold": 26.0,
       "fuseDelay": 0.01,
       "hpThresholdForFuse": 1E-06,
       "fuseOnWater": true,
@@ -669,7 +669,7 @@
         1000.0
       ],
       "rendinstDamageRadius": 10.0,
-      "explodeTreshold": 12.0,
+      "explodeTreshold": 26.0,
       "fuseDelay": 0.05,
       "hpThresholdForFuse": 1E-06,
       "fuseOnWater": true,
@@ -967,7 +967,7 @@
         1000.0
       ],
       "rendinstDamageRadius": 10.0,
-      "explodeTreshold": 12.0,
+      "explodeTreshold": 26.0,
       "fuseDelay": 0.05,
       "hpThresholdForFuse": 1E-06,
       "fuseOnWater": true,
@@ -1290,24 +1290,6 @@
           30.0,
           0.99
         ]
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
       },
       "pressureDamage": {
         "damageType": "pressure"

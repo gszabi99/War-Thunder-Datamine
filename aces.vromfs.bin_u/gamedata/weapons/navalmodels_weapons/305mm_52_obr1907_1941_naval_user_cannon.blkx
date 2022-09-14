@@ -4,8 +4,8 @@
   "maxDeltaAngle": 0.2,
   "maxDeltaAngleVertical": 0.31,
   "aimMinDist": 500.0,
-  "aimMaxDist": 15000.0,
-  "attackMaxDist": 15000.0,
+  "aimMaxDist": 20000.0,
+  "attackMaxDist": 20000.0,
   "shotFreq": 0.0367,
   "bullets": 1,
   "recoilOffset": 1.2,
@@ -96,24 +96,6 @@
         30.0,
         0.99
       ]
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 5.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": {
-          "break_fuse": 1.0
-        },
-        "onKill": {
-          "destruction": 1.0
-        }
-      }
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -430,24 +412,6 @@
           0.99
         ]
       },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
-      },
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -734,7 +698,7 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "305mm_obr1911_ap",
       "dynamicKv": true,
-      "explodeTreshold": 12.0,
+      "explodeTreshold": 17.0,
       "fuseDelay": 0.05,
       "hpThresholdForFuse": 1E-06,
       "fuseOnWater": true,
@@ -1037,7 +1001,7 @@
         1000.0
       ],
       "rendinstDamageRadius": 15.0,
-      "explodeTreshold": 12.0,
+      "explodeTreshold": 17.0,
       "fuseDelay": 0.05,
       "hpThresholdForFuse": 1E-06,
       "fuseOnWater": true,
@@ -1361,24 +1325,6 @@
           30.0,
           0.99
         ]
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
       },
       "pressureDamage": {
         "damageType": "pressure"

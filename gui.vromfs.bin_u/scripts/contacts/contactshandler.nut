@@ -830,8 +830,10 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (!::check_obj(childObj))
       return
 
-    if (childObj?.contact_buttons_contact_uid)
+    if (childObj?.contact_buttons_contact_uid) {
+      updateCurPlayerByUid(childObj.contact_buttons_contact_uid)
       showCurPlayerRClickMenu(childObj.getPosRC())
+    }
     else if (childObj?.isButton == "yes")
       sendClickButton(childObj)
   }
@@ -863,6 +865,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         return
 
       listObj.setValue(idx)
+      updateCurPlayerByUid(listObj.getChild(idx)?.contact_buttons_contact_uid)
       showCurPlayerRClickMenu()
     }
   }
@@ -965,7 +968,10 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
 
     let contactButtonsObject = button_object.getParent().getParent()
-    let contactUID = contactButtonsObject?.contact_buttons_contact_uid
+    updateCurPlayerByUid(contactButtonsObject?.contact_buttons_contact_uid)
+  }
+
+  function updateCurPlayerByUid(contactUID) {
     if (!contactUID)
       return
 

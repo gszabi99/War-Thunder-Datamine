@@ -32,8 +32,9 @@
       0.1,
       0.1
     ],
-    "finsAoaHor": 0.16,
-    "finsAoaVer": 0.16,
+    "finsAoaHor": 0.22,
+    "finsAoaVer": 0.22,
+    "finsLatAccel": 33.5,
     "massEnd": 210.45,
     "force": 38000.0,
     "timeFire": 2.0,
@@ -413,7 +414,7 @@
       "breakLockMaxTime": 3.0,
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -16.0,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 40.0,
         "angleMax": 50.0,
         "rateMax": 12.0,
@@ -422,7 +423,7 @@
         "transmitter": {
           "power": 200.0,
           "antenna": {
-            "angleHalfSens": 5.0,
+            "angleHalfSens": 12.0,
             "sideLobesSensitivity": -27.0
           }
         },
@@ -430,22 +431,24 @@
           "rcs": 2.0,
           "range": 25000.0,
           "rangeMax": 30000.0,
+          "timeGainControl": false,
           "antenna": {
             "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -15.0
+            "sideLobesSensitivity": -17.0
           }
         },
         "distance": {
           "presents": true,
-          "minValue": 300.0,
-          "maxValue": 38000.0,
-          "width": 300.0,
-          "signalWidthMin": 150.0,
-          "refWidth": 1500.0
+          "minValue": 150.0,
+          "maxValue": 75000.0,
+          "width": 150.0,
+          "signalWidthMin": 75.0,
+          "refWidth": 750.0
         },
         "distGate": {
           "filterAlpha": 0.8,
-          "filterBetta": 0.05
+          "filterBetta": 0.05,
+          "distAccelLimit": 60.0
         }
       },
       "guidanceAutopilot": {
@@ -459,11 +462,11 @@
         ],
         "propNavMult": 3.75,
         "reqAccelMax": 28.0,
-        "baseIndSpeed": 1620.0,
-        "accelControlProp": 0.04,
-        "accelControlIntg": 0.02,
-        "accelControlIntgLim": 0.8,
-        "accelControlDiff": 0.002
+        "accelControlProp": 0.0035,
+        "accelControlIntg": 0.035,
+        "accelControlDiff": 0.0007,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 0.0,
@@ -485,12 +488,22 @@
         "rangeMax": [
           12500.0,
           4300.0,
-          11500.0,
-          3500.0
+          18060.0,
+          3365.0
         ],
-        "altDiff": [
+        "rangeMaxAltDiff": [
           500.0,
           1200.0
+        ],
+        "timeMax": [
+          27.6,
+          14.25,
+          27.15,
+          13.8
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       },
       "table1": {
@@ -511,14 +524,24 @@
           1550.0
         ],
         "rangeMax": [
-          20000.0,
-          7200.0,
-          18000.0,
-          6000.0
+          30320.0,
+          7040.0,
+          28560.0,
+          5800.0
         ],
-        "altDiff": [
+        "rangeMaxAltDiff": [
           500.0,
           1200.0
+        ],
+        "timeMax": [
+          43.2,
+          21.3,
+          42.3,
+          20.4
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       },
       "table2": {
@@ -539,20 +562,30 @@
           2050.0
         ],
         "rangeMax": [
-          40000.0,
-          16500.0,
+          46305.0,
+          17565.0,
           38500.0,
           14000.0
         ],
-        "altDiff": [
+        "rangeMaxAltDiff": [
           500.0,
           1000.0
+        ],
+        "timeMax": [
+          60.0,
+          44.5,
+          60.0,
+          42.5
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.17,
-      "finsAoaVer": 0.17
+      "finsAoaHor": 0.24,
+      "finsAoaVer": 0.24
     },
     "proximityFuse": {
       "timeOut": 2.2,

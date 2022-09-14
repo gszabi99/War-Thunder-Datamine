@@ -439,17 +439,79 @@ hudEnemyDamage > damagePart {
   transp-time: -6000;
 }
 
+hitCameraCrew {
+  transp-base:0;
+  transp-end:255;
+  transp-func:cubeInv;
+  transp-time: -6000;
+  display:hide;
+}
+
 hudEnemyDamage > damagePart[partKilled=yes] {
   text-shade-color:#66000000;
 }
 
 hudEnemyDamage > damagePart[_blink=yes],
-hudEnemyDamage > damagePart[_blink=now] {
+hudEnemyDamage > damagePart[_blink=now],
+hitCameraCrew[_blink=yes],
+hitCameraCrew[_blink=now] {
   behaviour:basicTransparency;
   display:show;
 }
 
-hudEnemyDamage > damagePart[_blink=no] {
+hudEnemyDamage > damagePart[_blink=no],
+hitCameraCrew[_blink=no] {
+  display:hide;
+}
+
+hitCameraLostCrew > hitCameraLostCrewText {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontHudSmall;
+  text-align: right;
+
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:0;
+  transp-func:squareInv;
+  transp-time: 4000;
+  selfRemoveOnFinish: 1;
+}
+
+hitCameraCrew textareaNoTab {
+  font:@fontHudSmall;
+}
+
+hitCameraCritAnim {
+  position:absolute;
+  pos:0.5pw-0.5w, 0;
+  background-svg-size:1@hitCameraWidth, 1@hitCameraHeight;
+  background-image: #ui/gameuiskin#hit_camera_critical_gradient.svg;
+  background-repeat:expand-svg;
+  background-color:#EB2014;
+
+  size-time:1000;
+  size-func:squareInv;
+  size-scale:parent;
+  width-base:0;
+  width-end:150;
+  blend-time:0;
+  transp-base:255;
+  transp-end:0;
+  transp-func:square;
+  transp-time:200;
+  display:show;
+}
+
+hitCameraCritAnim[needAnim=yes] {
+  behaviour:basicSize;
+}
+
+hitCameraCritAnim[_size-timer=1] {
+  behaviour:basicTransparency;
+}
+
+hitCameraCritAnim[color-factor=0] {
   display:hide;
 }
 
@@ -467,13 +529,14 @@ multiplayerScore {
 @const enemyDmgStatusWidth: @enemyDmgStatusPanelWidth / 6;
 
 enemyDamageStatusPanel {
-  size:@enemyDmgStatusPanelWidth, @enemyDmgStatusPanelHeight;
+  width:@enemyDmgStatusPanelWidth;
   position:absolute;
-  pos:50%(pw-w), ph-h-@enemyDmgStatusPanelMarginBottom;
+  pos:50%(pw-w), ph-h;
 }
 
 enemyDamageStatus {
-  size:@enemyDmgStatusWidth, ph;
+  size:@enemyDmgStatusWidth, @enemyDmgStatusPanelHeight;
+  margin-bottom:@enemyDmgStatusPanelMarginBottom;
   css-hier-invalidate: yes;
 }
 
@@ -515,6 +578,16 @@ enemyDamageStatus[damage=critical] enemyDamageStatusIcon {
 
 enemyDamageStatus[damage=fatal] enemyDamageStatusIcon {
   background-color:@black;
+}
+
+hpProgressBar {
+  behaviour:progress;
+  re-type:progress;
+  background-color:@cardProgressBGColor;
+  border:yes;
+  border-color:@commonTextColor;
+  min:0;
+  max:1000;
 }
 
 hitCamera {

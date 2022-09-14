@@ -72,7 +72,7 @@ Split list into two arrays:
 one whose elements all satisfy predicate and one whose elements all do not satisfy predicate.
 predicate is transformed through iteratee to facilitate shorthand syntaxes.
 */
-local function partition(list, predicate){
+let function partition(list, predicate){
   let ok = []
   let not_ok = []
   predicate = mkIteratee(predicate)
@@ -129,7 +129,7 @@ let function invert(table) {
    if addParams=true), and for each key maps value func(tbl1Value, tbl2Value)
  * If value not exist in one of table it will be pushed to func as defValue
  */
-local function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true) {
+let function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true) {
   let res = {}
   if (func == null)
     func = function (_val1, val2) {return val2}
@@ -179,7 +179,7 @@ let function isEqual(val1, val2, customIsEqual={}){
 * equals to python list(set(<list>)), and with optional hash function
 * (for example to extract key form list of tables to make unique by that)
 */
-local function unique(list, hashfunc=null){
+let function unique(list, hashfunc=null){
   let values = {}
   let res = []
   hashfunc = hashfunc ?? @(v) v
@@ -239,7 +239,7 @@ let function reversed_enumerate(obj) {
 }
 
 //not recursive isEqual, for simple lists or tables
-local function isEqualSimple(list1, list2, compareFunc=null) {
+let function isEqualSimple(list1, list2, compareFunc=null) {
   compareFunc = compareFunc ?? @(a,b) a!=b
   if (list1 == list2)
     return true
@@ -311,7 +311,7 @@ let function deep_clone(val) {
  * - new key value pairs from source table will be added to target table
  * - it's impossible to delete key from target table, only overwrite with null value
  */
-local function deep_update(target, source) {
+let function deep_update(target, source) {
   if ((recursivetypes.indexof(type(source)) == null)) {
     target = source
     return target

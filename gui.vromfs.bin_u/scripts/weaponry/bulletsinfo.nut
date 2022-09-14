@@ -11,6 +11,7 @@ let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let { getGuiOptionsMode } = ::require_native("guiOptions")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -233,6 +234,7 @@ let function getBulletsSetData(air, modifName, noModList = null)
     foreach (b in bulletsList)
     {
       let paramsBlk = ::u.isDataBlock(b?.rocket) ? b.rocket : b
+      let bulletAnimations = paramsBlk % "shellAnimation"
       if (!res)
         if (paramsBlk?.caliber)
         {
@@ -245,11 +247,14 @@ let function getBulletsSetData(air, modifName, noModList = null)
                   useDefaultBullet = !wBlk?.notUseDefaultBulletInGui,
                   weaponBlkName = wBlkName
                   maxToRespawn = mod?.maxToRespawn ?? 0
-                  bulletAnimation = paramsBlk?.shellAnimation
+                  bulletAnimations = clone bulletAnimations
                 }
         }
         else
           continue
+      else
+        foreach (anim in bulletAnimations)
+          appendOnce(anim, res.bulletAnimations)
 
       local bulletType = b?.bulletType ?? b.getBlockName()
       let _bulletType = bulletType
@@ -257,7 +262,7 @@ let function getBulletsSetData(air, modifName, noModList = null)
         bulletType += "@s_d"
       res.bullets.append(bulletType)
       res.bulletDataByType[_bulletType] <- {
-        bulletAnimation = paramsBlk?.shellAnimation
+        bulletAnimations
       }
 
       if (paramsBlk?.guiCustomIcon != null)

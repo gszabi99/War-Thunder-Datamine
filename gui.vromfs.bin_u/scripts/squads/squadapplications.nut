@@ -1,3 +1,5 @@
+let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
+
 let SquadApplicationsList = class
 {
   [PERSISTENT_DATA_PARAMS] = ["applicationsList"]
@@ -121,7 +123,7 @@ let SquadApplicationsList = class
                             {
                               application.leaderName <- getLeaderName(leaderId)
                             }, this)
-      ::g_users_info_manager.requestInfo([leaderId.tostring()], cb, cb)
+      requestUsersInfo([leaderId.tostring()], cb, cb)
     }
   }
 

@@ -5,6 +5,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { deep_clone } = require("%sqstd/underscore.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -273,6 +274,18 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     presets[countryId].append(createEmptyPreset(countryId, presets[countryId].len()))
     save(countryId)
     ::broadcastEvent("SlotbarPresetsChanged", { showPreset = presets[countryId].len()-1 })
+    return true
+  }
+
+  function copyPreset(fromPreset)
+  {
+    if (!canCreate())
+      return false
+    let countryId = ::get_profile_country_sq()
+    let newPreset = deep_clone(fromPreset).__update({ title = $"{fromPreset.title} *" })
+    presets[countryId].append(newPreset)
+    save(countryId)
+    ::broadcastEvent("SlotbarPresetsChanged", { showPreset = presets[countryId].len() - 1 })
     return true
   }
 

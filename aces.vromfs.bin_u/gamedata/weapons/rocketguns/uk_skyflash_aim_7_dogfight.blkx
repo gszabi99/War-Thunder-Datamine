@@ -33,8 +33,9 @@
       0.1,
       0.1
     ],
-    "finsAoaHor": 0.16,
-    "finsAoaVer": 0.16,
+    "finsAoaHor": 0.23,
+    "finsAoaVer": 0.23,
+    "finsLatAccel": 23.3,
     "force": 35000.0,
     "timeFire": 2.8,
     "fireDelay": 0.25,
@@ -413,7 +414,7 @@
       "breakLockMaxTime": 5.0,
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -17.0,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 15.0,
         "angleMax": 45.0,
         "rateMax": 12.0,
@@ -433,31 +434,32 @@
           "timeGainControl": false,
           "antenna": {
             "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -16.0
+            "sideLobesSensitivity": -17.0
           }
         },
         "dopplerSpeed": {
           "presents": true,
           "minValue": -3000.0,
           "maxValue": 3000.0,
-          "width": 150.0,
+          "width": 20.0,
+          "refWidth": 100.0,
           "signalWidthMin": 4.0
         },
         "dopplerSpeedGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05,
+          "filterAlpha": 0.2,
+          "filterBetta": 0.02,
           "dopplerSpeedGateSearchRange": 300.0
         }
       },
       "guidanceAutopilot": {
-        "timeOut": 0.8,
+        "timeOut": 0.7,
         "propNavMult": 4.0,
         "reqAccelMax": 25.0,
-        "baseIndSpeed": 1600.0,
-        "accelControlProp": 0.04,
-        "accelControlIntg": 0.02,
-        "accelControlIntgLim": 0.8,
-        "accelControlDiff": 0.002
+        "accelControlProp": 0.0025,
+        "accelControlIntg": 0.029,
+        "accelControlDiff": 0.0008,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 1500.0,
@@ -545,8 +547,8 @@
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
+      "finsAoaHor": 0.25,
+      "finsAoaVer": 0.25
     },
     "proximityFuse": {
       "timeOut": 0.8,

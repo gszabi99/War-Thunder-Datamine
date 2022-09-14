@@ -1,4 +1,5 @@
 let { format } = require("string")
+let { loading_play_voice } = require("loading")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { is_replay_playing } = require("replays")
 
@@ -172,7 +173,7 @@ g_streaks.streakPlaySound <- function streakPlaySound(streakId)
   if (unlockBlk?.isAfterFlight)
     ::get_cur_gui_scene()?.playSound("streak_mission_complete")
   else if (unlockBlk?.sound)
-    ::loading_play_voice(unlockBlk.sound, true)
+    loading_play_voice(unlockBlk.sound, true)
 }
 
 g_streaks.getTimeMultiplier <- function getTimeMultiplier()

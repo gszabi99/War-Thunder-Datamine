@@ -240,12 +240,8 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "damage": 20.0,
-            "tail_dm": 0.2
-          },
-          {
-            "damage": 30.0,
-            "tail_dm": 0.4
+            "flame": 0.2,
+            "smoke": 0.2
           },
           {
             "damage": 50.0,
@@ -475,6 +471,10 @@
         "name": "tail_dm",
         "onHit": [
           {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
             "damage": 30.0,
             "cut": 0.25
           },
@@ -539,7 +539,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -556,7 +557,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -580,7 +581,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -597,7 +599,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -621,7 +623,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -638,7 +641,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -662,7 +665,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -679,7 +683,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -1383,12 +1387,12 @@
     "new_compressor_mi_4": {
       "tier": 1
     },
+    "cd_98_main_rotor": {
+      "tier": 2
+    },
     "hp_105": {
       "tier": 3,
-      "prevModification": "new_compressor_mi_4"
-    },
-    "cd_98_main_rotor": {
-      "tier": 3
+      "prevModification": "cd_98_main_rotor"
     },
     "new_heli_cover": {},
     "heli_flak_jacket": {},
@@ -1396,6 +1400,8 @@
       "tier": 2
     },
     "heli_night_vision_system": {
+      "tier": 3,
+      "modClass": "weapon",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -1449,16 +1455,16 @@
       "reqModification": "Mk11_belt_pack",
       "tier": 2
     },
-    "an_m2_universal": {},
-    "an_m2_ground_targets": {},
-    "an_m2_air_targets": {},
-    "an_m2_stealth": {},
-    "anm2_belt_pack": {
+    "anm3_universal": {},
+    "anm3_ground_targets": {},
+    "anm3_air_targets": {},
+    "anm3_stealth": {},
+    "anm3_belt_pack": {
       "tier": 3
     },
     "anm3_new_gun": {
       "tier": 4,
-      "reqModification": "anm2_belt_pack"
+      "reqModification": "anm3_belt_pack"
     },
     "frc_mk2": {
       "tier": 2,

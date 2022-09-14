@@ -10,13 +10,13 @@ let class SecondsUpdater
   timerObj = null
   destroyTimerObjOnFinish = false
 
-  function getUpdaterByNestObj(_nestObj)
+  function getUpdaterByNestObj(nestObj_)
   {
-    local userData = _nestObj.getUserData()
+    local userData = nestObj_.getUserData()
     if (u.isSecondsUpdater(userData))
       return userData
 
-    local _timerObj = _nestObj.findObject(this.getTimerObjIdByNestObj(_nestObj))
+    local _timerObj = nestObj_.findObject(this.getTimerObjIdByNestObj(nestObj_))
     if (_timerObj == null)
       return null
 
@@ -27,15 +27,15 @@ let class SecondsUpdater
     return null
   }
 
-  constructor(_nestObj, _updateFunc, useNestAsTimerObj = true, _params = {})
+  constructor(nestObj_, updateFunc_, useNestAsTimerObj = true, params_ = {})
   {
-    if (!_updateFunc)
+    if (!updateFunc_)
       return ::dagor.assertf(false, "Error: no updateFunc in seconds updater.")
 
-    this.nestObj    = _nestObj
-    this.updateFunc = _updateFunc
-    this.params     = _params
-    local lastUpdaterByNestObject = this.getUpdaterByNestObj(_nestObj)
+    this.nestObj    = nestObj_
+    this.updateFunc = updateFunc_
+    this.params     = params_
+    local lastUpdaterByNestObject = this.getUpdaterByNestObj(nestObj_)
     if (lastUpdaterByNestObject != null)
       lastUpdaterByNestObject.remove()
 
@@ -52,12 +52,12 @@ let class SecondsUpdater
     this.timerObj.setUserData(this)
   }
 
-  function createTimerObj(_nestObj)
+  function createTimerObj(nestObj_)
   {
-    local blkText = "dummy {id:t = '" + this.getTimerObjIdByNestObj(_nestObj) + "' behavior:t = 'Timer' }"
-    _nestObj.getScene().appendWithBlk(_nestObj, blkText, null)
-    local index = _nestObj.childrenCount() - 1
-    local resObj = index >= 0 ? _nestObj.getChild(index) : null
+    local blkText = "".concat("dummy{id:t='", this.getTimerObjIdByNestObj(nestObj_), "' behavior:t='Timer'}")
+    nestObj_.getScene().appendWithBlk(nestObj_, blkText, null)
+    local index = nestObj_.childrenCount() - 1
+    local resObj = index >= 0 ? nestObj_.getChild(index) : null
     if (resObj?.tag == "dummy")
       return resObj
     return null
@@ -79,9 +79,9 @@ let class SecondsUpdater
       this.timerObj.getScene().destroyElement(this.timerObj)
   }
 
-  function getTimerObjIdByNestObj(_nestObj)
+  function getTimerObjIdByNestObj(nestObj_)
   {
-    return "seconds_updater_" + (_nestObj?.id ?? "")
+    return $"seconds_updater_{nestObj_?.id ?? ""}"
   }
 }
 

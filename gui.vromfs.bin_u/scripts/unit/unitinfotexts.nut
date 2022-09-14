@@ -1,3 +1,5 @@
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
+
 global enum bit_unit_status
 {
   locked      = 1
@@ -285,14 +287,8 @@ let function getUnitRarity(unit)
 }
 
 let function getUnitRequireUnlockText(unit) {
-  let unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
-  let conditions = ::build_conditions_config(unlockBlk)
-
-  return "\n".concat(::loc("mainmenu/needUnlock"), ::build_unlock_desc(conditions,
-    { showProgress = true
-      showValueForBitList = true
-    }).text
-  )
+  let desc = getFullUnlockDescByName(unit.reqUnlock, -1, { showValueForBitList = true })
+  return "\n".concat(::loc("mainmenu/needUnlock"), desc)
 }
 
 let function getUnitRequireUnlockShortText(unit) {

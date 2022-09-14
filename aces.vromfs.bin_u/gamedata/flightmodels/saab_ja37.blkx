@@ -31,7 +31,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map_canard.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -464,29 +464,18 @@
         "name": "fuse1_dm",
         "onHit": [
           {
-            "damage": 9.0,
-            "wing_r_dm": 0.1,
-            "wing_l_dm": 0.1
+            "flame": 0.2,
+            "smoke": 0.2
           },
           {
-            "damage": 10.0,
+            "damage": 30.0,
             "wing_r_dm": 0.3,
             "wing_l_dm": 0.3
           },
           {
-            "damage": 20.0,
+            "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
-          },
-          {
-            "damage": 30.0,
-            "wing_r_dm": 0.7,
-            "wing_l_dm": 0.7
-          },
-          {
-            "damage": 50.0,
-            "wing_r_dm": 0.9,
-            "wing_l_dm": 0.9
           }
         ],
         "onKill": [
@@ -531,29 +520,18 @@
         "name": "fuse2_dm",
         "onHit": [
           {
-            "damage": 9.0,
-            "wing_r_dm": 0.1,
-            "wing_l_dm": 0.1
+            "flame": 0.2,
+            "smoke": 0.2
           },
           {
-            "damage": 10.0,
+            "damage": 30.0,
             "wing_r_dm": 0.3,
             "wing_l_dm": 0.3
           },
           {
-            "damage": 20.0,
+            "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
-          },
-          {
-            "damage": 30.0,
-            "wing_r_dm": 0.7,
-            "wing_l_dm": 0.7
-          },
-          {
-            "damage": 50.0,
-            "wing_r_dm": 0.9,
-            "wing_l_dm": 0.9
           }
         ],
         "onKill": [
@@ -598,29 +576,18 @@
         "name": "fuse3_dm",
         "onHit": [
           {
-            "damage": 9.0,
-            "wing_r_dm": 0.1,
-            "wing_l_dm": 0.1
+            "flame": 0.2,
+            "smoke": 0.2
           },
           {
-            "damage": 10.0,
+            "damage": 30.0,
             "wing_r_dm": 0.3,
             "wing_l_dm": 0.3
           },
           {
-            "damage": 20.0,
+            "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
-          },
-          {
-            "damage": 30.0,
-            "wing_r_dm": 0.7,
-            "wing_l_dm": 0.7
-          },
-          {
-            "damage": 50.0,
-            "wing_r_dm": 0.9,
-            "wing_l_dm": 0.9
           }
         ],
         "onKill": [
@@ -665,24 +632,16 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "tail_dm": 0.2
-          },
-          {
-            "damage": 20.0,
-            "tail_dm": 0.4
-          },
-          {
-            "damage": 30.0,
-            "tail_dm": 0.6
+            "flame": 0.2,
+            "smoke": 0.2
           },
           {
             "damage": 45.0,
-            "tail_dm": 0.8
+            "tail_dm": 0.4
           },
           {
             "damage": 40.0,
-            "tail_dm": 0.9
+            "tail_dm": 0.6
           },
           {
             "damage": 50.0,
@@ -863,28 +822,28 @@
         "name": "spar1_l_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 4.0
+          "cut": 3.0
         }
       },
       {
         "name": "spar1_r_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 4.0
+          "cut": 3.0
         }
       },
       {
         "name": "spar2_l_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 4.0
+          "cut": 3.0
         }
       },
       {
         "name": "spar2_r_dm",
         "onKill": {
           "nothing": 2.0,
-          "cut": 4.0
+          "cut": 3.0
         }
       },
       {
@@ -895,6 +854,10 @@
       },
       {
         "name": "tail_dm",
+        "onHit": {
+          "flame": 0.2,
+          "smoke": 0.2
+        },
         "onKill": [
           {
             "tailcontrol_dm": 1.0,
@@ -928,7 +891,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -944,7 +908,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -968,7 +932,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -984,7 +949,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1008,7 +973,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1024,7 +990,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1048,7 +1014,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1064,7 +1031,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1088,7 +1055,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1104,7 +1072,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1128,7 +1096,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1144,7 +1113,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1168,7 +1137,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1184,7 +1154,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1208,7 +1178,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.01,
             "leak": 0.9
           }
@@ -1224,7 +1195,7 @@
             "leak": 15.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
           }
@@ -1235,8 +1206,14 @@
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1245,6 +1222,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1253,6 +1232,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1261,6 +1242,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1269,6 +1252,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1279,6 +1264,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1288,6 +1275,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1297,6 +1286,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1306,6 +1297,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1315,6 +1308,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1327,8 +1322,14 @@
         "defaultEffectPart": "spar1_r_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1337,6 +1338,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1345,6 +1348,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1353,6 +1358,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1361,6 +1368,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1371,6 +1380,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1380,6 +1391,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1389,6 +1402,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1398,6 +1413,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1407,6 +1424,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1419,8 +1438,14 @@
         "defaultEffectPart": "spar2_l_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1429,6 +1454,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1437,6 +1464,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1445,6 +1474,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1453,6 +1484,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1463,6 +1496,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1472,6 +1507,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1481,6 +1518,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1490,6 +1529,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1499,6 +1540,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1511,8 +1554,14 @@
         "defaultEffectPart": "spar2_r_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -1521,6 +1570,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -1529,6 +1580,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -1537,6 +1590,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -1545,6 +1600,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1555,6 +1612,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -1564,6 +1623,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -1573,6 +1634,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -1582,6 +1645,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -1591,6 +1656,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -2048,25 +2115,9 @@
     ]
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": [
-        "u95_container",
-        "boy_401_container_l",
-        "boy_401_container_r",
-        "lavett_24_001_bol_451",
-        "lavett_24_006_bol_451"
-      ]
-    },
     "Weapon": {
-      "trigger": "cannon",
-      "blk": "gameData/Weapons/cannonAkan_m75.blk",
-      "emitter": "flare1",
-      "flash": "flare1",
-      "dm": "cannon1_dm",
-      "bullets": 150,
-      "light": false,
-      "spread": 1.2,
-      "traceOffset": 1
+      "slot": 0,
+      "preset": "akan_m75_common"
     }
   },
   "weapon_presets": {
@@ -2081,178 +2132,426 @@
       },
       {
         "name": "saab_ja37_rockets_rb24",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb24.blk",
-        "reqModification": "swe_rb24"
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb24.blk"
       },
       {
         "name": "saab_ja37_rockets_rb24j",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb24j.blk",
-        "reqModification": "swe_rb24j"
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb24j.blk"
       },
       {
         "name": "saab_ja37_rockets_rb71",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb71.blk",
-        "reqModification": "swe_rb71"
-      },
-      {
-        "name": "saab_ja37_rockets_rb71_rb24",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb71_rb24.blk",
-        "reqModification": [
-          "swe_rb24",
-          "swe_rb71"
-        ]
-      },
-      {
-        "name": "saab_ja37_rockets_rb71_rb24j",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb71_rb24j.blk",
-        "reqModification": [
-          "swe_rb24j",
-          "swe_rb71"
-        ]
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb71.blk"
       },
       {
         "name": "saab_ja37_rocket_135mm_psrak_m70",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rocket_135mm_psrak_m70.blk",
-        "reqModification": "swe_135mm_m70b",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_135mm_psrak_m70_pshu.blk",
-            "amountPerTier": 6.0,
-            "iconType": "nar_ap_special",
-            "tier": [
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rocket_135mm_psrak_m70.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 5000.0,
+    "maxloadMassLeftConsoles": 2500.0,
+    "maxloadMassRightConsoles": 2500.0,
+    "maxDisbalance": 1250.0,
+    "HideNodes": {
+      "node": [
+        "lavett_24_001",
+        "lavett_24_001_bol_451",
+        "lavett_24_002",
+        "lavett_71_001",
+        "u95_container",
+        "lavett_24_003",
+        "lavett_24_004",
+        "lavett_24_005",
+        "lavett_71_002",
+        "lavett_24_006",
+        "lavett_24_006_bol_451",
+        "boy_401_container_l",
+        "boy_401_container_r"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "name": "akan_m75_common",
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m75.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1,
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "gearName": "gear_c"
+            }
+          },
+          {
+            "name": "akan_m75_ltc",
+            "ShowNodes": {
+              "node": [
+                "boy_401_container_l",
+                "boy_401_container_r"
+              ]
+            },
+            "Weapon": [
               {
-                "idx": 4
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonAkan_m75.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "dm": "cannon1_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1,
+                "gearLimit": [
+                  0.0,
+                  0.1
+                ],
+                "gearName": "gear_c"
               },
               {
-                "idx": 5
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 24,
+                "external": true,
+                "separate": false
               },
               {
-                "idx": 7
-              },
-              {
-                "idx": 8
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 24,
+                "external": true,
+                "separate": false
               }
             ]
           }
-        }
+        ]
       },
       {
-        "name": "saab_ja37_rocket_135mm_psrak_m70_rb24",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rocket_135mm_psrak_m70_rb24.blk",
-        "reqModification": [
-          "swe_rb24",
-          "swe_135mm_m70b"
-        ],
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_135mm_psrak_m70_pshu.blk",
-            "amountPerTier": 6.0,
-            "iconType": "nar_ap_special",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "default_rb24j",
+            "ShowNodes": {
+              "node": "lavett_24_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j_default.blk",
+              "emitter": "rb24_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "lavett_24_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rb24_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
-        "name": "saab_ja37_rocket_135mm_psrak_m70_rb24j",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rocket_135mm_psrak_m70_rb24j.blk",
-        "reqModification": [
-          "swe_rb24j",
-          "swe_135mm_m70b"
-        ],
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_135mm_psrak_m70_pshu.blk",
-            "amountPerTier": 6.0,
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "lavett_24_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rb24_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
+            "ShowNodes": {
+              "node": "lavett_24_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb24_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "rb71",
+            "reqModification": "swe_rb71",
+            "ShowNodes": {
+              "node": "lavett_71_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb71.blk",
+              "emitter": "rb71_001",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "nar_ap_special",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
+            "name": "m70b",
+            "reqModification": "swe_135mm_m70b",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m70b.blk",
+              "emitter": "rakkaps_m70_b001",
+              "external": true,
+              "machLimit": 1.01
+            }
           }
-        }
+        ]
       },
       {
-        "name": "saab_ja37_rocket_135mm_psrak_m70_rb24_rb71",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rocket_135mm_psrak_m70_rb24_rb71.blk",
-        "reqModification": [
-          "swe_rb24",
-          "swe_135mm_m70b",
-          "swe_rb71"
-        ],
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_135mm_psrak_m70_pshu.blk",
-            "amountPerTier": 6.0,
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "lavett_24_003"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rb24_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
+            "ShowNodes": {
+              "node": "lavett_24_003"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb24_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "nar_ap_special",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
+            "name": "m70b",
+            "reqModification": "swe_135mm_m70b",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m70b.blk",
+              "emitter": "rakkaps_m70_b002",
+              "external": true,
+              "machLimit": 1.01
+            }
           }
-        }
+        ]
       },
       {
-        "name": "saab_ja37_rocket_135mm_psrak_m70_rb24j_rb71",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rocket_135mm_psrak_m70_rb24j_rb71.blk",
-        "reqModification": [
-          "swe_rb24j",
-          "swe_135mm_m70b",
-          "swe_rb71"
-        ],
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_135mm_psrak_m70_pshu.blk",
-            "amountPerTier": 6.0,
+        "index": 4,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "lavett_24_004"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rb24_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
+            "ShowNodes": {
+              "node": "lavett_24_004"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb24_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "nar_ap_special",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
+            "name": "m70b",
+            "reqModification": "swe_135mm_m70b",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m70b.blk",
+              "emitter": "rakkaps_m70_b003",
+              "external": true,
+              "machLimit": 1.01
+            }
           }
-        }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "lavett_24_005"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rb24_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
+            "ShowNodes": {
+              "node": "lavett_24_005"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb24_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "rb71",
+            "reqModification": "swe_rb71",
+            "ShowNodes": {
+              "node": "lavett_71_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb71.blk",
+              "emitter": "rb71_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "m70b",
+            "reqModification": "swe_135mm_m70b",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m70b.blk",
+              "emitter": "rakkaps_m70_b004",
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "default_rb24j",
+            "ShowNodes": {
+              "node": "lavett_24_006"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j_default.blk",
+              "emitter": "rb24_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "lavett_24_006"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rb24_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
       }
     ]
   },
@@ -2427,44 +2726,10 @@
       "tier": 1,
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "node": [
-              "u95_container",
-              "lavett_24_001_bol_451",
-              "lavett_24_006_bol_451"
-            ]
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m75.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 24,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 24,
-              "external": true,
-              "separate": false
-            }
-          ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "akan_m75_ltc"
+          }
         }
       }
     },
@@ -2544,7 +2809,7 @@
       -4.54098
     ],
     "emtr_break_wing_tail": [
-      -4.66917,
+      -5.58251,
       0.0,
       0.0
     ],

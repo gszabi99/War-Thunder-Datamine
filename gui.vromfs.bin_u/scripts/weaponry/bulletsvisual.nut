@@ -522,6 +522,19 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
   return bulletsData
 }
 
+let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
+  if (!::has_feature("BulletAnimation") || bulletAnimations == null)
+    return
+
+  descTbl.bulletAnimations <- bulletAnimations
+    .filter(@(fileName) ::dd_file_exist(fileName))
+    .map(@(fileName, idx) {
+      fileName
+      loadIdPosfix = idx == 0 ? "" : idx.tostring()
+    })
+  descTbl.hasBulletAnimation <- descTbl.bulletAnimations.len() > 0
+}
+
 let function addBulletsParamToDesc(descTbl, unit, item)
 {
   if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
@@ -535,9 +548,7 @@ let function addBulletsParamToDesc(descTbl, unit, item)
   if (!bulletsSet)
     return
 
-  if (::has_feature("BulletAnimation") && bulletsSet?.bulletAnimation != null
-      && ::dd_file_exist(bulletsSet.bulletAnimation))
-    descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
+  addBulletAnimationsToDesc(descTbl, bulletsSet?.bulletAnimations)
   let bIconParam = bulletsSet?.bIconParam
   let isBelt = bulletsSet?.isBulletBelt ?? true
   if (bIconParam && !isBelt)
@@ -579,9 +590,7 @@ let function addBulletsParamToDesc(descTbl, unit, item)
 let function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams)
 {
   let descTbl = { name = ::colorize("activeTextColor", locName), desc = "", bulletActions = []}
-  if (::has_feature("BulletAnimation") && bulletsSet?.bulletAnimation != null
-    && ::dd_file_exist(bulletsSet.bulletAnimation))
-      descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
+  addBulletAnimationsToDesc(descTbl, bulletsSet?.bulletAnimations)
   let part = bulletName.indexof("@")
     descTbl.desc = part == null ? getBulletAnnotation(bulletName)
       : getBulletAnnotation(bulletName.slice(0, part), bulletName.slice(part+1))

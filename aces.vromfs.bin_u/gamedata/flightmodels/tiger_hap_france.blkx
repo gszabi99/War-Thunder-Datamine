@@ -331,12 +331,8 @@
         "name": "fuse_dm",
         "onHit": [
           {
-            "damage": 20.0,
-            "tail_dm": 0.2
-          },
-          {
-            "damage": 30.0,
-            "tail_dm": 0.4
+            "flame": 0.2,
+            "smoke": 0.2
           },
           {
             "damage": 50.0,
@@ -533,6 +529,10 @@
         "name": "tail_dm",
         "onHit": [
           {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
             "damage": 30.0,
             "cut": 0.25
           },
@@ -597,7 +597,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -614,7 +615,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -638,7 +639,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -655,7 +657,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -695,8 +697,14 @@
         "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -705,6 +713,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -713,6 +723,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -721,6 +733,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -729,6 +743,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -739,6 +755,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -748,6 +766,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -757,6 +777,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -766,6 +788,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -775,6 +799,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -787,8 +813,14 @@
         "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -797,6 +829,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -805,6 +839,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -813,6 +849,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -821,6 +859,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -831,6 +871,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -840,6 +882,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -849,6 +893,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -858,6 +904,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -867,6 +915,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1911,137 +1961,10 @@
     ]
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "dummy": true,
-        "trigger": "gunner0",
-        "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "optic1_gun",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "speedYaw": 25.0,
-        "speedPitch": 25.0,
-        "parkInDeadzone": false,
-        "aimForOperatedShell": true,
-        "turret": {
-          "head": "optic1_turret",
-          "gun": "optic1_gun",
-          "mainTurret": true
-        },
-        "limits": {
-          "yaw": [
-            -115.0,
-            115.0
-          ],
-          "pitch": [
-            -55.0,
-            25.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/cannonGIAT_type_30_M781.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "turret": [
-          "turret1",
-          {
-            "head": "turret1",
-            "gun": "gun1",
-            "mainTurret": true,
-            "ballisticTargeting": true
-          }
-        ],
-        "shell": "emtr_shellrejection1",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "cannon1_dm",
-        "partsDP": "cannon1_dm",
-        "bullets": 450,
-        "recoilOffset": 0.0,
-        "parkInDeadzone": false,
-        "limits": {
-          "yaw": [
-            -115.0,
-            115.0
-          ],
-          "pitch": [
-            -50.0,
-            25.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -115.0,
-            -103.0,
-            -50.0,
-            15.0
-          ],
-          "lim2": [
-            -103.0,
-            -75.0,
-            -50.0,
-            19.0
-          ],
-          "lim3": [
-            -75.0,
-            -52.0,
-            -50.0,
-            24.0
-          ],
-          "lim4": [
-            -52.0,
-            -35.0,
-            -50.0,
-            25.0
-          ],
-          "lim5": [
-            -35.0,
-            -15.0,
-            -50.0,
-            23.0
-          ],
-          "lim6": [
-            -15.0,
-            15.0,
-            -50.0,
-            20.0
-          ],
-          "lim7": [
-            15.0,
-            35.0,
-            -50.0,
-            23.0
-          ],
-          "lim8": [
-            35.0,
-            52.0,
-            -50.0,
-            25.0
-          ],
-          "lim9": [
-            52.0,
-            75.0,
-            -50.0,
-            24.0
-          ],
-          "lim10": [
-            75.0,
-            103.0,
-            -50.0,
-            19.0
-          ],
-          "lim11": [
-            103.0,
-            115.0,
-            -50.0,
-            15.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "giat_cannon_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2050,161 +1973,541 @@
         "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_default.blk"
       },
       {
+        "name": "tiger_hap_france_tel22_tda",
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_tel22_tda.blk"
+      },
+      {
         "name": "tiger_hap_france_tel12_tda",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_tel12_tda.blk",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_TDA.blk",
-              "amountPerTier": 22.0
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
-              "amountPerTier": 12.0,
-              "iconType": "nar_ap_rocket_s"
-            }
-          ]
-        }
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_tel12_tda.blk"
+      },
+      {
+        "name": "tiger_hap_france_hot3_default",
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3_default.blk"
       },
       {
         "name": "tiger_hap_france_hot3",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3.blk",
-        "weaponConfig": {
-          "presetType": "ARMORED",
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk",
-            "amountPerTier": 4.0,
-            "tier": [
-              {
-                "idx": 5,
-                "iconType": "atgm_type1_x4"
-              },
-              {
-                "idx": 7,
-                "iconType": "atgm_type1_x4"
-              }
-            ]
-          }
-        }
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3.blk"
       },
       {
-        "name": "tiger_hap_france_hot3_tel12",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3_tel12.blk",
-        "reqModification": "tiger_hot3",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
-              "amountPerTier": 12.0,
-              "tier": [
-                {
-                  "idx": 4,
-                  "iconType": "nar_ap_rocket_s"
-                },
-                {
-                  "idx": 8,
-                  "iconType": "nar_ap_rocket_s"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk",
-              "amountPerTier": 4.0,
-              "tier": [
-                {
-                  "idx": 5,
-                  "iconType": "atgm_type1_x4"
-                },
-                {
-                  "idx": 7,
-                  "iconType": "atgm_type1_x4"
-                }
-              ]
-            }
-          ]
-        }
+        "name": "tiger_hap_france_stinger",
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_stinger.blk"
       },
       {
         "name": "tiger_hap_france_mistral",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_mistral.blk",
-        "reqModification": "heli_atam_mistral",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk",
-            "amountPerTier": 2.0,
-            "tier": [
-              {
-                "idx": 4,
-                "iconType": "missile_air_to_air_group"
-              },
-              {
-                "idx": 8,
-                "iconType": "missile_air_to_air_group"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "tiger_hap_france_tel22_tda_mistral",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_tel22_tda_mistral.blk",
-        "reqModification": "heli_atam_mistral",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_TDA.blk",
-            "amountPerTier": 22.0
-          }
-        }
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_mistral.blk"
       },
       {
         "name": "tiger_hap_france_hot3_mistral",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3_mistral.blk",
-        "reqModification": [
-          "tiger_hot3",
-          "heli_atam_mistral"
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3_mistral.blk"
+      },
+      {
+        "name": "tiger_hap_france_hot3_tel12_tda",
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3_tel12_tda.blk"
+      },
+      {
+        "name": "tiger_hap_france_tel22_tda_stinger",
+        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_tel22_tda_stinger.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1000.0,
+    "maxloadMassLeftConsoles": 500.0,
+    "maxloadMassRightConsoles": 500.0,
+    "maxDisbalance": 480.0,
+    "HideNodes": {
+      "node": [
+        "pylon_l",
+        "pylon_r",
+        "pylon_l_m",
+        "pylon_r_m",
+        "pylon_m272_001",
+        "pylon_m272_002",
+        "pylon_m279_001",
+        "pylon_m279_002"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": [
+          {
+            "name": "giat_cannon_common",
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -115.0,
+                    115.0
+                  ],
+                  "pitch": [
+                    -53.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/cannonGIAT_type_30_M781.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "turret": [
+                  "turret1",
+                  {
+                    "head": "turret1",
+                    "gun": "gun1",
+                    "mainTurret": true,
+                    "ballisticTargeting": true
+                  }
+                ],
+                "shell": "emtr_shellrejection1",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "cannon1_dm",
+                "partsDP": "cannon1_dm",
+                "bullets": 450,
+                "recoilOffset": 0.0,
+                "parkInDeadzone": false,
+                "limits": {
+                  "yaw": [
+                    -115.0,
+                    115.0
+                  ],
+                  "pitch": [
+                    -50.0,
+                    25.0
+                  ]
+                },
+                "limitsTable": {
+                  "lim1": [
+                    -115.0,
+                    -103.0,
+                    -50.0,
+                    15.0
+                  ],
+                  "lim2": [
+                    -103.0,
+                    -75.0,
+                    -50.0,
+                    19.0
+                  ],
+                  "lim3": [
+                    -75.0,
+                    -52.0,
+                    -50.0,
+                    24.0
+                  ],
+                  "lim4": [
+                    -52.0,
+                    -35.0,
+                    -50.0,
+                    25.0
+                  ],
+                  "lim5": [
+                    -35.0,
+                    -15.0,
+                    -50.0,
+                    23.0
+                  ],
+                  "lim6": [
+                    -15.0,
+                    15.0,
+                    -50.0,
+                    20.0
+                  ],
+                  "lim7": [
+                    15.0,
+                    35.0,
+                    -50.0,
+                    23.0
+                  ],
+                  "lim8": [
+                    35.0,
+                    52.0,
+                    -50.0,
+                    25.0
+                  ],
+                  "lim9": [
+                    52.0,
+                    75.0,
+                    -50.0,
+                    24.0
+                  ],
+                  "lim10": [
+                    75.0,
+                    103.0,
+                    -50.0,
+                    19.0
+                  ],
+                  "lim11": [
+                    103.0,
+                    115.0,
+                    -50.0,
+                    15.0
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "giat_cannon_ltc_common",
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -115.0,
+                    115.0
+                  ],
+                  "pitch": [
+                    -53.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/cannonGIAT_type_30_M781.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "turret": [
+                  "turret1",
+                  {
+                    "head": "turret1",
+                    "gun": "gun1",
+                    "mainTurret": true,
+                    "ballisticTargeting": true
+                  }
+                ],
+                "shell": "emtr_shellrejection1",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "cannon1_dm",
+                "partsDP": "cannon1_dm",
+                "bullets": 450,
+                "recoilOffset": 0.0,
+                "parkInDeadzone": false,
+                "limits": {
+                  "yaw": [
+                    -115.0,
+                    115.0
+                  ],
+                  "pitch": [
+                    -50.0,
+                    25.0
+                  ]
+                },
+                "limitsTable": {
+                  "lim1": [
+                    -115.0,
+                    -103.0,
+                    -50.0,
+                    15.0
+                  ],
+                  "lim2": [
+                    -103.0,
+                    -75.0,
+                    -50.0,
+                    19.0
+                  ],
+                  "lim3": [
+                    -75.0,
+                    -52.0,
+                    -50.0,
+                    24.0
+                  ],
+                  "lim4": [
+                    -52.0,
+                    -35.0,
+                    -50.0,
+                    25.0
+                  ],
+                  "lim5": [
+                    -35.0,
+                    -15.0,
+                    -50.0,
+                    23.0
+                  ],
+                  "lim6": [
+                    -15.0,
+                    15.0,
+                    -50.0,
+                    20.0
+                  ],
+                  "lim7": [
+                    15.0,
+                    35.0,
+                    -50.0,
+                    23.0
+                  ],
+                  "lim8": [
+                    35.0,
+                    52.0,
+                    -50.0,
+                    25.0
+                  ],
+                  "lim9": [
+                    52.0,
+                    75.0,
+                    -50.0,
+                    24.0
+                  ],
+                  "lim10": [
+                    75.0,
+                    103.0,
+                    -50.0,
+                    19.0
+                  ],
+                  "lim11": [
+                    103.0,
+                    115.0,
+                    -50.0,
+                    15.0
+                  ]
+                }
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              }
+            ]
+          }
         ]
       },
       {
-        "name": "tiger_hap_france_hot3_mistral_tel12",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_hot3_mistral_tel12.blk",
-        "reqModification": [
-          "tiger_hot3",
-          "heli_atam_mistral"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
-              "amountPerTier": 12.0,
-              "tier": {
-                "idx": 4,
-                "iconType": "nar_ap_rocket_s"
-              }
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_rocket_s",
+            "name": "telson_12",
+            "reqModification": "tiger_tel12",
+            "ShowNodes": {
+              "node": "pylon_l"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk",
-              "amountPerTier": 4.0,
-              "tier": [
-                {
-                  "idx": 5,
-                  "iconType": "atgm_type1_x4"
-                },
-                {
-                  "idx": 7,
-                  "iconType": "atgm_type1_x4"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk",
-              "amountPerTier": 2.0,
-              "tier": {
-                "idx": 8,
-                "iconType": "missile_air_to_air_group"
-              }
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/telson_12_tda_x12.blk",
+              "emitter": "telson12_pod_b001",
+              "external": true,
+              "machLimit": 1.01
             }
-          ]
-        }
+          },
+          {
+            "iconType": "missile_air_to_air_group_heli",
+            "name": "atas",
+            "reqModification": "stinger_aam",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atas_2x_stinger.blk",
+              "emitter": "aim92_stinger_pod_001"
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_heli",
+            "name": "mistral",
+            "reqModification": "heli_atam_mistral",
+            "ShowNodes": {
+              "node": "pylon_l_m"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+              "emitter": "atam_mistral_pod_001"
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_rocket_b",
+            "name": "telson_22",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/telson_22_tda_x22.blk",
+              "emitter": "telson22_pod_b001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type2_x2",
+            "name": "hot3_x2",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/hot3_pods_x2.blk",
+              "emitter": "hot_pod_001",
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type1_x4",
+            "name": "hot3_x4",
+            "reqModification": "tiger_hot3",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/hot3_pods_x4.blk",
+              "emitter": "hot_pod_001",
+              "dragCx": 0.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_rocket_b",
+            "name": "telson_22",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/telson_22_tda_x22.blk",
+              "emitter": "telson22_pod_b002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type2_x2",
+            "name": "hot3_x2",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/hot3_pods_x2.blk",
+              "emitter": "hot_pod_002",
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type1_x4",
+            "name": "hot3_x4",
+            "reqModification": "tiger_hot3",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/hot3_pods_x4.blk",
+              "emitter": "hot_pod_002",
+              "dragCx": 0.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_rocket_s",
+            "name": "telson_12",
+            "reqModification": "tiger_tel12",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/telson_12_tda_x12.blk",
+              "emitter": "telson12_pod_b002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_group_heli",
+            "name": "atas",
+            "reqModification": "stinger_aam",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atas_2x_stinger.blk",
+              "emitter": "aim92_stinger_pod_002"
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_heli",
+            "name": "mistral",
+            "reqModification": "heli_atam_mistral",
+            "ShowNodes": {
+              "node": "pylon_r_m"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+              "emitter": "atam_mistral_pod_002"
+            }
+          }
+        ]
       }
     ]
   },
@@ -2232,22 +2535,27 @@
     "new_compressor_heli": {
       "tier": 1
     },
-    "hp_105_jet": {
-      "tier": 3,
-      "prevModification": "new_compressor_heli"
-    },
     "cd_98_main_rotor": {
-      "tier": 3,
+      "tier": 2,
       "effects": {
         "mulCdminMainRotor": 1.15,
         "mulOswEffNumberMainRotor": 0.85
       }
     },
+    "hp_105_jet": {
+      "tier": 3,
+      "prevModification": "cd_98_main_rotor"
+    },
     "new_heli_cover": {},
     "heli_flak_jacket": {},
     "heli_structure": {},
+    "air_extinguisher": {
+      "prevModification": "heli_structure",
+      "tier": 3,
+      "invertEnableLogic": false
+    },
     "aden_new_gun": {
-      "tier": 2
+      "tier": 1
     },
     "tiger_tel12": {
       "deactivationIsAllowed": false,
@@ -2260,9 +2568,14 @@
       "modClass": "weapon",
       "tier": 2
     },
+    "stinger_aam": {
+      "modClass": "weapon",
+      "tier": 3,
+      "enabled": false
+    },
     "heli_atam_mistral": {
       "deactivationIsAllowed": false,
-      "reqModification": "tiger_hot3",
+      "reqModification": "stinger_aam",
       "modClass": "weapon",
       "tier": 4
     },
@@ -2277,155 +2590,10 @@
       "invertEnableLogic": false,
       "effects": {
         "commonWeapons": {
-          "Weapon": [
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [
-                  -115.0,
-                  115.0
-                ],
-                "pitch": [
-                  -50.0,
-                  25.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner0",
-              "blk": "gameData/Weapons/cannonGIAT_type_30_M781.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "turret": [
-                "turret1",
-                {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
-              ],
-              "shell": "emtr_shellrejection1",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "cannon1_dm",
-              "partsDP": "cannon1_dm",
-              "bullets": 450,
-              "recoilOffset": 0.0,
-              "parkInDeadzone": false,
-              "limits": {
-                "yaw": [
-                  -115.0,
-                  115.0
-                ],
-                "pitch": [
-                  -50.0,
-                  25.0
-                ]
-              },
-              "limitsTable": {
-                "lim1": [
-                  -115.0,
-                  -103.0,
-                  -50.0,
-                  15.0
-                ],
-                "lim2": [
-                  -103.0,
-                  -75.0,
-                  -50.0,
-                  19.0
-                ],
-                "lim3": [
-                  -75.0,
-                  -52.0,
-                  -50.0,
-                  24.0
-                ],
-                "lim4": [
-                  -52.0,
-                  -35.0,
-                  -50.0,
-                  25.0
-                ],
-                "lim5": [
-                  -35.0,
-                  -15.0,
-                  -50.0,
-                  23.0
-                ],
-                "lim6": [
-                  -15.0,
-                  15.0,
-                  -50.0,
-                  20.0
-                ],
-                "lim7": [
-                  15.0,
-                  35.0,
-                  -50.0,
-                  23.0
-                ],
-                "lim8": [
-                  35.0,
-                  52.0,
-                  -50.0,
-                  25.0
-                ],
-                "lim9": [
-                  52.0,
-                  75.0,
-                  -50.0,
-                  24.0
-                ],
-                "lim10": [
-                  75.0,
-                  103.0,
-                  -50.0,
-                  19.0
-                ],
-                "lim11": [
-                  103.0,
-                  115.0,
-                  -50.0,
-                  15.0
-                ]
-              }
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            }
-          ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "giat_cannon_ltc_common"
+          }
         },
         "sensors": {
           "sensor": [
@@ -2447,6 +2615,9 @@
       }
     },
     "heli_night_vision_system": {
+      "prevModification": "MAW_system_heli_false_thermal_targets",
+      "tier": 3,
+      "modClass": "weapon",
       "image": "#ui/gameuiskin#thermal_sight.png",
       "effects": {
         "nightVision": {

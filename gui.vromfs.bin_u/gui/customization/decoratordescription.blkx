@@ -1,81 +1,101 @@
 {
   "flow": "vertical",
-  "tdiv": {
-    "height": "@decalIconHeight",
-    "pos": "50%pw-50%w, 0",
-    "position": "relative",
-    "display": "hide",
-    "img": {
-      "id": "image",
-      "size": "pw, ph",
-      "background-svg-size": "pw, ph",
-      "background-repeat": "aspect-ratio"
-    }
-  },
-  "textAreaSmall": [
+  "tdiv": [
     {
-      "id": "header",
-      "text": "",
-      "max-width": "6@decalIconHeight",
-      "margin": "0, 1@blockInterval",
-      "hideEmptyText": "yes",
-      "overlayTextColor": "unlockHeader"
+      "height": "@decalIconHeight",
+      "pos": "50%pw-50%w, 0",
+      "position": "relative",
+      "display": "hide",
+      "img": {
+        "id": "image",
+        "size": "pw, ph",
+        "background-svg-size": "pw, ph",
+        "background-repeat": "aspect-ratio"
+      }
     },
     {
-      "id": "price",
-      "display": "hide",
-      "max-width": "6@decalIconHeight",
-      "text": "",
-      "hideEmptyText": "yes"
-    }
-  ],
-  "textareaNoTab": {
-    "id": "description",
-    "text": "",
-    "margin": "0, 1@blockInterval",
-    "hideEmptyText": "yes",
-    "max-width": "6@decalIconHeight",
-    "smallFont": "yes"
-  },
-  "div": [
-    {
       "id": "conditions",
-      "margin": "0, 2@blockInterval",
       "flow": "horizontal",
-      "max-width": "6@decalIconHeight",
-      "display": "hide",
+      "margin-top": "2@blockInterval",
       "cardImg": {
         "id": "state",
         "size": "@unlockIconSize, @unlockIconSize",
-        "re-type": "9rect",
-        "background-repeat": "expand",
         "background-image": "#ui/gameuiskin#favorite.png",
-        "margin": "0, 0, 1@blockInterval, 0"
+        "margin-right": "@blockInterval"
       },
       "tdiv": {
         "pos": "0, ph/2-h/2",
         "position": "relative",
         "flow": "vertical",
-        "textareaNoTab": {
-          "id": "unlock_description",
-          "text": "",
-          "hideEmptyText": "yes",
-          "max-width": "6@decalIconHeight - @unlockIconSize - 1@blockInterval",
-          "smallFont": "yes"
-        },
         "challengeDescriptionProgress": {
           "id": "progress",
+          "value": "",
           "display": "hide",
-          "value": ""
-        }
+          "thin": "yes"
+        },
+        "textareaNoTab": [
+          {
+            "id": "mainCond",
+            "max-width": "6@decalIconHeight",
+            "overflow": "hidden",
+            "smallFont": "yes",
+            "margin-top": "@blockInterval",
+            "hideEmptyText": "yes"
+          },
+          {
+            "id": "multDesc",
+            "max-width": "6@decalIconHeight",
+            "overflow": "hidden",
+            "smallFont": "yes"
+          },
+          {
+            "id": "conds",
+            "max-width": "6@decalIconHeight",
+            "overflow": "hidden",
+            "smallFont": "yes",
+            "margin-top": "@blockInterval",
+            "hideEmptyText": "yes"
+          },
+          {
+            "id": "obtain_info",
+            "hideEmptyText": "yes",
+            "margin-top": "@blockInterval",
+            "max-width": "6@decalIconHeight",
+            "smallFont": "yes"
+          }
+        ]
       }
     },
     {
       "id": "additional_description",
-      "margin": "0, 1@blockInterval",
+      "margin-top": "8@dp",
       "flow": "horizontal",
       "max-width": "1@decorationInfoMaxWidth",
-      "display": "hide"
+      "display": "hide",
+      "hideEmptyText": "yes"
+    }
+  ],
+  "textAreaSmall": {
+    "id": "header",
+    "max-width": "6@decalIconHeight",
+    "margin-top": "2@blockInterval",
+    "hideEmptyText": "yes",
+    "overlayTextColor": "unlockHeader"
+  },
+  "textareaNoTab": [
+    {
+      "id": "description",
+      "margin-top": "@blockInterval",
+      "hideEmptyText": "yes",
+      "max-width": "6@decalIconHeight",
+      "smallFont": "yes"
+    },
+    {
+      "id": "price",
+      "display": "hide",
+      "max-width": "6@decalIconHeight",
+      "hideEmptyText": "yes",
+      "margin-top": "@blockInterval"
     }
   ]
 }

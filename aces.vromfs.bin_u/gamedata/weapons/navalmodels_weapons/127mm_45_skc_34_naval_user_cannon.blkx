@@ -4,8 +4,8 @@
   "maxDeltaAngle": 0.21,
   "maxDeltaAngleVertical": 0.31,
   "aimMinDist": 0.05,
-  "aimMaxDist": 10000.0,
-  "attackMaxDist": 10000.0,
+  "aimMaxDist": 15000.0,
+  "attackMaxDist": 15000.0,
   "shotFreq": 0.3,
   "bullets": 1,
   "recoilOffset": 0.45,
@@ -35,13 +35,15 @@
     "type_frigate": true,
     "type_destroyer": true,
     "type_light_cruiser": true,
-    "type_heavy_cruiser": true
+    "type_heavy_cruiser": true,
+    "type_battlecruiser": true,
+    "type_battleship": true
   },
   "bullet": {
     "bulletCount": 40,
     "mass": 28.0,
     "explosiveType": "fp02",
-    "explosiveMass": 2.0,
+    "explosiveMass": 1.905,
     "caliber": 0.128,
     "speed": 830.0,
     "maxDistance": 20000.0,
@@ -94,24 +96,6 @@
         30.0,
         0.99
       ]
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 5.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": {
-          "break_fuse": 1.0
-        },
-        "onKill": {
-          "destruction": 1.0
-        }
-      }
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -370,7 +354,7 @@
       "bulletCount": 40,
       "mass": 28.0,
       "explosiveType": "fp02",
-      "explosiveMass": 2.0,
+      "explosiveMass": 1.905,
       "caliber": 0.128,
       "speed": 830.0,
       "maxDistance": 20000.0,
@@ -423,24 +407,6 @@
           30.0,
           0.99
         ]
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -990,7 +956,7 @@
       "bulletCount": 40,
       "mass": 28.0,
       "explosiveType": "fp02",
-      "explosiveMass": 1.4,
+      "explosiveMass": 1.905,
       "caliber": 0.128,
       "speed": 830.0,
       "maxDistance": 20000.0,
@@ -1347,7 +1313,7 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.01,
+          "countPortion": 0.015,
           "segment": [
             {
               "radiusScale": 7.0,

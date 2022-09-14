@@ -275,6 +275,10 @@
         "name": "fuse_dm",
         "onHit": [
           {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
             "damage": 20.0,
             "tail_dm": 0.2
           },
@@ -464,6 +468,10 @@
         "name": "tail_dm",
         "onHit": [
           {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
             "damage": 30.0,
             "cut": 0.25
           },
@@ -528,7 +536,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -545,7 +554,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -569,7 +578,8 @@
             "leak": 0.7
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
+            "expl": 0.5,
             "fire": 0.4,
             "leak": 0.9
           }
@@ -586,7 +596,7 @@
             "leak": 25.0
           },
           {
-            "damage": 70.0,
+            "damage": 80.0,
             "fire": 50.0,
             "leak": 20.0
           }
@@ -626,8 +636,14 @@
         "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -636,6 +652,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -644,6 +662,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -652,6 +672,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -660,6 +682,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -670,6 +694,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -679,6 +705,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -688,6 +716,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -697,6 +727,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -706,6 +738,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -718,8 +752,14 @@
         "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.1,
               "canCut": true
@@ -728,6 +768,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 0.3,
+            "flame": 0.3,
             "part": {
               "ratio": 0.2,
               "canCut": true
@@ -736,6 +778,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 0.4,
+            "flame": 0.4,
             "part": {
               "ratio": 0.4,
               "canCut": true
@@ -744,6 +788,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 0.6,
+            "flame": 0.6,
             "part": {
               "ratio": 0.8,
               "canCut": true
@@ -752,6 +798,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 0.8,
+            "flame": 0.8,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -762,6 +810,8 @@
           {
             "damage": 10.0,
             "cut": 0.0,
+            "smoke": 1.0,
+            "flame": 1.0,
             "nothing": 9.0,
             "part": {
               "ratio": 1.0,
@@ -771,6 +821,8 @@
           {
             "damage": 20.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 5.0,
             "part": {
               "ratio": 1.0,
@@ -780,6 +832,8 @@
           {
             "damage": 30.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 3.0,
             "part": {
               "ratio": 1.0,
@@ -789,6 +843,8 @@
           {
             "damage": 50.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "nothing": 1.0,
             "part": {
               "ratio": 1.0,
@@ -798,6 +854,8 @@
           {
             "damage": 70.0,
             "cut": 0.0,
+            "smoke": 2.0,
+            "flame": 2.0,
             "part": {
               "ratio": 1.0,
               "canCut": true
@@ -1255,10 +1313,6 @@
       {
         "name": "ah_1f_iaf_rocket",
         "blk": "gameData/flightModels/weaponPresets/ah_1f_iaf_rocket.blk"
-      },
-      {
-        "name": "ah_1f_iaf_xm18",
-        "blk": "gameData/flightModels/weaponPresets/ah_1f_iaf_xm18.blk"
       },
       {
         "name": "ah_1f_iaf_rocket_4xTOW",
@@ -1783,7 +1837,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_131a_desert_hydra_70_m247.blk",
               "emitter": "aero_6_b1",
               "mass": 0.01,
               "dragCx": 0.01
@@ -1792,11 +1846,11 @@
           {
             "iconType": "nar_ap_large",
             "name": "aero_7a",
-            "reqModification": "ah_1_m200_2",
+            "reqModification": "ah_1_m261_hydra_70",
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "aero_7_l_b001",
               "mass": 0.01,
               "dragCx": 0.01
@@ -1863,7 +1917,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_131a_desert_hydra_70_m247.blk",
               "emitter": "aero_6_b2",
               "mass": 0.01,
               "dragCx": 0.01
@@ -1872,44 +1926,14 @@
           {
             "iconType": "nar_ap_large",
             "name": "aero_7a",
-            "reqModification": "ah_1_m200_2",
+            "reqModification": "ah_1_m261_hydra_70",
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "aero_7_l_b002",
               "mass": 0.01,
               "dragCx": 0.01
-            }
-          },
-          {
-            "iconType": "multibarrel_box",
-            "name": "xm_18_left_wing",
-            "reqModification": "uh_1c_xm18",
-            "ShowNodes": {
-              "node": [
-                "us_xm_18_l",
-                "us_xm_18_barrel1",
-                "flare3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": "gun3_dm"
-            },
-            "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
-              "emitter": "flare3",
-              "flash": "flare3",
-              "shell": "emtr_shellrejection3",
-              "bullets": 1500,
-              "gunDm": "gun3_dm",
-              "partsDP": "gun3_dm",
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
-              "external": true,
-              "rotationAnimScale": "gun_rotate_01:CRS"
             }
           }
         ]
@@ -1925,7 +1949,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_131a_desert_hydra_70_m247.blk",
               "emitter": "aero_6_b3",
               "mass": 0.01,
               "dragCx": 0.01
@@ -1934,44 +1958,14 @@
           {
             "iconType": "nar_ap_large",
             "name": "aero_7a",
-            "reqModification": "ah_1_m200_2",
+            "reqModification": "ah_1_m261_hydra_70",
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "aero_7_l_b003",
               "mass": 0.01,
               "dragCx": 0.01
-            }
-          },
-          {
-            "iconType": "multibarrel_box",
-            "name": "xm_18_right_wing",
-            "reqModification": "uh_1c_xm18",
-            "ShowNodes": {
-              "node": [
-                "us_xm_18_r",
-                "us_xm_18_barrel2",
-                "flare4"
-              ]
-            },
-            "ShowDmParts": {
-              "node": "gun4_dm"
-            },
-            "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "shell": "emtr_shellrejection4",
-              "bullets": 1500,
-              "gunDm": "gun4_dm",
-              "partsDP": "gun4_dm",
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
-              "external": true,
-              "rotationAnimScale": "gun_rotate_01:CRS"
             }
           }
         ]
@@ -1987,7 +1981,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_6a_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_131a_desert_hydra_70_m247.blk",
               "emitter": "aero_6_b4",
               "mass": 0.01,
               "dragCx": 0.01
@@ -1996,11 +1990,11 @@
           {
             "iconType": "nar_ap_large",
             "name": "aero_7a",
-            "reqModification": "ah_1_m200_2",
+            "reqModification": "ah_1_m261_hydra_70",
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "aero_7_l_b004",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2101,7 +2095,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2189,7 +2187,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2277,7 +2279,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2356,7 +2362,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2440,7 +2450,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2524,7 +2538,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2608,7 +2626,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -2692,7 +2714,11 @@
           "elevon_r_dm",
           "elevon%d_r_dm",
           "airbrake_l_dm",
+          "airbrake_l%d_dm",
+          "airbrake%d_l_dm",
           "airbrake_r_dm",
+          "airbrake_r%d_dm",
+          "airbrake%d_r_dm",
           "airbrake_c_dm",
           "aileron_interceptor_l_dm",
           "aileron_interceptor%d_l_dm",
@@ -3133,6 +3159,11 @@
         ]
       },
       {
+        "dm": "blister1_dm",
+        "separateDm": true,
+        "dp": "blister%d"
+      },
+      {
         "dm": "tail_dm",
         "dp": [
           "prop01_2",
@@ -3143,6 +3174,7 @@
       },
       {
         "dm": "fin_dm",
+        "overwriteLinks": true,
         "dp": [
           "prop01_2",
           "prop02_2",
@@ -3198,20 +3230,25 @@
     "new_compressor_heli": {
       "tier": 1
     },
-    "hp_105_jet": {
-      "tier": 3,
-      "prevModification": "new_compressor_heli"
-    },
     "cd_98_main_rotor": {
-      "tier": 3,
+      "tier": 2,
       "effects": {
         "mulCdminMainRotor": 1.15,
         "mulOswEffNumberMainRotor": 0.85
       }
     },
+    "hp_105_jet": {
+      "tier": 3,
+      "prevModification": "cd_98_main_rotor"
+    },
     "new_heli_cover": {},
     "heli_flak_jacket": {},
     "heli_structure": {},
+    "air_extinguisher": {
+      "prevModification": "heli_structure",
+      "tier": 3,
+      "invertEnableLogic": false
+    },
     "t_160_universal": {},
     "t_160_air_targets": {},
     "t_160_armor_targets": {},
@@ -3228,6 +3265,35 @@
       "prevModification": "t_160_new_gun",
       "tier": 3,
       "modClass": "weapon"
+    },
+    "ah_1_m261_hydra_70": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "ah_1_TOW": {
+      "deactivationIsAllowed": false,
+      "reqModification": "ah_1_m261_hydra_70",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "ah_1_TOW_2": {
+      "deactivationIsAllowed": false,
+      "reqModification": "ah_1_TOW",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "ah_1_TOW2": {
+      "deactivationIsAllowed": false,
+      "reqModification": "ah_1_TOW",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "ah_1_TOW2_2": {
+      "deactivationIsAllowed": false,
+      "reqModification": "ah_1_TOW2",
+      "modClass": "weapon",
+      "tier": 4
     },
     "countermeasures_launcher_chaff_only": {},
     "countermeasures_launcher_flare_only": {},
@@ -3268,36 +3334,10 @@
         }
       }
     },
-    "ah_1_m200_2": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "ah_1_TOW": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_m200_2",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "ah_1_TOW_2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW",
-      "modClass": "weapon",
-      "tier": 4
-    },
-    "ah_1_TOW2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "ah_1_TOW2_2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW2",
-      "modClass": "weapon",
-      "tier": 4
-    },
     "heli_night_vision_system": {
+      "prevModification": "heli_counterMeasures",
+      "tier": 3,
+      "modClass": "weapon",
       "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {

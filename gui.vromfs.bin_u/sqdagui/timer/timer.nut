@@ -11,19 +11,19 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
   static timeNowPID = ::dagui_propid.add_name_id("timer-timenow")
 
-  constructor(parentObj, _delay, _onTimeOut, handler = null, _cycled = false, _isDelayed = false)
+  constructor(parentObj, delay, onTimeOut_, handler = null, cycled_ = false, isDelayed_ = false)
   {
-    if (!_onTimeOut)
+    if (!onTimeOut_)
       return ::dagor.assertf(false, "Error: no onTimeOut in Timer.")
 
-    this.onTimeOut = handler ? Callback(_onTimeOut, handler) : _onTimeOut
-    this.cycled    = _cycled
-    this.isDelayed = _isDelayed
+    this.onTimeOut = handler ? Callback(onTimeOut_, handler) : onTimeOut_
+    this.cycled    = cycled_
+    this.isDelayed = isDelayed_
 
     this.guiScene = parentObj.getScene()
     this.timerGuiObj = this.guiScene.createElement(parentObj, "timer", this)
     this.timerGuiObj.timer_handler_func = "onUpdate"
-    this.timerGuiObj.timer_interval_msec = (_delay * 1000.0).tointeger().tostring()
+    this.timerGuiObj.timer_interval_msec = (delay * 1000.0).tointeger().tostring()
     this.timerGuiObj.setUserData(this)
   }
 
@@ -52,9 +52,9 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
     }
   }
 
-  function setCb(_onTimeOut)
+  function setCb(onTimeOut_)
   {
-    this.onTimeOut = _onTimeOut
+    this.onTimeOut = onTimeOut_
   }
 
   function destroy()

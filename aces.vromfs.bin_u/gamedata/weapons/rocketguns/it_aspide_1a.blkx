@@ -33,8 +33,9 @@
       0.1,
       0.1
     ],
-    "finsAoaHor": 0.16,
-    "finsAoaVer": 0.16,
+    "finsAoaHor": 0.23,
+    "finsAoaVer": 0.23,
+    "finsLatAccel": 35.6,
     "force": 37500.0,
     "timeFire": 3.5,
     "fireDelay": 0.25,
@@ -413,7 +414,7 @@
       "breakLockMaxTime": 5.0,
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -17.0,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 15.0,
         "angleMax": 50.0,
         "rateMax": 12.0,
@@ -422,8 +423,8 @@
         "transmitter": {
           "power": 200.0,
           "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -30.0
+            "angleHalfSens": 12.0,
+            "sideLobesSensitivity": -27.0
           }
         },
         "receiver": {
@@ -432,20 +433,21 @@
           "rangeMax": 40000.0,
           "timeGainControl": false,
           "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -16.0
+            "angleHalfSens": 12.0,
+            "sideLobesSensitivity": -17.0
           }
         },
         "dopplerSpeed": {
           "presents": true,
           "minValue": -3000.0,
           "maxValue": 3000.0,
-          "width": 150.0,
-          "signalWidthMin": 4.0
+          "width": 20.0,
+          "refWidth": 100.0,
+          "signalWidthMin": 5.0
         },
         "dopplerSpeedGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05,
+          "filterAlpha": 0.25,
+          "filterBetta": 0.03,
           "dopplerSpeedGateSearchRange": 300.0
         }
       },
@@ -453,11 +455,11 @@
         "timeOut": 0.5,
         "propNavMult": 4.0,
         "reqAccelMax": 35.0,
-        "baseIndSpeed": 1600.0,
-        "accelControlProp": 0.04,
-        "accelControlIntg": 0.02,
-        "accelControlIntgLim": 0.8,
-        "accelControlDiff": 0.002
+        "accelControlProp": 0.005,
+        "accelControlIntg": 0.033,
+        "accelControlDiff": 0.001,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 1500.0,
@@ -545,8 +547,8 @@
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
+      "finsAoaHor": 0.25,
+      "finsAoaVer": 0.25
     },
     "proximityFuse": {
       "timeOut": 0.8,

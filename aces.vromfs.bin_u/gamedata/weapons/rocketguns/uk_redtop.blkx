@@ -19,7 +19,7 @@
     "bulletName": "uk_redtop_rocket",
     "caliber": 0.23,
     "mass": 167.0,
-    "explosiveType": "tnt",
+    "explosiveType": "rdx_tnt",
     "explosiveMass": 18.1,
     "massEnd": 105.0,
     "maxDeltaAngle": 0.0,
@@ -33,8 +33,9 @@
       0.1,
       0.1
     ],
-    "finsAoaHor": 0.16,
-    "finsAoaVer": 0.16,
+    "finsAoaHor": 0.17,
+    "finsAoaVer": 0.17,
+    "finsLatAccel": 15.0,
     "force": 36000.0,
     "timeFire": 2.5,
     "fireDelay": 0.0,
@@ -359,11 +360,11 @@
         "timeOut": 0.6,
         "propNavMult": 4.0,
         "reqAccelMax": 16.0,
-        "baseIndSpeed": 1500.0,
-        "accelControlProp": 0.03,
-        "accelControlIntg": 0.01,
-        "accelControlIntgLim": 0.8,
-        "accelControlDiff": 0.003
+        "accelControlProp": 0.0025,
+        "accelControlIntg": 0.0356,
+        "accelControlDiff": 0.0008,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 0.0,
@@ -448,8 +449,8 @@
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.17,
-      "finsAoaVer": 0.17
+      "finsAoaHor": 0.19,
+      "finsAoaVer": 0.19
     },
     "proximityFuse": {
       "timeOut": 1.3,

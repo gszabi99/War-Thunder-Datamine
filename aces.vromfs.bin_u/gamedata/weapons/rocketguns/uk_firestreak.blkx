@@ -19,7 +19,7 @@
     "bulletName": "us_aim9e_sidewinder",
     "caliber": 0.222,
     "mass": 136.0,
-    "explosiveType": "tnt",
+    "explosiveType": "rdx_tnt",
     "explosiveMass": 8.75,
     "massEnd": 96.0,
     "maxDeltaAngle": 0.0,
@@ -33,8 +33,9 @@
       0.1,
       0.1
     ],
-    "finsAoaHor": 0.16,
-    "finsAoaVer": 0.16,
+    "finsAoaHor": 0.12,
+    "finsAoaVer": 0.12,
+    "finsLatAccel": 10.9,
     "force": 38000.0,
     "timeFire": 1.9,
     "spawnExplosionFx": false,
@@ -358,11 +359,11 @@
         "timeOut": 0.34,
         "propNavMult": 4.0,
         "reqAccelMax": 15.0,
+        "accelControlProp": 0.004,
+        "accelControlIntg": 0.0486,
+        "accelControlDiff": 0.0007,
         "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.03,
-        "accelControlIntg": 0.01,
-        "accelControlIntgLim": 0.8,
-        "accelControlDiff": 0.003
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 0.0,
@@ -447,8 +448,8 @@
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.17,
-      "finsAoaVer": 0.17
+      "finsAoaHor": 0.14,
+      "finsAoaVer": 0.14
     },
     "proximityFuse": {
       "timeOut": 2.49,

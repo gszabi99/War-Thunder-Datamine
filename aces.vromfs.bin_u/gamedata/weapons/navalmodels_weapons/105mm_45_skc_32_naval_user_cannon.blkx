@@ -4,8 +4,8 @@
   "maxDeltaAngle": 0.19,
   "maxDeltaAngleVertical": 0.265,
   "aimMinDist": 0.05,
-  "aimMaxDist": 10000.0,
-  "attackMaxDist": 10000.0,
+  "aimMaxDist": 15000.0,
+  "attackMaxDist": 15000.0,
   "shotFreq": 0.25,
   "bullets": 1,
   "recoilOffset": 0.41,
@@ -35,7 +35,9 @@
     "type_frigate": true,
     "type_destroyer": true,
     "type_light_cruiser": true,
-    "type_heavy_cruiser": true
+    "type_heavy_cruiser": true,
+    "type_battlecruiser": true,
+    "type_battleship": true
   },
   "bullet": {
     "bulletCount": 40,
@@ -43,7 +45,7 @@
     "explosiveType": "fp02",
     "explosiveMass": 1.55,
     "caliber": 0.105,
-    "speed": 900.0,
+    "speed": 785.0,
     "maxDistance": 40000.0,
     "Cx": 0.27533,
     "normalizationPreset": "heat",
@@ -114,24 +116,6 @@
         30.0,
         0.99
       ]
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 5.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": {
-          "break_fuse": 1.0
-        },
-        "onKill": {
-          "destruction": 1.0
-        }
-      }
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -376,7 +360,7 @@
       "explosiveType": "fp02",
       "explosiveMass": 1.55,
       "caliber": 0.105,
-      "speed": 900.0,
+      "speed": 785.0,
       "maxDistance": 40000.0,
       "Cx": 0.27533,
       "normalizationPreset": "heat",
@@ -447,24 +431,6 @@
           30.0,
           0.99
         ]
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -710,7 +676,7 @@
       "explosiveType": "fp02",
       "explosiveMass": 1.55,
       "caliber": 0.105,
-      "speed": 900.0,
+      "speed": 785.0,
       "maxDistance": 40000.0,
       "Cx": 0.27533,
       "normalizationPreset": "heat",
@@ -931,7 +897,7 @@
       "explosiveType": "fp02",
       "explosiveMass": 1.55,
       "caliber": 0.105,
-      "speed": 900.0,
+      "speed": 785.0,
       "maxDistance": 40000.0,
       "Cx": 0.27533,
       "normalizationPreset": "heat",
@@ -1224,7 +1190,7 @@
       "explosiveType": "ph_salz_h10",
       "explosiveMass": 0.24,
       "caliber": 0.105,
-      "speed": 860.0,
+      "speed": 785.0,
       "maxDistance": 40000.0,
       "Cx": 0.27533,
       "normalizationPreset": "ap",

@@ -27,20 +27,21 @@
     "length": 2.85,
     "distFromCmToStab": 0.1,
     "wingAreaMult": 1.4,
-    "CxK": 4.1,
+    "CxK": 3.4,
     "WdK": [
       0.1,
       0.1,
       0.1
     ],
-    "finsAoaHor": 0.2,
-    "finsAoaVer": 0.2,
+    "finsAoaHor": 0.25,
+    "finsAoaVer": 0.25,
+    "finsLatAccel": 37.5,
     "effectOffset": [
       -0.85,
       0.0,
       0.0
     ],
-    "force": 12000.0,
+    "force": 10800.0,
     "timeFire": 5.3,
     "fireDelay": 0.0,
     "spawnExplosionFx": false,
@@ -430,13 +431,13 @@
       },
       "guidanceAutopilot": {
         "timeOut": 0.5,
-        "propNavMult": 3.5,
+        "propNavMult": 4.0,
         "reqAccelMax": 30.0,
-        "baseIndSpeed": 1440.0,
-        "accelControlProp": 0.01,
-        "accelControlIntg": 0.005,
-        "accelControlIntgLim": 0.75,
-        "accelControlDiff": 0.003
+        "accelControlProp": 0.002,
+        "accelControlIntg": 0.0361,
+        "accelControlDiff": 0.0006,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 0.0,
@@ -548,8 +549,8 @@
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.22,
-      "finsAoaVer": 0.22
+      "finsAoaHor": 0.27,
+      "finsAoaVer": 0.27
     },
     "proximityFuse": {
       "timeOut": 0.5,

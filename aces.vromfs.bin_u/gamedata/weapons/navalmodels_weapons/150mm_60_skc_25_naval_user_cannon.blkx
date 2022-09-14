@@ -4,8 +4,8 @@
   "maxDeltaAngle": 0.265,
   "maxDeltaAngleVertical": 0.305,
   "aimMinDist": 100.0,
-  "aimMaxDist": 12000.0,
-  "attackMaxDist": 12000.0,
+  "aimMaxDist": 20000.0,
+  "attackMaxDist": 20000.0,
   "shotFreq": 0.133,
   "bullets": 1,
   "recoilOffset": 0.44,
@@ -36,7 +36,8 @@
     "type_destroyer": true,
     "type_light_cruiser": true,
     "type_heavy_cruiser": true,
-    "type_battlecruiser": true
+    "type_battlecruiser": true,
+    "type_battleship": true
   },
   "150mm_ger_c36_naval_apc": {
     "bullet": {
@@ -45,9 +46,9 @@
       "explosiveType": "tnt",
       "explosiveMass": 1.32,
       "caliber": 0.15,
-      "speed": 960.0,
+      "speed": 835.0,
       "maxDistance": 60000.0,
-      "Cx": 0.32379,
+      "Cx": 0.3324,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "secondaryShattersPreset": "ap",
@@ -399,24 +400,6 @@
         0.99
       ]
     },
-    "DamageParts": {
-      "body": {
-        "hp": 5.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": {
-          "break_fuse": 1.0
-        },
-        "onKill": {
-          "destruction": 1.0
-        }
-      }
-    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -737,24 +720,6 @@
           0.99
         ]
       },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "break_fuse": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
-      },
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -1019,9 +984,9 @@
       "explosiveType": "tnt",
       "explosiveMass": 3.32,
       "caliber": 0.15,
-      "speed": 960.0,
+      "speed": 835.0,
       "maxDistance": 60000.0,
-      "Cx": 0.32379,
+      "Cx": 0.3324,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "secondaryShattersPreset": "ap_large_caliber",
@@ -1318,9 +1283,9 @@
       "explosiveType": "tnt",
       "explosiveMass": 3.914,
       "caliber": 0.15,
-      "speed": 960.0,
+      "speed": 835.0,
       "maxDistance": 60000.0,
-      "Cx": 0.32379,
+      "Cx": 0.3324,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",

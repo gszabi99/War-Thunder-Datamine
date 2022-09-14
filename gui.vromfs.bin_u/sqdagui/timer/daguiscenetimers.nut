@@ -12,10 +12,10 @@ local DaguiSceneTimers = class
   updateInterval = 1.0
   curTime = 0.0
 
-  constructor(_updateInterval, persistentDataUid = null)
+  constructor(updateInterval_, persistentDataUid = null)
   {
     timersList = []
-    updateInterval = _updateInterval
+    updateInterval = updateInterval_
     if (persistentDataUid)
       ::g_script_reloader.registerPersistentData("DaguiSceneTimers_" + persistentDataUid, this, [PERSISTENT_DATA_PARAMS])
   }

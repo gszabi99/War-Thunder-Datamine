@@ -1,4 +1,5 @@
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
+let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
 ::gui_handlers.clanSquadInfoWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -76,7 +77,7 @@ let squadsListData = require("%scripts/squads/clanSquadsList.nut")
     let memeberUidStr = memberUid.tostring()
     let contact = getContact(memeberUidStr)
     if (!contact)
-      ::g_users_info_manager.requestInfo([memeberUidStr])
+      requestUsersInfo([memeberUidStr])
     memberObj["id"] = "member_" + memeberUidStr
     memberObj.findObject("pilotIconImg").setValue(contact?.pilotIcon ?? "cardicon_bot")
     memberObj.findObject("clanTag").setValue(contact?.clanTag ?? "")

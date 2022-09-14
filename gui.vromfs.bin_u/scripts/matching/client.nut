@@ -1,10 +1,10 @@
 let exitGame = require("%scripts/utils/exitGame.nut")
+let { subscribe } = require("eventbus")
 
-::on_online_unavailable <- function on_online_unavailable()
-{
+subscribe("on_online_unavailable", function(_) {
   ::dagor.debug("on_online_unavailable")
   ::g_matching_connect.onDisconnect()
-}
+})
 
 ::on_online_available <- function on_online_available()
 {

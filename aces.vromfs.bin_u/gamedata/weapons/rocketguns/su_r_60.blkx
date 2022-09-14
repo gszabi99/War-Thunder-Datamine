@@ -35,6 +35,7 @@
     ],
     "finsAoaHor": 0.18,
     "finsAoaVer": 0.18,
+    "finsLatAccel": 29.1,
     "force": 9500.0,
     "timeFire": 3.0,
     "fireDelay": 0.0,
@@ -426,11 +427,11 @@
         "timeOut": 0.35,
         "propNavMult": 4.0,
         "reqAccelMax": 30.0,
-        "baseIndSpeed": 1700.0,
-        "accelControlProp": 0.01,
-        "accelControlIntg": 0.005,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.001
+        "accelControlProp": 0.0015,
+        "accelControlIntg": 0.0496,
+        "accelControlDiff": 0.0005,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 1000.0,
@@ -454,9 +455,19 @@
           2500.0,
           3800.0
         ],
-        "altDiff": [
+        "timeMax": [
+          3.2,
+          5.1,
+          3.6,
+          5.4
+        ],
+        "rangeMaxAltDiff": [
           500.0,
           1000.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       },
       "table1": {
@@ -481,9 +492,19 @@
           4300.0,
           5500.0
         ],
-        "altDiff": [
+        "timeMax": [
+          5.5,
+          7.1,
+          6.1,
+          7.9
+        ],
+        "rangeMaxAltDiff": [
           500.0,
           1000.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
         ]
       },
       "table2": {
@@ -508,9 +529,19 @@
           7000.0,
           9000.0
         ],
-        "altDiff": [
+        "timeMax": [
+          8.6,
+          11.4,
+          10.0,
+          12.9
+        ],
+        "rangeMaxAltDiff": [
           500.0,
           800.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.1
         ]
       }
     },

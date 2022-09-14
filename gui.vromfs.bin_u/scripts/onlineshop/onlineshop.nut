@@ -2,7 +2,7 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { getEntitlementDescription, getPricePerEntitlement,
+let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat,
   getEntitlementAmount, getFirstPurchaseAdditionalAmount,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
@@ -543,8 +543,21 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
   sceneNavBlkName = null
   useRowVisual = true
 
-  updateProductInfo = @(product, productId)
-    scene.findObject("item_desc_text").setValue(getEntitlementDescription(product, productId))
+  function updateProductInfo(product, productId) {
+    local descText = getEntitlementDescription(product, productId)
+    let renewText = getEntitlementTimeText(product)
+    if (renewText != "") {
+      let realname = ("alias" in product) ? product.alias : productId
+      let expire = entitlement_expires_in(realname == "PremiumAccount"
+        ? ::shop_get_premium_account_ent_name()
+        : realname)
+      if (expire>0)
+        descText = "".concat(descText,
+          ::colorize("chapterUnlockedColor",
+            $"{::loc("subscription/activeTime")}{::loc("ui/colon")}{time.getExpireText(expire)}"))
+    }
+    scene.findObject("item_desc_text").setValue(descText)
+  }
 
   function reinitScreen(params = {}) {
     base.reinitScreen(params)

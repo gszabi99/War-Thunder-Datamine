@@ -942,8 +942,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@at_assaults_t2_target_name",
-          "object_var_value": 0
+          "object": "@at_assaults_t2_target_name"
         }
       },
       "actions": {
@@ -1306,8 +1305,7 @@
           "value": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@at_assaults_t1_target_name",
-          "object_var_value": 0
+          "object": "@at_assaults_t1_target_name"
         }
       },
       "actions": {
@@ -1405,6 +1403,7 @@
           "target_var_comp_op": "equal",
           "target_var_value": 0,
           "object": "@at_assaults_t1_cover_name",
+          "target_type": "isActive",
           "follow_offset": [
             0.0,
             500.0,
@@ -1416,10 +1415,9 @@
           "object": "@at_assaults_t1_cover_name",
           "target": [
             "t2_players_squad",
-            "ht_t2_hunter"
+            "@at_t2_hunter_name"
           ],
           "fireRandom": true,
-          "targetTypeName": "airplane",
           "targetDistMax": 4000.0,
           "maxNumAttackersPerTarget": 1,
           "attackAltRange": [
@@ -1450,6 +1448,7 @@
             "target": "bfd_t1_assaults_defend",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t1_name",
             "object_type": "isActive"
           },
@@ -1457,6 +1456,7 @@
             "target": "bfd_t2_assaults_attack",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t1_name",
             "object_type": "isActive"
           }
@@ -1473,11 +1473,8 @@
           "value": false,
           "var": "at_t1_is_active"
         },
-        "triggerActivate": {
-          "target": "at_assaults_check_inactive",
-          "activate_type": "checkConidtions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
+        "triggerEnable": {
+          "target": "at_assaults_check_inactive"
         }
       }
     },
@@ -1624,6 +1621,7 @@
           "target_var_comp_op": "equal",
           "target_var_value": 0,
           "object": "@at_assaults_t2_cover_name",
+          "target_type": "isActive",
           "follow_offset": [
             0.0,
             500.0,
@@ -1635,10 +1633,9 @@
           "object": "@at_assaults_t2_cover_name",
           "target": [
             "t1_players_squad",
-            "ht_t1_hunter"
+            "@at_t1_hunter_name"
           ],
           "fireRandom": true,
-          "targetTypeName": "airplane",
           "targetDistMax": 4000.0,
           "maxNumAttackersPerTarget": 1,
           "attackAltRange": [
@@ -1669,6 +1666,7 @@
             "target": "bfd_t1_assaults_attack",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t2_name",
             "object_type": "isActive"
           },
@@ -1676,6 +1674,7 @@
             "target": "bfd_t2_assaults_defend",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t2_name",
             "object_type": "isActive"
           }
@@ -1692,11 +1691,8 @@
           "value": false,
           "var": "at_t2_is_active"
         },
-        "triggerActivate": {
-          "target": "at_assaults_check_inactive",
-          "activate_type": "checkConidtions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
+        "triggerDisable": {
+          "target": "at_assaults_check_inactive"
         }
       }
     },
@@ -1913,7 +1909,7 @@
       },
       "conditions": {
         "unitDistanceBetween": {
-          "value": 3500.0,
+          "value": 4500.0,
           "math": "2D",
           "object_type": "isActive",
           "object_marking": 0,
@@ -2035,6 +2031,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@at_assaults_t1_name",
@@ -2045,6 +2042,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@at_assaults_t1_name",
@@ -2107,6 +2105,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@at_assaults_t1_name",
@@ -2117,6 +2116,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@at_assaults_t1_name",
@@ -2154,7 +2154,7 @@
       },
       "conditions": {
         "unitDistanceBetween": {
-          "value": 3500.0,
+          "value": 4500.0,
           "math": "2D",
           "object_type": "isActive",
           "object_marking": 0,
@@ -2275,6 +2275,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@at_assaults_t2_name",
@@ -2285,6 +2286,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@at_assaults_t2_name",
@@ -2347,6 +2349,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@at_assaults_t2_name",
@@ -2357,6 +2360,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A",
             "unit_or_area": "@at_assaults_t2_name",
             "object_type": "any"
@@ -2475,6 +2479,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "extendedEnding": true,
           "team": "A",
           "unit_or_area": "@at_assaults_t1_name",
@@ -2524,6 +2529,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "extendedEnding": true,
           "team": "A",
           "unit_or_area": "@at_assaults_t2_name",
@@ -2573,6 +2579,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "extendedEnding": true,
           "team": "B",
           "unit_or_area": "@at_assaults_t2_name",
@@ -2622,6 +2629,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "extendedEnding": true,
           "team": "B",
           "unit_or_area": "@at_assaults_t1_name",
@@ -2726,6 +2734,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@at_assaults_t1_name",
@@ -2736,6 +2745,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A",
             "unit_or_area": "@at_assaults_t1_name",
             "object_type": "any"
@@ -2797,6 +2807,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@at_assaults_t1_name",
@@ -2807,6 +2818,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B",
             "unit_or_area": "@at_assaults_t1_name",
             "object_type": "any"
@@ -2911,6 +2923,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@at_assaults_t2_name",
@@ -2921,6 +2934,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B",
             "unit_or_area": "@at_assaults_t2_name",
             "object_type": "any"
@@ -2982,6 +2996,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@at_assaults_t2_name",
@@ -2992,6 +3007,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A",
             "unit_or_area": "@at_assaults_t2_name",
             "object_type": "any"
@@ -3572,6 +3588,7 @@
           "target": "bfd_t1_assaults_defend",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@at_assaults_t1_name",
           "object_type": "isActive"
         },
@@ -3618,6 +3635,7 @@
             "target": "bfd_t1_assaults_defend",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t1_name",
             "object_type": "isActive"
           },
@@ -3625,6 +3643,7 @@
             "target": "bfd_t2_assaults_attack",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t1_name",
             "object_type": "isActive"
           }
@@ -3694,6 +3713,7 @@
           "target": "bfd_t2_assaults_attack",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@at_assaults_t1_name",
           "object_type": "isActive"
         }
@@ -3766,6 +3786,7 @@
           "target": "bfd_t2_assaults_attack",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@at_assaults_t1_name",
           "object_type": "isActive"
         },
@@ -3850,6 +3871,7 @@
           "target": "bfd_t2_assaults_defend",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@at_assaults_t2_name",
           "object_type": "isActive"
         },
@@ -3896,6 +3918,7 @@
             "target": "bfd_t2_assaults_defend",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t2_name",
             "object_type": "isActive"
           },
@@ -3903,6 +3926,7 @@
             "target": "bfd_t1_assaults_attack",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@at_assaults_t2_name",
             "object_type": "isActive"
           }
@@ -3972,6 +3996,7 @@
           "target": "bfd_t1_assaults_attack",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@at_assaults_t2_name",
           "object_type": "isActive"
         }
@@ -4044,6 +4069,7 @@
           "target": "bfd_t1_assaults_attack",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@at_assaults_t2_name",
           "object_type": "isActive"
         },
@@ -4154,7 +4180,7 @@
       },
       "conditions": {
         "unitDistanceBetween": {
-          "value": 3500.0,
+          "value": 4500.0,
           "math": "2D",
           "object_type": "isActive",
           "object_marking": 0,
@@ -4166,7 +4192,6 @@
           "object_var_comp_op": "equal",
           "object": "@at_assaults_t1_cover_name",
           "target": "at_assaults_t1_retreat_point",
-          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -4193,7 +4218,7 @@
       },
       "conditions": {
         "unitDistanceBetween": {
-          "value": 3500.0,
+          "value": 4500.0,
           "math": "2D",
           "object_type": "isActive",
           "object_marking": 0,
@@ -4205,7 +4230,6 @@
           "object_var_comp_op": "equal",
           "object": "@at_assaults_t2_cover_name",
           "target": "at_assaults_t2_retreat_point",
-          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -4878,6 +4902,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t1_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -4936,6 +4961,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t1_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -4994,6 +5020,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t1_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5052,6 +5079,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t1_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5110,6 +5138,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t1_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5168,6 +5197,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t1_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5226,6 +5256,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t2_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5284,6 +5315,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t2_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5342,6 +5374,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t2_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5400,6 +5433,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t2_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5458,6 +5492,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t2_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -5516,6 +5551,7 @@
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "object": "@at_assaults_t2_name",
+            "target_type": "isActive",
             "altRange": [
               1200.0,
               1500.0
@@ -6708,7 +6744,9 @@
     "at_assaults_t2_search_timer_var_name": "",
     "at_assaults_t1_target_choise": 0,
     "at_assaults_t2_target_choise": 0,
-    "at_assaults_pve_mode": false
+    "at_assaults_pve_mode": false,
+    "at_t1_hunter_name": "ht_t1_hunter",
+    "at_t2_hunter_name": "ht_t2_hunter"
   },
   "dialogs": {},
   "airfields": {},

@@ -47,7 +47,6 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
   function initScreen()
   {
     ::enableHangarControls(true)
-    ::enable_menu_gradient(false)
 
     foreach (s in this.settings)
       this.onSettingChanged(this.scene.findObject(s.id))
@@ -102,7 +101,6 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
   function goBack()
   {
     ::save_profile(false)
-    ::enable_menu_gradient(true)
     if (this.LOCAL_PATH_SHOWED_ON_START != null)
       ::saveLocalByAccount(this.LOCAL_PATH_SHOWED_ON_START, true)
     base.goBack()

@@ -18,14 +18,14 @@
     "bulletType": "aam",
     "bulletName": "us_aim9b_sidewinder",
     "caliber": 0.2,
-    "mass": 197.0,
+    "mass": 182.34,
     "explosiveType": "pbxn_4",
     "explosiveMass": 9.0,
     "massEnd": 144.0,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.018,
     "length": 3.66,
-    "distFromCmToStab": 0.05,
+    "distFromCmToStab": 0.12,
     "wingAreaMult": 1.4,
     "CxK": 2.3,
     "WdK": [
@@ -35,6 +35,7 @@
     ],
     "finsAoaHor": 0.16,
     "finsAoaVer": 0.16,
+    "finsLatAccel": 13.0,
     "force": 41000.0,
     "timeFire": 2.1,
     "fireDelay": 0.25,
@@ -413,7 +414,7 @@
       "breakLockMaxTime": 5.0,
       "radarSeeker": {
         "band": 8,
-        "sideLobesAttenuation": -16.0,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 15.0,
         "angleMax": 45.0,
         "rateMax": 12.0,
@@ -432,20 +433,21 @@
           "rangeMax": 20000.0,
           "timeGainControl": false,
           "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -16.0
+            "angleHalfSens": 12.0,
+            "sideLobesSensitivity": -17.0
           }
         },
         "dopplerSpeed": {
           "presents": true,
           "minValue": -3000.0,
           "maxValue": 3000.0,
-          "width": 150.0,
+          "width": 22.0,
+          "refWidth": 120.0,
           "signalWidthMin": 7.0
         },
         "dopplerSpeedGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05,
+          "filterAlpha": 0.2,
+          "filterBetta": 0.02,
           "dopplerSpeedGateSearchRange": 300.0
         }
       },
@@ -472,11 +474,11 @@
         ],
         "propNavMult": 4.0,
         "reqAccelMax": 15.0,
-        "baseIndSpeed": 1600.0,
-        "accelControlProp": 0.04,
-        "accelControlIntg": 0.02,
-        "accelControlIntgLim": 0.8,
-        "accelControlDiff": 0.002
+        "accelControlProp": 0.004,
+        "accelControlIntg": 0.0426,
+        "accelControlDiff": 0.0011,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 1500.0,

@@ -18,17 +18,21 @@ let alwaysClearOnEvents = [
   "ScriptsReloaded",
 ]
 
-local function memoizeByEvents(func, hashFunc = null, clearOnEvents = [])
-{
-  hashFunc = hashFunc ?? @(...) vargv[0]
+let NullKey = persist("NullKey", @() {})
+let NoArg = persist("NoArg", @() {})
 
-  let cacheDefault = {}
-  let cacheForNull = {}
-
+let function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
+  let cache = {}
+  local simpleCache
+  local simpleCacheUsed = false
   let function onEventCb(p) {
-    cacheDefault.clear()
-    cacheForNull.clear()
+    cache.clear()
   }
+  let {parameters=null, varargs=0, defparams=null} = func.getfuncinfos()
+  let isVarargved = (varargs > 0) || ((defparams?.len() ?? 0) > 0)
+  let parametersNum = (parameters?.len() ?? 0)-1
+  let isOneParam = (parametersNum == 1) && !isVarargved
+  let isNoParams = (parametersNum == 0) && !isVarargved
 
   clearOnEvents = [].extend(clearOnEvents)
   foreach (event in alwaysClearOnEvents)
@@ -36,18 +40,40 @@ local function memoizeByEvents(func, hashFunc = null, clearOnEvents = [])
   foreach (event in clearOnEvents)
     ::add_event_listener(event, onEventCb, this, ::g_listener_priority.MEMOIZE_VALIDATION)
 
-  let function memoizedFunc(...) {
-    let args = [null].extend(vargv)
-    let rawHash = hashFunc.acall(args)
-    //index cannot be null. use different cache to avoid collision
-    let hash = rawHash ?? 0
-    let cache = rawHash != null ? cacheDefault : cacheForNull
-    if (!(hash in cache))
-      cache[hash] <- func.acall(args)
-    return cache[hash]
+  if (hashFunc != null) {
+    return function memoizedFuncHash(...) {
+      let args = [null].extend(vargv)
+      let hashKey = hashFunc(vargv) ?? NullKey
+      if (hashKey in cache)
+        return cache[hashKey]
+      return cache[hashKey] <- func.acall(args)
+    }
   }
-
-  return memoizedFunc
+  else if (isOneParam) {
+    return function memoizedfuncOne(v){
+      let k = v ?? NullKey
+      if (k in cache)
+        return cache[k]
+      return cache[k] <- func(v)
+    }
+  }
+  else if (isNoParams) {
+    return function memoizedfuncNo() {
+      if (simpleCacheUsed)
+        return simpleCache
+      simpleCache = func()
+      simpleCacheUsed = true
+      return simpleCache
+    }
+  }
+  return function memoizedFuncVargv(...) {
+    let args = [null].extend(vargv)
+    let hashKey = vargv.len() > 0 ? vargv[0] ?? NullKey : NoArg
+    if (hashKey in cache)
+      return cache[hashKey]
+    return cache[hashKey] <- func.acall(args)
+  }
 }
+
 
 return memoizeByEvents

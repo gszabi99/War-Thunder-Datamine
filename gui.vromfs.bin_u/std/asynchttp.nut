@@ -44,7 +44,7 @@ let function TaskHttpGet(url) {
 }
 
 let UNRESOLVED = persist("UNRESOLVED", @() {})
-let RESOLVED = persist("UNRESOLVED", @() {})
+let RESOLVED = persist("RESOLVED", @() {})
 let REJECTED = persist("REJECTED", @() {})
 
 let function TaskHttpMultiGet(urls, rejectOne=@(x) x, resolveOne=@(x) x) {

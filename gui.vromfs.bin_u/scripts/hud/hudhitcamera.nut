@@ -2,10 +2,13 @@ from "hitCamera" import *
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
 const TIME_TITLE_SHOW_SEC = 3
+const TIME_TO_SUM_CREW_LOST_SEC = 1 //To sum up the number of crew losses from multiple bullets in a single salvo
 
 let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
+let animSizeTimerPid = ::dagui_propid.add_name_id("_size-timer")
 
 let styles = {
   [DM_HIT_RESULT_NONE]      = "none",
@@ -52,6 +55,16 @@ local curUnitVersion = -1
 local curUnitType = ::ES_UNIT_TYPE_INVALID
 local camInfo   = {}
 local unitsInfo = {}
+local minAliveCrewCount = 2
+local canShowCritAnimation = false
+
+let function getMinAliveCrewCount() {
+  let diffCode = ::get_mission_difficulty_int()
+  let settingsName = ::g_difficulty.getDifficultyByDiffCode(diffCode).settingsName
+  let path = $"difficulty_settings/baseDifficulty/{settingsName}/changeCrewTime"
+  let changeCrewTime = get_blk_value_by_path(::dgs_get_game_params(), path)
+  return changeCrewTime != null ? 1 : 2
+}
 
 let getDamageStatusByHealth = @(health)
   health == 100 ? "none"
@@ -93,21 +106,6 @@ let function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null)
     labelObj.setValue(data.label)
 }
 
-let function onEnemyDamageState(event) {
-  setDamageStatus("artillery_health", event.artilleryHealth)
-  setDamageStatus("fire_status", event.hasFire ? 1 : -1)
-  setDamageStatus("engine_health", event.engineHealth)
-  setDamageStatus("torpedo_tubes_health", event.torpedoTubesHealth)
-  setDamageStatus("rudders_health", event.ruddersHealth)
-  setDamageStatus("breach_status", event.hasBreach ? 1 : -1)
-
-  local item = (debuffsListsByUnitType?[curUnitType] ?? []).findvalue(@(v) v == ::g_hud_enemy_debuffs.SHIP_BUOYANCY)
-  if (item != null) {
-    camInfo.buoyancy <- event?.buoyancy ?? camInfo?.buoyancy
-    updateDebuffItem(item, null)
-  }
-}
-
 let function updateFadeAnimation() {
   let needFade = stopFadeTimeS > 0
   scene["transp-time"] = needFade ? (stopFadeTimeS*1000).tointeger() : 1
@@ -126,6 +124,7 @@ let function reset() {
   curUnitId = -1
   curUnitVersion = -1
   curUnitType = ::ES_UNIT_TYPE_INVALID
+  canShowCritAnimation = false
 
   camInfo.clear()
   unitsInfo.clear()
@@ -142,6 +141,9 @@ let function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
       isKilled = isUnitKilled
       isKillProcessed = false
       time = 0
+      crewCount = -1
+      crewTotalCount = 0
+      crewLostCount = 0
       importantEvents = {}
     }
 
@@ -183,6 +185,20 @@ let function getNextImportantTitle() {
   return ""
 }
 
+let function showCritAnimation() {
+  if (!canShowCritAnimation)
+    return
+
+  canShowCritAnimation = false
+  let animObj = scene.findObject("critAnim")
+  animObj["_size-timer"] = "0"
+  animObj.width = 1
+  animObj.setFloatProp(animSizeTimerPid, 0.0)
+  animObj.setFloatProp(animTimerPid, 0.0)
+  animObj["color-factor"] = "255"
+  animObj.needAnim = "yes"
+}
+
 let function updateTitle() {
   clearTimer(updateTitle)
   if (!isVisible || !(titleObj?.isValid() ?? false))
@@ -204,6 +220,85 @@ let function updateTitle() {
   if (isVisibleTitle)
     titleObj.setValue(utf8ToUpper(::loc($"hitcamera/result/{style}")))
 }
+
+let function showCrewCount() {
+  let unitInfo = getTargetInfo(curUnitId, curUnitVersion,
+    curUnitType, isKillingHitResult(hitResult))
+  let { crewCount, crewTotalCount, crewLostCount } = unitInfo
+  unitInfo.crewLostCount = 0
+  if (!isVisible || crewLostCount == 0)
+    return
+
+  let crewNestObj = scene.findObject("crew_nest")
+  crewNestObj._blink = "yes"
+
+  let data = "".concat("hitCameraLostCrewText { text:t='",
+    ::colorize("warningTextColor", crewLostCount),"' }")
+  ::get_cur_gui_scene().prependWithBlk(
+    crewNestObj.findObject("lost_crew_count"), data, this)
+
+  let crewColor = crewCount <= minAliveCrewCount ? "warningTextColor" : "activeTextColor"
+  crewNestObj.findObject("crew_count").setValue(::colorize(crewColor, crewCount))
+  let totalText = crewTotalCount > 0 ? $"{::loc("ui/slash")}{crewTotalCount}" : ""
+  crewNestObj.findObject("max_crew_count").setValue(totalText)
+}
+
+let function updateCrewCount(unitInfo, data = null) {
+  clearTimer(showCrewCount)
+  if (!(scene?.isValid() ?? false))
+    return
+  let isShowCrew = !unitInfo.isKilled
+    && (curUnitType == ::ES_UNIT_TYPE_SHIP || curUnitType == ::ES_UNIT_TYPE_BOAT)
+  if (!isShowCrew) {
+    scene.findObject("crew_nest")._blink = "no"
+    return
+  }
+
+  unitInfo.crewTotalCount = data?.crewTotalCount ?? camInfo?.crewTotal ?? -1
+  let crewCount = data?.crewAliveCount ?? camInfo?.crewAlive ?? -1
+  if (unitInfo.crewCount == -1)
+    unitInfo.crewCount = crewCount
+  let crewLostCount = crewCount - unitInfo.crewCount
+
+  if (crewCount != -1 && crewLostCount < 0) {
+    unitInfo.crewLostCount = unitInfo.crewLostCount + crewLostCount
+    unitInfo.crewCount = crewCount
+  }
+  if (unitInfo.crewLostCount == 0)
+    return
+
+  minAliveCrewCount = data?.crewAliveMin ?? camInfo?.crewAliveMin ?? minAliveCrewCount
+  setTimeout(TIME_TO_SUM_CREW_LOST_SEC, showCrewCount)
+}
+
+let fullHealthColor = "#909E35"
+let healthColorConfig = [
+  { remainingHp = 0.25, color = "#FD0001" }
+  { remainingHp = 0.75,  color = "#F6B236" }
+]
+
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let function update() {
   if (!(scene?.isValid() ?? false))
@@ -234,8 +329,15 @@ let function onHitCameraEvent(mode, result, info) {
   curUnitId      = info?.unitId ?? curUnitId
   curUnitVersion = info?.unitVersion ?? curUnitVersion
   curUnitType    = newUnitType
-  if (isStarted)
+  if (isStarted) {
     camInfo      = info
+    if ((scene?.isValid() ?? false)) {
+      let animObj = scene.findObject("critAnim")
+      animObj["color-factor"] = "0"
+      animObj.needAnim = "no"
+    }
+    canShowCritAnimation = true
+  }
 
   if (needResetUnitType && (infoObj?.isValid() ?? false)) {
     let guiScene = infoObj.getScene()
@@ -263,6 +365,7 @@ let function onHitCameraEvent(mode, result, info) {
 
     if (unitInfo.isKilled)
       unitInfo.isKillProcessed = true
+    updateCrewCount(unitInfo)
   }
   else
     cleanupUnitsInfo()
@@ -303,15 +406,15 @@ let function onEnemyPartDamage(data) {
       dmPart[k] <- v
 
     let isPartDead = dmPart?.partDead ?? false
-    let partHpCur  = dmPart?.partHpCur ?? 1.0
-    dmPart._hp <- (isPartKilled || isPartDead) ? 0.0 : partHpCur
+    let partHp  = dmPart?.partHp ?? 1.0
+    dmPart._hp <- (isPartKilled || isPartDead) ? 0.0 : partHp
   }
 
   if (isVisible && unitInfo.unitId == curUnitId) {
     let isKill = isPartKilled || (unitInfo.isKilled && !unitInfo.isKillProcessed)
 
     foreach (item in (debuffsListsByUnitType?[unitInfo.unitType] ?? []))
-      if (!item.isUpdateOnKnownPartKillsOnly || (isKill && ::isInArray(partName, item.parts)))
+      if (!item.isUpdateByEnemyDamageState && isKill && item.parts.contains(partName))
         updateDebuffItem(item, unitInfo, partName, data)
 
     if (unitInfo.isKilled)
@@ -338,7 +441,30 @@ let function onHitCameraImportantEvents(data) {
     unitInfo.importantEvents[key] <- unitInfoEvents
   }
 
+  showCritAnimation()
   updateTitle()
+}
+
+let function onEnemyDamageState(event) {
+  if (curUnitType in (damageStatusTemplates)) {
+    setDamageStatus("artillery_health", event?.artilleryHealth ?? 1)
+    setDamageStatus("fire_status", (event?.hasFire ?? false) ? 1 : -1)
+    setDamageStatus("engine_health", event?.engineHealth ?? 1)
+    setDamageStatus("torpedo_tubes_health", event?.torpedoTubesHealth ?? 1)
+    setDamageStatus("rudders_health", event?.ruddersHealth ?? 1)
+    setDamageStatus("breach_status", (event?.hasBreach ?? false) ? 1 : -1)
+  }
+
+  let unitInfo = getTargetInfo(curUnitId, curUnitVersion,
+    curUnitType, isKillingHitResult(hitResult))
+  foreach (item in (debuffsListsByUnitType?[curUnitType] ?? []))
+    if (item.isUpdateByEnemyDamageState)
+      updateDebuffItem(item, unitInfo, null, event)
+
+  updateCrewCount(unitInfo, event)
+  //
+
+
 }
 
 let function hitCameraInit(nest) {
@@ -360,6 +486,8 @@ let function hitCameraInit(nest) {
     debuffsListsByUnitType[unitType] <- ::g_hud_enemy_debuffs.getTypesArrayByUnitType(unitType)
     trackedPartNamesByUnitType[unitType] <- ::g_hud_enemy_debuffs.getTrackedPartNamesByUnitType(unitType)
   }
+
+  minAliveCrewCount = getMinAliveCrewCount()
 
   ::g_hud_event_manager.subscribe("EnemyPartDamage", onEnemyPartDamage, this)
   ::g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, this)

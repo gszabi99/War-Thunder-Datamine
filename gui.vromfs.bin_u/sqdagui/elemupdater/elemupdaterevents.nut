@@ -111,7 +111,7 @@ clearInvalidSubscriptions = function(subs) //this function will never remove fro
     {
       clearInvalidSubscriptions(list)
       if (list.len() == 0)
-        subs.rawdelete(key)
+        subs.rawdelete(key) //warning disable: -modified-container
       continue
     }
 
@@ -119,7 +119,7 @@ clearInvalidSubscriptions = function(subs) //this function will never remove fro
       validateSubscriptionsArray(list)
 
     if (list.len() == 0)
-      subs.rawdelete(key)
+      subs.rawdelete(key) //warning disable: -modified-container
   }
 }
 

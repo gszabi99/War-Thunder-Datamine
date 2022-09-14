@@ -1,7 +1,7 @@
 from "%darg/ui_imports.nut" import *
 
 let ecs = require("ecs")
-let txt = require("%darg/components/text.nut").dtext
+let txt = require("%daeditor/components/text.nut").dtext
 
 let entity_editor = require("entity_editor")
 

@@ -6,10 +6,9 @@ let DataBlock = require("DataBlock")
 
 let nameFilter = require("components/nameFilter.nut")
 let textButton = require("%daeditor/components/textButton.nut")
-let {makeVertScroll} = require("%darg/components/scrollbar.nut")
 
 let entity_editor = require_optional("entity_editor")
-let {propPanelVisible, selectedEntity} = require("state.nut")
+let {propPanelVisible, selectedEntity, editorUnpause} = require("state.nut")
 let {registerPerCompPropEdit} = require("%daeditor/propPanelControls.nut")
 
 let {floor} = require("math")
@@ -125,6 +124,12 @@ let riNameFilter = nameFilter(riFilter, {
 })
 
 
+let function mouseWheelCb(mouseEvent) {
+  let ctrl = mouseEvent?.ctrlKey ?? false
+  let step = -(mouseEvent?.button ?? 0) * (ctrl ? 10 : 1)
+  riGotoPage(riPageClamped.value + step)
+}
+
 let mkSelectLine = kwarg(function(selected, textCtor = null, onSelect=null, onDClick=null){
   textCtor = textCtor ?? @(opt) opt
   return function(opt, i){
@@ -134,7 +139,9 @@ let mkSelectLine = kwarg(function(selected, textCtor = null, onSelect=null, onDC
     return watchElemState(@(sf) {
       size = [flex(), SIZE_TO_CONTENT]
       padding = [hdpx(3), hdpx(10)]
-      behavior = Behaviors.Button
+      behavior = [Behaviors.Button, Behaviors.TrackMouse]
+      onMouseWheel = mouseWheelCb
+      eventPassThrough = false
       watch = isSelected
       onClick
       onDoubleClick
@@ -166,7 +173,9 @@ let riSelectWindow = function() {
   })
   return {
     watch = [riDisplayed, riFilter]
-    behavior = Behaviors.Button
+    behavior = [Behaviors.Button, Behaviors.TrackMouse]
+    onMouseWheel = mouseWheelCb
+    eventPassThrough = false
     pos = [0, fsh(1)]
     size = [sw(29), sh(77)]
     hplace = ALIGN_CENTER
@@ -179,7 +188,7 @@ let riSelectWindow = function() {
       Gap(hdpx(10))
       txt("SELECT RENDINST", {hplace = ALIGN_CENTER})
       riNameFilter
-      makeVertScroll(vflow(Size(flex(), SIZE_TO_CONTENT), riDisplayed.value.map(mkSelectedRI)))
+      vflow(Size(flex(), flex()), riDisplayed.value.map(mkSelectedRI))
       hflow(
         HCenter,
         textButton("First", @() riGotoPage(0), {hotkeys = [["Home"]], vplace = ALIGN_BOTTOM}),
@@ -190,8 +199,8 @@ let riSelectWindow = function() {
       )
       hflow(
         HCenter,
-        textButton("Cancel", @() riSelectChangeAndClose(riSelectSaved.value), {hotkeys = [["Esc"]], vplace = ALIGN_BOTTOM}),
-        textButton("Accept",   @() riSelectShown(false), {hotkeys = [["Esc"]], vplace = ALIGN_BOTTOM})
+        textButton("Cancel", @() riSelectChangeAndClose(riSelectSaved.value), {vplace = ALIGN_BOTTOM}),
+        textButton("Accept", @() riSelectShown(false), {hotkeys = [["Esc"]], vplace = ALIGN_BOTTOM})
       )
     )
   }
@@ -208,34 +217,50 @@ let function openSelectRI(selectedRI, onSelect=null) {
 let riSelectEid = Watched(INVALID_ENTITY_ID)
 propPanelVisible.subscribe(function(v) {
   if (v && selectedEntity.value != riSelectEid.value && riSelectShown.value)
-    riSelectChangeAndClose(riSelectSaved.value)
+    riSelectShown(false)
 })
+
+let function onSelectRI(v){
+  let eid = riSelectEid.value
+  if ((eid ?? INVALID_ENTITY_ID) != INVALID_ENTITY_ID){
+    obsolete_dbg_set_comp_val(eid, "ri_extra__name", v)
+    entity_editor?.save_component(eid, "ri_extra__name")
+    let newEid = entity_editor?.get_instance().reCreateEditorEntity(eid)
+    if (newEid != INVALID_ENTITY_ID) {
+      riSelectEid(newEid)
+      editorUnpause(2.5)
+    }
+  }
+}
 
 let function initRISelect(file) {
   riFile(file)
   registerPerCompPropEdit("ri_extra__name", function(params) {
     let selectedRI = Watched(params?.obj)
     riSelectEid(params.eid)
-    let function onSelect(v){
-      let eid = riSelectEid.value
-      if ((eid ?? INVALID_ENTITY_ID) != INVALID_ENTITY_ID){
-        obsolete_dbg_set_comp_val(eid, "ri_extra__name", v)
-        entity_editor?.save_component(eid, "ri_extra__name")
-        let newEid = entity_editor?.get_instance().reCreateEditorEntity(eid)
-        if (newEid != INVALID_ENTITY_ID)
-          riSelectEid(newEid)
-      }
-    }
     return @() {
       watch = selectedRI
       halign = ALIGN_LEFT
-      children = textButton(selectedRI.value, @() openSelectRI(selectedRI, onSelect))
+      children = textButton(selectedRI.value, @() openSelectRI(selectedRI, onSelectRI))
     }
   })
+}
+
+let function openRISelectForEntity(eid) {
+  let riName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
+  if (riName == null)
+    return
+  riSelectEid(eid)
+  riSelectCB = onSelectRI
+  riSelectSaved(riName)
+  riSelectValue(riName)
+  riSelectShown(true)
+  riGotoPageByValue(riSelectValue.value)
 }
 
 return {
   initRISelect
   riSelectShown
   riSelectWindow
+  openRISelectForEntity
 }

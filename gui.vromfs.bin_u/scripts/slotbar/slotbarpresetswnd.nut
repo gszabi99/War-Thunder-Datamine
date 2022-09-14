@@ -183,6 +183,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
     ::enableBtnTable(scene, {
         btn_preset_create = canEdit
+        btn_preset_copy = canEdit
         btn_preset_rename = canEdit
         btn_preset_delete = canEdit && ::slotbarPresets.canErase() && isNonCurrentPresetSelected
         btn_preset_load   = ::slotbarPresets.canLoad()  && isAnyPresetSelected && selectedPresetEnabled
@@ -204,21 +205,32 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     updateDescription()
   }
 
+  function showNotAllowedMessage()
+  {
+    let reason = ::slotbarPresets.havePresetsReserve()
+      ? ::loc("shop/slotbarPresetsReserve",
+        { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus], unitTypes = ::slotbarPresets.getPresetsReseveTypesText()})
+      : ::loc("shop/slotbarPresetsMax")
+    showInfoMsgBox(format(::loc("weaponry/action_not_allowed"), reason))
+  }
+
   function onBtnPresetAdd(obj)
   {
     if (::slotbarPresets.canCreate())
       ::slotbarPresets.create()
     else
-    {
-      let reason = ::slotbarPresets.havePresetsReserve() ?
-                              ::loc("shop/slotbarPresetsReserve",
-                                { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus],
-                                  unitTypes = ::slotbarPresets.getPresetsReseveTypesText()})
-                             :
-                              ::loc("shop/slotbarPresetsMax")
+      showNotAllowedMessage()
+  }
 
-      showInfoMsgBox(format(::loc("weaponry/action_not_allowed"), reason))
-    }
+  function onBtnPresetCopy(obj)
+  {
+    if (!(chosenValue in presets))
+      return
+
+    if (::slotbarPresets.canCreate())
+      ::slotbarPresets.copyPreset(presets[chosenValue])
+    else
+      showNotAllowedMessage()
   }
 
   function onBtnPresetDelete(obj)

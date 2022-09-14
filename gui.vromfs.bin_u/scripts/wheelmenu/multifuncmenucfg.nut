@@ -4,6 +4,7 @@ let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
 let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
 let { emulateShortcut } = ::require_native("controls")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
@@ -83,6 +84,12 @@ let function restoreControlEngines() {
   for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
     if (is_bit_set(curMask, idx) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
+}
+
+let function resizeSecondaryWeaponSeries() {
+  let isAir = getPlayerCurUnit()?.unitType.tag == "air"
+  emulateShortcut(isAir ? "ID_SWITCH_SHOOTING_CYCLE_SECONDARY" : "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER")
+  emulateShortcut(isAir ? "ID_RESIZE_SECONDARY_WEAPON_SERIES" : "ID_RESIZE_SECONDARY_WEAPON_SERIES_HELICOPTER")
 }
 
 let function voiceMessagesMenuFunc() {
@@ -244,8 +251,8 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
       { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
       null
-      null
       { shortcut = [ "ID_TOGGLE_GUNNERS" ], enable = hasAiGunners }
+      { section = "weapon_selector" }
       { shortcut = [ "ID_BAY_DOOR" ], enable = hasBayDoor }
       { shortcut = [ "ID_SCHRAEGE_MUSIK" ], enable = hasSchraegeMusik }
       { section = "flares" }
@@ -259,10 +266,24 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasBallisticComputer }
       { shortcut = [ "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER" ], enable = hasLaserDesignator }
       { shortcut = [ "ID_CHANGE_SHOT_FREQ_HELICOPTER" ], enable = hasAlternativeShotFrequency }
-      null
+      { section = "weapon_selector" }
       null
       { shortcut = [ "ID_IRCM_SWITCH_HELICOPTER" ], enable = hasCountermeasureSystemIRCM }
       { section = "flares" }
+    ]
+  },
+
+  ["weapon_selector"] = {
+    title = "hotkeys/ID_WEAPON_SELECTOR_HEADER"
+    items = [
+      { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_PRIMARY", "ID_SWITCH_SHOOTING_CYCLE_PRIMARY_HELICOPTER" ] }
+      { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ] }
+      null
+      { shortcut = [ "ID_JETTISON_SECONDARY", "ID_JETTISON_SECONDARY_HELICOPTER" ] }
+      { action = resizeSecondaryWeaponSeries, label  = ::loc("hotkeys/ID_RESIZE_SECONDARY_WEAPON_SERIES") }
+      null
+      { shortcut = [ "ID_EXIT_SHOOTING_CYCLE_MODE" ] }
+      null
     ]
   },
 
@@ -488,7 +509,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_COLLIMATOR", "ID_TOGGLE_COLLIMATOR_HELICOPTER" ], enable = hasCollimatorSight }
       { shortcut = [ "ID_LOCK_TARGETING_AT_POINT", "ID_LOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = hasSightStabilization }
       { shortcut = [ "ID_UNLOCK_TARGETING_AT_POINT", "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = hasSightStabilization }
-      { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ] }
+      { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ], enable = hasCameraCockpit }
       { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
       { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = hasMissionBombingZones && hasCCRPSightMode }
       { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = hasCCIPSightMode }

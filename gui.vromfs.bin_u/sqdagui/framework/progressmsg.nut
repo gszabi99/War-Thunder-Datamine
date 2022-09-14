@@ -14,9 +14,9 @@ local Msg = class {
   showCount = 0
   sceneObj = null
 
-  constructor(_uid, config)
+  constructor(uid_, config)
   {
-    uid = _uid
+    uid = uid_
     incrementImpl(config)
   }
 

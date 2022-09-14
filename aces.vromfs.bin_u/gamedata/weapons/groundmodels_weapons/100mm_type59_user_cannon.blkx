@@ -12,8 +12,8 @@
   "emitTime": 0.03,
   "aimMinDist": 0.1,
   "aimMaxDist": 2000.0,
-  "maxDeltaAngle": 0.06,
-  "maxDeltaAngleVertical": 0.08,
+  "maxDeltaAngle": 0.027,
+  "maxDeltaAngleVertical": 0.027,
   "shotFreq": 0.095,
   "traceFreq": 4,
   "bEnablePause": false,
@@ -263,6 +263,9 @@
           0.99
         ]
       },
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "DamageParts": {
         "body": {
           "hp": 5.0,
@@ -280,9 +283,6 @@
             "destruction": 1.0
           }
         }
-      },
-      "pressureDamage": {
-        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [
@@ -1101,8 +1101,8 @@
       "bulletCount": 25,
       "mass": 3.18,
       "caliber": 0.1,
-      "damageCaliber": 0.05,
-      "ballisticCaliber": 0.052,
+      "damageCaliber": 0.04,
+      "ballisticCaliber": 0.0566,
       "speed": 1432.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
@@ -1124,7 +1124,7 @@
       "shellAnimation": "video/shells_animations/apds.ivf",
       "bulletName": "100mm_type1959",
       "onHitChanceMultExplFuel": 0.1,
-      "Cx": 0.0001,
+      "Cx": 0.21827,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -1324,6 +1324,7 @@
       "caliber": 0.1,
       "speed": 1000.0,
       "maxDistance": 7000.0,
+      "Cx": 0.93,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",

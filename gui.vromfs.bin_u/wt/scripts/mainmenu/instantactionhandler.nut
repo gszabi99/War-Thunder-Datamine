@@ -1103,7 +1103,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function checkShowChangelog()
   {
     guiScene.performDelayed({}, function() {
-      if (needShowChangelog())
+      if (needShowChangelog() && ::get_cur_base_gui_handler().isSceneActiveNoModals())
         ::handlersManager.animatedSwitchScene(openChangelog())
     })
   }

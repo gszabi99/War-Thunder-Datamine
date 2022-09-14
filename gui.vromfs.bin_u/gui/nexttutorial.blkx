@@ -48,7 +48,7 @@
       },
       "tdiv": {
         "width": "pw",
-        "max-height": "1@maxWindowHeightNoSrh - 1@frameTopPadding - 0.5w - 1@battleButtonHeight",
+        "max-height": "1@rh - 1@frameTopPadding - 0.5w - 1@battleButtonHeight",
         "pos": "0.5pw-0.5w, 0",
         "position": "relative",
         "flow": "vertical",
@@ -57,14 +57,14 @@
           "id": "msgText",
           "width": "pw",
           "position": "relative",
-          "padding-bottom": "0.02@scrn_tgt"
+          "padding-bottom": "1@blockInterval"
         },
         "tdiv": {
           "id": "rewards",
           "pos": "0.5pw-0.5w, 0",
           "position": "relative",
           "flow": "vertical",
-          "padding-bottom": "0.02@scrn_tgt",
+          "padding-bottom": "1@blockInterval",
           "display": "hide"
         }
       },
@@ -90,55 +90,6 @@
         },
         "focus_border": {},
         "ButtonImg": {}
-      },
-      "gamercard_div": {
-        "gamercard": {
-          "BottomMenuPanel": {
-            "rowSeparator": {},
-            "tdiv": {
-              "height": "ph",
-              "position": "absolute",
-              "pos": "pw-w, 0.5ph-0.5h",
-              "voiceChatWidgetNest": {
-                "isClanOnly": "no",
-                "blockSeparator": [
-                  {
-                    "display": "hide"
-                  },
-                  {
-                    "display": "hide"
-                  }
-                ],
-                "emptyVoiceChat": {
-                  "tooltip": "#clan/voice_chat/widget",
-                  "usertalk": {
-                    "id": "voice_chat_no_activity",
-                    "type": "noTalk",
-                    "fade": "in",
-                    "height-end": "1",
-                    "_size-timer": "0",
-                    "img": {
-                      "color-factor": "255",
-                      "inacive": "yes",
-                      "position": "relative"
-                    },
-                    "activeText": {
-                      "text": "...",
-                      "color-factor": "255",
-                      "position": "relative"
-                    }
-                  }
-                },
-                "voiceChatWidgetContainer": {
-                  "isSmall": "no",
-                  "voiceChatWidget": {
-                    "value": "{\"viewId\": \"VOICE_CHAT\"}"
-                  }
-                }
-              }
-            }
-          }
-        }
       },
       "dummy": [
         {

@@ -28,7 +28,7 @@ tdiv {
   <<#icon>>
   tdiv {
     size:t='<<#iconWidth>><<iconWidth>><</iconWidth>><<^iconWidth>>0.75@sIco<</iconWidth>>, @sIco'
-    pos:t='0, -2@sf/@pf'
+    pos:t='0, 0.5ph-0.5h'
     position:t='relative'
     img {
       size:t='@sIco, @sIco'; pos:t='pw/2-w/2, 0'; position:t='relative'

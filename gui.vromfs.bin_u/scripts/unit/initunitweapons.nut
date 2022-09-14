@@ -2,8 +2,6 @@ let { split_by_chars } = require("string")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
 let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { TRIGGER_TYPE, TRIGGER_TYPE_TO_BIT, ROCKETS_WEAPON_MASK, BOMBS_WEAPON_MASK
-  } = require("%scripts/weaponry/weaponryInfo.nut")
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",
@@ -35,13 +33,13 @@ let function addReqParamsToWeaponry(weaponry, blk) {
 
 let function initPresetParams(weapon, blk = null) {
   let weaponmask = weapon.weaponmask
-  weapon.hasMines <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MINES]) != 0
-  weapon.bomb <- (weaponmask & BOMBS_WEAPON_MASK) != 0
-  weapon.torpedo <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.TORPEDOES]) != 0
-  weapon.cannon <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.CANNON]) != 0
-  weapon.additionalGuns <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ADD_GUN]) != 0
-  weapon.frontGun <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MACHINE_GUN]) != 0
-  weapon.rocket <- (weaponmask & ROCKETS_WEAPON_MASK) != 0
+  weapon.hasMines <- (weaponmask & WeaponMask.MINE_MASK) != 0
+  weapon.bomb <- (weaponmask & WeaponMask.ALL_BOMBS_MASK) != 0
+  weapon.torpedo <- (weaponmask & WeaponMask.TORPEDO_MASK) != 0
+  weapon.cannon <- (weaponmask & WeaponMask.CANNON_MASK) != 0
+  weapon.additionalGuns <- (weaponmask & WeaponMask.ADDITIONAL_GUN_MASK) != 0
+  weapon.frontGun <- (weaponmask & WeaponMask.MACHINE_GUN_MASK) != 0
+  weapon.rocket <- (weaponmask & WeaponMask.ALL_ROCKETS_MASK) != 0
   weapon.bombsNbr <- blk?.totalBombCount ?? 0
   foreach(p in weaponWpCostProperties)
     weapon[p] <- weapon?[p] ?? blk?[p]
@@ -62,7 +60,7 @@ let function initCustomPresetParams(unit, weapon) {
           massPerSecValue += blk.mass_per_sec
         foreach(p in weaponWpCostProperties)
           weapon[p] <- weapon?[p] ?? blk?[p]
-        if ((weapon.weaponmask & BOMBS_WEAPON_MASK) != 0)
+        if ((weapon.weaponmask & WeaponMask.ALL_BOMBS_MASK) != 0)
           bombsNbr += blk?.totalBombCount ?? 0
       })
   }

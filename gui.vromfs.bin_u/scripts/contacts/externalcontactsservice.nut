@@ -28,7 +28,7 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb)
       table.__update(knownUsers)
 
       requestUnknownXboxIds(leftList, table, cb)
-    }.bindenv(this)
+    }
   )
 }
 
@@ -52,7 +52,7 @@ let function requestUnknownPSNIds(playersList, knownUsers, cb) {
     table.__update(knownUsers)
 
     self(leftList, table, cb)
-  }.bindenv(this))
+  })
 }
 
 return {

@@ -103,7 +103,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
       return
 
     this.isPendingPackageCheck = true
-    requestPackageUpdateStatus(this.onPackageUpdateCheckResult)
+    requestPackageUpdateStatus(this.onPackageUpdateCheckResult.bindenv(this))
   }
 
   function onEventPs4AutoLoginRequested(p)

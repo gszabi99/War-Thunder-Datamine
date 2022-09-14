@@ -16,6 +16,7 @@ let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { getMissionRewardsMarkup, getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::gui_handlers.MissionDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -343,7 +344,7 @@ let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorial
       else
       {
         let unlockName = mission.blk.chapter + "/" + mission.blk.name
-        config.requirements <- ::get_unlock_description(unlockName, 1, true)
+        config.requirements <- getFullUnlockDescByName(unlockName, 1)
       }
     }
 

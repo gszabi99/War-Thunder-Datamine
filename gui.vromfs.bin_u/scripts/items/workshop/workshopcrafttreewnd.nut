@@ -484,9 +484,12 @@ let function getButtonView(bodyConfig, itemSizes) {
     return null
 
   let buttonView = buttonConfig.__merge(button).__merge(buttonViewParams)
-  let posY = itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
-    + itemSizes.visibleItemsCountYByBodies[bodyConfig.bodyIdx] * itemSizes.itemBlockHeight
-    + itemSizes.headerBlockInterval
+  let posY = button?.position == "top"
+    ? itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
+      - ::to_pixels("1@buttonHeight")
+    : itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
+      + itemSizes.visibleItemsCountYByBodies[bodyConfig.bodyIdx] * itemSizes.itemBlockHeight
+      + itemSizes.headerBlockInterval
   let genId = button?.generatorId ? $"generatorId:t='{button.generatorId}'" : ""
   buttonView.actionParamsMarkup = $"pos:t='0.5pw - 0.5w, {posY}'; position:t='absolute'; noMargin:t='yes';{genId}"
   return buttonView
@@ -622,17 +625,24 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       textBlocks.sort(@(a, b) a.endPosY <=> b.endPosY)
       visibleItemsCountY = max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
+
+      let prevBtn = bodiesConfig?[idx-1].button
+      let prevBtnCfg = bodyButtonsConfig?[prevBtn?.type]
+      let prevBtnHeight = !(prevBtnCfg?.isButtonHidden(prevBtn) ?? true) ? buttonHeight : 0
+
+      let curBtn = bodiesConfig?[idx].button
+      let curBtnCfg = bodyButtonsConfig?[curBtn?.type]
+      let shiftForTopBtn = (curBtn?.position == "top") && !(curBtnCfg?.isButtonHidden(curBtn) ?? true) ? buttonHeight : 0
+
       curBodiesOffset += isShowHeaderPlace || idx == 0 || visibleItemsCountYByBodies[idx-1] == 0 ? 0
         : (bodiesConfig[idx-1].bodyTitlesCount * titleHeight
-            + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
-            + (!(bodyButtonsConfig?[bodiesConfig[idx-1].button?.type]
-              .isButtonHidden(bodiesConfig[idx-1].button) ?? true) ? buttonHeight : 0)
+            + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval + prevBtnHeight
           )
       let curBodyTitlesCount = bodiesConfig[idx].bodyTitlesCount
       itemsOffsetByBodies.append(curBodiesOffset
         + ((isShowHeaderPlace || visibleItemsCountY == 0)
           ? 0
-          : (curBodyTitlesCount * titleHeight + (curBodyTitlesCount -1) * titleMargin)
+          : (shiftForTopBtn + curBodyTitlesCount * titleHeight + (curBodyTitlesCount -1) * titleMargin)
       ))
       bodiesOffset.append(curBodiesOffset)
       visibleItemsCountYByBodies.append(visibleItemsCountY)

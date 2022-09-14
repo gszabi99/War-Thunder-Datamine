@@ -452,6 +452,7 @@ local ItemExternal = class extends ::BaseItem
     if (canRunCustomMission())
       return {
         btnName = getCustomMissionButtonText()
+        isRunCustomMission = true
       }
 
     return null
@@ -478,12 +479,14 @@ local ItemExternal = class extends ::BaseItem
     : (!hasMainActionDisassemble() && canDisassemble() && amount > 0 && !isCrafting() && !hasCraftResult())
       ? getDisassembleText()
     : (canBeModified() && amount > 0) ? getModifiedText()
+    : (params?.canRunCustomMission ?? false) && canRunCustomMission() ? getCustomMissionButtonText()
     : ""
   doAltAction        = @(params = null) (params?.canConsume && canConsume() && consume(null, params))
     || (canConsume() && assemble(null, params))
     || convertToWarbonds(params)
     || (!hasMainActionDisassemble() && disassemble(params))
     || modify(params)
+    || ((params?.canRunCustomMission ?? false) && canRunCustomMission() && runCustomMission())
 
   function consume(cb, params)
   {

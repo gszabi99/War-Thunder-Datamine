@@ -52,48 +52,6 @@ def find_index(arr : StringList; val : string) : int
   return -1
 
 
-def operator ?[] (t : IntList implicit; idx : int) : int const?#
-  if uint(idx) < uint(length(t))
-    unsafe
-      return reinterpret<int const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<int const?#> null
-
-def operator ?[] (t : FloatList implicit; idx : int) : float const?#
-  if uint(idx) < uint(length(t))
-    unsafe
-      return reinterpret<float const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<float const?#> null
-
-def operator ?[] (t : BoolList implicit; idx : int) : bool const?#
-  if uint(idx) < uint(length(t))
-    unsafe
-      return reinterpret<bool const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<bool const?#> null
-
-def operator ?[] (t : EidList implicit; idx : int) : EntityId const?#
-  if uint(idx) < uint(length(t))
-    unsafe
-      return reinterpret<EntityId const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<EntityId const?#> null
-
-def operator ?[] (t : Point2List implicit; idx : int) : float2 const?#
-  if uint(idx) < uint(length(t))
-    unsafe
-      return reinterpret<float2 const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<float2 const?#> null
-
-def operator ?[] (t : Point3List implicit; idx : int) : float3 const?#
-  if uint(idx) < uint(length(t))
-    unsafe
-      return reinterpret<float3 const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<float3 const?#> null
-
 [generic]
 def is_point_in_poly(pt : float2; points : ecs::Point2List)
   unsafe

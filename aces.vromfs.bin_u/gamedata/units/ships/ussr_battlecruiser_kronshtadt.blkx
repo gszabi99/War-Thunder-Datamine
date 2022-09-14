@@ -27,7 +27,8 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_large",
-  "explosionFx": "explosion_ship_small",
+  "explosionFx": "explosion_ship_large",
+  "decorCutProps": "battleship",
   "canReloadNonGuns": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 7.0,
@@ -397,7 +398,7 @@
       "armorThickness": 2.2,
       "oneSided": true,
       "genericDamageMult": 0.15,
-      "armorThrough": 35.0,
+      "armorThrough": 25.0,
       "compartment_01_dm": {
         "hp": 3000.0
       },
@@ -445,10 +446,10 @@
     "ammo_storages_shells": {
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_total",
-      "armorThrough": 180.0,
+      "armorThrough": 100.0,
       "armorThickness": 2.2,
       "oneSided": true,
-      "fireProtectionHp": 11.0,
+      "fireProtectionHp": 15.0,
       "ammunition_storage_shells_01_dm": {
         "hp": 2900.0
       },
@@ -474,10 +475,10 @@
     "ammo_storages_charges": {
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_total",
-      "armorThrough": 180.0,
+      "armorThrough": 100.0,
       "armorThickness": 2.2,
       "oneSided": true,
-      "fireProtectionHp": 11.0,
+      "fireProtectionHp": 15.0,
       "ammunition_storage_charges_01_dm": {
         "hp": 3000.0
       },
@@ -505,8 +506,8 @@
       "fireParamsPreset": "ship_ammo_fire_aux",
       "armorThickness": 2.2,
       "oneSided": true,
-      "fireProtectionHp": 5.0,
-      "armorThrough": 70.0,
+      "fireProtectionHp": 15.0,
+      "armorThrough": 100.0,
       "ammunition_storage_aux_01_dm": {
         "hp": 1423.0
       },
@@ -539,7 +540,7 @@
       "armorThrough": 100.0,
       "armorThickness": 2.2,
       "oneSided": true,
-      "fireProtectionHp": 3.0
+      "fireProtectionHp": 5.0
     },
     "elevators": {
       "armorClass": "ship_structural_steel",
@@ -942,7 +943,7 @@
     "hull_construction": {
       "stopChanceOnDeadPart": 0.3,
       "armorClass": "ship_structural_steel",
-      "armorThickness": 20.0,
+      "armorThickness": 56.44,
       "fireDamageMult": 0.1,
       "genericDamageMult": 0.1,
       "mid_bottom_dm": {
@@ -952,7 +953,7 @@
     "bulkheads": {
       "stopChanceOnDeadPart": 0.7,
       "armorClass": "ship_structural_steel",
-      "armorThickness": 38.1,
+      "armorThickness": 56.44,
       "fireDamageMult": 0.1,
       "bulkhead_01_dm": {
         "hp": 10000.0
@@ -1116,11 +1117,10 @@
       "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
-      "stopChanceOnDeadPart": 0.5,
-      "ignoreDeadWithSplash": true,
+      "genericDamageMult": 0.6,
+      "stopChanceOnDeadPart": 0.7,
       "restrainDamage": 0.5,
-      "splashPenetrationToArmorThreshold": 0.155,
-      "kineticPenetrationToArmorThreshold": 0.6
+      "kineticPenetrationToArmorThreshold": 0.8
     },
     "belt_armor": {
       "fireProtectionHp": 120.0,
@@ -1141,11 +1141,11 @@
       "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
-      "stopChanceOnDeadPart": 0.5,
+      "genericDamageMult": 0.4,
+      "stopChanceOnDeadPart": 0.7,
       "ignoreDeadWithSplash": true,
       "restrainDamage": 0.5,
-      "splashPenetrationToArmorThreshold": 0.155,
-      "kineticPenetrationToArmorThreshold": 0.6,
+      "kineticPenetrationToArmorThreshold": 0.8,
       "armor_belt_l_01_dm": {
         "armorThickness": 230.0,
         "hp": 8500.0
@@ -1559,179 +1559,189 @@
     "sailor3": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 155
+      "crew": 114
     },
     "sailor4": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 155
+      "crew": 114
     },
     "sailor5": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 198
+      "crew": 144
     },
     "sailor6": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 184
+      "crew": 135
     },
     "sailor7": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 155
+      "crew": 114
     },
     "sailor8": {
+      "dmPart": "compartment_06_dm",
+      "role": "sailor",
+      "crew": 114
+    },
+    "sailor9": {
+      "dmPart": "compartment_07_dm",
+      "role": "sailor",
+      "crew": 112
+    },
+    "sailor10": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
       "crew": 18
     },
-    "sailor9": {
+    "sailor11": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
       "crew": 18
     },
-    "sailor10": {
+    "sailor12": {
       "dmPart": "main_caliber_turret_03_dm",
       "role": "sailor",
       "crew": 18
     },
-    "sailor11": {
+    "sailor13": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
       "role": "sailor",
       "crew": 15
     },
-    "sailor12": {
+    "sailor14": {
       "dmPart": "auxiliary_caliber_turret_02_dm",
       "role": "sailor",
       "crew": 15
     },
-    "sailor13": {
+    "sailor15": {
       "dmPart": "auxiliary_caliber_turret_03_dm",
       "role": "sailor",
       "crew": 15
     },
-    "sailor14": {
+    "sailor16": {
       "dmPart": "auxiliary_caliber_turret_04_dm",
       "role": "sailor",
       "crew": 15
     },
-    "sailor15": {
+    "sailor17": {
       "dmPart": "auxiliary_caliber_turret_05_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor16": {
+    "sailor18": {
       "dmPart": "auxiliary_caliber_turret_06_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor17": {
+    "sailor19": {
       "dmPart": "auxiliary_caliber_turret_07_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor18": {
+    "sailor20": {
       "dmPart": "auxiliary_caliber_turret_08_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor19": {
+    "sailor21": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
       "crew": 50
     },
-    "sailor20": {
+    "sailor22": {
       "dmPart": "engine_room_02_dm",
       "role": "sailor",
       "crew": 50
     },
-    "sailor21": {
+    "sailor23": {
       "dmPart": "engine_room_03_dm",
       "role": "sailor",
       "crew": 50
     },
-    "sailor22": {
+    "sailor24": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
       "crew": 35
     },
-    "sailor23": {
+    "sailor25": {
       "dmPart": "transmission_02_dm",
       "role": "sailor",
       "crew": 35
     },
-    "sailor24": {
+    "sailor26": {
       "dmPart": "transmission_03_dm",
       "role": "sailor",
       "crew": 35
     },
-    "sailor25": {
+    "sailor27": {
       "dmPart": "elevator_01_dm",
       "role": "sailor",
       "crew": 15
     },
-    "sailor26": {
+    "sailor28": {
       "dmPart": "elevator_02_dm",
       "role": "sailor",
       "crew": 15
     },
-    "sailor27": {
+    "sailor29": {
       "dmPart": "elevator_03_dm",
       "role": "sailor",
       "crew": 15
     },
-    "sailor28": {
+    "sailor30": {
       "dmPart": "ammunition_storage_shells_01_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor29": {
+    "sailor31": {
       "dmPart": "ammunition_storage_shells_02_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor30": {
+    "sailor32": {
       "dmPart": "ammunition_storage_shells_03_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor31": {
+    "sailor33": {
       "dmPart": "fire_control_room_01_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor32": {
+    "sailor34": {
       "dmPart": "fire_control_room_02_dm",
       "role": "sailor",
       "crew": 10
     },
-    "sailor33": {
+    "sailor35": {
       "dmPart": "fire_director_01_dm",
       "role": "sailor",
       "crew": 5
     },
-    "sailor34": {
+    "sailor36": {
       "dmPart": "fire_director_02_dm",
       "role": "sailor",
       "crew": 5
     },
-    "sailor35": {
+    "sailor37": {
       "dmPart": "fire_director_03_dm",
       "role": "sailor",
       "crew": 5
     },
-    "sailor36": {
+    "sailor38": {
       "dmPart": "fire_director_04_dm",
       "role": "sailor",
       "crew": 5
     },
-    "sailor37": {
+    "sailor39": {
       "dmPart": "fire_director_05_dm",
       "role": "sailor",
       "crew": 5
     },
-    "sailor38": {
+    "sailor40": {
       "dmPart": "fire_director_06_dm",
       "role": "sailor",
       "crew": 5
@@ -2064,6 +2074,67 @@
           "fire": 0.1,
           "nothing": 0.9
         }
+      },
+      {
+        "name": [
+          "cover_01_dm",
+          "cover_02_dm",
+          "cover_03_dm",
+          "cover_04_dm",
+          "cover_05_dm",
+          "cover_06_dm",
+          "cover_07_dm",
+          "cover_08_dm",
+          "cover_09_dm",
+          "cover_10_dm"
+        ],
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "damage": 15.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.15,
+              "fxEventName": "fire_after_hit_med"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 35.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.15,
+              "fxEventName": "fire_after_hit_med"
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.5,
+              "fxEventName": "fire_after_hit_big"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 90.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.5,
+              "fxEventName": "fire_after_hit_big"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 800.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.6,
+              "fxEventName": "fire_after_hit_huge"
+            }
+          }
+        ]
       }
     ]
   },
@@ -7716,8 +7787,8 @@
         },
         "limitsDeadzone": {
           "yaw": [
-            -45.0,
-            45.0
+            -55.0,
+            55.0
           ],
           "pitch": [
             -90.0,
@@ -7950,7 +8021,7 @@
       {
         "name": "torpedo_explosion",
         "fx": {
-          "name": "explosion_ship_large_second",
+          "name": "explosion_ship_small_ammo",
           "centerDmgPart": false
         }
       },
@@ -7964,7 +8035,7 @@
       {
         "name": "ready_use_ammo_explosion",
         "fx": {
-          "name": "explosion_ship_large_second",
+          "name": "explosion_ship_small_ammo",
           "centerDmgPart": false
         }
       },
@@ -7972,19 +8043,19 @@
         "name": "ammo_fire",
         "fx": [
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_large_ammo",
             "emitter": "emtr_fire_ammo_01"
           },
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_large_ammo_second",
             "emitter": "emtr_fire_ammo_02"
           },
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_large_ammo",
             "emitter": "emtr_fire_ammo_03"
           },
           {
-            "name": "explosion_ship_ammo",
+            "name": "explosion_ship_large_ammo_second",
             "emitter": "emtr_fire_ammo_04"
           }
         ]
@@ -8317,10 +8388,6 @@
             "emitter": "emtr_explosion_center_01"
           },
           {
-            "name": "water_explosion_big",
-            "emitter": "emtr_explosion_center_01"
-          },
-          {
             "name": "explosion_ship_large_second",
             "emitter": "emtr_explosion_center_02"
           },
@@ -8328,182 +8395,262 @@
             "name": "explosion_ship_large_second",
             "emitter": "emtr_explosion_center_03"
           }
-        ]
+        ],
+        "wreckages": {
+          "count": 8,
+          "speed": 60.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_big"
+        }
+      },
+      {
+        "name": "big_bang",
+        "fx": [
+          {
+            "name": "explosion_ship_large_ammo",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "explosion_ship_large_ammo_second",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "explosion_ship_large_ammo_second",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": {
+          "count": 12,
+          "speed": 60.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_big"
+        }
+      },
+      {
+        "name": "big_bang",
+        "fx": [
+          {
+            "name": "explosion_ship_large",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "explosion_ship_big_second",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "explosion_ship_big_second",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": {
+          "count": 15,
+          "speed": 60.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_big"
+        }
       },
       {
         "name": "ammo_fire_1",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_fire_2",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_fire_3",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_fire_4",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_04"
         }
       },
       {
         "name": "ammo_fire_5",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_05"
         }
       },
       {
         "name": "ammo_fire_6",
         "fx": {
-          "name": "explosion_ship_ammo",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_06"
         }
       },
       {
         "name": "ammo_explosion_1",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_01"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_01"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_large_ammo_second",
+          "emitter": "emtr_fire_ammo_01"
+        }
       },
       {
         "name": "ammo_explosion_2",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_02"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_02"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_large_ammo_second",
+          "emitter": "emtr_fire_ammo_02"
+        }
       },
       {
         "name": "ammo_explosion_3",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_03"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_03"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_large_ammo_second",
+          "emitter": "emtr_fire_ammo_03"
+        }
       },
       {
         "name": "ammo_explosion_4",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_04"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_04"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_large_ammo_second",
+          "emitter": "emtr_fire_ammo_04"
+        }
       },
       {
         "name": "ammo_explosion_5",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_05"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_05"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_large_ammo_second",
+          "emitter": "emtr_fire_ammo_05"
+        }
       },
       {
         "name": "ammo_explosion_6",
-        "fx": [
-          {
-            "name": "explosion_ship_ammo",
-            "emitter": "emtr_fire_ammo_06"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_fire_ammo_06"
-          }
-        ]
+        "fx": {
+          "name": "explosion_ship_large_ammo_second",
+          "emitter": "emtr_fire_ammo_06"
+        }
       },
       {
         "name": "ammo_aux_fire_1",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_small_ammo_second",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_aux_fire_2",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_small_ammo_second",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_aux_fire_3",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_small_ammo_second",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_aux_fire_4",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_small_ammo_second",
           "emitter": "emtr_fire_ammo_04"
         }
       },
       {
         "name": "ammo_aux_explosion_1",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_01"
         }
       },
       {
         "name": "ammo_aux_explosion_2",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_02"
         }
       },
       {
         "name": "ammo_aux_explosion_3",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_03"
         }
       },
       {
         "name": "ammo_aux_explosion_4",
         "fx": {
-          "name": "explosion_ship_small",
+          "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_04"
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
         }
       }
     ],
@@ -8666,7 +8813,7 @@
         }
       },
       {
-        "part": "cover_08_dm",
+        "part": "cover_09_dm",
         "weight": 0.1,
         "maxWaterAlive": 1.0
       }
@@ -8685,13 +8832,15 @@
         16.0
       ],
       "splashDamageConstraint": [
-        7000.0,
+        3000.0,
         7000.0
       ],
       "shatterRadiusConstraint": [
         1.0,
         15.0
       ],
+      "splashPenetrationConstraint": 30.0,
+      "shatterPenetrationConstraint": 30.0,
       "gunpowderMassToSplashParams": {
         "gunpowderMassToInnerRadius": {
           "p1": [
@@ -8784,13 +8933,15 @@
         16.0
       ],
       "splashDamageConstraint": [
-        7000.0,
+        3000.0,
         7000.0
       ],
       "shatterRadiusConstraint": [
         1.0,
         15.0
       ],
+      "splashPenetrationConstraint": 30.0,
+      "shatterPenetrationConstraint": 30.0,
       "gunpowderMassToSplashParams": {
         "gunpowderMassToInnerRadius": {
           "p1": [
@@ -8883,13 +9034,15 @@
         16.0
       ],
       "splashDamageConstraint": [
-        7000.0,
+        3000.0,
         7000.0
       ],
       "shatterRadiusConstraint": [
         1.0,
         15.0
       ],
+      "splashPenetrationConstraint": 30.0,
+      "shatterPenetrationConstraint": 30.0,
       "gunpowderMassToSplashParams": {
         "gunpowderMassToInnerRadius": {
           "p1": [

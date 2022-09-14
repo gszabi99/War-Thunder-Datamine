@@ -676,7 +676,12 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     scene.findObject("activate_info_text").setValue(activateText)
     this.showSceneBtn("btn_preview", item ? (item.canPreview() && ::isInMenu()) : false)
 
-    let altActionText = item ? item.getAltActionName({ canConsume = canCraftOnlyInCraftTree }) : ""
+    let altActionText = item?.getAltActionName({
+      canRunCustomMission = !showMainAction
+        || canCraftOnlyInCraftTree
+        || !(mainActionData?.isRunCustomMission ?? false)
+      canConsume = canCraftOnlyInCraftTree
+    }) ?? ""
     this.showSceneBtn("btn_alt_action", altActionText != "")
     setColoredDoubleTextToButton(scene, "btn_alt_action", altActionText)
 
@@ -764,10 +769,17 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!item)
       return
 
-    let canConsume = item.canCraftOnlyInCraftTree()
-      && curSheet?.getSet().getCraftTree() != null
+    let hasCraftTree = curSheet?.getSet().getCraftTree() != null
+    let canCraftOnlyInCraftTree = hasCraftTree && (item.canCraftOnlyInCraftTree() ?? false)
 
-    item.doAltAction({ obj, canConsume, align = "top" })
+    item.doAltAction({
+      obj,
+      canConsume = canCraftOnlyInCraftTree,
+      canRunCustomMission = canCraftOnlyInCraftTree
+        || !(item.getLimitsCheckData()?.result ?? true)
+        || !(item.getMainActionData()?.isRunCustomMission ?? false)
+      align = "top"
+    })
   }
 
   function onJumpToDescPanelAccessKey(obj)
