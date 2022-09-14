@@ -9,6 +9,7 @@ let { getUnlockLocName, getSubUnlockLocName,
   getUnlockDesc, getUnlockConditionsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
+let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N.png
 
 ::g_unlock_view <- {
   function getUnlockTitle(unlockConfig) {
@@ -17,7 +18,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
       : ::get_unlock_name_text(unlockConfig.unlockType, unlockConfig.id)
     if (name == "")
       name = ::get_unlock_type_text(unlockConfig.unlockType, unlockConfig.id)
-    let stage = unlockConfig.curStage >= 0
+    let stage = (unlockConfig.needToAddCurStageToName && unlockConfig.curStage >= 0)
       ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
       : 0
     return $"{name} {::roman_numerals[stage]}"
@@ -415,18 +416,20 @@ g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context
 
   local currentStage = 0
   local textStages = ""
-  for(local i = 0; i < unlockConfig.stages.len(); i++)
-  {
+  let needToFillStages = unlockConfig.needToFillStages && unlockConfig.stages.len() <= MAX_STAGES_NUM
+  for (local i = 0; i < unlockConfig.stages.len(); i++) {
     let stage = unlockConfig.stages[i]
     let curValStage = (unlockConfig.curVal > stage.val)? stage.val : unlockConfig.curVal
     let isUnlockedStage = curValStage >= stage.val
     currentStage = isUnlockedStage ? i + 1 : currentStage
-    textStages += "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
-      .subst({
-        image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}.png" : $"#ui/gameuiskin#stage_locked_{i+1}.png"
-        parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
-        tooltip = UNLOCK_SHORT.getMarkup(unlockConfig.id, {stage=i})
-      })
+    if (needToFillStages) {
+      textStages += "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
+        .subst({
+          image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}.png" : $"#ui/gameuiskin#stage_locked_{i+1}.png"
+          parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
+          tooltip = UNLOCK_SHORT.getMarkup(unlockConfig.id, {stage=i})
+        })
+    }
   }
   unlockObj.getScene().replaceContentFromText(stagesObj, textStages, textStages.len(), context)
   if (currentStage != 0)

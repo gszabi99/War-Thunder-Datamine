@@ -164,7 +164,7 @@ let function checkFoundIds(p)
         if (acceptExistingInvite(uid))
           needCheckSquadInvitesOnContactsUpdate = false
         else
-          squadExistCheckArray.update(@(val) v.append(contact.uidInt64))
+          squadExistCheckArray.mutate(@(val) v.append(contact.uidInt64))
       }
     }
   }
@@ -195,7 +195,7 @@ let function checkSquadInvites(xboxIdsList)
       if (acceptExistingInvite(contact.uid))
         return
 
-      squadExistCheckArray.update(@(v) v.append(contact.uidInt64))
+      squadExistCheckArray.mutate(@(v) v.append(contact.uidInt64))
     }
     else
       idsArray.append(xboxId)

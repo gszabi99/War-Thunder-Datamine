@@ -30,6 +30,12 @@ let function getUnlockStagesDesc(cfg) {
   if (!hasStages || ::g_unlocks.isUnlockComplete(cfg))
     return ""
 
+  if (cfg.locStagesDescId != "")
+    return "".concat(
+      ::loc(cfg.locStagesDescId),
+      ::loc("ui/colon"),
+      ::colorize("unlockActiveColor", ::loc($"{cfg.curStage}/{cfg.stages.len()}")))
+
   return ::loc("challenge/stage", {
     stage = ::colorize("unlockActiveColor", cfg.curStage + 1)
     totalStages = ::colorize("unlockActiveColor", cfg.stages.len())

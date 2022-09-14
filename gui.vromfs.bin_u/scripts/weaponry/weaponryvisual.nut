@@ -223,7 +223,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
     {
       let showExp = itemReqExp - statusTbl.modExp
       local rpText = ::Cost().setRp(showExp).tostring()
-      if (flushExp > 0 && flushExp > showExp)
+      if (flushExp > 0 && flushExp >= showExp)
         rpText = ::colorize("goodTextColor", rpText)
       res.priceText = rpText
     }

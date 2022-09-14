@@ -107,6 +107,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
         sizeY = endPosY - posY + 1
         bodyIdx = bodyIdx
         texts = iBlk % "text"
+        reqItemExistsForDisplaying = getReqItemsArray(iBlk % "reqItemExistsForDisplaying").itemsIdArray
       })
       continue
     }

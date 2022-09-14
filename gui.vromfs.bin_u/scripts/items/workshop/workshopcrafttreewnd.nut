@@ -145,7 +145,8 @@ let sizeAndPosViewConfig = {
       itemInterval + columnPos,
       itemsOffsetByBodies[bodyIdx] + itemPosY * itemBlockHeight + headerBlockInterval)
   })
-  textBlock = ::kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX, endPosY, sizeX, sizeY, texts) {
+  textBlock = ::kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX, endPosY,
+      sizeX, sizeY, texts, reqItemExistsForDisplaying) {
     let { itemInterval, itemBlockHeight, itemBlockInterval,
       headerBlockInterval, itemsOffsetByBodies, textInTextBlockSize, maxBodyWidth } = itemSizes
     let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
@@ -281,7 +282,16 @@ let getItemBlockView = ::kwarg(
     }
 })
 
-let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources, workshopSet) {
+let function hasTextBlockAt(textBlocks, x, y, workshopSet, itemsList) {
+  foreach (block in textBlocks)
+    if (x >= block.posX && x <= block.endPosX && y >= block.posY && y <= block.endPosY
+        && !workshopSet.isRequireExistItemsForDisplaying(block, itemsList))
+      return true
+
+  return false
+}
+
+let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources, textBlocks, workshopSet) {
   let shopArrows = []
   let conectionsInRow = []
   let itemBlocksArr = []
@@ -301,7 +311,10 @@ let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources,
 
         let curColumnIdx = itemConfig.posXY.x.tointeger() - 1
         lastFilled[curColumnIdx] <- (lastFilled?[curColumnIdx] ?? 0)+1
-        if(itemBlock?.shouldRemoveBlankRows ?? false)
+        while (hasTextBlockAt(textBlocks, curColumnIdx, lastFilled[curColumnIdx] - 1, workshopSet, itemsList))
+          lastFilled[curColumnIdx]++
+
+        if (itemBlock?.shouldRemoveBlankRows ?? false)
           itemConfig.posXY.y = lastFilled[curColumnIdx]
 
         let itemBlockView = getItemBlockView({
@@ -448,8 +461,11 @@ let getAvailableRecipe = @(genId) ::ItemsManager.findItemById(genId)
   ?.getVisibleRecipes()
   .findvalue(@(r) r.isUsable && !r.isRecipeLocked())
 
-let getTextBlocksView = @(textBlocks, itemSizes)  textBlocks.map(
-  @(textBlock) sizeAndPosViewConfig.textBlock(textBlock.__merge({ itemSizes = itemSizes})))
+let function getTextBlocksView(textBlocks, itemSizes, workshopSet, itemsList) {
+  return textBlocks
+    .filter(@(block) !workshopSet.isRequireExistItemsForDisplaying(block, itemsList))
+    .map(@(block) sizeAndPosViewConfig.textBlock(block.__merge({ itemSizes })))
+}
 
 let bodyButtonsConfig = {
   marketplace = {
@@ -616,13 +632,25 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
             if (value && (posX not in lastFilled))
               lastFilled[posX] <- i + 1
             else if (!value && (posX in lastFilled))
-              lastFilled[posX] = lastFilled[posX] - 1
+              --lastFilled[posX]
         }
         if (visibleItemsCountY != null)
           break
       }
+
+      foreach (posX, posY in (clone lastFilled))
+        foreach (block in bodiesConfig[idx].textBlocks) {
+          if (block.endPosY >= posY - 1)
+            continue
+
+          let isHidden = workshopSet.isRequireExistItemsForDisplaying(block, itemsList)
+          if (isHidden)
+            lastFilled[posX] -= block.sizeY
+        }
+
       let textBlocks = bodiesConfig[idx].textBlocks
-      textBlocks.sort(@(a, b) a.endPosY <=> b.endPosY)
+        .filter((@(b) !workshopSet.isRequireExistItemsForDisplaying(b, itemsList)).bindenv(this))
+        .sort(@(a, b) a.endPosY <=> b.endPosY)
       visibleItemsCountY = max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
 
@@ -752,11 +780,11 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     let bodiesConfig = craftTree.bodiesConfig
     foreach (idx, rows in craftTree.treeRowsByBodies) {
       let connectingElements = getRowsElementsView(rows, itemSizes, itemsList,
-        bodiesConfig[idx].allowableResources, workshopSet)
+        bodiesConfig[idx].allowableResources, bodiesConfig[idx].textBlocks, workshopSet)
       shopArrows.extend(connectingElements.shopArrows)
       conectionsInRow.extend(connectingElements.conectionsInRow)
       itemBlocksArr.extend(connectingElements.itemBlocksArr)
-      textBlocks.extend(getTextBlocksView(bodiesConfig[idx].textBlocks, itemSizes))
+      textBlocks.extend(getTextBlocksView(bodiesConfig[idx].textBlocks, itemSizes, workshopSet, itemsList))
       let buttonView = getButtonView(bodiesConfig[idx], itemSizes)
       if (buttonView != null)
         buttons.append(buttonView)

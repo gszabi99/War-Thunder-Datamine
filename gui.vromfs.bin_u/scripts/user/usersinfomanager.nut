@@ -176,6 +176,9 @@ let function requestUserInfoData(userId)
   if ((userId not in usersForRequest) && (userId not in usersInfo))
     usersForRequest[userId] <- true
 
+  if(usersForRequest.len() == 0)
+    return
+
   setTimeout(0.3, updateUsersInfo)
 }
 

@@ -57,6 +57,17 @@ CheckBox:disabled {
   color:@inactiveButtonTextColor;
 }
 
+CheckBox > textareaNoTab {
+  width:fw - 1@tablePad;
+  position:relative;
+  margin-left:1@checkboxSize;
+  input-transparent:yes;
+}
+
+CheckBox.with_textarea {
+  height:0;
+}
+
 CheckBoxImg {
   re-type:rotationFg;
   size:@checkboxImgSize, @checkboxImgSize;
@@ -72,6 +83,10 @@ CheckBoxImg {
   foreground-color:@transparent;
   foreground-svg-size:@checkboxImgSize, @checkboxImgSize;
   input-transparent:yes;
+}
+
+CheckBox.with_textarea > CheckBoxImg {
+  left:50%@checkboxSize-50%h;
 }
 
 [inactiveColor=yes] > CheckBoxImg {

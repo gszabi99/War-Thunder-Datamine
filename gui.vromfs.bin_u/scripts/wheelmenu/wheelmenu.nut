@@ -124,9 +124,7 @@ const ITEMS_PER_PAGE = 8
     this.showSceneBtn("fast_shortcuts_block", false)
     this.showSceneBtn("wheelmenu_bg_shade", shouldShadeBackground)
 
-    ::g_hud_event_manager.subscribe("LocalPlayerDead", function (data) {
-      sendAnswerAndClose(invalidIndex)
-    }, this)
+    ::g_hud_event_manager.subscribe("LocalPlayerDead", @(_) quit(), this)
 
     wndControlsAllowMask = wndControlsAllowMaskWhenActive
   }
@@ -378,8 +376,6 @@ const ITEMS_PER_PAGE = 8
       callbackFunc(applyIndex)
   }
 
-  function onEventHudTypeSwitched(params)
-  {
-    sendAnswerAndClose(invalidIndex)
-  }
+  quit = @() sendAnswerAndClose(invalidIndex)
+  onEventHudTypeSwitched = @(_) quit()
 }

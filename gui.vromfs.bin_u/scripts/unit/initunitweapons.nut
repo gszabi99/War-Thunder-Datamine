@@ -53,15 +53,15 @@ let function initCustomPresetParams(unit, weapon) {
     let pWeapons = (wpCost?.custom_presets ? wpCost.custom_presets % "slot" : [])
       .findvalue(@(v) v.index == w.slot)[w.preset]
     if (pWeapons)
-      eachParam(pWeapons, function(_, name){
+      eachParam(pWeapons, function(count, name){
         let blk = wpCost?[name]
         weapon.weaponmask <- (weapon?.weaponmask ?? 0) | (blk?.weaponmask ?? 0)
         if ("mass_per_sec" in blk)
-          massPerSecValue += blk.mass_per_sec
+          massPerSecValue += blk.mass_per_sec * count
         foreach(p in weaponWpCostProperties)
           weapon[p] <- weapon?[p] ?? blk?[p]
         if ((weapon.weaponmask & WeaponMask.ALL_BOMBS_MASK) != 0)
-          bombsNbr += blk?.totalBombCount ?? 0
+          bombsNbr += (blk?.totalBombCount ?? 0) * count
       })
   }
   initPresetParams(weapon)

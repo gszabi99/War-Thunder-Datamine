@@ -492,10 +492,9 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function onEventUnitWeaponChanged(params = null)
   {
-    if (!isUnitHaveSecondaryWeapons(air) || !needSecondaryWeaponsWnd(air)) {
-      updateAllItems()
+    updateAllItems()
+    if (!isUnitHaveSecondaryWeapons(air) || !needSecondaryWeaponsWnd(air))
       return
-    }
 
     lastWeapon = getLastWeapon(airName)
     let secondaryWeapons = getSecondaryWeaponsList(air)

@@ -193,6 +193,7 @@ local unlockConditionUnitclasses = {
     text = ""
     locId = ""
     locDescId = ""
+    locStagesDescId = ""
     useSubUnlockName = false
     curVal = 0
     maxVal = 0
@@ -210,6 +211,8 @@ local unlockConditionUnitclasses = {
     conditions = []
     hasCustomUnlockableList = false
     isExpired = false
+    needToFillStages = true
+    needToAddCurStageToName = true
     names = [] //bit progress names. better to rename it.
 
     showProgress = true
@@ -232,10 +235,13 @@ local unlockConditionUnitclasses = {
   config.unlockType = ::get_unlock_type(blk?.type ?? "")
   config.locId = blk.getStr("locId", "")
   config.locDescId = blk.getStr("locDescId", "")
+  config.locStagesDescId = blk.getStr("locStagesDescId", "")
   config.useSubUnlockName = blk?.useSubUnlockName ?? false
   config.link = ::g_language.getLocTextFromConfig(blk, "link", "")
   config.forceExternalBrowser = blk?.forceExternalBrowser ?? false
   config.playback = blk?.playback
+  config.needToFillStages = blk?.needToFillStages ?? true
+  config.needToAddCurStageToName = blk?.needToAddCurStageToName ?? true
 
   config.iconStyle <- blk?.iconStyle ?? config?.iconStyle
   config.image = blk?.icon ?? ""
@@ -1367,7 +1373,8 @@ local unlockConditionUnitclasses = {
         if (curStage==stage)
         {
           rBlock = sBlock
-          res.name += " " + ::get_roman_numeral(stage + 1)
+          if (cond.needToAddCurStageToName)
+            res.name = $"{res.name} {::get_roman_numeral(stage + 1)}"
           res.stage <- stage
           res.unlocked <- true
           res.iconStyle <- "default_unlocked"

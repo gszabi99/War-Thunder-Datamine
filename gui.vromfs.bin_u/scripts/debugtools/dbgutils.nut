@@ -186,6 +186,7 @@ let function _charAddAllItemsHelper(params) {
           foreach(row in rowsList)
             blk[weapon.name + "_full"] <- row
           blk[$"{weapon.name}_massPerSec"] <- getUnitMassPerSecValue(unit, true, weapon.name)
+          blk[$"{weapon.name}_bombsNbr"] <- weapon.bombsNbr
         }
       return { key = unit.name, value = blk }
     }
