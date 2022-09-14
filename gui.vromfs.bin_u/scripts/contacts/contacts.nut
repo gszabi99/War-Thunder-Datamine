@@ -300,7 +300,8 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   if(!uid)
     return null
 
-  requestUserInfoData(uid)
+  if (::has_feature("ProfileIconInContact"))
+    requestUserInfoData(uid)
 
   if (!(uid in ::contacts_players))
   {
