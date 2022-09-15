@@ -49,36 +49,6 @@
             "value": "starting convoys generation"
           }
         ],
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "cnv_all_convoys_squad",
-          "targetAir": true,
-          "targetGnd": false,
-          "accuracy": 0.75,
-          "airAccuracy": 0.8,
-          "maxDeviationAngle": 10.0,
-          "checkVisibilityTarget": true,
-          "visibilityTreeTransparencyThreshold": 0.01,
-          "airEffShootingRate": 0.5,
-          "adaptiveAccuracyTime": 10.0,
-          "moveSpeedKAtShooting": 0.5,
-          "slowWhenEnemyNear": 0.7,
-          "slowWhenEnemyNearDistance": 2500.0,
-          "minDistBetween": 50.0,
-          "ignoresObstaclesAfterTime": true,
-          "allowOvertakeMode": true,
-          "keep_leader_dist": true,
-          "movementTraceRI": true,
-          "fireRandom": true,
-          "targetChangeInterval": 6.0,
-          "targetChangeProb": 0.25,
-          "ignoreGunSpeedLimits": true,
-          "ChainfireTime": 2.0,
-          "DelayAfterShoot": 2.0
-        },
         "unitMark": {
           "target_marking": 0,
           "target": "cnv_all_convoys_squad"
@@ -252,6 +222,30 @@
         }
       },
       "actions": {
+        "missionGetBalanceLevel": {
+          "input_var": "cnv_matching_rank"
+        },
+        "triggerEnable": [
+          {
+            "target": "cnv_aaa_matching_start"
+          },
+          {
+            "target": [
+              "cnv_t1_gen_delay_calc",
+              "cnv_t2_gen_delay_calc",
+              "cnv_t1_detect_restart",
+              "cnv_t2_detect_restart",
+              "cnv_t1_objective_update_restart",
+              "cnv_t2_objective_update_restart",
+              "cnv_t1_move_restart",
+              "cnv_t2_move_restart",
+              "cnv_t1_activity_restart",
+              "cnv_t2_activity_restart",
+              "cnv_t1_kill_restart",
+              "cnv_t2_kill_restart"
+            ]
+          }
+        ],
         "comment": [
           {
             "value": "generaciya konvoya razreshena"
@@ -272,22 +266,6 @@
           "operator": "add",
           "value": 500.0,
           "var": "cnv_move_check_distance"
-        },
-        "triggerEnable": {
-          "target": [
-            "cnv_t1_gen_delay_calc",
-            "cnv_t2_gen_delay_calc",
-            "cnv_t1_detect_restart",
-            "cnv_t2_detect_restart",
-            "cnv_t1_objective_update_restart",
-            "cnv_t2_objective_update_restart",
-            "cnv_t1_move_restart",
-            "cnv_t2_move_restart",
-            "cnv_t1_activity_restart",
-            "cnv_t2_activity_restart",
-            "cnv_t1_kill_restart",
-            "cnv_t2_kill_restart"
-          ]
         }
       },
       "else_actions": {
@@ -327,6 +305,34 @@
             "value": "net konvoev"
           },
           "triggerDisable": {
+            "object": "cnv_all_convoys_squad",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.75,
+            "maxDeviationAngle": 10.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.01,
+            "airEffShootingRate": 0.5,
+            "adaptiveAccuracyTime": 10.0,
+            "moveSpeedKAtShooting": 0.5,
+            "slowWhenEnemyNear": 0.7,
+            "slowWhenEnemyNearDistance": 2500.0,
+            "minDistBetween": 50.0,
+            "ignoresObstaclesAfterTime": true,
+            "allowOvertakeMode": true,
+            "keep_leader_dist": true,
+            "movementTraceRI": true,
+            "fireRandom": true,
+            "targetChangeInterval": 6.0,
+            "targetChangeProb": 0.25,
+            "ignoreGunSpeedLimits": true,
+            "ChainfireTime": 2.0,
+            "DelayAfterShoot": 2.0,
             "target": [
               "cnv_t1_gen_rotator",
               "cnv_t1_gen_restart"
@@ -13865,9 +13871,6 @@
         },
         "conditions": {},
         "actions": {
-          "missionGetBalanceLevel": {
-            "input_var": "cnv_matching_rank"
-          },
           "comment": {
             "value": "zapuskaem kal'kulyator distancii aktivnosti"
           },
@@ -14849,6 +14852,546 @@
             "target": "t2_tiny_task_completed"
           }
         }
+      }
+    },
+    "cnv_aaa_matching": {
+      "isCategory": true,
+      "is_enabled": true,
+      "cnv_aaa_matching_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareString": {
+            "var_value": "cnv_game_mode",
+            "value": "pvp",
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "pvp mode"
+          },
+          "triggerEnable": {
+            "target": [
+              "cnv_aaa_pvp_matching_0_3",
+              "cnv_aaa_pvp_matching_4_7",
+              "cnv_aaa_pvp_matching_8_11",
+              "cnv_aaa_pvp_matching_12_16",
+              "cnv_aaa_pvp_matching_17_50"
+            ]
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "pe mode"
+          },
+          "triggerEnable": {
+            "target": [
+              "cnv_aaa_pve_matching_0_23",
+              "cnv_aaa_pve_matching_24_26",
+              "cnv_aaa_pve_matching_27_50"
+            ]
+          }
+        }
+      },
+      "cnv_aaa_pvp_matching_0_3": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "cnv_matching_rank",
+            "value": 4,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pvp_matching_4_7",
+              "cnv_aaa_pvp_matching_8_11",
+              "cnv_aaa_pvp_matching_12_16",
+              "cnv_aaa_pvp_matching_17_50"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.5,
+            "maxDeviationAngle": 12.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.3,
+            "adaptiveAccuracyTime": 12.0,
+            "fireRandom": true,
+            "targetChangeInterval": 6.0,
+            "targetChangeProb": 0.25,
+            "ignoreGunSpeedLimits": true,
+            "ChainfireTime": 2.0,
+            "DelayAfterShoot": 2.0
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_aaa_pvp_matching_4_7": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 3,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 8,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pvp_matching_0_3",
+              "cnv_aaa_pvp_matching_8_11",
+              "cnv_aaa_pvp_matching_12_16",
+              "cnv_aaa_pvp_matching_17_50"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "aaa",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.5,
+            "maxDeviationAngle": 12.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.5,
+            "adaptiveAccuracyTime": 12.0,
+            "fireRandom": true,
+            "targetChangeInterval": 6.0,
+            "targetChangeProb": 0.25,
+            "ignoreGunSpeedLimits": true,
+            "ChainfireTime": 2.0,
+            "DelayAfterShoot": 2.0
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_aaa_pvp_matching_8_11": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 7,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 12,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pvp_matching_0_3",
+              "cnv_aaa_pvp_matching_4_7",
+              "cnv_aaa_pvp_matching_12_16",
+              "cnv_aaa_pvp_matching_17_50"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "aaa",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.5,
+            "maxDeviationAngle": 12.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.3,
+            "adaptiveAccuracyTime": 10.0,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "ignoreGunSpeedLimits": true,
+            "ChainfireTime": 2.5,
+            "DelayAfterShoot": 1.5
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_aaa_pvp_matching_12_16": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 11,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 17,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pvp_matching_0_3",
+              "cnv_aaa_pvp_matching_4_7",
+              "cnv_aaa_pvp_matching_8_11",
+              "cnv_aaa_pvp_matching_17_50"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "aaa",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.5,
+            "maxDeviationAngle": 12.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.3,
+            "adaptiveAccuracyTime": 10.0,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "ignoreGunSpeedLimits": true,
+            "ChainfireTime": 2.5,
+            "DelayAfterShoot": 1.5
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_aaa_pvp_matching_17_50": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 16,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 50,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pvp_matching_0_3",
+              "cnv_aaa_pvp_matching_4_7",
+              "cnv_aaa_pvp_matching_8_11",
+              "cnv_aaa_pvp_matching_12_16"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "aaa",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.5,
+            "maxDeviationAngle": 12.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.3,
+            "adaptiveAccuracyTime": 10.0,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "ignoreGunSpeedLimits": true,
+            "ChainfireTime": 2.5,
+            "DelayAfterShoot": 1.5
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_aaa_pve_matching_0_23": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "cnv_matching_rank",
+            "value": 24,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pve_matching_24_26",
+              "cnv_aaa_pve_matching_27_50"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "aaa",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.75,
+            "maxDeviationAngle": 10.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.5,
+            "adaptiveAccuracyTime": 6.0,
+            "fireRandom": true,
+            "targetChangeInterval": 9.0,
+            "targetChangeProb": 0.25,
+            "ChainfireTime": 3.0,
+            "DelayAfterShoot": 1.5
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_aaa_pve_matching_24_26": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 23,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 27,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pve_matching_0_23",
+              "cnv_aaa_pve_matching_27_50"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "aaa",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.75,
+            "maxDeviationAngle": 10.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.5,
+            "adaptiveAccuracyTime": 6.0,
+            "fireRandom": true,
+            "targetChangeInterval": 9.0,
+            "targetChangeProb": 0.25,
+            "ChainfireTime": 3.0,
+            "DelayAfterShoot": 1.5
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_aaa_pve_matching_27_50": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 26,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "cnv_matching_rank",
+              "value": 50,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "cnv_aaa_pve_matching_0_23",
+              "cnv_aaa_pve_matching_24_26"
+            ]
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "aaa",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
+            "stealthRadius": 128000.0,
+            "attack_type": "fire_at_will",
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.75,
+            "maxDeviationAngle": 10.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.5,
+            "adaptiveAccuracyTime": 5.0,
+            "fireRandom": true,
+            "targetChangeInterval": 7.5,
+            "targetChangeProb": 0.25,
+            "ignoreGunSpeedLimits": true,
+            "ChainfireTime": 2.5,
+            "DelayAfterShoot": 1.5
+          }
+        },
+        "else_actions": {}
       }
     },
     "cnv_battle": {

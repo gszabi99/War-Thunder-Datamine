@@ -64,13 +64,17 @@
               "ft_t1_medium_aaa_squad",
               "ft_t2_medium_aaa_squad"
             ],
-            "accuracy": 0.7,
-            "effShootingRate": 0.7,
-            "airEffShootingRate": 0.7,
+            "targetAir": true,
+            "targetGnd": false,
+            "accuracy": 0.75,
+            "airAccuracy": 0.75,
+            "airEffShootingRate": 1.0,
             "useSearchRadar": true,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
+            "targetChangeProb": 0.25,
+            "ChainfireTime": 3.0,
+            "DelayAfterShoot": 2.0
           },
           {
             "object_marking": 0,
@@ -82,9 +86,9 @@
               "ft_t1_big_aaa_squad",
               "ft_t2_big_aaa_squad"
             ],
-            "accuracy": 0.7,
-            "effShootingRate": 0.7,
-            "airEffShootingRate": 0.7,
+            "accuracy": 0.75,
+            "airAccuracy": 0.75,
+            "airEffShootingRate": 1.0,
             "useSearchRadar": true,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
@@ -333,12 +337,14 @@
             "target": "ft_t1_find_enemy_airfield",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "object_type": "isAlive"
           },
           {
             "target": "ft_t2_find_enemy_airfield",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "object_type": "isAlive"
           }
         ]
@@ -4322,6 +4328,7 @@
             "target": "@ft_add_objective_t1_objective_name",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@ft_add_objective_t2_zone_name"
           }
         },
@@ -4410,6 +4417,7 @@
             "target": "@ft_add_objective_t2_objective_name",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@ft_add_objective_t1_zone_name"
           }
         },
@@ -4493,6 +4501,7 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@ft_complete_objective_t2_zone_name"
@@ -4502,6 +4511,7 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "team": "A",
               "object_type": "isAlive"
             }
@@ -4590,6 +4600,7 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@ft_complete_objective_t1_zone_name"
@@ -4599,6 +4610,7 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "team": "Both",
               "object_type": "isAlive"
             }
@@ -4664,6 +4676,7 @@
             "target": "ft_t1_find_enemy_airfield",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "object_type": "isAlive"
           }
         },
@@ -4724,6 +4737,7 @@
             "target": "ft_t2_find_enemy_airfield",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "object_type": "isAlive"
           }
         },
@@ -4755,6 +4769,7 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "extendedEnding": true,
               "team": "A",
               "object_type": "isAlive"
@@ -4764,6 +4779,7 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "team": "A",
               "object_type": "isAlive"
             }
@@ -4818,6 +4834,7 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "extendedEnding": true,
               "team": "B",
               "object_type": "isAlive"
@@ -4827,6 +4844,7 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
+              "object_marking": 0,
               "team": "B",
               "object_type": "isAlive"
             }
@@ -8164,6 +8182,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "@st_t1_generate_name",
             "altRange": [
               2500.0,
@@ -8381,6 +8402,9 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "@st_t1_despawn_name"
           }
         },
@@ -8614,6 +8638,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "@st_t2_generate_name",
             "altRange": [
               2500.0,
@@ -8831,6 +8858,9 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "@st_t2_despawn_name"
           }
         },
@@ -9529,6 +9559,9 @@
               "object_var_value": 0,
               "fastClimb": false,
               "destTimeMode": false,
+              "target_var_name": "",
+              "target_var_comp_op": "equal",
+              "target_var_value": 0,
               "object": "@st_rearm_t1_sentinell_name",
               "altRange": [
                 2500.0,
@@ -9621,6 +9654,9 @@
               "object_var_value": 0,
               "fastClimb": false,
               "destTimeMode": false,
+              "target_var_name": "",
+              "target_var_comp_op": "equal",
+              "target_var_value": 0,
               "object": "@st_rearm_t2_sentinell_name",
               "altRange": [
                 2500.0,
