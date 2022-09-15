@@ -516,28 +516,6 @@
         },
         "triggerEnable": {
           "target": "bt_t1_choose_bdt_target_restart"
-        },
-        "__varGetStringValue": [
-          {
-            "from_var_name": "bdt_t2_base_as_target_for_t1_name",
-            "var": "bt_t1_target_name"
-          },
-          {
-            "from_var_name": "bdt_t2_base_as_target_for_t1_name",
-            "var": "bt_t1_target_area_name"
-          },
-          {
-            "from_var_name": "bdt_t2_base_as_target_for_t1_name",
-            "var": "bt_t1_target_point_name"
-          }
-        ],
-        "__varAddString": {
-          "value": "_bomb_target",
-          "digits": 0,
-          "var": "bt_t1_target_name"
-        },
-        "__triggerEnable": {
-          "target": "bt_t1_start_bombers"
         }
       },
       "else_actions": {
@@ -572,18 +550,21 @@
         "comment": {
           "value": ""
         },
-        "varGetStringValue": [
+        "varSetString": [
           {
-            "from_var_name": "bt_t1_search_target_name",
-            "var": "bt_t1_target_name"
+            "value": "",
+            "var": "bt_t1_target_name",
+            "input_var": "bt_t1_search_target_name"
           },
           {
-            "from_var_name": "bt_t1_search_target_name",
-            "var": "bt_t1_target_area_name"
+            "value": "",
+            "var": "bt_t1_target_name",
+            "input_var": "bt_t1_search_target_name"
           },
           {
-            "from_var_name": "bt_t1_search_target_name",
-            "var": "bt_t1_target_point_name"
+            "value": "",
+            "var": "bt_t1_target_area_name",
+            "input_var": "bt_t1_search_target_name"
           }
         ],
         "varAddString": {
@@ -1777,28 +1758,6 @@
         },
         "triggerEnable": {
           "target": "bt_t2_choose_bdt_target_restart"
-        },
-        "__varGetStringValue": [
-          {
-            "from_var_name": "bdt_t2_base_as_target_for_t1_name",
-            "var": "bt_t1_target_name"
-          },
-          {
-            "from_var_name": "bdt_t2_base_as_target_for_t1_name",
-            "var": "bt_t1_target_area_name"
-          },
-          {
-            "from_var_name": "bdt_t2_base_as_target_for_t1_name",
-            "var": "bt_t1_target_point_name"
-          }
-        ],
-        "__varAddString": {
-          "value": "_bomb_target",
-          "digits": 0,
-          "var": "bt_t1_target_name"
-        },
-        "__triggerEnable": {
-          "target": "bt_t1_start_bombers"
         }
       },
       "else_actions": {
@@ -1833,18 +1792,21 @@
         "comment": {
           "value": ""
         },
-        "varGetStringValue": [
+        "varSetString": [
           {
-            "from_var_name": "bt_t2_search_target_name",
-            "var": "bt_t2_target_name"
+            "value": "",
+            "var": "bt_t2_target_name",
+            "input_var": "bt_t2_search_target_name"
           },
           {
-            "from_var_name": "bt_t2_search_target_name",
-            "var": "bt_t2_target_area_name"
+            "value": "",
+            "var": "bt_t2_target_area_name",
+            "input_var": "bt_t2_search_target_name"
           },
           {
-            "from_var_name": "bt_t2_search_target_name",
-            "var": "bt_t2_target_point_name"
+            "value": "",
+            "var": "bt_t2_target_point_name",
+            "input_var": "bt_t2_search_target_name"
           }
         ],
         "varAddString": {
@@ -2856,7 +2818,7 @@
           "target": [
             "bt_t2_bombers_saved",
             "bt_t2_mis_obj_update",
-            "bt_t1_bombers_target_destroyed"
+            "bt_t2_bombers_target_destroyed"
           ]
         },
         "comment": [
