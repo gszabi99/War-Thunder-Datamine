@@ -11595,7 +11595,6 @@
       "chapter": "battlepass_season8",
       "group": "battlepass_season_8_challenge_3",
       "locId": "mainmenu/type_tank",
-      "icon": "!ui/gameuiskin#item_sub_challenge.png",
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -28475,6 +28474,49 @@
             "type": "timeRange",
             "beginDate": "2022-05-27 14:00:00",
             "endDate": "2022-05-30 07:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2022_09_15_battle_of_britain_2022",
+      "locDescId": "2022_09_15_battle_of_britain_2022/desc",
+      "userLogId": "2022_09_15_battle_of_britain_2022_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "battle_of_britain",
+      "costGold": 199,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_britain"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-09-15 12:00:00",
+            "endDate": "2022-09-19 07:30:00"
           }
         ]
       }
