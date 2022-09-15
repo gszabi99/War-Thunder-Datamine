@@ -3,8 +3,7 @@
   "bin_dump_file": "",
   "mission_settings": {
     "player": {
-      "army": 1,
-      "wing": "lbt_armada"
+      "army": 1
     },
     "player_teamB": {
       "army": 2
@@ -17,8 +16,7 @@
       "scoreLimit": 30000,
       "restoreType": "attempts",
       "optionalTakeOff": false
-    },
-    "spectator_points": {}
+    }
   },
   "imports": {},
   "triggers": {
@@ -5554,6 +5552,9 @@
               "value": "pobedila komanda A"
             },
             {
+              "value": "remembering zone idx"
+            },
+            {
               "value": "dvigaem liniyu fronta"
             },
             {
@@ -5566,6 +5567,11 @@
           "varSetBool": {
             "value": false,
             "var": "@lbt_end_active_var_name"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "lbt_t1_counter_attack_zone_idx",
+            "input_var": "@lbt_end_from_var_name"
           },
           "triggerEnable": [
             {
@@ -5615,6 +5621,9 @@
               "value": "pobedila komanda A"
             },
             {
+              "value": "remembering zone idx"
+            },
+            {
               "value": "dvigaem liniyu fronta"
             },
             {
@@ -5627,6 +5636,11 @@
           "varSetBool": {
             "value": false,
             "var": "@lbt_end_active_var_name"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "lbt_t2_counter_attack_zone_idx",
+            "input_var": "@lbt_end_from_var_name"
           },
           "triggerEnable": [
             {
@@ -5733,9 +5747,24 @@
           }
         },
         "else_actions": {
-          "comment": {
-            "value": "ne dvigaem liniyu fronta"
-          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "ne dvigaem liniyu fronta"
+            }
+          ],
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "@lbt_end_from_var_name"
+            },
+            {
+              "value": 0,
+              "var": "@lbt_end_to_var_name"
+            }
+          ],
           "triggerDisable": {
             "target": "lbt_end_t1_move_frontline"
           }
@@ -5792,11 +5821,26 @@
           }
         },
         "else_actions": {
-          "comment": {
-            "value": "ne dvigaem liniyu fronta"
-          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "ne dvigaem liniyu fronta"
+            }
+          ],
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "@lbt_end_from_var_name"
+            },
+            {
+              "value": 0,
+              "var": "@lbt_end_to_var_name"
+            }
+          ],
           "triggerDisable": {
-            "target": "lbt_end_t1_move_frontline"
+            "target": "lbt_end_t2_move_frontline"
           }
         }
       },
@@ -6568,6 +6612,10 @@
           }
         },
         "actions": {
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "comment": [
             {
               "value": "ataka byla so storony vraga - mozhno kontratakovat'"
@@ -6585,7 +6633,7 @@
           },
           "varAddString": [
             {
-              "value": "@lbt_end_cur_idx",
+              "value": "@lbt_t1_counter_attack_zone_idx",
               "digits": 2,
               "var": "lbt_counter_attack_t1_heat_var_name"
             },
@@ -6644,7 +6692,7 @@
           },
           "varAddString": [
             {
-              "value": "@lbt_end_cur_idx",
+              "value": "@lbt_t2_counter_attack_zone_idx",
               "digits": 2,
               "var": "lbt_counter_attack_t2_heat_var_name"
             },
@@ -6655,7 +6703,7 @@
             }
           ],
           "varSetInt": {
-            "value": 10000,
+            "value": 20000,
             "var": "@lbt_counter_attack_t2_heat_var_name"
           }
         },
@@ -6919,7 +6967,9 @@
     "lbt_battle_t1_outdated_aaa_name": "",
     "lbt_battle_t2_outdated_aaa_name": "",
     "lbt_battle_t1_spawn_in_progress": false,
-    "lbt_battle_t2_spawn_in_progress": false
+    "lbt_battle_t2_spawn_in_progress": false,
+    "lbt_t1_counter_attack_zone_idx": 0,
+    "lbt_t2_counter_attack_zone_idx": 0
   },
   "dialogs": {},
   "airfields": {},

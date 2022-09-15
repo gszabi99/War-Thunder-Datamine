@@ -3,8 +3,7 @@
   "bin_dump_file": "",
   "mission_settings": {
     "player": {
-      "army": 1,
-      "wing": "lbt_armada"
+      "army": 1
     },
     "player_teamB": {
       "army": 2
@@ -16,8 +15,7 @@
       "weather": "hazy",
       "restoreType": "attempts",
       "optionalTakeOff": false
-    },
-    "spectator_points": {}
+    }
   },
   "imports": {
     "import_record": [
@@ -177,12 +175,21 @@
       },
       "conditions": {},
       "actions": {
-        "comment": {
-          "value": "limit land battles count"
-        },
+        "comment": [
+          {
+            "value": "limit land battles count"
+          },
+          {
+            "value": "enabling counterattack for team A"
+          }
+        ],
         "varSetInt": {
           "value": 2,
           "var": "lbt_battle_max_battle_num"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "lbt_counter_attack_t1_is_enable"
         }
       },
       "else_actions": {}
@@ -294,7 +301,7 @@
             "lbt_battle_t1_bunker_01",
             "lbt_battle_t1_acar_01",
             "lbt_battle_t1_modern_aaa_01",
-            "lbt_battle_t1_modern_aaa_02"
+            "lbt_battle_t1_modern_aaa_01"
           ]
         }
       },
@@ -329,7 +336,7 @@
             "lbt_battle_t1_art_02",
             "lbt_battle_t1_bunker_02",
             "lbt_battle_t1_acar_02",
-            "lbt_battle_t1_modern_aaa_01",
+            "lbt_battle_t1_modern_aaa_02",
             "lbt_battle_t1_modern_aaa_02"
           ]
         }
