@@ -108,9 +108,11 @@
               "bdt_t2_aaa_squad"
             ],
             "accuracy": 0.75,
+            "airAccuracy": 0.75,
             "maxDeviationAngle": 10.0,
-            "effShootingRate": 0.5,
-            "airEffShootingRate": 1.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "airEffShootingRate": 0.5,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
@@ -4043,7 +4045,8 @@
             "target": "@bdt_t1_clear_name",
             "status": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           "triggerEnable": {
             "target": "bdt_t1_clear_rotator"
@@ -4158,7 +4161,8 @@
             "target": "@bdt_t2_clear_name",
             "status": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           "triggerEnable": {
             "target": "bdt_t2_clear_rotator"
@@ -4194,6 +4198,7 @@
             "target": "@bdt_t2_spawn_objective_name",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@bdt_t1_cur_spawn_zone_name"
           }
         },
@@ -4227,6 +4232,7 @@
             "target": "@bdt_t1_spawn_objective_name",
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "unit_or_area": "@bdt_t2_cur_spawn_zone_name"
           }
         },
@@ -4265,6 +4271,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         },
@@ -4303,6 +4310,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           }
         },
