@@ -48,7 +48,7 @@ local function getSlotActionFunctionName(unit, params)
   if (isInResearch && unitStatus.canBuyNotResearched(unit))
     return "mainmenu/btnOrder"
   if (!::isUnitUsable(unit) && !::isUnitGift(unit) && (!isSquadronVehicle || !isInResearch))
-    return ::isUnitMaxExp(unit) ? "mainmenu/btnOrder" : "mainmenu/btnResearch"
+    return (::isUnitResearched(unit) || ::isUnitMaxExp(unit)) ? "mainmenu/btnOrder" : "mainmenu/btnResearch"
   return ""
 }
 

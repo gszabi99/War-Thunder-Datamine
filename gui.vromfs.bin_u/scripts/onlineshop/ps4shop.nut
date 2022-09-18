@@ -234,7 +234,8 @@ let openIngameStoreImpl = ::kwarg(
 )
 
 let function openIngameStore(params = {}) {
-  if (isChapterSuitable(params?.chapter)
+  if (::has_feature("PSNAllowShowQRCodeStore")
+    && isChapterSuitable(params?.chapter)
     && ::g_language.getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
     ::add_big_query_record("ingame_store_qr", targetPlatform)

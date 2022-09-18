@@ -77,13 +77,13 @@ let function getCurSceneObjects() {
 
 //validate objects before calling this
 let function updateTexts(objects, params) {
-  let { ping, pl, sessionId, latency, latencyA, latencyR } = params
-  let fps = (params.fps + 0.5).tointeger();
+  let { fps, ping, pl, sessionId, latency, latencyA, latencyR } = params
+  let fpsInt = (fps + 0.5).tointeger();
   local fpsText = ""
   let isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !::is_platform_android
   let isAllowedForUser = hasFeature("FpsCounterOverride")
-  if ((::is_dev_version || isAllowedForPlatform || isAllowedForUser) && fps < 10000 && fps > 0)
-    fpsText = ::colorize(getFpsColor(fps), format("FPS: %d", fps))
+  if ((::is_dev_version || isAllowedForPlatform || isAllowedForUser) && fpsInt < 10000 && fpsInt > 0)
+    fpsText = ::colorize(getFpsColor(fpsInt), format("FPS: %d", fpsInt))
   objects.fps.setValue(fpsText)
 
   local latencyText = ""

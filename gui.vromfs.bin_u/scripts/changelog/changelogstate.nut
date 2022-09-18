@@ -9,6 +9,7 @@ let eventbus = require("eventbus")
 let http = require("dagor.http")
 let { send_counter } = require("statsd")
 let { get_time_msec } = require("dagor.time")
+let { setInterval, clearTimer } = require("dagor.workcycle")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
@@ -273,10 +274,13 @@ versions.subscribe(@(value) ::call_darg("updateExtWatched", { changelogsVersions
 curPatchnote.subscribe(@(value) ::call_darg("updateExtWatched", { curPatchnote = value }))
 curPatchnoteIdx.subscribe(@(value) ::call_darg("updateExtWatched", { curPatchnoteIdx = value }))
 chosenPatchnoteLoaded.subscribe(function (value) {
-    ::call_darg("updateExtWatched", { chosenPatchnoteLoaded = value })
-    if (needShowChangelog())
-      openChangelog()
-  })
+  clearTimer(openChangelog)
+  ::call_darg("updateExtWatched", { chosenPatchnoteLoaded = value })
+  if (!needShowChangelog())
+    return
+
+  setInterval(0.1, openChangelog)
+})
 patchnotesReceived.subscribe(function(value){
     ::call_darg("updateExtWatched", { patchnotesReceived = value })
     if (!value || !haveUnseenVersions.value)

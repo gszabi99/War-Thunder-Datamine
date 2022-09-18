@@ -143,7 +143,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null)
   }
 
   let fullErrorCb = function(response) {
-    errorCb()
+    errorCb?()
     haveRequest = false
   }
 

@@ -6,8 +6,6 @@
 @const promoButtonMinHeight: 1@smallItemHeight + 1@arrowButtonHeight + 2@dp;
 
 @const promoButtonSizeWithOffsets: 1@mIco;
-@const promoBtnNotCollapsedBgVPadding: 20@sf/@pf;
-
 @const imageRouletteTextAreaHeigth: 48@sf/@pf;
 
 @const airInfoToggleButtonSize: @mIco + 2@buttonImgPadding;
@@ -51,11 +49,6 @@ promoButton[type=battlePass] > expandable {
   width: 1@promoButtonWidth;
   position: relative;
   padding-right: 1@contentRightPadding;
-}
-
-promoButton[collapsed=no][type=imageRoulette] {
-  padding-top:@promoBtnNotCollapsedBgVPadding;
-  padding-bottom:@promoBtnNotCollapsedBgVPadding;
 }
 
 promoButton[collapsed=no][type=arrowButton] {
