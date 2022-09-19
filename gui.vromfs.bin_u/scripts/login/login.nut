@@ -2,7 +2,7 @@
 #no-root-fallback
 
 let LoginProcess = require("loginProcess.nut")
-let bqClient     = require("%scripts/bigQuery/bigQueryClient.nut")
+let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 
 global enum LOGIN_STATE //bit mask
 {
@@ -102,7 +102,7 @@ global enum LOGIN_STATE //bit mask
   if (wasLoggedIn != this.isLoggedIn())
     this.onLoggedInChanged()
 
-  bqClient.login_state(
+  bqSendLoginState(
   {
     "was"  : wasState,
     "new"  : newState,
