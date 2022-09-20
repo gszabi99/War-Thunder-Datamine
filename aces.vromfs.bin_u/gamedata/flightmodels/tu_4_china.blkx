@@ -208,9 +208,6 @@
       }
     }
   },
-  "Aircraft": {
-    "gunnersCount": 4
-  },
   "balanceData": {
     "accSpd": 0.844259,
     "climbSpeed": 6.51126,
@@ -3119,6 +3116,9 @@
       }
     ]
   },
+  "Aircraft": {
+    "gunnersCount": 4
+  },
   "weapon_presets": {
     "preset": [
       {
@@ -3196,60 +3196,8 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
-            "tier": [
-              {
-                "idx": 0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 1,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 2,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 3,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 4,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 5,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 6,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 7,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 8,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 9,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 10,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 11,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 12,
-                "iconType": "bombs_middle_group"
-              }
-            ]
+            "amountPerTier": 4.0,
+            "iconType": "bombs_middle_group_x4"
           }
         }
       },
@@ -3288,36 +3236,8 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
-            "tier": [
-              {
-                "idx": 3,
-                "iconType": "bombs_large_group"
-              },
-              {
-                "idx": 4,
-                "iconType": "bombs_large_group"
-              },
-              {
-                "idx": 5,
-                "iconType": "bombs_large_group"
-              },
-              {
-                "idx": 6,
-                "iconType": "bombs_large_group_x2"
-              },
-              {
-                "idx": 7,
-                "iconType": "bombs_large_group"
-              },
-              {
-                "idx": 8,
-                "iconType": "bombs_large_group"
-              },
-              {
-                "idx": 9,
-                "iconType": "bombs_large_group"
-              }
-            ]
+            "amountPerTier": 4.0,
+            "iconType": "bombs_large_group_x4"
           }
         }
       },
@@ -3379,6 +3299,12 @@
       "modClass": "weapon",
       "tier": 2,
       "reqModLevel": 5.0
+    },
+    "air_extinguisher": {
+      "prevModification": "kd-4_bc",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
     },
     "bd-4_bc": {
       "reqModification": "kd-3_bc",
