@@ -15,6 +15,9 @@ let missionState = {
   ctaDeathTicketPenalty = Watched(1)
   useDeathmatchHUD = Watched(false)
   timeLimitWarn = Watched(-1)
+  customHUD = Watched("")
+  missionProgressScore = Watched(0)
+  missionProgressScoreEnemy = Watched(0)
 }
 
 
