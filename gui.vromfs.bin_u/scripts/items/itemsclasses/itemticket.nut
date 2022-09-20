@@ -1,5 +1,7 @@
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText,
+  getConditionText } = require("%scripts/events/eventRewards.nut")
 
 ::items_classes.Ticket <- class extends ::BaseItem
 {
@@ -351,17 +353,17 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     let event = ::events.getEventByEconomicName(eventId)
     if (event)
     {
-      let baseReward = ::EventRewards.getBaseVictoryReward(event)
+      let baseReward = getBaseVictoryReward(event)
       if (baseReward)
         text += (text.len() ? "\n" : "") + ::loc("tournaments/reward/everyVictory",  {reward = baseReward})
 
-      if (::EventRewards.haveRewards(event))
+      if (haveRewards(event))
       {
         text += (text.len() ? "\n\n" : "") + ::loc("tournaments/specialRewards") + ::loc("ui/colon")
-        let specialRewards = ::EventRewards.getSortedRewardsByConditions(event)
+        let specialRewards = getSortedRewardsByConditions(event)
         foreach (conditionId, rewardsList in specialRewards)
           foreach (reward in rewardsList)
-            text += "\n" + ::EventRewards.getConditionText(reward) + " - " + ::EventRewards.getRewardDescText(reward)
+            text += "\n" + getConditionText(reward) + " - " + getRewardDescText(reward)
       }
     }
     return text

@@ -19,6 +19,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getTournamentInfoBlk } = require("%scripts/events/eventRewards.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -2475,7 +2476,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return false
     if (get_blk_value_by_path(::get_tournaments_blk(), event.name + "/allowToSwitchClan"))
       return true
-    let tournamentBlk = ::EventRewards.getTournamentInfoBlk(::events.getEventEconomicName(event))
+    let tournamentBlk = getTournamentInfoBlk(::events.getEventEconomicName(event))
     return tournamentBlk?.clanId ? ::clan_get_my_clan_id() == tournamentBlk.clanId.tostring() : true
   }
 

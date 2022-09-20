@@ -166,7 +166,7 @@ let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBack
   }
 }
 
-let function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount = 0) {
+let function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount = -1) {
   local txts = []
   if (seconds >= 0) {
     txts = [::string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
@@ -176,7 +176,7 @@ let function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount 
   }
   else if (count >= 0) {
     txts = [count]
-    if (actualCount > 0)
+    if (actualCount >= 0)
       txts.append("/", actualCount)
     if (salvo > 0)
       txts.append(" [", salvo, "]  ")

@@ -1,4 +1,17 @@
 let { number_of_set_bits } = require("%sqstd/math.nut")
+let { buildDateStrShort } = require("%scripts/time.nut")
+let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
+
+let function getUnlockBeginDateText(unlock) {
+  let isBlk = unlock?.mode != null
+  let conds = isBlk ? getUnlockConditions(unlock.mode) : unlock?.conditions
+  local timeCond = conds?.findvalue(@(c) ::unlock_time_range_conditions.contains(c.type))
+  if (isBlk)
+    timeCond = ::UnlockConditions.loadCondition(timeCond, unlock.mode?.type)
+  return (timeCond?.beginTime != null)
+    ? buildDateStrShort(timeCond.beginTime).replace(" ", ::nbsp)
+    : ""
+}
 
 let function getUnlockLocName(config, key = "locId") {
   let isRawBlk = (config?.mode != null)
@@ -11,7 +24,7 @@ let function getUnlockLocName(config, key = "locId") {
   numHardcore = ::ceil(num.tofloat() / numHardcore)
 
   return "".join(::g_localization.getLocIdsArray(config?[key]).map(@(locId) locId.len() == 1 ? locId :
-    ::loc(locId, { num, numRealistic, numHardcore })))
+    ::loc(locId, { num, numRealistic, numHardcore, beginDate = getUnlockBeginDateText(config) })))
 }
 
 let function getSubUnlockLocName(config) {
@@ -27,7 +40,8 @@ let function getUnlockStagesDesc(cfg) {
     return ""
 
   let hasStages = (cfg.stages.len() ?? 0) > 1
-  if (!hasStages || ::g_unlocks.isUnlockComplete(cfg))
+  let hideDesc = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
+  if (!hasStages || hideDesc)
     return ""
 
   if (cfg.locStagesDescId != "")
@@ -42,15 +56,14 @@ let function getUnlockStagesDesc(cfg) {
   })
 }
 
-let function getUnlockDesc(cfg, params = {}) {
+let function getUnlockDesc(cfg) {
   let desc = [getUnlockStagesDesc(cfg)]
 
   let hasDescInConds = cfg?.conditions.findindex(@(c) "typeLocIDWithoutValue" in c) != null
   if (!hasDescInConds)
     if ((cfg?.locDescId ?? "") != "") {
       let isBitMode = ::UnlockConditions.isBitModeType(cfg.type)
-      let maxVal = params?.maxVal ?? cfg.maxVal
-      let num = isBitMode ? number_of_set_bits(maxVal) : maxVal
+      let num = isBitMode ? number_of_set_bits(cfg.maxVal) : cfg.maxVal
       desc.append(::loc(cfg.locDescId, { num }))
     }
     else if ((cfg?.desc ?? "") != "")
@@ -65,27 +78,31 @@ let function getUnlockConditionsText(cfg, params = {}) {
 
   params.isExpired <- cfg.isExpired
 
-  let curVal = params?.curVal ?? (::g_unlocks.isUnlockComplete(cfg) ? null : cfg.curVal)
-  let maxVal = params?.maxVal ?? cfg.maxVal
-  let desc = [::UnlockConditions.getConditionsText(cfg.conditions, curVal, maxVal, params)]
+  let hideCurVal = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
+  let curVal = params?.curVal ?? (hideCurVal ? null : cfg.curVal)
+  return ::UnlockConditions.getConditionsText(cfg.conditions, curVal, cfg.maxVal, params)
+}
 
-  if (params?.showCost ?? false) {
-    let cost = ::get_unlock_cost(cfg.id)
-    if (cost > ::zero_money)
-      desc.append("".concat(
-        ::loc("ugm/price"),
-        ::loc("ui/colon"),
-        ::colorize("unlockActiveColor", cost.getTextAccordingToBalance())))
-  }
+let function getUnlockCostText(cfg) {
+  if (!cfg)
+    return ""
 
-  return "\n".join(desc, true)
+  let cost = ::get_unlock_cost(cfg.id)
+  if (cost > ::zero_money)
+    return "".concat(
+      ::loc("ugm/price"),
+      ::loc("ui/colon"),
+      ::colorize("unlockActiveColor", cost.getTextAccordingToBalance()))
+
+  return ""
 }
 
 let function getUnlockMainCondText(cfg) {
   if (!cfg?.conditions)
     return ""
 
-  let curVal = ::g_unlocks.isUnlockComplete(cfg) ? null : cfg.curVal
+  let hideCurVal = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
+  let curVal = hideCurVal ? null : cfg.curVal
   return ::UnlockConditions.getMainConditionText(cfg.conditions, curVal, cfg.maxVal)
 }
 
@@ -99,8 +116,9 @@ let function getUnlockMultDesc(cfg) {
 
 let function getFullUnlockDesc(cfg, params = {}) {
   return "\n".join([
-    getUnlockDesc(cfg, params),
-    getUnlockConditionsText(cfg, params)], true)
+    getUnlockDesc(cfg),
+    getUnlockConditionsText(cfg, params),
+    params?.showCost ? getUnlockCostText(cfg) : ""], true)
 }
 
 let function getFullUnlockDescByName(unlockName, forUnlockedStage = -1, params = {}) {

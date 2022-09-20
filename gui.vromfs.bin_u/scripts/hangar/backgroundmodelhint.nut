@@ -15,7 +15,7 @@ let function initBackgroundModelHint(handler) {
   screen = [ ::screen_width(), ::screen_height() ]
   unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
   offset = [ cursorOffset, cursorOffset ]
-  scene.findObject("background_model_hint")?.setUserData(handler)
+  handler.scene.findObject("background_model_hint")?.setUserData(handler)
 }
 
 let function getHintObj() {

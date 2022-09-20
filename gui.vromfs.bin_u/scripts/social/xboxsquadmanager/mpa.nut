@@ -13,7 +13,8 @@ let function getCurSquadId() {
 }
 
 let function sendInvitation(xuid) {
-  send_invitations(getCurSquadId(), [xuid.tointeger()], function(success) {
+  let squadId = getCurSquadId()
+  send_invitations(squadId, [xuid.tointeger()], function(success) {
     logX($"Invitation sent: {success}, squadId {squadId}, xuid {xuid.tointeger()}")
   })
 }

@@ -1,3 +1,6 @@
+let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText,
+  getConditionText } = require("%scripts/events/eventRewards.nut")
+
 ::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
@@ -26,27 +29,26 @@
   function initScreen()
   {
     let event = ::events.getEventByEconomicName(eventEconomicName)
-    let nextReward = ::EventRewards.getNext(rewardBlk, event)
+    let nextReward = getNextReward(rewardBlk, event)
 
     let rewardDescriptionData = {
       tournamentName = ::colorize("userlogColoredText", ::events.getNameByEconomicName(eventEconomicName))
     }
 
-    let mainConditionId = ::EventRewards.getRewardConditionId(rewardBlk)
     let view = {
       rewardDescription = ::loc("tournaments/reward/description", rewardDescriptionData)
-      conditionText     = ::EventRewards.getConditionText(rewardBlk)
-      conditionIcon     = ::EventRewards.getConditionIcon(::EventRewards.getCondition(mainConditionId))
-      rewardIcon        = ::EventRewards.getRewardIcon(rewardBlk)
-      rewardText        = ::EventRewards.getRewardDescText(rewardBlk)
+      conditionText     = getConditionText(rewardBlk)
+      conditionIcon     = getConditionIcon(getRewardCondition(rewardBlk))
+      rewardIcon        = getRewardIcon(rewardBlk)
+      rewardText        = getRewardDescText(rewardBlk)
       nextReward        = null
     }
 
     if (nextReward)
       view.nextReward = {
-        conditionText = ::EventRewards.getConditionText(nextReward)
-        rewardIcon    = ::EventRewards.getRewardIcon(nextReward)
-        rewardText    = ::EventRewards.getRewardDescText(nextReward)
+        conditionText = getConditionText(nextReward)
+        rewardIcon    = getRewardIcon(nextReward)
+        rewardText    = getRewardDescText(nextReward)
       }
     let blk = ::handyman.renderCached("%gui/tournamentRewardReceived", view)
     guiScene.replaceContentFromText(scene.findObject("root-box"), blk, blk.len(), this)

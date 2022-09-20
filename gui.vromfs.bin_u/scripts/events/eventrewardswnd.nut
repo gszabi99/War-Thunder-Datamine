@@ -1,4 +1,8 @@
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { getRewardConditionId, getRewardConditionById, getConditionValue, getConditionField,
+  getBaseVictoryReward, getSortedRewardsByConditions, getRewardRowIcon, getRewardDescText,
+  getRewardTooltipId, getConditionText, isRewardReceived
+} = require("%scripts/events/eventRewards.nut")
 
 ::gui_handlers.EventRewardsWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -23,9 +27,9 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
 
       let tournamenBlk = ::get_tournament_desk_blk(tourId)
       let finalAwardDate = tournamenBlk?.finalAwardDate
-      let rewards = ::EventRewards.getSortedRewardsByConditions(event, tournamenBlk?.awards)
+      let rewards = getSortedRewardsByConditions(event, tournamenBlk?.awards)
 
-      if (!rewards.len() && !::EventRewards.getBaseVictoryReward(event))
+      if (!rewards.len() && !getBaseVictoryReward(event))
         continue
 
       tabsList.append({ header, event, rewards, finalAwardDate, tourId })
@@ -63,7 +67,7 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
     let view = {
       total      = rewards.len()
       baseReward = (@(event) function () {
-        let reward = ::EventRewards.getBaseVictoryReward(event)
+        let reward = getBaseVictoryReward(event)
         return reward ? ::loc("tournaments/reward/everyVictory",  {reward = reward}) : reward
       })(event)
       items = (@(rewards, event) function () {
@@ -76,13 +80,13 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
             let item = {
               index           = idx
               conditionId     = conditionName
-              conditionText   = ::EventRewards.getConditionText(blk)
-              conditionValue  = ::EventRewards.getConditionValue(blk)
-              conditionField  = ::EventRewards.getConditionField(blk)
-              reward          = ::EventRewards.getRewardDescText(blk)
-              icon            = ::EventRewards.getRewardRowIcon(blk)
-              rewardTooltipId = ::EventRewards.getRewardTooltipId(blk)
-              received        = ::EventRewards.isRewardReceived(blk, eventEconomicName)
+              conditionText   = getConditionText(blk)
+              conditionValue  = getConditionValue(blk)
+              conditionField  = getConditionField(blk)
+              reward          = getRewardDescText(blk)
+              icon            = getRewardRowIcon(blk)
+              rewardTooltipId = getRewardTooltipId(blk)
+              received        = isRewardReceived(blk, eventEconomicName)
               even            = even
             }
             res.append(item)
@@ -104,17 +108,19 @@ let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut
     let eventEconomicName = finalAwardDate ? tourId : ::events.getEventEconomicName(event)
     foreach(conditionId, rewardsInCondition in rewards)
       foreach (idx, blk in rewardsInCondition)
-        if (!::EventRewards.isRewardReceived(blk, eventEconomicName)) {
+        if (!isRewardReceived(blk, eventEconomicName)) {
           let index = idx
           let reward = blk
-          ::EventRewards.getCondition(conditionId).updateProgress(blk, event, function (progress) {
-              let condId = ::EventRewards.getRewardConditionId(reward)
-              let conditionField = ::EventRewards.getConditionField(reward)
+          getRewardConditionById(conditionId).updateProgress(blk, event, eventEconomicName,
+            function (progress) {
+              let condId = getRewardConditionId(reward)
+              let conditionField = getConditionField(reward)
               let conditionTextObj = scene.findObject(
                 $"reward_condition_text_{condId}_{conditionField}_{index}")
               if (conditionTextObj?.isValid())
-                conditionTextObj.setValue(::EventRewards.getConditionText(reward, progress))
-            }, this)}
+                conditionTextObj.setValue(getConditionText(reward, progress))
+            }, this)
+        }
   }
 
   function updateTabInfo() {

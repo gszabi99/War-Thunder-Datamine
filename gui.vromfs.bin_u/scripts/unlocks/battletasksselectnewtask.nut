@@ -1,3 +1,5 @@
+let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
+
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null)
 {
   if (!::g_battle_tasks.isAvailableForUser() || ::u.isEmpty(battleTasksArray))
@@ -106,7 +108,7 @@
       )
     )
 
-    ::showUnlocksGroupWnd([{
+    showUnlocksGroupWnd([{
       unlocksList = awardsList
       titleText = ::loc("unlocks/requirements")
     }])

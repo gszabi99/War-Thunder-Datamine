@@ -195,6 +195,7 @@ local unlockConditionUnitclasses = {
     locDescId = ""
     locStagesDescId = ""
     useSubUnlockName = false
+    hideSubunlocks = false
     curVal = 0
     maxVal = 0
     stages = []
@@ -213,6 +214,7 @@ local unlockConditionUnitclasses = {
     isExpired = false
     needToFillStages = true
     needToAddCurStageToName = true
+    useLastStageAsUnlockOpening = false
     names = [] //bit progress names. better to rename it.
 
     showProgress = true
@@ -237,16 +239,18 @@ local unlockConditionUnitclasses = {
   config.locDescId = blk.getStr("locDescId", "")
   config.locStagesDescId = blk.getStr("locStagesDescId", "")
   config.useSubUnlockName = blk?.useSubUnlockName ?? false
+  config.hideSubunlocks = blk?.hideSubunlocks ?? false
   config.link = ::g_language.getLocTextFromConfig(blk, "link", "")
   config.forceExternalBrowser = blk?.forceExternalBrowser ?? false
   config.playback = blk?.playback
   config.needToFillStages = blk?.needToFillStages ?? true
   config.needToAddCurStageToName = blk?.needToAddCurStageToName ?? true
+  config.useLastStageAsUnlockOpening = blk?.useLastStageAsUnlockOpening ?? false
 
   config.iconStyle <- blk?.iconStyle ?? config?.iconStyle
   config.image = blk?.icon ?? ""
   if (config.image != "")
-    config.lockStyle = blk?.lockStyle ?? "" // lock, darkened, desaturated
+    config.lockStyle = blk?.lockStyle ?? "" // lock, darkened, desaturated, none
 
   let unlocked = ::is_unlocked_scripted(config.unlockType, id)
   if (config.image == "")
@@ -361,6 +365,18 @@ local unlockConditionUnitclasses = {
   {
     config.curStage = showStage
     config.maxVal = config.stages[showStage].val
+  }
+  else if (config.useLastStageAsUnlockOpening) {
+    config.maxVal = config.stages.top().val
+    config.curVal = min(config.curVal, config.maxVal)
+    config.curStage = 0
+    for (local i = config.stages.len() - 1; i >= 0; --i) {
+      let stage = config.stages[i]
+      if (stage.val <= config.curVal) {
+        config.curStage = i + 1
+        break
+      }
+    }
   }
   else
   {
@@ -569,163 +585,6 @@ local unlockConditionUnitclasses = {
 ::get_unlock_cost <- function get_unlock_cost(id)
 {
   return ::Cost(::wp_get_unlock_cost(id), ::wp_get_unlock_cost_gold(id))
-}
-
-::showUnlocksGroupWnd <- function showUnlocksGroupWnd(unlocksLists)
-{
-  ::gui_start_modal_wnd(
-    ::gui_handlers.showUnlocksGroupModal,
-    { unlocksLists = unlocksLists }
-  )
-}
-
-::gui_handlers.showUnlocksGroupModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
-  wndType = handlerType.MODAL
-  sceneBlkName = "%gui/emptyFrame.blk"
-  unlocksLists = null
-  currentTab = 0
-
-  function initScreen()
-  {
-    if (!checkUnlocksLists(unlocksLists))
-      return goBack()
-
-    //set initial window parameters
-    let fObj = scene.findObject("wnd_frame")
-    fObj["max-height"] = "1@maxWindowHeight"
-    fObj["max-width"] = "1@maxWindowWidth"
-    fObj["class"] = "wnd"
-    let blocksCount = (getMaximumListlength(unlocksLists) > 3) ? 2 : 1
-    fObj.width = blocksCount + "@unlockBlockWidth + " + (blocksCount + 1) + "@framePadding"
-
-    let listObj = scene.findObject("wnd_content")
-    listObj.width = "pw"
-    listObj["overflow-y"] = "auto"
-    listObj.flow = "h-flow"
-    listObj.scrollbarShortcuts = "yes"
-
-    fillHeader()
-    fillPage()
-  }
-
-  function reinitScreen(params = {})
-  {
-    setParams(params)
-    initScreen()
-  }
-
-
-  /**
-   * Create tabs for several unlock list or
-   * jast fill header for one list
-   */
-  function fillHeader()
-  {
-    if (unlocksLists.len() > 1)
-    {
-      let view = {
-        tabs = []
-      }
-      foreach(i, list in unlocksLists)
-        view.tabs.append({
-          tabName = ::getTblValue("titleText", list, "")
-          navImagesText = ::get_navigation_images_text(i, unlocksLists.len())
-        })
-
-      let markup = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-      let tabsObj = scene.findObject("tabs_list")
-      tabsObj.show(true)
-      tabsObj.enable(true)
-      guiScene.replaceContentFromText(tabsObj, markup, markup.len(), this)
-      tabsObj.setValue(0)
-    }
-    else
-    {
-      let titleText = ::getTblValue("titleText", unlocksLists[0], "")
-      let titleObj = scene.findObject("wnd_title")
-      titleObj.show(true)
-      titleObj.setValue(titleText)
-    }
-  }
-
-
-  /**
-   * Goes throug lists and return true
-   * if lists are valid, othrvise return false.
-   */
-  function checkUnlocksLists(lists)
-  {
-    if (!unlocksLists || !unlocksLists.len())
-      return false
-
-    foreach (unlockListData in lists)
-    {
-      if (!("unlocksList" in unlockListData))
-        continue
-
-      if (unlockListData.unlocksList.len())
-        return true
-    }
-    return false
-  }
-
-
-  function getMaximumListlength(lists)
-  {
-    local result = 0
-    foreach (list in lists)
-    {
-      let len = ::getTblValue("unlocksList", list, []).len()
-      result = (result < len) ? len : result
-    }
-    return result
-  }
-
-  function addUnlock(idx, unlock, listObj)
-  {
-    let objId = "unlock_" + idx
-    let obj = guiScene.createElementByObject(listObj, "%gui/unlocks/unlockBlock.blk", "frameBlock_dark", this)
-    obj.id = objId
-    obj.width = "1@unlockBlockWidth"
-    obj.pos = "1@framePadding, 1@framePadding"
-
-    ::fill_unlock_block(obj, unlock)
-  }
-
-  function onAwardTooltipOpen(obj)
-  {
-    let id = getTooltipObjId(obj)
-    if (!id)
-      return
-
-    let unlock = getUnlock(id.tointeger())
-    ::build_unlock_tooltip_by_config(obj, unlock , this)
-  }
-
-  function onHeaderTabSelect(obj)
-  {
-    currentTab = obj.getValue()
-    fillPage()
-  }
-
-  function fillPage()
-  {
-    let unlocksList = unlocksLists[currentTab].unlocksList
-    let listObj = scene.findObject("wnd_content")
-
-    guiScene.setUpdatesEnabled(false, false)
-    guiScene.replaceContentFromText(listObj, "", 0, this)
-    for(local i = 0; i < unlocksList.len(); i++)
-      addUnlock(i, unlocksList[i], listObj)
-    guiScene.setUpdatesEnabled(true, true)
-    ::move_mouse_on_child_by_value(listObj)
-  }
-
-  function getUnlock(id)
-  {
-    return ::getTblValue(idx, unlocksLists[currentTab])
-  }
 }
 
 ::fill_unlock_block <- function fill_unlock_block(obj, config, isForTooltip = false)
@@ -1091,7 +950,7 @@ local unlockConditionUnitclasses = {
     res.image = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
     if (::g_battle_tasks.isTaskDone(battleTask))
       res.image2 <- "#ui/gameuiskin#icon_primary_ok.svg"
-    else if (::g_battle_tasks.isTaskTimeExpired(task))
+    else if (::g_battle_tasks.isTaskTimeExpired(battleTask))
       res.image2 <- "#ui/gameuiskin#icon_primary_fail.svg"
   } else
   {

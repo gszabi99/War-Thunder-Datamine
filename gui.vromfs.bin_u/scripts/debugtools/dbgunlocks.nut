@@ -2,6 +2,7 @@ let { format } = require("string")
 // warning disable: -file:forbidden-function
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
 {
@@ -12,7 +13,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
     if((!chapter || unlock?.chapter == chapter) && (!group || unlock.group == group))
       awardsList.append(::build_log_unlock_data({ id = unlock.id }))
-  ::showUnlocksGroupWnd([{
+  showUnlocksGroupWnd([{
     unlocksList = awardsList
     titleText = "debug_show_test_unlocks (total: " + awardsList.len() + ")"
   }])
@@ -50,7 +51,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     }
   }
 
-  ::showUnlocksGroupWnd([{
+  showUnlocksGroupWnd([{
     unlocksList = awardsList,
     titleText = "debug_show_all_streaks (total: " + total + ")"
   }])

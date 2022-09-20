@@ -15,6 +15,7 @@ let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
+let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 
 let watchObjInfoConfig = {
@@ -489,7 +490,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     foreach(id in getCurrentConfig()?.names ?? [])
       awardsList.append(::build_log_unlock_data(::build_conditions_config(::g_unlocks.getUnlockById(id))))
 
-    ::showUnlocksGroupWnd([{
+    showUnlocksGroupWnd([{
       unlocksList = awardsList
       titleText = ::loc("unlocks/requirements")
     }])

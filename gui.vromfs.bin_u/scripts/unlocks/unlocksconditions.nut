@@ -647,16 +647,16 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
   }
   else if (::isInArray(t, unlock_time_range_conditions))
   {
-    foreach(key in ["beginDate", "endDate"])
-    {
-      let unlockTime = blk?[key] ?
-        (time.getTimestampFromStringUtc(blk[key])) : -1
-      if (unlockTime >= 0)
-      {
-        res[key] <- time.buildDateTimeStr(unlockTime)
-        if (key == "endDate")
-          res.endTime <- unlockTime
-      }
+    let beginTime = blk?.beginDate != null ? time.getTimestampFromStringUtc(blk.beginDate) : -1
+    if (beginTime != -1) {
+      res.beginTime <- beginTime
+      res.beginDate <- time.buildDateTimeStr(beginTime)
+    }
+
+    let endTime = blk?.endDate != null ? time.getTimestampFromStringUtc(blk.endDate) : -1
+    if (endTime != -1) {
+      res.endTime <- endTime
+      res.endDate <- time.buildDateTimeStr(endTime)
     }
   }
   else if (t == "missionPostfix")

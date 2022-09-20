@@ -83,7 +83,6 @@ enum ESwitchSpectatorTarget
   needCheckSlotReady = true //compatibility with "1.51.7.81"
   slotReadyAtHostMask = 0
   slotsCostSum = 0 //refreash slotbar when unit costs sum will changed after initslotbar.
-  currCrewNamesList = null
 
   isFirstInit = true
   isFirstUnitOptionsInSession = false
@@ -1781,13 +1780,7 @@ enum ESwitchSpectatorTarget
 
   function updateAllCrewSlots()
   {
-    let crewsList = ::get_crews_list_by_country(::get_local_player_country())
-    let newCrewNamesList = crewsList.map(@(crew) crew?.aircraft).filter(@(inst) inst)
-    if (::u.isEqual(currCrewNamesList, newCrewNamesList))
-      return
-
-    currCrewNamesList = newCrewNamesList
-    foreach(crew in crewsList)
+    foreach(crew in ::get_crews_list_by_country(::get_local_player_country()))
       updateCrewSlot(crew)
   }
 

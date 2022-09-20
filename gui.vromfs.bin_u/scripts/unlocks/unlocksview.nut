@@ -19,7 +19,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
     if (name == "")
       name = ::get_unlock_type_text(unlockConfig.unlockType, unlockConfig.id)
     let stage = (unlockConfig.needToAddCurStageToName && unlockConfig.curStage >= 0)
-      ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
+      ? unlockConfig.curStage + 1
       : 0
     return $"{name} {::roman_numerals[stage]}"
   }
@@ -41,6 +41,9 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
   }
 
   function getSubunlocksView(cfg) {
+    if (cfg.hideSubunlocks)
+      return null
+
     let isBitMode = ::UnlockConditions.isBitModeType(cfg.type)
     let titles = ::UnlockConditions.getLocForBitValues(cfg.type, cfg.names, cfg.hasCustomUnlockableList)
 
@@ -95,7 +98,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       iconStyle = (isUnlocked? "default_unlocked" : "default_locked") +
           ((isUnlocked || unlockConfig.curStage < 1)? "" : "_stage_" + unlockConfig.curStage)
 
-    let effect = isUnlocked || needShowLockIcon(unlockConfig) ? ""
+    let effect = isUnlocked || unlockConfig.lockStyle == "none" || needShowLockIcon(unlockConfig) ? ""
       : unlockConfig.lockStyle != "" ? unlockConfig.lockStyle
       : unlockType == ::UNLOCKABLE_MEDAL ? "darkened"
       : "desaturated"
@@ -137,6 +140,9 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
   }
 
   function needShowLockIcon(cfg) {
+    if (cfg.lockStyle == "none")
+      return false
+
     if (cfg?.isTrophyLocked)
       return true
 
@@ -289,45 +295,38 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
   if (!::check_obj(hiddenObj))
     return
 
-  let guiScene = unlockObj.getScene()
   local hiddenContent = ""
-  let expandImgObj = unlockObj.findObject("expandImg")
 
-  let isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
-  let names = ::UnlockConditions.getLocForBitValues(unlockConfig.type, unlockConfig.names, unlockConfig.hasCustomUnlockableList)
+  if (!unlockConfig.hideSubunlocks) {
+    let isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
+    let names = ::UnlockConditions.getLocForBitValues(unlockConfig.type, unlockConfig.names, unlockConfig.hasCustomUnlockableList)
+    for (local i = 0; i < names.len(); i++) {
+      let unlockId = unlockConfig.names[i]
+      let unlock = ::g_unlocks.getUnlockById(unlockId)
+      if(unlock && !::is_unlock_visible(unlock) && !(unlock?.showInDesc ?? false))
+        continue
 
-  guiScene.replaceContentFromText(hiddenObj, "", 0, context)
-  for(local i = 0; i < names.len(); i++)
-  {
-    let unlockId = unlockConfig.names[i]
-    let unlock = ::g_unlocks.getUnlockById(unlockId)
-    if(unlock && !::is_unlock_visible(unlock) && !(unlock?.showInDesc ?? false))
-      continue
+      let isUnlocked = isBitMode? is_bit_set(unlockConfig.curVal, i) : ::is_unlocked_scripted(-1, unlockId)
+      hiddenContent += "unlockCondition {"
+      hiddenContent += format("textarea {text:t='%s' } \n %s \n",
+                                ::g_string.stripTags(names[i]),
+                                ("image" in unlockConfig && unlockConfig.image != "" ? "" : "unlockImg{}"))
+      hiddenContent += format("unlocked:t='%s'; ", (isUnlocked ? "yes" : "no"))
+      if(unlockConfig.type == "char_resources")
+      {
+        let decorator = ::g_decorator.getDecoratorById(unlockConfig.names[i])
+        if (decorator)
+          hiddenContent += DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
+      }
+      else if(unlock)
+        hiddenContent += UNLOCK.getMarkup(unlock.id, {showProgress=true})
 
-    let isUnlocked = isBitMode? is_bit_set(unlockConfig.curVal, i) : ::is_unlocked_scripted(-1, unlockId)
-    hiddenContent += "unlockCondition {"
-    hiddenContent += format("textarea {text:t='%s' } \n %s \n",
-                              ::g_string.stripTags(names[i]),
-                              ("image" in unlockConfig && unlockConfig.image != "" ? "" : "unlockImg{}"))
-    hiddenContent += format("unlocked:t='%s'; ", (isUnlocked ? "yes" : "no"))
-    if(unlockConfig.type == "char_resources")
-    {
-      let decorator = ::g_decorator.getDecoratorById(unlockConfig.names[i])
-      if (decorator)
-        hiddenContent += DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
+      hiddenContent += "}"
     }
-    else if(unlock)
-      hiddenContent += UNLOCK.getMarkup(unlock.id, {showProgress=true})
+  }
 
-    hiddenContent += "}"
-  }
-  if(hiddenContent != "")
-  {
-    expandImgObj.show(true)
-    guiScene.appendWithBlk(hiddenObj, hiddenContent, context)
-  }
-  else
-    expandImgObj.show(false)
+  unlockObj.findObject("expandImg").show(hiddenContent != "")
+  unlockObj.getScene().replaceContentFromText(hiddenObj, hiddenContent, hiddenContent.len(), context)
 }
 
 g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConfig, unlockObj)
@@ -343,7 +342,8 @@ g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConf
 {
   unlockObj.findObject("description").setValue(getUnlockDesc(unlockConfig))
 
-  let curVal = ::g_unlocks.isUnlockComplete(unlockConfig) ? null : unlockConfig.curVal
+  let hideCurVal = ::g_unlocks.isUnlockComplete(unlockConfig) && !unlockConfig.useLastStageAsUnlockOpening
+  let curVal = hideCurVal ? null : unlockConfig.curVal
   let mainCondText = ::UnlockConditions.getMainConditionText(unlockConfig.conditions, curVal, unlockConfig.maxVal)
   unlockObj.findObject("main_cond").setValue(mainCondText)
 
@@ -414,15 +414,13 @@ g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context
   if (!stagesObj?.isValid())
     return
 
-  local currentStage = 0
   local textStages = ""
   let needToFillStages = unlockConfig.needToFillStages && unlockConfig.stages.len() <= MAX_STAGES_NUM
-  for (local i = 0; i < unlockConfig.stages.len(); i++) {
-    let stage = unlockConfig.stages[i]
-    let curValStage = (unlockConfig.curVal > stage.val)? stage.val : unlockConfig.curVal
-    let isUnlockedStage = curValStage >= stage.val
-    currentStage = isUnlockedStage ? i + 1 : currentStage
-    if (needToFillStages) {
+  if (needToFillStages)
+    for (local i = 0; i < unlockConfig.stages.len(); i++) {
+      let stage = unlockConfig.stages[i]
+      let curValStage = (unlockConfig.curVal > stage.val) ? stage.val : unlockConfig.curVal
+      let isUnlockedStage = curValStage >= stage.val
       textStages += "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
         .subst({
           image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}.png" : $"#ui/gameuiskin#stage_locked_{i+1}.png"
@@ -430,10 +428,8 @@ g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context
           tooltip = UNLOCK_SHORT.getMarkup(unlockConfig.id, {stage=i})
         })
     }
-  }
+
   unlockObj.getScene().replaceContentFromText(stagesObj, textStages, textStages.len(), context)
-  if (currentStage != 0)
-    unlockConfig.curStage = currentStage
 }
 
 g_unlock_view.fillUnlockTitle <- function fillUnlockTitle(unlockConfig, unlockObj)

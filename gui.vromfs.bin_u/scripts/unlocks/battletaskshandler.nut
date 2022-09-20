@@ -1,6 +1,7 @@
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null)
 {
@@ -687,7 +688,7 @@ global enum BattleTasksWndTab {
     foreach(id in config.names)
       awardsList.append(::build_log_unlock_data(::build_conditions_config(::g_unlocks.getUnlockById(id))))
 
-    ::showUnlocksGroupWnd([{
+    showUnlocksGroupWnd([{
       unlocksList = awardsList
       titleText = ::loc("unlocks/requirements")
     }])

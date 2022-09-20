@@ -224,33 +224,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return ::loc("ugm/tags") + ::loc("ui/colon") + ::g_string.implode(tagsLoc, ::loc("ui/comma"))
   }
 
-  function getUnlockDesc()
-  {
-    if (!unlockBlk)
-      return ""
-
-    let config = ::build_conditions_config(unlockBlk)
-
-    let showStages = (config?.stages ?? []).len() > 1
-    if (!showStages && config.maxVal < 0)
-      return ""
-
-    let descData = []
-
-    let isComplete = ::g_unlocks.isUnlockComplete(config)
-
-    if (showStages && !isComplete)
-      descData.append(::loc("challenge/stage", {
-                           stage = ::colorize("unlockActiveColor", config.curStage + 1)
-                           totalStages = ::colorize("unlockActiveColor", config.stages.len())
-                         }))
-
-    let curVal = config.curVal < config.maxVal ? config.curVal : null
-    descData.append(::UnlockConditions.getConditionsText(config.conditions, curVal, config.maxVal))
-
-    return ::g_string.implode(descData, "\n")
-  }
-
   function getCostText()
   {
     if (isUnlocked())
@@ -264,14 +237,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
            + cost.getTextAccordingToBalance()
            + "\n"
            + ::loc("shop/object/can_be_purchased")
-  }
-
-  function getRevenueShareDesc()
-  {
-    if (unlockBlk?.isRevenueShare != true)
-      return ""
-
-    return ::colorize("advertTextColor", ::loc("content/revenue_share"))
   }
 
   function getSmallIcon()

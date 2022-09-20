@@ -41,6 +41,7 @@ let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { is_replay_turned_on, is_replay_saved, is_replay_present,
   on_save_replay, on_view_replay } = require("replays")
 
@@ -2454,7 +2455,7 @@ let statTooltipColumnParamByType = {
         ::g_unlocks.getUnlockById(id)
     )))
 
-    ::showUnlocksGroupWnd([{
+    showUnlocksGroupWnd([{
       unlocksList = awards
       titleText = ::loc("unlocks/requirements")
     }])

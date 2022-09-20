@@ -7,36 +7,34 @@ let { format } = require("string")
  * Just call requestProgress function and it will provide actual value
  * requestProgress(event, field, callback, context = null)
  *   @event    - tournament event
+ *   @eventEconomicName =event economic name for request season leaderboard
  *   @field    - name of leaderboard field you want to get
  *   @callback - callback function, which receives
  *               a value as an argument (null if there is no value)
- *   @contest  - scope for callback execution
  */
 ::g_reward_progress_manager <- {
   __cache = {}
 
-  function requestProgress(event, field, callback, context = null)
+  function requestProgress(event, eventEconomicName, field, callback)
   {
-    let cb = ::Callback(callback, context)
-    let eventEconomicName = ::events.getEventEconomicName(event)
-
     //Try to get from cache
     if (eventEconomicName in __cache && __cache[eventEconomicName])
-      return cb(::getTblValue(field, __cache[eventEconomicName]))
+      return callback(__cache[eventEconomicName]?[field])
 
     //Try to get from userlog
     if (fetchRowFromUserlog(event))
-      return cb(::getTblValue(field, __cache[eventEconomicName]))
+      return callback(__cache[eventEconomicName]?[field])
 
     //Try to get from leaderbords
     let request = ::events.getMainLbRequest(event)
+    request.economicName = eventEconomicName
     if (request.forClans)
       request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
 
     let cache = __cache
     ::events.requestSelfRow(request, function (selfRow) {
       if (!selfRow.len())
-        return cb(null)
+        return callback(null)
 
       cache[eventEconomicName] <- selfRow[0]
       if (field in selfRow[0])

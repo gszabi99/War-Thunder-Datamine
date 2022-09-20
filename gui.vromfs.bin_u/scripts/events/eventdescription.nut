@@ -5,6 +5,7 @@ let { getPlayerName,
         isPlatformXboxOne,
         isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
+let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventRewards.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true)
 {
@@ -296,7 +297,7 @@ let { isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
 
     let hasAchievementGroup = (::events.getEventAchievementGroup(selectedEvent) != "")
     this.showSceneBtn("rewards_list_btn",
-      ::EventRewards.haveRewards(selectedEvent) || ::EventRewards.getBaseVictoryReward(selectedEvent)
+      haveRewards(selectedEvent) || getBaseVictoryReward(selectedEvent)
         || hasAchievementGroup)
   }
 

@@ -11,6 +11,7 @@ let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
 let { money_type } = require("%scripts/money.nut")
+let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -983,9 +984,9 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       let result = getTournamentRewardData(log)
       let desc = []
       foreach(rewardBlk in result)
-        desc.append(::EventRewards.getConditionText(rewardBlk))
+        desc.append(getConditionText(rewardBlk))
 
-      lineReward = ::EventRewards.getTotalRewardDescText(result)
+      lineReward = getTotalRewardDescText(result)
       res.description = ::g_string.implode(desc, "\n")
       res.name = ::loc("userlog/" + rewardType, {
                          name = ::colorize("userlogColoredText", ::events.getNameByEconomicName(::getTblValue("name", log)))

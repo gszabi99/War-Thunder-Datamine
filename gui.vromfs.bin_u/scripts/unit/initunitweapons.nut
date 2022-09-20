@@ -1,4 +1,4 @@
-let { split_by_chars } = require("string")
+let { format, split_by_chars } = require("string")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
 let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
@@ -169,7 +169,7 @@ let function initWeaponryUpgrades(upgradesTarget, blk) {
   }
 }
 
-let function initUnitModifications (modifications, modificationsBlk, esUnitType) {
+let function initUnitModifications(modifications, modificationsBlk, esUnitType) {
   let errorsTextArray = []
   if (modificationsBlk == null)
     return errorsTextArray
@@ -188,7 +188,7 @@ let function initUnitModifications (modifications, modificationsBlk, esUnitType)
     //validate prevModification. it used in gui only.
     if (("prevModification" in mod) && !(modificationsBlk?[mod.prevModification]))
       errorsTextArray.append(format("Not exist prevModification '%s' for '%s' (%s)",
-                             delete mod.prevModification, modName, name))
+                             delete mod.prevModification, modName, esUnitType))
   })
   return errorsTextArray
 }
