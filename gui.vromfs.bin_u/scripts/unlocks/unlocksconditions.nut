@@ -558,7 +558,7 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
   else if (t == "gameModeInfoString")
   {
     res.name <- blk?.name
-    res.values = (blk % "value")
+    res.values = (blk % "value").filter(@(v) (blk % "hideValue").indexof(v) == null)
 
     if (blk?.locParamName)
       res.locParamName <- blk.locParamName

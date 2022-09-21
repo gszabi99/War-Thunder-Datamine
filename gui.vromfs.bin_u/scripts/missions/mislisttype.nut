@@ -45,6 +45,8 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
     if ((gm == ::GM_SINGLE_MISSION) && ::g_squad_manager.isNotAloneOnline())
       if (!misBlk.getBool("gt_cooperative", false) || ::is_user_mission(misBlk))
         continue
+    if (misBlk?.hideInSingleMissionList)
+      continue
     let unlock = misBlk?.chapter? ::g_unlocks.getUnlockById(misBlk.chapter + "/" + missionId) : null
     if (unlock && !::is_unlock_visible(unlock))
       continue

@@ -5604,30 +5604,17 @@
       ]
     },
     {
-      "name": "missionFighterAttackInBattleArea",
+      "name": "eventMissionSimpleEnergyAttack",
       "selectStrategy": "ordered",
-      "reaction": [
-        {
-          "event": "groundAhead",
-          "name": "react-groundAhead",
-          "spiralUp": {
-            "spiralHorVertOffset": [
-              8.0,
-              8.0
-            ]
-          }
-        },
-        {
-          "event": "outsideBattleField",
-          "name": "react-outsideBattleField",
-          "spiralUp": {
-            "spiralHorVertOffset": [
-              8.0,
-              8.0
-            ]
+      "reaction": {
+        "event": "groundAhead",
+        "parallel": {
+          "turnToEvasiveDir": {},
+          "stayAtSpeed": {
+            "speedMode": "boostOn"
           }
         }
-      ],
+      },
       "sequencer": {
         "name": "seq-findAndAttack",
         "clearTargetList": {
@@ -5653,10 +5640,8 @@
         },
         "selector": {
           "selectStrategy": "ordered",
-          "name": "sel-fighterAttackFighter",
-          "fighterAttackFighter": {
-            "allowSpeedCheat": true
-          }
+          "name": "sel-energyAttack",
+          "energyAttack": {}
         }
       }
     }

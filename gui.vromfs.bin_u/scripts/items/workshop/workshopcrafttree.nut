@@ -98,6 +98,8 @@ let function generateRows(branchBlk, treeRows, treeBlk)
       let endPosY = iBlk.posXYTo.y.tointeger()
       minPosX = min(minPosX ?? posX, posX)
       maxPosX = max(maxPosX ?? endPosX, endPosX)
+      let reqItems = getReqItemsArray(iBlk % "reqItemExistsForDisplaying")
+      itemsIdList.__update(reqItems.fullItemsIdList)
       textBlocks.append({
         posX = posX - 1
         posY = posY - 1
@@ -107,7 +109,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
         sizeY = endPosY - posY + 1
         bodyIdx = bodyIdx
         texts = iBlk % "text"
-        reqItemExistsForDisplaying = getReqItemsArray(iBlk % "reqItemExistsForDisplaying").itemsIdArray
+        reqItemExistsForDisplaying = reqItems.itemsIdArray
       })
       continue
     }

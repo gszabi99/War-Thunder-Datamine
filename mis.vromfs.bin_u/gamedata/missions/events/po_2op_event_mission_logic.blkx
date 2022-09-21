@@ -1,0 +1,1466 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission_check": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/po_2op_event_mission/start",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
+      },
+      "else_actions": {}
+    },
+    "init_mission_props": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isActive",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "missionBattleArea": [
+          {
+            "air": true,
+            "ground": false,
+            "mapArea": true,
+            "airMapArea": true,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "player_battle_area",
+            "team": "A"
+          },
+          {
+            "air": true,
+            "ground": false,
+            "mapArea": true,
+            "airMapArea": true,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": "enemy_battle_area",
+            "team": "B"
+          }
+        ],
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player",
+          "isImmortal": true
+        },
+        "unitLoadBehTree": {
+          "name": "eventMissionSimpleEnergyAttack",
+          "objects": "enemy_sq",
+          "loadType": "tree"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/po_2op_event_mission/start",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": false
+        }
+      },
+      "else_actions": {}
+    },
+    "enemy_spawn_check_count": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "less",
+          "value": 0,
+          "object": "enemy_sq",
+          "var": "enemies_max_count"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "need_to_spawn_enemy"
+        },
+        "triggerEnable": {
+          "target": "enemy_spawn_check_idx"
+        }
+      },
+      "else_actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "need_to_spawn_enemy"
+        },
+        "triggerEnable": {
+          "target": "enemy_spawn_check_count"
+        }
+      }
+    },
+    "enemy_spawn_check_idx": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "enemy_spawn_idx",
+          "value": 16,
+          "comparasion_func": "more"
+        }
+      },
+      "actions": {
+        "varSetInt": {
+          "value": 1,
+          "var": "enemy_spawn_idx"
+        },
+        "triggerEnable": {
+          "target": "enemy_spawn"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "enemy_spawn"
+        }
+      }
+    },
+    "enemy_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "less",
+          "value": 0,
+          "object": "enemy_sq",
+          "var": "enemies_max_count"
+        }
+      },
+      "actions": {
+        "varSetString": {
+          "value": "spawn_",
+          "var": "enemy_spawn_str"
+        },
+        "varAddString": {
+          "value": "@enemy_spawn_idx",
+          "digits": 2,
+          "var": "enemy_spawn_str"
+        },
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "enemy_sq",
+          "object_type": "isDelayed",
+          "target": "@enemy_spawn_str",
+          "randomObjectsCount": 1,
+          "isStealth": true,
+          "setObjectMarking": 0,
+          "shouldKeepFormation": false
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "enemy_sq",
+          "attack_type": "attack_target",
+          "target": "player"
+        },
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "enemy_sq",
+          "stealthRadius": 2000.0,
+          "calmDetection": true
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "enemy_spawn_idx"
+        },
+        "triggerEnable": {
+          "target": "enemy_spawn_check_idx"
+        }
+      },
+      "else_actions": {}
+    },
+    "enemy_out_delay": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.2
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": [
+          {
+            "math": "notNear2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "enemy_sq",
+            "target": "enemy_battle_area"
+          },
+          {
+            "math": "3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "enemy_sq",
+            "target": "enemy_too_high_area"
+          }
+        ]
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "enemy_sq",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": {}
+    },
+    "enemy_killed_delay": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.2
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "enemy_sq",
+          "target": "player_bottom_return_area"
+        }
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "enemy_sq",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": {}
+    },
+    "player_reload": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 5.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_op",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": false,
+          "target": "player",
+          "ammoRestore": true
+        }
+      },
+      "else_actions": {}
+    },
+    "player_battlearea_handler": {
+      "isCategory": true,
+      "is_enabled": true,
+      "player_too_low": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "player",
+            "target": "player_bottom_area"
+          }
+        },
+        "actions": {
+          "playSound": {
+            "name": "aircraft/gui/alarm_alt",
+            "loop": false,
+            "start": true
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/po_2op_event_mission/climd",
+            "action": "warning",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": true,
+            "warningTime": 1.0,
+            "target": "player"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "player_low_alt_timer"
+          }
+        },
+        "else_actions": {
+          "varSetInt": {
+            "value": 10,
+            "var": "player_low_alt_timer"
+          }
+        }
+      },
+      "player_too_low_reset": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "player_low_alt_timer",
+            "value": 0,
+            "comparasion_func": "notMore"
+          },
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "player",
+            "target": "player_bottom_return_area"
+          }
+        },
+        "actions": {
+          "playSound": {
+            "name": "aircraft/gui/alarm_alt",
+            "loop": false,
+            "start": false
+          },
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "player_respawn_pos",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1500.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "player",
+            "move_type": "teleport",
+            "lookat": "spawn_02"
+          }
+        },
+        "else_actions": {}
+      },
+      "player_too_high": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "player",
+            "target": "player_up_area"
+          }
+        },
+        "actions": {
+          "playSound": {
+            "name": "aircraft/gui/alarm_alt",
+            "loop": false,
+            "start": true
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/po_2op_event_mission/descend",
+            "action": "warning",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": true,
+            "warningTime": 1.0,
+            "target": "player"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "player_high_alt_timer"
+          }
+        },
+        "else_actions": {
+          "varSetInt": {
+            "value": 10,
+            "var": "player_high_alt_timer"
+          }
+        }
+      },
+      "player_too_high_reset": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "player_high_alt_timer",
+            "value": 0,
+            "comparasion_func": "notMore"
+          },
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "player",
+            "target": "enemy_too_high_area"
+          }
+        },
+        "actions": {
+          "playSound": {
+            "name": "aircraft/gui/alarm_alt",
+            "loop": false,
+            "start": false
+          },
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "player_respawn_pos",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1500.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "player",
+            "move_type": "teleport",
+            "lookat": "spawn_02"
+          }
+        },
+        "else_actions": {}
+      }
+    },
+    "player_status_and_timers": {
+      "isCategory": true,
+      "is_enabled": true,
+      "kill_counter": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "enemy_sq",
+            "unit_type_ex": "isKilledByPlayer"
+          }
+        },
+        "actions": {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "enemy_sq",
+            "useForTriggerFiltered": true
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "kill_count"
+          },
+          "triggerEnable": {
+            "target": "kill_add_op_time"
+          }
+        },
+        "else_actions": {}
+      },
+      "kill_add_op_time": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "is_op",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "op_timer",
+            "use_variable": true,
+            "var_value": "kill_op_timer_add"
+          },
+          "playHint": {
+            "hintType": "bottom",
+            "name": "hints/po_2op_event_mission/to_op_timer",
+            "action": "show",
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": 2.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "var_name": "kill_op_timer_add"
+          }
+        },
+        "else_actions": {}
+      },
+      "set_indicators": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.2
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "missionSetTargetsIndicator": {
+            "target_type": "any",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "score",
+            "icon army": 1,
+            "set": true,
+            "target": "player",
+            "var": "kill_count"
+          },
+          "__missionSetTargetsIndicator": {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "air",
+            "icon army": 2,
+            "set": true,
+            "target": "enemy_sq"
+          },
+          "missionSetTimeIndicator": {
+            "var": "op_timer"
+          }
+        },
+        "else_actions": {}
+      },
+      "op_timer_tick": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "op_timer",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "op_timer"
+          }
+        },
+        "else_actions": {
+          "playSound": {
+            "name": "dialogs_crew_aircraft/voice1/voice_message_return_to_base_0",
+            "loop": false,
+            "start": true
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": false
+          },
+          "varSetBool": {
+            "value": false,
+            "var": "is_op"
+          },
+          "triggerDisable": {
+            "target": "op_timer_tick"
+          }
+        }
+      },
+      "objective_completed": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.2
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "kill_count",
+            "value": 100,
+            "comparasion_func": "notLess"
+          }
+        },
+        "actions": {
+          "moSetObjectiveStatus": {
+            "target": "missions/po_2op_event_mission/objective",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          },
+          "missionCompleted": {
+            "timer": false,
+            "debriefingTimer": 7
+          }
+        },
+        "else_actions": {}
+      },
+      "player_death": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.2
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isKilled",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "player"
+          },
+          "varCompareInt": {
+            "var_value": "kill_count",
+            "value": 100,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "missionFailed": {}
+        },
+        "else_actions": {}
+      }
+    },
+    "d_point": {
+      "isCategory": true,
+      "is_enabled": true,
+      "player_too_far": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 1800.0,
+            "math": "notNear3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "player",
+            "target": "d_point",
+            "compareCenters": true
+          },
+          "unitWhenInArea": {
+            "math": "notNear3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "player",
+            "target": "player_bottom_area"
+          },
+          "unitWhenStatus": {
+            "object_type": "isAlive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "player"
+          },
+          "varCompareBool": {
+            "var_value": "is_op",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "triggerEnable": {
+            "target": "enable_d_point"
+          }
+        },
+        "else_actions": {}
+      },
+      "enable_d_point": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "missionMarkAsCaptureZone": {
+            "army": 2,
+            "timeMultiplier": 1.0,
+            "disableZone": false,
+            "name_for_respawn_base": "",
+            "target": "player_respawn_pos",
+            "iconIndex": 3,
+            "canCaptureOnGround": false,
+            "playAirfieldSound": false,
+            "canCaptureInAir": false,
+            "canCaptureByGM": true,
+            "onlyPlayersCanCapture": true,
+            "zoneDefenders": {}
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "voice_message_attack_D_1",
+            "action": "show",
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": 3.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          "playSound": {
+            "name": "dialogs_crew_aircraft/voice3/voice_message_attack_D_0",
+            "loop": false,
+            "start": true
+          },
+          "triggerEnable": {
+            "target": "check_d_point"
+          }
+        },
+        "else_actions": {}
+      },
+      "check_d_point": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 100.0,
+            "math": "3D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "player",
+            "target": "d_point",
+            "compareCenters": true
+          }
+        },
+        "actions": {
+          "missionMarkAsCaptureZone": {
+            "army": 0,
+            "timeMultiplier": 1.0,
+            "disableZone": true,
+            "name_for_respawn_base": "",
+            "target": "player_respawn_pos",
+            "iconIndex": 3,
+            "canCaptureOnGround": false,
+            "playAirfieldSound": false,
+            "canCaptureInAir": false,
+            "canCaptureByGM": true,
+            "onlyPlayersCanCapture": true,
+            "zoneDefenders": {}
+          },
+          "triggerEnable": {
+            "target": "capture_add_op_time"
+          }
+        },
+        "else_actions": {}
+      },
+      "capture_add_op_time": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "is_op",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "op_timer",
+            "use_variable": true,
+            "var_value": "capture_op_timer_add"
+          },
+          "playHint": {
+            "hintType": "bottom",
+            "name": "hints/po_2op_event_mission/to_op_timer",
+            "action": "show",
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": 2.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "var_name": "capture_op_timer_add"
+          },
+          "triggerEnable": {
+            "target": "player_too_far"
+          }
+        },
+        "else_actions": {}
+      }
+    },
+    "barrel_roll": {
+      "isCategory": true,
+      "is_enabled": true,
+      "barrel_roll_timer_tick": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "barrel_roll_timer",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "barrel_roll_timer"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "barrel_roll_check_necessity"
+          },
+          "triggerDisable": {
+            "target": "barrel_roll_timer_tick"
+          }
+        }
+      },
+      "barrel_roll_check_necessity": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.2
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "is_op",
+            "value": false,
+            "comparasion_func": "equal"
+          },
+          "varCompareInt": {
+            "var_value": "barrel_roll_ability_count",
+            "value": 0,
+            "comparasion_func": "more"
+          },
+          "unitWhenStatus": {
+            "object_type": "isAlive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "player"
+          }
+        },
+        "actions": {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/po_2op_event_mission/do_a_barrel_roll",
+            "action": "show",
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": 5.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          "triggerEnable": {
+            "target": "do_barrel_roll"
+          },
+          "triggerDisable": {
+            "target": "barrel_roll_check_necessity"
+          }
+        },
+        "else_actions": {}
+      },
+      "do_barrel_roll": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.2
+          }
+        },
+        "conditions": {
+          "playerWhenManeuver": [
+            {
+              "manName": "barrel_left"
+            },
+            {
+              "manName": "barrel_right"
+            }
+          ]
+        },
+        "actions": {
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "hints/po_2op_event_mission/do_a_barrel_roll",
+              "action": "hide",
+              "shouldFadeOut": true,
+              "isOverFade": false,
+              "time": 5.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "hints/po_2op_event_mission/to_op_timer",
+              "action": "show",
+              "shouldFadeOut": true,
+              "isOverFade": false,
+              "time": 5.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "var_name": "barrel_roll_op_timer_add"
+            }
+          ],
+          "playSound": {
+            "name": "dialogs_crew_aircraft/voice2/voice_message_well_done_0",
+            "loop": false,
+            "start": true
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 0.0,
+              "var": "op_timer",
+              "use_variable": true,
+              "var_value": "barrel_roll_op_timer_add"
+            },
+            {
+              "operator": "add",
+              "value": -1.0,
+              "var": "barrel_roll_ability_count"
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "barrel_roll_timer",
+            "input_var": "barrel_roll_cooldown"
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "is_op"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          },
+          "triggerEnable": {
+            "target": [
+              "barrel_roll_timer_tick",
+              "op_timer_tick"
+            ]
+          }
+        },
+        "else_actions": {}
+      }
+    },
+    "mission_states": {
+      "isCategory": true,
+      "is_enabled": true,
+      "first_up": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.2
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "kill_count",
+            "value": 35,
+            "comparasion_func": "notLess"
+          }
+        },
+        "actions": {
+          "varModify": [
+            {
+              "operator": "add",
+              "value": -2.0,
+              "var": "kill_op_timer_add"
+            },
+            {
+              "operator": "add",
+              "value": 5.0,
+              "var": "barrel_roll_op_timer_add"
+            },
+            {
+              "operator": "add",
+              "value": 10.0,
+              "var": "enemies_max_count"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "second_up": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.2
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "kill_count",
+            "value": 70,
+            "comparasion_func": "notLess"
+          }
+        },
+        "actions": {
+          "varModify": [
+            {
+              "operator": "add",
+              "value": -2.0,
+              "var": "kill_op_timer_add"
+            },
+            {
+              "operator": "add",
+              "value": 5.0,
+              "var": "barrel_roll_op_timer_add"
+            },
+            {
+              "operator": "add",
+              "value": 10.0,
+              "var": "enemies_max_count"
+            }
+          ]
+        },
+        "else_actions": {}
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "missions/po_2op_event_mission/objective": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    }
+  },
+  "variables": {
+    "need_to_spawn_enemy": false,
+    "enemy_spawn_idx": 1,
+    "enemy_spawn_str": "",
+    "kill_count": 0,
+    "enemies_max_count": 20,
+    "player_low_alt_timer": 0,
+    "player_high_alt_timer": 0,
+    "op_timer": 60,
+    "is_op": true,
+    "kill_op_timer_add": 7,
+    "capture_op_timer_add": 15,
+    "barrel_roll_op_timer_add": 10,
+    "barrel_roll_cooldown": 90,
+    "barrel_roll_timer": 0,
+    "barrel_roll_ability_count": 3
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

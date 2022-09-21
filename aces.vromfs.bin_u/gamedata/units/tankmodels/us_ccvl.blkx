@@ -96,6 +96,7 @@
     },
     "RHHA_add_6mm_parts": {
       "armorClass": "RHAHH_tank",
+      "createSecondaryShatters": false,
       "hidableInViewer": true,
       "armorThickness": 6.35,
       "turret_01_side_dm": {},
@@ -772,6 +773,9 @@
         "hp": 100.0
       }
     }
+  },
+  "attachables": {
+    "ex_armor_01_dm": true
   },
   "xray_viewer_data": {
     "armorArrayHull": {
@@ -2728,8 +2732,8 @@
     ],
     "headPosOnShooting": [
       -0.6,
-      3.7,
-      -0.0
+      3.5,
+      0.4
     ],
     "detectionHeight": 2.81
   },
@@ -2908,8 +2912,8 @@
     },
     "105mm_us_M416_Smoke": {},
     "105mm_usa_HESH": {},
-    "105mm_usa_M735_APDS_FS": {},
     "105mm_NATO_APDS_FS": {},
+    "105mm_usa_M833_APDS_FS": {},
     "105mm_us_M416_Smoke_ammo_pack": {
       "tier": 1
     },
@@ -2917,7 +2921,9 @@
       "tier": 2
     },
     "105mm_NATO_APDS_FS_ammo_pack": {},
-    "105mm_usa_M735_APDS_FS_ammo_pack": {},
+    "105mm_usa_M833_APDS_FS_ammo_pack": {
+      "tier": 4
+    },
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
       "tier": 4,
@@ -3230,7 +3236,21 @@
           }
         }
       }
+    },
+    "tank_support_ucav": {
+      "rcostAddParam": 0.92,
+      "effects": {
+        "allowSupportPlane": true
+      },
+      "disableModEffects": {
+        "allowSupportPlane": false
+      }
     }
+  },
+  "supportPlane": {
+    "supportPlaneClass": "ucav_recon_micro",
+    "planeStartSpeed": 80.0,
+    "count": 1
   },
   "default_skin": {
     "set_tex": [
