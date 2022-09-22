@@ -5,10 +5,30 @@ let { get_local_unixtime } = require("dagor.time")
 let { grnd               } = require("dagor.random")
 let { format             } = require("string")
 let { to_string          } = require("json")
+let { get_user_system_info } = require("sysinfo")
+
+
+let function add_uuid(table)
+{
+  let sysinfo = get_user_system_info()
+
+  local uuid = ""
+  foreach (u in ["uuid0", "uuid2"])  // biosUuid, systemHddId
+  {
+    local str = sysinfo?[u] ?? ""
+    str = str.slice(str.len() / 2)
+    uuid = $"{uuid}{str}"
+  }
+
+  if (uuid.len() > 0)
+    table.uuid <- uuid
+}
 
 
 let function add_user_info(table)
 {
+  add_uuid(table)
+
   let distr = ::get_settings_blk()?.distr ?? ""
   if (distr.len() > 0)
     table.distr <- distr
@@ -19,6 +39,13 @@ let function add_user_info(table)
 
   assert(::target_platform.len() > 0)
   table.os <- ::target_platform
+
+  if (::steam_is_running())
+    table.steam <- true
+
+  let steamId = ::steam_get_my_id()
+  if (steamId.len() > 0)
+    table.steamId <- steamId
 }
 
 
