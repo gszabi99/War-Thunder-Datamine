@@ -272,6 +272,7 @@ local unlockConditionUnitclasses = {
   if (blk?._controller)
     config._controller <- blk._controller
 
+  local hasCurStageInProgressData = false // this param is compatibility for wop_2_19_0_X, feel free to remove after wop_2_21_0_X
   foreach (modeIdx, mode in blk % "mode")
   {
     let modeType = mode?.type ?? ""
@@ -328,6 +329,8 @@ local unlockConditionUnitclasses = {
         }
 
         config.curVal = progress.curVal
+        config.curStage = (progress?.curStage ?? -1) + 1
+        hasCurStageInProgressData = (progress?.curStage != null)
       }
     }
 
@@ -369,12 +372,14 @@ local unlockConditionUnitclasses = {
   else if (config.useLastStageAsUnlockOpening) {
     config.maxVal = config.stages.top().val
     config.curVal = min(config.curVal, config.maxVal)
-    config.curStage = 0
-    for (local i = config.stages.len() - 1; i >= 0; --i) {
-      let stage = config.stages[i]
-      if (stage.val <= config.curVal) {
-        config.curStage = i + 1
-        break
+    if (!hasCurStageInProgressData) { // getting curStage from stages is compatibility for wop_2_19_0_X, feel free to remove after wop_2_21_0_X
+      config.curStage = 0
+      for (local i = config.stages.len() - 1; i >= 0; --i) {
+        let stage = config.stages[i]
+        if (stage.val <= config.curVal) {
+          config.curStage = i + 1
+          break
+        }
       }
     }
   }
@@ -384,7 +389,8 @@ local unlockConditionUnitclasses = {
       if ((stage.val <= config.maxVal && stage.val > config.curVal)
           || (config.curStage < 0 && stage.val == config.maxVal && stage.val == config.curVal))
       {
-        config.curStage = idx
+        if (!hasCurStageInProgressData) // getting curStage from stages is compatibility for wop_2_19_0_X, feel free to remove after wop_2_21_0_X
+          config.curStage = idx
         config.maxVal = stage.val
       }
   }
