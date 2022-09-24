@@ -2070,6 +2070,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.value = ::get_gui_option(optionId)
       break
 
+    case ::USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON:
+      descr.id = "automatic_empty_containers_jettison"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_gui_option(optionId)
+      break
+
     case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
       descr.id = "use_radar_hud_in_cockpit"
       descr.controlType = optionControlType.CHECKBOX
@@ -4691,6 +4698,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       ::set_option_default_ai_target_type(value)
       break;
     case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
+      ::set_gui_option(optionId, value)
+      break;
+    case ::USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON:
       ::set_gui_option(optionId, value)
       break;
     case ::USEROPT_SHOW_INDICATORS_TYPE:
