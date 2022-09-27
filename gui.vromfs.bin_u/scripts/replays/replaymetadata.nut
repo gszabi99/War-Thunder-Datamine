@@ -94,7 +94,7 @@ let restoreReplayScriptCommentsBlk = function(replayPath)
     }
   }
 
-  ::SessionLobby.playersInfo = playersInfo
+  ::SessionLobby.setCustomPlayersInfo(playersInfo)
 }
 
 // Creates global func, which is called from client.

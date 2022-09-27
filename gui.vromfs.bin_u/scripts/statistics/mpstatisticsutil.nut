@@ -168,9 +168,7 @@ let function guiStartMPStatScreenFromGame()
       local item = ""
       local tdData = ""
       let widthAdd = ((j==0)||(j==(hdr.len()-1)))? "+@tablePad":""
-      local textPadding = "style:t='padding:0.005sh,0;'; "
-      if (j==0)             textPadding = "style:t='padding:@tablePad,0,0.005sh,0;'; "
-      if (j==(hdr.len()-1)) textPadding = "style:t='padding:0.005sh,0,@tablePad,0;'; "
+      local textPadding = "style:t='padding:@tablePad,0;'; "
 
       if (!isEmpty && (hdr[j] in table[i]))
         item = table[i][hdr[j]]

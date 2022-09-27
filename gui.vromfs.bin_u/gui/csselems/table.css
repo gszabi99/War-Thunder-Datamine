@@ -722,9 +722,12 @@ td[team] > teamImg {
   pos:50%pw-50%w, 50%ph-50%h;
 }
 
+teamImg {
+  text-valign:center;
+}
+
 teamImg > activeText {
   font:@fontSmall;
-  margin-top:4;
   text-align:center;
   padding:0;
 }
@@ -747,9 +750,6 @@ teamImg > activeText {
 [team=red] > teamImg[iconSquad=squad][topSquad=yes] {
   background-image:#ui/gameuiskin#icon_best_squad_enemy.svg;
 }
-teamImg[iconSquad=squad] > activeText {
-  margin-top:0.01@sf;
-}
 teamImg[iconSquad=autosquad] {
   size:0.025@sf, 0.025@sf;
   background-svg-size:0.025@sf, 0.025@sf;
@@ -759,7 +759,7 @@ teamImg[iconSquad=autosquad][topSquad=yes] {
   background-image:#ui/gameuiskin#table_best_autosquad_background.svg;
 }
 teamImg[iconSquad=autosquad] > activeText {
-  margin-top:0.004@sf;
+  top:(ph-h)/2 - 0.001@sf;
 }
 
 [id=controls_tbl] > tr > td {

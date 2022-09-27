@@ -323,6 +323,11 @@ let allowed_mission_settings = { //only this settings are allowed in room
       return getMissionLocIdsArray(::get_mission_meta_info(misData.name))
     return []
   }
+
+  function setCustomPlayersInfo(customPlayersInfo){
+    playersInfo = customPlayersInfo
+    updateIconPlayersInfo()
+  }
 }
 
 SessionLobby.setIngamePresence <- function setIngamePresence(roomPublic, roomId)

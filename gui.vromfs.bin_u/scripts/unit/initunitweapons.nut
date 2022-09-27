@@ -46,15 +46,15 @@ let function initPresetParams(weapon, blk = null) {
 }
 
 let function initCustomPresetParams(unit, weapon) {
-  let wpCost = ::get_wpcost_blk()?[unit.name].weapons
+  let { weapons = null, defaultCommonPresetMassPerSec = 0 } = ::get_wpcost_blk()?[unit.name]
   local bombsNbr = 0
-  local massPerSecValue = 0
+  local massPerSecValue = defaultCommonPresetMassPerSec
   foreach (w in  (weapon?.weaponsBlk ? weapon.weaponsBlk % "Weapon" : [])) {
-    let pWeapons = (wpCost?.custom_presets ? wpCost.custom_presets % "slot" : [])
+    let pWeapons = (weapons?.custom_presets ? weapons.custom_presets % "slot" : [])
       .findvalue(@(v) v.index == w.slot)[w.preset]
     if (pWeapons)
       eachParam(pWeapons, function(count, name){
-        let blk = wpCost?[name]
+        let blk = weapons?[name]
         weapon.weaponmask <- (weapon?.weaponmask ?? 0) | (blk?.weaponmask ?? 0)
         if ("mass_per_sec" in blk)
           massPerSecValue += blk.mass_per_sec * count

@@ -133,7 +133,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null)
   let requestBlk = DataBlock()
   requestBlk.setStr("usersList", usersList)
 
-  let fullSuccessCb = function(response) {
+  let function fullSuccessCb(response) {
     let parsedResponse = _convertServerResponse(response)
     _requestDataCommonSuccessCallback(parsedResponse)
     clearRequestArray(parsedResponse)
@@ -142,8 +142,8 @@ let function requestUsersInfo(users, successCb = null, errorCb = null)
     haveRequest = false
   }
 
-  let fullErrorCb = function(response) {
-    errorCb?()
+  let function fullErrorCb(response) {
+    errorCb?(response)
     haveRequest = false
   }
 
@@ -155,8 +155,7 @@ let function updateUsersInfo()
 {
   clearTimer(updateUsersInfo)
   let updateUsersInfo_ = callee()
-  let errorCb = function()
-  {
+  let function errorCb(_) {
     clearTimer(updateUsersInfo_)
     setTimeout(MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC, updateUsersInfo_)
   }

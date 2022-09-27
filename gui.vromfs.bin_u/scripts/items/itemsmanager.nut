@@ -86,6 +86,7 @@ foreach (fn in [
 ::ItemsManager <- {
   itemsList = []
   inventory = []
+  inventoryItemById = {}
   shopItemById = {}
 
   itemsListInternal = []
@@ -182,6 +183,12 @@ foreach (fn in [
 
   function invalidateShopVisibleSeenIds() {
     shopVisibleSeenIds = null
+  }
+
+  function getInventoryItemById(id)
+  {
+    _checkInventoryUpdate()
+    return inventoryItemById?[id]
   }
 }
 
@@ -526,6 +533,7 @@ local lastItemDefsUpdatedelayedCall = 0
   _needInventoryUpdate = false
 
   inventory = []
+  inventoryItemById.clear()
 
   let itemsBlk = ::get_items_blk()
 
@@ -558,6 +566,7 @@ local lastItemDefsUpdatedelayedCall = 0
 
     let item = createItem(iType, blk, invItemBlk, slot)
     inventory.append(item)
+    inventoryItemById[item.id] <- item
     if (item.shouldAutoConsume && !item.isActive())
       setShouldCheckAutoConsume(true)
   }
@@ -571,6 +580,7 @@ local lastItemDefsUpdatedelayedCall = 0
     {
       let item = createItem(blk?.type, blk, ::DataBlock(), {uids = [::FAKE_ITEM_CYBER_CAFE_BOOSTER_UID]})
       inventory.append(item)
+      inventoryItemById[item.id] <- item
     }
   }
 
@@ -615,6 +625,7 @@ local lastItemDefsUpdatedelayedCall = 0
       if (item.shouldAutoConsume)
         setShouldCheckAutoConsume(true)
       extInventoryItems.append(item)
+      inventoryItemById[item.id] <- item
     }
   }
 
@@ -638,6 +649,7 @@ local lastItemDefsUpdatedelayedCall = 0
     let item = createItem(iType, itemdef, {})
     item.transferAmount += amount
     extInventoryItems.append(item)
+    inventoryItemById[item.id] <- item
   }
 
   if (itemdefsToRequest.len())
@@ -672,8 +684,6 @@ local lastItemDefsUpdatedelayedCall = 0
 
   return inventoryVisibleSeenIds
 }
-
-::ItemsManager.getInventoryItemById <- @(id) ::u.search(getInventoryList(), @(item) item.id == id)
 
 ::ItemsManager.getInventoryItemByCraftedFrom <- @(uid) ::u.search(getInventoryList(),
   @(item) item.isCraftResult() && item.craftedFrom == uid)
