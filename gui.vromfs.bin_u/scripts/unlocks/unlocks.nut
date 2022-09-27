@@ -995,7 +995,7 @@ local unlockConditionUnitclasses = {
         res.descrImage <- imagePath
         res.descrImageSize <- "128, 128"
         res.tooltipImage <- ::get_image_for_unlockable_medal(id, true)
-        res.tooltipImageSize <- "@profileMedalSizeBig, @profileMedalSizeBig"
+        res.tooltipImageSize <- "@profileMedalSize, @profileMedalSize"
       }
       break
 
