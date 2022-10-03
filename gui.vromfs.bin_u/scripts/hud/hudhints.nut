@@ -428,6 +428,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     }
   }
 
+  BAILOUT_CANT_REPAIR = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/bailout_cant_repair"
+    showEvent = "hint:bailout:cantRepair"
+    selfRemove = true
+    lifeTime = 10.0
+  }
+
   SKIP_XRAY_SHOT = {
     hintType = ::g_hud_hint_types.MINOR
     locId = "hints/skip"
