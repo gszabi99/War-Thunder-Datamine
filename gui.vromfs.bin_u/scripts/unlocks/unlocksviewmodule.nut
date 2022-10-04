@@ -72,15 +72,15 @@ let function getUnlockDesc(cfg) {
   return "\n".join(desc, true)
 }
 
-let function getUnlockConditionsText(cfg, params = {}) {
+let function getUnlockConditionsText(cfg) {
   if (!cfg?.conditions)
     return ""
 
-  params.isExpired <- cfg.isExpired
-
-  let hideCurVal = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
-  let curVal = params?.curVal ?? (hideCurVal ? null : cfg.curVal)
-  return ::UnlockConditions.getConditionsText(cfg.conditions, curVal, cfg.maxVal, params)
+  return ::UnlockConditions.getConditionsText(cfg.conditions, null, null, {
+    withMainCondition = false
+    showMult = false
+    isExpired = cfg.isExpired
+  })
 }
 
 let function getUnlockCostText(cfg) {
@@ -97,13 +97,14 @@ let function getUnlockCostText(cfg) {
   return ""
 }
 
-let function getUnlockMainCondText(cfg) {
+// params: { curVal, showValueForBitList }
+let function getUnlockMainCondText(cfg, params = {}) {
   if (!cfg?.conditions)
     return ""
 
   let hideCurVal = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
-  let curVal = hideCurVal ? null : cfg.curVal
-  return ::UnlockConditions.getMainConditionText(cfg.conditions, curVal, cfg.maxVal)
+  let curVal = params?.curVal ?? (hideCurVal ? null : cfg.curVal)
+  return ::UnlockConditions.getMainConditionText(cfg.conditions, curVal, cfg.maxVal, params)
 }
 
 let function getUnlockMultDesc(cfg) {
@@ -117,8 +118,9 @@ let function getUnlockMultDesc(cfg) {
 let function getFullUnlockDesc(cfg, params = {}) {
   return "\n".join([
     getUnlockDesc(cfg),
-    getUnlockConditionsText(cfg, params),
-    params?.showCost ? getUnlockCostText(cfg) : ""], true)
+    getUnlockMainCondText(cfg, params),
+    getUnlockConditionsText(cfg),
+    getUnlockMultDesc(cfg)], true)
 }
 
 let function getFullUnlockDescByName(unlockName, forUnlockedStage = -1, params = {}) {
@@ -139,4 +141,5 @@ return {
   getUnlockConditionsText
   getUnlockMainCondText
   getUnlockMultDesc
+  getUnlockCostText
 }

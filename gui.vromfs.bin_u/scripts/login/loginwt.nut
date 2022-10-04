@@ -291,7 +291,7 @@ let function go_to_account_web_page(bqKey = "")
 }
 
 let function needAutoStartBattle() {
-  if (isFirstChoiceShown.value
+  if (!isFirstChoiceShown.value
       || !::has_feature("BattleAutoStart")
       || ::disable_network()
       || ::stat_get_value_respawns(0, 1) > 0

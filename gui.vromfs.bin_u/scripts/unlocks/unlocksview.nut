@@ -5,7 +5,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { is_bit_set } = require("%sqstd/math.nut")
 let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
 } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnlockLocName, getSubUnlockLocName,
+let { getUnlockLocName, getSubUnlockLocName, getUnlockMainCondText, getUnlockMultDesc,
   getUnlockDesc, getUnlockConditionsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
@@ -18,8 +18,10 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       : ::get_unlock_name_text(unlockConfig.unlockType, unlockConfig.id)
     if (name == "")
       name = ::get_unlock_type_text(unlockConfig.unlockType, unlockConfig.id)
-    let stage = (unlockConfig.needToAddCurStageToName && unlockConfig.curStage >= 0)
-      ? unlockConfig.curStage + 1
+
+    let hasStages = (unlockConfig.stages.len() ?? 0) > 0
+    let stage = (unlockConfig.needToAddCurStageToName && hasStages && (unlockConfig.curStage >= 0))
+      ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
       : 0
     return $"{name} {::roman_numerals[stage]}"
   }
@@ -341,20 +343,9 @@ g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConf
 g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
 {
   unlockObj.findObject("description").setValue(getUnlockDesc(unlockConfig))
-
-  let hideCurVal = ::g_unlocks.isUnlockComplete(unlockConfig) && !unlockConfig.useLastStageAsUnlockOpening
-  let curVal = hideCurVal ? null : unlockConfig.curVal
-  let mainCondText = ::UnlockConditions.getMainConditionText(unlockConfig.conditions, curVal, unlockConfig.maxVal)
-  unlockObj.findObject("main_cond").setValue(mainCondText)
-
-  let mainCond = ::UnlockConditions.getMainProgressCondition(unlockConfig.conditions)
-  let mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
-  unlockObj.findObject("mult_desc").setValue(mulText)
-
-  unlockObj.findObject("conditions").setValue(getUnlockConditionsText(unlockConfig, {
-    withMainCondition = false
-    showMult = false
-  }))
+  unlockObj.findObject("main_cond").setValue(getUnlockMainCondText(unlockConfig))
+  unlockObj.findObject("mult_desc").setValue(getUnlockMultDesc(unlockConfig))
+  unlockObj.findObject("conditions").setValue(getUnlockConditionsText(unlockConfig))
 
   let showUnitsBtnObj = unlockObj.findObject("show_units_btn")
   showUnitsBtnObj.show(hasActiveUnlock(unlockConfig.id, getShopDiffCode())

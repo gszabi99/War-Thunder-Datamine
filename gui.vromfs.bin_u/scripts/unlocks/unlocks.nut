@@ -628,10 +628,7 @@ local unlockConditionUnitclasses = {
     obj.findObject("desc_text").setValue(getUnlockDesc(config.unlockCfg))
     obj.findObject("mainCond").setValue(getUnlockMainCondText(config.unlockCfg))
     obj.findObject("multDesc").setValue(getUnlockMultDesc(config.unlockCfg))
-    obj.findObject("conds").setValue(getUnlockConditionsText(config.unlockCfg, {
-      withMainCondition = false
-      showMult = false
-    }))
+    obj.findObject("conds").setValue(getUnlockConditionsText(config.unlockCfg))
     obj.findObject("obtain_info").setValue(config?.obtainInfo ?? "")
 
     if (isForTooltip) {
@@ -1004,6 +1001,7 @@ local unlockConditionUnitclasses = {
       if (challengeDescription && challengeDescription != "")
         res.desc = challengeDescription
       res.image = "#ui/gameuiskin#unlock_challenge.png"
+      res.isLocked <- !::is_unlocked_scripted(-1, id)
       break
 
     case ::UNLOCKABLE_SINGLEMISSION:

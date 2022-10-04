@@ -103,10 +103,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   let canShowUnlockDesc = !isTrophyContent && !isReceivedPrizes
   let mainCond = canShowUnlockDesc ? getUnlockMainCondText(config) : ""
   let multDesc = canShowUnlockDesc ? getUnlockMultDesc(config) : ""
-  let conds = canShowUnlockDesc ? getUnlockConditionsText(config, {
-    withMainCondition = false
-    showMult = false
-  }) : ""
+  let conds = canShowUnlockDesc ? getUnlockConditionsText(config) : ""
 
   let cObj = obj.findObject("conditions")
   cObj.findObject("mainCond").setValue(mainCond)

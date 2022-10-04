@@ -672,10 +672,7 @@ let selMedalIdx = {}
 
     infoObj.findObject("decalMainCond").setValue(getUnlockMainCondText(cfg))
     infoObj.findObject("decalMultDecs").setValue(getUnlockMultDesc(cfg))
-    infoObj.findObject("decalConds").setValue(getUnlockConditionsText(cfg, {
-      withMainCondition = false
-      showMult = false
-    }))
+    infoObj.findObject("decalConds").setValue(getUnlockConditionsText(cfg))
     infoObj.findObject("decalPrice").setValue(getDecalObtainInfo(decor))
   }
 
@@ -1269,10 +1266,7 @@ let selMedalIdx = {}
       skinPrice = decorator.getCostText()
       mainCond = getUnlockMainCondText(config)
       multDesc = getUnlockMultDesc(config)
-      conds = getUnlockConditionsText(config, {
-        withMainCondition = false
-        showMult = false
-      })
+      conds = getUnlockConditionsText(config)
       conditions = getSubUnlocksView(config)
       canAddFav
     }
@@ -1499,10 +1493,7 @@ let selMedalIdx = {}
       hasProgress = progressData.show
       mainCond = getUnlockMainCondText(config)
       multDesc = getUnlockMultDesc(config)
-      conds = getUnlockConditionsText(config, {
-        withMainCondition = false
-        showMult = false
-      })
+      conds = getUnlockConditionsText(config)
       rewardText = rewardText != "" ? rewardText : null
     }
 

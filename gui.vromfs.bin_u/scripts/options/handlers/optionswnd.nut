@@ -589,12 +589,6 @@ let function openOptionsWnd(group = null) {
     ::WebUI.launch_browser()
   }
 
-  function afterModalDestroy()
-  {
-    joinEchoChannel(false);
-    base.afterModalDestroy()
-  }
-
   function fullReloadScene() {
     doApply()
     base.fullReloadScene()
@@ -602,6 +596,7 @@ let function openOptionsWnd(group = null) {
 
   function doApply()
   {
+    joinEchoChannel(false);
     let result = base.doApply();
 
     let group = curGroup == -1 ? null : optGroups[curGroup];

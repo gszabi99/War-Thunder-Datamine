@@ -1,5 +1,5 @@
 let regexp2 = require("regexp2")
-let { getTierWeaponsParams, getCustomWeaponryPresetView, editSlotInPreset, getPresetDisbalanceText
+let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -7,8 +7,6 @@ let { openPopupList } = require("%scripts/popups/popupList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { addCustomPreset, isPresetChanged } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { getUnitWeaponSlots } = require("%scripts/weaponry/weaponryPresets.nut")
-
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
 
@@ -33,14 +31,13 @@ let function openEditPresetName(name, okFunc) {
   presetNest           = null
   availableWeapons     = null
   favoriteArr          = null
-  maxDisbalance        = -1
-  notUseforDisbalance  = null
+  unitBlk              = null
 
   getSceneTplView = @() { presets = getPresetMarkup() }
 
   function initScreen() {
-    updateUnitDisbalanceParams()
-    checkWeightDisbalance()
+    unitBlk = ::get_full_unit_blk(unit.name)
+    checkWeightRestrictions()
     presetNest = scene.findObject("presetNest")
     ::move_mouse_on_obj(presetNest.findObject("presetHeader_"))
   }
@@ -61,15 +58,53 @@ let function openEditPresetName(name, okFunc) {
     }]
   }
 
-  function getWeaponsPopupView(parentObj, tierId, weaponsBlk) {
-    let buttons = []
-    let tierIdInt = tierId.tointeger()
-    local weapons = {}
+  function getPopupWeaponsList(weaponsBlk) {
+    let res = []
+    let weapons = {}
     foreach(wBlk in weaponsBlk)
       foreach(key, val in (addWeaponsFromBlk({}, [wBlk], unit)?.weaponsByTypes ?? {}))
         weapons[key] <- (weapons?[key] ?? []).extend(val)
+    foreach (triggerType, triggers in weapons)
+      foreach (weapon in triggers)
+        foreach(id, inst in weapon.weaponBlocks)
+          res.append(inst.__merge({id = id, tType = triggerType}))
+    return res
+  }
 
-    let params = getTierWeaponsParams(weapons, tierIdInt)
+  getPopupItemName = @(ammo, nameText) ammo > 0
+    ? "".concat(nameText, ::loc("ui/parentheses/space",
+      {text = $"{::loc("shop/ammo")}{::loc("ui/colon")}{ammo}"}))
+    : nameText
+
+  function getWeaponsPopupParams(weapons, tierId) {
+    let res = []
+    foreach (weapon in weapons) {
+      let tierWeaponConfig = weapon.__merge({
+        iconType = weapon.tiers?[tierId].iconType ?? weapon.iconType
+      })
+      let nameText = ::loc($"weapons/{weapon.id}")
+      let dubIdx = res.findindex(@(v) v.presetId == weapon.presetId)
+      if (dubIdx) {
+        res[dubIdx].name = "".concat(res[dubIdx].name, ::loc("ui/comma"),
+          getPopupItemName(weapon.ammo, nameText))
+        continue
+      }
+
+      res.append({
+        id = weapon.tiers?[tierId].presetId ?? weapon.id
+        presetId = weapon.presetId // To find duplicates
+        name = getPopupItemName(weapon.ammo, nameText)
+        img = getTierIcon(tierWeaponConfig, weapon.ammo)
+      })
+    }
+    return res
+  }
+
+  function getWeaponsPopupView(parentObj, tierId, weaponsBlk) {
+    let buttons = []
+    let tierIdInt = tierId.tointeger()
+    let weapons = getPopupWeaponsList(weaponsBlk)
+    let params = getWeaponsPopupParams(weapons, tierIdInt)
     let curTier = preset.tiers?[tierIdInt]
     let curPresetId = curTier?.presetId ?? ""
     local maxWidth = 0
@@ -152,7 +187,7 @@ let function openEditPresetName(name, okFunc) {
         return
       preset = getCustomWeaponryPresetView(unit, preset, favoriteArr, availableWeapons)
       updatePreset()
-      checkWeightDisbalance()
+      checkWeightRestrictions()
       ::move_mouse_on_obj(presetNest.findObject($"tier_{tierId}"))
     }, this)
     editSlotInPreset(preset, tierId, presetId, availableWeapons, cb)
@@ -183,9 +218,9 @@ let function openEditPresetName(name, okFunc) {
   onPresetSelect = @() null
 
   function onPresetSave() {
-    let disbalanceText = getPresetDisbalanceText(preset, maxDisbalance, notUseforDisbalance)
-    if (disbalanceText != "") {
-      ::showInfoMsgBox($"{::loc("msg/can_not_save_preset")}\n{disbalanceText}", "can_not_save_disbalanced_preset")
+    let restrictionsText = getPresetWeightRestrictionText(preset, unitBlk)
+    if (restrictionsText != "") {
+      ::showInfoMsgBox($"{::loc("msg/can_not_save_preset")}\n{restrictionsText}", "can_not_save_disbalanced_preset")
       return
     }
 
@@ -209,22 +244,10 @@ let function openEditPresetName(name, okFunc) {
       ], "cancel")
   }
 
-  function updateUnitDisbalanceParams() {
-    let unitBlk = ::get_full_unit_blk(unit.name)
-    maxDisbalance = unitBlk?.WeaponSlots.maxDisbalance ?? -1
-    notUseforDisbalance = {}
-    foreach (slot in getUnitWeaponSlots(unitBlk))
-      if (slot?.notUseforDisbalanceCalculation ?? false)
-        notUseforDisbalance[slot?.tier ?? slot.index] <- true
-  }
-
-  function checkWeightDisbalance() {
-    if (maxDisbalance < 0)
-      return
-
-    let disbalanceText = getPresetDisbalanceText(preset, maxDisbalance, notUseforDisbalance)
-    scene.findObject("weightDisbalance").setValue(disbalanceText)
-    scene.findObject("savePreset").inactiveColor = disbalanceText != "" ? "yes" : "no"
+  function checkWeightRestrictions() {
+    let restrictionsText = getPresetWeightRestrictionText(preset, unitBlk)
+    scene.findObject("weightDisbalance").setValue(restrictionsText)
+    scene.findObject("savePreset").inactiveColor = restrictionsText != "" ? "yes" : "no"
   }
 }
 

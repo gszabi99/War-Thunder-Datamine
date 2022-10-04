@@ -678,7 +678,8 @@ let textParamsMapMain = {
     valueComputed = Computed(@() generateBulletsTextFunction(AamCount.value, AamSeconds.value, 0, AamActualCount.value))
     selectedComputed = Computed(@() AamSelected.value ? ">" : "")
     additionalComputed = Computed(@() ::loc(AamName.value))
-    alertStateCaptionComputed = Computed(@() IsAamEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    alertStateCaptionComputed = Computed(@() (IsAamEmpty.value || aamGuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING) ?
+      HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsAamEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     titleSizeFactor = 1.0
   },

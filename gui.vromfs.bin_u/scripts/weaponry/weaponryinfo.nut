@@ -317,6 +317,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       amountPerTier = null
       isGun = null
       bulletType = null
+      presetId = null
       tiers = {}
       dependentWeaponPreset = {}
       bannedWeaponPreset = {}
@@ -341,6 +342,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     let bulletCount = weapon?.bullets ?? bulletsCount
     let hasWeaponSlots = "slot" in weapon
     if (hasWeaponSlots) {
+      item.presetId = weapon.presetId
       item.tiers[weapon.tier] <- {
         presetId = weapon.presetId
         slot = weapon.slot

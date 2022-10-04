@@ -7,7 +7,7 @@ let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
   getModificationInfo, getModificationName
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
-let { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
+let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
   addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
 let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
@@ -76,6 +76,18 @@ let function getSingleWeaponDescTbl(unit, params) {
   return res
 }
 
+let function getGunAmmoPerTier(weapons) {
+  // It works for gun on tier only.
+  // The logic below works on assume the tier can have only one gun/cannon block by design.
+  let trigger = (weapons?.weaponsByTypes[WEAPON_TYPE.GUNS]
+    ?? weapons?.weaponsByTypes[WEAPON_TYPE.CANNON])?[0]
+  if (!trigger)
+    return null
+
+  let block = trigger.weaponBlocks.values()?[0]
+  return block && block.num > 0 ? block.ammo * (block?.amountPerTier ?? 1) / block.num : null
+}
+
 let function getTierDescTbl(unit, params) {
   let {tooltipLang, amountPerTier, name,
     blk, tType, ammo, isGun, addWeaponry, presetName, tierId } = params
@@ -98,7 +110,7 @@ let function getTierDescTbl(unit, params) {
       "".concat(header, format(::loc("weapons/counter"), amountPerTier)) : header
   else if (ammo > 0)
     header = "".concat(header, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
-      isBlock && isGun ? amountPerTier : ammo, ")")
+      !isBlock ? ammo : !isGun ? amountPerTier : getGunAmmoPerTier(weapons) ?? "", ")")
 
   // Need to replace header with new one contains right weapons amount calculated per tier
   let descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)

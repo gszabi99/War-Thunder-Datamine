@@ -5,7 +5,8 @@ let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX,
-  getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams, getSlotsWeaponsForEditPreset
+  getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams, getSlotsWeaponsForEditPreset,
+  getUnitWeaponSlots
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCustomPresetByPresetBlk, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
@@ -371,28 +372,6 @@ let function getReqRankByMod(reqMod, modifications) {
   return res
 }
 
-let function getTierWeaponsParams(weapons, tierId) {
-  let res = []
-  foreach (triggerType, triggers in weapons)
-    foreach (weapon in triggers)
-      foreach(id, inst in weapon.weaponBlocks) {
-        let tierWeaponConfig = inst.__merge({
-          tType = triggerType
-          iconType = inst.tiers?[tierId].iconType ?? inst.iconType
-        })
-        let nameText = ::loc($"weapons/{id}")
-        res.append({
-          id = inst.tiers?[tierId].presetId ?? id
-          name = inst.ammo > 0
-            ? "".concat(nameText, ::loc("ui/parentheses/space",
-              {text = $"{::loc("shop/ammo")}{::loc("ui/colon")}{inst.ammo}"}))
-            : nameText
-          img = getTierIcon(tierWeaponConfig, inst.ammo)
-        })
-      }
-  return res
-}
-
 let function updateTiersActivity(tiers, weapons) {
   for (local i = 0; i < TIERS_NUMBER; i++)
     tiers[i].__update({
@@ -665,30 +644,73 @@ let function editSlotInPreset(preset, tierId, presetId, availableWeapons, cb) {
     "ok", { cancel_fn = @() null })
 }
 
-let function getPresetDisbalanceText(preset, maxDisbalance, notUseforDisbalance) {
-  if (maxDisbalance < 0)
-    return ""
-
-  let massBySide = [0, 0]
-  let centerIdx = TIERS_NUMBER/2
-  foreach (idx, tier in preset.tiersView) {
-    if (notUseforDisbalance?[idx] ?? false)
-      continue
-
-    let sideIdx = idx < centerIdx ? 0 : 1
-    massBySide[sideIdx] += tier?.weaponry.massKg ?? 0.0
-  }
-
-  let disbalance = abs(massBySide[0]-massBySide[1])
-  if (disbalance <= maxDisbalance)
+let function overloadMsg(locKey, weight, maxWeight) {
+  let overload = weight - maxWeight
+  if(overload <= 0)
     return ""
 
   let kgMeasure = ::g_measure_type.getTypeByName("kg", true)
-  return ::loc("weapons/pylonsWeightDisbalance", {
-    side = ::loc($"side/{massBySide[0] > massBySide[1] ? "left" : "right"}")
-    disbalance = kgMeasure.getMeasureUnitsText(disbalance)
-    maxDisbalance = kgMeasure.getMeasureUnitsText(maxDisbalance)
+  return ::loc(locKey, {
+    overload = kgMeasure.getMeasureUnitsText(abs(overload)),
+    weight = kgMeasure.getMeasureUnitsText(abs(weight)),
+    maxWeight = kgMeasure.getMeasureUnitsText(maxWeight)
   })
+}
+
+let function getPresetWeightRestrictionText(preset, unitBlk) {
+  let {maxDisbalance = -1, maxloadMass = -1,
+      maxloadMassLeftConsoles = -1, maxloadMassRightConsoles = -1} = unitBlk?.WeaponSlots
+
+  if (maxDisbalance < 0 && maxloadMass < 0 && maxloadMassLeftConsoles < 0
+      && maxloadMassRightConsoles < 0)
+    return ""
+
+  let notUseforDisbalance = {}
+
+  foreach (slot in getUnitWeaponSlots(unitBlk))
+    if (slot?.notUseforDisbalanceCalculation ?? false)
+      notUseforDisbalance[slot?.tier ?? slot.index] <- true
+
+  let result = []
+
+  local leftMass = 0
+  local rightMass = 0
+  local centerMass = 0
+
+  let centerIdx = TIERS_NUMBER / 2
+
+  foreach (idx, tier in preset.tiersView) {
+    let { tierId = -1, massKg = 0.0 } = tier?.weaponry
+    let amount = tier?.weaponry.tiers[tierId].amountPerTier ?? 1.0
+    let tierMass= massKg * amount
+    if (notUseforDisbalance?[idx] ?? false)
+      centerMass += tierMass
+    else
+      if (idx < centerIdx)
+        leftMass += tierMass
+      else
+        rightMass += tierMass
+  }
+
+  let disbalance = abs(leftMass - rightMass)
+  if (disbalance > maxDisbalance) {
+    let kgMeasure = ::g_measure_type.getTypeByName("kg", true)
+    result.append(::loc("weapons/pylonsWeightDisbalance", {
+      side = ::loc($"side/{leftMass > rightMass ? "left" : "right"}")
+      disbalance = kgMeasure.getMeasureUnitsText(disbalance)
+      maxDisbalance = kgMeasure.getMeasureUnitsText(maxDisbalance)
+      })
+    )
+  }
+
+  let summaryWeight = leftMass + rightMass +  centerMass
+  result.append(
+    overloadMsg("weapons/pylonsWeightSummaryOverload", summaryWeight, maxloadMass)
+    overloadMsg("weapons/pylonsWeightLeftOverload", leftMass, maxloadMassLeftConsoles)
+    overloadMsg("weapons/pylonsWeightRightOverload", rightMass, maxloadMassRightConsoles)
+  )
+
+  return "\n".join(result, true)
 }
 
 return {
@@ -696,9 +718,9 @@ return {
   setFavoritePresets
   sortPresetsList
   getTierTooltipParams
-  getTierWeaponsParams
   getCustomWeaponryPresetView
   getWeaponryPresetView
   editSlotInPreset
-  getPresetDisbalanceText
+  getPresetWeightRestrictionText
+  getTierIcon
 }

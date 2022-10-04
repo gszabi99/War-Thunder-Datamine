@@ -35,6 +35,7 @@ let TvvMark = [0, 0]
 let AtgmTargetDist = Watched(0.0)
 let MfdVdiVisible = Watched(false)
 let MfdVdiPosSize = [0, 0, 0, 0]
+let VdiColor = Watched(Color(255, 255, 0, 240))
 let IsOnGround = Watched(false)
 
 let planeState = {
@@ -73,6 +74,7 @@ let planeState = {
   AtgmTargetDist,
   MfdVdiVisible,
   MfdVdiPosSize,
+  VdiColor,
   IsOnGround
 }
 

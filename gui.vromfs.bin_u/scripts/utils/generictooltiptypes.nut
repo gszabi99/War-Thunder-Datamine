@@ -102,10 +102,7 @@ let exportTypes = addTooltipTypes({
         obj.findObject("chapter").setValue(::g_unlock_view.getChapterAndGroupText(unlock))
 
       let mainCond = getUnlockMainCondText(subunlockCfg ?? config)
-      let conds = getUnlockConditionsText(subunlockCfg ?? config, {
-        withMainCondition = false
-        showMult = false
-      })
+      let conds = getUnlockConditionsText(subunlockCfg ?? config)
       obj.findObject("desc_text").setValue(getUnlockDesc(subunlockCfg ?? config))
       obj.findObject("mainCond").setValue(mainCond)
       obj.findObject("multDesc").setValue(getUnlockMultDesc(subunlockCfg ?? config))

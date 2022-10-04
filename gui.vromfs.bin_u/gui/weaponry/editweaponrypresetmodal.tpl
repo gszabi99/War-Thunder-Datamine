@@ -19,10 +19,11 @@ root {
       include "%gui/weaponry/weaponryPreset"
     }
     tdiv {
-      size:t='pw, 1@buttonHeight'
+      width:t='pw'
       textareaNoTab {
         id:t='weightDisbalance'
-        pos:t='pw-w, 0.5ph-0.5h'
+        width:t='pw'
+        text-align:t='right'
         position:t='relative'
         smallFont:t='yes'
         overlayTextColor:t='bad'

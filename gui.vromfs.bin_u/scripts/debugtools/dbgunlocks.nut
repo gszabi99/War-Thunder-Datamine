@@ -1,7 +1,7 @@
 let { format } = require("string")
 // warning disable: -file:forbidden-function
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
-let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getFullUnlockDesc, getUnlockCostText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
@@ -61,11 +61,12 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 {
   dlog("GP: gen all unlocks description")
   local res = ""
-  let params = {showCost = showCost}
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
   {
     let cfg = ::build_conditions_config(unlock)
-    let desc = getFullUnlockDesc(cfg, params)
+    local desc = getFullUnlockDesc(cfg)
+    if (showCost)
+      desc = $"{desc}\n{getUnlockCostText(cfg)}"
     res += "\n" + unlock.id + ":" + (desc != ""? "\n" : "") + desc
   }
   dlog("GP: res:")
@@ -115,14 +116,15 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
 
   let res = ::DataBlock()
   let params = {
-                   showCost = showCost,
-                   curVal = showValue ? null : "{value}" // warning disable: -forgot-subst
-                 }
+    curVal = showValue ? null : "{value}" // warning disable: -forgot-subst
+  }
 
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
   {
     let cfg = ::build_conditions_config(unlock)
-    let desc = getFullUnlockDesc(cfg, params)
+    local desc = getFullUnlockDesc(cfg, params)
+    if (showCost)
+      desc = $"{desc}\n{getUnlockCostText(cfg)}"
 
     let blk = ::DataBlock()
     blk.name = ::get_unlock_name_text(cfg.unlockType, id)

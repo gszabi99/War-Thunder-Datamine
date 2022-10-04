@@ -183,11 +183,22 @@ local summaryNameArray = [
     }
     _needRecountNewbie = false
 
+    let newbieEndByArmyId = ::g_login.isProfileReceived()
+      ? ::load_local_account_settings("myStats/newbieEndedByArmyId", {})
+      : null
+
     newbieByUnitType.clear()
     foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable() || !unitType.isPresentOnMatching)
         continue
+
+      let isNewbieEnded = newbieEndByArmyId?[unitType.armyId] ?? false
+      if (isNewbieEnded) {
+        newbieByUnitType[unitType.esUnitType] <- false
+        continue
+      }
+
       let killsReq = _newPlayersBattles?[unitType.esUnitType]?.minKills ?? 0
       if (killsReq <= 0)
         continue
@@ -196,7 +207,14 @@ local summaryNameArray = [
       foreach (addEsUnitType in additionalUnitTypes)
         kills += getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
       newbieByUnitType[unitType.esUnitType] <- kills < killsReq
+
+      if (newbieEndByArmyId)
+        newbieEndByArmyId[unitType.armyId] <- !newbieByUnitType[unitType.esUnitType]
     }
+
+    if (newbieEndByArmyId)
+      ::save_local_account_settings("myStats/newbieEndedByArmyId", newbieEndByArmyId)
+
     newbie = __isNewbie()
 
     newbieNextEvent.clear()
@@ -402,10 +420,10 @@ local summaryNameArray = [
     return newbie
   }
 
-  function isMeNewbieOnUnitType(esUnitType, defVal = false)
+  function isMeNewbieOnUnitType(esUnitType)
   {
     checkRecountNewbie()
-    return newbieByUnitType?[esUnitType] ?? defVal
+    return newbieByUnitType?[esUnitType] ?? false
   }
 
   function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) //return null when no newbie event

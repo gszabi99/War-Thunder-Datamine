@@ -1,13 +1,14 @@
-let {MfdColor} = require("%rGui/airState.nut")
+let {VdiColor} = require("%rGui/planeState/planeToolsState.nut")
 let baseLineWidth = hdpx(2 * LINE_WIDTH)
 let {compassWrap} = require("%rGui/planeIlses/ilsCompasses.nut")
 let {Tangage, Roll} = require("%rGui/planeState/planeFlyState.nut")
 
-local airSymbol = {
+local airSymbol = @(){
+  watch = VdiColor
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
-  color = MfdColor.value
-  fillColor = MfdColor.value
+  color = VdiColor.value
+  fillColor = VdiColor.value
   lineWidth = baseLineWidth * 2
   commands = [
     [VECTOR_ELLIPSE, 50, 50, 1, 1],
@@ -26,17 +27,17 @@ let generateCompassMark = function(num, _elemWidth) {
     flow = FLOW_VERTICAL
     children = [
       @() {
-        watch = MfdColor
+        watch = VdiColor
         size = [baseLineWidth * 2, baseLineWidth * ((num % 10 == 0 ) ? 7 : 4)]
         rendObj = ROBJ_SOLID
-        color = MfdColor.value
+        color = VdiColor.value
         lineWidth = baseLineWidth
         hplace = ALIGN_CENTER
       },
       (num % 10 == 0 ? @() {
-        watch = MfdColor
+        watch = VdiColor
         rendObj = ROBJ_TEXT
-        color = MfdColor.value
+        color = VdiColor.value
         hplace = ALIGN_CENTER
         fontSize = 35
         font = Fonts.usa_ils
@@ -55,7 +56,7 @@ let compass = function(width, height) {
         size = [pw(1), ph(2)]
         pos = [pw(50), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
-        color = MfdColor.value
+        color = VdiColor.value
         lineWidth = baseLineWidth
         commands = [
           [VECTOR_LINE, 0, 100, -100, 0],
@@ -83,10 +84,10 @@ let function generatePitchLine(num, width) {
     [
       @() {
         size = flex()
-        watch = MfdColor
+        watch = VdiColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth
-        color = MfdColor.value
+        color = VdiColor.value
         commands = [
           sign > 0 && num % 30 != 0 ? [VECTOR_LINE, 25, 0, 75, 0] : [],
           sign > 0 && num % 30 == 0 ? [VECTOR_LINE, -20, 0, 35, 0] : [],
@@ -97,12 +98,12 @@ let function generatePitchLine(num, width) {
         ]
         children = num % 30 == 0 ? [
           @() {
-            watch = MfdColor
+            watch = VdiColor
             pos = [0, ph(-25)]
             rendObj = ROBJ_TEXT
             vplace = ALIGN_TOP
             hplace = ALIGN_CENTER
-            color = MfdColor.value
+            color = VdiColor.value
             fontSize = 45
             font = Fonts.usa_ils
             text = (num / 10).tostring()
