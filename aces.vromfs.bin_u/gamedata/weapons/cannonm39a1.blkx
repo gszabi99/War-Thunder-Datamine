@@ -25,7 +25,8 @@
       "mass": 0.101,
       "caliber": 0.02,
       "speed": 1030.0,
-      "maxDistance": 5000.0,
+      "maxDistance": 6250.0,
+      "Cx": 0.45,
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -37,20 +38,23 @@
       "modelName": "tank_bullet_ball",
       "hitPowerMult": 13.0,
       "onHitChanceMultFire": 1.0,
-      "recoilMultiplier": 0.4,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
       "relativeVelArmorShift": [
         200.0,
-        3000.0
+        1000.0
       ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_19_27mm_metal_ap",
       "groundCollisionEffect": "hit_19_27mm_dirt_ap",
       "ricochetEffect": "hit_19_27mm_metal_ap",
       "waterCollisionEffect": "hit_19_27mm_water",
+      "recoilMultiplier": [
+        0.4,
+        0.4
+      ],
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -115,12 +119,8 @@
           2450.0
         ],
         "ArmorPower2500m": [
-          2.0,
-          2500.0
-        ],
-        "ArmorPower3000m": [
           0.0,
-          3000.0
+          2500.0
         ]
       },
       "visual": {
@@ -214,10 +214,11 @@
       }
     },
     {
-      "mass": 0.147,
+      "mass": 0.10166,
       "caliber": 0.02,
       "speed": 1030.0,
-      "maxDistance": 5000.0,
+      "maxDistance": 6250.0,
+      "Cx": 0.46,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
@@ -428,10 +429,11 @@
       }
     },
     {
-      "mass": 0.147,
+      "mass": 0.10166,
       "caliber": 0.02,
       "speed": 1030.0,
-      "maxDistance": 5000.0,
+      "maxDistance": 6250.0,
+      "Cx": 0.46,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
@@ -642,10 +644,11 @@
       }
     },
     {
-      "mass": 0.147,
+      "mass": 0.09962,
       "caliber": 0.02,
       "speed": 1030.0,
-      "maxDistance": 5000.0,
+      "maxDistance": 6250.0,
+      "Cx": 0.45,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
       "secondaryShattersPreset": "ap",
@@ -657,7 +660,6 @@
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/ap.ivf",
       "modelName": "tank_bullet_ap",
-      "recoilMultiplier": 0.4,
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [
         300.0,
@@ -665,7 +667,7 @@
       ],
       "relativeVelArmorShift": [
         200.0,
-        3000.0
+        1000.0
       ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_19_27mm_metal_ap",
@@ -806,10 +808,11 @@
       }
     },
     {
-      "mass": 0.147,
+      "mass": 0.09962,
       "caliber": 0.02,
       "speed": 1030.0,
-      "maxDistance": 4000.0,
+      "maxDistance": 6250.0,
+      "Cx": 0.45,
       "normalizationPreset": "default",
       "ricochetPreset": "defaultExt",
       "secondaryShattersPreset": "ap",
@@ -970,10 +973,11 @@
   "t_160_universal": {
     "bullet": [
       {
-        "mass": 0.147,
+        "mass": 0.10166,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.46,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -992,7 +996,10 @@
         "shellAnimation": "video/shells_animations/he_belt.ivf",
         "explosiveType": "rdx",
         "explosiveMass": 0.01,
-        "recoilMultiplier": 0.4,
+        "recoilMultiplier": [
+          0.4,
+          0.4
+        ],
         "hitPowerMult": 1.0,
         "onHitChanceMultFire": 1.7,
         "effectiveDistance": 1800.0,
@@ -1184,10 +1191,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
@@ -1199,7 +1207,6 @@
         "slopeEffectPreset": "ap",
         "shellAnimation": "video/shells_animations/ap.ivf",
         "modelName": "tank_bullet_ap",
-        "recoilMultiplier": 0.4,
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -1207,7 +1214,7 @@
         ],
         "relativeVelArmorShift": [
           200.0,
-          3000.0
+          1000.0
         ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
@@ -1348,10 +1355,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 4000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "secondaryShattersPreset": "ap",
@@ -1513,10 +1521,229 @@
   "t_160_air_targets": {
     "bullet": [
       {
-        "mass": 0.147,
+        "mass": 0.10166,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.46,
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.05,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "he_frag_i",
+        "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "explosiveType": "rdx",
+        "explosiveMass": 0.01,
+        "recoilMultiplier": [
+          0.4,
+          0.4
+        ],
+        "hitPowerMult": 1.0,
+        "onHitChanceMultFire": 1.7,
+        "effectiveDistance": 1800.0,
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "explodeTreshold": 0.1,
+        "fuseDelayDist": 0.2,
+        "selfDestructionFx": "explosion_air_selfexplosion_small",
+        "explosionEffect": "hit_19_27mm_metal_he",
+        "groundCollisionEffect": "hit_19_27mm_dirt_he",
+        "ricochetEffect": "hit_19_27mm_metal_ap",
+        "waterCollisionEffect": "hit_19_27mm_water",
+        "stabilityRicochetModifier": {
+          "mod1": [
+            0.0,
+            0.05
+          ],
+          "mod2": [
+            20.0,
+            0.1
+          ],
+          "mod3": [
+            [
+              30.0,
+              0.2
+            ],
+            [
+              45.0,
+              0.3
+            ]
+          ]
+        },
+        "hitpower": {
+          "HitPower10m": [
+            1.0,
+            10.0
+          ],
+          "HitPower1000m": [
+            0.88,
+            1000.0
+          ],
+          "HitPower1500m": [
+            0.65,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ]
+        },
+        "armorpower": {
+          "ArmorPower0m": [
+            2.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            2.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            1.5,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            1.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.5,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic"
+          },
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.2,
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                180.0
+              ],
+              "countPortion": 1.0
+            }
+          }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
+        },
+        "collisions": {
+          "default": {
+            "fx": "hit_19_27mm_dirt_he"
+          },
+          "horLandMesh": {
+            "fx": "hit_19_27mm_dirt_he"
+          },
+          "soil": {
+            "fx": "hit_19_27mm_dirt_he"
+          },
+          "dirt": {
+            "fx": "hit_19_27mm_dirt_he"
+          },
+          "road": {
+            "fx": "hit_19_27mm_dirt_he"
+          },
+          "roadSoil": {
+            "fx": "hit_19_27mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_19_27mm_red_brick_he"
+          },
+          "sand": {
+            "fx": "hit_19_27mm_sand_he"
+          },
+          "duneSand": {
+            "fx": "hit_19_27mm_sand_he"
+          },
+          "roadSand": {
+            "fx": "hit_19_27mm_sand_he"
+          },
+          "quickSand": {
+            "fx": "hit_19_27mm_sand_he"
+          },
+          "snow": {
+            "fx": "hit_19_27mm_snow_he"
+          },
+          "ice": {
+            "fx": "hit_19_27mm_snow_he"
+          },
+          "roadSnow": {
+            "fx": "hit_19_27mm_snow_he"
+          },
+          "snowLower": {
+            "fx": "hit_19_27mm_snow_he"
+          },
+          "glass": {
+            "fx": "hit_19_27mm_metal_he"
+          },
+          "wood": {
+            "fx": "hit_19_27mm_wood_he"
+          },
+          "steel": {
+            "fx": "hit_19_27mm_metal_he"
+          },
+          "metal": {
+            "fx": "hit_19_27mm_metal_he"
+          },
+          "buildings": {
+            "fx": "hit_19_27mm_stone_he"
+          },
+          "verLandMesh": {
+            "fx": "hit_19_27mm_stone_he"
+          },
+          "concrete": {
+            "fx": "hit_19_27mm_stone_he"
+          },
+          "rocks": {
+            "fx": "hit_19_27mm_stone_he"
+          },
+          "rocksSlippery": {
+            "fx": "hit_19_27mm_stone_he"
+          },
+          "fabric": {
+            "fx": "hit_19_27mm_stone_he"
+          },
+          "stone_snow": {
+            "fx": "hit_19_27mm_snow_he"
+          }
+        }
+      },
+      {
+        "mass": 0.10166,
+        "caliber": 0.02,
+        "speed": 1030.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.46,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -1727,10 +1954,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.10166,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.46,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -1941,224 +2169,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
-        "normalizationPreset": "heat",
-        "ricochetPreset": "he",
-        "secondaryShattersPreset": "ap",
-        "stabilityThreshold": 0.05,
-        "stabilityCaliberToArmorThreshold": 5.0,
-        "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "he_frag_i",
-        "slopeEffectPreset": "ap",
-        "fresnel": [
-          0.23,
-          0.1,
-          2.0
-        ],
-        "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_belt.ivf",
-        "explosiveType": "rdx",
-        "explosiveMass": 0.01,
-        "recoilMultiplier": 0.4,
-        "hitPowerMult": 1.0,
-        "onHitChanceMultFire": 1.7,
-        "effectiveDistance": 1800.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "explodeTreshold": 0.1,
-        "fuseDelayDist": 0.2,
-        "selfDestructionFx": "explosion_air_selfexplosion_small",
-        "explosionEffect": "hit_19_27mm_metal_he",
-        "groundCollisionEffect": "hit_19_27mm_dirt_he",
-        "ricochetEffect": "hit_19_27mm_metal_ap",
-        "waterCollisionEffect": "hit_19_27mm_water",
-        "stabilityRicochetModifier": {
-          "mod1": [
-            0.0,
-            0.05
-          ],
-          "mod2": [
-            20.0,
-            0.1
-          ],
-          "mod3": [
-            [
-              30.0,
-              0.2
-            ],
-            [
-              45.0,
-              0.3
-            ]
-          ]
-        },
-        "hitpower": {
-          "HitPower10m": [
-            1.0,
-            10.0
-          ],
-          "HitPower1000m": [
-            0.88,
-            1000.0
-          ],
-          "HitPower1500m": [
-            0.65,
-            1500.0
-          ],
-          "HitPower2000m": [
-            0.3,
-            2000.0
-          ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            2.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.5,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
-          ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.2,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
-          }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
-        },
-        "collisions": {
-          "default": {
-            "fx": "hit_19_27mm_dirt_he"
-          },
-          "horLandMesh": {
-            "fx": "hit_19_27mm_dirt_he"
-          },
-          "soil": {
-            "fx": "hit_19_27mm_dirt_he"
-          },
-          "dirt": {
-            "fx": "hit_19_27mm_dirt_he"
-          },
-          "road": {
-            "fx": "hit_19_27mm_dirt_he"
-          },
-          "roadSoil": {
-            "fx": "hit_19_27mm_dirt_he"
-          },
-          "bricks_red": {
-            "fx": "hit_19_27mm_red_brick_he"
-          },
-          "sand": {
-            "fx": "hit_19_27mm_sand_he"
-          },
-          "duneSand": {
-            "fx": "hit_19_27mm_sand_he"
-          },
-          "roadSand": {
-            "fx": "hit_19_27mm_sand_he"
-          },
-          "quickSand": {
-            "fx": "hit_19_27mm_sand_he"
-          },
-          "snow": {
-            "fx": "hit_19_27mm_snow_he"
-          },
-          "ice": {
-            "fx": "hit_19_27mm_snow_he"
-          },
-          "roadSnow": {
-            "fx": "hit_19_27mm_snow_he"
-          },
-          "snowLower": {
-            "fx": "hit_19_27mm_snow_he"
-          },
-          "glass": {
-            "fx": "hit_19_27mm_metal_he"
-          },
-          "wood": {
-            "fx": "hit_19_27mm_wood_he"
-          },
-          "steel": {
-            "fx": "hit_19_27mm_metal_he"
-          },
-          "metal": {
-            "fx": "hit_19_27mm_metal_he"
-          },
-          "buildings": {
-            "fx": "hit_19_27mm_stone_he"
-          },
-          "verLandMesh": {
-            "fx": "hit_19_27mm_stone_he"
-          },
-          "concrete": {
-            "fx": "hit_19_27mm_stone_he"
-          },
-          "rocks": {
-            "fx": "hit_19_27mm_stone_he"
-          },
-          "rocksSlippery": {
-            "fx": "hit_19_27mm_stone_he"
-          },
-          "fabric": {
-            "fx": "hit_19_27mm_stone_he"
-          },
-          "stone_snow": {
-            "fx": "hit_19_27mm_snow_he"
-          }
-        }
-      },
-      {
-        "mass": 0.147,
-        "caliber": 0.02,
-        "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
@@ -2170,7 +2185,6 @@
         "slopeEffectPreset": "ap",
         "shellAnimation": "video/shells_animations/ap.ivf",
         "modelName": "tank_bullet_ap",
-        "recoilMultiplier": 0.4,
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -2178,7 +2192,7 @@
         ],
         "relativeVelArmorShift": [
           200.0,
-          3000.0
+          1000.0
         ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
@@ -2319,10 +2333,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 4000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "secondaryShattersPreset": "ap",
@@ -2484,10 +2499,11 @@
   "t_160_armor_targets": {
     "bullet": [
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
@@ -2499,7 +2515,6 @@
         "slopeEffectPreset": "ap",
         "shellAnimation": "video/shells_animations/ap.ivf",
         "modelName": "tank_bullet_ap",
-        "recoilMultiplier": 0.4,
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -2507,13 +2522,14 @@
         ],
         "relativeVelArmorShift": [
           200.0,
-          3000.0
+          1000.0
         ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
         "groundCollisionEffect": "hit_19_27mm_dirt_ap",
         "ricochetEffect": "hit_19_27mm_metal_ap",
         "waterCollisionEffect": "hit_19_27mm_water",
+        "recoilMultiplier": 0.4,
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -2648,10 +2664,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 4000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "secondaryShattersPreset": "ap",
@@ -2809,10 +2826,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 4000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "secondaryShattersPreset": "ap",
@@ -2974,10 +2992,11 @@
   "t_160_stealth": {
     "bullet": [
       {
-        "mass": 0.147,
+        "mass": 0.10166,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.46,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -3188,10 +3207,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.10166,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.46,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -3402,10 +3422,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.10166,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.46,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -3616,10 +3637,11 @@
         }
       },
       {
-        "mass": 0.147,
+        "mass": 0.09962,
         "caliber": 0.02,
         "speed": 1030.0,
-        "maxDistance": 4000.0,
+        "maxDistance": 6250.0,
+        "Cx": 0.45,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "secondaryShattersPreset": "ap",
