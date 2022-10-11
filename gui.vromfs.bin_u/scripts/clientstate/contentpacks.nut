@@ -133,8 +133,9 @@ let function request_packages_and_restart(packList)
   ::u.appendOnce(checkReqContentByName("jpn_pacific_41_43", "hc_pacific"), reqPacksList, true)
 
   local text = ""
-  let langPack = "pkg_" + ::get_current_language()
-  if (!::have_package(langPack))
+  let langId = ::get_current_language()
+  let langPack = $"pkg_{langId}"
+  if (!::have_package(langPack) && is_fully_translated(langId))
   {
     if (!reqPacksList.len())
       text = ::loc("yn1/have_new_content_lang")

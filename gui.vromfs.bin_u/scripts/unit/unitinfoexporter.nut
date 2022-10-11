@@ -59,6 +59,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     path = genPath
 
     exportCalculationParameters()
+    ::get_main_gui_scene().performDelayed(this, nextLangExport)
   }
 
   function _tostring()
@@ -118,10 +119,10 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
       .filter(@(unit) unit.isInShop)
       .map(@(unit) unit.name)
       .values()
+    let instance = this
     export_calculations_parameters_for_wta(shopUnitsNames, function(parameters) {
-      debugLog("Exporter: calculation parameters received")
-      parameters.saveToTextFile(getCalculationParemetersFullPath())
-      ::get_main_gui_scene().performDelayed(this, startExport)
+      instance.debugLog("Exporter: calculation parameters received")
+      parameters.saveToTextFile(instance.getCalculationParemetersFullPath())
     })
   }
 
