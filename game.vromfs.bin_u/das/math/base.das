@@ -145,3 +145,8 @@ def cvt(val : float; from : float2; to : float2) : float
 [generic]
 def frac(x)
   return x - floor(x)
+
+[generic]
+def get_normal(dir : float3)
+  let altDir = abs(dot(dir, float3(1, 0, 0))) > 0.5 ? float3(0, 0, 1) : float3(1, 0, 0)
+  return cross(dir, altDir)

@@ -67,3 +67,14 @@ def rnd_float(a : float2)
 
 def rnd_int(a : int2)
   return rnd_int(a.x, a.y)
+
+def _rnd_float(var seed : int&; a : float2)
+  return _rnd_float(seed, a.x, a.y)
+
+def _rnd_int(var seed : int&; a : int2)
+  return _rnd_int(seed, a.x, a.y)
+
+def get_random_point_in_triangle(a, b, c : float3)
+  let r1 = gfrnd()
+  let r2 = gfrnd()
+  return a * (1f - r1)  + b * r1 * (1f - r2) + c * r1 * r2
