@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let function getLockedCountryDataBySquad() {
   let operationcountry = ::g_squad_manager.getWwOperationCountry()
   if (operationcountry == "" || ::g_squad_manager.getWwOperationBattle() == null
@@ -6,7 +11,7 @@ let function getLockedCountryDataBySquad() {
 
   return {
     availableCountries = [operationcountry]
-    reasonText = ::loc("worldWar/cantChangeCountryInBattlePrepare")
+    reasonText = loc("worldWar/cantChangeCountryInBattlePrepare")
   }
 }
 
@@ -17,7 +22,7 @@ let function getLockedCountryData() {
 
   return {
     availableCountries = [curOperationCountry]
-    reasonText = ::loc("worldWar/cantChangeCountryInOperation")
+    reasonText = loc("worldWar/cantChangeCountryInOperation")
   }
 }
 

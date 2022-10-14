@@ -1,6 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let stdMath = require("%sqstd/math.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 /*
   config = {
@@ -50,7 +58,7 @@ let stdMath = require("%sqstd/math.nut")
     let configValue = ("value" in config)? config.value : -1
     foreach(idx, option in config.options)
     {
-      let isVisible = ::getTblValue("show", option, true)
+      let isVisible = getTblValue("show", option, true)
       if (!isVisible)
         continue
 
@@ -114,7 +122,7 @@ let stdMath = require("%sqstd/math.nut")
         avatarImage = item?.image
         enabled     = item?.enabled
         haveCustomTooltip = haveCustomTooltip
-        tooltipId   = haveCustomTooltip ? null : ::getTblValue("tooltipId", item)
+        tooltipId   = haveCustomTooltip ? null : getTblValue("tooltipId", item)
         unseenIcon = item?.seenListId && bhvUnseen.makeConfigStr(item?.seenListId, item?.seenEntity)
         hasGjnIcon = item?.marketplaceItemdefId != null && !item?.enabled
       }
@@ -200,7 +208,7 @@ let stdMath = require("%sqstd/math.nut")
     if (option?.marketplaceItemdefId) {
       let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
       if (inventoryItem != null)
-        inventoryItem.consume(::Callback(function(result) {
+        inventoryItem.consume(Callback(function(result) {
           if (result?.success ?? false)
             chooseImage(selIdx)
         }, this), null)
@@ -251,7 +259,7 @@ let stdMath = require("%sqstd/math.nut")
 
     if (inventoryItem != null)
     {
-      inventoryItem.consume(::Callback(function(result) {
+      inventoryItem.consume(Callback(function(result) {
         if (result?.success ?? false)
           chooseImage(selIdx)
       }, this), null)
@@ -267,14 +275,14 @@ let stdMath = require("%sqstd/math.nut")
 
   function getSelIconIdx()
   {
-    if (!::checkObj(contentObj))
+    if (!checkObj(contentObj))
       return -1
     return contentObj.getValue() + currentPage * itemsPerPage
   }
 
   function updateButtons()
   {
-    let option = ::getTblValue(getSelIconIdx(), options)
+    let option = getTblValue(getSelIconIdx(), options)
     let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
     let btn = this.showSceneBtn("btn_select", isVisible)
 
@@ -282,23 +290,23 @@ let stdMath = require("%sqstd/math.nut")
     let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
     if (isFavBtnVisible) {
       favBtnObj.setValue(::g_unlocks.isUnlockFav(option.unlockId)
-        ? ::loc("preloaderSettings/untrackProgress")
-        : ::loc("preloaderSettings/trackProgress"))
+        ? loc("preloaderSettings/untrackProgress")
+        : loc("preloaderSettings/trackProgress"))
       return
     }
 
     if (option?.enabled)
     {
-      btn.setValue(::loc("mainmenu/btnSelect"))
+      btn.setValue(loc("mainmenu/btnSelect"))
       return
     }
 
     let item = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
 
     if (item != null)
-      btn.setValue(::loc("item/consume/coupon"))
+      btn.setValue(loc("item/consume/coupon"))
     else
-      btn.setValue(::loc("msgbox/btn_find_on_marketplace"))
+      btn.setValue(loc("msgbox/btn_find_on_marketplace"))
   }
 
   function afterModalDestroy()
@@ -314,12 +322,12 @@ let stdMath = require("%sqstd/math.nut")
 
   function getTooltipObjFunc()
   {
-    return ::getTblValue("tooltipObjFunc", config)
+    return getTblValue("tooltipObjFunc", config)
   }
 
   function onImageTooltipOpen(obj)
   {
-    let id = getTooltipObjId(obj)
+    let id = ::getTooltipObjId(obj)
     let func = getTooltipObjFunc()
     if (!id || !func)
       return

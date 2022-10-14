@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
   closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality,
   getPresetForMaxFPS, isGpuBenchmarkRunning } = require("gpuBenchmark")
@@ -42,7 +50,7 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     let timeText = secondsToString(timeLeft, true, true)
-    let progressText = ::loc("gpuBenchmark/progress", { timeLeft = timeText })
+    let progressText = loc("gpuBenchmark/progress", { timeLeft = timeText })
     scene.findObject("progressText").setValue(progressText)
   }
 
@@ -107,9 +115,9 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     ::scene_msg_box("msg_sysopt_compatibility", null,
-      ::loc("msgbox/compatibilityMode"),
+      loc("msgbox/compatibilityMode"),
       [
-        ["yes", ::Callback(@() presetApplyImpl(presetName), this)],
+        ["yes", Callback(@() presetApplyImpl(presetName), this)],
         ["no", @() null],
       ], "no",
       { cancel_fn = @() null, checkDuplicateId = true })

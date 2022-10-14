@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { subscribe } = require("eventbus")
 let { format } = require("string")
 let {
@@ -12,8 +19,8 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getActionBarItems } = ::require_native("hudActionBar")
-local { EII_ARTILLERY_TARGET } = ::require_native("hudActionBarConst")
+let { getActionBarItems } = require_native("hudActionBar")
+local { EII_ARTILLERY_TARGET } = require_native("hudActionBarConst")
 
 enum POINTING_DEVICE
 {
@@ -64,14 +71,14 @@ enum POINTING_DEVICE
   function initScreen()
   {
     let objMap = scene.findObject("tactical_map")
-    if (::checkObj(objMap))
+    if (checkObj(objMap))
     {
       mapPos  = objMap.getPos()
       mapSize = objMap.getSize()
     }
 
     objTarget = scene.findObject(isSuperArtillery ? "super_artillery_target" : "artillery_target")
-    if (::checkObj(objTarget))
+    if (checkObj(objTarget))
     {
       if (isSuperArtillery)
       {
@@ -115,7 +122,7 @@ enum POINTING_DEVICE
 
   function update(obj = null, dt = 0.0)
   {
-    if (!::checkObj(objTarget))
+    if (!checkObj(objTarget))
       return
 
     let prevArtilleryReady = artilleryReady
@@ -165,9 +172,9 @@ enum POINTING_DEVICE
     }
 
     let objHint = scene.findObject("txt_artillery_hint")
-    if (::checkObj(objHint))
+    if (checkObj(objHint))
     {
-      objHint.setValue(::loc(valid ? "artillery_strike/allowed" :
+      objHint.setValue(loc(valid ? "artillery_strike/allowed" :
         (artilleryEnabled ?
           (artilleryReady ? "artillery_strike/not_allowed" : "artillery_strike/not_ready") :
           "artillery_strike/crew_lost")))
@@ -175,7 +182,7 @@ enum POINTING_DEVICE
     }
 
     let objBtnApply = scene.findObject("btn_apply")
-    if (::check_obj(objBtnApply))
+    if (checkObj(objBtnApply))
       objBtnApply.enable(valid)
 
     updateMapShadeRadius()
@@ -186,8 +193,8 @@ enum POINTING_DEVICE
     local avatarPos = getMapRelativePlayerPos()
     avatarPos = avatarPos.len() == 2 ? avatarPos : [ 0.5, 0.5 ]
     let diameter  = isSuperArtillery ? 3.0 : (::is_in_flight() ? getArtilleryRange() * 2 : 1.0)
-    let rangeSize = [ round(mapSize[0] * diameter), round(mapSize[1] * diameter) ]
-    let rangePos  = [ round(mapSize[0] * avatarPos[0] - rangeSize[0] / 2), round(mapSize[1] * avatarPos[1] - rangeSize[1] / 2) ]
+    let rangeSize = [ ::round(mapSize[0] * diameter), ::round(mapSize[1] * diameter) ]
+    let rangePos  = [ ::round(mapSize[0] * avatarPos[0] - rangeSize[0] / 2), ::round(mapSize[1] * avatarPos[1] - rangeSize[1] / 2) ]
 
     if (rangePos[0] == prevShadeRangePos[0] && rangePos[1] == prevShadeRangePos[1])
       return
@@ -196,7 +203,7 @@ enum POINTING_DEVICE
     invalidTargetDispersionRadius = invalidTargetDispersionRadiusMeters.tofloat() / mapSizeMeters * diameter
 
     local obj = scene.findObject("map_shade_center")
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     obj.size = format("%d, %d", rangeSize[0], rangeSize[1])
@@ -211,28 +218,28 @@ enum POINTING_DEVICE
 
     obj = scene.findObject("map_shade_t")
     obj.show(gap.t > 0)
-    if (::checkObj(obj) && gap.t > 0)
+    if (checkObj(obj) && gap.t > 0)
     {
       obj.size = format("%d, %d", mapSize[0], gap.t)
       obj.pos  = format("%d, %d", 0, 0)
     }
     obj = scene.findObject("map_shade_b")
     obj.show(gap.b > 0)
-    if (::checkObj(obj) && gap.b > 0)
+    if (checkObj(obj) && gap.b > 0)
     {
       obj.size = format("%d, %d", mapSize[0], gap.b)
       obj.pos  = format("%d, %d", 0, rangePos[1] + rangeSize[1])
     }
     obj = scene.findObject("map_shade_l")
     obj.show(gap.l > 0)
-    if (::checkObj(obj) && gap.l > 0)
+    if (checkObj(obj) && gap.l > 0)
     {
       obj.size = format("%d, %d", gap.l, rangeSize[1])
       obj.pos  = format("%d, %d", 0, rangePos[1])
     }
     obj = scene.findObject("map_shade_r")
     obj.show(gap.r > 0)
-    if (::checkObj(obj) && gap.r > 0)
+    if (checkObj(obj) && gap.r > 0)
     {
       obj.size = format("%d, %d", gap.r, rangeSize[1])
       obj.pos  = format("%d, %d", rangePos[0] + rangeSize[0], rangePos[1])
@@ -242,7 +249,7 @@ enum POINTING_DEVICE
   function updateShotcutImages()
   {
     let placeObj = scene.findObject("shortcuts_block")
-    if (!::checkObj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     let showShortcuts = [
@@ -257,7 +264,7 @@ enum POINTING_DEVICE
         title = "hotkeys/ID_CHANGE_ARTILLERY_TARGETING_MODE"
         shortcuts = ["ID_CHANGE_ARTILLERY_TARGETING_MODE"]
         buttonCb = "onChangeTargetingMode"
-        show = ::get_mission_difficulty_int() != ::DIFFICULTY_HARDCORE && !isSuperArtillery
+        show = ::get_mission_difficulty_int() != DIFFICULTY_HARDCORE && !isSuperArtillery
       },
       {
         title = "mainmenu/btnCancel"
@@ -266,11 +273,11 @@ enum POINTING_DEVICE
       },
     ]
 
-    local reqDevice = ::STD_MOUSE_DEVICE_ID
+    local reqDevice = STD_MOUSE_DEVICE_ID
     if (::show_console_buttons || pointingDevice == POINTING_DEVICE.GAMEPAD || pointingDevice == POINTING_DEVICE.JOYSTICK)
-      reqDevice = ::JOYSTICK_DEVICE_0_ID
+      reqDevice = JOYSTICK_DEVICE_0_ID
     else if (pointingDevice == POINTING_DEVICE.TOUCHSCREEN)
-      reqDevice = ::STD_KEYBOARD_DEVICE_ID
+      reqDevice = STD_KEYBOARD_DEVICE_ID
 
     foreach(idx, info in showShortcuts)
       if (info?.show ?? true)
@@ -335,7 +342,7 @@ enum POINTING_DEVICE
       let name = ::getLocalizedControlName(curPreset, shortcut.dev[k], shortcut.btn[k]);
       local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", ::g_string.stripTags(name), (name.len()>2)? "@fontTiny" : "@fontMedium");
 
-      if (shortcut.dev[k] == ::STD_MOUSE_DEVICE_ID)
+      if (shortcut.dev[k] == STD_MOUSE_DEVICE_ID)
       {
         let mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s.png'; }"
         if (shortcut.btn[k] == 0)
@@ -346,7 +353,7 @@ enum POINTING_DEVICE
           buttonFrame = format(mouseBtnImg, "mouse_center");
       }
 
-      if (shortcut.dev[k] == ::JOYSTICK_DEVICE_0_ID)
+      if (shortcut.dev[k] == JOYSTICK_DEVICE_0_ID)
       {
         let btnId = shortcut.btn[k]
         if (gamepadIcons.hasTextureByButtonIdx(btnId))

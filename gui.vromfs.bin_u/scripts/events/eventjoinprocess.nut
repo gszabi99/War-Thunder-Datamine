@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let stdMath = require("%sqstd/math.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -23,7 +30,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 
     if (activeEventJoinProcess.len())
       if (::dagor.getCurTime() - activeEventJoinProcess[0].processStartTime < PROCESS_TIME_OUT)
-        return ::dagor.assertf(false, "Error: trying to use 2 join event processes at once")
+        return assert(false, "Error: trying to use 2 join event processes at once")
       else
         activeEventJoinProcess[0].remove()
 
@@ -60,7 +67,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     {
       //Don't allow to change ready status, leader don't know about members balance
       if (!::events.haveEventAccessByCost(event))
-        ::showInfoMsgBox(::loc("events/notEnoughMoney"))
+        ::showInfoMsgBox(loc("events/notEnoughMoney"))
       else if (::events.eventRequiresTicket(event) && ::events.getEventActiveTicket(event) == null)
         ::events.checkAndBuyTicket(event)
       else
@@ -72,8 +79,8 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
       return remove()
     // Same as checkedNewFlight in gui_handlers.BaseGuiHandlerWT.
     ::queues.checkAndStart(
-                    ::Callback(joinStep2_external, this),
-                    ::Callback(remove, this),
+                    Callback(joinStep2_external, this),
+                    Callback(remove, this),
                     "isCanNewflight",
                     { isSilentLeaveQueue = !!room }
                    )
@@ -81,7 +88,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 
   function joinStep2_external()
   {
-    if (::events.getEventDiffCode(event) == ::DIFFICULTY_HARDCORE &&
+    if (::events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return remove()
 
@@ -90,7 +97,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 
     if (!::events.isEventAllowedByComaptibilityMode(event))
     {
-      ::showInfoMsgBox(::loc("events/noCompatibilityMode/msg"))
+      ::showInfoMsgBox(loc("events/noCompatibilityMode/msg"))
       remove()
       return
     }
@@ -153,8 +160,8 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
   function joinStep6_membersForQueue()
   {
     ::events.checkMembersForQueue(event, room,
-      ::Callback(@(membersData) joinStep7_joinQueue(membersData), this),
-      ::Callback(remove, this)
+      Callback(@(membersData) joinStep7_joinQueue(membersData), this),
+      Callback(remove, this)
     )
   }
 
@@ -192,7 +199,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
         squadSize = squadSize.tostring()
         maxTeamSize = maxTeamSize.tostring()
       }
-      this.msgBox("squad_is_too_big", ::loc("events/squad_is_too_big", locParams),
+      this.msgBox("squad_is_too_big", loc("events/squad_is_too_big", locParams),
         [["ok", function() {}]], "ok")
       return false
     }

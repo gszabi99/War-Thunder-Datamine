@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
 let { fillTooltip } = require("genericTooltip.nut")

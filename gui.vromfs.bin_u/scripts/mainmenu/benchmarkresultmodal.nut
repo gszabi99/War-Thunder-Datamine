@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.BenchmarkResultModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -38,7 +46,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
   {
     let rowData = [
                       {
-                        text = ::loc(statType),
+                        text = loc(statType),
                         tdalign = "right",
                         width = "46%pw"
                       }

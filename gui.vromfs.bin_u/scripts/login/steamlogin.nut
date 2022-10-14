@@ -1,8 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
-let { setGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode } = require_native("guiOptions")
 
 ::gui_handlers.LoginWndHandlerSteam <- class extends ::gui_handlers.LoginWndHandler
 {
@@ -27,7 +32,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
       return
 
     let useSteamLoginAuto = ::load_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID)
-    if (!::has_feature("AllowSteamAccountLinking"))
+    if (!hasFeature("AllowSteamAccountLinking"))
     {
       if (!useSteamLoginAuto) //can be null or false
         this.goToLoginWnd(useSteamLoginAuto == null)
@@ -55,9 +60,9 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
   {
     ::scene_msg_box("steam_link_method_question",
       this.guiScene,
-      ::loc("steam/login/linkQuestion" + (::has_feature("AllowSteamAccountLinking")? "" : "/noLink")),
-      [["#mainmenu/loginWithGaijin", ::Callback(this.goToLoginWnd, this) ],
-       ["#mainmenu/loginWithSteam", ::Callback(this.authorizeSteam, this)],
+      loc("steam/login/linkQuestion" + (hasFeature("AllowSteamAccountLinking")? "" : "/noLink")),
+      [["#mainmenu/loginWithGaijin", Callback(this.goToLoginWnd, this) ],
+       ["#mainmenu/loginWithSteam", Callback(this.authorizeSteam, this)],
        ["exit", exitGame]
       ],
       "#mainmenu/loginWithGaijin"
@@ -68,11 +73,11 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
   {
     switch(result)
     {
-      case ::YU2_NOT_FOUND:
+      case YU2_NOT_FOUND:
         this.goToLoginWnd()
         break
-      case ::YU2_OK:
-        if (::steam_is_running() && !::has_feature("AllowSteamAccountLinking"))
+      case YU2_OK:
+        if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking"))
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
           // no break!
       default:  // warning disable: -missed-break
@@ -101,7 +106,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
   {
     ::scene_msg_box("steam_question_quit_game",
       this.guiScene,
-      ::loc("mainmenu/questionQuitGame"),
+      loc("mainmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no", @() null]

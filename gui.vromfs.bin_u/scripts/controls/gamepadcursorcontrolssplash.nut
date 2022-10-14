@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
@@ -94,7 +102,7 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
   function initScreen()
   {
     let contentObj = scene.findObject("content")
-    if (!::check_obj(contentObj))
+    if (!checkObj(contentObj))
       goBack()
 
     let view = isPlatformPS4 ? controllerDualshock4View

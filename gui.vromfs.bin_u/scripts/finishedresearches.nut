@@ -1,11 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
 ::researchedModForCheck <- "prevMod"
 ::researchedUnitForCheck <- "prevUnit"
 
-::g_script_reloader.registerPersistentData("finishedResearchesGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("finishedResearchesGlobals", getroottable(),
   ["researched_items_table", "abandoned_researched_items_for_session"])
 
 let isResearchForModification = @(research)
@@ -52,9 +60,9 @@ let function isResearchAbandoned(research)
 let function isResearchLast(research, checkUnit = false)
 {
   if (isResearchForModification(research))
-    return ::getTblValue("mod", research, "") == ""
+    return getTblValue("mod", research, "") == ""
   else if (checkUnit)
-    return ::getTblValue("unit", research, "") == ""
+    return getTblValue("unit", research, "") == ""
   return false
 }
 
@@ -161,7 +169,7 @@ let function removeResearchBlock(researchBlock)
       return
     }
 
-    let unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
+    let unitName = getTblValue(::researchedUnitForCheck, researchBlock)
     unit = ::getAircraftByName(unitName)
     if (!unit)
     {
@@ -176,7 +184,7 @@ let function removeResearchBlock(researchBlock)
   function updateResearchedUnit()
   {
     let placeObj = getUnitPlaceObj()
-    if (!::checkObj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     let unit_blk = ::build_aircraft_item(unit.name, unit)
@@ -192,7 +200,7 @@ let function removeResearchBlock(researchBlock)
 
   function onEventUnitBought(params)
   {
-    if(::getTblValue("unitName", params) != unit.name)
+    if(getTblValue("unitName", params) != unit.name)
     {
       purchaseUnit()
       return
@@ -205,7 +213,7 @@ let function removeResearchBlock(researchBlock)
 
   function getUnitPlaceObj()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return null
 
     return scene.findObject("rankup_aircraft_table")

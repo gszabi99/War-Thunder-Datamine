@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 ::gui_handlers.squadInviteListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
@@ -29,7 +38,7 @@ let { format } = require("string")
     if (!canOpen())
       return null
 
-    if (!::checkObj(alignObj))
+    if (!checkObj(alignObj))
       return null
 
     let params = {
@@ -41,7 +50,7 @@ let { format } = require("string")
 
   static function canOpen()
   {
-    return ::has_feature("Squad") && ::has_feature("SquadWidget")
+    return hasFeature("Squad") && hasFeature("SquadWidget")
       && ::g_squad_manager.isInSquad()
       && (::g_squad_manager.canChangeSquadSize(false) || ::g_squad_manager.getInvitedPlayers().len() > 0
           || ::g_squad_manager.getApplicationsToSquad().len() > 0)
@@ -86,7 +95,7 @@ let { format } = require("string")
     {
       let inviteObjId = "squad_invite_" + memberData.uid
       let inviteObj = listObj.findObject(inviteObjId)
-      if (::checkObj(inviteObj))
+      if (checkObj(inviteObj))
       {
         if (::u.isEqual(selectedObjId, inviteObjId) && isFocused)
           selectedIdx = i
@@ -125,7 +134,7 @@ let { format } = require("string")
       return
 
     let sizes = ::u.map(::g_squad_manager.squadSizesList,
-      @(s) s.value + ::loc("ui/comma") + ::loc("squadSize/" + s.name))
+      @(s) s.value + loc("ui/comma") + loc("squadSize/" + s.name))
     let curValue = ::g_squad_manager.getMaxSquadSize()
     let curIdx = ::g_squad_manager.squadSizesList.findindex(@(s) s.value == curValue) ?? 0
 
@@ -149,7 +158,7 @@ let { format } = require("string")
 
   function updateSize(listObj, playersList)
   {
-    if (!::checkObj(listObj))
+    if (!checkObj(listObj))
       return
 
     let total = playersList.len()
@@ -164,7 +173,7 @@ let { format } = require("string")
   function updatePosition()
   {
     let nestObj = scene.findObject(NEST_OBJ_ID)
-    if (::checkObj(nestObj))
+    if (checkObj(nestObj))
       align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, nestObj)
   }
 
@@ -195,7 +204,7 @@ let { format } = require("string")
 
     ::g_squad_manager.enableApplications(value)
     if (!::g_squad_manager.isApplicationsEnabled() && ::g_squad_manager.getApplicationsToSquad().len() > 0)
-      this.msgBox("denyAllMembershipApplications", ::loc("squad/ConfirmDenyApplications"),
+      this.msgBox("denyAllMembershipApplications", loc("squad/ConfirmDenyApplications"),
         [
           ["yes", function() { ::g_squad_manager.denyAllAplication() }],
           ["no",  function() {} ],

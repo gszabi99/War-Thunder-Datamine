@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 
@@ -37,11 +42,11 @@ const timeToShowAll = 500.0
       ::speedCreditsScroll = 0.016
     if (::speedCreditsScroll>1.5)
       ::speedCreditsScroll = 1.5
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 */
-  eventMask = ::EV_TIMER //| ::EV_MOUSE_WHEEL
-  //eventMask = ::EV_TIMER
+  eventMask = EV_TIMER //| EV_MOUSE_WHEEL
+  //eventMask = EV_TIMER
 
 }
 

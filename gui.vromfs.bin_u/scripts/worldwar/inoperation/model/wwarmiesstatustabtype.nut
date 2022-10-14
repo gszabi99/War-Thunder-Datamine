@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_ww_map_armies_status_tab_type <- {
   types = []
@@ -27,16 +34,16 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
     local countText = armies.common.len()
     if (armies.surrounded.len() > 0)
-      countText += "+" + ::colorize("armySurroundedColor", armies.surrounded.len())
+      countText += "+" + colorize("armySurroundedColor", armies.surrounded.len())
 
-    return ::loc("ui/parentheses/space", { text = countText })
+    return loc("ui/parentheses/space", { text = countText })
   }
 
   getTitleViewData = function() {
     return {
       id = status
-      tabIconText = ::loc(iconText)
-      tabText = ::loc(text)
+      tabIconText = loc(iconText)
+      tabText = loc(text)
       armiesCountText = getArmiesCountText()
     }
   }
@@ -96,7 +103,7 @@ enums.addTypesByGlobalName("g_ww_map_armies_status_tab_type", {
 }, null, "name")
 
 
-g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status)
+::g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status)
 {
   return enums.getCachedType(
     "status",

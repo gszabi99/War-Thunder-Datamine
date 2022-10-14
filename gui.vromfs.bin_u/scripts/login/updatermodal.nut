@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let statsd = require("statsd")
 let time = require("%scripts/time.nut")
 let eventbus = require("eventbus")
@@ -70,7 +79,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
   function changeBg()
   {
     let dynamicBgContainer = this.scene.findObject("animated_bg_picture")
-    if (::check_obj(dynamicBgContainer))
+    if (checkObj(dynamicBgContainer))
       animBgLoad("", dynamicBgContainer)
   }
 
@@ -151,7 +160,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
   function updateProgressbar()
   {
     let blockObj = this.scene.findObject("loading_progress_box")
-    if (!::checkObj(blockObj))
+    if (!checkObj(blockObj))
       return
     blockObj.setValue(100 * this.percent)
   }
@@ -166,7 +175,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
       this.goBack()
     else
     {
-      let errorText = ::loc("updater/error/" + this.errorCode.tostring())
+      let errorText = loc("updater/error/" + this.errorCode.tostring())
       this.msgBox("updater_error", errorText, [["ok", this.goBack ]], "ok")
     }
   }
@@ -177,9 +186,9 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
     local text = ""
     local textSub = ""
     if (stage == UPDATER_DOWNLOADING)
-      text = ::loc("updater/downloading")
+      text = loc("updater/downloading")
     else
-      text = ::loc("pl1/check_profile") //because we have all localizations
+      text = loc("pl1/check_profile") //because we have all localizations
 
     if (stage == UPDATER_CHECKING_FAST || stage == UPDATER_CHECKING
       || stage == UPDATER_RESPATCH || stage == UPDATER_DOWNLOADING
@@ -194,19 +203,19 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
       if (dspeed > 0)
       {
         local meas = 0.0;
-        local desc = ::loc("updater/dspeed/b");
+        local desc = loc("updater/dspeed/b");
         meas = dspeed / 1073741824.0; //GB
         if (meas > 0.5)
-          desc = ::loc("updater/dspeed/gb");
+          desc = loc("updater/dspeed/gb");
         else
         {
           meas = dspeed / 1048576.0; //MB
           if (meas > 0.5)
-            desc = ::loc("updater/dspeed/mb");
+            desc = loc("updater/dspeed/mb");
           else
           {
             meas = dspeed / 1024.0; //KB
-            desc = meas > 0.5 ? ::loc("updater/dspeed/kb") : ::loc("updater/dspeed/b");
+            desc = meas > 0.5 ? loc("updater/dspeed/kb") : loc("updater/dspeed/b");
           }
         }
         textSub += time.secondsToString(etaSec);

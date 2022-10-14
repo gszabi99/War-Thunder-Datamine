@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getBattleTaskUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { eachParam } = require("%sqstd/datablock.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
@@ -22,7 +31,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   collapsibleChaptersIdx = null
 
   function initScreen() {
-    this.showSceneBtn("show_all_unlocks", ::has_feature("ShowAllBattleTasks"))
+    this.showSceneBtn("show_all_unlocks", hasFeature("ShowAllBattleTasks"))
     chaptersObj = scene.findObject("chapters_list")
     unlocksObj = scene.findObject("unlocks_list")
     updateWindow()
@@ -65,7 +74,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   function updateNoTasksText() {
     local text = ""
     if (unlocksArray.len() == 0)
-      text = ::loc("mainmenu/battleTasks/noPersonalUnlocks")
+      text = loc("mainmenu/battleTasks/noPersonalUnlocks")
     scene.findObject("no_unlocks_msg").setValue(text)
   }
 
@@ -179,7 +188,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", canShow && isHeader)
     if (isHeader)
       collapsedButtonObj.setValue(
-        ::loc(getCollapsedChapters()?[curChapterId] != null ? "mainmenu/btnExpand" : "mainmenu/btnCollapse"))
+        loc(getCollapsedChapters()?[curChapterId] != null ? "mainmenu/btnExpand" : "mainmenu/btnCollapse"))
   }
 
   function onCollapse(obj) {
@@ -207,7 +216,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     foreach (group in chapterGroups)
     {
       let groupObj = chaptersObj.findObject(group.id)
-      if(!::check_obj(groupObj))
+      if(!checkObj(groupObj))
         continue
 
       isHiddenGroupSelected = isHiddenGroupSelected || curChapterId == group.id

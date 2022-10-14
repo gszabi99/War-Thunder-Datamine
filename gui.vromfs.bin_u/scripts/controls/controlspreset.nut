@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::g_script_reloader.loadOnce("%scripts/controls/controlsPresets.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { copyParamsToTable, eachBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -53,10 +58,10 @@ let dataArranging = {
 }
 
 let deviceIdByType = {
-  mouseButton = ::STD_MOUSE_DEVICE_ID
-  keyboardKey = ::STD_KEYBOARD_DEVICE_ID
-  joyButton   = ::JOYSTICK_DEVICE_0_ID
-  gesture     = ::STD_GESTURE_DEVICE_ID
+  mouseButton = STD_MOUSE_DEVICE_ID
+  keyboardKey = STD_KEYBOARD_DEVICE_ID
+  joyButton   = JOYSTICK_DEVICE_0_ID
+  gesture     = STD_GESTURE_DEVICE_ID
 }
 
 
@@ -95,7 +100,7 @@ let function isSameMapping(lhs, rhs) {
 
   for (local j = 0; j < lhs.len(); j++)
     foreach (attr in deviceMapAttr)
-      if (::getTblValue(attr, lhs[j], noValue) != ::getTblValue(attr, rhs[j], noValue))
+      if (getTblValue(attr, lhs[j], noValue) != getTblValue(attr, rhs[j], noValue))
        return false
 
   return true
@@ -341,8 +346,8 @@ let function isSameMapping(lhs, rhs) {
     // Check preset load recursion
     if (presetChain.indexof(presetPath) != null)
     {
-      ::dagor.assertf(false, "Controls preset require itself. " +
-        "Preset chain: " + ::toString(presetChain) + " > " + presetPath)
+      assert(false, "Controls preset require itself. " +
+        "Preset chain: " + toString(presetChain) + " > " + presetPath)
       return
     }
 
@@ -357,14 +362,14 @@ let function isSameMapping(lhs, rhs) {
   {
     local controlsBlk = blk?.controls
     let version = controlsBlk != null ?
-      ::getTblValue("version", controlsBlk, PRESET_DEFAULT_VERSION) :
-      ::getTblValue("controlsVer", blk, PRESET_DEFAULT_VERSION)
+      getTblValue("version", controlsBlk, PRESET_DEFAULT_VERSION) :
+      getTblValue("controlsVer", blk, PRESET_DEFAULT_VERSION)
 
     let shouldBackupOldControls =
-      ::getTblValue("shouldBackupOldControls", blk, BACKUP_OLD_CONTROLS_DEFAULT)
+      getTblValue("shouldBackupOldControls", blk, BACKUP_OLD_CONTROLS_DEFAULT)
 
     let shouldForgetBasePresets =
-      ::getTblValue("shouldForgetBasePresets", blk, false)
+      getTblValue("shouldForgetBasePresets", blk, false)
 
     if (version < PRESET_ACTUAL_VERSION && ::u.isString(blk?.hotkeysPreset) && blk?.hotkeysPreset != "")
     {
@@ -375,7 +380,7 @@ let function isSameMapping(lhs, rhs) {
     let shouldLoadOldControls = (version < PRESET_ACTUAL_VERSION) || shouldBackupOldControls;
     if (shouldLoadOldControls)
     {
-      ::dagor.debug("ControlsPreset: BackupOldControls")
+      log("ControlsPreset: BackupOldControls")
       this.controlsV4Blk = ::DataBlock()
       foreach (backupBlock in
         ["hotkeys", "joysticks", "controlsVer", "hotkeysPreset"])
@@ -397,7 +402,7 @@ let function isSameMapping(lhs, rhs) {
 
     this.loadBasePresetsFromBlk(controlsBlk, version, presetChain)
 
-    ::dagor.debug("ControlsPreset: LoadControls v" + version.tostring())
+    log("ControlsPreset: LoadControls v" + version.tostring())
 
     this.loadHotkeysFromBlk    (controlsBlk, version)
     this.loadAxesFromBlk       (controlsBlk, version)
@@ -421,7 +426,7 @@ let function isSameMapping(lhs, rhs) {
     let controlsDiff = ::ControlsPreset(this)
     controlsDiff.diffBasePresets()
 
-    ::dagor.debug("ControlsPreset: SaveControls")
+    log("ControlsPreset: SaveControls")
 
     controlsDiff.saveHotkeysToBlk    (controlsBlk)
     controlsDiff.saveAxesToBlk       (controlsBlk)
@@ -439,7 +444,7 @@ let function isSameMapping(lhs, rhs) {
 
   function debugPresetStats()
   {
-    ::dagor.debug("ControlsPreset: Stats:"
+    log("ControlsPreset: Stats:"
       + " hotkeys=" + this.hotkeys.len()
       + " axes=" + this.axes.len()
       + " params=" + this.params.len()
@@ -461,7 +466,7 @@ let function isSameMapping(lhs, rhs) {
     foreach (axesName, otherAxis in appliedPreset.axes)
     {
       this.setAxis(axesName, otherAxis)
-      if (::getTblValue("axisId", otherAxis, -1) >= 0)
+      if (getTblValue("axisId", otherAxis, -1) >= 0)
         usedAxesIds.append(otherAxis["axisId"])
     }
 
@@ -558,7 +563,7 @@ let function isSameMapping(lhs, rhs) {
       if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0)
       {
         blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("keyboard_updates")
-        ::dagor.debug("ControlsPreset: Compatibility preset added to base presets")
+        log("ControlsPreset: Compatibility preset added to base presets")
       }
 
       eachParam(blkBasePresetPaths, function(presetPath, presetGroup) {
@@ -567,7 +572,7 @@ let function isSameMapping(lhs, rhs) {
           presetPath = actualPresetPath
           blkBasePresetPaths[presetGroup] = presetPath
         }
-        ::dagor.debug("ControlsPreset: BasePreset." + presetGroup + " = " + presetPath)
+        log("ControlsPreset: BasePreset." + presetGroup + " = " + presetPath)
         this.applyBasePreset(presetPath, presetGroup, presetChain)
       }, this)
     }
@@ -575,7 +580,7 @@ let function isSameMapping(lhs, rhs) {
     if (presetChain.len() == 1)
     {
       this.basePresetPaths["default"] <- presetChain[0]
-      ::dagor.debug("ControlsPreset: InitialPreset = " + presetChain[0])
+      log("ControlsPreset: InitialPreset = " + presetChain[0])
     }
   }
 
@@ -598,7 +603,7 @@ let function isSameMapping(lhs, rhs) {
         for (local k = 0; k < blkHotkey.paramCount(); k++)
         {
           let deviceType = blkHotkey.getParamName(k)
-          let deviceId = ::getTblValue(deviceType, deviceIdByType, null)
+          let deviceId = getTblValue(deviceType, deviceIdByType, null)
           let buttonId = blkHotkey.getParamValue(k)
 
           if (deviceId == null || !::u.isInteger(buttonId) || buttonId == -1)
@@ -763,7 +768,7 @@ let function isSameMapping(lhs, rhs) {
         let blkShortcut = ::DataBlock()
         foreach (button in shortcut)
         {
-          let deviceName = ::getTblValue(button.deviceId, deviceTypeById, null)
+          let deviceName = getTblValue(button.deviceId, deviceTypeById, null)
           if (deviceName != null)
             blkShortcut[deviceName] <- button.buttonId
         }
@@ -870,10 +875,10 @@ let function isSameMapping(lhs, rhs) {
 
   function getButtonName(deviceId, buttonId)
   {
-    if (deviceId != ::JOYSTICK_DEVICE_0_ID)
-      return ::loc(::get_button_name(deviceId, buttonId)) // C++ function
+    if (deviceId != JOYSTICK_DEVICE_0_ID)
+      return loc(::get_button_name(deviceId, buttonId)) // C++ function
 
-    let buttonLocalized = ::loc("composite/button")
+    let buttonLocalized = loc("composite/button")
 
     local name = null
     local connected = false
@@ -897,14 +902,14 @@ let function isSameMapping(lhs, rhs) {
     if (name == null)
       name = "?:" + buttonLocalized + (buttonId + 1).tostring()
     if (!connected)
-      name += " (" + ::loc("composite/device_is_offline_short") + ")"
+      name += " (" + loc("composite/device_is_offline_short") + ")"
     return name
   }
 
 
   function getAxisName(axisId)
   {
-    let axisLocalized = ::loc("composite/axis")
+    let axisLocalized = loc("composite/axis")
 
     local name = null
     local connected = false
@@ -930,16 +935,16 @@ let function isSameMapping(lhs, rhs) {
     if (name == null)
       name = "?:" + axisLocalized + (axisId + 1).tostring()
     if (!connected)
-      name += " (" + ::loc("composite/device_is_offline") + ")"
+      name += " (" + loc("composite/device_is_offline") + ")"
     return name
   }
 
 
   function updateDeviceMapping(newDevices) {
     let oldDevices = this.deviceMapping
-    ::dagor.debug($"[CTRL] updating from {oldDevices.len()} to {newDevices.len()} devices")
-    ::debugTableData(oldDevices)
-    ::debugTableData(newDevices)
+    log($"[CTRL] updating from {oldDevices.len()} to {newDevices.len()} devices")
+    debugTableData(oldDevices)
+    debugTableData(newDevices)
 
     if (isSameMapping(oldDevices, newDevices))
       return false // nothing to do
@@ -972,7 +977,7 @@ let function isSameMapping(lhs, rhs) {
       }
     }
 
-    ::dagor.debug($"[CTRL] lost {lostDevicesIndexes.len()} devices")
+    log($"[CTRL] lost {lostDevicesIndexes.len()} devices")
 
     foreach (i in lostDevicesIndexes) {
       let old = oldDevices[i.old]
@@ -987,8 +992,8 @@ let function isSameMapping(lhs, rhs) {
       totalBindings.buttons += old.buttonsCount
     }
 
-    ::dagor.debug($"[CTRL] updated devices list ({newDevices.len()} devices)")
-    ::dagor.debug($"[CTRL] remapping {ranges.len()} ranges")
+    log($"[CTRL] updated devices list ({newDevices.len()} devices)")
+    log($"[CTRL] remapping {ranges.len()} ranges")
 
     let shouldRemap = @(id, m) id >= m.from && id < (m.from + m.count)
     foreach (axis in this.axes) {
@@ -1003,7 +1008,7 @@ let function isSameMapping(lhs, rhs) {
     foreach (event in this.hotkeys) {
       foreach (shortcut in event) {
         foreach (btn in shortcut) {
-          if (btn.deviceId == ::JOYSTICK_DEVICE_0_ID) {
+          if (btn.deviceId == JOYSTICK_DEVICE_0_ID) {
             foreach (remap in ranges) {
               if (shouldRemap(btn.buttonId, remap.buttons)) {
                 btn.buttonId = btn.buttonId - remap.buttons.from + remap.buttons.to
@@ -1016,8 +1021,8 @@ let function isSameMapping(lhs, rhs) {
     }
 
     this.deviceMapping = ::u.copy(newDevices)
-    ::dagor.debug($"[CTRL] final map for {this.deviceMapping.len()} devices:")
-    ::debugTableData(this.deviceMapping)
+    log($"[CTRL] final map for {this.deviceMapping.len()} devices:")
+    debugTableData(this.deviceMapping)
     return true
   }
 

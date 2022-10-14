@@ -1,7 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let getMfmHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
-let getMfmSectionTitle = @(section) section?.getTitle() ?? ::loc(section?.title ?? "")
+let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
 
 local isDebugMode = false
 
@@ -65,21 +72,21 @@ let function makeMfmSection(cfg, id, unit)
     if (isShortcut)
     {
       shortcutId = c.shortcut.findvalue(@(id) allowedShortcutIds.indexof(id) != null)
-      label = ::loc("hotkeys/{0}".subst(shortcutId ?? c.shortcut?[0] ?? ""))
+      label = loc("hotkeys/{0}".subst(shortcutId ?? c.shortcut?[0] ?? ""))
       isEnabled = shortcutId != null && isEnabledByUnit(cfg, c, unitId)
     }
     else if (isSection)
     {
       sectionId = c.section
       let title = getMfmSectionTitle(cfg[sectionId])
-      label = "".concat(title, ::loc("ui/ellipsis"))
+      label = "".concat(title, loc("ui/ellipsis"))
       isEnabled = isEnabledByUnit(cfg, c, unitId)
     }
     else if (isAction)
     {
       action = c.action
       label = c.label
-      isEnabled = label != ""
+      isEnabled = isEnabledByUnit(cfg, c, unitId) && label != ""
     }
 
     local color = isEnabled ? "hudGreenTextColor" : ""
@@ -95,7 +102,7 @@ let function makeMfmSection(cfg, id, unit)
     let isEmpty = label == ""
 
     local shortcutText = ""
-    if (!isEmpty && ::is_platform_pc)
+    if (!isEmpty && is_platform_pc)
       shortcutText = ::get_shortcut_text({
         shortcuts = ::get_shortcuts([ $"ID_VOICE_MESSAGE_{idx+1}" ])
         shortcutId = 0
@@ -108,7 +115,7 @@ let function makeMfmSection(cfg, id, unit)
       sectionId
       shortcutId
       action
-      name = ::colorize(color, label)
+      name = colorize(color, label)
       shortcutText = shortcutText != "" ? shortcutText : null
       wheelmenuEnabled = isEnabled
     })

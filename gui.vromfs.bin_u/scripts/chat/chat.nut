@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format, split_by_chars } = require("string")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
@@ -78,7 +85,7 @@ global enum chatErrorName {
 
 //to test filters - use console "chat_filter_for_myself=true"
 ::chat_filter_for_myself <- ::is_vendor_tencent()
-g_chat.filterMessageText <- function filterMessageText(text, isMyMessage)
+::g_chat.filterMessageText <- function filterMessageText(text, isMyMessage)
 {
   if (::get_option(::USEROPT_CHAT_FILTER).value &&
     (!isMyMessage || ::chat_filter_for_myself))
@@ -88,7 +95,7 @@ g_chat.filterMessageText <- function filterMessageText(text, isMyMessage)
 ::cross_call_api.filter_chat_message <- ::g_chat.filterMessageText
 
 
-g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg)
+::g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg)
 {
   //space work as close link. but non-breakable space - work as other symbols.
   //rnd for duplicate blocked messages
@@ -96,31 +103,31 @@ g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg)
 }
 
 
-g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link)
+::g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link)
 {
   let prefixLen = 6 // Prefix is "BL_NN_", where NN are digits.
   return ::stringReplace(link.slice(prefixLen), ::nbsp, " ")
 }
 
 
-g_chat.makeBlockedMsg <- function makeBlockedMsg(msg, replacelocId = "chat/blocked_message")
+::g_chat.makeBlockedMsg <- function makeBlockedMsg(msg, replacelocId = "chat/blocked_message")
 {
   local link = convertBlockedMsgToLink(msg)
-  return format("<Link=%s>%s</Link>", link, ::loc(replacelocId))
+  return format("<Link=%s>%s</Link>", link, loc(replacelocId))
 }
 
-g_chat.makeXBoxRestrictedMsg <- function makeXBoxRestrictedMsg(msg)
+::g_chat.makeXBoxRestrictedMsg <- function makeXBoxRestrictedMsg(msg)
 {
   return makeBlockedMsg(msg, "chat/blocked_message/xbox_restriction")
 }
 
-g_chat.checkBlockedLink <- function checkBlockedLink(link)
+::g_chat.checkBlockedLink <- function checkBlockedLink(link)
 {
-  return !::is_platform_xbox && (link.len() > 6 && link.slice(0, 3) == "BL_")
+  return !is_platform_xbox && (link.len() > 6 && link.slice(0, 3) == "BL_")
 }
 
 
-g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link)
+::g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link)
 {
   let start = text.indexof("<Link=" + link)
   if (start == null)
@@ -137,17 +144,17 @@ g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link)
   return text
 }
 
-g_chat.checkChatConnected <- function checkChatConnected()
+::g_chat.checkChatConnected <- function checkChatConnected()
 {
   if (::gchat_is_connected())
     return true
 
-  systemMessage(::loc("chat/not_connected"))
+  systemMessage(loc("chat/not_connected"))
   return false
 }
 
-g_chat.nextSystemMessageTime <- 0
-g_chat.systemMessage <- function systemMessage(msg, needPopup = true, forceMessage = false)
+::g_chat.nextSystemMessageTime <- 0
+::g_chat.systemMessage <- function systemMessage(msg, needPopup = true, forceMessage = false)
 {
   if ( (!forceMessage) && (nextSystemMessageTime > ::dagor.getCurTime()) )
     return
@@ -157,22 +164,22 @@ g_chat.systemMessage <- function systemMessage(msg, needPopup = true, forceMessa
   if (::menu_chat_handler)
     ::menu_chat_handler.addRoomMsg("", "", msg)
   if (needPopup && ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY))
-    ::g_popups.add(null, ::colorize(SYSTEM_COLOR, msg))
+    ::g_popups.add(null, colorize(SYSTEM_COLOR, msg))
 }
 
-g_chat.getRoomById <- function getRoomById(id)
+::g_chat.getRoomById <- function getRoomById(id)
 {
   return ::u.search(rooms, (@(id) function (room) { return room.id == id })(id))
 }
 
-g_chat.isRoomJoined <- function isRoomJoined(roomId)
+::g_chat.isRoomJoined <- function isRoomJoined(roomId)
 {
   let room = getRoomById(roomId)
   return room != null && room.joined
 }
 
-g_chat._roomJoinedIdx <- 0
-g_chat.addRoom <- function addRoom(room)
+::g_chat._roomJoinedIdx <- 0
+::g_chat.addRoom <- function addRoom(room)
 {
   room.roomJoinedIdx = _roomJoinedIdx++
   rooms.append(room)
@@ -187,33 +194,33 @@ g_chat.addRoom <- function addRoom(room)
   })
 }
 
-g_chat.getMaxRoomMsgAmount <- function getMaxRoomMsgAmount()
+::g_chat.getMaxRoomMsgAmount <- function getMaxRoomMsgAmount()
 {
   return ::is_myself_anyof_moderators() ? MAX_ROOM_MSGS_FOR_MODERATOR : MAX_ROOM_MSGS
 }
 
-g_chat.isSystemUserName <- function isSystemUserName(name)
+::g_chat.isSystemUserName <- function isSystemUserName(name)
 {
   return ::g_string.endsWith(name, SYSTEM_MESSAGES_USER_ENDING)
 }
 
-g_chat.isSystemChatRoom <- function isSystemChatRoom(roomId)
+::g_chat.isSystemChatRoom <- function isSystemChatRoom(roomId)
 {
   return ::g_chat_room_type.SYSTEM.checkRoomId(roomId)
 }
 
-g_chat.getSystemRoomId <- function getSystemRoomId()
+::g_chat.getSystemRoomId <- function getSystemRoomId()
 {
   return ::g_chat_room_type.SYSTEM.getRoomId("")
 }
 
-g_chat.openPrivateRoom <- function openPrivateRoom(name, ownerHandler)
+::g_chat.openPrivateRoom <- function openPrivateRoom(name, ownerHandler)
 {
   if (::openChatScene(ownerHandler))
     ::menu_chat_handler.changePrivateTo.call(::menu_chat_handler, name)
 }
 
-g_chat.joinSquadRoom <- function joinSquadRoom(callback)
+::g_chat.joinSquadRoom <- function joinSquadRoom(callback)
 {
   let name = getMySquadRoomId()
   if (::u.isEmpty(name))
@@ -227,18 +234,18 @@ g_chat.joinSquadRoom <- function joinSquadRoom(callback)
     ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, password, callback)
 }
 
-g_chat.leaveSquadRoom <- function leaveSquadRoom()
+::g_chat.leaveSquadRoom <- function leaveSquadRoom()
 {
   if (::menu_chat_handler)
     ::menu_chat_handler.leaveSquadRoom.call(::menu_chat_handler)
 }
 
-g_chat.isRoomSquad <- function isRoomSquad(roomId)
+::g_chat.isRoomSquad <- function isRoomSquad(roomId)
 {
   return ::g_chat_room_type.SQUAD.checkRoomId(roomId)
 }
 
-g_chat.isSquadRoomJoined <- function isSquadRoomJoined()
+::g_chat.isSquadRoomJoined <- function isSquadRoomJoined()
 {
   let roomId = getMySquadRoomId()
   if (roomId == null)
@@ -247,7 +254,7 @@ g_chat.isSquadRoomJoined <- function isSquadRoomJoined()
   return isRoomJoined(roomId)
 }
 
-g_chat.getMySquadRoomId <- function getMySquadRoomId()
+::g_chat.getMySquadRoomId <- function getMySquadRoomId()
 {
   if (!::g_squad_manager.isInSquad())
     return null
@@ -259,12 +266,12 @@ g_chat.getMySquadRoomId <- function getMySquadRoomId()
   return ::g_chat_room_type.SQUAD.getRoomId(squadRoomName)
 }
 
-g_chat.isRoomClan <- function isRoomClan(roomId)
+::g_chat.isRoomClan <- function isRoomClan(roomId)
 {
   return ::g_chat_room_type.CLAN.checkRoomId(roomId)
 }
 
-g_chat.getMyClanRoomId <- function getMyClanRoomId()
+::g_chat.getMyClanRoomId <- function getMyClanRoomId()
 {
   let myClanId = ::clan_get_my_clan_id()
   if (myClanId != "-1")
@@ -272,13 +279,13 @@ g_chat.getMyClanRoomId <- function getMyClanRoomId()
   return ""
 }
 
-g_chat.getBaseRoomsList <- function getBaseRoomsList() //base rooms list opened on chat load for all players
+::g_chat.getBaseRoomsList <- function getBaseRoomsList() //base rooms list opened on chat load for all players
 {
   return [::g_chat_room_type.THREADS_LIST.getRoomId("")]
 }
 
-g_chat._lastCleanTime <- -1
-g_chat._checkCleanThreadsList <- function _checkCleanThreadsList()
+::g_chat._lastCleanTime <- -1
+::g_chat._checkCleanThreadsList <- function _checkCleanThreadsList()
 {
   if (_lastCleanTime + THREADS_INFO_CLEAN_PERIOD_MSEC > ::dagor.getCurTime())
     return
@@ -302,12 +309,12 @@ g_chat._checkCleanThreadsList <- function _checkCleanThreadsList()
     delete threadsInfo[id]
 }
 
-g_chat.getThreadInfo <- function getThreadInfo(roomId)
+::g_chat.getThreadInfo <- function getThreadInfo(roomId)
 {
-  return ::getTblValue(roomId, threadsInfo)
+  return getTblValue(roomId, threadsInfo)
 }
 
-g_chat.addThreadInfoById <- function addThreadInfoById(roomId)
+::g_chat.addThreadInfoById <- function addThreadInfoById(roomId)
 {
   local res = getThreadInfo(roomId)
   if (res)
@@ -318,7 +325,7 @@ g_chat.addThreadInfoById <- function addThreadInfoById(roomId)
   return res
 }
 
-g_chat.updateThreadInfo <- function updateThreadInfo(dataBlk)
+::g_chat.updateThreadInfo <- function updateThreadInfo(dataBlk)
 {
   _checkCleanThreadsList()
   let roomId = dataBlk?.thread
@@ -338,12 +345,12 @@ g_chat.updateThreadInfo <- function updateThreadInfo(dataBlk)
   ::broadcastEvent("ChatThreadInfoChanged", { roomId = roomId })
 }
 
-g_chat.haveProgressCaps <- function haveProgressCaps(name)
+::g_chat.haveProgressCaps <- function haveProgressCaps(name)
 {
   return (userCaps?[name]) == userCapsGen;
 }
 
-g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk)
+::g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk)
 {
   userCapsGen++;
 
@@ -357,12 +364,12 @@ g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk)
     }
   }
 
-  ::dagor.debug("ChatProgressCapsChanged: "+userCapsGen)
-  ::debugTableData(userCaps);
+  log("ChatProgressCapsChanged: "+userCapsGen)
+  debugTableData(userCaps);
   ::broadcastEvent("ChatProgressCapsChanged")
 }
 
-g_chat.createThread <- function createThread(title, categoryName, langTags = null)
+::g_chat.createThread <- function createThread(title, categoryName, langTags = null)
 {
   if (!checkChatConnected() || !::g_chat.canCreateThreads() )
     return
@@ -375,12 +382,12 @@ g_chat.createThread <- function createThread(title, categoryName, langTags = nul
   ::broadcastEvent("ChatThreadCreateRequested")
 }
 
-g_chat.joinThread <- function joinThread(roomId)
+::g_chat.joinThread <- function joinThread(roomId)
 {
   if (!checkChatConnected())
     return
   if (!::g_chat_room_type.THREAD.checkRoomId(roomId))
-    return systemMessage(::loc(CHAT_ERROR_NO_CHANNEL))
+    return systemMessage(loc(CHAT_ERROR_NO_CHANNEL))
 
   if (!isRoomJoined(roomId))
     ::gchat_raw_command("xtjoin " + roomId)
@@ -388,12 +395,12 @@ g_chat.joinThread <- function joinThread(roomId)
     ::menu_chat_handler.switchCurRoom(roomId)
 }
 
-g_chat.validateRoomName <- function validateRoomName(name)
+::g_chat.validateRoomName <- function validateRoomName(name)
 {
   return validateRoomNameRegexp.replace("", name)
 }
 
-g_chat.validateChatMessage <- function validateChatMessage(text, multilineAllowed = false)
+::g_chat.validateChatMessage <- function validateChatMessage(text, multilineAllowed = false)
 {
   //do not allow players to use tag.  <color=#000000>...
   text = ::stringReplace(text, "<", "[")
@@ -403,7 +410,7 @@ g_chat.validateChatMessage <- function validateChatMessage(text, multilineAllowe
   return text
 }
 
-g_chat.validateThreadTitle <- function validateThreadTitle(title)
+::g_chat.validateThreadTitle <- function validateThreadTitle(title)
 {
   local res = ::stringReplace(title, "\\n", "\n")
   res = clearBorderSymbolsMultiline(res)
@@ -411,13 +418,13 @@ g_chat.validateThreadTitle <- function validateThreadTitle(title)
   return res
 }
 
-g_chat.prepareThreadTitleToSend <- function prepareThreadTitleToSend(title)
+::g_chat.prepareThreadTitleToSend <- function prepareThreadTitleToSend(title)
 {
   let res = validateThreadTitle(title)
   return ::stringReplace(res, "\n", "<br>")
 }
 
-g_chat.restoreReceivedThreadTitle <- function restoreReceivedThreadTitle(title)
+::g_chat.restoreReceivedThreadTitle <- function restoreReceivedThreadTitle(title)
 {
   local res = ::stringReplace(title, "\\n", "\n")
   res = ::stringReplace(res, "<br>", "\n")
@@ -426,14 +433,14 @@ g_chat.restoreReceivedThreadTitle <- function restoreReceivedThreadTitle(title)
   return res
 }
 
-g_chat.checkThreadTitleLen <- function checkThreadTitleLen(title)
+::g_chat.checkThreadTitleLen <- function checkThreadTitleLen(title)
 {
   let checkLenTitle = prepareThreadTitleToSend(title)
   let titleLen = utf8(checkLenTitle).charCount()
   return threadTitleLenMin <= titleLen && titleLen <= threadTitleLenMax
 }
 
-g_chat.openRoomCreationWnd <- function openRoomCreationWnd()
+::g_chat.openRoomCreationWnd <- function openRoomCreationWnd()
 {
   let devoiceMsg = penalties.getDevoiceMessage("activeTextColor")
   if (devoiceMsg)
@@ -442,7 +449,7 @@ g_chat.openRoomCreationWnd <- function openRoomCreationWnd()
   ::gui_start_modal_wnd(::gui_handlers.CreateRoomWnd)
 }
 
-g_chat.openChatRoom <- function openChatRoom(roomId, ownerHandler = null)
+::g_chat.openChatRoom <- function openChatRoom(roomId, ownerHandler = null)
 {
   if (!::openChatScene(ownerHandler))
     return
@@ -451,20 +458,20 @@ g_chat.openChatRoom <- function openChatRoom(roomId, ownerHandler = null)
     ::menu_chat_handler.switchCurRoom.call(::menu_chat_handler, roomId)
 }
 
-g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo)
+::g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo)
 {
   if (threadInfo.canEdit())
     ::handlersManager.loadHandler(::gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
 }
 
-g_chat.openModifyThreadWndByRoomId <- function openModifyThreadWndByRoomId(roomId)
+::g_chat.openModifyThreadWndByRoomId <- function openModifyThreadWndByRoomId(roomId)
 {
   let threadInfo = getThreadInfo(roomId)
   if (threadInfo)
     openModifyThreadWnd(threadInfo)
 }
 
-g_chat.modifyThread <- function modifyThread(threadInfo, modifyTable)
+::g_chat.modifyThread <- function modifyThread(threadInfo, modifyTable)
 {
   if ("title" in modifyTable)
   {
@@ -513,20 +520,20 @@ g_chat.modifyThread <- function modifyThread(threadInfo, modifyTable)
   return true
 }
 
-g_chat.canChooseThreadsLang <- function canChooseThreadsLang()
+::g_chat.canChooseThreadsLang <- function canChooseThreadsLang()
 {
   //only moderators can modify chat lang tags atm.
-  return ::has_feature("ChatThreadLang") && ::is_myself_anyof_moderators()
+  return hasFeature("ChatThreadLang") && ::is_myself_anyof_moderators()
 }
 
-g_chat.canCreateThreads <- function canCreateThreads()
+::g_chat.canCreateThreads <- function canCreateThreads()
 {
   // it can be useful in China to disallow creating threads for ordinary users
   // only moderators allowed to do so
-  return ::is_myself_anyof_moderators() || ::has_feature("ChatThreadCreate")
+  return ::is_myself_anyof_moderators() || hasFeature("ChatThreadCreate")
 }
 
-g_chat.isImRoomOwner <- function isImRoomOwner(roomData)
+::g_chat.isImRoomOwner <- function isImRoomOwner(roomData)
 {
   if (roomData)
     foreach(member in roomData.users)
@@ -535,7 +542,7 @@ g_chat.isImRoomOwner <- function isImRoomOwner(roomData)
   return false
 }
 
-g_chat.generateInviteMenu <- function generateInviteMenu(playerName)
+::g_chat.generateInviteMenu <- function generateInviteMenu(playerName)
 {
   let menu = []
   if(::my_user_name == playerName)
@@ -573,7 +580,7 @@ g_chat.generateInviteMenu <- function generateInviteMenu(playerName)
   return menu
 }
 
-g_chat.showPlayerRClickMenu <- function showPlayerRClickMenu(playerName, roomId = null, contact = null, position = null)
+::g_chat.showPlayerRClickMenu <- function showPlayerRClickMenu(playerName, roomId = null, contact = null, position = null)
 {
   playerContextMenu.showMenu(contact, this, {
     position = position
@@ -583,14 +590,14 @@ g_chat.showPlayerRClickMenu <- function showPlayerRClickMenu(playerName, roomId 
   })
 }
 
-g_chat.generatePlayerLink <- function generatePlayerLink(name, uid = null)
+::g_chat.generatePlayerLink <- function generatePlayerLink(name, uid = null)
 {
   if(uid)
     return "PLU_" + uid
   return "PL_" + name
 }
 
-g_chat.onEventInitConfigs <- function onEventInitConfigs(p)
+::g_chat.onEventInitConfigs <- function onEventInitConfigs(p)
 {
   let blk = ::get_game_settings_blk()
   if (!::u.isDataBlock(blk?.chat))
@@ -600,7 +607,7 @@ g_chat.onEventInitConfigs <- function onEventInitConfigs(p)
   threadTitleLenMax = blk.chat?.threadTitleLenMax ?? threadTitleLenMax
 }
 
-g_chat.getNewMessagesCount <- function getNewMessagesCount()
+::g_chat.getNewMessagesCount <- function getNewMessagesCount()
 {
   local result = 0
 
@@ -611,12 +618,12 @@ g_chat.getNewMessagesCount <- function getNewMessagesCount()
   return result
 }
 
-g_chat.haveNewMessages <- function haveNewMessages()
+::g_chat.haveNewMessages <- function haveNewMessages()
 {
   return getNewMessagesCount() > 0
 }
 
-g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig, isSeparationAllowed = true, needAssert = true)
+::g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig, isSeparationAllowed = true, needAssert = true)
 {
   let message = systemMsg.configToJsonString(langConfig, validateChatMessage)
   let messageLen = message.len() //to be visible in assert callstack
@@ -644,7 +651,7 @@ g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig,
   return true
 }
 
-g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message)
+::g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message)
 {
   let jsonString = ::g_string.cutPrefix(message, LOCALIZED_MESSAGE_PREFIX)
   if (!jsonString)
@@ -652,18 +659,18 @@ g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message)
 
   let res = systemMsg.jsonStringToLang(jsonString, null, "\n   ")
   if (!res)
-    ::dagor.debug("Chat: failed to localize json message: " + message)
+    log("Chat: failed to localize json message: " + message)
   return res || ""
 }
 
-g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRoom(langConfig)
+::g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRoom(langConfig)
 {
   let squadRoomId = getMySquadRoomId()
   if (!::u.isEmpty(squadRoomId))
     sendLocalizedMessage(squadRoomId, langConfig)
 }
 
-g_chat.getSenderColor <- function getSenderColor(senderName, isHighlighted = true, isPrivateChat = false, defaultColor = ::g_chat.color.sender)
+::g_chat.getSenderColor <- function getSenderColor(senderName, isHighlighted = true, isPrivateChat = false, defaultColor = ::g_chat.color.sender)
 {
   if (isPrivateChat)
     return color.senderPrivate[isHighlighted]
@@ -671,7 +678,7 @@ g_chat.getSenderColor <- function getSenderColor(senderName, isHighlighted = tru
     return color.senderMe[isHighlighted]
   if (::g_squad_manager.isInMySquad(senderName, false))
     return color.senderSquad[isHighlighted]
-  if (::isPlayerNickInContacts(senderName, ::EPL_FRIENDLIST))
+  if (::isPlayerNickInContacts(senderName, EPL_FRIENDLIST))
     return color.senderFriend[isHighlighted]
   return ::u.isTable(defaultColor) ? defaultColor[isHighlighted] : defaultColor
 }

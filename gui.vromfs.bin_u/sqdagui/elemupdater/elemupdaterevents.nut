@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 let stdSubscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let function isArray(v) {return type(v)=="array"}
 

@@ -1,8 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
-let aeroSmokesList    = persist("aeroSmokesList", @() ::Watched([]))
-let buyableSmokesList = persist("buyableSmokesList", @() ::Watched([]))
+let aeroSmokesList    = persist("aeroSmokesList", @() Watched([]))
+let buyableSmokesList = persist("buyableSmokesList", @() Watched([]))
 
 let function updateAeroSmokeList() {
   let blk = ::DataBlock()

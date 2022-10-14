@@ -1,26 +1,34 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { hasChat } = require("%scripts/user/matchingFeature.nut")
 
 let getClanActions = function(clanId)
 {
-  if (!::has_feature("Clans"))
+  if (!hasFeature("Clans"))
     return []
 
   let myClanId = ::clan_get_my_clan_id()
 
   return [
     {
-      text = ::loc("clan/btn_membership_req")
+      text = loc("clan/btn_membership_req")
       show = myClanId == "-1" && ::clan_get_requested_clan_id() != clanId
       action = @() ::g_clans.requestMembership(clanId)
     }
     {
-      text = ::loc("clan/clanInfo")
+      text = loc("clan/clanInfo")
       show = clanId != "-1"
       action = @() ::showClanPage(clanId, "", "")
     }
     {
-      text = ::loc("mainmenu/btnComplain")
+      text = loc("mainmenu/btnComplain")
       show = myClanId != clanId
       action = @() ::g_clans.requestOpenComplainWnd(clanId)
     }
@@ -35,7 +43,7 @@ let getRequestActions = function(clanId, playerUid, playerName = "", handler = n
   let myClanRights = ::g_clans.getMyClanRights()
   let isClanAdmin = ::clan_get_admin_editor_mode()
 
-  let isBlock = ::isPlayerInContacts(playerUid, ::EPL_BLOCKLIST)
+  let isBlock = ::isPlayerInContacts(playerUid, EPL_BLOCKLIST)
   let contact = ::getContact(playerUid, playerName)
   let name = contact?.name ?? playerName
   let canChat = contact?.canChat() ?? isChatEnableWithPlayer(name)
@@ -43,12 +51,12 @@ let getRequestActions = function(clanId, playerUid, playerName = "", handler = n
 
   return [
     {
-      text = ::loc("contacts/message")
+      text = loc("contacts/message")
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       show = playerUid != ::my_user_id_str
              && ::ps4_is_chat_enabled()
-             && !u.isEmpty(name)
-             && ::has_feature("Chat")
+             && !::u.isEmpty(name)
+             && hasChat.value
       action = function()
       {
         if (isBlock)
@@ -64,22 +72,22 @@ let getRequestActions = function(clanId, playerUid, playerName = "", handler = n
       }
     }
     {
-      text = ::loc("mainmenu/btnUserCard")
+      text = loc("mainmenu/btnUserCard")
       action = @() ::gui_modal_userCard({uid = playerUid})
     }
     {
-      text = ::loc("clan/requestApprove")
-      show = ::isInArray("MEMBER_ADDING", myClanRights) || isClanAdmin
+      text = loc("clan/requestApprove")
+      show = isInArray("MEMBER_ADDING", myClanRights) || isClanAdmin
       action = @() ::g_clans.approvePlayerRequest(playerUid, clanId)
     }
     {
-      text = ::loc("clan/requestReject")
-      show = ::isInArray("MEMBER_REJECT", myClanRights) || isClanAdmin
+      text = loc("clan/requestReject")
+      show = isInArray("MEMBER_REJECT", myClanRights) || isClanAdmin
       action = @() ::g_clans.rejectPlayerRequest(playerUid, clanId)
     }
     {
-      text = ::loc("clan/blacklistAdd")
-      show = ::isInArray("MEMBER_BLACKLIST", myClanRights) || isClanAdmin
+      text = loc("clan/blacklistAdd")
+      show = isInArray("MEMBER_BLACKLIST", myClanRights) || isClanAdmin
       action = @() ::g_clans.blacklistAction(playerUid, true, clanId)
     }
   ]

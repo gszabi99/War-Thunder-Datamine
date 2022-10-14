@@ -1,6 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::g_crew_points <- {}
 
-g_crew_points.getSkillPointsPacks <- function getSkillPointsPacks(country)
+::g_crew_points.getSkillPointsPacks <- function getSkillPointsPacks(country)
 {
   let res = []
   let blk = ::get_warpoints_blk()
@@ -21,7 +28,7 @@ g_crew_points.getSkillPointsPacks <- function getSkillPointsPacks(country)
 }
 
 //pack can be a single pack or packs array
-g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onCancel = @() null)
+::g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onCancel = @() null)
 {
   if (!::u.isArray(packsList))
     packsList = [packsList]
@@ -37,9 +44,9 @@ g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onC
     cost = cost.getTextAccordingToBalance()
   }
 
-  let msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
+  let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
   ::scene_msg_box("purchase_ask", null, msgText,
-    [["yes", ::Callback(function()
+    [["yes", Callback(function()
       {
         if (::check_balance_msgBox(cost))
           buyPackImpl(crew, packsList, onSuccess)
@@ -47,11 +54,11 @@ g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onC
     ], ["no", onCancel]], "yes", { cancel_fn = onCancel })
 }
 
-g_crew_points.buyPackImpl <- function buyPackImpl(crew, packsList, onSuccess)
+::g_crew_points.buyPackImpl <- function buyPackImpl(crew, packsList, onSuccess)
 {
   let pack = packsList.remove(0)
-  let taskId = shop_purchase_skillpoints(crew.id, pack.name)
-  let cb = ::Callback(function()
+  let taskId = ::shop_purchase_skillpoints(crew.id, pack.name)
+  let cb = Callback(function()
   {
     ::broadcastEvent("CrewSkillsChanged", { crew = crew, isOnlyPointsChanged = true })
     if (packsList.len())
@@ -62,7 +69,7 @@ g_crew_points.buyPackImpl <- function buyPackImpl(crew, packsList, onSuccess)
   ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
 }
 
-g_crew_points.getPacksToBuyAmount <- function getPacksToBuyAmount(country, skillPoints)
+::g_crew_points.getPacksToBuyAmount <- function getPacksToBuyAmount(country, skillPoints)
 {
   let packs = getSkillPointsPacks(country)
   if (!packs.len())

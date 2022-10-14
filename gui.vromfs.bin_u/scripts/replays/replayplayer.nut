@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::replay_status <- function replay_status(params)
 {
   return {
@@ -10,11 +17,11 @@
 {
   let status = ::get_replay_status()
   if (status != "ok")
-    return replay_status(null)
+    return ::replay_status(null)
 
-  let startPosition = ::getTblValue("position", params) || 0
-  let url = ::getTblValue("url", params)
-  let timeline = !!::getTblValue("timeline", params)
+  let startPosition = getTblValue("position", params) || 0
+  let url = getTblValue("url", params)
+  let timeline = !!getTblValue("timeline", params)
 
   if (!url)
   {
@@ -26,5 +33,5 @@
   return {status = "processed", version = ::get_replay_version()}
 }
 
-web_rpc.register_handler("replay_status", replay_status)
-web_rpc.register_handler("replay_start", replay_start)
+::web_rpc.register_handler("replay_status", ::replay_status)
+::web_rpc.register_handler("replay_start", ::replay_start)

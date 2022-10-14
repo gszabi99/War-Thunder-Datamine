@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
@@ -30,7 +35,7 @@ let function getFallbackUnitForHangar(params) {
     return curHangarUnit
 
   // Trying any other unit from country slotbar
-  let esUnitType = curHangarUnit?.esUnitType ?? ::ES_UNIT_TYPE_AIRCRAFT
+  let esUnitType = curHangarUnit?.esUnitType ?? ES_UNIT_TYPE_AIRCRAFT
   foreach (needCheckUnitType in [ true, false ])
     foreach (unit in (params?.slotbarUnits ?? []))
       if (!needCheckUnitType || unit.esUnitType == esUnitType)
@@ -40,7 +45,7 @@ let function getFallbackUnitForHangar(params) {
   return getCountryHangarDefaultUnit(countryId, esUnitType)
 }
 
-let showedUnit = persist("showedUnit", @() ::Watched(null))
+let showedUnit = persist("showedUnit", @() Watched(null))
 
 let getShowedUnitName = @() showedUnit.value?.name ??
   (isFallbackUnitInHangar ? "" : ::hangar_get_current_unit_name())

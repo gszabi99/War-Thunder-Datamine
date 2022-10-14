@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let datablock = require("DataBlock")
 
@@ -23,7 +28,7 @@ let visibleSeenIds = []
 
 let getShopItem = @(id) persistent.itemsList?[id]
 
-let canUseIngameShop = @() isPlatformSony && ::has_feature("PS4IngameShop")
+let canUseIngameShop = @() isPlatformSony && hasFeature("PS4IngameShop")
 
 local haveItemDiscount = null
 
@@ -50,7 +55,7 @@ let onFinishCollectData = function(v_categoriesData = null)
       persistent.itemsList[label] <- psnStoreItem(itemInfo, itemIndex++)
 
   //Must call in the end
-  ::dagor.debug("PSN: Shop Data: Finish update items info")
+  log("PSN: Shop Data: Finish update items info")
   ::broadcastEvent("Ps4ShopDataUpdated", {isLoadingInProgress = false})
 }
 

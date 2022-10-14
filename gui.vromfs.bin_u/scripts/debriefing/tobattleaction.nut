@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
 
@@ -37,7 +42,7 @@ local goToBattleAction = function() {
 
     if (!handler && eventDisplayType.showInEventsWindow) {
       ::gui_start_modal_events()
-      ::get_cur_gui_scene().performDelayed(::getroottable(), function() {
+      ::get_cur_gui_scene().performDelayed(getroottable(), function() {
         handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
         if (handler)
           handler.goToBattleFromDebriefing()

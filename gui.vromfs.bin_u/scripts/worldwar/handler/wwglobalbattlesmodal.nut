@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let globalBattlesListData = require("%scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
 let WwGlobalBattle = require("%scripts/worldWar/operations/model/wwGlobalBattle.nut")
 let { openBattlesFilterMenu, isMatchFilterMask } = require("%scripts/worldWar/handler/wwBattlesFilterMenu.nut")
@@ -96,8 +103,8 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
   function getTitleText()
   {
-    return ::loc("worldwar/global_battle/title", {
-      country = ::loc(getCustomViewCountryData(::get_profile_country_sq()).locId)})
+    return loc("worldwar/global_battle/title", {
+      country = loc(getCustomViewCountryData(::get_profile_country_sq()).locId)})
   }
 
   function updateSlotbar()
@@ -138,12 +145,12 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
   function updateSelectedItem(isForceUpdate = false)
   {
     refreshSelBattle()
-    let cb = ::Callback(function() {
+    let cb = Callback(function() {
       local newOperationBattle = ::g_world_war.getBattleById(curBattleInList.id)
       if (!newOperationBattle.isValid() || newOperationBattle.isStale())
       {
         newOperationBattle = clone curBattleInList
-        newOperationBattle.setStatus(::EBS_FINISHED)
+        newOperationBattle.setStatus(EBS_FINISHED)
       }
       let isBattleEqual = operationBattle.isEqual(newOperationBattle)
       operationBattle = newOperationBattle
@@ -202,7 +209,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
         continue
 
       newBattle.setFromBattle(battle)
-      newBattle.setStatus(::EBS_FINISHED)
+      newBattle.setStatus(EBS_FINISHED)
       battleListMap[idx] = newBattle
     }
 
@@ -220,7 +227,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
   function onOpenBattlesFilters(obj)
   {
-    let applyFilter = ::Callback(function()
+    let applyFilter = Callback(function()
       {
         reinitBattlesList(true)
         refreshList(true)
@@ -281,7 +288,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
   function fillOperationInfoText()
   {
     let operationInfoTextObj = scene.findObject("operation_info_text")
-    if (!::check_obj(operationInfoTextObj))
+    if (!checkObj(operationInfoTextObj))
       return
 
     let operation = getOperationById(curBattleInList.getOperationId())

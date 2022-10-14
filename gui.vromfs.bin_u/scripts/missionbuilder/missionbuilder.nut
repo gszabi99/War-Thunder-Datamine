@@ -1,5 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-local { getCdBaseDifficulty } = ::require_native("guiOptions")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+local { getCdBaseDifficulty } = require_native("guiOptions")
 
 ::gui_start_builder <- function gui_start_builder(params = {})
 {
@@ -11,7 +20,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/navBuilderOptions.blk"
-  wndGameMode = ::GM_BUILDER
+  wndGameMode = GM_BUILDER
   wndOptionsMode = ::OPTIONS_MODE_DYNAMIC
 
   applyAtClose = false
@@ -43,22 +52,22 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
       [::USEROPT_LIMITED_AMMO, "spinner"],
     ]
 
-    let container = create_options_container("builder_options", options, true, 0.5, true)
+    let container = ::create_options_container("builder_options", options, true, 0.5, true)
     let optListObj = scene.findObject("optionslist")
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
     optionsContainers.append(container.descr)
-    setSceneTitle(::loc("mainmenu/btnDynamicTraining"), scene, "menu-title")
+    setSceneTitle(loc("mainmenu/btnDynamicTraining"), scene, "menu-title")
 
     let desc = ::get_option(::USEROPT_DYN_ZONE)
     let dynZoneObj = guiScene["dyn_zone"]
     local value = desc.value
-    if(::checkObj(dynZoneObj))
+    if(checkObj(dynZoneObj))
       value = guiScene["dyn_zone"].getValue()
 
     ::g_map_preview.setSummaryPreview(scene.findObject("tactical-map"), ::DataBlock(), desc.values[value])
 
     if (::mission_settings.dynlist.len() == 0)
-      return this.msgBox("no_missions_error", ::loc("msgbox/appearError"),
+      return this.msgBox("no_missions_error", loc("msgbox/appearError"),
                      [["ok", goBack ]], "ok", { cancel_fn = goBack})
 
     update_takeoff()
@@ -77,7 +86,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
   function reinitOptionsList()
   {
-    if (!::check_obj(scene))
+    if (!checkObj(scene))
       return goBack()
 
     updateButtons()
@@ -88,7 +97,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
     let textObj = scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
     textObj.setValue(showOptions ? ""
-      : ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"))
+      : loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"))
 
     if (!showOptions)
       return
@@ -98,12 +107,12 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
   function isBuilderAvailable()
   {
-    return ::isUnitAvailableForGM(showedUnit.value, ::GM_BUILDER)
+    return ::isUnitAvailableForGM(showedUnit.value, GM_BUILDER)
   }
 
   function updateButtons()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     let available = isBuilderAvailable()
@@ -116,15 +125,15 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
-        maxSquadSize = ::get_max_players_for_gamemode(::GM_BUILDER)
+        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
 
     if (!isBuilderAvailable())
-      return this.msgBox("not_available", ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
+      return this.msgBox("not_available", loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
         [["ok"]], "ok")
 
-    if (::isInArray(getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
+    if (isInArray(getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
       if (!::check_diff_pkg(::g_difficulty.SIMULATOR.diffCode))
         return
 
@@ -195,7 +204,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
         misblk.setBool("gt_cooperative", true);
       add.append(misblk)
     }
-    ::add_mission_list_full(::GM_BUILDER, add, ::mission_settings.dynlist)
+    ::add_mission_list_full(GM_BUILDER, add, ::mission_settings.dynlist)
   }
 
   function update_dynamic_map()
@@ -241,10 +250,10 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
   {
     local haveTakeOff = false
     let mapObj = scene.findObject("dyn_mp_map")
-    if (::checkObj(mapObj))
+    if (checkObj(mapObj))
       ::mission_settings.currentMissionIdx = mapObj.getValue()
 
-    let dynMission = ::getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
+    let dynMission = getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
     if (!dynMission)
       return
 
@@ -261,7 +270,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
     }
     let txt = ::create_option_combobox(descrWeap.id, descrWeap.items, descrWeap.value, "onMissionChange", false)
     let dObj = scene.findObject(descrWeap.id)
-    if (::checkObj(dObj))
+    if (checkObj(dObj))
       guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
   }
 
@@ -272,7 +281,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
     if(desc.values.len() == 0)
     {
-      let settings = ::toString({                      // warning disable: -declared-never-used
+      let settings = toString({                      // warning disable: -declared-never-used
         DYN_MAP = getSceneOptValue(::USEROPT_DYN_MAP),
         DYN_ZONE = getSceneOptValue(::USEROPT_DYN_ZONE),
         DYN_SURROUND = getSceneOptValue(::USEROPT_DYN_SURROUND),
@@ -289,7 +298,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
       let currentUnit = showedUnit.value?.name         // warning disable: -declared-never-used
       let slotbarUnit = ::get_cur_slotbar_unit()?.name // warning disable: -declared-never-used
       let optId = desc.id                              // warning disable: -declared-never-used
-      let values = ::toString(desc.values)             // warning disable: -declared-never-used
+      let values = toString(desc.values)             // warning disable: -declared-never-used
       ::script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")
       return
     }
@@ -299,7 +308,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
   function randomize_builder_options()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     can_generate_missions = false
@@ -347,12 +356,12 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
-        maxSquadSize = ::get_max_players_for_gamemode(::GM_BUILDER)
+        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
 
     ::mission_settings.currentMissionIdx = scene.findObject("dyn_mp_map").getValue()
-    let fullMissionBlk = ::getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
+    let fullMissionBlk = getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
     if (!fullMissionBlk)
       return
 
@@ -362,7 +371,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
       ::dynamic_set_takeoff_mode(fullMissionBlk, takeoff_mode, takeoff_mode)
     }
 
-    let settings = DataBlock()
+    let settings = ::DataBlock()
     settings.setInt("allyCount",  getSceneOptValue(::USEROPT_DYN_ALLIES))
     settings.setInt("enemyCount", getSceneOptValue(::USEROPT_DYN_ENEMIES))
     settings.setInt("allySkill",  getSceneOptValue(::USEROPT_FRIENDLY_SKILL))
@@ -378,7 +387,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
     let missionBlk = fullMissionBlk.mission_settings.mission
 
-    missionBlk.setInt("_gameMode", ::GM_BUILDER)
+    missionBlk.setInt("_gameMode", GM_BUILDER)
     missionBlk.setBool("gt_cooperative", ::mission_settings.coop)
     if (::mission_settings.coop)
     {
@@ -406,7 +415,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
     ::mission_settings.missionFull = fullMissionBlk
     ::select_mission_full(missionBlk, fullMissionBlk);
 
-    //dlog("missionBlk:"); ::debugTableData(missionBlk)
+    //dlog("missionBlk:"); debugTableData(missionBlk)
 
     ::gui_start_builder_tuner()
   }

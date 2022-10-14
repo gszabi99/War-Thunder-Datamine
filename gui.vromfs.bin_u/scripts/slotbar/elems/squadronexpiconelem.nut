@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format, split_by_chars } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
@@ -11,16 +18,16 @@ elemModelType.addTypes({
   SQUADRON_EXP_ICON = {
     init = function() {
       ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
-      subscribe(seenList.id, null, ::Callback(@() notify([]), this))
+      subscribe(seenList.id, null, Callback(@() notify([]), this))
     }
 
     isVisible = @() seenList.getNewCount() == 0
-      && ::has_feature("ClanVehicles")
+      && hasFeature("ClanVehicles")
       && ::clan_get_exp() > 0
       && ::clan_get_researching_unit() != ""
       && !isAllClanUnitsResearched()
 
-    getTooltip = @() format(::loc("mainmenu/availableFreeExpForNewResearch"),
+    getTooltip = @() format(loc("mainmenu/availableFreeExpForNewResearch"),
       ::Cost().setSap(::clan_get_exp()).tostring())
 
     onEventFlushSquadronExp = @(p) notify([])

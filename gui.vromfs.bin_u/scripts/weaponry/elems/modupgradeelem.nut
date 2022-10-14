@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
@@ -66,5 +73,5 @@ return {
   createMarkup = @(objId = null, unitName = null, modName = null)
     elemViewType.MOD_UPGRADE_ICON.createMarkup(makeConfig(unitName, modName), objId)
   setValueToObj = @(obj, unitName, modName)
-    ::check_obj(obj) && obj.setValue(elemViewType.MOD_UPGRADE_ICON.getBhvParamsString(makeConfig(unitName, modName)))
+    checkObj(obj) && obj.setValue(elemViewType.MOD_UPGRADE_ICON.getBhvParamsString(makeConfig(unitName, modName)))
 }

@@ -1,0 +1,67 @@
+{
+  "root": {
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "width": "13@tierIconSize + 2@blockInterval",
+      "class": "wndNav",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "absolute",
+      "css-hier-invalidate": "yes",
+      "frame_header": {
+        "activeText": {
+          "caption": "yes",
+          "text": "#msg/attention"
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "textareaNoTab": {
+        "id": "restrictionsMessage",
+        "width": "pw",
+        "text-align": "center",
+        "input-transparent": "yes"
+      },
+      "tdiv": [
+        {
+          "id": "presetBefore",
+          "pos": "0.5pw-0.5w, 0",
+          "position": "relative"
+        },
+        {
+          "id": "presetAfter",
+          "pos": "0.5pw-0.5w, 0",
+          "position": "relative"
+        }
+      ],
+      "img": {
+        "background-color": "@white",
+        "background-image": "#ui/gameuiskin#item_upgrade",
+        "pos": "0.5pw-0.5w, 0",
+        "position": "relative",
+        "rotation": "180",
+        "size": "@tierIconSize, @tierIconSize"
+      },
+      "navBar": {
+        "navLeft": {
+          "Button_text": {
+            "text": "#msgbox/btn_cancel",
+            "on_click": "goBack",
+            "btnName": "B",
+            "ButtonImg": {}
+          }
+        },
+        "navRight": {
+          "Button_text": {
+            "id": "changePreset",
+            "text": "#msgbox/btn_ok",
+            "on_click": "onPresetChange",
+            "btnName": "X",
+            "ButtonImg": {}
+          }
+        }
+      }
+    }
+  }
+}

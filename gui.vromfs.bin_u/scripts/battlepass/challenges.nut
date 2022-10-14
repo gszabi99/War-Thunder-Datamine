@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getTimestampFromStringUtc, buildDateStr} = require("%scripts/time.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
@@ -5,8 +10,8 @@ let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/usersta
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
 
-let battlePassChallenges = ::Watched([])
-let curSeasonChallenges = ::Computed(@() battlePassChallenges.value
+let battlePassChallenges = Watched([])
+let curSeasonChallenges = Computed(@() battlePassChallenges.value
   .filter(@(unlock) unlock.battlePassSeason == season.value))
 
 curSeasonChallenges.subscribe(function(value) {
@@ -31,7 +36,7 @@ let function getLevelFromConditions(conditions) {
   return null
 }
 
-let curSeasonChallengesByStage = ::Computed(function() {
+let curSeasonChallengesByStage = Computed(function() {
   let res = {}
   foreach (challenge in curSeasonChallenges.value) {
     let mode = challenge?.mode
@@ -47,8 +52,8 @@ let curSeasonChallengesByStage = ::Computed(function() {
   return res
 })
 
-let mainChallengeOfSeasonId = ::Computed(@() $"battlepass_season_{season.value}_challenge_all")
-let mainChallengeOfSeason = ::Computed(@() curSeasonChallenges.value
+let mainChallengeOfSeasonId = Computed(@() $"battlepass_season_{season.value}_challenge_all")
+let mainChallengeOfSeason = Computed(@() curSeasonChallenges.value
   .findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.value))
 
 let function invalidateUnlocksCache() {
@@ -90,8 +95,8 @@ let function getConditionInTitleConfig(unlockBlk) {
   if (level != null) {
     if (level > seasonLevel.value)
       return {
-        addTitle = ::loc("ui/parentheses/space", {
-          text = ::loc("condition/unlockByLevel", { level = level })
+        addTitle = loc("ui/parentheses/space", {
+          text = loc("condition/unlockByLevel", { level = level })
         })
         titleIcon = "#ui/gameuiskin#calendar_event.svg"
       }
@@ -102,8 +107,8 @@ let function getConditionInTitleConfig(unlockBlk) {
     let beginTime = getTimestampFromStringUtc(timeCond.beginDate)
     if (beginTime > ::get_charserver_time_sec())
       return {
-        addTitle = ::loc("ui/parentheses/space", {
-          text = ::loc("condition/unlockByTime", { date = buildDateStr(beginTime) })
+        addTitle = loc("ui/parentheses/space", {
+          text = loc("condition/unlockByTime", { date = buildDateStr(beginTime) })
         })
         titleIcon = "#ui/gameuiskin#calendar_date.svg"
       }
@@ -133,7 +138,7 @@ let function getChallengeView(config, paramsCfg = {}) {
     title = $"{title}{addTitle}"
     taskStatus = challengeStatus
     taskDifficultyImage = titleIcon
-    taskHeaderCondition = headerCond ? ::loc("ui/parentheses/space", { text = headerCond }) : null
+    taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
     description = ::g_battle_tasks.getTaskDescription(unlockConfig, paramsCfg)
     reward = getUnlockRewardMarkUp(userstatUnlock)
     canGetReward = userstatUnlock?.hasReward ?? false
@@ -149,7 +154,7 @@ let function getChallengeView(config, paramsCfg = {}) {
   }
 }
 
-let hasChallengesReward = ::Computed(@() battlePassChallenges.value
+let hasChallengesReward = Computed(@() battlePassChallenges.value
   .findindex(@(unlock) activeUnlocks.value?[unlock.id].hasReward ?? false) != null)
 
 return {

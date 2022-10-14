@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 ::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
@@ -6,7 +13,7 @@ let { format } = require("string")
   function createView()
   {
     return {
-      windowHeader = ::loc("clan/upgrade_clan_wnd_title")
+      windowHeader = loc("clan/upgrade_clan_wnd_title")
       hasClanTypeSelect = false
       hasClanNameSelect = false
       hasClanSloganSelect = false
@@ -38,7 +45,7 @@ let { format } = require("string")
   function updateSubmitButtonText()
   {
     let cost = clanData.getClanUpgradeCost()
-    setSubmitButtonText(::loc("clan/clan_upgrade/button"), cost)
+    setSubmitButtonText(loc("clan/clan_upgrade/button"), cost)
   }
 
   // Important override.
@@ -57,7 +64,7 @@ let { format } = require("string")
     else if (::check_balance_msgBox(upgradeCost))
     {
       let msgText = ::warningIfGold(
-        format(::loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
+        format(loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)
       this.msgBox("need_money", msgText, [["ok", function() { upgradeClan() }],

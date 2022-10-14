@@ -1948,6 +1948,9 @@
     "gun": "gun_default"
   },
   "cockpit": {
+    "sightInFov": 50.5,
+    "sightOutFov": 40.5,
+    "sightFov": 1.0,
     "headPos": [
       4.2,
       0.87,
@@ -2443,6 +2446,34 @@
         "WeaponPreset": {
           "name": "nr_30",
           "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -12.0,
+                  12.0
+                ],
+                "pitch": [
+                  -30.0,
+                  6.0
+                ]
+              }
+            },
             {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonNR30.blk",
@@ -3513,6 +3544,25 @@
         ]
       }
     ]
+  },
+  "gunnerOpticFps": {
+    "Laser": {
+      "pos": [
+        -1.8,
+        1.4,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -12.0,
+        12.0,
+        -30.0,
+        6.0
+      ],
+      "opticType": "laser",
+      "turretNo": 0
+    }
   },
   "turbulence": {
     "segmentlength": 100.0,

@@ -1,5 +1,12 @@
-::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapArmiesList"
   sceneBlkName = null
@@ -27,14 +34,14 @@
 
     let tabListObj = scene.findObject("armies_by_status_list")
     fillContent()
-    if (::check_obj(tabListObj))
+    if (checkObj(tabListObj))
       tabListObj.setValue(0)
   }
 
   function fillContent()
   {
     let contentObj = scene.findObject("armies_tab_content")
-    if (!::check_obj(contentObj))
+    if (!checkObj(contentObj))
       return
 
     let emptyViewData = ::g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
@@ -48,7 +55,7 @@
   function getArmiesPerPage(withoutPaginator = false)
   {
     let contentObj = scene.findObject("armies_tab_content")
-    if (!::check_obj(contentObj))
+    if (!checkObj(contentObj))
       return 0
 
     let armiesContentSize = contentObj.getSize()
@@ -75,7 +82,7 @@
 
   function isValid()
   {
-    return ::check_obj(scene) && ::check_obj(scene.findObject("armies_object"))
+    return checkObj(scene) && checkObj(scene.findObject("armies_object"))
   }
 
   function getArmiesStateTabs()
@@ -106,7 +113,7 @@
     foreach(tab in tabOrder)
     {
       let tabCountObj = scene.findObject("army_by_state_title_count_" + tab.status)
-      if (::check_obj(tabCountObj))
+      if (checkObj(tabCountObj))
         tabCountObj.setValue(tab.getArmiesCountText())
     }
   }
@@ -117,7 +124,7 @@
     updatePaginator()
 
     let contentObj = scene.findObject("armies_tab_content")
-    if (!::check_obj(contentObj))
+    if (!checkObj(contentObj))
       return
 
     let contentViewData = lastTabSelected.getContentViewData(curItemsPerPage, currentPage)
@@ -154,7 +161,7 @@
   function updateScene(contentObj, viewData, index)
   {
     let viewObj = contentObj.getChild(index)
-    if (!::check_obj(viewObj))
+    if (!checkObj(viewObj))
       return
 
     let isShow = viewData != null
@@ -170,14 +177,14 @@
     viewObj["selected"] = viewData.name == selectedArmyName ? "yes" : "no"
 
     let armyIconObj = viewObj.findObject("armyIcon")
-    if (::check_obj(armyIconObj))
+    if (checkObj(armyIconObj))
     {
       armyIconObj["team"] = viewData.getTeamColor()
       armyIconObj["isBelongsToMyClan"] = viewData.isBelongsToMyClan() ? "yes" : "no"
       armyIconObj.findObject("entrenchIcon").show(viewData.isEntrenched())
 
       let armyUnitTypeObj = armyIconObj.findObject("armyUnitType")
-      if (::check_obj(armyUnitTypeObj))
+      if (checkObj(armyUnitTypeObj))
         armyUnitTypeObj.setValue(viewData.getUnitTypeCustomText())
     }
   }
@@ -237,11 +244,11 @@
       return
 
     let contentObj = scene.findObject("armies_tab_content")
-    if (::check_obj(contentObj))
+    if (checkObj(contentObj))
       for(local i = 0; i < itemsPerPageWithoutPaginator; i++)
       {
         let viewObj = contentObj.getChild(i)
-        if (!::check_obj(viewObj))
+        if (!checkObj(viewObj))
           break
 
         if (viewObj.armyName == selectedArmyName)
@@ -258,7 +265,7 @@
     if (!isSceneActiveNoModals())
       return doWhenActiveOnce("fullViewUpdate")
 
-    let armies = ::getTblValue("armies", params)
+    let armies = getTblValue("armies", params)
     if (::u.isEmpty(armies))
       return
 

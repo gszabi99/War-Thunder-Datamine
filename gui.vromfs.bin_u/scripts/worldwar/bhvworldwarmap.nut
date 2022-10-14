@@ -1,9 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 
 ::ww_gui_bhv.worldWarMapControls <- class
 {
-  eventMask = ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_WHEEL | ::EV_PROCESS_SHORTCUTS | ::EV_TIMER | ::EV_MOUSE_MOVE
+  eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_WHEEL | EV_PROCESS_SHORTCUTS | EV_TIMER | EV_MOUSE_MOVE
 
   selectedObjectPID    = ::dagui_propid.add_name_id("selectedObject")
   airfieldPID    = ::dagui_propid.add_name_id("selectedAirfield")
@@ -13,7 +20,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   function onLMouse(obj, mx, my, is_up, bits)
   {
     if (is_up)
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
 
     ::ww_event("ClearSelectFromLogArmy")
     ::ww_clear_outlined_zones()
@@ -23,36 +30,36 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (curActionMode != null)
     {
       curActionMode.useAction(mapPos)
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
     }
 
-    if (ww_is_append_path_mode_active())
+    if (::ww_is_append_path_mode_active())
     {
       onMoveCommand(obj, mapPos, true)
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
     }
 
     local selectedObject = mapObjectSelect.NONE
     if (checkBattle(obj, mapPos))
       selectedObject = mapObjectSelect.BATTLE
     else if (checkArmy(obj, mapPos))
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
     else if (checkAirfield(obj, mapPos))
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
     else if (checkRearZone(obj, mapPos))
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
 
     setSelectedObject(obj, selectedObject)
     sendMapEvent("ClearSelection")
 
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
   function onMouseMove(obj, mx, my, bits)
   {
     enableObjectsHover(obj, true)
 
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
   function isObjectsHoverEnabled(obj)
@@ -120,9 +127,9 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       let mapCell = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
       if (::ww_is_cell_generally_passable(mapCell))
         ::gui_handlers.WwAirfieldFlyOut.open(
-          airfieldIdx, clickPos, armyTargetName, ::Callback(checkFlewOutArmy, this))
+          airfieldIdx, clickPos, armyTargetName, Callback(checkFlewOutArmy, this))
       else
-        ::g_popups.add("", ::loc("worldwar/charError/MOVE_REJECTED"),
+        ::g_popups.add("", loc("worldwar/charError/MOVE_REJECTED"),
           null, null, null, "send_air_army_error")
     }
     else if (currentSelectedObject == mapObjectSelect.ARMY)
@@ -132,21 +139,21 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   function onExtMouse(obj, mx, my, btn_id, is_up, bits)
   {
     if (is_up)
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
 
     if (btn_id != 2)  //right mouse button
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
 
     let curActionMode = actionModesManager.getCurActionMode()
     if (curActionMode != null)
     {
       actionModesManager.setActionMode()
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
     }
 
     //-- rclick ---- (easy to search)
-    if (ww_is_append_path_mode_active())
-      return ::RETCODE_NOTHING
+    if (::ww_is_append_path_mode_active())
+      return RETCODE_NOTHING
 
     ::ww_clear_outlined_zones()
     let mapPos = ::Point2(mx, my)
@@ -157,7 +164,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (currentSelectedObject != mapObjectSelect.NONE)
       onMoveCommand(obj, mapPos, false)
 
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
   function onTimer(obj, dt)
@@ -192,7 +199,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       if (hoverBattle)
         hoverBattleId = hoverBattle.id
 
-      let lastSavedBattleName = ::getTblValue("battleName", params)
+      let lastSavedBattleName = getTblValue("battleName", params)
       if (hoverBattleId != lastSavedBattleName)
       {
         if (!hoverBattleId)
@@ -204,7 +211,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       }
 
       let armyName = ::ww_find_army_name_by_coordinates(mousePos[0], mousePos[1])
-      let lastSavedArmyName = ::getTblValue("armyName", params)
+      let lastSavedArmyName = getTblValue("armyName", params)
       if (armyName != lastSavedArmyName)
       {
         if (!armyName)
@@ -216,7 +223,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       }
 
       let airfieldIndex = ::ww_find_airfield_by_coordinates(mousePos[0], mousePos[1])
-      let lastAirfieldIndex = ::getTblValue("airfieldIndex", params)
+      let lastAirfieldIndex = getTblValue("airfieldIndex", params)
       if (airfieldIndex != lastAirfieldIndex)
       {
         if (airfieldIndex < 0)
@@ -229,7 +236,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     }
 
     let zoneIndex = ::ww_get_zone_idx(mousePos[0], mousePos[1])
-    let lastZoneIndex = ::getTblValue("zoneIndex", params)
+    let lastZoneIndex = getTblValue("zoneIndex", params)
     if (zoneIndex != lastZoneIndex)
     {
       if (zoneIndex < 0)
@@ -251,7 +258,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
 
   function onMapHover(obj)
   {
-    ::g_world_war_render.setCategory(::ERC_AIRFIELD_ARROW, true)
+    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
   }
 
   function onMapUnhover(obj)
@@ -260,7 +267,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     updateHoveredObjects(params)
     sendMapEvent("UpdateCursorByTimer", params)
     obj.setUserData(params)
-    ::g_world_war_render.setCategory(::ERC_AIRFIELD_ARROW, false)
+    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
   }
 
   function onMouseWheel(obj, mx, my, is_up, buttons)
@@ -269,11 +276,11 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (curActionMode?.onMouseWheel != null)
     {
       curActionMode.onMouseWheel(is_up)
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
     }
 
     ::ww_zoom_map(is_up)
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
   function checkArmy(obj, mapPos)
@@ -296,19 +303,19 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
 
   function getSelectedArmiesOnMap(obj)
   {
-    let selectedArmies = ::getTblValue(selectedArmiesID, obj.getUserData(), "")
+    let selectedArmies = getTblValue(selectedArmiesID, obj.getUserData(), "")
     return split_by_chars(selectedArmies, ",")
   }
 
   function selectArmy(obj, armyName, forceReplace = false, armyType = mapObjectSelect.ARMY)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     ::ww_event("SelectLogArmyByName", {name = armyName})
 
     let selectedArmies = getSelectedArmiesOnMap(obj)
-    if (::isInArray(armyName, selectedArmies))
+    if (isInArray(armyName, selectedArmies))
     {
       sendMapEvent("ArmySelected", { armyName = armyName, armyType = armyType })
       return true
@@ -357,7 +364,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
 
   function selectAirfield(obj, params)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return false
 
     obj.setIntProp(airfieldPID, params.airfieldIdx)
@@ -403,7 +410,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   {
     let zoneName = ::ww_get_zone_name(::ww_get_zone_idx(mapPos.x, mapPos.y))
     foreach (side in ::g_world_war.getCommonSidesOrder())
-      if (::isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side)))
+      if (isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side)))
       {
         sendMapEvent("RearZoneSelected", { side = ::ww_side_val_to_name(side) })
         return true
@@ -498,10 +505,10 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   if (!::g_world_war.haveManagementAccessForSelectedArmies())
     return false
 
-  return ::is_keyboard_btn_down(::DKEY_LSHIFT) || ::is_keyboard_btn_down(::DKEY_RSHIFT)
+  return ::is_keyboard_btn_down(DKEY_LSHIFT) || ::is_keyboard_btn_down(DKEY_RSHIFT)
 }
 
 ::ww_is_add_selected_army_mode_active <- function ww_is_add_selected_army_mode_active()
 {
-  return false//::is_keyboard_btn_down(::DKEY_LCONTROL) || ::is_keyboard_btn_down(::DKEY_RCONTROL)
+  return false//::is_keyboard_btn_down(DKEY_LCONTROL) || ::is_keyboard_btn_down(DKEY_RCONTROL)
 }

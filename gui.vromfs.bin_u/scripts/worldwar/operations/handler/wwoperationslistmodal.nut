@@ -1,5 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 local { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -65,7 +74,7 @@ local { getOperationById, getOperationGroupByMapId
         {
           view.items.append({
             id = "active_group"
-            itemText = ::colorize(itemColor, ::loc("worldwar/operation/active"))
+            itemText = colorize(itemColor, loc("worldwar/operation/active"))
             isCollapsable = true
           })
           isActiveChapterAdded = true
@@ -75,7 +84,7 @@ local { getOperationById, getOperationGroupByMapId
       {
         view.items.append({
           id = "finished_group"
-          itemText = ::colorize(itemColor, ::loc("worldwar/operation/finished"))
+          itemText = colorize(itemColor, loc("worldwar/operation/finished"))
           isCollapsable = true
         })
         isFinishedChapterAdded = true
@@ -95,7 +104,7 @@ local { getOperationById, getOperationGroupByMapId
       view.items.append({
         itemIcon = icon
         id = operation.id.tostring()
-        itemText = ::colorize(itemColor, operation.getNameText(false))
+        itemText = colorize(itemColor, operation.getNameText(false))
         isLastPlayedIcon = isLastPlayed
       })
     }
@@ -136,7 +145,7 @@ local { getOperationById, getOperationGroupByMapId
     if (idx < 0 || idx >= opListObj.childrenCount())
       return false
     let opObj = opListObj.getChild(idx)
-    if(!::checkObj(opObj))
+    if(!checkObj(opObj))
       return false
 
     let newOperation = opObj?.collapse_header ? null
@@ -150,25 +159,25 @@ local { getOperationById, getOperationGroupByMapId
 
   function onCollapse(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let headerObj = obj.getParent()
-    if (::check_obj(headerObj))
+    if (checkObj(headerObj))
       doCollapse(headerObj)
   }
 
   function onCollapsedChapter()
   {
     let rowObj = opListObj.getChild(opListObj.getValue())
-    if (::check_obj(rowObj))
+    if (checkObj(rowObj))
       doCollapse(rowObj)
   }
 
   function doCollapse(obj)
   {
     let containerObj = obj.getParent()
-    if (!::check_obj(containerObj))
+    if (!checkObj(containerObj))
       return
 
     obj.collapsing = "yes"
@@ -203,7 +212,7 @@ local { getOperationById, getOperationGroupByMapId
     }
 
     let selectedObj = containerObj.getChild(containerObj.getValue())
-    if (needReselect || (::check_obj(selectedObj) && !selectedObj.isVisible()))
+    if (needReselect || (checkObj(selectedObj) && !selectedObj.isVisible()))
       selectFirstItem(containerObj)
 
     updateButtons()
@@ -231,7 +240,7 @@ local { getOperationById, getOperationGroupByMapId
   function updateTitle()
   {
     let titleObj = scene.findObject("wnd_title")
-    if (!::check_obj(titleObj))
+    if (!checkObj(titleObj))
       return
 
     titleObj.setValue(selOperation ?
@@ -261,13 +270,13 @@ local { getOperationById, getOperationGroupByMapId
         let rowObj = opListObj.getChild(opListObj.getValue())
         if (rowObj?.isValid())
           collapsedChapterBtnObj.setValue(rowObj?.collapsed == "yes"
-            ? ::loc("mainmenu/btnExpand")
-            : ::loc("mainmenu/btnCollapse"))
+            ? loc("mainmenu/btnExpand")
+            : loc("mainmenu/btnCollapse"))
       }
 
       let operationDescText = scene.findObject("operation_short_info_text")
       operationDescText.setValue(getOpGroup().getOperationsList().len() == 0
-        ? ::loc("worldwar/msg/noActiveOperations")
+        ? loc("worldwar/msg/noActiveOperations")
         : "" )
       return
     }
@@ -282,7 +291,7 @@ local { getOperationById, getOperationGroupByMapId
       joinBtn.findObject("is_clan_participate_img").show(selOperation.isMyClanSide(side))
 
       let joinBtnFlagsObj = joinBtn.findObject("side_countries")
-      if (::checkObj(joinBtnFlagsObj))
+      if (checkObj(joinBtnFlagsObj))
       {
         let wwMap = selOperation.getMap()
         let markUpData = wwMap.getCountriesViewBySide(side, false)
@@ -300,13 +309,13 @@ local { getOperationById, getOperationGroupByMapId
   function onJoinOperationSide1()
   {
     if (selOperation)
-      joinOperationBySide(::SIDE_1)
+      joinOperationBySide(SIDE_1)
   }
 
   function onJoinOperationSide2()
   {
     if (selOperation)
-      joinOperationBySide(::SIDE_2)
+      joinOperationBySide(SIDE_2)
   }
 
   function joinOperationBySide(side)

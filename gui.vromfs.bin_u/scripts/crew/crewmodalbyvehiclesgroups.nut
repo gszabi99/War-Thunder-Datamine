@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
@@ -66,8 +73,8 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
     if (!isRecrutedCrew) {
       let rawCost = ::get_crew_slot_cost(getCurCountryName())
       let cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
-      let text = "".concat(::loc("shop/recruitCrew"),
-        ::loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
+      let text = "".concat(loc("shop/recruitCrew"),
+        loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
       setColoredDoubleTextToButton(scene, "btn_recruit", text)
     }
   }
@@ -81,7 +88,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
       return
 
     let unit = getCrewUnit(crew)
-    let onTaskSuccess = ::Callback(function() {
+    let onTaskSuccess = Callback(function() {
       let crews = ::get_crews_list_by_country(country)
       if (!crews.len())
         return
@@ -97,7 +104,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
     }, this)
     if (cost > ::zero_money) {
       let msgText = ::warningIfGold(
-        format(::loc("shop/needMoneyQuestion_purchaseCrew"),
+        format(loc("shop/needMoneyQuestion_purchaseCrew"),
           cost.getTextAccordingToBalance()),
         cost)
       this.msgBox("need_money", msgText,
@@ -120,9 +127,9 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 
 return {
   open = function(params = {}) {
-    if (::has_feature("CrewSkills"))
+    if (hasFeature("CrewSkills"))
       ::handlersManager.loadHandler(CrewModalByVehiclesGroups, params)
     else
-      ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
+      ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
   }
 }

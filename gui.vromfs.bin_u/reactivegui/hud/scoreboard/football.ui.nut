@@ -1,15 +1,17 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {localTeam, scoreTeamA, scoreTeamB, roundTimeLeft} = require("%rGui/missionState.nut")
 let teamColors = require("%rGui/style/teamColors.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
 let scoreParamsByTeam = {
   localTeam = {
-    score = ::Computed(@() localTeam.value == 2 ? scoreTeamB.value : scoreTeamA.value)
+    score = Computed(@() localTeam.value == 2 ? scoreTeamB.value : scoreTeamA.value)
     fillColor = "teamBlueColor"
     borderColor = "teamBlueLightColor"
   }
   enemyTeam = {
-    score = ::Computed(@() localTeam.value == 2 ? scoreTeamA.value : scoreTeamB.value)
+    score = Computed(@() localTeam.value == 2 ? scoreTeamA.value : scoreTeamB.value)
     fillColor = "teamRedColor"
     borderColor = "teamRedLightColor"
   }

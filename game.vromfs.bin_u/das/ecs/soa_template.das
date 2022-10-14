@@ -6,11 +6,12 @@ require strings
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/strings_boost
+require daslib/macro_boost
+require daslib/remove_call_args
 
 
 let
   show_completion = true
-  precache_markers = true
 
 
 [macro_function]
@@ -20,14 +21,12 @@ def has_annotation(annotations : rtti::AnnotationList; tag : string)
       return true
   return false
 
-
 [macro_function]
-def fn_or_block_apply(var func; body; var errors : das_string; keep_all_args = false)
+def fn_or_block_apply(var func; body; var errors : das_string)
   if show_completion && is_in_completion()
     return true
   var usedTypes : table<string; bool>
   var toReplace : array<tuple<name : string; fields : array<string>>>
-  var addedFields : table<string; bool>
   var i = 0
   while i < length(func.arguments)
     assume arg = func.arguments[i]
@@ -41,36 +40,50 @@ def fn_or_block_apply(var func; body; var errors : das_string; keep_all_args = f
         var fieldType <- clone_type(field._type)
         if arg._type.flags.constant
           fieldType.flags |= TypeDeclFlags constant
-        func.arguments |> emplace_new <| new [[Variable() at=arg.at,
+        var newArg <- new [[Variable() at=arg.at,
           name := field.name,
           _type <- fieldType,
           _aka := "{field.name}_SOA"
         ]]
-        addedFields[string(field.name)] = true
+        for ann in field.annotation
+          newArg.annotation |> add_annotation_argument(ann)
+        func.arguments |> emplace(newArg)
       toReplace |> emplace <| [[auto string(arg.name), [{ for f in arg._type.structType.fields; string(f.name) }] ]]
       func.arguments |> erase(i)
     else
       i += 1
-  var usedNames : table<string; bool>
-  for replace in toReplace
-    replate_index_and_field(replace.name, replace.fields, body, usedNames)
 
-  if keep_all_args
-    for arg in func.arguments
-      arg.flags |= VariableFlags marked_used
-  else
-    i = 0
-    while i < length(func.arguments)
-      assume arg = func.arguments[i]
-      if addedFields |> key_exists(string(arg.name)) && !key_exists(usedNames, string(arg.name))
-        func.arguments |> erase(i)
-      else
-        i += 1
+  for replace in toReplace
+    replate_index_and_field(replace.name, replace.fields, body)
   return true
+
+[macro_function]
+def patch_soa_blocks(fn : smart_ptr<Function>; ast_changed : bool?)
+  var astVisitor = new PatchSoaBlocks(ast_changed)
+  var astVisitorAdapter <- make_visitor(*astVisitor)
+  visit(fn, astVisitorAdapter)
+  astVisitorAdapter := null
+  unsafe
+    delete astVisitor
+
+[macro_interface]
+class PatchSoaBlocks : AstVisitor
+  astChanged : bool?
+
+  def PatchSoaBlocks(ast_changed : bool?)
+    astChanged = ast_changed
+
+  def override visitExprBlock(blk : smart_ptr<ExprBlock>) : ExpressionPtr
+    for ann in blk.annotations
+      if ann.annotation.name == "soa_blk"
+        block_patch(get_ptr(blk), *astChanged)
+    return blk
 
 
 [macro_function]
-def fn_or_block_finish(var func; blk; is_func : bool)
+def fn_or_block_patch(var func; blk; var astChanged : bool&)
+  patch_soa_blocks(func, unsafe(addr(astChanged)))
+
   var fnBlock = blk as ExprBlock
   if length(fnBlock.list) > 0
     assume firstBlk = fnBlock.list[0]
@@ -78,62 +91,65 @@ def fn_or_block_finish(var func; blk; is_func : bool)
       let call = firstBlk as ExprCall
       if call.name == "ecs::process_view" && length(call.arguments) > 1 && call.arguments[1] is ExprMakeBlock
         let makeEsBlk = call.arguments[1] as ExprMakeBlock
-        return fn_finish(func, (makeEsBlk._block as ExprBlock).arguments, is_func)
+        return block_patch(makeEsBlk._block as ExprBlock, astChanged)
 
-  return fn_finish(func, func.arguments, is_func)
+  return fn_patch(func, astChanged)
 
 
 [macro_function]
-def fn_finish(var func; args; is_func : bool)
-  var roFields : array<string>
-  var rwFields : array<string>
-  for arg in args
-    if arg._aka |> ends_with("_SOA")
-      let onlyReading = !arg.access_flags.access_ref
-      if onlyReading
-        roFields |> push(string(arg.name))
-      else
-        rwFields |> push(string(arg.name))
+def fn_patch(var fn : smart_ptr<Function>; var astChanged : bool&)
+  for ann in fn.annotations
+    if ann.annotation.name == "remove_call_args"
+      return true
 
-  var markers : array< tuple<argname : string; argvalue : RttiValue> >
-  if length(roFields) > 0
-    if precache_markers
-      markers |> emplace <| [[auto "ro", [[RttiValue tInt=join(roFields, ",") |> ecs_hash |> int()]] ]]
-    else
-      markers |> emplace <| [[auto "ro", [[RttiValue tString=join(roFields, ",")]] ]]
+  var removeArgs : array< tuple<argname : string; argvalue : RttiValue> >
+  var i = length(fn.arguments)
+  while --i >= 0
+    assume arg = fn.arguments[i]
+    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init
+      astChanged = true
+      removeArgs |> emplace([[auto "arg", [[RttiValue tInt=i]] ]])
 
-  if length(rwFields) > 0
-    if precache_markers
-      markers |> emplace <| [[auto "rw", [[RttiValue tInt=join(rwFields, ",") |> ecs_hash |> int()]] ]]
-    else
-      markers |> emplace <| [[auto "rw", [[RttiValue tString=join(rwFields, ",")]] ]]
+  if length(removeArgs) > 0
+    fn |> append_annotation("remove_call_args", "remove_call_args", removeArgs)
 
-  append_annotation(func, "soa_template", is_func ? "_soa_fn" : "_soa_blk", markers)
   return true
+
+
+[macro_function]
+def block_patch(var blk : ExprBlock?; var astChanged : bool&)
+  var indexes : array<int>
+  var i = length(blk.arguments)
+  while --i >= 0
+    assume arg = blk.arguments[i]
+    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init
+      blk.arguments |> erase(i)
+      astChanged = true
+      indexes |> push(i)
+  return true
+
 
 [function_macro(name="soa_def")]
 class SoaDefCallMacro : AstFunctionAnnotation
   [unused_argument(group, args)] def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
-    return fn_or_block_apply(func, func.body, errors, true)
+    return fn_or_block_apply(func, func.body, errors)
 
+  [unused_argument(group, args, progArgs, errors)] def override patch(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string; var astChanged : bool &) : bool
+    return fn_patch(func, astChanged)
 
 [function_macro(name="soa_es")]
 class SoaEsCallMacro : AstFunctionAnnotation
   [unused_argument(group, args)] def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     return fn_or_block_apply(func, func.body, errors)
 
-  [unused_argument(group, args, progArgs, errors)] def override finish(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool
-    return fn_or_block_finish(func, func.body, true)
+  [unused_argument(group, args, progArgs, errors)] def override patch(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string; var astChanged : bool &) : bool
+    return fn_or_block_patch(func, func.body, astChanged)
 
 
 [block_macro(name="soa_blk")]
 class SoaEsBlockMacro : AstBlockAnnotation
   [unused_argument(group, args)] def override apply(var blk : smart_ptr<ExprBlock>; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     return fn_or_block_apply(blk, blk, errors)
-
-  [unused_argument(group, args, progArgs, errors)] def override finish(var blk : smart_ptr<ExprBlock>; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool
-    return fn_or_block_finish(blk, blk, false)
-
 
 [function_macro(name="_soa_fn")]
 class SoaFnMarkerMacro : AstFunctionAnnotation
@@ -147,21 +163,17 @@ class SoaBlkMarkerMacro : AstBlockAnnotation
 
 
 [macro_function]
-def replate_index_and_field(prefix : string; var fields : array<string>; blk : ExpressionPtr; var usedNames : table<string; bool>)
+def replate_index_and_field(prefix : string; var fields : array<string>; blk : ExpressionPtr)
   var astVisitor = new ReplaceIndexAndFieldsVisitor(prefix, fields)
   var astVisitorAdapter <- make_visitor(*astVisitor)
   visit(blk, astVisitorAdapter)
-  for n in keys(astVisitor.usedNames)
-    usedNames[n] = true
   astVisitorAdapter := null
   unsafe
     delete astVisitor
 
-
 class ReplaceIndexAndFieldsVisitor : AstVisitor
   it_prefix : string
   fields : array<string>
-  usedNames : table<string; bool>
 
   def ReplaceIndexAndFieldsVisitor(prefix : string; var fields_ : array<string>)
     it_prefix = prefix
@@ -173,7 +185,6 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
       if (at.subexpr is ExprVar)
         if (at.subexpr as ExprVar).name == it_prefix
           let ename = string(expr.name)
-          usedNames[ename] = true
           return <- new [[ExprAt()
             at=expr.at,
             subexpr <- new [[ExprVar() at=expr.at, name := ename]],
@@ -183,12 +194,11 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
 
   def override visitExprCall(expr : smart_ptr<ExprCall>) : ExpressionPtr
     let argsNum = length(expr.arguments)
-    if (expr.name == "length") && argsNum == 1
+    if (expr.name == "length" || expr.name == "iter_range") && argsNum == 1
       assume arg = expr.arguments[0]
       if (arg is ExprVar) && (arg as ExprVar).name == it_prefix
         var len <- clone_expression(expr)
         var lenCall = len as ExprCall
-        usedNames[fields[0]] = true
         lenCall.arguments[0] := null
         lenCall.arguments[0] <- new [[ExprVar() at=arg.at, name := fields[0]]]
         return len
@@ -205,7 +215,6 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
             at=arg.at,
             name := field
           ]]
-          usedNames[field] = true
         return pushExpr
     else
       var hasSoaArg = false
@@ -226,7 +235,6 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
                 at=arg.at,
                 name := field
               ]]
-              usedNames[field] = true
         return pushExpr
     return expr
 
@@ -259,7 +267,6 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
           at=expr.sources[soa_index].at,
           name := itn
         ]]
-        usedNames[itn] = true
         newFor.sources |> emplace(nsrc)
       newFor.iteratorVariables |> clear()
 
@@ -488,7 +495,7 @@ class SoaTemplateStructMacro : AstStructureAnnotation
     return <- make_any_named_call(st, stype, args, fnName, callName, check_sizes)
 
 
-
+[macro_interface]
 class CollectAndReplaceIteratorFields : AstVisitor
   prefix : string
   names : table<string; bool>

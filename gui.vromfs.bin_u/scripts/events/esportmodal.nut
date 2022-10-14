@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
@@ -43,11 +51,11 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       return {}
 
     return {
-      seasonHeader = "\n".join([::g_string.utf8ToUpper(::loc("mainmenu/btnTournament")),
-        $"{::loc("tournaments/season")} {currSeason.competitiveSeason}"])
+      seasonHeader = "\n".join([::g_string.utf8ToUpper(loc("mainmenu/btnTournament")),
+        $"{loc("tournaments/season")} {currSeason.competitiveSeason}"])
       seasonDate = "".concat(
         buildDateTimeStr(getTimestampFromStringUtc(currSeason.beginDate), false, false),
-        ::loc("ui/mdash"),
+        loc("ui/mdash"),
         buildDateTimeStr(getTimestampFromStringUtc(currSeason.endDate), false, false))
       items = getTourListViewData(tournamentList, filter)
     }
@@ -231,7 +239,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
         sortId    = unitTypes.len()
         image     = "#ui/gameuiskin#all_unit_types.svg"
         isDisable = !isUnitTypeInEvents("mix")
-        text      = ::loc("mainmenu/mix_battles")
+        text      = loc("mainmenu/mix_battles")
       }
   }
 
@@ -242,7 +250,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
         id        = $"tour_{tType}"
         sortId    = idx
         isDisable = tType != "my" ? !isTournamentTypeInEvents(tType) : !hasAnyTickets()
-        text  = ::loc($"tournaments/{tType}")
+        text  = loc($"tournaments/{tType}")
       }
   }
 

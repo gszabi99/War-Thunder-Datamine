@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 // warning disable: -file:forbidden-function
 let { get_mp_session_id_str = @() ::get_mp_session_id() //compatibility with 2.16.0.X
 } = require_optional("multiplayer")
@@ -10,34 +15,32 @@ let { getDebriefingResult, getDynamicResult } = require("%scripts/debriefing/deb
 let { getPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-
-::debug_dump_unload <- dbg_dump.unload
-::debug_dump_is_loaded <- dbg_dump.isLoaded
+let { register_command } = require("console")
+let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 
 //==================================================================================================
 
-::debug_dump_debriefing_save <- function debug_dump_debriefing_save(filename = "debug_dump_debriefing.blk")
-{
+let function debug_dump_debriefing_save(filename) {
   let debriefingResult = getDebriefingResult()
   if (!debriefingResult || dbg_dump.isLoaded())
     return "IGNORED: No debriefingResult, or dump is loaded."
 
   let list = [
-    { id = "stat_get_exp", value = ::getTblValue("expDump", debriefingResult, {}) }
+    { id = "stat_get_exp", value = getTblValue("expDump", debriefingResult, {}) }
     "get_game_type"
     "get_game_mode"
     "get_current_mission_info_cached"
     { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
-    { id = "_fake_mplayers_list", value = ::getTblValue("mplayers_list", debriefingResult, []) }
+    { id = "_fake_mplayers_list", value = getTblValue("mplayers_list", debriefingResult, []) }
     { id = "dynamic_apply_status", value = getDynamicResult() }
-    { id = "get_mission_status", value = ::getTblValue("isSucceed", debriefingResult) ? ::MISSION_STATUS_SUCCESS : ::MISSION_STATUS_RUNNING }
-    { id = "get_mission_restore_type", value = ::getTblValue("restoreType", debriefingResult, 0) }
-    { id = "get_local_player_country", value = ::getTblValue("country", debriefingResult, "") }
-    { id = "get_mp_session_id", value = ::getTblValue("sessionId", debriefingResult, get_mp_session_id_str()) }
-    { id = "get_mp_tbl_teams", value = ::getTblValue("mpTblTeams", debriefingResult, ::get_mp_tbl_teams()) }
+    { id = "get_mission_status", value = getTblValue("isSucceed", debriefingResult) ? MISSION_STATUS_SUCCESS : MISSION_STATUS_RUNNING }
+    { id = "get_mission_restore_type", value = getTblValue("restoreType", debriefingResult, 0) }
+    { id = "get_local_player_country", value = getTblValue("country", debriefingResult, "") }
+    { id = "get_mp_session_id", value = getTblValue("sessionId", debriefingResult, get_mp_session_id_str()) }
+    { id = "get_mp_tbl_teams", value = getTblValue("mpTblTeams", debriefingResult, ::get_mp_tbl_teams()) }
     { id = "_fake_sessionlobby_unit_type_mask", value = debriefingResult?.unitTypesMask }
-    { id = "stat_get_benchmark", value = ::getTblValue("benchmark", debriefingResult, ::stat_get_benchmark()) }
-    { id = "get_race_winners_count", value = ::getTblValue("numberOfWinningPlaces", debriefingResult, 0) }
+    { id = "stat_get_benchmark", value = getTblValue("benchmark", debriefingResult, ::stat_get_benchmark()) }
+    { id = "get_race_winners_count", value = getTblValue("numberOfWinningPlaces", debriefingResult, 0) }
     { id = "get_race_best_lap_time", value = debriefingResult?.exp.ptmBestLap ?? -1 }
     { id = "get_race_lap_times", value = debriefingResult?.exp.ptmLapTimesArray ?? [] }
     { id = "get_mp_local_team", value = debriefingResult?.localTeam ?? ::get_mp_local_team() }
@@ -58,36 +61,36 @@ let { havePremium } = require("%scripts/user/premium.nut")
     "shop_get_countries_list_with_autoset_units"
     "shop_get_units_list_with_autoset_modules"
     { id = "abandoned_researched_items_for_session", value = [] }
-    { id = "get_gamechat_log_text", value = ::getTblValue("chatLog", debriefingResult, "") }
+    { id = "get_gamechat_log_text", value = getTblValue("chatLog", debriefingResult, "") }
     { id = "getLogForBanhammer", value = debriefingResult?.logForBanhammer ??  "" }
-    { id = "is_multiplayer", value = ::getTblValue("isMp", debriefingResult, false) }
+    { id = "is_multiplayer", value = getTblValue("isMp", debriefingResult, false) }
     { id = "_fake_battlelog", value = ::HudBattleLog.battleLog }
-    { id = "_fake_userlogs", value = ::getTblValue("roomUserlogs", debriefingResult, []) }
-    { id = "get_user_logs_count", value = ::getTblValue("roomUserlogs", debriefingResult, []).len() }
+    { id = "_fake_userlogs", value = getTblValue("roomUserlogs", debriefingResult, []) }
+    { id = "get_user_logs_count", value = getTblValue("roomUserlogs", debriefingResult, []).len() }
     { id = "_fake_playersInfo", value = getPlayersInfo() }
   ]
 
   let units = []
   let mods  = []
-  let exp = ::getTblValue("expDump", debriefingResult, {})
+  let exp = getTblValue("expDump", debriefingResult, {})
   foreach (ut in unitTypes.types)
   {
-    let unitId = ::getTblValue("investUnitName" + ut.name, exp, "")
+    let unitId = getTblValue("investUnitName" + ut.name, exp, "")
     if (unitId != "")
       units.append([ unitId ])
   }
-  foreach (unitId, data in ::getTblValue("aircrafts", exp, {}))
+  foreach (unitId, data in getTblValue("aircrafts", exp, {}))
   {
     if (!::getAircraftByName(unitId))
       continue
     units.append([ unitId ])
-    let modId = ::getTblValue("investModuleName", data, "")
+    let modId = getTblValue("investModuleName", data, "")
     if (modId != "")
       mods.append([ unitId, modId ])
   }
   foreach (tbl in ::shop_get_countries_list_with_autoset_units())
   {
-    let unitId = ::getTblValue("unit", tbl, "")
+    let unitId = getTblValue("unit", tbl, "")
     let unit = ::getAircraftByName(unitId)
     let args = [ ::getUnitCountry(unit), ::get_es_unit_type(unit) ]
     foreach (id in [ "shop_get_researchable_unit_name", "shop_get_country_excess_exp" ])
@@ -95,7 +98,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
     units.append([ unitId ])
   }
   foreach (tbl in ::shop_get_units_list_with_autoset_modules())
-    mods.append([ ::getTblValue("name", tbl, ""), ::getTblValue("mod", tbl, "") ])
+    mods.append([ getTblValue("name", tbl, ""), getTblValue("mod", tbl, "") ])
   foreach (args in units)
     foreach (id in [ "shop_is_player_has_unit", "shop_is_aircraft_purchased", "shop_unit_research_status",
       "shop_get_researchable_module_name", "shop_get_unit_exp", "shop_get_unit_excess_exp",
@@ -110,8 +113,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
   return "Debriefing result saved to " + filename
 }
 
-::debug_dump_debriefing_load <- function debug_dump_debriefing_load(filename = "debug_dump_debriefing.blk", onUnloadFunc = null)
-{
+let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   if (!dbg_dump.load(filename))
     return "File not found: " + filename
 
@@ -124,11 +126,11 @@ let { havePremium } = require("%scripts/user/premium.nut")
     autosave_replay = @() null
     is_era_available = function(...) { return true }
     get_current_mission_desc = @(outBlk) outBlk.setFrom(
-      ::getroottable()?._fake_get_current_mission_desc ?? ::get_current_mission_info_cached())
+      getroottable()?._fake_get_current_mission_desc ?? ::get_current_mission_info_cached())
     get_mplayers_list = function(team, full) {
       let res = []
       foreach (v in ::_fake_mplayers_list)
-        if (team == ::GET_MPLAYERS_LIST || v.team == team)
+        if (team == GET_MPLAYERS_LIST || v.team == team)
           res.append(v)
       return (res)
     }
@@ -139,17 +141,17 @@ let { havePremium } = require("%scripts/user/premium.nut")
       return dbg_dump.getOriginal("get_local_mplayer")()
     }
     is_unlocked = function(unlockType, unlockId) {
-      foreach (log in ::_fake_userlogs)
-        if (log?.body.unlockId == unlockId)
+      foreach (logObj in ::_fake_userlogs)
+        if (logObj?.body.unlockId == unlockId)
           return true
       return dbg_dump.getOriginal("is_unlocked")(unlockType, unlockId)
     }
   }, false)
 
   ::SessionLobby.settings = ::_fake_sessionlobby_settings
-  ::SessionLobby.playersInfo = ::getroottable()?._fake_playersInfo ?? {}
-  ::SessionLobby.getUnitTypesMask = @() ::getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
-  ::SessionLobby.lastEventName = ::getroottable()?._fake_sessionlobby_last_event_name ?? ""
+  ::SessionLobby.playersInfo = getroottable()?._fake_playersInfo ?? {}
+  ::SessionLobby.getUnitTypesMask = @() getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
+  ::SessionLobby.lastEventName = getroottable()?._fake_sessionlobby_last_event_name ?? ""
   ::HudBattleLog.battleLog = ::_fake_battlelog
   initListLabelsSquad()
 
@@ -166,9 +168,8 @@ let { havePremium } = require("%scripts/user/premium.nut")
   return "Debriefing result loaded from " + filename
 }
 
-::debug_dump_debriefing_batch_load <- function debug_dump_debriefing_batch_load()
-{
-  let skyquakePath = ::debug_get_skyquake_path()
+let function debug_dump_debriefing_batch_load() {
+  let skyquakePath = debug_get_skyquake_path()
   let filesList = dagor_fs.scan_folder({ root = $"{skyquakePath}/gameOnline",
     files_suffix = "*.blk", recursive = false, vromfs=false, realfs = true
   }).filter(@(v) v.contains("debug_dump_debriefing") && !v.contains("_SKIP.blk"))
@@ -178,19 +179,18 @@ let { havePremium } = require("%scripts/user/premium.nut")
     let count = filesList.len()
     if (!count) return
     let filename = filesList.pop()
-    ::clog($"[{total - count + 1}/{total}] {filename}")
+    console_print($"[{total - count + 1}/{total}] {filename}")
     ::copy_to_clipboard(filename)
-    ::debug_dump_debriefing_load(filename, loadNext)
+    debug_dump_debriefing_load(filename, loadNext)
   }
   loadNext()
 }
 
 //==================================================================================================
 
-::debug_dump_mpstatistics_save <- function debug_dump_mpstatistics_save(filename = "debug_dump_mpstatistics.blk")
-{
+let function debug_dump_mpstatistics_save(filename) {
   dbg_dump.save(filename, [
-    { id = "_fake_mplayers_list", value = ::get_mplayers_list(::GET_MPLAYERS_LIST, true) }
+    { id = "_fake_mplayers_list", value = ::get_mplayers_list(GET_MPLAYERS_LIST, true) }
     { id = "_fake_playersInfo", value = ::SessionLobby.playersInfo }
     { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
     "LAST_SESSION_DEBUG_INFO"
@@ -215,14 +215,13 @@ let { havePremium } = require("%scripts/user/premium.nut")
   return "Saved " + filename
 }
 
-::debug_dump_mpstatistics_load <- function debug_dump_mpstatistics_load(filename = "debug_dump_mpstatistics.blk")
-{
+let function debug_dump_mpstatistics_load(filename) {
   if (!dbg_dump.load(filename))
     return "File not found: " + filename
   dbg_dump.loadFuncs({
     get_current_mission_desc = @(outBlk) outBlk.setFrom(::_fake_get_current_mission_desc)
     get_mplayers_list = function(team, full) {
-      return ::u.filter(::_fake_mplayers_list, @(p) p.team == team || team == ::GET_MPLAYERS_LIST)
+      return ::u.filter(::_fake_mplayers_list, @(p) p.team == team || team == GET_MPLAYERS_LIST)
     }
     get_mplayer_by_id = function(id) {
       return ::u.search(::_fake_mplayers_list, @(p) p.id == id)
@@ -231,21 +230,20 @@ let { havePremium } = require("%scripts/user/premium.nut")
       return ::u.search(::_fake_mplayers_list, @(p) p.isLocal) ?? dbg_dump.getOriginal("get_local_mplayer")()
     }
   }, false)
-  ::SessionLobby.playersInfo = ::getroottable()?._fake_playersInfo ?? {}
+  ::SessionLobby.playersInfo = getroottable()?._fake_playersInfo ?? {}
   guiStartMPStatScreen()
   return "Loaded " + filename
 }
 
 //==================================================================================================
 
-::debug_dump_respawn_save <- function debug_dump_respawn_save(filename = "debug_dump_respawn.blk")
-{
+let function debug_dump_respawn_save(filename) {
   let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.RespawnHandler)
   if (!handler || dbg_dump.isLoaded())
     return "IGNORED: Handler not found, or dump is loaded."
 
   let list = [
-    { id = "_fake_mplayers_list", value = ::get_mplayers_list(::GET_MPLAYERS_LIST, true) }
+    { id = "_fake_mplayers_list", value = ::get_mplayers_list(GET_MPLAYERS_LIST, true) }
     { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock();
       ::get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ ::my_user_id_int64, false ] }
@@ -329,14 +327,13 @@ let { havePremium } = require("%scripts/user/premium.nut")
   return "Saved " + filename
 }
 
-::debug_dump_respawn_load <- function debug_dump_respawn_load(filename = "debug_dump_respawn.blk")
-{
+let function debug_dump_respawn_load(filename) {
   if (!dbg_dump.load(filename))
     return "File not found: " + filename
   dbg_dump.loadFuncs({
     get_current_mission_desc = @(outBlk) outBlk.setFrom(::_fake_get_current_mission_desc)
     get_mplayers_list = @(team, full) ::_fake_mplayers_list.filter(
-      @(p) p.team == team || team == ::GET_MPLAYERS_LIST)
+      @(p) p.team == team || team == GET_MPLAYERS_LIST)
     get_mplayer_by_id = @(id) ::_fake_mplayers_list.filter(@(p) p.id == id)?[0]
     get_local_mplayer = @() ::_fake_mplayers_list.filter(@(p) p.isLocal)?[0]
     request_aircraft_and_weapon = @(...) -1
@@ -354,8 +351,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
 
 //==================================================================================================
 
-::debug_dump_userlogs_save <- function debug_dump_userlogs_save(filename = "debug_dump_userlogs.blk")
-{
+let function debug_dump_userlogs_save(filename) {
   let userlogs = []
   for (local i = 0; i < ::get_user_logs_count(); i++) {
     let blk = ::DataBlock()
@@ -368,8 +364,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
   return "Saved " + filename
 }
 
-::debug_dump_userlogs_load <- function debug_dump_userlogs_load(filename = "debug_dump_userlogs.blk")
-{
+let function debug_dump_userlogs_load(filename) {
   if (!dbg_dump.load(filename))
     return "File not found: " + filename
   dbg_dump.loadFuncs({
@@ -385,8 +380,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
 
 //==================================================================================================
 
-::debug_dump_inventory_save <- function debug_dump_inventory_save(filename = "debug_dump_inventory.blk")
-{
+let function debug_dump_inventory_save(filename) {
   dbg_dump.save(filename, [
     { id = "_inventoryClient_items",    value = inventoryClient.items }
     { id = "_inventoryClient_itemdefs", value = inventoryClient.itemdefs }
@@ -394,8 +388,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
   return "Saved " + filename
 }
 
-::debug_dump_inventory_load <- function debug_dump_inventory_load(filename = "debug_dump_inventory.blk")
-{
+let function debug_dump_inventory_load(filename) {
   if (!dbg_dump.load(filename))
     return "File not found: " + filename
   dbg_dump.loadFuncs({
@@ -410,5 +403,36 @@ let { havePremium } = require("%scripts/user/premium.nut")
 
 //==================================================================================================
 
-::debug_debriefing_result_dump_save <- ::debug_dump_debriefing_save // old names
-::debug_debriefing_result_dump_load <- ::debug_dump_debriefing_load // old names
+register_command(dbg_dump.unload, "debug.dump.unload")
+register_command(dbg_dump.isLoaded, "debug.dump.is_loaded")
+
+let defDebriefingFile = "debug_dump_debriefing.blk"
+register_command(@() debug_dump_debriefing_save(defDebriefingFile), "debug.dump.debriefing_save")
+register_command(debug_dump_debriefing_save, "debug.dump.debriefing_save_to_file")
+register_command(@() debug_dump_debriefing_load(defDebriefingFile), "debug.dump.debriefing_load")
+register_command(@(file) debug_dump_debriefing_load(file), "debug.dump.debriefing_load_from_file")
+register_command(debug_dump_debriefing_batch_load, "debug.dump.debriefing_batch_load")
+
+let defMpStatFile = "debug_dump_mpstatistics.blk"
+register_command(@() debug_dump_mpstatistics_save(defMpStatFile), "debug.dump.mpstatistics_save")
+register_command(debug_dump_mpstatistics_save, "debug.dump.mpstatistics_save_to_file")
+register_command(@() debug_dump_mpstatistics_load(defMpStatFile), "debug.dump.mpstatistics_load")
+register_command(debug_dump_mpstatistics_load, "debug.dump.mpstatistics_load_from_file")
+
+let defRespawnFile = "debug_dump_respawn.blk"
+register_command(@() debug_dump_respawn_save(defRespawnFile), "debug.dump.respawn_save")
+register_command(debug_dump_respawn_save, "debug.dump.respawn_save_to_file")
+register_command(@() debug_dump_respawn_load(defRespawnFile), "debug.dump.respawn_load")
+register_command(debug_dump_respawn_load, "debug.dump.respawn_load_from_file")
+
+let defUserlogsFile = "debug_dump_userlogs.blk"
+register_command(@() debug_dump_userlogs_save(defUserlogsFile), "debug.dump.userlogs_save")
+register_command(debug_dump_userlogs_save, "debug.dump.userlogs_save_to_file")
+register_command(@() debug_dump_userlogs_load(defUserlogsFile), "debug.dump.userlogs_load")
+register_command(debug_dump_userlogs_load, "debug.dump.userlogs_load_from_file")
+
+let defInventoryFile = "debug_dump_inventory.blk"
+register_command(@() debug_dump_inventory_save(defInventoryFile), "debug.dump.inventory_save")
+register_command(debug_dump_inventory_save, "debug.dump.inventory_save_to_file")
+register_command(@() debug_dump_inventory_load(defInventoryFile), "debug.dump.inventory_load")
+register_command(debug_dump_inventory_load, "debug.dump.inventory_load_from_file")

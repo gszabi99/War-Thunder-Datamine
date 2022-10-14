@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format, split_by_chars } = require("string")
 let {
   is_mplayer_peer = @() ::is_mplayer_peer() //compatibility with 2.16.0.X
@@ -11,6 +18,7 @@ let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let changeStartMission = require("%scripts/missions/changeStartMission.nut")
 let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { hasChat } = require("%scripts/user/matchingFeature.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -41,9 +49,9 @@ const MIN_SLIDE_TIME = 2.0
     numTips = blk.loading.numTips
 
     let cutObj = guiScene["cutscene_update"]
-    if (::checkObj(cutObj)) cutObj.setUserData(this)
+    if (checkObj(cutObj)) cutObj.setUserData(this)
 
-    setDoubleTextToButton(scene, "btn_select", ::loc("hints/cutsc_skip"))
+    setDoubleTextToButton(scene, "btn_select", loc("hints/cutsc_skip"))
 
     let missionBlk = ::DataBlock()
     local country = ""
@@ -54,17 +62,17 @@ const MIN_SLIDE_TIME = 2.0
         ::get_current_mission_desc(missionBlk)
         ::current_campaign_mission = missionBlk.getStr("name","")
       }
-      else if (::get_game_type() & ::GT_DYNAMIC)
+      else if (::get_game_type() & GT_DYNAMIC)
         missionBlk.setFrom(::mission_settings.mission)
       else if (::current_campaign_mission)
         missionBlk.setFrom(::get_mission_meta_info(::current_campaign_mission))
 
-      if (gm == ::GM_TEST_FLIGHT)
+      if (gm == GM_TEST_FLIGHT)
         country = ::getCountryByAircraftName(::test_flight_aircraft.name)
       else
         country = ::getCountryByAircraftName(missionBlk.getStr("player_class", ""))
-      ::dagor.debug("0 player_class = "+missionBlk.getStr("player_class", "") + "; country = " + country)
-      if (country != "" && !(::get_game_type() & ::GT_VERSUS) && gm != ::GM_TRAINING)
+      log("0 player_class = "+missionBlk.getStr("player_class", "") + "; country = " + country)
+      if (country != "" && !(::get_game_type() & GT_VERSUS) && gm != GM_TRAINING)
         guiScene["briefing-flag"]["background-image"] = ::get_country_flag_img("bgflag_" + country)
 
       misObj_add = count_misObj_add(missionBlk)
@@ -74,22 +82,22 @@ const MIN_SLIDE_TIME = 2.0
     if (briefing)
     {
       let guiBlk = GUI.get()
-      let exclBlock = guiBlk?.slides_exclude?[get_country_flags_preset()]
+      let exclBlock = guiBlk?.slides_exclude?[::get_country_flags_preset()]
       let excludeArray = exclBlock? (exclBlock % "name") : []
 
       local sceneInfo = ""
       if (::current_campaign_mission)
       {
-        sceneInfo += ::loc(format("mb/%s/date", ::current_campaign_mission.tostring()), "")
+        sceneInfo += loc(format("mb/%s/date", ::current_campaign_mission.tostring()), "")
         sceneInfo += (sceneInfo=="")? "" : "\n"
-        sceneInfo += ::loc(format("mb/%s/place", ::current_campaign_mission.tostring()), "")
+        sceneInfo += loc(format("mb/%s/place", ::current_campaign_mission.tostring()), "")
       }
       if (sceneInfo == "")
-        sceneInfo = ::loc(briefing.getStr("place_loc", ""))
+        sceneInfo = loc(briefing.getStr("place_loc", ""))
       setSceneInfo(sceneInfo)
 
       music = briefing.getStr("music","action_01")
-      if ((::get_game_type() & ::GT_DYNAMIC) && country != "")
+      if ((::get_game_type() & GT_DYNAMIC) && country != "")
         music = country + "_main_theme"
 
       local prevSlide = ""
@@ -101,7 +109,7 @@ const MIN_SLIDE_TIME = 2.0
         {
           let part =
           {
-            subtitles = ::loc(partBlock.getStr("event", ""))
+            subtitles = loc(partBlock.getStr("event", ""))
             slides = []
           }
           part.event <- partBlock.getStr("event", "")
@@ -112,7 +120,7 @@ const MIN_SLIDE_TIME = 2.0
               idx = part.event.indexof("/")
             }
           part.voiceLen <- loading_get_voice_len(part.event) //-1 if there's no sound
-          ::dagor.debug("voice "+part.event+" len "+part.voiceLen.tostring())
+          log("voice "+part.event+" len "+part.voiceLen.tostring())
 
           local totalSlidesTime = 0.0
           let freeTimeSlides = []
@@ -123,7 +131,7 @@ const MIN_SLIDE_TIME = 2.0
             {
               if (::find_in_array(excludeArray, image, -1) >= 0)
               {
-                ::dagor.debug("EXCLUDE by: " + ::get_country_flags_preset() + "; slide " + image)
+                log("EXCLUDE by: " + ::get_country_flags_preset() + "; slide " + image)
                 continue
               }
             }
@@ -178,17 +186,17 @@ const MIN_SLIDE_TIME = 2.0
     if (partsList.len() == 0)
       finished = true
 
-    if (gchat_is_enabled() && ::has_feature("Chat"))
-      switchMenuChatObjIfVisible(getChatDiv(scene))
+    if (::gchat_is_enabled() && hasChat.value)
+      ::switchMenuChatObjIfVisible(::getChatDiv(scene))
 
-    if (gt & ::GT_VERSUS)
+    if (gt & GT_VERSUS)
     {
       let missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
-      let haveHelp = ::has_feature("ControlsHelp") && missionHelpPath != null
+      let haveHelp = hasFeature("ControlsHelp") && missionHelpPath != null
 
       let helpBtnObj = this.showSceneBtn("btn_help", haveHelp)
       if (helpBtnObj && !::show_console_buttons)
-        helpBtnObj.setValue(::loc("flightmenu/btnControlsHelp") + ::loc("ui/parentheses/space", { text = "F1" }))
+        helpBtnObj.setValue(loc("flightmenu/btnControlsHelp") + loc("ui/parentheses/space", { text = "F1" }))
 
       if (haveHelp)
       {
@@ -212,37 +220,37 @@ const MIN_SLIDE_TIME = 2.0
     local m_aircraft = blk.getStr("player_class", "")
     local m_weapon = blk.getStr("player_weapons", "")
 
-    if (gm == ::GM_TEST_FLIGHT)
+    if (gm == GM_TEST_FLIGHT)
     {
       m_aircraft = ::test_flight_aircraft.name
       m_weapon = ::get_gui_option(::USEROPT_WEAPONS)
     }
-    if ((m_aircraft != "") && !(gt & ::GT_VERSUS))
-      res.append(::loc("options/aircraft") + ::loc("ui/colon") +
+    if ((m_aircraft != "") && !(gt & GT_VERSUS))
+      res.append(loc("options/aircraft") + loc("ui/colon") +
                     " " + ::getUnitName(m_aircraft) + "; " +
                     getWeaponNameText(m_aircraft, null, m_weapon, ", "))
 
     local m_condition = ""
     if (::current_campaign_mission)
-      m_condition = ::loc("missions/"+::current_campaign_mission+"/condition", "")
+      m_condition = loc("missions/"+::current_campaign_mission+"/condition", "")
 
     if (m_condition == "")
     {
-      if (!(gt & ::GT_VERSUS))
+      if (!(gt & GT_VERSUS))
       {
         let m_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
         if (m_location != "")
-          m_condition += ::loc("location/" + m_location)
+          m_condition += loc("location/" + m_location)
         let m_time = blk.getStr("time", blk.getStr("environment", ""))
         if (m_time != "")
           m_condition += (m_condition != "" ? "; " : "") + ::get_mission_time_text(m_time)
         let m_weather = blk.getStr("weather", "")
         if (m_weather != "")
-          m_condition += (m_condition != "" ? "; " : "") + ::loc("options/weather" + m_weather)
+          m_condition += (m_condition != "" ? "; " : "") + loc("options/weather" + m_weather)
       }
     }
     if (m_condition != "")
-      res.append(::loc("sm_conditions") + ::loc("ui/colon") + " " + m_condition)
+      res.append(loc("sm_conditions") + loc("ui/colon") + " " + m_condition)
     return ::g_string.implode(res, "\n")
   }
 
@@ -263,7 +271,7 @@ const MIN_SLIDE_TIME = 2.0
     if (applyReady != loading_is_finished())
     {
       applyReady = loading_is_finished()
-      let showStart = !::is_multiplayer() && gm != ::GM_TRAINING && !changeStartMission
+      let showStart = !::is_multiplayer() && gm != GM_TRAINING && !changeStartMission
       if ((applyReady && !showStart) || finished)
         finishLoading()
       else
@@ -337,7 +345,7 @@ const MIN_SLIDE_TIME = 2.0
         nextSubtitles = partsList[partIdx].subtitles
         loading_stop_voice_but_named_events()
         loading_play_voice(partsList[partIdx].event, true)
-        ::dagor.debug($"loading_play_voice {partsList[partIdx].event.tostring()}")
+        log($"loading_play_voice {partsList[partIdx].event.tostring()}")
       }
     }
 
@@ -360,15 +368,15 @@ const MIN_SLIDE_TIME = 2.0
 
   function onSlidesStart()
   {
-    setSceneTitle(getCurMpTitle())
+    setSceneTitle(::getCurMpTitle())
     if (partsList.len() > 0)
     {
       setSubtitles(partsList[0].subtitles)
       loading_play_music(music)
       loading_play_voice(partsList[0].event, true)
-      ::dagor.debug($"loading_play_voice {partsList[0].event.tostring()}")
+      log($"loading_play_voice {partsList[0].event.tostring()}")
     }
-    start_gui_sound("slide_loop")
+    ::start_gui_sound("slide_loop")
   }
 
   function setSlide(imgName)
@@ -442,17 +450,17 @@ const MIN_SLIDE_TIME = 2.0
       {
         local misObj = ""
         if (::current_campaign_mission)
-          misObj = ::loc(format("mb/%s/objective", ::current_campaign_mission.tostring()), "")
-        if ((gt & ::GT_VERSUS) && ::current_campaign_mission)
+          misObj = loc(format("mb/%s/objective", ::current_campaign_mission.tostring()), "")
+        if ((gt & GT_VERSUS) && ::current_campaign_mission)
           misObj = ::loc_current_mission_desc()
         if (misObj == "" && ::current_campaign_mission)
-          misObj = ::loc(format("missions/%s/objective", ::current_campaign_mission.tostring()), "")
+          misObj = loc(format("missions/%s/objective", ::current_campaign_mission.tostring()), "")
         if (misObj == "")
-          misObj = ::loc(briefing.getStr("objective_loc", ""))
+          misObj = loc(briefing.getStr("objective_loc", ""))
         if (misObj_add != "")
           misObj += (misObj.len() ? "\n\n" : "") + misObj_add
 
-        misObj = ::colorize("userlogColoredText", ::loc_current_mission_name(false)) +
+        misObj = colorize("userlogColoredText", ::loc_current_mission_name(false)) +
           "\n\n" + clearBorderSymbolsMultiline(misObj)
         setMissionObjective(misObj)
       }

@@ -1,10 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::queue_stats_versions.StatsVer2 <- class extends ::queue_stats_versions.Base
 {
-  neutralTeamId = ::get_team_name_by_mp_team(::MP_TEAM_NEUTRAL)
+  neutralTeamId = ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
   static fullTeamNamesList = [
-    ::get_team_name_by_mp_team(::MP_TEAM_NEUTRAL)
-    ::get_team_name_by_mp_team(::MP_TEAM_A)
-    ::get_team_name_by_mp_team(::MP_TEAM_B)
+    ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
+    ::get_team_name_by_mp_team(MP_TEAM_A)
+    ::get_team_name_by_mp_team(MP_TEAM_B)
   ]
 
   function applyQueueInfo(queueInfo)
@@ -59,7 +66,7 @@
 
     foreach(fullStats in statsByQueueId)
     {
-      let stats = ::getTblValue("byTeams", fullStats)
+      let stats = getTblValue("byTeams", fullStats)
       if (!stats)
         continue
 
@@ -73,7 +80,7 @@
 
   function mergeToDataByTeams(dataByTeams, stats)
   {
-    let neutralTeamStats = ::getTblValue(neutralTeamId, stats)
+    let neutralTeamStats = getTblValue(neutralTeamId, stats)
     if (neutralTeamStats)
     {
       let playersCount = getCountByRank(neutralTeamStats, myRankInQueue)
@@ -87,8 +94,8 @@
       return
     }
 
-    let teamAStats = ::getTblValue("teamA", stats)
-    let teamBStats = ::getTblValue("teamB", stats)
+    let teamAStats = getTblValue("teamA", stats)
+    let teamBStats = getTblValue("teamB", stats)
     let playersCount = getCountByRank(teamAStats, myRankInQueue)
                        + getCountByRank(teamBStats, myRankInQueue)
     if (playersCount <= dataByTeams.playersCount)
@@ -108,13 +115,13 @@
 
     let key = rank.tostring()
     foreach(countryTbl in statsByCountries)
-      res += getCountFromStatTbl(::getTblValue(key, countryTbl))
+      res += getCountFromStatTbl(getTblValue(key, countryTbl))
     return res
   }
 
   function getCountFromStatTbl(statTbl)
   {
-    return ::getTblValue("cnt", statTbl, 0)
+    return getTblValue("cnt", statTbl, 0)
   }
 
   function gatherCountsTblByRanks(statsByCountries)
@@ -122,7 +129,7 @@
     let res = {}
     for(local i = 1; i <= ::max_country_rank; i++)
       res[i.tostring()] <- getCountByRank(statsByCountries, i)
-    res.playersCount <- ::getTblValue(myRankInQueue.tostring(), res, 0)
+    res.playersCount <- getTblValue(myRankInQueue.tostring(), res, 0)
     return res
   }
 
@@ -169,11 +176,11 @@
 
   function gatherClansData(stats)
   {
-    let statsByClans = ::getTblValue("byClans", stats)
+    let statsByClans = getTblValue("byClans", stats)
     if (::u.isEmpty(statsByClans))
       return false
 
-    let myClanInfo = ::getTblValue(::clan_get_my_clan_tag(), statsByClans)
+    let myClanInfo = getTblValue(::clan_get_my_clan_tag(), statsByClans)
     if (myClanInfo)
       myClanQueueTable = clone myClanInfo
 

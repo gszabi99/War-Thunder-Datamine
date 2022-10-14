@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 ::gui_handlers.WwJoinBattleCondition <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -7,7 +16,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   sceneTplName = "%gui/worldWar/battleJoinCondition"
 
   battle = null
-  side = ::SIDE_NONE
+  side = SIDE_NONE
 
   static maxUnitsInColumn = 8
 
@@ -22,7 +31,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
         unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
     {
       let requiredUnits = battle.getUnitsRequiredForJoin(team, side)
-      wwUnitsList = u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(requiredUnits),
+      wwUnitsList = ::u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(requiredUnits),
         @(unit) !unit.isControlledByAI())
       wwUnitsList = wwActionsWithUnitsList.getUnitsListViewParams({
         wwUnits = wwUnitsList,
@@ -45,9 +54,9 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
     let viewCountryData = getCustomViewCountryData(team.country)
     return {
-      countryInfoText = ::loc("worldwar/help/country_info",
-        {country = ::colorize("@newTextColor", ::loc(viewCountryData.locId))})
-      battleConditionText = ::loc("worldwar/help/required_units_" + unitAvailability)
+      countryInfoText = loc("worldwar/help/country_info",
+        {country = colorize("@newTextColor", loc(viewCountryData.locId))})
+      battleConditionText = loc("worldwar/help/required_units_" + unitAvailability)
       countryIcon = viewCountryData.icon
       columns = columns
     }

@@ -1,12 +1,17 @@
+#explicit-this
+#no-root-fallback
+
+let { loc } = require("dagor.localize")
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
 let msgList = {}
 
 local buttonsDelayDefault = 30
 local textLocIdDefault = ""
 
-local Msg = class {
-  text = null //string. ::loc(textLocIdDefault) when not set
+let class Msg {
+  text = null //string. loc(textLocIdDefault) when not set
   onCancelCb = null
   buttonsDelay = null //int. buttonsDelayDefault when not set
 
@@ -16,11 +21,11 @@ local Msg = class {
 
   constructor(uid_, config)
   {
-    uid = uid_
-    incrementImpl(config)
+    this.uid = uid_
+    this.incrementImpl(config)
   }
 
-  isValid = @() showCount > 0 && ::check_obj(sceneObj)
+  isValid = @() this.showCount > 0 && check_obj(this.sceneObj)
 
   function applyConfig(config)
   {
@@ -37,35 +42,35 @@ local Msg = class {
 
   function increment(config)
   {
-    if (!isValid())
-      showCount = 0
-    incrementImpl(config)
+    if (!this.isValid())
+      this.showCount = 0
+    this.incrementImpl(config)
   }
 
   function incrementImpl(config)
   {
-    showCount++
-    let hasSceneChanges = applyConfig(config) || !::check_obj(sceneObj)
+    this.showCount++
+    let hasSceneChanges = this.applyConfig(config) || !check_obj(this.sceneObj)
     if (!hasSceneChanges)
       return
 
-    let prevSceneObj = sceneObj //destroy previous message only after create new to not activate handlers behind on switch.
+    let prevSceneObj = this.sceneObj //destroy previous message only after create new to not activate handlers behind on switch.
 
     let cancelCb = Callback(function() {
-      if (onCancelCb)
-        onCancelCb()
-      destroy()
+      if (this.onCancelCb)
+        this.onCancelCb()
+      this.destroy()
     }, this)
 
-    sceneObj = ::scene_msg_box(
-      "progressMsg_" + uid,
+    this.sceneObj = ::scene_msg_box(
+      "progressMsg_" + this.uid,
       ::get_cur_gui_scene(),
-      text ?? ::loc(textLocIdDefault),
+      this.text ?? loc(textLocIdDefault),
       [["cancel", cancelCb]],
       "cancel",
       {
         waitAnim = true
-        delayedButtons = buttonsDelay ?? buttonsDelayDefault
+        delayedButtons = this.buttonsDelay ?? buttonsDelayDefault
       }
     )
 
@@ -74,16 +79,16 @@ local Msg = class {
 
   function decrement()
   {
-    showCount--
-    if (!isValid())
-      destroy()
+    this.showCount--
+    if (!this.isValid())
+      this.destroy()
   }
 
   function destroy()
   {
-    if (uid in msgList)
-      delete msgList[uid]
-    ::destroyMsgBox(sceneObj)
+    if (this.uid in msgList)
+      delete msgList[this.uid]
+    ::destroyMsgBox(this.sceneObj)
   }
 }
 

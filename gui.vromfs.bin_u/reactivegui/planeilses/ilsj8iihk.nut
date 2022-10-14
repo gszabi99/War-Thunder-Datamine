@@ -1,3 +1,6 @@
+from "%rGui/globals/ui_library.nut" import *
+
+let string = require("string")
 let {Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude} = require("%rGui/planeState/planeFlyState.nut");
 let {IlsColor, TargetPosValid, TargetPos, CannonMode,
         BombCCIPMode, RocketMode, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")

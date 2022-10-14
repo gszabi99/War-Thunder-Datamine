@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 local blockNameByDirection = {
   [AxisDirection.X] = {
     rangeMin = "rightKey"
@@ -36,7 +43,7 @@ local blockNameByDirection = {
     foreach (element in elements)
     {
       needArrows = needArrows
-        || element.input.getDeviceId() != ::STD_KEYBOARD_DEVICE_ID
+        || element.input.getDeviceId() != STD_KEYBOARD_DEVICE_ID
         || !(element.input instanceof ::Input.Button)
       view[blockNameByDirection[isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getMarkup()
@@ -62,7 +69,7 @@ local blockNameByDirection = {
     if (elements.len())
       return elements[0].getDeviceId()
 
-    return ::NULL_INPUT_DEVICE_ID
+    return NULL_INPUT_DEVICE_ID
   }
 
   function getConfig()
@@ -72,7 +79,7 @@ local blockNameByDirection = {
     foreach (element in elements)
     {
       needArrows = needArrows
-        || element.input.getDeviceId() != ::STD_KEYBOARD_DEVICE_ID
+        || element.input.getDeviceId() != STD_KEYBOARD_DEVICE_ID
         || !(element.input instanceof ::Input.Button)
       elemConf[blockNameByDirection[isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getConfig()

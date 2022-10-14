@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
@@ -168,7 +173,7 @@ let function updatePresets(presetId, countryPresets) {
 
 let groupInSlotMsgBoxlocId = "msgbox/groupAlreadyInOtherSlot"
 
-let setUnit = ::kwarg(function setUnit(crew, unit, onFinishCb = null, showNotification = true, needEvent = true) {
+let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotification = true, needEvent = true) {
   let country = crew.country
   let curCountryPreset = curPreset.countryPresets?[country]
   if (curCountryPreset == null)
@@ -214,17 +219,17 @@ let setUnit = ::kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifi
       return
     }
 
-    let groupName = ::colorize("activeTextColor", ::loc(countryGroups.groups[unitGroup].name))
+    let groupName = colorize("activeTextColor", loc(countryGroups.groups[unitGroup].name))
     let descLocId = "{0}/{1}".subst(groupInSlotMsgBoxlocId, curUnit == null ? "inEmptySlot" : "slotWithUnit")
     ::scene_msg_box("group_already_in_other_slot", null,
-      ::loc(groupInSlotMsgBoxlocId, {
+      loc(groupInSlotMsgBoxlocId, {
         groupName = groupName
         slotIdx = oldGroupIdx + 1
-        descMsg = ::loc(descLocId, {
-          unitName = ::colorize("activeTextColor", ::getUnitName(unit))
-          curGroupUnitName = ::colorize("activeTextColor",
+        descMsg = loc(descLocId, {
+          unitName = colorize("activeTextColor", ::getUnitName(unit))
+          curGroupUnitName = colorize("activeTextColor",
             ::getUnitName(curCountryPreset.units[oldGroupIdx]))
-          curUnitName = ::colorize("activeTextColor", ::getUnitName(curUnit))
+          curUnitName = colorize("activeTextColor", ::getUnitName(curUnit))
           slotIdx = oldGroupIdx + 1
         })
       }),
@@ -290,7 +295,7 @@ let function setUnits(trainCrews) {
   ::broadcastEvent("PresetsByGroupsChanged")
 }
 
-let setGroup = ::kwarg(function setGroup(crew, group, onFinishCb) {
+let setGroup = kwarg(function setGroup(crew, group, onFinishCb) {
   let country = crew.country
   let curCountryPreset = curPreset.countryPresets?[country]
   if (curCountryPreset == null)

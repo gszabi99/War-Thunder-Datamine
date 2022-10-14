@@ -1,5 +1,9 @@
-let { is_stereo_mode } = ::require_native("vr")
-let { hasFeature } = require("%scripts/user/features.nut")
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { is_stereo_mode } = require_native("vr")
 let { isPlatformPS4, isPlatformPS5, isPlatformPC } = require("%scripts/clientState/platform.nut")
 
 let function isHeadTrackerAvailable() {

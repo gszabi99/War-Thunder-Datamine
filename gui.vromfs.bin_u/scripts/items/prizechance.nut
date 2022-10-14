@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let function getPrizeChanceConfig(prize) {
   let res = {
     chanceIcon = null
@@ -9,8 +14,8 @@ let function getPrizeChanceConfig(prize) {
     return res
 
   res.chanceIcon = ::get_game_settings_blk()?.visualizationTrophyWeights[weight].icon
-  let chanceName = ::loc($"item/chance/{weight}")
-  res.chanceTooltip = $"{::loc("item/chance")}{::loc("ui/colon")}{chanceName}"
+  let chanceName = loc($"item/chance/{weight}")
+  res.chanceTooltip = $"{loc("item/chance")}{loc("ui/colon")}{chanceName}"
   return res
 }
 
@@ -23,7 +28,7 @@ let function getPrizeChanceLegendMarkup() {
   for(local i = 0; i < chancesBlk.blockCount(); i++) {
     let chanceBlk = chancesBlk.getBlock(i)
     chances.append({
-      chanceName = ::loc($"item/chance/{chanceBlk.getBlockName()}")
+      chanceName = loc($"item/chance/{chanceBlk.getBlockName()}")
       chanceIcon = chanceBlk?.icon
     })
   }

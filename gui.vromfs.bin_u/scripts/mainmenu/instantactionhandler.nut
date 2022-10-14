@@ -1,0 +1,1352 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { format } = require("string")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { recentBR } = require("%scripts/battleRating.nut")
+let clanVehiclesModal = require("%scripts/clans/clanVehiclesModal.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
+let changeStartMission = require("%scripts/missions/changeStartMission.nut")
+let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
+let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
+let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
+let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomization.nut")
+let { needShowChangelog,
+  openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
+let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
+let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
+} = require("%scripts/hangar/backgroundModelHint.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isHaveNonApprovedClanUnitResearches } = require("%scripts/unit/squadronUnitAction.nut")
+let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
+let time = require("%scripts/time.nut")
+let { LEADER_OPERATION_STATES,
+  getLeaderOperationState } = require("%scripts/squads/leaderOperationStates.nut")
+
+local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+
+::gui_handlers.InstantDomination <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
+  static keepLoaded = true
+
+  sceneBlkName = "%gui/mainmenu/instantAction.blk"
+
+  toBattleButtonObj = null
+  gameModeChangeButtonObj = null
+  newGameModesWidgetsPlaceObj = null
+  inited = false
+  wndGameMode = GM_DOMINATION
+  startEnabled = false
+  queueMask = QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
+
+  curQueue = null
+  function getCurQueue() { return curQueue }
+  function setCurQueue(value)
+  {
+    curQueue = value
+    if (value != null)
+    {
+      initQueueTableHandler()
+      restoreQueueParams()
+    }
+  }
+
+  curCountry = ""
+  function getCurCountry() { return curCountry }
+  function setCurCountry(value)
+  {
+    curCountry = value
+  }
+
+  gamercardDrawerHandler = null
+  function getGamercardDrawerHandler()
+  {
+    if (!::handlersManager.isHandlerValid(gamercardDrawerHandler))
+      initGamercardDrawerHandler()
+    if (::handlersManager.isHandlerValid(gamercardDrawerHandler))
+      return gamercardDrawerHandler
+    assert(false, "Failed to get gamercardDrawerHandler.")
+    return null
+  }
+
+  queueTableHandler = null
+  function getQueueTableHandler()
+  {
+    if (!::handlersManager.isHandlerValid(queueTableHandler))
+      initQueueTableHandler()
+    if (::handlersManager.isHandlerValid(queueTableHandler))
+      return queueTableHandler
+    assert(false, "Failed to get queueTableHandler.")
+    return null
+  }
+
+  newGameModeIconWidget = null
+  slotbarPresetsTutorial = null
+
+  function initScreen()
+  {
+    ::enableHangarControls(true)
+    // Causes drawer to initialize once.
+    getGamercardDrawerHandler()
+
+    mainOptionsMode = getGuiOptionsMode()
+    setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
+
+    initToBattleButton()
+    setCurrentGameModeName()
+
+    setCurQueue(::queues.findQueue({}, queueMask))
+
+    updateStartButton()
+
+    inited = true
+    ::dmViewer.update()
+    initBackgroundModelHint(this)
+    requestAllPatchnotes()
+  }
+
+  function reinitScreen(params)
+  {
+    inited = false
+    initScreen()
+  }
+
+  function canShowDmViewer()
+  {
+    return getCurQueue() == null
+  }
+
+  function initQueueTableHandler()
+  {
+    if (::handlersManager.isHandlerValid(queueTableHandler))
+      return
+
+    let drawer = getGamercardDrawerHandler()
+    if (drawer == null)
+      return
+
+    let queueTableContainer = drawer.scene.findObject("queue_table_container")
+    if (queueTableContainer == null)
+      return
+
+    let params = {
+      scene = queueTableContainer
+      queueMask = queueMask
+    }
+    queueTableHandler = ::handlersManager.loadHandler(::gui_handlers.QueueTable, params)
+  }
+
+  function initGamercardDrawerHandler()
+  {
+    if (topMenuHandler.value == null)
+      return
+
+    let gamercardPanelCenterObject = topMenuHandler.value.scene.findObject("gamercard_panel_center")
+    if (gamercardPanelCenterObject == null)
+      return
+    gamercardPanelCenterObject.show(true)
+    gamercardPanelCenterObject.enable(true)
+
+    let gamercardDrawerContainer = topMenuHandler.value.scene.findObject("gamercard_drawer_container")
+    if (gamercardDrawerContainer == null)
+      return
+
+    let params = {
+      scene = gamercardDrawerContainer
+    }
+    gamercardDrawerHandler = ::handlersManager.loadHandler(::gui_handlers.GamercardDrawer, params)
+    registerSubHandler(gamercardDrawerHandler)
+  }
+
+  function initToBattleButton()
+  {
+    if (!rootHandlerWeak)
+      return
+
+    let centeredPlaceObj = ::showBtn("gamercard_center", true, rootHandlerWeak.scene)
+    if (!centeredPlaceObj)
+      return
+
+    let toBattleNest = ::showBtn("gamercard_tobattle", true, rootHandlerWeak.scene)
+    if (toBattleNest)
+    {
+      rootHandlerWeak.scene.findObject("top_gamercard_bg").needRedShadow = "no"
+      let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton", {
+        enableEnterKey = !::is_platform_shield_tv()
+      })
+      guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
+      toBattleButtonObj = rootHandlerWeak.scene.findObject("to_battle_button")
+      rootHandlerWeak.scene.findObject("gamercard_tobattle_bg")["background-color"] = "#00000000"
+    }
+    rootHandlerWeak.scene.findObject("gamercard_logo").show(false)
+    gameModeChangeButtonObj = rootHandlerWeak.scene.findObject("game_mode_change_button")
+
+    if (!hasFeature("GameModeSelector"))
+    {
+      gameModeChangeButtonObj.show(false)
+      gameModeChangeButtonObj.enable(false)
+    }
+
+    newGameModesWidgetsPlaceObj = rootHandlerWeak.scene.findObject("new_game_modes_widget_place")
+    updateUnseenGameModesCounter()
+  }
+
+  _lastGameModeId = null
+  function setGameMode(modeId)
+  {
+    let gameMode = ::game_mode_manager.getGameModeById(modeId)
+    if (gameMode == null || modeId == _lastGameModeId)
+      return
+    _lastGameModeId = modeId
+
+    onCountrySelectAction()//bad function naming. Actually this function validates your units and selected country for new mode
+    setCurrentGameModeName()
+    reinitSlotbar()
+  }
+
+  function setCurrentGameModeName()
+  {
+    if (!checkObj(gameModeChangeButtonObj))
+      return
+
+    local name = ""
+
+    if (isMultiplayerPrivilegeAvailable.value) {
+      let gameMode = ::game_mode_manager.getCurrentGameMode()
+      let br = recentBR.value
+      name = gameMode && gameMode?.text != ""
+        ? gameMode.text + (br > 0 ? loc("mainmenu/BR", {br = format("%.1f", br)}) : "") : ""
+
+      if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
+      {
+        let gameModeId = ::g_squad_manager.getLeaderGameModeId()
+        let leaderBR = ::g_squad_manager.getLeaderBattleRating()
+        if(gameModeId != "")
+          name = ::events.getEventNameText(::events.getEvent(gameModeId))
+        if(leaderBR > 0)
+          name += loc("mainmenu/BR", {br = format("%.1f", leaderBR)})
+      }
+    }
+    else
+      name = loc("xbox/noMultiplayer")
+
+    gameModeChangeButtonObj.findObject("game_mode_change_button_text").setValue(
+      name != "" ? name : loc("mainmenu/gamemodesNotLoaded")
+    )
+  }
+
+  function updateUnseenGameModesCounter()
+  {
+    if (!checkObj(newGameModesWidgetsPlaceObj))
+      return
+
+    if (!newGameModeIconWidget)
+      newGameModeIconWidget = ::NewIconWidget(guiScene, newGameModesWidgetsPlaceObj)
+
+    newGameModeIconWidget.setValue(::game_mode_manager.getUnseenGameModeCount())
+  }
+
+  function goToBattleFromDebriefing()
+  {
+    determineAndStartAction(true)
+  }
+
+  function onEventShowingGameModesUpdated(params)
+  {
+    updateUnseenGameModesCounter()
+  }
+
+  function onEventMyStatsUpdated(params)
+  {
+    setCurrentGameModeName()
+    doWhenActiveOnce("checkNoviceTutor")
+    updateStartButton()
+  }
+
+  function onEventCrewTakeUnit(params)
+  {
+    doWhenActiveOnce("onCountrySelectAction")
+  }
+
+  function onEventSlotbarPresetLoaded(params)
+  {
+    if (getTblValue("crewsChanged", params, true))
+      doWhenActiveOnce("onCountrySelectAction")
+  }
+
+  function onEventSquadSetReady(params)
+  {
+    doWhenActiveOnce("updateStartButton")
+  }
+
+  function onEventSquadStatusChanged(params)
+  {
+    doWhenActiveOnce("updateStartButton")
+  }
+
+  function onEventCrewChanged(params)
+  {
+    doWhenActiveOnce("checkCountries")
+  }
+
+  function onEventCheckClientUpdate(params)
+  {
+    if (!checkObj(scene))
+      return
+
+    let obj = scene.findObject("update_avail")
+    if (!checkObj(obj))
+      return
+
+    obj.show(getTblValue("update_avail", params, false))
+  }
+
+  function onEventNewClientVersion(params) {
+    doWhenActive(@() checkNuclearEvent(params))
+  }
+
+  function checkCountries()
+  {
+    onCountrySelectAction()
+    return
+  }
+
+  function onEventQueueChangeState(p)
+  {
+    let _queue = p?.queue
+    if (!::queues.checkQueueType(_queue, queueMask))
+      return
+    setCurQueue(::queues.isQueueActive(_queue) ? _queue : null)
+    updateStartButton()
+    ::dmViewer.update()
+  }
+
+  function onEventCurrentGameModeIdChanged(params)
+  {
+    setGameMode(::game_mode_manager.getCurrentGameModeId())
+    updateNoticeGMChanged()
+  }
+
+  function onEventGameModesUpdated(params)
+  {
+    setGameMode(::game_mode_manager.getCurrentGameModeId())
+    updateUnseenGameModesCounter()
+    guiScene.performDelayed(this, function() {
+      if (!isValid())
+        return
+      doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
+    })
+  }
+
+  function onCountrySelect()
+  {
+    checkQueue(onCountrySelectAction)
+  }
+
+  function onCountrySelectAction()
+  {
+    if (!checkObj(scene))
+      return
+    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    if (currentGameMode == null)
+      return
+    let multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
+    setCurCountry(::get_profile_country_sq())
+    let countryEnabled = ::isCountryAvailable(getCurCountry())
+      && ::events.isCountryAvailable(
+          ::game_mode_manager.getGameModeEvent(currentGameMode),
+          getCurCountry()
+        )
+    let crewsGoodForMode = testCrewsForMode(getCurCountry())
+    let currentUnitGoodForMode = testCurrentUnitForMode(getCurCountry())
+    let requiredUnitsAvailable = checkRequiredUnits(getCurCountry())
+    startEnabled = countryEnabled && requiredUnitsAvailable && ((!multiSlotEnabled && currentUnitGoodForMode) || (multiSlotEnabled && crewsGoodForMode))
+  }
+
+  function getQueueAircraft(country)
+  {
+    let slots = getCurQueue() && ::queues.getQueueSlots(getCurQueue())
+    if (slots && (country in slots))
+    {
+      foreach(cIdx, c in ::g_crews_list.get())
+        if (c.country == country)
+          return ::g_crew.getCrewUnit(country.crews?[slots[country]])
+      return null
+    }
+    return ::getSelAircraftByCountry(country)
+  }
+
+  function onTopMenuGoBack(checkTopMenuButtons = false)
+  {
+    if (!getCurQueue() && ::g_squad_manager.isInSquad() && !::g_squad_manager.isSquadLeader() && ::g_squad_manager.isMeReady())
+      return ::g_squad_manager.setReadyFlag()
+
+    if (leaveCurQueue({ isLeaderCanJoin = true
+      msgId = "squad/only_leader_can_cancel"
+      isCanceledByPlayer = true }))
+      return
+
+    if (checkTopMenuButtons && topMenuHandler.value?.leftSectionHandlerWeak != null)
+    {
+      topMenuHandler.value.leftSectionHandlerWeak.switchMenuFocus()
+      return
+    }
+  }
+
+  _isToBattleAccessKeyActive = true
+  function setToBattleButtonAccessKeyActive(value)
+  {
+    if (value == _isToBattleAccessKeyActive)
+      return
+    if (toBattleButtonObj == null)
+      return
+
+    _isToBattleAccessKeyActive = value
+    toBattleButtonObj.enable(value)
+    let consoleImageObj = toBattleButtonObj.findObject("to_battle_console_image")
+    if (checkObj(consoleImageObj))
+      consoleImageObj.show(value && ::show_console_buttons)
+  }
+
+  function startManualMission(manualMission)
+  {
+    let missionBlk = ::DataBlock()
+    missionBlk.setFrom(::get_mission_meta_info(manualMission.name))
+    foreach(name, value in manualMission)
+      if (name != "name")
+        missionBlk[name] <- value
+    ::select_mission(missionBlk, false)
+    ::current_campaign_mission = missionBlk.name
+    guiScene.performDelayed(this, function() { goForward(::gui_start_flight)})
+  }
+
+  function onStart()
+  {
+    if (!suggestAndAllowPsnPremiumFeatures())
+      return
+
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
+
+    if (!::g_squad_manager.isMeReady())
+      ::game_mode_manager.setUserGameModeId(::game_mode_manager.getCurrentGameModeId())
+
+    determineAndStartAction()
+  }
+
+  function onEventSquadDataUpdated(params)
+  {
+    if(::g_squad_manager.isSquadLeader())
+      return
+
+    if (::g_squad_manager.isMeReady())
+    {
+      let id = ::g_squad_manager.getLeaderGameModeId()
+      if(id == "" || id == ::game_mode_manager.getCurrentGameModeId())
+        updateNoticeGMChanged()
+      else
+        ::game_mode_manager.setLeaderGameMode(id)
+    }
+    else
+    {
+      let id = ::game_mode_manager.getUserGameModeId()
+      if (id && id != "")
+        ::game_mode_manager.setCurrentGameModeById(id, true)
+    }
+    setCurrentGameModeName()
+    doWhenActiveOnce("updateStartButton")
+  }
+
+  function determineAndStartAction(isFromDebriefing = false)
+  {
+    if (changeStartMission)
+    {
+      startManualMission(changeStartMission)
+      return
+    }
+
+    if (::g_squad_manager.isSquadMember()) {
+      if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT)
+        ::g_squad_manager.setReadyFlag()
+      else {
+        if (!::g_squad_manager.isMeReady())
+          ::g_squad_manager.setReadyFlag(true)
+
+        if (::is_worldwar_enabled())
+          this.guiScene.performDelayed(this, @()
+            ::g_world_war.joinOperationById(::g_squad_manager.getWwOperationId()))
+      }
+
+      return
+    }
+
+    if (leaveCurQueue({ isLeaderCanJoin = true, isCanceledByPlayer = true}))
+      return
+
+    let curGameMode = ::game_mode_manager.getCurrentGameMode()
+    let event = ::game_mode_manager.getGameModeEvent(curGameMode)
+    if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
+      return
+
+    if (!isCrossPlayEventAvailable(event))
+    {
+      if (!::xbox_try_show_crossnetwork_message())
+        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+      return
+    }
+
+    if ("onBattleButtonClick" in curGameMode)
+      return curGameMode.onBattleButtonClick()
+
+    let configForStatistic = {
+      actionPlace = isFromDebriefing ? "debriefing" : "hangar"
+      economicName = ::events.getEventEconomicName(event)
+      difficulty = event?.difficulty ?? ""
+      canIntoToBattle = true
+      missionsComplete = ::my_stats.getMissionsComplete()
+    }
+
+    ::g_squad_utils.checkMembersMrankDiff(this, Callback(@()
+      checkedNewFlight(function() {
+        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        onStartAction()
+      }.bindenv(this),
+      function() {
+        configForStatistic.canIntoToBattle <- false
+        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+      }.bindenv(this))
+    , this))
+  }
+
+  function isCrossPlayEventAvailable(event)
+  {
+    return crossplayModule.isCrossPlayEnabled() || ::events.isEventPlatformOnlyAllowed(event)
+  }
+
+  function onStartAction()
+  {
+    checkCountries()
+
+    if (!::is_online_available())
+    {
+      let handler = this
+      goForwardIfOnline((@(handler) function() {
+          if (handler && checkObj(handler.scene))
+            handler.onStartAction.call(handler)
+        })(handler), false, true)
+      return
+    }
+
+    if (::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
+    {
+      setCurCountry(::get_profile_country_sq())
+      let gameMode = ::game_mode_manager.getCurrentGameMode()
+      if (gameMode == null)
+        return
+      if (checkGameModeTutorial(gameMode))
+        return
+
+      let event = ::game_mode_manager.getGameModeEvent(gameMode)
+      if (!::events.checkEventFeature(event))
+        return
+
+      let countryGoodForMode = ::events.isCountryAvailable(event, getCurCountry())
+      let multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
+      let requiredUnitsAvailable = checkRequiredUnits(getCurCountry())
+      if (countryGoodForMode && startEnabled)
+        onCountryApply()
+      else if (!requiredUnitsAvailable)
+        showRequirementsMsgBox()
+      else if (countryGoodForMode && !testCrewsForMode(getCurCountry()))
+        showNoSuitableVehiclesMsgBox()
+      else if (countryGoodForMode && !testCurrentUnitForMode(getCurCountry()) && !multiSlotEnabled)
+        showBadCurrentUnitMsgBox()
+      else
+        ::gui_start_modal_wnd(::gui_handlers.ChangeCountry, {
+          currentCountry = getCurCountry()
+          onCountryChooseCb = Callback(onCountryChoose, this)
+        })
+    }
+  }
+
+  function startEventBattle(event)
+  {
+    //!!FIX ME: this is a start random_battles or newbie battles events without check old domination modes
+    //can be used as base random battles start for new matching.
+    //valid only for newbie events yes
+    if (::queues.isAnyQueuesActive(queueMask) || !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
+      return
+
+    ::EventJoinProcess(event)
+  }
+
+  function showNoSuitableVehiclesMsgBox()
+  {
+    this.msgBox("cant_fly", loc("events/no_allowed_crafts", " "), [["ok", function() {
+      startSlotbarPresetsTutorial()
+    }]], "ok")
+  }
+
+  function showBadCurrentUnitMsgBox()
+  {
+    this.msgBox("cant_fly", loc("events/no_allowed_crafts", " "), [["ok", function() {
+      startSlotbarPresetsTutorial()
+    }]], "ok")
+  }
+
+  function getRequirementsMsgText()
+  {
+    let gameMode = ::game_mode_manager.getCurrentGameMode()
+    if (!gameMode || gameMode.type != RB_GM_TYPE.EVENT)
+      return ""
+
+    local requirements = []
+    let event = ::game_mode_manager.getGameModeEvent(gameMode)
+    if (!event)
+      return ""
+
+    foreach (team in ::events.getSidesList(event))
+    {
+      let teamData = ::events.getTeamData(event, team)
+      if (!teamData)
+        continue
+
+      requirements = ::events.getRequiredCrafts(teamData)
+      if (requirements.len() > 0)
+        break
+    }
+    if (requirements.len() == 0)
+      return ""
+
+    local msgText = loc("events/no_required_crafts") + loc("ui/colon")
+    foreach(rule in requirements)
+      msgText += "\n" + ::events.generateEventRule(rule, true)
+
+    return msgText
+  }
+
+  function showRequirementsMsgBox()
+  {
+    showBadUnitMsgBox(getRequirementsMsgText())
+  }
+
+  function showBadUnitMsgBox(msgText)
+  {
+    let buttonsArray = []
+
+    // "Change mode" button
+    let curUnitType = ::get_es_unit_type(::get_cur_slotbar_unit())
+    let gameMode = ::game_mode_manager.getGameModeByUnitType(curUnitType, -1, true)
+    if (gameMode != null)
+    {
+      buttonsArray.append([
+        "#mainmenu/changeMode",
+        function () {
+          ::game_mode_manager.setCurrentGameModeById(gameMode.id)
+          checkCountries()
+          onStart()
+        }
+      ])
+    }
+
+    // "Change vehicle" button
+    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    local properUnitType = null
+    if (currentGameMode.type == RB_GM_TYPE.EVENT)
+    {
+      let event = ::game_mode_manager.getGameModeEvent(currentGameMode)
+      foreach(unitType in unitTypes.types)
+        if (::events.isUnitTypeRequired(event, unitType.esUnitType))
+        {
+          properUnitType = unitType
+          break
+        }
+    }
+
+    if (rootHandlerWeak)
+    {
+      buttonsArray.append([
+        "#mainmenu/changeVehicle",
+        function () {
+          if (isValid() && rootHandlerWeak)
+            rootHandlerWeak.openShop(properUnitType)
+        }
+      ])
+    }
+
+    // "Ok" button
+    buttonsArray.append(["ok", function () {}])
+
+    this.msgBox("bad_current_unit", msgText, buttonsArray, "ok"/*"#mainmenu/changeMode"*/, { cancel_fn = function () {} })
+  }
+
+  function isCurrentGameModeMultiSlotEnabled()
+  {
+    let gameMode = ::game_mode_manager.getCurrentGameMode()
+    return ::events.isEventMultiSlotEnabled(getTblValue("source", gameMode, null))
+  }
+
+  function onCountryChoose(country)
+  {
+    if (::isCountryAvailable(country))
+    {
+      setCurCountry(country)
+      topMenuSetCountry(getCurCountry())
+      onCountryApply()
+    }
+  }
+
+  function topMenuSetCountry(country)
+  {
+    let slotbar = getSlotbar()
+    if (slotbar)
+      slotbar.setCountry(country)
+  }
+
+  function onAdvertLinkClick(obj, itype, link)
+  {
+    proccessLinkFromText(obj, itype, link)
+  }
+
+  function onCountryApply()
+  {
+    if (::tanksDriveGamemodeRestrictionMsgBox("TanksInRandomBattles",
+                                              getCurCountry(),
+                                              null,
+                                              "cbt_tanks/forbidden/instant_action"))
+      return
+
+    let multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
+    if (!testCrewsForMode(getCurCountry()))
+      return showNoSuitableVehiclesMsgBox()
+    if (!multiSlotEnabled && !testCurrentUnitForMode(getCurCountry()))
+      return showBadCurrentUnitMsgBox()
+
+    let gameMode   = ::game_mode_manager.getCurrentGameMode()
+    if (gameMode == null)
+      return
+    if (::events.checkEventDisableSquads(this, gameMode.id))
+      return
+    if (checkGameModeTutorial(gameMode))
+      return
+
+    if (gameMode.type == RB_GM_TYPE.EVENT)
+      return startEventBattle(::game_mode_manager.getGameModeEvent(gameMode)) //better to do completely the same here as we do n events.
+                                               // but better to refactor this place after remove old gamemodes
+  }
+
+  function checkGameModeTutorial(gameMode)
+  {
+    let checkTutorUnitType = (gameMode.unitTypes.len() == 1)? gameMode.unitTypes[0] : null
+    let diffCode = ::events.getEventDiffCode(::game_mode_manager.getGameModeEvent(gameMode))
+    return checkDiffTutorial(diffCode, checkTutorUnitType)
+  }
+
+  function updateStartButton()
+  {
+    if (!checkObj(scene) || !checkObj(toBattleButtonObj))
+      return
+
+    let inQueue = getCurQueue() != null
+
+    local txt = ""
+    local isCancel = false
+
+    if (!inQueue) {
+      if (::g_squad_manager.isSquadMember()) {
+        let isReady = ::g_squad_manager.isMeReady()
+        if (getLeaderOperationState() != LEADER_OPERATION_STATES.OUT) {
+          txt = ::g_ww_global_status_actions.getOperationById(
+            ::g_squad_manager.getWwOperationId())?.getNameText(false) ?? ""
+          isCancel = false
+        }
+        else {
+          txt = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
+          isCancel = isReady
+        }
+      }
+      else {
+        txt = loc(getToBattleLocIdShort())
+        isCancel = false
+      }
+    }
+    else
+    {
+      txt = loc("mainmenu/btnCancel")
+      isCancel = true
+    }
+
+    toBattleButtonObj.setValue(txt)
+    toBattleButtonObj.findObject("to_battle_button_text").setValue(txt)
+    toBattleButtonObj.isCancel = isCancel ? "yes" : "no"
+
+    toBattleButtonObj.fontOverride = daguiFonts.getMaxFontTextByWidth(txt,
+      to_pixels("1@maxToBattleButtonTextWidth"), "bold")
+
+    topMenuHandler.value?.onQueue.call(topMenuHandler.value, inQueue)
+  }
+
+  function afterCountryApply(membersData = null, team = null, event = null)
+  {
+    if (::disable_network())
+    {
+      ::match_search_gm <- GM_DOMINATION
+      guiScene.performDelayed(this, function() {
+        goForwardIfOnline(::gui_start_session_list, false)
+      })
+      return
+    }
+
+    joinQuery(null, membersData, team, event)
+  }
+
+  function joinQuery(query = null, membersData = null, team = null, event = null)
+  {
+    leaveCurQueue()
+
+    local modeName = ""
+    if (event)
+      modeName = event.name
+    else
+    {
+      let gameMode = ::game_mode_manager.getCurrentGameMode()
+      modeName = getTblValue("id", gameMode, "")
+    }
+    if (!query)
+    {
+      query = {
+        mode = modeName
+        country = getCurCountry()
+      }
+    }
+
+    if (membersData)
+      query.members <- membersData
+
+    ::set_presence_to_player("queue")
+    ::queues.joinQueue(query)
+
+    local chatDiv = null
+    if (topMenuHandler.value != null)
+      chatDiv = ::getChatDiv(topMenuHandler.value.scene)
+    if (!chatDiv && scene && scene.isValid())
+      chatDiv = ::getChatDiv(scene)
+    if(chatDiv)
+      ::switchMenuChatObjIfVisible(chatDiv)
+  }
+
+  function leaveCurQueue(options = {})
+  {
+    let queue = getCurQueue()
+    if (!queue)
+      return false
+
+    if (options.len() && !::g_squad_utils.canJoinFlightMsgBox(options))
+      return false
+
+    ::queues.leaveQueue(queue, options)
+    return true
+  }
+
+  function goBack()
+  {
+    if (leaveCurQueue({ isLeaderCanJoin = true
+      msgId = "squad/only_leader_can_cancel"
+      isCanceledByPlayer = true }))
+      return
+
+    onTopMenuGoBack()
+  }
+
+  function checkQueue(func)
+  {
+    if (!inited)
+      return func()
+
+    checkedModifyQueue(queueMask, func, restoreQueueParams)
+  }
+
+  function restoreQueueParams()
+  {
+    let tMsgBox = guiScene["req_tutorial_msgbox"]
+    if (checkObj(tMsgBox))
+      guiScene.destroyElement(tMsgBox)
+  }
+
+  function testCurrentUnitForMode(country)
+  {
+    if (country == "country_0")
+    {
+      let option = ::get_option(::USEROPT_COUNTRY)
+      foreach(idx, optionCountryName in option.values)
+        if (optionCountryName != "country_0" && option.items[idx].enabled)
+        {
+          let unit = getQueueAircraft(optionCountryName)
+          if (!unit)
+            continue
+          if (::game_mode_manager.isUnitAllowedForGameMode(unit))
+            return true
+        }
+      return false
+    }
+    let unit = ::getSelAircraftByCountry(country)
+    return ::game_mode_manager.isUnitAllowedForGameMode(unit)
+  }
+
+  function testCrewsForMode(country)
+  {
+    let countryToCheckArr = []
+    if (country == "country_0")
+    {//fill countryToCheckArr with countries, allowed by game mode
+      let option = ::get_option(::USEROPT_COUNTRY)
+      foreach(idx, optionCountryName in option.values)
+        if (optionCountryName != "country_0" && option.items[idx].enabled)
+          countryToCheckArr.append(optionCountryName)
+    }
+    else
+      countryToCheckArr.append(country)
+
+    foreach (countryCrews in ::g_crews_list.get())
+    {
+      if (!isInArray(countryCrews.country, countryToCheckArr))
+        continue
+
+      foreach (crew in countryCrews.crews)
+      {
+        if (!("aircraft" in crew))
+          continue
+        let unit = ::getAircraftByName(crew.aircraft)
+        if (::game_mode_manager.isUnitAllowedForGameMode(unit))
+          return true
+      }
+    }
+
+    return false
+  }
+
+  function checkRequiredUnits(country)
+  {
+    let gameMode = ::game_mode_manager.getCurrentGameMode()
+    return gameMode ? ::events.checkRequiredUnits(::game_mode_manager.getGameModeEvent(gameMode), null, country) : true
+  }
+
+  function getIaBlockSelObj(obj)
+  {
+    let value = obj.getValue() || 0
+    if (obj.childrenCount() <= value)
+      return null
+
+    let id = ::getObjIdByPrefix(obj.getChild(value), "block_")
+    if (!id)
+      return null
+
+    let selObj = obj.findObject(id)
+    return checkObj(selObj)? selObj : null
+  }
+
+  function onIaBlockActivate(obj)
+  {
+    let selObj = getIaBlockSelObj(obj)
+    if (!selObj)
+      return
+
+    selObj.select()
+  }
+
+  function onUnlockCrew(obj)
+  {
+    if (!obj)
+      return
+    local isGold = false
+    if (obj?.id == "btn_unlock_crew_gold")
+      isGold = true
+    let unit = getShowedUnit()
+    if (!unit)
+      return
+
+    let crewId = ::getCrewByAir(unit).id
+    let cost = ::Cost()
+    if (isGold)
+      cost.gold = ::shop_get_unlock_crew_cost_gold(crewId)
+    else
+      cost.wp = ::shop_get_unlock_crew_cost(crewId)
+
+    let msg = format("%s %s?", loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
+    this.msgBox("unlock_crew", msg, [
+        ["yes", (@(crewId, isGold) function() {
+          taskId = ::unlockCrew( crewId, isGold, cost )
+          ::sync_handler_simulate_signal("profile_reload")
+          if (taskId >= 0)
+          {
+            ::set_char_cb(this, slotOpCb)
+            showTaskProgressBox()
+            afterSlotOp = null
+          }
+        })(crewId, isGold)],
+        ["no", function() { return false }]
+      ], "no")
+  }
+
+  function checkNoviceTutor()
+  {
+    if (::disable_network() || !::my_stats.isStatsLoaded() || !checkObj(toBattleButtonObj))
+      return
+
+    if (!tutorialModule.needShowTutorial("toBattle", 1) || ::my_stats.getPvpRespawns())
+      return
+
+    toBattleTutor()
+    tutorialModule.saveShowedTutorial("toBattle")
+  }
+
+  function checkUpgradeCrewTutorial()
+  {
+    if (!::g_login.isLoggedIn())
+      return
+
+    if (!::g_crew.isAllCrewsMinLevel())
+      return
+
+    tryToStartUpgradeCrewTutorial()
+  }
+
+  function getCurrentCrewSlot()
+  {
+    let slotbar = getSlotbar()
+    return slotbar && slotbar.getCurrentCrewSlot()
+  }
+
+  function tryToStartUpgradeCrewTutorial()
+  {
+    let curCrew = getCurCrew()
+    if (curCrew == null || curCrew.isEmpty)
+      return
+
+    let curCrewSlot = getCurrentCrewSlot()
+    if (!curCrewSlot)
+      return
+
+    let tutorialPageId = ::g_crew.getSkillPageIdToRunTutorial(curCrew)
+    if (!tutorialPageId)
+      return
+
+    let steps = [
+      {
+        obj = [curCrewSlot]
+        text = loc("tutorials/upg_crew/skill_points_info") + " " + loc("tutorials/upg_crew/press_to_crew")
+        actionType = tutorAction.OBJ_CLICK
+        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        nextActionShortcut = "help/OBJ_CLICK"
+        cb = @() openUnitActionsList(curCrewSlot, true, true)
+      },
+      {
+        actionType = tutorAction.WAIT_ONLY
+        waitTime = 0.5
+      },
+      {
+        obj = [function() {
+          return curCrewSlot.findObject("crew")
+        }]
+        text = loc("tutorials/upg_crew/select_crew")
+        actionType = tutorAction.OBJ_CLICK
+        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        nextActionShortcut = "help/OBJ_CLICK"
+        cb = function() {
+          ::gui_modal_crew({
+            countryId = curCrew.idCountry,
+            idInCountry = curCrew.idInCountry,
+            curPageId = tutorialPageId,
+            showTutorial = true
+          })
+        }
+      }
+    ]
+    ::gui_modal_tutor(steps, this)
+  }
+
+  function toBattleTutor()
+  {
+    let objs = [toBattleButtonObj, topMenuHandler.value.getObj("to_battle_console_image")]
+    let steps = [{
+      obj = [objs]
+      text = loc("tutor/battleButton")
+      actionType = tutorAction.OBJ_CLICK
+      nextActionShortcut = "help/OBJ_CLICK"
+      shortcut = ::SHORTCUT.GAMEPAD_X
+      cb = onStart
+    }]
+    ::gui_modal_tutor(steps, this)
+  }
+
+  function startSlotbarPresetsTutorial()
+  {
+    let tutorialCounter = ::SlotbarPresetsTutorial.getCounter()
+    if (tutorialCounter >= ::SlotbarPresetsTutorial.MAX_TUTORIALS)
+      return false
+
+    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    if (currentGameMode == null)
+      return false
+
+    let missionCounter = ::stat_get_value_missions_completed(currentGameMode.diffCode, 1)
+    if (missionCounter >= ::SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
+      return false
+
+    if (!::slotbarPresets.canEditCountryPresets(getCurCountry()))
+      return false
+
+    let tutorial = ::SlotbarPresetsTutorial()
+    tutorial.currentCountry = getCurCountry()
+    tutorial.tutorialGameMode = currentGameMode
+    tutorial.currentHandler = this
+    tutorial.onComplete = function (params) {
+      slotbarPresetsTutorial = null
+    }.bindenv(this)
+    tutorial.preset = ::game_mode_manager.findPresetValidForGameMode(getCurCountry())
+    if (tutorial.startTutorial())
+    {
+      slotbarPresetsTutorial = tutorial
+      return true
+    }
+    return false
+  }
+
+  function checkShowViralAcquisition() {
+    guiScene.performDelayed({}, function() {
+      if (::my_stats.isMeNewbie())
+        return
+
+      let invitedPlayersBlk = ::DataBlock()
+      ::get_invited_players_info(invitedPlayersBlk)
+      if (invitedPlayersBlk.blockCount() == 0) {
+        let gmBlk = ::get_game_settings_blk()
+        let reminderPeriod = gmBlk?.viralAcquisitionReminderPeriodDays ?? 10
+        let today = time.getUtcDays()
+        let never = 0
+        let lastLoginDay = ::load_local_account_settings("viralAcquisition/lastLoginDay", today)
+        local lastShowTime = ::load_local_account_settings("viralAcquisition/lastShowTime", never)
+
+        // Game designers can force reset lastShowTime of all users by increasing this value in cfg:
+        if (gmBlk?.resetViralAcquisitionDaysCounter) {
+          let newResetVer = gmBlk.resetViralAcquisitionDaysCounter
+          let knownResetVer = ::load_local_account_settings("viralAcquisition/resetDays", 0)
+          if (newResetVer > knownResetVer) {
+            ::save_local_account_settings("viralAcquisition/resetDays", newResetVer)
+            lastShowTime = never
+          }
+        }
+
+        ::save_local_account_settings("viralAcquisition/lastLoginDay", today)
+        if ((lastLoginDay - lastShowTime) > reminderPeriod) {
+          ::save_local_account_settings("viralAcquisition/lastShowTime", today)
+          showViralAcquisitionWnd()
+        }
+      }
+    })
+  }
+
+  function checkShowChangelog()
+  {
+    guiScene.performDelayed({}, function() {
+      if (needShowChangelog() && ::get_cur_base_gui_handler().isSceneActiveNoModals())
+        ::handlersManager.animatedSwitchScene(openChangelog())
+    })
+  }
+
+  function checkNewUnitTypeToBattleTutor()
+  {
+    if (::disable_network()
+      || !::my_stats.isStatsLoaded()
+      || !hasFeature("NewUnitTypeToBattleTutorial"))
+      return
+
+    if (!tutorialModule.needShowTutorial("newUnitTypetoBattle", 1)
+      || ::my_stats.getMissionsComplete(["pvp_played", "skirmish_played"])
+           < ::SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
+      || ::g_squad_manager.isNotAloneOnline()
+      || !isCountrySlotbarHasUnits(::get_profile_country_sq())
+      || !::isCountryAllCrewsUnlockedInHangar(::get_profile_country_sq()))
+      return
+
+    startNewUnitTypeToBattleTutorial()
+  }
+
+  function startNewUnitTypeToBattleTutorial()
+  {
+    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    if (!currentGameMode)
+      return
+
+    let currentCountry = ::get_profile_country_sq()
+    local gameModeForTutorial = null
+    local validPreset = null
+    local isNotFoundUnitTypeForTutorial = true
+    local isNotFoundValidPresetForTutorial= false
+    foreach (unitType in unitTypes.types)
+    {
+      if (!unitType.isAvailableForFirstChoice()
+        || ::my_stats.getTimePlayedOnUnitType(unitType.esUnitType) > 0)
+        continue
+
+      isNotFoundUnitTypeForTutorial = false
+      gameModeForTutorial = ::game_mode_manager.getGameModeById(::events.getEventEconomicName(
+        ::my_stats.getNextNewbieEvent(currentCountry, unitType.esUnitType)))
+
+      if (!gameModeForTutorial)
+        continue
+
+      validPreset = ::game_mode_manager.findPresetValidForGameMode(currentCountry, gameModeForTutorial)
+      if (validPreset)
+        break
+
+      isNotFoundValidPresetForTutorial = true
+    }
+
+    if (!gameModeForTutorial || !validPreset)
+    {
+      if (isNotFoundUnitTypeForTutorial || isNotFoundValidPresetForTutorial)
+      {
+        ::add_big_query_record("new_unit_type_to_battle_tutorial_skipped",
+          isNotFoundUnitTypeForTutorial ? "isNotFoundUnitTypeForTutorial" : "isNotFoundValidPreset")
+        tutorialModule.saveShowedTutorial("newUnitTypetoBattle")
+      }
+      return
+    }
+
+    ::scene_msg_box("new_unit_type_to_battle_tutorial_msgbox", null,
+      loc("msgBox/start_new_unit_type_to_battle_tutorial", { gameModeName = gameModeForTutorial.text }),
+      [
+        ["yes", function() {
+          ::add_big_query_record("new_unit_type_to_battle_tutorial_msgbox_btn", "yes")
+          let tutorial = ::SlotbarPresetsTutorial()
+          tutorial.currentCountry = currentCountry
+          tutorial.tutorialGameMode = gameModeForTutorial
+          tutorial.isNewUnitTypeToBattleTutorial = true
+          tutorial.currentHandler = this
+          tutorial.onComplete = function (params) {
+            slotbarPresetsTutorial = null
+          }.bindenv(this)
+          tutorial.preset = validPreset
+          if (tutorial.startTutorial())
+            slotbarPresetsTutorial = tutorial
+        }.bindenv(this)],
+        ["no", function() {
+          ::add_big_query_record("new_unit_type_to_battle_tutorial_msgbox_btn", "no")
+        }.bindenv(this)]
+      ], "yes")
+
+    tutorialModule.saveShowedTutorial("newUnitTypetoBattle")
+  }
+
+  function updateNoticeGMChanged()
+  {
+    if (!hasFeature("GameModeSelector"))
+      return
+
+    local notice = null
+    let alertObj = scene.findObject("game_mode_notice")
+    if(::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
+    {
+      let gameModeId = ::g_squad_manager.getLeaderGameModeId()
+      if(gameModeId && gameModeId != "")
+        notice = loc("mainmenu/leader_gamemode_notice")
+      alertObj.hideConsoleImage = "yes"
+    }
+    else
+    {
+      let id = ::game_mode_manager.getUserGameModeId()
+      let gameMode = ::game_mode_manager.getGameModeById(id)
+      if((id != "" && gameMode && id != ::game_mode_manager.getCurrentGameModeId()))
+        notice = format(loc("mainmenu/gamemode_change_notice"), gameMode.text)
+      alertObj.hideConsoleImage = "no"
+    }
+
+    if(notice)
+      alertObj.setValue(notice)
+    alertObj.show(notice)
+  }
+
+  function onGMNoticeClick()
+  {
+    if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
+      return
+
+    let id = ::game_mode_manager.getUserGameModeId()
+    if(id != "")
+    {
+      ::game_mode_manager.setCurrentGameModeById(id, true)
+    }
+  }
+
+  function onEventBattleRatingChanged(params)
+  {
+    setCurrentGameModeName()
+  }
+
+  function checkNonApprovedSquadronResearches()
+  {
+    if (isHaveNonApprovedClanUnitResearches())
+      clanVehiclesModal.open()
+  }
+
+  function onEventClanChanged(params)
+  {
+    if (!hasFeature("AutoFlushClanExp"))
+      doWhenActiveOnce("checkNonApprovedSquadronResearches")
+  }
+
+  function onEventSquadronExpChanged(params)
+  {
+    if (!hasFeature("AutoFlushClanExp"))
+      doWhenActiveOnce("checkNonApprovedSquadronResearches")
+  }
+
+  function onEventPartnerUnlocksUpdated(p)
+  {
+    let hasModalObjectVal = guiScene.hasModalObject()
+    doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal))
+  }
+
+  function onEventCrossPlayOptionChanged(p) {
+    setCurrentGameModeName()
+  }
+
+  function on_show_clan_requests() //FIXME: FUNC in 'on_click' somehow calls
+  {
+    if (::g_clans.isHaveRightsToReviewCandidates())
+      ::showClanRequests(::g_clans.getMyClanCandidates(), ::clan_get_my_clan_id(), false);
+  }
+
+  onEventToBattleLocShortChanged = @(params) doWhenActiveOnce("updateStartButton")
+
+  onEventOpenGameModeSelect = @(p) openGameModeSelect()
+
+  function openGameModeSelect()
+  {
+    if (!isValid())
+      return
+
+    checkQueue(
+      @() ::g_squad_utils.checkSquadUnreadyAndDo(
+        @() ::gui_handlers.GameModeSelect.open(), null))
+  }
+
+  onEventBackgroundHangarVehicleHoverChanged = @(params) showBackgroundModelHint(params)
+  onBackgroundModelHintTimer = @(obj, dt) placeBackgroundModelHint(obj)
+}

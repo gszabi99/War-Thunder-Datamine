@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 
@@ -81,7 +88,7 @@ global enum WW_LB_MODE
   if (name in lbModeNames)
     return lbModeNames[name]
 
-  ::dagor.logerr("Invalid leaderboard mode '" + name + "'")
+  logerr("Invalid leaderboard mode '" + name + "'")
   return 0
 }
 
@@ -94,19 +101,19 @@ global enum WW_LB_MODE
   }
 }
 
-g_lb_category.getTypeById <- function getTypeById(id)
+::g_lb_category.getTypeById <- function getTypeById(id)
 {
   return enums.getCachedType("id", id, ::g_lb_category.cache.byId,
     ::g_lb_category, UNKNOWN)
 }
 
-g_lb_category.getTypeByField <- function getTypeByField(field)
+::g_lb_category.getTypeByField <- function getTypeByField(field)
 {
   return enums.getCachedType("field", field, ::g_lb_category.cache.byField,
     ::g_lb_category, UNKNOWN)
 }
 
-g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row)
+::g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row)
 {
   if (!additionalTooltipCategoryes || !row)
     return ""
@@ -139,7 +146,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
       tooltipKey = tooltipKey.slice(1)
 
     res += (res.len() ? "\n" : "") +
-      ::loc(tooltipKey) + ::loc("ui/colon") + ::g_string.stripTags("" + value)
+      loc(tooltipKey) + loc("ui/colon") + ::g_string.stripTags("" + value)
   }
 
   return res
@@ -191,7 +198,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
 
   isVisibleInEvent = function(event)
   {
-    if (showFieldFilter && !::isInArray(::events.getEventTournamentMode(event), showFieldFilter))
+    if (showFieldFilter && !isInArray(::events.getEventTournamentMode(event), showFieldFilter))
       return false
 
     if (showEventFilterFunc && !showEventFilterFunc(event))
@@ -204,7 +211,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
 }
 
 
-g_lb_category._typeConstructor <- function _typeConstructor ()
+::g_lb_category._typeConstructor <- function _typeConstructor ()
 {
   headerImage = "#ui/gameuiskin#lb_" + (headerImage != "" ? headerImage : visualKey) + ".svg"
   headerTooltip = "#multiplayer/" + (headerTooltip != "" ? headerTooltip : visualKey)

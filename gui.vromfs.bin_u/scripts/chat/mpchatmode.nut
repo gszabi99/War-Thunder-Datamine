@@ -1,5 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad
+} = require("%scripts/user/matchingFeature.nut")
 
 enum mpChatModeSort {
   TEAM
@@ -21,8 +30,8 @@ enum mpChatModeSort {
   sortOrder = mpChatModeSort.ALL
   textColor = ""
 
-  getNameText = function() { return ::loc("chat/" + name) }
-  getDescText = function() { return ::loc("chat/" + name + "/desc") }
+  getNameText = function() { return loc("chat/" + name) }
+  getDescText = function() { return loc("chat/" + name + "/desc") }
   isEnabled   = function() { return false }
 }
 
@@ -33,7 +42,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     sortOrder = mpChatModeSort.ALL
     textColor = "@chatTextAllColor"
 
-    isEnabled = @() ::has_feature("BattleChatModeAll")
+    isEnabled = @() hasBattleChatModeAll.value
   }
 
   TEAM = {
@@ -42,7 +51,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     sortOrder = mpChatModeSort.TEAM
     textColor = "@chatTextTeamColor"
 
-    isEnabled = @() ::has_feature("BattleChatModeTeam") && !::isPlayerDedicatedSpectator()
+    isEnabled = @() hasBattleChatModeTeam.value && !::isPlayerDedicatedSpectator()
       && ::is_mode_with_teams()
   }
 
@@ -52,7 +61,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     sortOrder = mpChatModeSort.SQUAD
     textColor = "@chatTextSquadColor"
 
-    isEnabled = @() ::has_feature("BattleChatModeSquad") && ::g_squad_manager.isInSquad(true)
+    isEnabled = @() hasBattleChatModeSquad.value && ::g_squad_manager.isInSquad(true)
       && !::isPlayerDedicatedSpectator()
   }
 
@@ -72,13 +81,13 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
   return 0
 })
 
-g_mp_chat_mode.getModeById <- function getModeById(modeId)
+::g_mp_chat_mode.getModeById <- function getModeById(modeId)
 {
   return enums.getCachedType("id", modeId, cache.byId, this, ALL)
 }
 
 
-g_mp_chat_mode.getModeNameText <- function getModeNameText(modeId)
+::g_mp_chat_mode.getModeNameText <- function getModeNameText(modeId)
 {
   return getModeById(modeId).getNameText()
 }
@@ -86,7 +95,7 @@ g_mp_chat_mode.getModeNameText <- function getModeNameText(modeId)
 
 // To pass color name to daRg.
 // daRg can't use text color constants
-g_mp_chat_mode.getModeColorName <- function getModeColorName(modeId)
+::g_mp_chat_mode.getModeColorName <- function getModeColorName(modeId)
 {
   local colorName = getModeById(modeId).textColor
   if (colorName.len())
@@ -95,7 +104,7 @@ g_mp_chat_mode.getModeColorName <- function getModeColorName(modeId)
 }
 
 
-g_mp_chat_mode.getNextMode <- function getNextMode(modeId)
+::g_mp_chat_mode.getNextMode <- function getNextMode(modeId)
 {
   local isCurFound = false
   local newMode = null
@@ -119,26 +128,26 @@ g_mp_chat_mode.getNextMode <- function getNextMode(modeId)
   return newMode
 }
 
-g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode()
+::g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode()
 {
   let availableModes = types.filter(@(mode) mode.isEnabled())
   if (availableModes.len() <= 1)
     return ""
-  return ::loc("ui/slash").join(availableModes.map(@(mode) mode.getNameText()), true)
+  return loc("ui/slash").join(availableModes.map(@(mode) mode.getNameText()), true)
 }
 
-g_mp_chat_mode.getChatHint <- function getChatHint()
+::g_mp_chat_mode.getChatHint <- function getChatHint()
 {
-  let hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
-  let chatHelpText = hasIME ? "" : ::loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
+  let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || ::is_steam_big_picture()
+  let chatHelpText = hasIME ? "" : loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
   local availableModeText = getTextAvailableMode()
   availableModeText = availableModeText != ""
-    ? ::loc("chat/help/modeSwitch", {
+    ? loc("chat/help/modeSwitch", {
         modeSwitchShortcuts = "{{ID_TOGGLE_CHAT_MODE}}"
         modeList = availableModeText
       })
     : ""
-  return ::loc("ui/comma").join([availableModeText, chatHelpText], true)
+  return loc("ui/comma").join([availableModeText, chatHelpText], true)
 }
 
 ::cross_call_api.mp_chat_mode <- ::g_mp_chat_mode

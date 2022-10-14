@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
 {
@@ -59,7 +67,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
   function updateRequestList()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return;
 
     if (curPage > 0 && rowTexts.len() <= curPage * rowsPerPage)
@@ -78,7 +86,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
         tdalign="center",
       });
     }
-    data = buildTableRow("row_header", headerRow, null,
+    data = ::buildTableRow("row_header", headerRow, null,
       "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
 
     let startIdx = curPage * rowsPerPage
@@ -95,7 +103,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
           text = "",
         });
       }
-      data += buildTableRow(rowName, rowData, (i-startIdx)%2==0, "");
+      data += ::buildTableRow(rowName, rowData, (i-startIdx)%2==0, "");
     }
 
     guiScene.setUpdatesEnabled(false, false);
@@ -113,7 +121,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     ::move_mouse_on_child_by_value(tblObj)
     onSelect()
 
-    generatePaginator(scene.findObject("paginator_place"), this, curPage, ((rowTexts.len()-1) / rowsPerPage).tointeger())
+    ::generatePaginator(scene.findObject("paginator_place"), this, curPage, ((rowTexts.len()-1) / rowsPerPage).tointeger())
   }
 
   function goToPage(obj)
@@ -151,7 +159,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
   function onUserAction()
   {
     let table = scene.findObject("candidatesList")
-    if (!::checkObj(table))
+    if (!checkObj(table))
       return
 
     let index = table.getValue()

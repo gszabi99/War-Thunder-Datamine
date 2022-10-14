@@ -1,7 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { subscribe } = require("eventbus")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { hasFeature } = require("%scripts/user/features.nut")
 
 
 const QUALITY_COLOR_EPIC = "constantColorFps"
@@ -45,11 +49,11 @@ let function getPacketlossColor(pl) {
 
 
 let function validateObjects(objects, guiScene) {
-  if (::checkObj(::getTblValue(paramsList[0], objects)))
+  if (checkObj(getTblValue(paramsList[0], objects)))
     return true
 
   let holderObj = guiScene["status_texts_holder"]
-  if (!::checkObj(holderObj))
+  if (!checkObj(holderObj))
     return false
 
   foreach(param in paramsList)
@@ -80,10 +84,10 @@ let function updateTexts(objects, params) {
   let { fps, ping, pl, sessionId, latency, latencyA, latencyR } = params
   let fpsInt = (fps + 0.5).tointeger();
   local fpsText = ""
-  let isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !::is_platform_android
+  let isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !is_platform_android
   let isAllowedForUser = hasFeature("FpsCounterOverride")
   if ((::is_dev_version || isAllowedForPlatform || isAllowedForUser) && fpsInt < 10000 && fpsInt > 0)
-    fpsText = ::colorize(getFpsColor(fpsInt), format("FPS: %d", fpsInt))
+    fpsText = colorize(getFpsColor(fpsInt), format("FPS: %d", fpsInt))
   objects.fps.setValue(fpsText)
 
   local latencyText = ""
@@ -92,14 +96,14 @@ let function updateTexts(objects, params) {
   local sidText = ""
   if (latency >= 0) {
     if (latencyA >= 0 && latencyR >= 0)
-      latencyText = format("%s:%5.1fms (A:%5.1fms R:%5.1fms)", ::loc("latency", "Latency"), latency, latencyA, latencyR)
+      latencyText = format("%s:%5.1fms (A:%5.1fms R:%5.1fms)", loc("latency", "Latency"), latency, latencyA, latencyR)
     else
-      latencyText = format("%s:%5.1fms", ::loc("latency", "Latency"), latency)
+      latencyText = format("%s:%5.1fms", loc("latency", "Latency"), latency)
   }
   if (ping >= 0)
   {
-    pingText = ::colorize(getPingColor(ping), "Ping: " + ping)
-    plText = ::colorize(getPacketlossColor(pl), "PL: " + pl + "%")
+    pingText = colorize(getPingColor(ping), "Ping: " + ping)
+    plText = colorize(getPacketlossColor(pl), "PL: " + pl + "%")
     sidText = sessionId
   }
   objects.latency.setValue(latencyText)

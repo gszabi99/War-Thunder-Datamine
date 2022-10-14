@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -64,16 +69,16 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
 ]
 
 let reqTutorial = {
-  [::ES_UNIT_TYPE_AIRCRAFT] = "tutorialB_takeoff_and_landing",
-  //[::ES_UNIT_TYPE_TANK] = "",
+  [ES_UNIT_TYPE_AIRCRAFT] = "tutorialB_takeoff_and_landing",
+  //[ES_UNIT_TYPE_TANK] = "",
 }
 
 let getReqTutorial = @(unitType) reqTutorial?[unitType] ?? ""
 
-let tutorialRewardData = persist("tutorialRewardData", @() ::Watched(null))
+let tutorialRewardData = persist("tutorialRewardData", @() Watched(null))
 let clearTutorialRewardData = @() tutorialRewardData(null)
 
-let launchedTutorialQuestionsPeerSession = persist("launchedTutorialQuestionsPeerSession", @() ::Watched(0))
+let launchedTutorialQuestionsPeerSession = persist("launchedTutorialQuestionsPeerSession", @() Watched(0))
 let setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession(newValue)
 
 let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
@@ -128,8 +133,8 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
 
 let function saveTutorialToCheckReward(mission) {
   let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(::GM_TRAINING)  //req to check progress
-  let campId = ::get_game_mode_name(::GM_TRAINING)
+  ::set_mp_mode(GM_TRAINING)  //req to check progress
+  let campId = ::get_game_mode_name(GM_TRAINING)
   let missionName = mission.name
   let fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
   let progress = ::get_mission_progress(fullMissionName)
@@ -139,14 +144,14 @@ let function saveTutorialToCheckReward(mission) {
   let preset = ::g_controls_presets.getCurrentPresetInfo()
   if (preset.name.indexof("hotas4") != null
       && checkJoystickThustmasterHotas(false)
-      && ! ::has_feature("DisableSwitchPresetOnTutorialForHotas4"))
+      && ! hasFeature("DisableSwitchPresetOnTutorialForHotas4"))
     {
       presetFilename = preset.fileName
       ::apply_joy_preset_xchange(::g_controls_presets.getControlsPresetFilename("dualshock4"))
     }
 
   let rBlk = ::get_pve_awards_blk()
-  let dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
+  let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
   let misDataBlk = dataBlk?[missionName]
   let resource = misDataBlk?.decal
   let resourceType = "decal"
@@ -170,7 +175,7 @@ let function saveTutorialToCheckReward(mission) {
   ::set_mp_mode(mainGameMode)
 }
 
-let isRequireFeature = @(data, featureId) (featureId in data) && !::has_feature(data[featureId])
+let isRequireFeature = @(data, featureId) (featureId in data) && !hasFeature(data[featureId])
 
 let function getTutorialsTblWithMissions (diff = -1, misName = null) {
   let tutorialsTbl = checkTutorialsList
@@ -185,9 +190,9 @@ let function getTutorialsTblWithMissions (diff = -1, misName = null) {
     {})
 
   let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(::GM_TRAINING)  //req to check progress
-  let campId = ::get_game_mode_name(::GM_TRAINING)
-  let chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
+  ::set_mp_mode(GM_TRAINING)  //req to check progress
+  let campId = ::get_game_mode_name(GM_TRAINING)
+  let chapters = ::get_meta_missions_info_by_chapters(GM_TRAINING)
   foreach(chapter in chapters)
     foreach(m in chapter)
       if (m.name in tutorialsTbl && (misName == null || misName == m.name)) {
@@ -211,7 +216,7 @@ let function getTutorialRewardMarkup(tutorialData) {
     return ""
 
   let rBlk = ::get_pve_awards_blk()
-  let dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
+  let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
   if (dataBlk == null)
     return ""
 
@@ -229,7 +234,7 @@ let function getTutorialRewardMarkup(tutorialData) {
 }
 
 let function getUncompletedTutorialData(misName, diff = -1) {
-  if (!::has_feature("Tutorials"))
+  if (!hasFeature("Tutorials"))
     return null
 
   let tutorialData = getTutorialsTblWithMissions(diff, misName)?[misName]
@@ -240,7 +245,7 @@ let function getUncompletedTutorialData(misName, diff = -1) {
 }
 
 let function getSuitableUncompletedTutorialData(unit, diff = -1) {
-  if (!::has_feature("Tutorials"))
+  if (!hasFeature("Tutorials"))
     return null
 
   let tutorialsTbl = getTutorialsTblWithMissions(diff)
@@ -275,19 +280,19 @@ let function isDiffUnlocked(diff, checkUnitType) {
     return true
 
   let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(::GM_TRAINING)  //req to check progress
+  ::set_mp_mode(GM_TRAINING)  //req to check progress
 
-  let chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
+  let chapters = ::get_meta_missions_info_by_chapters(GM_TRAINING)
   foreach(chapter in chapters)
     foreach(m in chapter)
       if (reqName == m.name) {
-        let fullMissionName = m.getStr("chapter", ::get_game_mode_name(::GM_TRAINING)) + "/" + m.name
+        let fullMissionName = m.getStr("chapter", ::get_game_mode_name(GM_TRAINING)) + "/" + m.name
         let progress = ::get_mission_progress(fullMissionName)
         if (mainGameMode >= 0)
           ::set_mp_mode(mainGameMode)
         return (progress<3 && progress>=diff) // 3 == unlocked, 0-2 - completed at difficulty
       }
-  ::dagor.assertf(false, "Error: Not found mission ::req_tutorial_name = " + reqName)
+  assert(false, "Error: Not found mission ::req_tutorial_name = " + reqName)
   ::set_mp_mode(mainGameMode)
   return true
 }
@@ -308,10 +313,10 @@ let function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = nul
   if (!mData)
     return false
 
-  local msgText = ::loc((diff==2)? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
-  msgText += "\n\n" + format(::loc("msgbox/req_tutorial_for_mode"), ::loc("difficulty" + diff))
+  local msgText = loc((diff==2)? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
+  msgText += "\n\n" + format(loc("msgbox/req_tutorial_for_mode"), loc("difficulty" + diff))
 
-  msgText += "\n<color=@userlogColoredText>" + ::loc("missions/" + mData.mission.name) + "</color>"
+  msgText += "\n<color=@userlogColoredText>" + loc("missions/" + mData.mission.name) + "</color>"
 
   if(needMsgBox)
     ::scene_msg_box("req_tutorial_msgbox", null, msgText,

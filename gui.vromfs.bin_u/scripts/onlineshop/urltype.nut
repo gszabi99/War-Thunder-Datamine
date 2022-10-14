@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let {regexp} = require("string")
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
@@ -38,7 +43,7 @@ enum URL_CHECK_ORDER
     if (!this.supportedLangs)
       return null
     let curLang = ::g_language.getShortName()
-    if (::isInArray(curLang, this.supportedLangs))
+    if (isInArray(curLang, this.supportedLangs))
       return curLang
     return null
   }
@@ -90,7 +95,7 @@ enums.addTypesByGlobalName("g_url_type", {
 
       let insertIdx = idx + keyBeforeLang.len()
       local afterLangIdx = url.indexof("/", insertIdx)
-      if (afterLangIdx == null || !::isInArray(url.slice(insertIdx, afterLangIdx), this.supportedLangs))
+      if (afterLangIdx == null || !isInArray(url.slice(insertIdx, afterLangIdx), this.supportedLangs))
         afterLangIdx = insertIdx
       else
         afterLangIdx++

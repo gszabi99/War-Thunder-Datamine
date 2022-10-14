@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -173,7 +180,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
   }
 
   getCrewDataParams = @(crewData) {
-    bottomLineText = ::loc(
+    bottomLineText = loc(
       slotbarPresets.getVehiclesGroupByUnit(
         crewData.unit, unitsGroupsByCountry?[crewData?.crew.country ?? ""])?.name ?? "")
   }
@@ -186,7 +193,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
 let function create(params)
 {
   let nest = params?.scene
-  if (!::check_obj(nest))
+  if (!checkObj(nest))
     return null
 
   if (params?.shouldAppendToObject ?? true) //we append to nav-bar by default

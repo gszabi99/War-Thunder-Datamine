@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
@@ -21,7 +26,7 @@ return [
   {
     id = "ID_SHOW_MULTIFUNC_WHEEL_MENU"
     checkGroup = ctrlGroups.COMMON
-    checkAssign = ::is_platform_pc
+    checkAssign = is_platform_pc
     needShowInHelp = true
   }
   {
@@ -56,14 +61,14 @@ return [
   {
     id = "ID_TOGGLE_CHAT_TEAM"
     checkGroup = ctrlGroups.COMMON
-    checkAssign = ::is_platform_pc
+    checkAssign = is_platform_pc
     needShowInHelp = true
   }
   // Use CO_ALL chat mode, but can not be renamed to "ID_TOGGLE_CHAT_ALL" for compatibility reasons
   {
     id = "ID_TOGGLE_CHAT"
     checkGroup = ctrlGroups.COMMON
-    checkAssign = ::is_platform_pc
+    checkAssign = is_platform_pc
   }
   {
     id = "ID_TOGGLE_CHAT_PARTY"

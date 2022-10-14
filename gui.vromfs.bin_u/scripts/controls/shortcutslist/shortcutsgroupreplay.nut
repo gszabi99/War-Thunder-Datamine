@@ -1,10 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let isExperimentalCameraTrack = @() ::get_settings_blk()?.debug?.experimentalCameraTrack ?? false
 
 return [
   {
     id = "ID_REPLAY_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    showFunc = @() ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")
+    showFunc = @() hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")
   }
   {
     id = "ID_TOGGLE_FOLLOWING_CAMERA"
@@ -105,7 +110,7 @@ return [
     id = "ID_REPLAY_AVI_WRITER"
     checkGroup = ctrlGroups.REPLAY
     checkAssign = false
-    showFunc = @() ::target_platform != "macosx" && ::has_feature("ClientReplay")
+    showFunc = @() target_platform != "macosx" && hasFeature("ClientReplay")
   }
   {
     id = "ID_REPLAY_SHOW_MARKERS"

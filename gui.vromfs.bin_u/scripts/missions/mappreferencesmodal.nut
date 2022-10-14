@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let mapPreferences    = require("mapPreferences")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -25,19 +34,19 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   function getSceneTplView()
   {
     let maxCountX = max(::floor(
-      ::to_pixels("1@srw - 1@mapPreferencePreviewFullWidth - 1@scrollBarSize")
-      * 1.0 / ::to_pixels("1@mapPreferenceIconNestWidth")), 1)
+      to_pixels("1@srw - 1@mapPreferencePreviewFullWidth - 1@scrollBarSize")
+      * 1.0 / to_pixels("1@mapPreferenceIconNestWidth")), 1)
     mapsList = mapPreferencesParams.getMapsList(curEvent)
     inactiveMaps = mapPreferencesParams.getInactiveMaps(curEvent, mapsList)
     updateValidatedCounters()
     let banList = getBanList()
     let mapsCountY = ::ceil(mapsList.len() * 1.0 / maxCountX)
-    let mapItemHeight = ::to_pixels("1@mapPreferenceIconSize + 3@blockInterval")
+    let mapItemHeight = to_pixels("1@mapPreferenceIconSize + 3@blockInterval")
       + daguiFonts.getFontLineHeightPx("fontSmall")
     let mapsRowsHeight = mapsCountY * mapItemHeight
     let title = mapPreferencesParams.getPrefTitle(curEvent)
     let textRowHeight = daguiFonts.getFontLineHeightPx("fontNormal")
-    let banListHeight = ::to_pixels("".concat("1@maxWindowHeight-1@frameFooterHeight",
+    let banListHeight = to_pixels("".concat("1@maxWindowHeight-1@frameFooterHeight",
       "-1@frameTopPadding-1@frameHeaderHeight-1@mapPreferencePreviewSize-3@checkboxSize",
       "-2@buttonHeight-3@blockInterval-2@buttonMargin")) - 2*textRowHeight
 
@@ -53,7 +62,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
       hasMaxBanned = hasMaxCount("banned") ? "yes" : "no"
       hasMaxDisliked = hasMaxCount("disliked") ? "yes" : "no"
       hasMaxLiked = hasMaxCount("liked") ? "yes" : "no"
-      hasScroll = ::to_pixels("1@mapPreferenceListHeight") < (mapsRowsHeight + ::to_pixels("1@blockInterval"))
+      hasScroll = to_pixels("1@mapPreferenceListHeight") < (mapsRowsHeight + to_pixels("1@blockInterval"))
       banListHeight = banListHeight > textRowHeight ? banListHeight : 0
     }
   }
@@ -70,7 +79,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   function updateMapPreview()
   {
     let previewObj = scene.findObject("map_preview")
-    if (!::check_obj(previewObj))
+    if (!checkObj(previewObj))
       return
 
     let isMapSelected = mapsList?[currentMapId] != null
@@ -106,11 +115,11 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
       let checkBoxObj = scene.findObject("map_preview").findObject(inst.id)
       checkBoxObj.setValue(idx == "disliked" ? !banned && disliked : mapsList[currentMapId][idx])
       checkBoxObj.findObject("title").setValue(::g_string.implode([
-        ::loc("maps/preferences/{0}".subst(mapsList[currentMapId][idx]
+        loc("maps/preferences/{0}".subst(mapsList[currentMapId][idx]
           ? inst.tooltip_remove_id
           : inst.id)),
         isLevelBanMode
-          ? ::loc("ui/parentheses/space", {text = ::loc("maps/preferences/all_missions")})
+          ? loc("ui/parentheses/space", {text = loc("maps/preferences/all_missions")})
           : ""
       ], " "))
       checkBoxObj.inactiveColor = (idx == "disliked" ?  banned : false)
@@ -127,20 +136,20 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   {
     let maxCountertextWithPremium = !havePremium.value
       && counters[typeName].maxCounter < counters[typeName].maxCounterWithPremium
-        ? " {0}".subst(::loc("ui/parentheses", { text = ::loc("maps/preferences/counter/withPremium",
+        ? " {0}".subst(loc("ui/parentheses", { text = loc("maps/preferences/counter/withPremium",
           { count = counters[typeName].maxCounterWithPremium }) }))
         : ""
 
-    return ::loc("ui/parentheses",{text = counters[typeName].curCounter + ::loc("ui/slash")
+    return loc("ui/parentheses",{text = counters[typeName].curCounter + loc("ui/slash")
       + counters[typeName].maxCounter + maxCountertextWithPremium})
   }
 
   function getCounterTitleText()
   {
     return ::g_string.implode([
-      ::loc("maps/preferences/counter/dislike", { counterText = getCounterTextByType("disliked") }),
-      ::loc("maps/preferences/counter/ban", { counterText = getCounterTextByType("banned") }),
-      ::loc("maps/preferences/counter/like", { counterText = getCounterTextByType("liked") })
+      loc("maps/preferences/counter/dislike", { counterText = getCounterTextByType("disliked") }),
+      loc("maps/preferences/counter/ban", { counterText = getCounterTextByType("banned") }),
+      loc("maps/preferences/counter/like", { counterText = getCounterTextByType("liked") })
     ], " ")
   }
 
@@ -181,12 +190,12 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     updateProfile(paramName, value, mapsList[mapId].map)
 
     let iconObj = scene.findObject("icon_" + mapId)
-    if (!::check_obj(iconObj))
+    if (!checkObj(iconObj))
       return
 
     iconObj.state = newState
     let chekboxObj = iconObj.findObject(paramName)
-    if (::check_obj(chekboxObj))
+    if (checkObj(chekboxObj))
       chekboxObj.setValue(value)
 
     updateBanListPartsVisibility()
@@ -217,15 +226,15 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     {
       let needPremium  = objType == "banned" && !havePremium.value
       if(needPremium)
-        ::scene_msg_box("need_money", null, ::loc("mainmenu/onlyWithPremium"),
-          [ ["purchase", ::Callback(@() onOnlineShopPremium(), this)],
+        ::scene_msg_box("need_money", null, loc("mainmenu/onlyWithPremium"),
+          [ ["purchase", Callback(@() onOnlineShopPremium(), this)],
             ["cancel", null]
           ], "purchase")
       else
       {
         let msg_id = isDislikeBannedMap ? "mapIsBanned"
           : mapPreferencesParams.getPrefTypes()[objType].msg_id
-        ::g_popups.add(null, ::loc(POPUP_PREFIX_LOC_ID + msg_id), null, null, null, msg_id)
+        ::g_popups.add(null, loc(POPUP_PREFIX_LOC_ID + msg_id), null, null, null, msg_id)
       }
 
       count.curCounter--
@@ -264,7 +273,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     for(local i=0; i < mapsList.len(); i++)
     {
       let iconObj = scene.findObject("icon_" + i)
-      if (!::check_obj(iconObj))
+      if (!checkObj(iconObj))
         continue
 
       iconObj.state = mapPreferencesParams.getMapState(mapsList[i])
@@ -339,7 +348,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     if(params.len() > 0)
     {
       resetCounters(params)
-      ::scene_msg_box("reset_preferences", null, ::loc(POPUP_PREFIX_LOC_ID + "resetPreferences"),
+      ::scene_msg_box("reset_preferences", null, loc(POPUP_PREFIX_LOC_ID + "resetPreferences"),
         [["ok", updateScreen.bindenv(this)]], "ok")
     }
   }
@@ -367,7 +376,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   function updateBanList()
   {
     let listObj = scene.findObject("ban_list")
-    if (!::check_obj(listObj))
+    if (!checkObj(listObj))
       return
 
     let data = ::handyman.renderCached("%gui/missions/mapStateBox", {mapStateBox = getBanList()})
@@ -376,7 +385,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
   function onResetPreferencess(obj)
   {
-    ::scene_msg_box("reset_preferences", null, ::loc("maps/preferences/notice/request_reset"),
+    ::scene_msg_box("reset_preferences", null, loc("maps/preferences/notice/request_reset"),
       [["ok", function() {
             resetCounters(counters.keys())
             updateScreen()
@@ -441,7 +450,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   function fillMapPreview()
   {
     let previewObj = scene.findObject("map_preview")
-    if (!::check_obj(previewObj))
+    if (!checkObj(previewObj))
       return
 
     let missionsList = mapsList[currentMapId].missions

@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
@@ -23,21 +28,21 @@ let function disableSeenUserlogs(idsList) {
 
   if (needSave)
   {
-    ::dagor.debug("Userlog: Disable seen logs: save online")
+    log("Userlog: Disable seen logs: save online")
     saveOnlineJob()
   }
 }
 
 
 let actionByLogType = {
-  [::EULT_PUNLOCK_ACCEPT]       = @(log) ::gui_start_battle_tasks_wnd(),
-  [::EULT_PUNLOCK_EXPIRED]      = @(log) ::gui_start_battle_tasks_wnd(),
-  [::EULT_PUNLOCK_CANCELED]     = @(log) ::gui_start_battle_tasks_wnd(),
-  [::EULT_PUNLOCK_NEW_PROPOSAL] = @(log) ::gui_start_battle_tasks_wnd(),
-  [::EULT_PUNLOCK_ACCEPT_MULTI] = @(log) ::gui_start_battle_tasks_wnd(),
-  [::EULT_INVITE_TO_TOURNAMENT] = function (log)
+  [EULT_PUNLOCK_ACCEPT]       = @(log) ::gui_start_battle_tasks_wnd(),
+  [EULT_PUNLOCK_EXPIRED]      = @(log) ::gui_start_battle_tasks_wnd(),
+  [EULT_PUNLOCK_CANCELED]     = @(log) ::gui_start_battle_tasks_wnd(),
+  [EULT_PUNLOCK_NEW_PROPOSAL] = @(log) ::gui_start_battle_tasks_wnd(),
+  [EULT_PUNLOCK_ACCEPT_MULTI] = @(log) ::gui_start_battle_tasks_wnd(),
+  [EULT_INVITE_TO_TOURNAMENT] = function (logObj)
   {
-    let battleId = log?.battleId
+    let battleId = logObj?.battleId
     if (battleId == null)
       return
 
@@ -48,25 +53,25 @@ let actionByLogType = {
       return
 
     if (!isCrossPlayEnabled())
-      return ::g_popups.add(null, ::colorize("warningTextColor", ::loc("xbox/crossPlayRequired")))
+      return ::g_popups.add(null, colorize("warningTextColor", loc("xbox/crossPlayRequired")))
 
-    ::dagor.debug($"join to tournament battle with id {battleId}")
-    ::get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(log.battleId))
+    log($"join to tournament battle with id {battleId}")
+    ::get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(logObj.battleId))
   }
 }
 
-let function getTournamentRewardData(log) {
+let function getTournamentRewardData(logObj) {
   let res = []
 
-  if (!log?.rewardTS)
+  if (!logObj?.rewardTS)
     return []
 
-  foreach(idx, block in log.rewardTS)
+  foreach(idx, block in logObj.rewardTS)
   {
     let result = clone block
 
     result.type <- "TournamentReward"
-    result.eventId <- log.name
+    result.eventId <- logObj.name
     result.reason <- block?.awardType ?? ""
     let reasonNum = block?.fieldValue ?? 0
     result.reasonNum <- reasonNum

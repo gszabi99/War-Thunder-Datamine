@@ -34,23 +34,27 @@
     "caliber": 0.0127,
     "speed": 915.0,
     "Cx": 0.4,
+    "maxDistance": 4000.0,
+    "bulletName": "t_ball_M48A2",
     "normalizationPreset": "default",
     "ricochetPreset": "default",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.3,
-    "bulletType": "he_i_ball",
+    "bulletType": "he_ball",
     "slopeEffectPreset": "ap",
-    "modelName": "tank_bullet_ball",
-    "maxDistance": 4000.0,
-    "hitPowerMult": 0.3,
     "onHitChanceMultFire": 8.0,
     "effectiveDistance": 3000.0,
     "relativeVelHitShift": [
       300.0,
       3000.0
     ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "hitPowerMult": 6.0,
     "explodeTreshold": 3.0,
     "explodeHitPower": 7.5,
     "explodeArmorPower": 2.5,
@@ -63,10 +67,6 @@
     "shutterAmount": 8,
     "shutterArmorPower": 3.0,
     "shutterHit": 2.5,
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
     "groundCollisionEffect": "hit_12_18mm_dirt_he",
     "ricochetEffect": "hit_12_18mm_metal_ap",
     "waterCollisionEffect": "hit_12_18mm_water",

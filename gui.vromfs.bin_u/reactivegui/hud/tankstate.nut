@@ -1,3 +1,6 @@
+from "%rGui/globals/ui_library.nut" import *
+
+let {interop} = require("%rGui/globals/interop.nut")
 let interopGen = require("%rGui/interopGen.nut")
 let { floor } = require("%sqstd/math.nut")
 
@@ -73,7 +76,7 @@ interopGen({
   postfix = "Update"
 })
 
-::interop.updateActiveProtectionSystem <- function (shotCountRemain, emitterPosX, emitterPosY, horAnglesX, horAnglesY, timeToReady, index) {
+interop.updateActiveProtectionSystem <- function (shotCountRemain, emitterPosX, emitterPosY, horAnglesX, horAnglesY, timeToReady, index) {
   let module = activeProtectionSystemModules[index]
   module.shotCountRemain(shotCountRemain)
   module.emitterPosX(floor(emitterPosX*100)/100)

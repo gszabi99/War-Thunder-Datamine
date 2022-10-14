@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {})
 {
@@ -22,19 +31,19 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   function initScreen()
   {
     let listObj = scene.findObject("items_list")
-    if (!::checkObj(listObj))
+    if (!checkObj(listObj))
       return goBack()
 
     infoHandler = itemInfoHandler(scene.findObject("item_info"))
 
     let titleObj = scene.findObject("title")
-    if (::check_obj(titleObj))
-      titleObj.setValue(::loc(tittleLocId))
+    if (checkObj(titleObj))
+      titleObj.setValue(loc(tittleLocId))
 
     fillList(listObj)
 
     if (rewardsArray.len() > 4)
-      listObj.width = (listObj.getSize()[0] + ::to_pixels("1@scrollBarSize")).tostring()
+      listObj.width = (listObj.getSize()[0] + to_pixels("1@scrollBarSize")).tostring()
 
     listObj.setValue(rewardsArray.len() > 0 ? 0 : -1)
     ::move_mouse_on_child_by_value(listObj)
@@ -79,7 +88,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   function onEventItemsShopUpdate(p)
   {
     let listObj = scene.findObject("items_list")
-    if (!::check_obj(listObj))
+    if (!checkObj(listObj))
       return
 
     fillList(listObj)

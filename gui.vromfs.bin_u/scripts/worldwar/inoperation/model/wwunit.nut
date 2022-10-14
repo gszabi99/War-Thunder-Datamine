@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -22,17 +29,17 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
     if (!blk)
       return
 
-    name = blk.getBlockName() || ::getTblValue("name", blk, "")
+    name = blk.getBlockName() || getTblValue("name", blk, "")
     unit = ::getAircraftByName(name)
 
     wwUnitType = ::g_ww_unit_type.getUnitTypeByWwUnit(this)
     expClass = wwUnitType.expClass || (unit? unit.expClass.name : "")
-    stengthGroupExpClass = ::getTblValue(expClass, ::strength_unit_expclass_group, expClass)
+    stengthGroupExpClass = getTblValue(expClass, ::strength_unit_expclass_group, expClass)
 
-    inactiveCount = ::getTblValue("inactiveCount", blk, 0)
-    count = ::getTblValue("count", blk, -1)
-    weaponPreset = ::getTblValue("weaponPreset", blk, "")
-    weaponCount = ::getTblValue("weaponCount", blk, 0)
+    inactiveCount = getTblValue("inactiveCount", blk, 0)
+    count = getTblValue("count", blk, -1)
+    weaponPreset = getTblValue("weaponPreset", blk, "")
+    weaponCount = getTblValue("weaponCount", blk, 0)
   }
 
   function isValid()
@@ -81,7 +88,7 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
     return wwUnitType
   }
 
-  getShortStringView = ::kwarg(function getShortStringViewImpl(
+  getShortStringView = kwarg(function getShortStringViewImpl(
     addIcon = true, addPreset = true, hideZeroCount = true, needShopInfo = false, hasIndent = false)
   {
     let presetData = getWeaponTypeIcoByWeapon(name, addPreset ? weaponPreset : "")
@@ -93,7 +100,7 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
     if (needShopInfo && unit && !isControlledByAI() && !unit.canUseByPlayer())
     {
       let nameColor = ::isUnitSpecial(unit) ? "@hotkeyColor" : "@weaponWarning"
-      nameText = ::colorize(nameColor, nameText)
+      nameText = colorize(nameColor, nameText)
     }
 
     let activeCount = getActiveCount()
@@ -107,7 +114,7 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
       activeCount = activeCount ? activeCount.tostring() : null
       count = totalCount ? totalCount.tostring() : null
       isControlledByAI = isControlledByAI()
-      weapon = presetText.len() > 0 ? ::colorize("@activeTextColor", presetText) : ""
+      weapon = presetText.len() > 0 ? colorize("@activeTextColor", presetText) : ""
       hasBomb = presetData.bomb.len() > 0
       hasRocket = presetData.rocket.len() > 0
       hasTorpedo = presetData.torpedo.len() > 0
@@ -170,7 +177,7 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
     local unitRole = wwUnitType.getUnitRole(unit)
     if (unitRole == "")
     {
-      ::dagor.debug("WWar: Army Class: Not found role for unit " + name + ". Set unknown")
+      log("WWar: Army Class: Not found role for unit " + name + ". Set unknown")
       unitRole = "unknown"
     }
 

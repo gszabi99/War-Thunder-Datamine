@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -5,8 +12,8 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { is_bit_set } = require("%sqstd/math.nut")
 let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
 } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnlockLocName, getSubUnlockLocName, getUnlockMainCondText, getUnlockMultDesc,
-  getUnlockDesc, getUnlockConditionsText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockLocName, getSubUnlockLocName, getUnlockMainCondDescByCfg, getUnlockMultDescByCfg,
+  getUnlockDesc, getUnlockCondsDescByCfg } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N.png
@@ -29,13 +36,13 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
   function getChapterAndGroupText(unlockBlk) {
     let chapterAndGroupText = []
     if ("chapter" in unlockBlk)
-      chapterAndGroupText.append(::loc($"unlocks/chapter/{unlockBlk.chapter}"))
+      chapterAndGroupText.append(loc($"unlocks/chapter/{unlockBlk.chapter}"))
     if ((unlockBlk?.group ?? "") != "") {
       local locId = $"unlocks/group/{unlockBlk.group}"
       let parentUnlock = ::g_unlocks.getUnlockById(unlockBlk.group)
       if (parentUnlock?.chapter == unlockBlk?.chapter)
         locId = $"{parentUnlock.id}/name"
-      chapterAndGroupText.append(::loc(locId))
+      chapterAndGroupText.append(loc(locId))
     }
     return chapterAndGroupText.len() > 0
       ? $"({", ".join(chapterAndGroupText, true)})"
@@ -80,7 +87,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
     updateLockStatus(unlockConfig, unlockObj)
 
     let closeBtn = unlockObj.findObject("removeFromFavoritesBtn")
-    if(::check_obj(closeBtn))
+    if(checkObj(closeBtn))
       closeBtn.unlockId = unlockBlk.id
 
     let tooltipObj = unlockObj.findObject("unlock_tooltip")
@@ -102,12 +109,12 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
 
     let effect = isUnlocked || unlockConfig.lockStyle == "none" || needShowLockIcon(unlockConfig) ? ""
       : unlockConfig.lockStyle != "" ? unlockConfig.lockStyle
-      : unlockType == ::UNLOCKABLE_MEDAL ? "darkened"
+      : unlockType == UNLOCKABLE_MEDAL ? "darkened"
       : "desaturated"
 
     return {
       style = iconStyle
-      image = unlockType == ::UNLOCKABLE_PILOT ? (unlockConfig?.descrImage ?? image) : image
+      image = unlockType == UNLOCKABLE_PILOT ? (unlockConfig?.descrImage ?? image) : image
       ratio = unlockConfig?.imgRatio ?? 1.0
       params = unlockConfig?.iconParams
       effect
@@ -154,8 +161,8 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       return false
 
     return cfg.lockStyle == "lock"
-      || unlockType == ::UNLOCKABLE_DECAL
-      || unlockType == ::UNLOCKABLE_PILOT
+      || unlockType == UNLOCKABLE_DECAL
+      || unlockType == UNLOCKABLE_PILOT
   }
 
   function getUnitActionButtonsView(unit) {
@@ -195,7 +202,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       shopItemType = getUnitRole(unit)
       unitPlate = unitPlate
       classIco = ::getUnitClassIco(unit)
-      commentText = isBought? ::colorize("badTextColor", ::loc(receiveOnce)) : null
+      commentText = isBought? colorize("badTextColor", loc(receiveOnce)) : null
       buttons = buttons
       buttonsCount = buttons.len()
     }
@@ -235,40 +242,40 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
 
     return {
       icon = decoratorType.prizeTypeIcon
-      title = ::colorize(nameColor, locName)
+      title = colorize(nameColor, locName)
       tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decoratorType.unlockedItemType)
-      commentText = isHave ? ::colorize("badTextColor", ::loc("mainmenu/receiveOnlyOnce")) : null
+      commentText = isHave ? colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")) : null
       buttons = buttons
     }
   }
 
   function getPilotViewDataItem(unlockConfig) {
     return {
-      title = ::loc("trophy/unlockables_names/gamerpic")
+      title = loc("trophy/unlockables_names/gamerpic")
       previewImage = "cardAvatar { value:t='" + unlockConfig.id +"'}"
     }
   }
 
   function getViewDataItem(unlockConfig, params = {}) {
     let unlockType = getUnlockType(unlockConfig)
-    if (unlockType == ::UNLOCKABLE_AIRCRAFT)
+    if (unlockType == UNLOCKABLE_AIRCRAFT)
       return getUnitViewDataItem(unlockConfig, params)
 
-    if (unlockType == ::UNLOCKABLE_DECAL
-      || unlockType == ::UNLOCKABLE_SKIN
-      || unlockType == ::UNLOCKABLE_ATTACHABLE)
+    if (unlockType == UNLOCKABLE_DECAL
+      || unlockType == UNLOCKABLE_SKIN
+      || unlockType == UNLOCKABLE_ATTACHABLE)
       return getDecoratorViewDataItem(unlockConfig, params)
 
-    if (unlockType == ::UNLOCKABLE_PILOT)
+    if (unlockType == UNLOCKABLE_PILOT)
       return getPilotViewDataItem(unlockConfig)
 
     local icon = "#ui/gameuiskin#item_type_placeholder.svg"
     local title = unlockConfig.name
 
-    if (unlockType == ::UNLOCKABLE_TITLE)
+    if (unlockType == UNLOCKABLE_TITLE)
     {
       icon = "#ui/gameuiskin#item_type_unlock.svg"
-      title = format(::loc("reward/title"), title)
+      title = format(loc("reward/title"), title)
     }
 
     return {
@@ -288,13 +295,13 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
 //  build_conditions_config(unlockBlk)
 //  ::build_unlock_desc(unlockConfig)
 
-g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig, unlockObj, context)
+::g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig, unlockObj, context)
 {
-  if( ! ::checkObj(unlockObj))
+  if( ! checkObj(unlockObj))
     return
 
   let hiddenObj = unlockObj.findObject("hidden_block")
-  if (!::check_obj(hiddenObj))
+  if (!checkObj(hiddenObj))
     return
 
   local hiddenContent = ""
@@ -331,7 +338,7 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
   unlockObj.getScene().replaceContentFromText(hiddenObj, hiddenContent, hiddenContent.len(), context)
 }
 
-g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConfig, unlockObj)
+::g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConfig, unlockObj)
 {
   let obj = unlockObj.findObject("progress_bar")
   let data = unlockConfig.getProgressBarData()
@@ -340,12 +347,12 @@ g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConf
     obj.setValue(data.value)
 }
 
-g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
+::g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
 {
   unlockObj.findObject("description").setValue(getUnlockDesc(unlockConfig))
-  unlockObj.findObject("main_cond").setValue(getUnlockMainCondText(unlockConfig))
-  unlockObj.findObject("mult_desc").setValue(getUnlockMultDesc(unlockConfig))
-  unlockObj.findObject("conditions").setValue(getUnlockConditionsText(unlockConfig))
+  unlockObj.findObject("main_cond").setValue(getUnlockMainCondDescByCfg(unlockConfig))
+  unlockObj.findObject("mult_desc").setValue(getUnlockMultDescByCfg(unlockConfig))
+  unlockObj.findObject("conditions").setValue(getUnlockCondsDescByCfg(unlockConfig))
 
   let showUnitsBtnObj = unlockObj.findObject("show_units_btn")
   showUnitsBtnObj.show(hasActiveUnlock(unlockConfig.id, getShopDiffCode())
@@ -357,22 +364,22 @@ g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConf
   showPrizesBtnObj.trophyId = unlockConfig?.trophyId
 }
 
-g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
+::g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
 {
   let id = unlockConfig.id
   let rewardObj = unlockObj.findObject("reward")
-  if( ! ::checkObj(rewardObj))
+  if( ! checkObj(rewardObj))
     return
   local rewardText = ""
   local tooltipId = REWARD_TOOLTIP.getTooltipId(id)
   let unlockType = unlockConfig.unlockType
-  if(::isInArray(unlockType, [::UNLOCKABLE_DECAL, ::UNLOCKABLE_MEDAL, ::UNLOCKABLE_SKIN]))
+  if(isInArray(unlockType, [UNLOCKABLE_DECAL, UNLOCKABLE_MEDAL, UNLOCKABLE_SKIN]))
   {
     rewardText = ::get_unlock_name_text(unlockType, id)
   }
-  else if (unlockType == ::UNLOCKABLE_TITLE)
-    rewardText = format(::loc("reward/title"), ::get_unlock_name_text(unlockType, id))
-  else if (unlockType == ::UNLOCKABLE_TROPHY)
+  else if (unlockType == UNLOCKABLE_TITLE)
+    rewardText = format(loc("reward/title"), ::get_unlock_name_text(unlockType, id))
+  else if (unlockType == UNLOCKABLE_TROPHY)
   {
     let item = ::ItemsManager.findItemById(id, itemType.TROPHY)
     if (item)
@@ -383,10 +390,10 @@ g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
   }
 
   if (rewardText != "")
-    rewardText = ::loc("challenge/reward") + " " + ::colorize("activeTextColor", rewardText)
+    rewardText = loc("challenge/reward") + " " + colorize("activeTextColor", rewardText)
 
   let tooltipObj = rewardObj.findObject("tooltip")
-  if(::checkObj(tooltipObj))
+  if(checkObj(tooltipObj))
     tooltipObj.tooltipId = tooltipId
 
   let showStages = ("stages" in unlockConfig) && (unlockConfig.stages.len() > 1)
@@ -397,7 +404,7 @@ g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
   rewardObj.setValue(rewardText)
 }
 
-g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context)
+::g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context)
 {
   if (!unlockObj?.isValid())
     return
@@ -423,60 +430,60 @@ g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context
   unlockObj.getScene().replaceContentFromText(stagesObj, textStages, textStages.len(), context)
 }
 
-g_unlock_view.fillUnlockTitle <- function fillUnlockTitle(unlockConfig, unlockObj)
+::g_unlock_view.fillUnlockTitle <- function fillUnlockTitle(unlockConfig, unlockObj)
 {
   let title = getUnlockTitle(unlockConfig)
   unlockObj.findObject("achivment_title").setValue(title)
 }
 
-g_unlock_view.getRewardText <- function getRewardText(unlockConfig, stageNum)
+::g_unlock_view.getRewardText <- function getRewardText(unlockConfig, stageNum)
 {
   if (("stages" in unlockConfig) && (stageNum in unlockConfig.stages))
     unlockConfig = unlockConfig.stages[stageNum]
 
-  let reward = ::getTblValue("reward", unlockConfig, null)
+  let reward = getTblValue("reward", unlockConfig, null)
   let text = reward? reward.tostring() : ""
   if (text != "")
-    return ::loc("challenge/reward") + " " + "<color=@activeTextColor>" + text + "</color>"
+    return loc("challenge/reward") + " " + "<color=@activeTextColor>" + text + "</color>"
   return ""
 }
 
-g_unlock_view.fillUnlockFav <- function fillUnlockFav(unlockId, unlockObj)
+::g_unlock_view.fillUnlockFav <- function fillUnlockFav(unlockId, unlockObj)
 {
   let checkboxFavorites = unlockObj.findObject("checkbox_favorites")
-  if( ! ::checkObj(checkboxFavorites))
+  if( ! checkObj(checkboxFavorites))
     return
   checkboxFavorites.unlockId = unlockId
   ::g_unlock_view.fillUnlockFavCheckbox(checkboxFavorites)
 }
 
-g_unlock_view.fillUnlockFavCheckbox <- function fillUnlockFavCheckbox(obj)
+::g_unlock_view.fillUnlockFavCheckbox <- function fillUnlockFavCheckbox(obj)
 {
   let isUnlockInFavorites = obj.unlockId in ::g_unlocks.getFavoriteUnlocks()
   obj.setValue(isUnlockInFavorites)
-  obj.tooltip = ::loc( isUnlockInFavorites ?
+  obj.tooltip = loc( isUnlockInFavorites ?
     "mainmenu/UnlockAchievementsRemoveFromFavorite/hint" :
     "mainmenu/UnlockAchievementsToFavorite/hint")
 }
 
-g_unlock_view.fillUnlockPurchaseButton <- function fillUnlockPurchaseButton(unlockData, unlockObj)
+::g_unlock_view.fillUnlockPurchaseButton <- function fillUnlockPurchaseButton(unlockData, unlockObj)
 {
   let purchButtonObj = unlockObj.findObject("purchase_button")
-  if (!::check_obj(purchButtonObj))
+  if (!checkObj(purchButtonObj))
     return
 
   let unlockId = unlockData.id
   purchButtonObj.unlockId = unlockId
   let isUnlocked = ::is_unlocked_scripted(-1, unlockId)
-  let haveStages = ::getTblValue("stages", unlockData, []).len() > 1
+  let haveStages = getTblValue("stages", unlockData, []).len() > 1
   let cost = ::get_unlock_cost(unlockId)
-  let canSpendGold = cost.gold == 0 || ::has_feature("SpendGold")
+  let canSpendGold = cost.gold == 0 || hasFeature("SpendGold")
   let isPurchaseTime = ::g_unlocks.isVisibleByTime(unlockId, false)
 
   let show = isPurchaseTime && canSpendGold && !haveStages && !isUnlocked && !cost.isZero()
   purchButtonObj.show(show)
   if (show)
-    placePriceTextToButton(unlockObj, "purchase_button", ::loc("mainmenu/btnBuy"), cost)
+    placePriceTextToButton(unlockObj, "purchase_button", loc("mainmenu/btnBuy"), cost)
 
   if (!show && !cost.isZero())
   {
@@ -492,6 +499,6 @@ g_unlock_view.fillUnlockPurchaseButton <- function fillUnlockPurchaseButton(unlo
       msg += "not purchase time. see time before."
       ::g_unlocks.debugLogVisibleByTimeInfo(unlockId)
     }
-    ::dagor.debug(msg)
+    log(msg)
   }
 }

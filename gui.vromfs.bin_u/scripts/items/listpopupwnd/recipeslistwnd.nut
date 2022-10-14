@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -39,8 +48,8 @@ local MIN_ITEMS_IN_ROW = 7
     foreach(r in recipesList)
       maxRecipeLen = max(maxRecipeLen, r.getVisibleMarkupComponents())
 
-    let recipeWidthPx = maxRecipeLen * ::to_pixels("0.5@itemWidth")
-    let recipeHeightPx = ::to_pixels("0.5@itemHeight")
+    let recipeWidthPx = maxRecipeLen * to_pixels("0.5@itemWidth")
+    let recipeHeightPx = to_pixels("0.5@itemHeight")
     let minColumns = ::ceil(MIN_ITEMS_IN_ROW.tofloat() / maxRecipeLen).tointeger()
     let columns = max(minColumns,
       stdMath.calc_golden_ratio_columns(recipesList.len(), recipeWidthPx / (recipeHeightPx || 1)))
@@ -48,15 +57,20 @@ local MIN_ITEMS_IN_ROW = 7
 
     local itemsInRow = 0 //some columns are thinner than max
     local columnWidth = 0
+    let separatorsIdx = []
     foreach(i, recipe in recipesList)
     {
-      columnWidth = max(columnWidth, recipe.getVisibleMarkupComponents())
-      if ((i + 1) % (rows + 1))
+      let recipeWidth = recipe.getVisibleMarkupComponents()
+      columnWidth = max(columnWidth, recipeWidth)
+      if (i == 0 || (i % rows))
         continue
       itemsInRow += columnWidth
-      columnWidth = 0
-      recipesList.insert(i, { isSeparator = true })
+      columnWidth = recipeWidth
+      separatorsIdx.append(i + separatorsIdx.len())
     }
+    foreach (idx in separatorsIdx)
+      recipesList.insert(idx, { isSeparator = true })
+
     itemsInRow += columnWidth
 
     let res = {
@@ -94,14 +108,14 @@ local MIN_ITEMS_IN_ROW = 7
   {
     let steps = [{
       obj = getUsableRecipeObjs().map(@(r) { obj = r, hasArrow = true })
-      text = ::loc("workshop/tutorial/selectRecipe")
+      text = loc("workshop/tutorial/selectRecipe")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::GAMEPAD_ENTER_SHORTCUT
       cb = @() selectRecipe()
     },
     {
       obj = scene.findObject("btn_apply")
-      text = ::loc("workshop/tutorial/pressButton", {
+      text = loc("workshop/tutorial/pressButton", {
         button_name = buttonText
       })
       actionType = tutorAction.OBJ_CLICK
@@ -155,9 +169,9 @@ local MIN_ITEMS_IN_ROW = 7
     local btnObj = scene.findObject("btn_apply")
     btnObj.inactiveColor = curRecipe?.isUsable && !curRecipe.isRecipeLocked() ? "no" : "yes"
 
-    local btnText = ::loc(curRecipe.getActionButtonLocId() ?? buttonText)
+    local btnText = loc(curRecipe.getActionButtonLocId() ?? buttonText)
     if (curRecipe.hasCraftTime())
-      btnText += " " + ::loc("ui/parentheses", {text = curRecipe.getCraftTimeText()})
+      btnText += " " + loc("ui/parentheses", {text = curRecipe.getCraftTimeText()})
     btnObj.setValue(btnText)
 
     if (!needMarkRecipes)
@@ -181,7 +195,7 @@ local MIN_ITEMS_IN_ROW = 7
   {
     if (curRecipe && curRecipe.isRecipeLocked())
       return ::scene_msg_box("cant_cancel_craft", null,
-        ::colorize("badTextColor", ::loc(curRecipe.getCantAssembleMarkedFakeLocId())),
+        colorize("badTextColor", loc(curRecipe.getCantAssembleMarkedFakeLocId())),
         [[ "ok" ]],
         "ok")
 
@@ -192,7 +206,7 @@ local MIN_ITEMS_IN_ROW = 7
       goBack()
   }
 
-  getMarkBtnText = @() ::loc(curRecipe.mark == MARK_RECIPE.BY_USER
+  getMarkBtnText = @() loc(curRecipe.mark == MARK_RECIPE.BY_USER
     ? "item/recipes/unmarkFake"
     : "item/recipes/markFake")
 
@@ -203,7 +217,7 @@ local MIN_ITEMS_IN_ROW = 7
 
     curRecipe.markRecipe(true)
     let recipeObj = scene.findObject("id_"+ curRecipe.uid)
-    if (!::check_obj(recipeObj))
+    if (!checkObj(recipeObj))
       return
 
     recipeObj.isRecipeLocked = curRecipe.isRecipeLocked() ? "yes" : "no"

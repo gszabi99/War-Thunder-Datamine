@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 
 let focusBorder = @(override = {})
@@ -8,7 +10,7 @@ let focusBorder = @(override = {})
       ? {
         rendObj = ROBJ_9RECT
         size = flex()
-        image = ::Picture("!ui/gameuiskin#item_selection.png")
+        image = Picture("!ui/gameuiskin#item_selection.png")
         color = Color(255, 211, 75)
         screenOffs = 8
         texOffs = 8

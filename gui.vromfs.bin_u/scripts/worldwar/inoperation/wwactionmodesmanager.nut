@@ -1,6 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 
-let function setActionMode(modeId = ::AUT_None) {
+let function setActionMode(modeId = AUT_None) {
   ::ww_set_curr_action_type(modeId)
   ::ww_event("ArmyStatusChanged")
 }
@@ -14,16 +21,16 @@ let function useTransportAction(clickPos, requestActionCb) {
 }
 
 let actionModesById = {
-  [::AUT_ArtilleryFire] = {
+  [AUT_ArtilleryFire] = {
     startArtilleryFire = function startArtilleryFire(mapPos, army) {
       let blk = ::DataBlock()
       blk.setStr("army", army.name)
       blk.setStr("point", $"{mapPos.x},{mapPos.y}")
-      blk.setStr("radius", ww_artillery_get_attack_radius().tostring())
+      blk.setStr("radius", ::ww_artillery_get_attack_radius().tostring())
 
       let taskId = ::ww_send_operation_request("cln_ww_artillery_strike", blk)
       ::g_tasker.addTask(taskId, null, @() setActionMode(),
-        ::Callback(function (errorCode) {
+        Callback(function (errorCode) {
           ::g_world_war.popupCharErrorMsg("cant_fire", getTitle())
         }, this))
     }
@@ -34,7 +41,7 @@ let actionModesById = {
         startArtilleryFire(mapPos, army)
       }
       else
-        ::g_popups.add(getTitle(), ::loc("worldwar/artillery/notReadyToFire"),
+        ::g_popups.add(getTitle(), loc("worldwar/artillery/notReadyToFire"),
           null, null, null, "cant_fire")
     }
     useAction = function useAction(clickPos) {
@@ -47,14 +54,14 @@ let actionModesById = {
           makeArtilleryFire(mapPos, army)
       }
     }
-    setMode = @() setActionMode(::AUT_ArtilleryFire)
-    getTitle = @() ::loc("worldwar/artillery/cant_fire")
+    setMode = @() setActionMode(AUT_ArtilleryFire)
+    getTitle = @() loc("worldwar/artillery/cant_fire")
     onMouseWheel = function onMouseWheel(is_up) {
       let attackRadius = ::ww_artillery_get_attack_radius() + (is_up ? 0.5 : -0.5)
       ::ww_artillery_set_attack_radius(attackRadius)
     }
   },
-  [::AUT_TransportLoad] = {
+  [AUT_TransportLoad] = {
     errorGroupName = "load_transport_army_error"
     requestAction = function requestAction(transportName, armyName, cellIdx) {
       let errorId = ::ww_get_load_army_to_transport_error(transportName, armyName)
@@ -69,13 +76,13 @@ let actionModesById = {
       params.setStr("armyName", armyName)
       let taskId = ::ww_send_operation_request("cln_ww_load_transport", params)
       ::g_tasker.addTask(taskId, null, @() setActionMode(),
-        ::Callback(@(errorCode) ::g_world_war.popupCharErrorMsg(errorGroupName), this))
+        Callback(@(errorCode) ::g_world_war.popupCharErrorMsg(errorGroupName), this))
     }
     useAction = @(clickPos) useTransportAction(clickPos, requestAction)
-    setMode = @() setActionMode(::AUT_TransportLoad)
-    getTitle = @() ::loc("worldwar/cant_use_transport")
+    setMode = @() setActionMode(AUT_TransportLoad)
+    getTitle = @() loc("worldwar/cant_use_transport")
   },
-  [::AUT_TransportUnload] = {
+  [AUT_TransportUnload] = {
     errorGroupName = "unload_transport_army_error"
     requestAction = function requestAction(transportName, armyName, cellIdx) {
       let errorId = ::ww_get_unload_army_from_transport_error(transportName, armyName, cellIdx)
@@ -91,7 +98,7 @@ let actionModesById = {
       params.setInt("cellIdx", cellIdx)
       let taskId = ::ww_send_operation_request("cln_ww_unload_transport", params)
       ::g_tasker.addTask(taskId, null, @() setActionMode(),
-        ::Callback(@(errorCode) ::g_world_war.popupCharErrorMsg(errorGroupName), this))
+        Callback(@(errorCode) ::g_world_war.popupCharErrorMsg(errorGroupName), this))
     }
     requestActionForAllLoadedArmy = function requestActionForAllLoadedArmy(transportName, armyName, cellIdx) {
       let loadedTransportArmy = transportManager.getLoadedTransport()?[transportName]
@@ -103,8 +110,8 @@ let actionModesById = {
       }
     }
     useAction = @(clickPos) useTransportAction(clickPos, requestActionForAllLoadedArmy)
-    setMode = @() setActionMode(::AUT_TransportUnload)
-    getTitle = @() ::loc("worldwar/cant_use_transport")
+    setMode = @() setActionMode(AUT_TransportUnload)
+    getTitle = @() loc("worldwar/cant_use_transport")
   }
 }
 
@@ -124,7 +131,7 @@ let function trySetActionModeOrCancel(modeId) {
 
   if (armiesNames.len() > 1)
     return ::g_popups.add(actionModesById?[modeId].getTitle() ?? "",
-      ::loc("worldwar/artillery/selectOneArmy"), null, null, null, "select_one_army")
+      loc("worldwar/artillery/selectOneArmy"), null, null, null, "select_one_army")
 
   setActionMode(modeId)
 }

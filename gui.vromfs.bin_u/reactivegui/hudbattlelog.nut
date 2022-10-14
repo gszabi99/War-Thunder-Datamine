@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let state = require("battleLogState.nut")
 let scrollableData = require("components/scrollableData.nut")
 let hudLog = require("components/hudLog.nut")

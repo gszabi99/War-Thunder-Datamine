@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -40,7 +47,7 @@ let defaultLocIdsList = {
 
 let function showExchangeInventoryErrorMsg(errorId, componentItem) {
   let locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
-  ::showInfoMsgBox(::loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
+  ::showInfoMsgBox(loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
     "exchange_inventory_error")
 }
 
@@ -111,7 +118,7 @@ local ExchangeRecipes = class {
     visibleComponents = []
     let componentItemdefArray = componentsArray.map(@(c) c.itemdefid)
     let items = ::ItemsManager.getInventoryList(itemType.ALL,
-      @(item) ::isInArray(item.id, componentItemdefArray))
+      @(item) isInArray(item.id, componentItemdefArray))
     hasChestInComponents = u.search(items, @(i) i.iType == itemType.CHEST) != null
     foreach (component in componentsArray)
     {
@@ -151,7 +158,7 @@ local ExchangeRecipes = class {
 
   function isEnabled()
   {
-    return requirement == null || ::has_feature(requirement)
+    return requirement == null || hasFeature(requirement)
   }
 
   function hasComponent(itemdefid)
@@ -224,8 +231,8 @@ local ExchangeRecipes = class {
 
   function getCraftTimeText()
   {
-    return ::loc(getLocIdsList().craftTime,
-      {time = ::loc("icon/hourglass") + " " + time.secondsToString(craftTime, true, true)})
+    return loc(getLocIdsList().craftTime,
+      {time = loc("icon/hourglass") + " " + time.secondsToString(craftTime, true, true)})
   }
 
   getItemMarkupParams = @() {
@@ -241,7 +248,7 @@ local ExchangeRecipes = class {
   {
     let itemsViewData = []
     if (showRecipeAsProduct != null) {
-      let item = ItemsManager.findItemById(showRecipeAsProduct.tointeger())
+      let item = ::ItemsManager.findItemById(showRecipeAsProduct.tointeger())
       if (item)
         itemsViewData.append(item.getViewData(getItemMarkupParams().__update({
           count = -1
@@ -250,7 +257,7 @@ local ExchangeRecipes = class {
     } else
       foreach (component in visibleComponents)
       {
-        let item = ItemsManager.findItemById(component.itemdefId)
+        let item = ::ItemsManager.findItemById(component.itemdefId)
         if (item)
           itemsViewData.append(item.getViewData(getItemMarkupParams().__update({
             count = getComponentQuantityText(component, { needColoredText = false })
@@ -286,10 +293,10 @@ local ExchangeRecipes = class {
       return ""
 
     if (curMark == MARK_RECIPE.USED)
-      return ::loc(path + (isFake ? "fake" : "true"))
+      return loc(path + (isFake ? "fake" : "true"))
 
     if (curMark == MARK_RECIPE.BY_USER)
-      return ::loc(path + "fakeByUser")
+      return loc(path + "fakeByUser")
 
     return ""
   }
@@ -399,12 +406,12 @@ local ExchangeRecipes = class {
         isMultiExtraItems  = isMultiExtraItems || (multipleExtraItems.len() > 1)
       }
 
-      headerFirst = ::colorize("grayOptionColor",
+      headerFirst = colorize("grayOptionColor",
         componentItem.getDescRecipeListHeader(recipesToShow.len(), recipes.len(),
                                             isMultiExtraItems, hasFakeRecipesInList,
                                             craftTimeText))
       headerNext = isMultiRecipes && isMultiExtraItems ?
-        ::colorize("grayOptionColor", ::loc("hints/shortcut_separator")) : null
+        colorize("grayOptionColor", loc("hints/shortcut_separator")) : null
     }
 
     params.componentToHide <- componentItem
@@ -433,11 +440,11 @@ local ExchangeRecipes = class {
     if (minSeconds <= 0 && maxSeconds <= 0)
       return ""
 
-    local timeText = ::loc("icon/hourglass") + " " + time.secondsToString(minSeconds, true, true)
+    local timeText = loc("icon/hourglass") + " " + time.secondsToString(minSeconds, true, true)
     if (minSeconds != maxSeconds)
-      timeText += " " + ::loc("ui/ndash") + " " + time.secondsToString(maxSeconds, true, true)
+      timeText += " " + loc("ui/ndash") + " " + time.secondsToString(maxSeconds, true, true)
 
-    return ::loc(recipes[0].getLocIdsList().craftTime,
+    return loc(recipes[0].getLocIdsList().craftTime,
       {time = timeText})
   }
 
@@ -461,12 +468,12 @@ local ExchangeRecipes = class {
   {
     if (!(params?.showCurQuantities ?? true))
       return component.reqQuantity > 1 ?
-        (::nbsp + format(::loc("weapons/counter/right/short"), component.reqQuantity)) : ""
+        (::nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
 
     let locId = params?.needShowItemName ?? true ? "ui/parentheses/space" : "ui/parentheses"
-    let locText = ::loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
+    let locText = loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
     if (params?.needColoredText ?? true)
-      return ::colorize(getComponentQuantityColor(component, true), locText)
+      return colorize(getComponentQuantityColor(component, true), locText)
 
     return locText
   }
@@ -489,7 +496,7 @@ local ExchangeRecipes = class {
     if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false))
     {
       ::scene_msg_box("reached_max_amount", null,
-      ::loc(componentItem.getLocIdsList().reachedMaxAmount),
+      loc(componentItem.getLocIdsList().reachedMaxAmount),
         [["cancel"]], "cancel")
       return false
     }
@@ -522,7 +529,7 @@ local ExchangeRecipes = class {
       msgboxParams.__update({
         data_below_text = (msgboxParams?.data_below_text ?? "")
           + ::PrizesView.getPrizesListView(params.bundleContent,
-              { header = ::loc("mainmenu/you_will_receive")
+              { header = loc("mainmenu/you_will_receive")
                 headerParams = recipeComponentHeaderParams
                 widthByParentParent = true
               }, false)
@@ -531,7 +538,7 @@ local ExchangeRecipes = class {
     }
 
     ::scene_msg_box("chest_exchange", null, msgData.text, [
-      [ "yes", ::Callback(function()
+      [ "yes", Callback(function()
         {
           recipe.updateComponents()
           if (recipe.isUsable)
@@ -547,7 +554,7 @@ local ExchangeRecipes = class {
   static function showUseErrorMsg(recipes, componentItem)
   {
     let locId = componentItem.getCantUseLocId()
-    let text = ::colorize("badTextColor", ::loc(locId))
+    let text = colorize("badTextColor", loc(locId))
     let msgboxParams = {
       data_below_text = getRequirementsMarkup(recipes, componentItem, {
         widthByParentParent = true
@@ -574,7 +581,7 @@ local ExchangeRecipes = class {
     local defBtn = "cancel"
     if (requiredItem)
     {
-      buttons.insert(0, [ "find_on_marketplace", ::Callback(@() requiredItem.openLink(), this) ])
+      buttons.insert(0, [ "find_on_marketplace", Callback(@() requiredItem.openLink(), this) ])
       defBtn = "find_on_marketplace"
     }
 
@@ -684,14 +691,13 @@ local ExchangeRecipes = class {
       })
 
       ::gui_start_open_trophy({ [componentItem.id] = openTrophyWndConfigs,
-        rewardTitle = ::loc(rewardTitle),
+        rewardTitle = loc(rewardTitle),
         rewardListLocId = rewardListLocId
         isDisassemble = isDisassemble
         isHidePrizeActionBtn = params?.isHidePrizeActionBtn ?? false
         singleAnimationGuiSound = getRandomEffect(effectOnOpenChest?.playSound)
         rewardImage = effectOnOpenChest?.showImage
         rewardImageRatio = effectOnOpenChest?.imageRatio
-        rewardImageShowTimeSec = effectOnOpenChest?.showTimeSec ?? -1
         reUseRecipeUid = params?.reUseRecipeUid
       })
       removeUserstatItemRewardToShow(componentItem.id)
@@ -769,7 +775,7 @@ local ExchangeRecipes = class {
     return locIdsList
   }
 
-  getHeaderRecipeMarkupText = @() ::loc(getLocIdsList().headerRecipeMarkup)
+  getHeaderRecipeMarkupText = @() loc(getLocIdsList().headerRecipeMarkup)
 
   getConfirmMessageLocId = @(itemLocIdsList) getLocIdsList().msgBoxConfirmWhithItemName ??
     (isDisassemble

@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 ::dagui_propid.add_name_id("leaderUid")
@@ -21,7 +29,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
       showOnSelect = "hover"
       btnName = "X"
       btnKey = "X"
-      tooltip = @() ::loc("squad/info")
+      tooltip = @() loc("squad/info")
       img = "#ui/gameuiskin#btn_help.svg"
       funcName = "onSquadInfo"
       isHidden = false
@@ -34,7 +42,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
       showOnSelect = "hover"
       btnName = "A"
       btnKey = "A"
-      tooltip = @() ::loc("squad/membership_request")
+      tooltip = @() loc("squad/membership_request")
       img = "#ui/gameuiskin#btn_invite.svg"
       funcName = "onApplication"
       isHidden = true
@@ -48,7 +56,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
       btnName = "A"
       btnKey = "A"
       isColoredImg = "yes"
-      tooltip = @() ::loc("squad/revoke_membership_request")
+      tooltip = @() loc("squad/revoke_membership_request")
       img = "#ui/gameuiskin#icon_primary_fail.svg"
       funcName = "onRevokeApplication"
       isHidden = true
@@ -69,7 +77,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   {
     squadsListObj = scene.findObject("clan_squads_list")
     dummyButtonsListObj = scene.findObject("clan_squads_modal")
-    if (!::checkObj(squadsListObj))
+    if (!checkObj(squadsListObj))
       return goBack()
     curList = []
     selectedSquad = null
@@ -140,7 +148,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
       {
         selectedSquad = null
         selectedIndex = -1
-        gui_bhv.posNavigator.clearSelect(squadsListObj)
+        ::gui_bhv.posNavigator.clearSelect(squadsListObj)
       }
     updateSquadDummyButtons()
     updateSquadsListInfo(curList.len())
@@ -173,7 +181,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   function fillPresence(obj, squad)
   {
     obj.findObject("presence").setValue(!isSquadOnline(squad)
-      ? ::colorize(OFFLINE_SQUAD_TEXT_COLOR, ::loc("matching/SQUAD_LEADER_OFFLINE"))
+      ? colorize(OFFLINE_SQUAD_TEXT_COLOR, loc("matching/SQUAD_LEADER_OFFLINE"))
       : getPresence(squad))
   }
 
@@ -181,8 +189,8 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   {
     let show = canApplyForMembership(squad)
     let btnObj = ::showBtn("btn_application", show, obj)
-    if (::check_obj(btnObj) && show)
-      btnObj.tooltip = getInvitationInSquad(squad) ? ::loc("squad/join") : ::loc("squad/membership_request")
+    if (checkObj(btnObj) && show)
+      btnObj.tooltip = getInvitationInSquad(squad) ? loc("squad/join") : loc("squad/membership_request")
 
     ::showBtn("btn_revoke_application", canRevokeApplication(squad), obj)
   }
@@ -227,7 +235,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     if (!::g_squad_manager.isInSquad())
       return false
 
-    return ::isInArray(::my_user_id_int64, squad?.members ?? [])
+    return isInArray(::my_user_id_int64, squad?.members ?? [])
       || squad?.leader.tostring() == ::g_squad_manager.getLeaderUid()
   }
 
@@ -239,7 +247,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
 
   function getNumMembers(squad)
   {
-    return ::loc("squad/size", { numMembers = getNumberMembers(squad)
+    return loc("squad/size", { numMembers = getNumberMembers(squad)
                           maxMembers = getMaxMembers(squad)})
   }
 
@@ -262,7 +270,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
 
     local infoText = ""
     if (!visibleSquadsAmount && squadsListData.isListValid())
-      infoText = ::loc("clan/no_squads_in_clan")
+      infoText = loc("clan/no_squads_in_clan")
 
     scene.findObject("items_list_msg").setValue(infoText)
   }
@@ -480,7 +488,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     for (local i = 0; i < curList.len(); i++)
     {
       leader = curList[i].leader
-      if (::isInArray(leader, leadersArr))
+      if (isInArray(leader, leadersArr))
       {
         obj = getSquadObj(i)
         updateSquadButtons(obj, curList[i])

@@ -1,4 +1,5 @@
-from "%darg/ui_imports.nut" import *
+from "%rGui/globals/ui_library.nut" import *
+
 from "string" import regexp, split_by_chars
 
 /*
@@ -9,27 +10,27 @@ from "string" import regexp, split_by_chars
     - replace editor in enlisted with this component (it should be already suitable)
 */
 let rexInt = regexp(@"[\+\-]?[0-9]+")
-let function isStringInt(str){
-  return rexInt.match(str) //better use one from string.nut
+let function isStringInt(strv){
+  return rexInt.match(strv) //better use one from string.nut
 }
 
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
-let function isStringFloat(str){
-  return rexFloat.match(str) //better use one from string.nut
+let function isStringFloat(strv){
+  return rexFloat.match(strv) //better use one from string.nut
 }
 
 let rexEng = regexp(@"[a-z,A-Z]*")
-let function isStringEng(str){
-  return rexEng.match(str)
+let function isStringEng(strv){
+  return rexEng.match(strv)
 }
-let function isStringLikelyEmail(str, _verbose=true) {
+let function isStringLikelyEmail(strv, _verbose=true) {
 // this check is not rfc fully compatible. We check that @ exist and correctly used, and that let and domain parts exist and they are correct length.
 // Domain part also have at least one period and main domain at least 2 symbols
 // also come correct emails on google are against RFC, for example a.a.a@gmail.com.
 
-  if (type(str)!="string")
+  if (type(strv)!="string")
     return false
-  let splitted = split_by_chars(str,"@")
+  let splitted = split_by_chars(strv,"@")
   if (splitted.len()<2)
     return false
   local locpart = splitted[0]
@@ -70,19 +71,19 @@ let function defaultFrame(inputObj, group, sf) {
   }
 }
 
-let function isValidStrByType(str, inputType) {
-  if (str=="")
+let function isValidStrByType(strv, inputType) {
+  if (strv=="")
     return true
   if (inputType=="mail")
-     return isStringLikelyEmail(str)
+     return isStringLikelyEmail(strv)
   if (inputType=="num")
-     return isStringInt(str) || isStringFloat(str)
+     return isStringInt(strv) || isStringFloat(strv)
   if (inputType=="integer")
-     return isStringInt(str)
+     return isStringInt(strv)
   if (inputType=="float")
-     return isStringFloat(str)
+     return isStringFloat(strv)
   if (inputType=="lat")
-     return isStringEng(str)
+     return isStringEng(strv)
   return true
 }
 

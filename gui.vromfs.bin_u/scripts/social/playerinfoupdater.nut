@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let playerInfoUpdater = {
   [PERSISTENT_DATA_PARAMS] = ["lastSendedData"]
 
@@ -30,7 +37,7 @@ let playerInfoUpdater = {
 
   function updateStatistics()
   {
-    if (!::is_platform_xbox)
+    if (!is_platform_xbox)
       return
 
     let myStats = ::my_stats.getStats()
@@ -44,7 +51,7 @@ let playerInfoUpdater = {
 
   function updatePresence(presence)
   {
-    if (!::is_platform_xbox || !presence)
+    if (!is_platform_xbox || !presence)
       return
 
     if (presence == ::g_contact_presence.UNKNOWN

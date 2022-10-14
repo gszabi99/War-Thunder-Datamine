@@ -1,15 +1,22 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WW_MAP_TOOLTIP_TYPE_ARMY } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 
 local transportTypeByTextCode = {
-  TT_NONE      = ::TT_NONE
-  TT_GROUND    = ::TT_GROUND
-  TT_AIR       = ::TT_AIR
-  TT_WATER     = ::TT_WATER
-  TT_INFANTRY  = ::TT_INFANTRY
-  TT_TOTAL     = ::TT_TOTAL
+  TT_NONE      = TT_NONE
+  TT_GROUND    = TT_GROUND
+  TT_AIR       = TT_AIR
+  TT_WATER     = TT_WATER
+  TT_INFANTRY  = TT_INFANTRY
+  TT_TOTAL     = TT_TOTAL
 }
 
 ::WwArmy <- class extends ::WwFormation
@@ -22,7 +29,7 @@ local transportTypeByTextCode = {
   armyIsDead = false
   deathReason = ""
   armyFlags = 0
-  transportType = ::TT_NONE
+  transportType = TT_NONE
 
   constructor(armyName, blk = null)
   {
@@ -48,17 +55,17 @@ local transportTypeByTextCode = {
 
     let unitTypeTextCode = blk?.specs.unitType ?? ""
     unitType = ::g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode).code
-    morale = ::getTblValue("morale", blk, -1)
+    morale = getTblValue("morale", blk, -1)
     armyIsDead = get_blk_value_by_path(blk, "specs/isDead", false)
     deathReason = get_blk_value_by_path(blk, "specs/deathReason", "")
     armyFlags = get_blk_value_by_path(blk, "specs/flags", 0)
-    transportType = transportTypeByTextCode?[blk?.specs.transportInfo.type ?? "TT_NONE"] ?? ::TT_NONE
+    transportType = transportTypeByTextCode?[blk?.specs.transportInfo.type ?? "TT_NONE"] ?? TT_NONE
     if (isTransport())
       loadedArmyType = blk?.loadedArmyType ?? ::ww_get_loaded_army_type(armyName, false)
-    suppliesEndMillisec = ::getTblValue("suppliesEndMillisec", blk, 0)
-    entrenchEndMillisec = ::getTblValue("entrenchEndMillisec", blk, 0)
-    stoppedAtMillisec = ::getTblValue("stoppedAtMillisec", blk, 0)
-    overrideIconId = ::getTblValue("iconOverride", blk, "")
+    suppliesEndMillisec = getTblValue("suppliesEndMillisec", blk, 0)
+    entrenchEndMillisec = getTblValue("entrenchEndMillisec", blk, 0)
+    stoppedAtMillisec = getTblValue("stoppedAtMillisec", blk, 0)
+    overrideIconId = getTblValue("iconOverride", blk, "")
     hasArtilleryAbility = blk?.specs.canArtilleryFire ?? false
 
     let armyArtilleryParams = hasArtilleryAbility ?
@@ -126,7 +133,7 @@ local transportTypeByTextCode = {
     if (group)
       fullName += " " + group.getFullName()
 
-    fullName += ::loc("ui/parentheses/space", {text = getDescription()})
+    fullName += loc("ui/parentheses/space", {text = getDescription()})
 
     return fullName
   }
@@ -147,7 +154,7 @@ local transportTypeByTextCode = {
 
     let recalMoral = getMoral()
     if (recalMoral >= 0)
-      desc.append(::loc("worldwar/morale", {morale = recalMoral}))
+      desc.append(loc("worldwar/morale", {morale = recalMoral}))
 
     let suppliesEnd = getSuppliesFinishTime()
     if (suppliesEnd > 0)
@@ -156,17 +163,17 @@ local transportTypeByTextCode = {
       local suppliesEndLoc = "worldwar/suppliesfinishedIn"
       if (::g_ww_unit_type.isAir(unitType))
         suppliesEndLoc = "worldwar/returnToAirfieldIn"
-      desc.append( ::loc(suppliesEndLoc, { time = timeText }) )
+      desc.append( loc(suppliesEndLoc, { time = timeText }) )
     }
 
     let entrenchTime = secondsLeftToEntrench()
     if (entrenchTime == 0)
     {
-      desc.append(::loc("worldwar/armyEntrenched"))
+      desc.append(loc("worldwar/armyEntrenched"))
     }
     else if (entrenchTime > 0)
     {
-      desc.append(::loc("worldwar/armyEntrenching",
+      desc.append(loc("worldwar/armyEntrenching",
           {time = time.hoursToString(time.secondsToHours(entrenchTime), true, true)}))
     }
 
@@ -305,7 +312,7 @@ local transportTypeByTextCode = {
 
   function isTransport()
   {
-    return transportType > ::TT_NONE && transportType < ::TT_TOTAL
+    return transportType > TT_NONE && transportType < TT_TOTAL
   }
 
   static function sortArmiesByUnitType(a, b)

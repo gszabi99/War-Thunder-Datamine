@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 //wndInfoConfig = {
 //  textsBlk - blk with texts for this window
 //  links = [
@@ -10,8 +17,9 @@
 //  ]
 //}
 
-::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
@@ -37,11 +45,11 @@
     if (!config)
       return goBack()
 
-    objContainer = ::getTblValue("objContainer", config, ownerScene)
+    objContainer = getTblValue("objContainer", config, ownerScene)
     if (!checkObj(objContainer))
       return goBack()
 
-    let links = ::getTblValue("links", config)
+    let links = getTblValue("links", config)
     if (!links)
       return goBack()
 
@@ -59,7 +67,7 @@
         link.msgId <- null
 
       let msgObj = link.msgId ? scene.findObject(link.msgId) : null
-      if (::check_obj(msgObj))
+      if (checkObj(msgObj))
       {
         msgObj.show(!!objBlock)
         if ("text" in link)

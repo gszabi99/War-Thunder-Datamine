@@ -1,4 +1,11 @@
-let { is_stereo_mode } = ::require_native("vr")
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { is_stereo_mode } = require_native("vr")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { sin, cos, pow, atan2, abs, sqrt } = require("math")
 
@@ -35,7 +42,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
         if (axisName in res)
           continue
 
-        res[axisName] <- ::getTblValue(idx, axisData[idxPair], 0)
+        res[axisName] <- getTblValue(idx, axisData[idxPair], 0)
       }
     }
     return res

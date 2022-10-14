@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 enum CREWS_READY_STATUS
@@ -66,7 +73,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       brRanges = mGameMode?.matchmaking.mmRanges
       countries = {}
       countriesSetList = []
-      onChangeCb = ::Callback(onOptionChange, this)
+      onChangeCb = Callback(onOptionChange, this)
     }
     if (isAllowCountriesSetsOnly)
       _optionsConfig.countriesSetList = ::events.getAllCountriesSets(mGameMode)
@@ -101,7 +108,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     {
       let ediff = ::events.getEDiffByEvent(mGameMode)
       let unitMRank = unit.getEconomicRank(ediff)
-      if (unitMRank < ::getTblValue(0, brRange, 0) || ::getTblValue(1, brRange, ::max_country_rank) < unitMRank)
+      if (unitMRank < getTblValue(0, brRange, 0) || getTblValue(1, brRange, ::max_country_rank) < unitMRank)
         return false
     }
 
@@ -111,7 +118,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   function isCountryAvailable(country)
   {
     foreach(team in ::g_team.getTeams())
-      if (::isInArray(country, getCurCountries(team)))
+      if (isInArray(country, getCurCountries(team)))
         return true
     return false
   }
@@ -123,7 +130,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     let ediff = ::events.getEDiffByEvent(mGameMode)
     foreach (team in ::g_team.getTeams())
     {
-      if (!::isInArray(country, getCurCountries(team)))
+      if (!isInArray(country, getCurCountries(team)))
        continue
 
       let teamData = ::events.getTeamData(mGameMode, team.code)
@@ -162,15 +169,15 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
     if (!isCountryAvailable(::get_profile_country_sq()))
     {
-      res.reasonText = ::loc("events/no_selected_country")
+      res.reasonText = loc("events/no_selected_country")
     }
     else
     {
       let crewsStatus = getCurCrewsReadyStatus()
       if (!(crewsStatus & CREWS_READY_STATUS.HAS_ALLOWED))
-        res.reasonText = ::loc("events/no_allowed_crafts")
+        res.reasonText = loc("events/no_allowed_crafts")
       else if (!(crewsStatus & CREWS_READY_STATUS.HAS_REQUIRED_AND_ALLOWED))
-        res.reasonText = ::loc("events/no_required_crafts")
+        res.reasonText = loc("events/no_required_crafts")
     }
 
     if (res.reasonText.len())
@@ -219,7 +226,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
     let chosenNames = blk % CHOSEN_EVENT_MISSIONS_SAVE_KEY
     foreach(mission in fullMissionsList)
-      if (::isInArray(mission.id, chosenNames))
+      if (isInArray(mission.id, chosenNames))
         chosenMissionsList.append(mission)
   }
 
@@ -310,7 +317,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       res.mranks <- getCurBrRange()
 
     let clusterOpt = ::get_option(::USEROPT_CLUSTER)
-    res.cluster <- ::getTblValue(clusterOpt.value, clusterOpt.values, "")
+    res.cluster <- getTblValue(clusterOpt.value, clusterOpt.values, "")
 
     if (!isAllMissionsSelected())
       res.missions <- ::u.map(chosenMissionsList, @(m) m.id)

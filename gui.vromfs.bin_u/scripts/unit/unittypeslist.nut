@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
@@ -5,16 +10,16 @@ let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 const BULLETS_SETS_QUANTITY_SHORT = 4
 
 let crewUnitTypeConfig = {
-  [::CUT_INVALID] = {
+  [CUT_INVALID] = {
     crewTag = ""
   },
-  [::CUT_AIRCRAFT] = {
+  [CUT_AIRCRAFT] = {
     crewTag = "air"
   },
-  [::CUT_TANK] = {
+  [CUT_TANK] = {
     crewTag = "tank"
   },
-  [::CUT_SHIP] = {
+  [CUT_SHIP] = {
     crewTag = "ship"
   }
 }
@@ -26,7 +31,7 @@ local unitTypes = {
     lowerName = "" //filled automatically by name.tolower()
     tag = ""
     armyId = ""
-    esUnitType = ::ES_UNIT_TYPE_INVALID
+    esUnitType = ES_UNIT_TYPE_INVALID
     bit = 0      //unitType bit for it mask. filled by esUnitType  (bit = 1 << esUnitType)
     bitCrewType = 0 //crewUnitType bit for it mask
     visualSortOrder = -1
@@ -38,13 +43,13 @@ local unitTypes = {
     bailoutName = "btnLeaveTheTank"
     bailoutQuestion = "questionLeaveTheTank"
     canChangeViewType = false
-    hudTypeCode = ::HUD_TYPE_UNKNOWN
+    hudTypeCode = HUD_TYPE_UNKNOWN
     missionSettingsAvailabilityFlag = ""
     isUsedInKillStreaks = false
     isPresentOnMatching = true
 
     firstChosenTypeUnlockName = null
-    crewUnitType = ::CUT_INVALID
+    crewUnitType = CUT_INVALID
     hasAiGunners = false
 
     isAvailable = function() { return false }
@@ -52,15 +57,15 @@ local unitTypes = {
     isAvailableForFirstChoice = function(country = null) { return this.isAvailable() }
     isFirstChosen = function()
       { return this.firstChosenTypeUnlockName != null && ::is_unlocked(-1, this.firstChosenTypeUnlockName) }
-    getTestFlightText = function() { return ::loc($"mainmenu/btn{this.testFlightName}") }
-    getTestFlightUnavailableText = function() { return ::loc($"mainmenu/cant{this.testFlightName}") }
-    getBailoutButtonText = @() ::loc($"flightmenu/{this.bailoutName}")
-    getBailoutQuestionText = @() ::loc($"flightmenu/{this.bailoutQuestion}")
+    getTestFlightText = function() { return loc($"mainmenu/btn{this.testFlightName}") }
+    getTestFlightUnavailableText = function() { return loc($"mainmenu/cant{this.testFlightName}") }
+    getBailoutButtonText = @() loc($"flightmenu/{this.bailoutName}")
+    getBailoutQuestionText = @() loc($"flightmenu/{this.bailoutQuestion}")
     getArmyLocId = @() $"mainmenu/{this.armyId}"
-    getArmyLocName = @() ::loc(getArmyLocId(), "")
-    getCrewArmyLocName = @() ::loc("unit_type/" + (crewUnitTypeConfig?[this.crewUnitType]?.crewTag ?? ""))
+    getArmyLocName = @() loc(this.getArmyLocId(), "")
+    getCrewArmyLocName = @() loc("unit_type/" + (crewUnitTypeConfig?[this.crewUnitType]?.crewTag ?? ""))
     getCrewTag = @() crewUnitTypeConfig?[this.crewUnitType]?.crewTag ?? ""
-    getLocName = @() ::loc($"unit_type/{this.tag}", "")
+    getLocName = @() loc($"unit_type/{this.tag}", "")
     canUseSeveralBulletsForGun = false
     modClassOrder = []
     isSkinAutoSelectAvailable = @() false
@@ -167,7 +172,7 @@ local unitTypes = {
     enums.addTypes(this, typesTable,
       function()
       {
-        if (this.esUnitType != ::ES_UNIT_TYPE_INVALID)
+        if (this.esUnitType != ES_UNIT_TYPE_INVALID)
         {
           this.bit = 1 << this.esUnitType
           this.bitCrewType = 1 << this.crewUnitType

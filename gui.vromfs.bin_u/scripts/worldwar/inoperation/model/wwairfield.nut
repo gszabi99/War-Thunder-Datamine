@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
@@ -5,7 +12,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 {
   index  = -1
   size   = 0
-  side   = ::SIDE_NONE
+  side   = SIDE_NONE
   pos    = null
   airfieldType = null
   armies = null
@@ -100,7 +107,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 
   function _tostring()
   {
-    local returnText = "AIRFIELD: index = " + index + ", side = " + side + ", size = " + size + ", pos = " + ::toString(pos) + ", airfieldType = " + airfieldType.name
+    local returnText = "AIRFIELD: index = " + index + ", side = " + side + ", size = " + size + ", pos = " + toString(pos) + ", airfieldType = " + airfieldType.name
     if (formations.len())
       returnText += ", groups len = " + formations.len()
     if (armies.len())
@@ -110,7 +117,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 
   function isArmyBelongsTo(army)
   {
-    return ::isInArray(army.name, armies)
+    return isInArray(army.name, armies)
   }
 
   function getSide()

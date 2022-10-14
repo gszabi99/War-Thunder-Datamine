@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getWeaponByName } = require("%scripts/weaponry/weaponryInfo.nut")
 
 let sortIdxByExpClass = {
@@ -9,22 +14,22 @@ let sortIdxByExpClass = {
 let wwUnitClassParams = {
   [WW_UNIT_CLASS.FIGHTER] = {
     name = "fighter"
-    iconText = @() ::loc("worldWar/iconAirFighter")
+    iconText = @() loc("worldWar/iconAirFighter")
     color = "medium_fighterColor"
   },
   [WW_UNIT_CLASS.ASSAULT] = {
     name = "assault"
-    iconText = @() ::loc("worldWar/iconAirAssault")
+    iconText = @() loc("worldWar/iconAirAssault")
     color = "common_assaultColor"
   },
   [WW_UNIT_CLASS.BOMBER] = {
     name = "bomber"
-    iconText = @() ::loc("worldWar/iconAirBomber")
+    iconText = @() loc("worldWar/iconAirBomber")
     color = "medium_bomberColor"
   },
   [WW_UNIT_CLASS.HELICOPTER] = {
     name = "helicopter"
-    iconText = @() ::loc("worldWar/iconAirHelicopter")
+    iconText = @() loc("worldWar/iconAirHelicopter")
     color = "attack_helicopterColor"
   }
 }
@@ -38,7 +43,7 @@ let function getIconText(unitClass, needColorize = false) {
 
   local text = params.iconText()
   if (needColorize)
-    text = ::colorize(params.color, text)
+    text = colorize(params.color, text)
 
   return text
 }

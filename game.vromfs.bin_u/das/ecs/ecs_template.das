@@ -8,7 +8,7 @@ require daslib/templates
 require daslib/templates_boost
 require daslib/ast_boost
 require daslib/defer
-require daslib/functional
+
 
 let show_completion = true
 

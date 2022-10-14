@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 /*
   config = {
     unit  //unit for weapons
@@ -22,6 +29,8 @@
   }
 */
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getLastWeapon,
         setLastWeapon,
@@ -119,7 +128,7 @@ local CHOOSE_WEAPON_PARAMS = {
     local weaponryListMarkup = ""
     foreach(idx, config in list)
     {
-      let weaponryItem = ::getTblValue("weaponryItem", config)
+      let weaponryItem = getTblValue("weaponryItem", config)
       if (!weaponryItem)
       {
         ::script_net_assert_once("cant load weaponry",
@@ -128,7 +137,7 @@ local CHOOSE_WEAPON_PARAMS = {
         return null
       }
 
-      if (::getTblValue("selected", config))
+      if (getTblValue("selected", config))
         wasSelIdx = idx
 
       params.posX = rows ? (idx / rows) : 0
@@ -165,10 +174,10 @@ local CHOOSE_WEAPON_PARAMS = {
     {
       let config = list[i]
       let itemObj = listObj.getChild(i)
-      let enabled = ::getTblValue("enabled", config, true)
+      let enabled = getTblValue("enabled", config, true)
       itemObj.enable(enabled)
 
-      weaponItemParams.visualDisabled <- !enabled || ::getTblValue("visualDisabled", config, false)
+      weaponItemParams.visualDisabled <- !enabled || getTblValue("visualDisabled", config, false)
       updateModItem(unit, config.weaponryItem, itemObj, false, this, weaponItemParams)
     }
     weaponItemParams.visualDisabled <- false
@@ -220,6 +229,6 @@ local CHOOSE_WEAPON_PARAMS = {
         || !(selIdx in list)
         || !onChangeValueCb)
       return
-    onChangeValueCb(::getTblValue("weaponryItem", list[selIdx]))
+    onChangeValueCb(getTblValue("weaponryItem", list[selIdx]))
   }
 }

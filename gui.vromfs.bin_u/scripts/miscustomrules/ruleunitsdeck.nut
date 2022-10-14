@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::mission_rules.UnitsDeck <- class extends ::mission_rules.Base
 {
   needLeftRespawnOnSlots = true
@@ -9,7 +16,7 @@
 
   function getRespawnInfoTextForUnitInfo(unit)
   {
-    return ::loc("multiplayer/leftTeamUnit",
+    return loc("multiplayer/leftTeamUnit",
                  { num = getUnitLeftRespawns(unit) })
   }
 
@@ -18,8 +25,8 @@
     if (!unit)
       return 0
     let myState = getMyStateBlk()
-    let limitedUnits = ::getTblValue("limitedUnits", myState)
-    return ::getTblValue(unit.name, limitedUnits, 0)
+    let limitedUnits = getTblValue("limitedUnits", myState)
+    return getTblValue(unit.name, limitedUnits, 0)
   }
 
   function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk)
@@ -35,7 +42,7 @@
     let leftRespawns = getUnitLeftRespawns(unit)
     if (leftRespawns || isUnitAvailableBySpawnScore(unit))
       return null
-    return ::loc("respawn/noUnitLeft", { unitName = ::colorize("userlogColoredText", ::getUnitName(unit)) })
+    return loc("respawn/noUnitLeft", { unitName = colorize("userlogColoredText", ::getUnitName(unit)) })
   }
 
   function hasCustomUnitRespawns()
@@ -50,8 +57,8 @@
     res.defaultUnitRespawnsLeft = 0
 
     let myTeamDataBlk = isTeamMine ? getMyTeamDataBlk() : getEnemyTeamDataBlk()
-    let distributedBlk = ::getTblValue("distributedUnits", myTeamDataBlk)
-    let limitedBlk = ::getTblValue("limitedUnits", myTeamDataBlk)
+    let distributedBlk = getTblValue("distributedUnits", myTeamDataBlk)
+    let limitedBlk = getTblValue("limitedUnits", myTeamDataBlk)
     let myTeamUnitsParamsBlk = isTeamMine
       ? getMyTeamDataBlk("unitsParamsList") : getEnemyTeamDataBlk("unitsParamsList")
     let weaponsLimitsBlk = getWeaponsLimitsBlk()
@@ -61,14 +68,14 @@
       for(local i = 0; i < limitedBlk.paramCount(); i++)
       {
         let unitName = limitedBlk.getParamName(i)
-        let teamUnitPreset = ::getTblValue(unitName, myTeamUnitsParamsBlk, null)
-        let userUnitPreset = ::getTblValue(unitName, weaponsLimitsBlk, null)
-        let weapon = ::getTblValue("weapon", teamUnitPreset, null)
+        let teamUnitPreset = getTblValue(unitName, myTeamUnitsParamsBlk, null)
+        let userUnitPreset = getTblValue(unitName, weaponsLimitsBlk, null)
+        let weapon = getTblValue("weapon", teamUnitPreset, null)
 
         let presetData = {
-          weaponPresetId = ::getTblValue("name", weapon, "")
-          teamUnitPresetAmount = ::getTblValue("count", weapon, "")
-          userUnitPresetAmount = ::getTblValue("respawnsLeft", userUnitPreset, 0)
+          weaponPresetId = getTblValue("name", weapon, "")
+          teamUnitPresetAmount = getTblValue("count", weapon, "")
+          userUnitPresetAmount = getTblValue("respawnsLeft", userUnitPreset, 0)
         }
 
         let group = unitsGroups?[unitName]

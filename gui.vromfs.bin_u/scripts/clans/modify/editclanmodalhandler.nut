@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -13,7 +20,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
   function createView()
   {
     return {
-      windowHeader = ::loc("clan/edit_clan_wnd_title")
+      windowHeader = loc("clan/edit_clan_wnd_title")
       hasClanTypeSelect = false
       hasClanNameSelect = true
       hasClanSloganSelect = true
@@ -41,7 +48,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     if (!clanData.isRegionChangeAvailable())
     {
       let regionChangeTime = clanData.getRegionChangeAvailableTime()
-      let regionChangeTimeText = ::loc(
+      let regionChangeTimeText = loc(
         "clan/clan_can_change_region_in",
         {time = time.buildDateTimeStr(regionChangeTime)}
       )
@@ -133,7 +140,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     let changedPrimary = hasChangedPrimaryInfo()
     let changedSecondary = hasChangedSecondaryInfo()
     let cost = getCost(changedPrimary, changedSecondary)
-    setSubmitButtonText(::loc("clan/btnSaveClanInfo"), cost)
+    setSubmitButtonText(loc("clan/btnSaveClanInfo"), cost)
   }
 
   function onSubmit()
@@ -154,7 +161,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
       let text = changedPrimary && newClanType.getPrimaryInfoChangeCost() > ::zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
-      let msgText = ::warningIfGold(format(::loc(text), cost.getTextAccordingToBalance()), cost)
+      let msgText = ::warningIfGold(format(loc(text), cost.getTextAccordingToBalance()), cost)
       this.msgBox("need_money", msgText, [["ok", function() { editClanInfo() }],
         ["cancel"]], "ok")
     }
@@ -172,7 +179,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     adminMode = ::clan_get_admin_editor_mode()
     myRights = []
     if (isMyClan || adminMode)
-      myRights = ::clan_get_role_rights(adminMode ? ::ECMR_CLANADMIN : ::clan_get_my_role())
+      myRights = ::clan_get_role_rights(adminMode ? ECMR_CLANADMIN : ::clan_get_my_role())
 
     updateButtons()
   }
@@ -182,7 +189,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     let canUpgrade = clanData.clanType.canUpgradeMembers(clanData.mlimit)
     let haveLeaderRight = isInArray("LEADER", myRights)
 
-    let upgradeMembersButtonVisible = ::has_feature("ClanUpgradeMembers") &&
+    let upgradeMembersButtonVisible = hasFeature("ClanUpgradeMembers") &&
                           ((isMyClan && haveLeaderRight) || adminMode) &&
                           canUpgrade
 
@@ -190,7 +197,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     {
       let cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.clanType.getMembersUpgradeCost(clanData.mlimit)
       let upgStep = clanData.clanType.getMembersUpgradeStep()
-      placePriceTextToButton(scene, "btn_upg_members", ::loc("clan/members_upgrade_button", {step = upgStep}), cost)
+      placePriceTextToButton(scene, "btn_upg_members", loc("clan/members_upgrade_button", {step = upgStep}), cost)
     }
 
     this.showSceneBtn("btn_upg_members", upgradeMembersButtonVisible)
@@ -204,7 +211,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     if (::check_balance_msgBox(cost))
     {
       let step = clanData.clanType.getMembersUpgradeStep()
-      let msgText = ::warningIfGold(::loc("clan/needMoneyQuestion_upgradeMembers",
+      let msgText = ::warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,
             cost = cost.getTextAccordingToBalance()
           }),
@@ -250,7 +257,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     if ((!isMyClan || !isInArray("LEADER", myRights)) && !::clan_get_admin_editor_mode())
       return;
 
-    this.msgBox("disband_clan", ::loc("clan/disbandClanConfirmation"),
+    this.msgBox("disband_clan", loc("clan/disbandClanConfirmation"),
       [
         ["yes", function()
         {

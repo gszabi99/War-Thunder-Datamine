@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
@@ -28,7 +35,7 @@ local function localizeSystemMsg(msg)
       continue
 
     localized = true
-    let locText = ::loc(ending, "")
+    let locText = loc(ending, "")
     local playerName = ::g_string.slice(msg, 0, -ending.len() - 1)
     playerName = platformModule.getPlayerName(playerName)
     if (locText != "")
@@ -38,7 +45,7 @@ local function localizeSystemMsg(msg)
     break
   }
   if (!localized)
-    msg = ::loc(msg)
+    msg = loc(msg)
   return msg
 }
 
@@ -59,13 +66,13 @@ local function colorMyNameInText(msg)
     let nameEndPos = nameStartPos + ::my_user_name.len();
     counter = nameEndPos;
 
-    if (::isInArray(msg.slice(nameStartPos-1, nameStartPos), ::punctuation_list) &&
-        ::isInArray(msg.slice(nameEndPos, nameEndPos+1),     ::punctuation_list))
+    if (isInArray(msg.slice(nameStartPos-1, nameStartPos), ::punctuation_list) &&
+        isInArray(msg.slice(nameEndPos, nameEndPos+1),     ::punctuation_list))
     {
       let msgStart = msg.slice(0, nameStartPos);
       let msgEnd = msg.slice(nameEndPos);
       let msgName = msg.slice(nameStartPos, nameEndPos);
-      let msgProcessedPart = msgStart + ::colorize(::g_chat.color.senderMe[false], msgName)
+      let msgProcessedPart = msgStart + colorize(::g_chat.color.senderMe[false], msgName)
       msg = msgProcessedPart + msgEnd;
       counter = msgProcessedPart.len();
     }
@@ -75,7 +82,7 @@ local function colorMyNameInText(msg)
   return msg
 }
 
-local function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
+let function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
     important = false, needCensore = false) {
   let text = ""
   local clanTag = ""
@@ -126,7 +133,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
     if (overlaySystemColor) {
       msgColor = overlaySystemColor
     }
-    else if (!myPrivate && ::isPlayerNickInContacts(from, ::EPL_BLOCKLIST))
+    else if (!myPrivate && ::isPlayerNickInContacts(from, EPL_BLOCKLIST))
     {
       if (privateMsg)
         return null
@@ -151,7 +158,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
   }
 
   if (msgColor != "")
-    msg = ::colorize(msgColor, msg)
+    msg = colorize(msgColor, msg)
 
   return {
     fullName = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(from), clanTag)
@@ -177,7 +184,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
   }
 }
 
-::newRoom <- function newRoom(id, customScene = null, ownerHandler = null) {
+let function newRoom(id, customScene = null, ownerHandler = null) {
   let rType = ::g_chat_room_type.getRoomType(id)
   local r = {
     id = id
@@ -248,7 +255,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
     }
 
     function getLogForBanhammer() {
-      let log = mBlocks.map(@(mBlock) {
+      let logObj = mBlocks.map(@(mBlock) {
         from = mBlock.from
         userColor = mBlock.userColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(mBlock.userColor, "@")) : ""
         fromUid = mBlock.uid
@@ -257,7 +264,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
         msgColor = mBlock.msgColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(mBlock.msgColor, "@")) : ""
         sTime = mBlock.sTime
       })
-      return chatLogFormatForBanhammer().__merge({ chatLog = log })
+      return chatLogFormatForBanhammer().__merge({ chatLog = logObj })
     }
 
     getRoomName = @(isColored = false) rType.getRoomName(id, isColored)
@@ -266,7 +273,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
   return r
 }
 
-::initChatMessageListOn <- function initChatMessageListOn(sceneObject, handler, customRoomId = null) {
+let function initChatMessageListOn(sceneObject, handler, customRoomId = null) {
   let messages = []
   for (local i = 0; i < ::g_chat.getMaxRoomMsgAmount(); i++) {
     messages.append({ childIndex = i });
@@ -278,7 +285,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
 }
 
 return {
-  newRoom = newRoom
-  newMessage = newMessage
-  initChatMessageListOn = initChatMessageListOn
+  newRoom
+  newMessage
+  initChatMessageListOn
 }

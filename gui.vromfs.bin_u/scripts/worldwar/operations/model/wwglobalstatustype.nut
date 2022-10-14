@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let { refreshGlobalStatusData,
@@ -89,7 +96,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
       foreach(mapId, map in mapsList)
-        cachedList[mapId] <-::WwQueue(map, ::getTblValue(mapId, data))
+        cachedList[mapId] <-::WwQueue(map, getTblValue(mapId, data))
     }
   }
 

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isDataBlock } = require("%sqstd/underscore.nut")
@@ -60,11 +67,11 @@ let class TrophyMultiAward
       key = (awardType == "") ? "multiAward/name/count" : "multiAward/name/count/singleType"
     else
       key = (awardType == "") ? "multiAward/name" : "multiAward/name/singleType"
-    return ::loc(key,
+    return loc(key,
                  {
-                   awardType = ::loc("multiAward/type/" + awardType)
+                   awardType = loc("multiAward/type/" + awardType)
                    awardCost = getCost().tostring()
-                   awardCount = showCount ? ::colorize(headerActiveColor, getCount()) : ""
+                   awardCount = showCount ? colorize(headerActiveColor, getCount()) : ""
                  })
   }
 
@@ -74,10 +81,10 @@ let class TrophyMultiAward
     if (resDesc != "")
       return resDesc
 
-    local header = ::colorize(headerColor, getName())
+    local header = colorize(headerColor, getName())
     if (blk?.fromLastBattle)
     {
-      local text = ::loc("multiAward/fromLastBattle")
+      local text = loc("multiAward/fromLastBattle")
       if (useBoldAsSmaller)
         text = "<b>" + text + "</b>"
       header += "\n" + text
@@ -95,7 +102,7 @@ let class TrophyMultiAward
     if (!textList.len())
       return header
 
-    textList.insert(0, header + ::loc("ui/colon"))
+    textList.insert(0, header + loc("ui/colon"))
     return ::g_string.implode(textList, (skipUnconditional && count == 1) ? "\n" : listDiv)
   }
 
@@ -111,7 +118,7 @@ let class TrophyMultiAward
         return ""
 
       let uTypes = ::u.map(awardBlk % "type",
-                                 function(t) { return ::colorize(goodsColor, ::loc("multiAward/type/" + t)) }.bindenv(this))
+                                 function(t) { return colorize(goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
       return ::g_string.implode(uTypes, listDiv)
     }
 
@@ -120,8 +127,8 @@ let class TrophyMultiAward
       if (skipUnconditional)
         return ""
 
-      local res = ::colorize(goodsColor, ::loc("multiAward/type/modification"))
-      res += ::colorize(condColor, " x" + awardBlk.paramCount())
+      local res = colorize(goodsColor, loc("multiAward/type/modification"))
+      res += colorize(condColor, " x" + awardBlk.paramCount())
       return res
     }
 
@@ -131,7 +138,7 @@ let class TrophyMultiAward
         return ""
 
       let uTypes = ::u.map(awardBlk % "resourceType",
-                                 function(t) { return ::colorize(goodsColor, ::loc("multiAward/type/" + t)) }.bindenv(this))
+                                 function(t) { return colorize(goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
       return ::g_string.implode(uTypes, listDiv)
     }
 
@@ -140,8 +147,8 @@ let class TrophyMultiAward
     {
       let count = awardBlk?.count ?? 1
       res = "".concat(
-        ::colorize(goodsColor, ::loc("multiAward/type/" + curAwardType)),
-        ::colorize(condColor, " x" + count))
+        colorize(goodsColor, loc("multiAward/type/" + curAwardType)),
+        colorize(condColor, " x" + count))
     }
 
     local conditions = getConditionsText(awardBlk)
@@ -170,7 +177,7 @@ let class TrophyMultiAward
   function _addCondExistingUnit(awardBlk, condList)
   {
     if (awardBlk?.forExistingUnits)
-      condList.append(::loc("conditions/unitExists"))
+      condList.append(loc("conditions/unitExists"))
   }
 
   function _addCondSpecialization(awardBlk, condList)
@@ -178,8 +185,8 @@ let class TrophyMultiAward
     if ((awardBlk?.specAce ?? false) == (awardBlk?.aceExpert ?? false))
       return
 
-    let text = ::loc(blk?.specAce ? "crew/qualification/1" : "crew/qualification/2")
-    condList.append(::colorize(condColor, text))
+    let text = loc(blk?.specAce ? "crew/qualification/1" : "crew/qualification/2")
+    condList.append(colorize(condColor, text))
   }
 
   function _addCondCountries(awardBlk, condList)
@@ -188,9 +195,9 @@ let class TrophyMultiAward
     if (!countries.len())
       return
 
-    local text = ::loc("options/country") + ::loc("ui/colon")
+    local text = loc("options/country") + loc("ui/colon")
     countries = ::u.map(countries,
-                            function(val) { return ::colorize(condColor ::loc(val)) }.bindenv(this))
+                            function(val) { return colorize(condColor loc(val)) }.bindenv(this))
     text += ::g_string.implode(countries, ", ")
     condList.append(text)
   }
@@ -201,18 +208,18 @@ let class TrophyMultiAward
     if (!ranks.len())
       return
 
-    local text = ::loc("shop/age") + ::loc("ui/colon")
+    local text = loc("shop/age") + loc("ui/colon")
     ranks = ::u.map(ranks,
                         function(val) {
                           if (typeof(val) != "instance" || !(val instanceof ::Point2))
                             return ""
 
-                          let res = ::colorize(condColor, ::get_roman_numeral(val.x))
+                          let res = colorize(condColor, ::get_roman_numeral(val.x))
                           if (val.x == val.y)
                             return res
 
                           let div = (val.y - val.x == 1) ? ", " : "-"
-                          return res + div + ::colorize(condColor, ::get_roman_numeral(val.y))
+                          return res + div + colorize(condColor, ::get_roman_numeral(val.y))
                         }.bindenv(this))
 
     text += ::g_string.implode(ranks, ", ")
@@ -225,14 +232,14 @@ let class TrophyMultiAward
     if (!classes.len())
       return
 
-    local text = ::loc("unit_type") + ::loc("ui/colon")
+    local text = loc("unit_type") + loc("ui/colon")
     classes = ::u.map(classes,
                           function(val) {
                             local role = val.tolower()
                             role = ::g_string.cutPrefix(role, "exp_", role)
                             if (role == "aircraft")
-                              return ::colorize(condColor, ::loc("unlockTag/unit_aircraft"))
-                            return ::colorize(condColor, getRoleText(role))
+                              return colorize(condColor, loc("unlockTag/unit_aircraft"))
+                            return colorize(condColor, getRoleText(role))
                           }.bindenv(this))
 
     text += ::g_string.implode(classes, ", ")

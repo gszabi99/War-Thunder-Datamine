@@ -39,9 +39,20 @@
         "missionGetBalanceLevel": {
           "input_var": "at_matching_rank"
         },
-        "comment": {
-          "value": "activating matching ranks"
-        },
+        "comment": [
+          {
+            "value": "activating matching ranks"
+          },
+          {
+            "value": "creating name for t1 assaults and it's cover"
+          },
+          {
+            "value": "creating name for t1 assaults and it's cover"
+          },
+          {
+            "value": ""
+          }
+        ],
         "triggerActivate": [
           {
             "target": "at_matching_0_3",
@@ -79,7 +90,32 @@
             "check_trigger_status": false,
             "after_activation": "disable"
           }
-        ]
+        ],
+        "varSetString": [
+          {
+            "value": "at_t1_assault",
+            "var": "at_assaults_t1_name"
+          },
+          {
+            "value": "at_t1_fighter",
+            "var": "at_assaults_t1_cover_name"
+          },
+          {
+            "value": "at_t2_assault",
+            "var": "at_assaults_t2_name"
+          },
+          {
+            "value": "at_t2_fighter",
+            "var": "at_assaults_t2_cover_name"
+          }
+        ],
+        "unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": [
+            "@at_assaults_t1_name",
+            "@at_assaults_t2_name"
+          ]
+        }
       },
       "else_actions": {}
     },
@@ -296,9 +332,6 @@
       "actions": {
         "comment": [
           {
-            "value": "creating name for t1 assaults and it's cover"
-          },
-          {
             "value": "getting random name withing 1-3"
           },
           {
@@ -308,24 +341,14 @@
             "value": "check game mode"
           }
         ],
-        "varSetString": [
-          {
-            "value": "at_t1_assault",
-            "var": "at_assaults_t1_name"
-          },
-          {
-            "value": "at_t1_fighter",
-            "var": "at_assaults_t1_cover_name"
-          },
-          {
-            "value": "at_assaults_t1_spawn_",
-            "var": "at_assaults_t1_spawn_name"
-          }
-        ],
         "varSetRandomInt": {
           "var": "at_assaults_t1_spawn_random_idx",
           "from": 1,
           "to_not_including": 5
+        },
+        "varSetString": {
+          "value": "at_assaults_t1_spawn_",
+          "var": "at_assaults_t1_spawn_name"
         },
         "varAddString": {
           "value": "@at_assaults_t1_spawn_random_idx",
@@ -379,9 +402,6 @@
       "actions": {
         "comment": [
           {
-            "value": "creating name for t1 assaults and it's cover"
-          },
-          {
             "value": "getting random name withing 1-3"
           },
           {
@@ -391,24 +411,14 @@
             "value": "check game mode"
           }
         ],
-        "varSetString": [
-          {
-            "value": "at_t2_assault",
-            "var": "at_assaults_t2_name"
-          },
-          {
-            "value": "at_t2_fighter",
-            "var": "at_assaults_t2_cover_name"
-          },
-          {
-            "value": "at_assaults_t2_spawn_",
-            "var": "at_assaults_t2_spawn_name"
-          }
-        ],
         "varSetRandomInt": {
           "var": "at_assaults_t2_spawn_random_idx",
           "from": 1,
           "to_not_including": 5
+        },
+        "varSetString": {
+          "value": "at_assaults_t2_spawn_",
+          "var": "at_assaults_t2_spawn_name"
         },
         "varAddString": {
           "value": "@at_assaults_t2_spawn_random_idx",
@@ -1032,10 +1042,6 @@
           "target": "@at_assaults_t1_spawn_name",
           "resetFormation": false
         },
-        "unitLoadBehTree": {
-          "name": "missionAssault",
-          "objects": "@at_assaults_t1_name"
-        },
         "unitSetProperties": {
           "object_marking": 0,
           "object_var_name": "",
@@ -1186,10 +1192,6 @@
           "target": "@at_assaults_t2_spawn_name",
           "resetFormation": false
         },
-        "unitLoadBehTree": {
-          "name": "missionAssault",
-          "objects": "@at_assaults_t2_name"
-        },
         "unitSetProperties": {
           "object_marking": 0,
           "object_var_name": "",
@@ -1311,6 +1313,9 @@
       "actions": {
         "comment": [
           {
+            "value": "sett attacck flag off"
+          },
+          {
             "value": "govorim assaltam letet' k celi"
           },
           {
@@ -1326,30 +1331,13 @@
             "value": "vklyuchaem miganie na karte"
           },
           {
-            "value": "zapuskaem otobrazhenie indikatorvo snizu"
-          },
-          {
-            "value": "vklyuchaem proverku na dostizhenie celi"
-          },
-          {
-            "value": "vydaem obzhektiv komande A"
-          },
-          {
-            "value": "vydaem obzhektiv komande B"
-          },
-          {
-            "value": "vklyuchaem trigery otslezhivaniya obzhektivov"
-          },
-          {
-            "value": "vklyuchaem trigger na smert' assaltov"
-          },
-          {
-            "value": "vklyuchaem proverku na detekt"
-          },
-          {
-            "value": ""
+            "value": "enabling trigggers"
           }
         ],
+        "varSetBool": {
+          "value": false,
+          "var": "at_t1_attack_done"
+        },
         "varSetString": {
           "value": "at_t1_matching_move_",
           "var": "at_matching_t1_move_trigger_name"
@@ -1364,19 +1352,14 @@
             "target": "@at_matching_t1_move_trigger_name"
           },
           {
-            "target": "at_assaults_t1_indicators"
-          },
-          {
             "target": [
               "at_assaults_t1_check_distance_target",
-              "at_assaults_t1_lost_target"
+              "at_assaults_t1_lost_target_check",
+              "at_assaults_check_t1_dead",
+              "at_t1_is_detect_alowed",
+              "at_t1_check_out_area",
+              "at_assaults_t1_indicators"
             ]
-          },
-          {
-            "target": "at_assaults_check_t1_dead"
-          },
-          {
-            "target": "at_t1_is_detect_alowed"
           }
         ],
         "wait": {
@@ -1442,30 +1425,6 @@
           "object_var_value": 0,
           "target": "@at_assaults_t1_name",
           "team": "Both"
-        },
-        "__moAddMissionObjective": [
-          {
-            "target": "bfd_t1_assaults_defend",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0,
-            "unit_or_area": "@at_assaults_t1_name",
-            "object_type": "isActive"
-          },
-          {
-            "target": "bfd_t2_assaults_attack",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0,
-            "unit_or_area": "@at_assaults_t1_name",
-            "object_type": "isActive"
-          }
-        ],
-        "__triggerEnable": {
-          "target": [
-            "at_assaults_t1_def_objective_update",
-            "at_assaults_t2_kill_objective_update"
-          ]
         }
       },
       "else_actions": {
@@ -1506,6 +1465,9 @@
       "actions": {
         "comment": [
           {
+            "value": "sett attacck flag off"
+          },
+          {
             "value": "govorim assaltam letet' k celi"
           },
           {
@@ -1521,27 +1483,13 @@
             "value": "vklyuchaem miganie na karte"
           },
           {
-            "value": "zapuskaem otobrazhenie indikatorvo snizu"
-          },
-          {
-            "value": "vklyuchaem proverku na dostizhenie celi"
-          },
-          {
-            "value": "vydaem obzhektiv komande A"
-          },
-          {
-            "value": "vydaem obzhektiv komande B"
-          },
-          {
-            "value": "vklyuchaem trigery otslezhivaniya obzhektivov"
-          },
-          {
-            "value": "vklyuchaem trigger na smert' assaltov"
-          },
-          {
-            "value": "vklyuchaem proverku na detekt"
+            "value": "enabling trigggers"
           }
         ],
+        "varSetBool": {
+          "value": false,
+          "var": "at_t1_attack_done"
+        },
         "varSetString": {
           "value": "at_t2_matching_move_",
           "var": "at_matching_t2_move_trigger_name"
@@ -1556,49 +1504,18 @@
             "target": "@at_matching_t2_move_trigger_name"
           },
           {
-            "target": "at_assaults_t2_indicators"
-          },
-          {
             "target": [
               "at_assaults_t2_check_distance_target",
-              "at_assaults_t2_lost_target"
+              "at_assaults_t2_lost_target_check",
+              "at_assaults_check_t2_dead",
+              "at_t2_is_detect_alowed",
+              "at_t2_check_out_area",
+              "at_assaults_t2_indicators"
             ]
-          },
-          {
-            "target": "at_assaults_check_t2_dead"
-          },
-          {
-            "target": "at_t2_is_detect_alowed"
           }
         ],
         "wait": {
           "time": 1.0
-        },
-        "__unitMoveTo": {
-          "object_marking": 0,
-          "target": "@at_assaults_t2_target_name",
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": true,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
-          "object": "@at_assaults_t2_name",
-          "altRange": [
-            1200.0,
-            1500.0
-          ]
         },
         "unitMoveTo": {
           "object_marking": 0,
@@ -1660,30 +1577,6 @@
           "object_var_value": 0,
           "target": "@at_assaults_t2_name",
           "team": "Both"
-        },
-        "__moAddMissionObjective": [
-          {
-            "target": "bfd_t1_assaults_attack",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0,
-            "unit_or_area": "@at_assaults_t2_name",
-            "object_type": "isActive"
-          },
-          {
-            "target": "bfd_t2_assaults_defend",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0,
-            "unit_or_area": "@at_assaults_t2_name",
-            "object_type": "isActive"
-          }
-        ],
-        "__triggerEnable": {
-          "target": [
-            "at_assaults_t2_def_objective_update",
-            "at_assaults_t1_kill_objective_update"
-          ]
         }
       },
       "else_actions": {
@@ -1742,20 +1635,15 @@
             "value": "govorim atakovat' cel'"
           },
           {
+            "value": "settiing flag that attack has been started"
+          },
+          {
             "value": "vklyuchaem proverku na dostizhenie konechnoj tochki"
-          },
-          {
-            "value": "prekrashchaem slezhenie za poterej celi"
           }
         ],
-        "triggerDisable": [
-          {
-            "target": "at_assaults_t1_lost_target"
-          },
-          {
-            "target": "at_assaults_t1_lost_target"
-          }
-        ],
+        "triggerDisable": {
+          "target": "at_assaults_t1_lost_target_check"
+        },
         "unitMoveTo": {
           "object_marking": 0,
           "target": "at_assaults_t1_retreat_point",
@@ -1788,6 +1676,10 @@
           "target": "@at_assaults_t1_target_name",
           "fireRandom": true,
           "attackNumMax": 3
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "at_t1_attack_done"
         },
         "triggerEnable": {
           "target": "at_assaults_t1_check_evacuate"
@@ -1841,20 +1733,15 @@
             "value": "govorim atakovat' cel'"
           },
           {
+            "value": "settiing flag that attack has been started"
+          },
+          {
             "value": "vklyuchaem proverku na dostizhenie konechnoj tochki"
-          },
-          {
-            "value": "prekrashchaem slezhenie za poterej celi"
           }
         ],
-        "triggerDisable": [
-          {
-            "target": "at_assaults_t2_lost_target"
-          },
-          {
-            "target": "at_assaults_t2_lost_target"
-          }
-        ],
+        "triggerDisable": {
+          "target": "at_assaults_t2_lost_target_check"
+        },
         "unitMoveTo": {
           "object_marking": 0,
           "target": "at_assaults_t2_retreat_point",
@@ -1887,6 +1774,10 @@
           "target": "@at_assaults_t2_target_name",
           "fireRandom": true,
           "attackNumMax": 3
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "at_t2_attack_done"
         },
         "triggerEnable": {
           "target": "at_assaults_t2_check_evacuate"
@@ -2022,7 +1913,8 @@
         "triggerDisable": {
           "target": [
             "at_assaults_t1_def_objective_update",
-            "at_assaults_t2_kill_objective_update"
+            "at_assaults_t2_kill_objective_update",
+            "at_t1_check_out_area"
           ]
         },
         "moSetObjectiveStatus": [
@@ -2266,7 +2158,8 @@
         "triggerDisable": {
           "target": [
             "at_assaults_t2_def_objective_update",
-            "at_assaults_t1_kill_objective_update"
+            "at_assaults_t1_kill_objective_update",
+            "at_t2_check_out_area"
           ]
         },
         "moSetObjectiveStatus": [
@@ -2716,7 +2609,10 @@
         ],
         "triggerDisable": [
           {
-            "target": "at_assaults_t1_check_evacuate"
+            "target": [
+              "at_assaults_t1_check_evacuate",
+              "at_t1_check_out_area"
+            ]
           },
           {
             "target": [
@@ -2725,7 +2621,7 @@
             ]
           },
           {
-            "target": "at_assaults_t1_lost_target"
+            "target": "at_assaults_t1_lost_target_check"
           }
         ],
         "moSetObjectiveStatus": [
@@ -2905,7 +2801,10 @@
         ],
         "triggerDisable": [
           {
-            "target": "at_assaults_t2_check_evacuate"
+            "target": [
+              "at_assaults_t2_check_evacuate",
+              "at_t2_check_out_area"
+            ]
           },
           {
             "target": [
@@ -2914,7 +2813,7 @@
             ]
           },
           {
-            "target": "at_assaults_t2_lost_target"
+            "target": "at_assaults_t2_lost_target_check"
           }
         ],
         "moSetObjectiveStatus": [
@@ -3032,7 +2931,7 @@
       },
       "else_actions": {}
     },
-    "at_assaults_t1_lost_target": {
+    "at_assaults_t1_lost_target_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -3053,46 +2952,20 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@at_assaults_t1_target_name",
-          "object_var_value": 0
+          "object": "@at_assaults_t1_target_name"
         }
       },
       "actions": {
-        "comment": [
-          {
-            "value": "govorim chto ne nuzhen spavn assaltov i ohrany"
-          },
-          {
-            "value": "skidyvaem schetchik popytok poiska novoj celi"
-          },
-          {
-            "value": "ubiraem nachal'nuyu zaderzhku respauna"
-          },
-          {
-            "value": "cel' poteryana. probuem najti novuyu"
-          }
-        ],
-        "varSetBool": {
-          "value": false,
-          "var": "at_assaults_t1_spawn_need"
+        "comment": {
+          "value": "trying to find new target"
         },
-        "varSetInt": [
-          {
-            "value": 0,
-            "var": "at_assaults_t1_tries_to_finding_target"
-          },
-          {
-            "value": 1,
-            "var": "at_assaults_t1_additional_delay_timer"
-          }
-        ],
         "triggerEnable": {
-          "target": "at_assaults_t1_sub_init"
+          "target": "at_assaults_t1_find_new_target"
         }
       },
       "else_actions": {}
     },
-    "at_assaults_t2_lost_target": {
+    "at_assaults_t2_lost_target_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -3118,34 +2991,9 @@
         }
       },
       "actions": {
-        "comment": [
-          {
-            "value": "govorim chto ne nuzhen spavn assaltov i ohrany"
-          },
-          {
-            "value": "skidyvaem schetchik popytok poiska novoj celi"
-          },
-          {
-            "value": "ubiraem nachal'nuyu zaderzhku respauna"
-          },
-          {
-            "value": "cel' poteryana. probuem najti novuyu"
-          }
-        ],
-        "varSetBool": {
-          "value": false,
-          "var": "at_assaults_t2_spawn_need"
+        "comment": {
+          "value": "trying to find new target"
         },
-        "varSetInt": [
-          {
-            "value": 0,
-            "var": "at_assaults_t2_tries_to_finding_target"
-          },
-          {
-            "value": 1,
-            "var": "at_assaults_t2_additional_delay_timer"
-          }
-        ],
         "triggerEnable": {
           "target": "at_assaults_t2_sub_init"
         }
@@ -4237,6 +4085,104 @@
         "unitPutToSleep": {
           "target": "@at_assaults_t2_cover_name",
           "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": {}
+    },
+    "at_assaults_t1_find_new_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "govorim chto ne nuzhen spavn assaltov i ohrany"
+          },
+          {
+            "value": "skidyvaem schetchik popytok poiska novoj celi"
+          },
+          {
+            "value": "ubiraem nachal'nuyu zaderzhku respauna"
+          },
+          {
+            "value": "cel' poteryana. probuem najti novuyu"
+          }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "at_assaults_t1_spawn_need"
+        },
+        "varSetInt": [
+          {
+            "value": 0,
+            "var": "at_assaults_t1_tries_to_finding_target"
+          },
+          {
+            "value": 1,
+            "var": "at_assaults_t1_additional_delay_timer"
+          }
+        ],
+        "triggerEnable": {
+          "target": "at_assaults_t1_sub_init"
+        }
+      },
+      "else_actions": {}
+    },
+    "at_assaults_t2_find_new_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "govorim chto ne nuzhen spavn assaltov i ohrany"
+          },
+          {
+            "value": "skidyvaem schetchik popytok poiska novoj celi"
+          },
+          {
+            "value": "ubiraem nachal'nuyu zaderzhku respauna"
+          },
+          {
+            "value": "cel' poteryana. probuem najti novuyu"
+          }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "at_assaults_t2_spawn_need"
+        },
+        "varSetInt": [
+          {
+            "value": 0,
+            "var": "at_assaults_t2_tries_to_finding_target"
+          },
+          {
+            "value": 1,
+            "var": "at_assaults_t2_additional_delay_timer"
+          }
+        ],
+        "triggerEnable": {
+          "target": "at_assaults_t2_sub_init"
         }
       },
       "else_actions": {}
@@ -6632,6 +6578,208 @@
           }
         }
       }
+    },
+    "at_battle_area_checks": {
+      "isCategory": true,
+      "is_enabled": true,
+      "at_t1_check_out_area": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 30.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "all",
+            "object": "@at_assaults_t1_name",
+            "target": "flt_battle_area"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "units are n area. do nothing"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "units are left area and it's strange"
+          },
+          "triggerEnable": {
+            "target": "at_t1_check_attack_done"
+          }
+        }
+      },
+      "at_t1_check_attack_done": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "at_t1_attack_done",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "attackas are done need to complete"
+            },
+            {
+              "value": "they are not dead"
+            }
+          ],
+          "unitPutToSleep": {
+            "target": "@at_assaults_t1_name"
+          },
+          "triggerDisable": {
+            "target": "at_assaults_check_t1_dead"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "reload for beh tree to fix posssible AI code glitches"
+            },
+            {
+              "value": "choosing new target"
+            }
+          ],
+          "unitLoadBehTree": [
+            {
+              "name": "missionAssault",
+              "objects": "@at_assaults_t1_name"
+            },
+            {
+              "name": "missionFighter",
+              "objects": "@at_assaults_t1_cover_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "at_assaults_t1_find_new_target"
+          }
+        }
+      },
+      "at_t2_check_out_area": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 30.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "all",
+            "object": "@at_assaults_t2_name",
+            "target": "flt_battle_area"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "units are n area. do nothing"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "units are left area and it's strange"
+          },
+          "triggerEnable": {
+            "target": "at_t2_check_attack_done"
+          }
+        }
+      },
+      "at_t2_check_attack_done": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "at_t2_attack_done",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "attackas are done need to complete"
+            },
+            {
+              "value": "they are not dead"
+            }
+          ],
+          "unitPutToSleep": {
+            "target": "@at_assaults_t2_name"
+          },
+          "triggerDisable": {
+            "target": "at_assaults_check_t2_dead"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "reload for beh tree to fix posssible AI code glitches"
+            },
+            {
+              "value": "choosing new target"
+            }
+          ],
+          "unitLoadBehTree": [
+            {
+              "name": "missionAssault",
+              "objects": "@at_assaults_t2_name"
+            },
+            {
+              "name": "missionFighter",
+              "objects": "@at_assaults_t2_cover_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "at_assaults_t2_find_new_target"
+          }
+        }
+      }
     }
   },
   "mission_objectives": {
@@ -6746,7 +6894,9 @@
     "at_assaults_t2_target_choise": 0,
     "at_assaults_pve_mode": false,
     "at_t1_hunter_name": "ht_t1_hunter",
-    "at_t2_hunter_name": "ht_t2_hunter"
+    "at_t2_hunter_name": "ht_t2_hunter",
+    "at_t1_attack_done": false,
+    "at_t2_attack_done": false
   },
   "dialogs": {},
   "airfields": {},

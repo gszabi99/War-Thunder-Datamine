@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
@@ -29,12 +36,12 @@ local ItemGenerator = class {
     genType = itemDefDesc?.type ?? ""
     exchange = itemDefDesc?.exchange ?? ""
     bundle   = itemDefDesc?.bundle ?? ""
-    isPack   = ::isInArray(genType, [ "bundle", "delayedexchange" ])
+    isPack   = isInArray(genType, [ "bundle", "delayedexchange" ])
     tags     = itemDefDesc?.tags
     timestamp = itemDefDesc?.Timestamp ?? ""
     rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
     let lifetimeModifierText = itemDefDesc?.lifetime_modifier
-    if (!u.isEmpty(lifetimeModifierText))
+    if (!::u.isEmpty(lifetimeModifierText))
       lifetimeModifier = ItemLifetimeModifier(lifetimeModifierText)
   }
 
@@ -47,7 +54,7 @@ local ItemGenerator = class {
     if (lifetimeModifier != null)
     {
       let mul = lifetimeModifier.calculate()
-      result = max(1, round(result * mul))
+      result = max(1, ::round(result * mul))
     }
     return result
   }

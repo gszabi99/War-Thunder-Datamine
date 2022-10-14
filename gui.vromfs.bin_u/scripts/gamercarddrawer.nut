@@ -1,5 +1,13 @@
-enum GamercardDrawerState
-{
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+enum GamercardDrawerState {
   STATE_CLOSED
   STATE_OPENING
   STATE_OPENED
@@ -26,7 +34,7 @@ enum GamercardDrawerState
     if (currentState == GamercardDrawerState.STATE_OPENED
         || currentState == GamercardDrawerState.STATE_OPENING)
       return true
-    return currentVisible && ::check_obj(currentTarget)
+    return currentVisible && checkObj(currentTarget)
   }
 
   function closeDrawer()
@@ -99,7 +107,7 @@ enum GamercardDrawerState
 
   function openCurTargetIfNeeded()
   {
-    if (!currentVisible || !::checkObj(currentTarget))
+    if (!currentVisible || !checkObj(currentTarget))
       return
 
     setShowContent(currentTarget)

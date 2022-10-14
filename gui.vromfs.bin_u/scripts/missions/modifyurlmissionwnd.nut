@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let regexp2 = require("regexp2")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
@@ -22,7 +31,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
   function initScreen()
   {
-    let title = urlMission ? ::loc("urlMissions/modify") : ::loc("urlMissions/add")
+    let title = urlMission ? loc("urlMissions/modify") : loc("urlMissions/add")
     scene.findObject("title").setValue(title)
 
     if (urlMission)
@@ -30,7 +39,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
       scene.findObject("name_editbox").setValue(urlMission.name)
       scene.findObject("url_editbox").setValue(urlMission.url)
     } else
-      scene.findObject("btn_apply").setValue(::loc("chat/create"))
+      scene.findObject("btn_apply").setValue(loc("chat/create"))
 
     ::select_editbox(scene.findObject("name_editbox"))
   }
@@ -72,7 +81,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
   function onApply()
   {
     if (!isValuesValid)
-      return ::showInfoMsgBox(::loc("msg/allFieldsMustBeFilled"))
+      return ::showInfoMsgBox(loc("msg/allFieldsMustBeFilled"))
 
     local res = true
     let name = clearBorderSymbols(curName, [" "])

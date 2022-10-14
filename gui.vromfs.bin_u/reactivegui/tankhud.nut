@@ -1,3 +1,6 @@
+from "%rGui/globals/ui_library.nut" import *
+
+let cross_call = require("%rGui/globals/cross_call.nut")
 let { mkRadar} = require("radarComponent.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
@@ -28,7 +31,7 @@ let radarPosComputed = Computed(@() [bw.value + 0.06 * rw.value, bh.value + 0.03
 let function Root() {
   let colorWacthed = Watched(greenColor)
   let colorAlertWatched = Watched(redColor)
-  let isTankGunsAmmoVisible = ::cross_call.isVisibleTankGunsAmmoIndicator()
+  let isTankGunsAmmoVisible = cross_call.isVisibleTankGunsAmmoIndicator()
 
   return {
     halign = ALIGN_LEFT
@@ -60,7 +63,7 @@ let tankXrayIndicator = @() {
   behavior = Behaviors.RecalcHandler
   function onRecalcLayout(_initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-      ::cross_call.update_damage_panel_state({
+      cross_call.update_damage_panel_state({
         pos = [elem.getScreenPosX(), elem.getScreenPosY()]
         size = [elem.getWidth(), elem.getHeight()]
         visible = true
@@ -104,7 +107,7 @@ let function tankDmgIndicator() {
     size = dmgIndicatorStates.value.size
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    image = ::Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorStates.value.size[0]}:{dmgIndicatorStates.value.size[1]}" )
+    image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorStates.value.size[0]}:{dmgIndicatorStates.value.size[1]}" )
     children
   }
 }

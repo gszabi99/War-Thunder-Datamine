@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 enum MAP_PREVIEW_TYPE {
   MISSION_MAP
   DYNAMIC_SUMMARY
@@ -11,19 +18,19 @@ enum MAP_PREVIEW_TYPE {
 
 //add or replace (by scene) preview to show.
 //obj is scene to check visibility and modal counter (not a obj with tqactical map behavior)
-g_map_preview.setMapPreview <- function setMapPreview(mapObj, missionBlk)
+::g_map_preview.setMapPreview <- function setMapPreview(mapObj, missionBlk)
 {
   setPreview(MAP_PREVIEW_TYPE.MISSION_MAP, mapObj, missionBlk)
 }
 
-g_map_preview.setSummaryPreview <- function setSummaryPreview(mapObj, missionBlk, mapName)
+::g_map_preview.setSummaryPreview <- function setSummaryPreview(mapObj, missionBlk, mapName)
 {
   setPreview(MAP_PREVIEW_TYPE.DYNAMIC_SUMMARY, mapObj, missionBlk, mapName)
 }
 
-g_map_preview.setPreview <- function setPreview(previewType, mapObj, missionBlk, param = null)
+::g_map_preview.setPreview <- function setPreview(previewType, mapObj, missionBlk, param = null)
 {
-  if (!::check_obj(mapObj))
+  if (!checkObj(mapObj))
     return
 
   local preview = findPreview(mapObj)
@@ -41,7 +48,7 @@ g_map_preview.setPreview <- function setPreview(previewType, mapObj, missionBlk,
   refreshCurPreview(preview == curPreview)
 }
 
-g_map_preview.createPreview <- function createPreview(previewType, missionBlk, mapObj, param)
+::g_map_preview.createPreview <- function createPreview(previewType, missionBlk, mapObj, param)
 {
   let preview = {
     type = previewType
@@ -49,7 +56,7 @@ g_map_preview.createPreview <- function createPreview(previewType, missionBlk, m
     obj = mapObj
     param = param
 
-    isValid = @() ::check_obj(obj)
+    isValid = @() checkObj(obj)
     isEmpty = @() !blk
     isInCurGuiScene = @() obj.getScene().isEqual(::get_cur_gui_scene())
     show = function(shouldShow)
@@ -62,12 +69,12 @@ g_map_preview.createPreview <- function createPreview(previewType, missionBlk, m
   return preview
 }
 
-g_map_preview.findPreview <- function findPreview(obj)
+::g_map_preview.findPreview <- function findPreview(obj)
 {
-  return ::u.search(list, (@(obj) function(p) { return ::check_obj(p.obj) && p.obj.isEqual(obj) })(obj))
+  return ::u.search(list, (@(obj) function(p) { return checkObj(p.obj) && p.obj.isEqual(obj) })(obj))
 }
 
-g_map_preview.hideCurPreview <- function hideCurPreview()
+::g_map_preview.hideCurPreview <- function hideCurPreview()
 {
   if (!curPreview)
     return
@@ -76,10 +83,10 @@ g_map_preview.hideCurPreview <- function hideCurPreview()
   curPreview = null
 }
 
-g_map_preview.refreshCurPreview <- function refreshCurPreview(isForced = false)
+::g_map_preview.refreshCurPreview <- function refreshCurPreview(isForced = false)
 {
   validateList()
-  let newPreview = ::getTblValue(0, list)
+  let newPreview = getTblValue(0, list)
   if (!newPreview || !newPreview.isInCurGuiScene())
   {
     hideCurPreview()
@@ -98,7 +105,7 @@ g_map_preview.refreshCurPreview <- function refreshCurPreview(isForced = false)
     ::dynamic_load_summary(curPreview.param, curPreview.blk)
 }
 
-g_map_preview.validateList <- function validateList()
+::g_map_preview.validateList <- function validateList()
 {
   for(local i = list.len() - 1; i >= 0; i--)
     if (!list[i].isValid() || list[i].isEmpty())
@@ -114,7 +121,7 @@ g_map_preview.validateList <- function validateList()
   })
 }
 
-g_map_preview.getMissionBriefingConfig <- function getMissionBriefingConfig(mission)
+::g_map_preview.getMissionBriefingConfig <- function getMissionBriefingConfig(mission)
 {
   let config = ::DataBlock()
   let blk = ::g_mislist_type.isUrlMission(mission)
@@ -128,6 +135,6 @@ g_map_preview.getMissionBriefingConfig <- function getMissionBriefingConfig(miss
 }
 
 
-g_map_preview.onEventActiveHandlersChanged <- function onEventActiveHandlersChanged(p) { refreshCurPreview() }
+::g_map_preview.onEventActiveHandlersChanged <- function onEventActiveHandlersChanged(p) { refreshCurPreview() }
 
 ::subscribe_handler(::g_map_preview, ::g_listener_priority.DEFAULT_HANDLER)

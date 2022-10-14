@@ -1,7 +1,13 @@
-::_generateCoverMission <- function _generateCoverMission(isFreeFlight, createGroundUnitsProc)
-{
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
+} = require("%scripts/dynamic/misGenFuncTools.nut")
+
+let function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   let mission_preset_name = "cover_bombers_preset01";
-  ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/"+mission_preset_name+".blk");
+  ::mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk");
   let playerSide = ::mgGetPlayerSide();
   let enemySide = ::mgGetEnemySide();
   let bombtargets = createGroundUnitsProc(enemySide);
@@ -15,13 +21,15 @@
   let wpMax = ws.dynPlanesMaxCost;
   let playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
   local playerPlaneCost = ::getAircraftCost(playerFighterPlane);
-  if (playerPlaneCost == 0){playerPlaneCost = 250}
+  if (playerPlaneCost == 0)
+    playerPlaneCost = 250
 
-  let enemyFighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
+  let enemyFighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
   local enemyPlaneCost = ::getAircraftCost(enemyFighterPlane);
-  if (enemyPlaneCost == 0){enemyPlaneCost = 250}
+  if (enemyPlaneCost == 0)
+    enemyPlaneCost = 250
 
-  let planeCost = ::planeCostCalculate(playerPlaneCost, enemyPlaneCost);
+  let planeCost = planeCostCalculate(playerPlaneCost, enemyPlaneCost);
 
 //bombers count
   local bombersCount = 0;
@@ -36,48 +44,42 @@
   let carrier_count = ::mgGetUnitsCount("#bomb_targets_carrier");
   let bombTargets_count = ::mgGetUnitsCount("#bomb_target_buildings");
 
-  if (bombTargets_count > 0)
-  {
+  if (bombTargets_count > 0) {
     bombersCount = ::rndRangeInt(bombTargets_count*0.5, bombTargets_count*2);
     ground_type = "building";
     squad_type = "#bomb_target_buildings";
     allyBomberPlane = ::getAircraftDescription(playerSide, "bomber", ["bomber"],
-                                              ["bomb"], false, 0, wpMax);
+      ["bomb"], false, 0, wpMax);
   }
-  else if ( tanks_count > 0 && tanks_count > light_count && tanks_count > art_count)
-  {
+  else if ( tanks_count > 0 && tanks_count > light_count && tanks_count > art_count) {
     bombersCount = ::rndRangeInt(tanks_count, tanks_count*3);
     ground_type = "tank";
     squad_type = "#bomb_targets_tanks";
     allyBomberPlane = ::getAircraftDescription(playerSide, "bomber", ["bomber"],
-                                              ["antiTankBomb"], false, 0, wpMax);
+      ["antiTankBomb"], false, 0, wpMax);
   }
-  else if (light_count > 0 && light_count > art_count)
-  {
+  else if (light_count > 0 && light_count > art_count) {
     bombersCount = ::rndRangeInt(light_count*0.5, light_count);
     ground_type = "truck";
     squad_type = "#bomb_targets_light";
     allyBomberPlane = ::getAircraftDescription(playerSide, "bomber", ["bomber"],
-                                              ["bomb"], false, 0, wpMax);
+      ["bomb"], false, 0, wpMax);
   }
-  else if (art_count > 0)
-  {
+  else if (art_count > 0) {
     bombersCount = ::rndRangeInt(art_count*0.5, art_count);
     ground_type = "artillery";
     squad_type = "#bomb_targets_art";
     allyBomberPlane = ::getAircraftDescription(playerSide, "bomber", ["bomber"],
-                                              ["bomb"], false, 0, wpMax);
+      ["bomb"], false, 0, wpMax);
   }
-  else if (carrier_count > 0)
-  {
+  else if (carrier_count > 0) {
     bombersCount = ::rndRangeInt(ships_count*8, ships_count*32);
     ground_type = "carrier";
     squad_type = "#bomb_targets_carrier";
     allyBomberPlane = ::getAircraftDescription(playerSide, "bomber", ["bomber"],
-                                              ["antiShipBomb"], false, 0, wpMax);
+      ["antiShipBomb"], false, 0, wpMax);
   }
-  else if (ships_count > 0)
-  {
+  else if (ships_count > 0) {
     bombersCount = ::rndRangeInt(ships_count*4, ships_count*8);
     ground_type = "destroyer";
     squad_type = "#bomb_targets_ships";
@@ -96,19 +98,16 @@
   ::mgReplace("triggers", "object", "#bomb_targets", squad_type);
   ::mgReplace("triggers", "target", "#bomb_targets", squad_type);
 
-  if (ground_type != "destroyer" && ground_type != "carrier")
-  {
+  if (ground_type != "destroyer" && ground_type != "carrier") {
     ::mgReplace("mission_settings/briefing/part", "target", "target_waypoint_bombers", squad_type);
     ::mgReplace("mission_settings/briefing/part", "lookAt", "target_waypoint_bombers", squad_type);
     ::mgReplace("mission_settings/briefing/part", "point", "target_waypoint_bombers", squad_type);
   }
 
-
   if (bombersCount < 8)
     bombersCount = 8;
   if (bombersCount > 24)
     bombersCount = 24;
-
 
 //fighters count calculate
   let allyFighterCountMin = (bombersCount*0.5)/1.5*planeCost-4;
@@ -119,7 +118,6 @@
   if (allyFightersCount > 16)
     allyFightersCount = 16;
 
-
   let enemyTotalCountMin = (bombersCount*0.5+allyFightersCount+4)*0.5/planeCost;
   let enemyTotalCountMax = (bombersCount+allyFightersCount+4)/planeCost;
   local enemyTotalCount = ::rndRangeInt(enemyTotalCountMin, enemyTotalCountMax);
@@ -127,7 +125,6 @@
     enemyTotalCount = 8;
   if (enemyTotalCount > 44)
     enemyTotalCount = 44;
-
 
 //wave count
   local enemyWaveCount = 0;
@@ -144,8 +141,7 @@
   local wave3 = 0;
   local j = 0;
 
-  do
-  {
+  do {
     j = ::rndRangeInt(1,3);
     if (j == 1 && wave1 == 0){wave1 = 1; --enemyWaveCount_temp}
     if (j == 2 && wave2 == 0){wave2 = 1; --enemyWaveCount_temp}
@@ -164,31 +160,24 @@
   local enemy2Count = 0;
   local enemy3Count = 0;
 
-
-  if (wave1 == 1)
-  {
+  if (wave1 == 1) {
     enemy1Count = enemyPlanesInWave*::rndRange(2/3.0,3/2.0);
-    if (enemy1Count < 8)
-    {
+    if (enemy1Count < 8) {
       enemy1Count = 8
     }
     enemyTotalCount_temp = enemyTotalCount_temp - enemy1Count;
     enemyWaveCount_temp = enemyWaveCount_temp - 1;
   }
-  if (wave2 == 1 && enemyWaveCount_temp > 0)
-  {
+  if (wave2 == 1 && enemyWaveCount_temp > 0) {
     enemy2Count = enemyTotalCount_temp/(enemyWaveCount_temp)*::rndRange(2/3.0,3/2.0);
-    if (enemy2Count < 8)
-    {
+    if (enemy2Count < 8) {
       enemy2Count = 8
     }
     enemyTotalCount_temp = enemyTotalCount_temp - enemy2Count;
   }
-  if (wave3 == 1 && enemyWaveCount_temp > 0)
-  {
+  if (wave3 == 1 && enemyWaveCount_temp > 0) {
     enemy3Count = enemyTotalCount_temp;
-    if (enemy3Count < 8)
-    {
+    if (enemy3Count < 8) {
       enemy3Count = 8
     }
   }
@@ -222,55 +211,52 @@
   ::mgSetupArea("enemy_evac", bombtargets, "player_start", evacAngle-180, 90000, 1000);
 
   ::mgSetupArea("enemy1_pointToFight", "player_start", bombtargets, 0,
-              playerSpeed*timeToEnemy1, rndHeight+::rndRange(0,2000));
+    playerSpeed*timeToEnemy1, rndHeight+::rndRange(0,2000));
   ::mgSetupArea("enemy1_start", "enemy1_pointToFight", bombtargets, enemy1Angle,
-              enemy1Speed*timeToEnemy1, 0);
+    enemy1Speed*timeToEnemy1, 0);
 
   ::mgSetupArea("enemy2_pointToFight", "enemy1_pointToFight", bombtargets, 0,
-              playerSpeed*timeToEnemy2, rndHeight+::rndRange(0,2000));
+    playerSpeed*timeToEnemy2, rndHeight+::rndRange(0,2000));
   ::mgSetupArea("enemy2_start", "enemy2_pointToFight", bombtargets, enemy2Angle,
-              enemy2Speed*timeToEnemy2, 0);
+    enemy2Speed*timeToEnemy2, 0);
 
   ::mgSetupArea("enemy3_start", bombtargets, "player_start", 180,
-              enemy3Speed*timeToEnemy3, rndHeight+::rndRange(0,2000));
+    enemy3Speed*timeToEnemy3, rndHeight+::rndRange(0,2000));
 
 
 //armada setup
-  ::mgSetupArmada("#player.fighter", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
-  ::mgSetupArmada("#player_cut.any", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
+  ::mgSetupArmada("#player.fighter", "player_start", ::Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
+  ::mgSetupArmada("#player_cut.any", "player_start", ::Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
   ::gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter");
 
-  ::mgSetupArmada("#ally01.bomber", "#player.fighter", Point3(200, -200, 0), bombtargets,
-                "#ally_bombers_group", bombersCount, bombersCount, allyBomberPlane);
+  ::mgSetupArmada("#ally01.bomber", "#player.fighter", ::Point3(200, -200, 0), bombtargets,
+    "#ally_bombers_group", bombersCount, bombersCount, allyBomberPlane);
 
   if (allyFighterCountMin != 0)
-    ::mgSetupArmada("#ally02.fighter", "#player.fighter", Point3(-500, 0, 0), bombtargets,
-                  "#ally_fighters_group", allyFighterCountMin, allyFighterCountMax, playerFighterPlane);
+    ::mgSetupArmada("#ally02.fighter", "#player.fighter", ::Point3(-500, 0, 0), bombtargets,
+      "#ally_fighters_group", allyFighterCountMin, allyFighterCountMax, playerFighterPlane);
 
 
-  if (wave1 == 1)
-  {
-    ::mgSetupArmada("#enemy01.fighter", "enemy1_start", Point3(0, 0, 0), "#ally01.bomber",
-                  "#enemy_attack_bombers01", enemy1Count/2, enemy1Count/2, enemyFighterPlane);
-    ::mgSetupArmada("#enemy02.fighter", "enemy1_start", Point3(-200, -200, 200), "#player.fighter",
-                  "#enemy_attack_fighters01", enemy1Count/2, enemy1Count/2, enemyFighterPlane);
+  if (wave1 == 1) {
+    ::mgSetupArmada("#enemy01.fighter", "enemy1_start", ::Point3(0, 0, 0), "#ally01.bomber",
+      "#enemy_attack_bombers01", enemy1Count/2, enemy1Count/2, enemyFighterPlane);
+    ::mgSetupArmada("#enemy02.fighter", "enemy1_start", ::Point3(-200, -200, 200), "#player.fighter",
+      "#enemy_attack_fighters01", enemy1Count/2, enemy1Count/2, enemyFighterPlane);
     ::mgSetBool("variables/e1_enable", true);
   }
-  if (wave2 == 1)
-  {
-    ::mgSetupArmada("#enemy03.fighter", "enemy2_start", Point3(0, 0, 0), "#ally01.bomber",
-                  "#enemy_attack_bombers02", enemy2Count/2, enemy2Count/2, enemyFighterPlane);
-    ::mgSetupArmada("#enemy04.fighter", "enemy2_start", Point3(-200, -200, 200), "#player.fighter",
-                  "#enemy_attack_fighters02", enemy2Count/2, enemy2Count/2, enemyFighterPlane);
+  if (wave2 == 1) {
+    ::mgSetupArmada("#enemy03.fighter", "enemy2_start", ::Point3(0, 0, 0), "#ally01.bomber",
+      "#enemy_attack_bombers02", enemy2Count/2, enemy2Count/2, enemyFighterPlane);
+    ::mgSetupArmada("#enemy04.fighter", "enemy2_start", ::Point3(-200, -200, 200), "#player.fighter",
+      "#enemy_attack_fighters02", enemy2Count/2, enemy2Count/2, enemyFighterPlane);
     ::mgSetBool("variables/e2_enable", true);
     ::mgSetInt("variables/enemy2_time", timeToEnemy1*60);
   }
-  if (wave3 == 1)
-  {
-    ::mgSetupArmada("#enemy05.fighter", "enemy3_start", Point3(0, 0, 0), "#ally01.bomber",
-                  "#enemy_attack_bombers03", enemy3Count/2, enemy3Count/2, enemyFighterPlane);
-    ::mgSetupArmada("#enemy06.fighter", "enemy3_start", Point3(-200, -200, 200), "#player.fighter",
-                  "#enemy_attack_fighters03", enemy3Count/2, enemy3Count/2, enemyFighterPlane);
+  if (wave3 == 1) {
+    ::mgSetupArmada("#enemy05.fighter", "enemy3_start", ::Point3(0, 0, 0), "#ally01.bomber",
+      "#enemy_attack_bombers03", enemy3Count/2, enemy3Count/2, enemyFighterPlane);
+    ::mgSetupArmada("#enemy06.fighter", "enemy3_start", ::Point3(-200, -200, 200), "#player.fighter",
+      "#enemy_attack_fighters03", enemy3Count/2, enemy3Count/2, enemyFighterPlane);
 
     ::mgSetBool("variables/e3_enable", true);
   }
@@ -280,11 +266,10 @@
   ::mgSetMinMaxAircrafts("ally", "bomber", 8, 24);
   ::mgSetMinMaxAircrafts("enemy", "fighter", 0, 44);
 
-
 //mission warpoint cost calculate
   let mission_mult = ::sqrt(enemyTotalCount/20.0+0.05);
   let missionWpCost = warpointCalculate(mission_preset_name, allyFightersCount+bombersCount*0.5, enemyCount, planeCost,
-                                          playerFighterPlane, mission_mult);
+    playerFighterPlane, mission_mult);
   ::mgSetInt("mission_settings/mission/wpAward", missionWpCost);
 
   ::mgSetEffShootingRate(0.1);
@@ -292,39 +277,35 @@
   if (playerFighterPlane == "" || allyBomberPlane == "")
     return
 
-  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
+  slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
 
   ::mgSetBool("variables/training_mode", isFreeFlight);
 
 //  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testBombing_cover_temp.blk");
   if (::mgFullLogs())
-    dagor.debug_dump_stack();
+    ::dagor.debug_dump_stack();
 
   ::mgAcceptMission();
 }
 
-
-
-
-missionGenFunctions.append( function(isFreeFlight)
-{
-   _generateCoverMission (isFreeFlight, function(enemySide)
-     {
-       return ::mgCreateGroundUnits(enemySide,
-         false, false,
-       {
-         heavy_vehicles = "#bomb_targets_tanks"
-         light_vehicles = "#bomb_targets_light"
-         infantry = "#bomb_target_cover"
-         air_defence = "#bomb_target_cover"
-         anti_tank = "#bomb_targets_art"
-         bombtarget = "#bomb_target_buildings"
-         ships = "#bomb_targets_ships"
-         carriers = "#bomb_targets_carrier"
-       }
-
-       )
-     }
-   );
+let function genCoverMission(isFreeFlight) {
+  generateCoverMission(isFreeFlight,
+    function(enemySide) {
+      return ::mgCreateGroundUnits(enemySide, false, false,
+        {
+          heavy_vehicles = "#bomb_targets_tanks"
+          light_vehicles = "#bomb_targets_light"
+          infantry = "#bomb_target_cover"
+          air_defence = "#bomb_target_cover"
+          anti_tank = "#bomb_targets_art"
+          bombtarget = "#bomb_target_buildings"
+          ships = "#bomb_targets_ships"
+          carriers = "#bomb_targets_carrier"
+        })
+    }
+  )
 }
-);
+
+return {
+  genCoverMission
+}

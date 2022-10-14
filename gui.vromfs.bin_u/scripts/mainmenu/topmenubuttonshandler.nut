@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
 ::gui_handlers.TopMenuButtonsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -23,7 +32,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     if (!::g_login.isLoggedIn())
       return null
 
-    if (!::check_obj(nestObj))
+    if (!checkObj(nestObj))
       return null
 
     let handler = ::handlersManager.loadHandler(::gui_handlers.TopMenuButtonsHandler, {
@@ -54,12 +63,12 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
   function getMaxSectionsCount()
   {
-    if (!::has_feature("SeparateTopMenuButtons"))
+    if (!hasFeature("SeparateTopMenuButtons"))
       return 1
 
-    if (!::check_obj(objForWidth))
+    if (!checkObj(objForWidth))
       objForWidth = scene
-    if (!::check_obj(objForWidth))
+    if (!checkObj(objForWidth))
       return 1
 
     let freeWidth = objForWidth.getSize()[0]
@@ -78,7 +87,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
   function getSectionsView()
   {
-    if (!::check_obj(scene))
+    if (!checkObj(scene))
       return {}
 
     initSectionsOrder()
@@ -144,7 +153,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
       obj = obj.getParent()
 
     let hover = obj.findObject(obj.id+"_list_hover")
-    if (::check_obj(hover)) {
+    if (checkObj(hover)) {
       let menu = obj.findObject(obj.id+"_focus")
       menu.getScene().applyPendingChanges(true)
       hover["height-end"] = menu.getSize()[1] + guiScene.calcString("@dropDownMenuBottomActivityGap", null)
@@ -155,7 +164,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
   function updateButtonsStatus()
   {
-    let needHideVisDisabled = ::has_feature("HideDisabledTopMenuActions")
+    let needHideVisDisabled = hasFeature("HideDisabledTopMenuActions")
     let isInQueue = ::checkIsInQueue()
     let skipNavigation = parentHandlerWeak?.scene
       .findObject("gamercard_div")["gamercardSkipNavigation"] == "yes"
@@ -164,7 +173,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     {
       let sectionId = section.getTopMenuButtonDivId()
       let sectionObj = scene.findObject(sectionId)
-      if (!::check_obj(sectionObj))
+      if (!checkObj(sectionObj))
         continue
 
       local isVisibleAnyButton = false
@@ -173,7 +182,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
         foreach (button in column)
         {
           let btnObj = sectionObj.findObject(button.id)
-          if (!::checkObj(btnObj))
+          if (!checkObj(btnObj))
             continue
 
           local isVisualDisable = button.isVisualDisabled()
@@ -208,7 +217,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
   function hideHoverMenu(name)
   {
     let obj = getObj(name)
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     obj["_size-timer"] = "0"
@@ -251,7 +260,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     }
 
     let buttonObj = scene.findObject(section.getTopMenuButtonDivId())
-    if (::checkObj(buttonObj))
+    if (checkObj(buttonObj))
       this[section.onClick](buttonObj)
   }
 
@@ -262,7 +271,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
       return
 
     let selObj = obj.getChild(curVal)
-    if (!::checkObj(selObj))
+    if (!checkObj(selObj))
       return
     let eventName = selObj?._on_click ?? selObj?.on_click ?? selObj?.on_change_value
     if (!eventName || !(eventName in this))

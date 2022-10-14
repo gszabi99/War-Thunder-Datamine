@@ -1,5 +1,8 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let interopGen = require("interopGen.nut")
 
+let {interop} = require("%rGui/globals/interop.nut")
 let modeNames =
 [
   "hud/standby",
@@ -207,18 +210,18 @@ radarState.__update({
   }
 )
 
-::interop.updateCurrentTime <- function(curr_time) {
+interop.updateCurrentTime <- function(curr_time) {
   radarState.currentTime(curr_time)
 }
 
 
-::interop.updateBlinking <- function(isTargetBlink, isSpeedBlink) {
+interop.updateBlinking <- function(isTargetBlink, isSpeedBlink) {
   radarState.selectedTargetBlinking(isTargetBlink)
   radarState.selectedTargetSpeedBlinking(isSpeedBlink)
 }
 
 
-::interop.clearTargets <- function() {
+interop.clearTargets <- function() {
   local needUpdate = false
   for(local i = 0; i < targets.len(); ++i) {
     if (targets[i] != null) {
@@ -232,7 +235,7 @@ radarState.__update({
 }
 
 
-::interop.updateTarget <- function (index,
+interop.updateTarget <- function (index,
                                     azimuth_rel, elevation_rel, distance_rel,
                                     azimuth_width_rel, elevation_width_rel, distance_width_rel,
                                     los_hor_speed, los_ver_speed, los_speed,
@@ -268,7 +271,7 @@ radarState.__update({
 
 const targetLifeTime = 5.0
 
-::interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked) {
+interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked) {
   if (!screenTargets)
     screenTargets = {}
 
@@ -304,7 +307,7 @@ const targetLifeTime = 5.0
   ScreenTargetsTrigger.trigger()
 }
 
-::interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg, is_selected, is_detected, is_enemy) {
+interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg, is_selected, is_detected, is_enemy) {
   if (!azimuthMarkers)
     azimuthMarkers = {}
 
@@ -335,7 +338,7 @@ const targetLifeTime = 5.0
 }
 
 
-::interop.resetTargetsFlags <- function() {
+interop.resetTargetsFlags <- function() {
   foreach(target in screenTargets)
     if (target)
       target.isUpdated = false
@@ -346,7 +349,7 @@ const targetLifeTime = 5.0
 }
 
 
-::interop.clearUnusedTargets <- function() {
+interop.clearUnusedTargets <- function() {
   local needUpdate = false
   foreach(id, target in screenTargets)
     if (target && !target.isUpdated) {
@@ -367,28 +370,28 @@ const targetLifeTime = 5.0
 }
 
 
-::interop.updateForestall <- function(x, y) {
+interop.updateForestall <- function(x, y) {
   forestall.x = x
   forestall.y = y
 }
 
 
-::interop.updateSelectedTarget <- function(x, y) {
+interop.updateSelectedTarget <- function(x, y) {
   selectedTarget.x = x
   selectedTarget.y = y
 }
 
-::interop.updateScanZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
+interop.updateScanZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
   ScanZoneWatched({x0, y0, x1, y1, x2, y2, x3, y3})
 }
 
-::interop.updateLockZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
+interop.updateLockZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
   LockZoneWatched({x0, x1, x2, x3, y0, y1, y2, y3})
 }
 
-::interop.updateLockZoneRotated <- function(_x0, _y0, _x1, _y1, _x2, _y2, _x3, _y3) {}
+interop.updateLockZoneRotated <- function(_x0, _y0, _x1, _y1, _x2, _y2, _x3, _y3) {}
 
-::interop.updateRadarPosSize <- function(x, y, w, h) {
+interop.updateRadarPosSize <- function(x, y, w, h) {
   radarPosSize({x, y, w, h})
 }
 

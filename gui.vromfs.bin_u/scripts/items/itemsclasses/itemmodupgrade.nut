@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.ModUpgrade <- class extends BaseItemModClass
@@ -14,7 +21,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   getConditionsBlk = @(configBlk) configBlk?.modUpgradeParams
 
-  getActivateInfo  = @() ::loc("item/modUpgrade/activateInModifications")
+  getActivateInfo  = @() loc("item/modUpgrade/activateInModifications")
 
   function initConditions(conditionsBlk)
   {
@@ -25,7 +32,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
   function getDescriptionIntroArray()
   {
     if (level)
-      return [ ::loc("multiplayer/level") + ::loc("ui/colon") + ::colorize("activeTextColor", level) ]
+      return [ loc("multiplayer/level") + loc("ui/colon") + colorize("activeTextColor", level) ]
     return null
   }
 
@@ -33,14 +40,14 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   function canActivateOnMod(unit, mod)
   {
-    if (modsList && !::isInArray(mod.name, modsList)
-      && !::isInArray(::get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, modsList))
+    if (modsList && !isInArray(mod.name, modsList)
+      && !isInArray(::get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, modsList))
       return false
-    if (countries && !::isInArray(unit.shopCountry, countries))
+    if (countries && !isInArray(unit.shopCountry, countries))
       return false
     if (rankRange && (unit.rank < rankRange.x || unit.rank > rankRange.y))
       return false
-    if (unitTypes && !::isInArray(unit.unitType.lowerName, unitTypes))
+    if (unitTypes && !isInArray(unit.unitType.lowerName, unitTypes))
       return false
     if (level - 1 != ::get_modification_level(unit.name, mod.name))
       return false

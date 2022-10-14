@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let penalty = require("penalty")
@@ -29,17 +34,17 @@ let getDevoiceMessage = function (activeColor = "chatActiveInfoColor") {
 
   local txt = ""
   if (st.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
-    txt += ::loc("charServer/mute/permanent") + "\n"
+    txt += loc("charServer/mute/permanent") + "\n"
   } else {
     let durationHours = time.secondsToHours(st.duration)
-    local timeText = ::colorize(activeColor, time.hoursToString(durationHours, false))
-    txt += format(::loc("charServer/mute/timed"), timeText)
+    local timeText = colorize(activeColor, time.hoursToString(durationHours, false))
+    txt += format(loc("charServer/mute/timed"), timeText)
 
     if (("seconds_left" in st) && st.seconds_left > 0) {
       let leftHours = time.secondsToHours(st.seconds_left)
-      timeText = ::colorize(activeColor, time.hoursToString(leftHours, false, true))
+      timeText = colorize(activeColor, time.hoursToString(leftHours, false, true))
       if (timeText != "") {
-        txt += " " + format(::loc("charServer/ban/timeLeft"), timeText)
+        txt += " " + format(loc("charServer/ban/timeLeft"), timeText)
       }
     } else if (::isInMenu()) {
       ::update_entitlements_limited()
@@ -50,9 +55,9 @@ let getDevoiceMessage = function (activeColor = "chatActiveInfoColor") {
     }
   }
 
-  txt += ::loc("charServer/ban/reason") + ::loc("ui/colon") + " " +
-    ::colorize(activeColor, ::loc("charServer/ban/reason/"+st.category)) + "\n" +
-    ::loc("charServer/ban/comment") + "\n" + st.comment
+  txt += loc("charServer/ban/reason") + loc("ui/colon") + " " +
+    colorize(activeColor, loc("charServer/ban/reason/"+st.category)) + "\n" +
+    loc("charServer/ban/comment") + "\n" + st.comment
   return txt
 }
 
@@ -63,7 +68,7 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
     return
   }
 
-  ::debugTableData(st, {recursionLevel = -1, addStr = "BAN "})
+  debugTableData(st, {recursionLevel = -1, addStr = "BAN "})
 
   local txt = ""
   local fn = function() {}
@@ -89,18 +94,18 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
   }
 
   if (st.duration >= penalty.BAN_USER_INFINITE_PENALTY || onlyDecalsDisabled) {
-    txt += ::loc("charServer/" + banType + "/permanent")
+    txt += loc("charServer/" + banType + "/permanent")
   } else {
     let timeLeft = time.secondsToHours(::get_time_till_decals_disabled() || st.seconds_left)
     let durationHours = time.secondsToHours(st.duration)
-    txt += format(::loc("charServer/" + banType + "/timed"), time.hoursToString(durationHours, false))
-    txt += " " + format(::loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))
+    txt += format(loc("charServer/" + banType + "/timed"), time.hoursToString(durationHours, false))
+    txt += " " + format(loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))
   }
 
   if (!onlyDecalsDisabled) {
-    txt += "\n" + ::loc("charServer/ban/reason") + ::loc("ui/colon") + " " +
-      ::colorize("highlightedTextColor", ::loc("charServer/ban/reason/"+st.category)) + "\n\n"
-    txt += ::loc("charServer/ban/comment") + "\n" + st.comment
+    txt += "\n" + loc("charServer/ban/reason") + loc("ui/colon") + " " +
+      colorize("highlightedTextColor", loc("charServer/ban/reason/"+st.category)) + "\n\n"
+    txt += loc("charServer/ban/comment") + "\n" + st.comment
   }
 
   if (txt != "") {

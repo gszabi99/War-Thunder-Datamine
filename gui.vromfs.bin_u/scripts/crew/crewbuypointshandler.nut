@@ -1,6 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
-::gui_handlers.CrewBuyPointsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.CrewBuyPointsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneTplName = "%gui/crew/crewBuyPoints"
@@ -10,7 +18,7 @@ let { format } = require("string")
   function initScreen()
   {
     buyPointsPacks = ::g_crew_points.getSkillPointsPacks(::g_crew.getCrewCountry(crew))
-    scene.findObject("wnd_title").setValue(::loc("mainmenu/btnBuySkillPoints"))
+    scene.findObject("wnd_title").setValue(loc("mainmenu/btnBuySkillPoints"))
 
     let rootObj = scene.findObject("wnd_frame")
     rootObj["class"] = "wnd"
@@ -26,7 +34,7 @@ let { format } = require("string")
     {
       let skills = pack.skills || 1
       let bonusDiscount = price ? ::floor(100.5 - 100.0 * pack.cost.gold / skills / price) : 0
-      let bonusText = bonusDiscount ? format(::loc("charServer/entitlement/discount"), bonusDiscount) : ""
+      let bonusText = bonusDiscount ? format(loc("charServer/entitlement/discount"), bonusDiscount) : ""
 
       rows.append({
         id = getRowId(idx)
@@ -68,7 +76,7 @@ let { format } = require("string")
 
   function onButtonRowApply(obj)
   {
-    if (!::check_obj(obj) || obj?.id != "buttonRowApply")
+    if (!checkObj(obj) || obj?.id != "buttonRowApply")
     {
       let tblObj = scene.findObject("buy_table")
       if (!tblObj?.isValid())
@@ -81,7 +89,7 @@ let { format } = require("string")
         obj = rowObj.findObject("buttonRowApply")
     }
 
-    if (::check_obj(obj))
+    if (checkObj(obj))
       doBuyPoints(obj)
   }
 
@@ -92,8 +100,8 @@ let { format } = require("string")
       return
 
     ::g_crew_points.buyPack(crew, buyPointsPacks[row],
-      ::Callback(goBack, this),
-      ::Callback(@() ::move_mouse_on_child(scene.findObject("buy_table"), row), this))
+      Callback(goBack, this),
+      Callback(@() ::move_mouse_on_child(scene.findObject("buy_table"), row), this))
   }
 
   function onEventModalWndDestroy(params)

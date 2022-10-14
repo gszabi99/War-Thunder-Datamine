@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 /*
    systemMsg  allow to send messages via config to localize and color on receiver side.
    It has short keys to be compact in json format allowed to use in irc chat etc.
@@ -81,7 +88,7 @@ let function registerColors(colorsTable) //tag = color
 {
   foreach(tag, color in colorsTable)
   {
-    ::dagor.assertf(!(tag in colors), "SystemMsg: Duplicate color tag: " + tag + " = " + color)
+    assert(!(tag in colors), "SystemMsg: Duplicate color tag: " + tag + " = " + color)
     colors[tag] <- color
   }
 }
@@ -90,7 +97,7 @@ let function registerLocTags(locTagsTable) //tag = locId
 {
   foreach(tag, locId in locTagsTable)
   {
-    ::dagor.assertf(!(tag in locTags), "SystemMsg: Duplicate locId tag: " + tag + " = " + locId)
+    assert(!(tag in locTags), "SystemMsg: Duplicate locId tag: " + tag + " = " + locId)
     locTags[tag] <- locId
   }
 }
@@ -130,7 +137,7 @@ let systemMsg = { //functons here need to be able recursive call self
       return ::g_string.implode(resArray, separator)
     }
     if (::u.isString(langConfig))
-      return ::loc(getLocId(langConfig), defaultLocValue)
+      return loc(getLocId(langConfig), defaultLocValue)
     return null
   }
 
@@ -167,11 +174,11 @@ let systemMsg = { //functons here need to be able recursive call self
           paramOut = param
         params[key] <- paramOut
       }
-      res = ::loc(getLocId(locId), params)
+      res = loc(getLocId(locId), params)
     }
 
     let colorName = getColorByTag(configTbl?[COLOR_ID])
-    res = ::colorize(colorName, res)
+    res = colorize(colorName, res)
     return res
   }
 
@@ -217,8 +224,8 @@ getroottable().dbgExample <- function(textObjId = "menu_chat_text")
   ])
 
   local res = systemMsg.jsonStringToLang(json)
-  local testObj = get_gui_scene()[textObjId]
-  if (::check_obj(testObj))
+  local testObj = ::get_gui_scene()[textObjId]
+  if (checkObj(testObj))
     testObj.setValue(res)
   return json
 }

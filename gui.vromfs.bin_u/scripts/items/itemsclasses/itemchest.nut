@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
@@ -72,7 +79,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
       return res
     if (isInventoryItem && amount)
       return {
-        btnName = ::loc("item/open")
+        btnName = loc("item/open")
       }
 
     return null
@@ -83,7 +90,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   isAllowSkipOpeningAnim    = @() itemDef?.tags.isAllowSkipOpeningAnim || ::is_dev_version
   getOpeningAnimId          = @() itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
   getConfirmMessageData    = @(recipe) getEmptyConfirmMessageData().__update({
-    text = ::loc(getLocIdsList().msgBoxConfirm, { itemName = ::colorize("activeTextColor", getName()) })
+    text = loc(getLocIdsList().msgBoxConfirm, { itemName = colorize("activeTextColor", getName()) })
     headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
     needRecipeMarkup = recipe.isMultipleItems
   })
@@ -120,7 +127,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   }
 
   function getDescHeaderFunction() {
-    return isContentPack() ? (@(fixedAmount = 1) ::loc("trophy/chest_contents/all"))
+    return isContentPack() ? (@(fixedAmount = 1) loc("trophy/chest_contents/all"))
       : _getDescHeader
   }
 
@@ -154,15 +161,15 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   function _getDescHeader(fixedAmount = 1)
   {
     let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
-    let headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
-    return ::colorize("grayOptionColor", headerText)
+    let headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
+    return colorize("grayOptionColor", headerText)
   }
 
   function getHiddenItemsDesc()
   {
     if (!getGenerator()?.hasHiddenItems || !getContent().len())
       return null
-    return ::colorize("grayOptionColor", ::loc("trophy/chest_contents/other"))
+    return colorize("grayOptionColor", loc("trophy/chest_contents/other"))
   }
 
   function getHiddenTopPrizeParams()
@@ -209,7 +216,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     openingRewardTitle           = "mainmenu/chestConsumed/title"
   })
 
-  needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy")
+  needShowDropChance = @() hasFeature("ShowDropChanceInTrophy")
     && ((itemDef?.tags?.showDropChance ?? false)
       || getCategoryWeight().len() > 0)
 
@@ -225,7 +232,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   }
 
   canOpenForGold = @() itemDef?.tags.openForGoldByFeature != null
-    && ::has_feature(itemDef.tags.openForGoldByFeature)
+    && hasFeature(itemDef.tags.openForGoldByFeature)
   hasUsableRecipe = @() getRelatedRecipes().findvalue(@(recipe) recipe.isUsable) != null
   getOpenForGoldRecipe = @() getRelatedRecipes().findvalue(
     (@(recipe) recipe.getOpenCost(this) != null).bindenv(this))
@@ -244,7 +251,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
     let item = this
     let text = ::warningIfGold(
-      ::loc("item/openForGold/needMoneyQuestion", { itemName = getName(), cost = cost.getTextAccordingToBalance() }),
+      loc("item/openForGold/needMoneyQuestion", { itemName = getName(), cost = cost.getTextAccordingToBalance() }),
       cost)
     ::scene_msg_box("open_ches_for_gold", null, text, [
       [ "yes", @() openForGoldRecipe.buyAllRequiredComponets(item) ],
@@ -263,7 +270,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
   function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "") {
     if (canOpenForGold())
-      return ::loc($"{getLocIdsList().descReceipesListHeaderPrefix}item")
+      return loc($"{getLocIdsList().descReceipesListHeaderPrefix}item")
 
     return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
   }

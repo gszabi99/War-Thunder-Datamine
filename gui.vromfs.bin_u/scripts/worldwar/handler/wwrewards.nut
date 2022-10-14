@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.WwRewards <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -19,15 +28,15 @@ let time = require("%scripts/time.nut")
   function initScreen()
   {
     rewardsListObj = scene.findObject("rewards_list")
-    if (!::check_obj(rewardsListObj))
+    if (!checkObj(rewardsListObj))
       return goBack()
 
     let wndTitle = ::g_string.implode([
-      (lbMode ? ::loc("worldwar/leaderboard/" + lbMode) : ""),
-      (lbDay ? ::loc("enumerated_day", {number=lbDay}) : !isClanRewards ? ::loc("worldwar/allSeason") : ""),
-      (lbMap ? lbMap.getNameText() : ::loc("worldwar/allMaps")),
-      (lbCountry ? ::loc(lbCountry) : ::loc("worldwar/allCountries")),
-    ], ::loc("ui/comma")) + " " + ::loc("ui/mdash") + " " + ::loc("worldwar/btn_rewards")
+      (lbMode ? loc("worldwar/leaderboard/" + lbMode) : ""),
+      (lbDay ? loc("enumerated_day", {number=lbDay}) : !isClanRewards ? loc("worldwar/allSeason") : ""),
+      (lbMap ? lbMap.getNameText() : loc("worldwar/allMaps")),
+      (lbCountry ? loc(lbCountry) : loc("worldwar/allCountries")),
+    ], loc("ui/comma")) + " " + loc("ui/mdash") + " " + loc("worldwar/btn_rewards")
     scene.findObject("wnd_title").setValue(wndTitle)
 
     this.showSceneBtn("nav-help", true)
@@ -87,21 +96,21 @@ let time = require("%scripts/time.nut")
   {
     if (!tillPlace)
       tillPlace = ::g_clan_type.NORMAL.maxMembers
-    return ::loc(isClan ? "multiplayer/clan_place" : "multiplayer/place") + ::loc("ui/colon")
-      + ((tillPlace - prevPlace == 1) ? tillPlace : (prevPlace + 1) + ::loc("ui/mdash") + tillPlace)
+    return loc(isClan ? "multiplayer/clan_place" : "multiplayer/place") + loc("ui/colon")
+      + ((tillPlace - prevPlace == 1) ? tillPlace : (prevPlace + 1) + loc("ui/mdash") + tillPlace)
   }
 
   function getRewardTitle(tillPlace, prevPlace)
   {
     if (!tillPlace)
-      return ::loc("multiplayer/place/to_other")
+      return loc("multiplayer/place/to_other")
 
     if (tillPlace - prevPlace == 1)
       return tillPlace <= 3
-        ? ::loc("clan/season_award/place/place" + tillPlace)
-        : ::loc("clan/season_award/place/placeN", { placeNum = tillPlace })
+        ? loc("clan/season_award/place/place" + tillPlace)
+        : loc("clan/season_award/place/placeN", { placeNum = tillPlace })
 
-    return ::loc("clan/season_award/place/top", { top = tillPlace })
+    return loc("clan/season_award/place/top", { top = tillPlace })
   }
 
   function getRewardsView()
@@ -163,7 +172,7 @@ let time = require("%scripts/time.nut")
   {
     local text = ""
     if (rewardsTime > 0)
-      text = ::loc("worldwar/rewards_start_time") + ::loc("ui/colon") +
+      text = loc("worldwar/rewards_start_time") + loc("ui/colon") +
         time.buildDateTimeStr(rewardsTime, false, false)
     scene.findObject("statusbar_text").setValue(text)
   }

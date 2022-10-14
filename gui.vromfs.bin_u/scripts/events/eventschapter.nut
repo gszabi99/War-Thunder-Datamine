@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::EventChapter <- class
 {
   name = ""
@@ -14,7 +21,7 @@
 
   function getLocName()
   {
-    return ::loc("events/chapter/" + name)
+    return loc("events/chapter/" + name)
   }
 
   function getEvents()
@@ -130,7 +137,7 @@
 
   function addChapter(chapter_name)
   {
-    chapters.append(EventChapter(chapter_name))
+    chapters.append(::EventChapter(chapter_name))
     sortChapters()
   }
 

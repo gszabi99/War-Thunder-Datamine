@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let stdMath = require("%sqstd/math.nut")
 
 const RICOCHET_DATA_ANGLE = 30
@@ -13,39 +20,39 @@ const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
 /*************************************PUBLIC FUNCTIONS *******************************************/
 /*************************************************************************************************/
 
-g_dmg_model.getDmgModelBlk <- function getDmgModelBlk()
+::g_dmg_model.getDmgModelBlk <- function getDmgModelBlk()
 {
   let blk = ::DataBlock()
   blk.load("config/damageModel.blk")
   return blk
 }
 
-g_dmg_model.getExplosiveBlk <- function getExplosiveBlk()
+::g_dmg_model.getExplosiveBlk <- function getExplosiveBlk()
 {
   let blk = ::DataBlock()
   blk.load("gameData/damage_model/explosive.blk")
   return blk
 }
 
-g_dmg_model.getRicochetData <- function getRicochetData(presetName)
+::g_dmg_model.getRicochetData <- function getRicochetData(presetName)
 {
   initRicochetDataOnce()
   return ricochetDataByPreset?[presetName]
 }
 
-g_dmg_model.getTntEquivalentText <- function getTntEquivalentText(explosiveType, explosiveMass)
+::g_dmg_model.getTntEquivalentText <- function getTntEquivalentText(explosiveType, explosiveMass)
 {
   if(explosiveType == "tnt")
     return ""
   let blk = getExplosiveBlk()
-  ::dagor.assertf(!!blk?.explosiveTypes, "ERROR: Can't load explosiveTypes from explosive.blk")
+  assert(!!blk?.explosiveTypes, "ERROR: Can't load explosiveTypes from explosive.blk")
   let explMassInTNT = blk?.explosiveTypes?[explosiveType]?.strengthEquivalent ?? 0
   if (!explosiveMass || explMassInTNT <= 0)
     return ""
   return ::g_dmg_model.getMeasuredExplosionText(explosiveMass.tofloat() * explMassInTNT)
 }
 
-g_dmg_model.getMeasuredExplosionText <- function getMeasuredExplosionText(weightValue)
+::g_dmg_model.getMeasuredExplosionText <- function getMeasuredExplosionText(weightValue)
 {
   local typeName = "kg"
   if (weightValue < 1.0)
@@ -56,7 +63,7 @@ g_dmg_model.getMeasuredExplosionText <- function getMeasuredExplosionText(weight
   return ::g_measure_type.getTypeByName(typeName, true).getMeasureUnitsText(weightValue)
 }
 
-g_dmg_model.getDestructionInfoTexts <- function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass)
+::g_dmg_model.getDestructionInfoTexts <- function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass)
 {
   let res = {
     maxArmorPenetrationText = ""
@@ -104,12 +111,12 @@ g_dmg_model.getDestructionInfoTexts <- function getDestructionInfoTexts(explosiv
 /************************************PRIVATE FUNCTIONS *******************************************/
 /*************************************************************************************************/
 
-g_dmg_model.resetData <- function resetData()
+::g_dmg_model.resetData <- function resetData()
 {
   ricochetDataByPreset = null
 }
 
-g_dmg_model.getLinearValueFromP2blk <- function getLinearValueFromP2blk(blk, x)
+::g_dmg_model.getLinearValueFromP2blk <- function getLinearValueFromP2blk(blk, x)
 {
   local pMin = null
   local pMax = null
@@ -136,7 +143,7 @@ g_dmg_model.getLinearValueFromP2blk <- function getLinearValueFromP2blk(blk, x)
 }
 
 /** Returns -1 if no such angle found. */
-g_dmg_model.getAngleByProbabilityFromP2blk <- function getAngleByProbabilityFromP2blk(blk, x)
+::g_dmg_model.getAngleByProbabilityFromP2blk <- function getAngleByProbabilityFromP2blk(blk, x)
 {
   for (local i = 0; i < blk.paramCount() - 1; ++i)
   {
@@ -167,7 +174,7 @@ g_dmg_model.getAngleByProbabilityFromP2blk <- function getAngleByProbabilityFrom
 }
 
 /** Returns -1 if nothing found. */
-g_dmg_model.getMaxProbabilityFromP2blk <- function getMaxProbabilityFromP2blk(blk)
+::g_dmg_model.getMaxProbabilityFromP2blk <- function getMaxProbabilityFromP2blk(blk)
 {
   local result = -1
   for (local i = 0; i < blk.paramCount(); ++i)
@@ -179,7 +186,7 @@ g_dmg_model.getMaxProbabilityFromP2blk <- function getMaxProbabilityFromP2blk(bl
   return result
 }
 
-g_dmg_model.initRicochetDataOnce <- function initRicochetDataOnce()
+::g_dmg_model.initRicochetDataOnce <- function initRicochetDataOnce()
 {
   if (ricochetDataByPreset)
     return
@@ -192,7 +199,7 @@ g_dmg_model.initRicochetDataOnce <- function initRicochetDataOnce()
   let ricBlk = blk?.ricochetPresets
   if (!ricBlk)
   {
-    ::dagor.assertf(false, "ERROR: Can't load ricochetPresets from damageModel.blk")
+    assert(false, "ERROR: Can't load ricochetPresets from damageModel.blk")
     return
   }
 
@@ -204,7 +211,7 @@ g_dmg_model.initRicochetDataOnce <- function initRicochetDataOnce()
   }
 }
 
-g_dmg_model.getRicochetDataByPreset <- function getRicochetDataByPreset(presetDataBlk)
+::g_dmg_model.getRicochetDataByPreset <- function getRicochetDataByPreset(presetDataBlk)
 {
   let res = {
     angleProbabilityMap = []
@@ -246,7 +253,7 @@ g_dmg_model.getRicochetDataByPreset <- function getRicochetDataByPreset(presetDa
   return res
 }
 
-g_dmg_model.getRichochetPresetBlk <- function getRichochetPresetBlk(presetData)
+::g_dmg_model.getRichochetPresetBlk <- function getRichochetPresetBlk(presetData)
 {
   if (presetData == null)
     return null
@@ -271,7 +278,7 @@ g_dmg_model.getRichochetPresetBlk <- function getRichochetPresetBlk(presetData)
   return presetData
 }
 
-g_dmg_model.calcDestroyRadiusNotArmored <- function calcDestroyRadiusNotArmored(shattersParamsBlk, fillingRatio, brisanceMass)
+::g_dmg_model.calcDestroyRadiusNotArmored <- function calcDestroyRadiusNotArmored(shattersParamsBlk, fillingRatio, brisanceMass)
 {
   if (!::u.isDataBlock(shattersParamsBlk) || !brisanceMass)
     return 0
@@ -287,7 +294,7 @@ g_dmg_model.calcDestroyRadiusNotArmored <- function calcDestroyRadiusNotArmored(
   return 0
 }
 
-g_dmg_model.onEventSignOut <- function onEventSignOut(p)
+::g_dmg_model.onEventSignOut <- function onEventSignOut(p)
 {
   resetData()
 }

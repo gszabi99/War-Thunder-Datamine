@@ -1,10 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getCdBaseDifficulty } = ::require_native("guiOptions")
-local { getActionBarUnitName } = ::require_native("hudActionBar")
+let { getCdBaseDifficulty } = require_native("guiOptions")
+local { getActionBarUnitName } = require_native("hudActionBar")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -27,7 +36,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
   multipleInstances = false
-  wndGameMode = ::GM_TEST_FLIGHT
+  wndGameMode = GM_TEST_FLIGHT
   wndOptionsMode = ::OPTIONS_MODE_TRAINING
   afterCloseFunc = null
   shouldSkipUnitCheck = false
@@ -50,7 +59,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     let btnBuilder = this.showSceneBtn("btn_builder", hasMissionBuilder)
     if (hasMissionBuilder)
-      btnBuilder.setValue(::loc("mainmenu/btnBuilder"))
+      btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     this.showSceneBtn("btn_select", true)
 
     needSlotbar = needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
@@ -80,7 +89,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     else
     {
       let unitNestObj = scene.findObject("unit_nest")
-      if (::checkObj(unitNestObj))
+      if (checkObj(unitNestObj))
       {
         let airData = ::build_aircraft_item(unit.name, unit)
         guiScene.appendWithBlk(unitNestObj, airData, this)
@@ -149,7 +158,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
   function getCantFlyText(checkUnit)
   {
     return !checkUnit.unitType.isAvailable() ?
-      ::loc("mainmenu/unitTypeLocked") : checkUnit.unitType.getTestFlightUnavailableText()
+      loc("mainmenu/unitTypeLocked") : checkUnit.unitType.getTestFlightUnavailableText()
   }
 
   function updateOptionsArray()
@@ -170,7 +179,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     let skin_options = [
       [::USEROPT_SKIN, "spinner"]
     ]
-    if (::has_feature("UserSkins"))
+    if (hasFeature("UserSkins"))
       skin_options.append([::USEROPT_USER_SKIN, "spinner"])
 
     options.extend(skin_options)
@@ -226,10 +235,10 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     textObj.setValue(showOptions? "" : getCantFlyText(unit))
 
     let hObj = scene.findObject("header_name")
-    if (!::checkObj(hObj))
+    if (!checkObj(hObj))
       return
 
-    let headerText = unit.unitType.getTestFlightText() + " " + ::loc("ui/mdash") + " " + ::getUnitName(unit.name)
+    let headerText = unit.unitType.getTestFlightText() + " " + loc("ui/mdash") + " " + ::getUnitName(unit.name)
     hObj.setValue(headerText)
 
     if (!showOptions)
@@ -242,7 +251,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     ::aircraft_for_weapons = unit.name
     ::set_gui_option(::USEROPT_AIRCRAFT, unit.name)
 
-    let container = create_options_container("testflight_options", options, true, 0.5, true, optionsConfig)
+    let container = ::create_options_container("testflight_options", options, true, 0.5, true, optionsConfig)
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
     optionsContainers = [container.descr]
@@ -251,7 +260,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function isBuilderAvailable()
   {
-    return ::isUnitAvailableForGM(unit, ::GM_BUILDER)
+    return ::isUnitAvailableForGM(unit, GM_BUILDER)
   }
   function isTestFlightAvailable()
   {
@@ -260,7 +269,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function updateButtons()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     scene.findObject("btn_builder").inactiveColor = isBuilderAvailable() ? "no" : "yes"
@@ -271,7 +280,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
-        maxSquadSize = ::get_max_players_for_gamemode(::GM_BUILDER)
+        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
 
@@ -281,7 +290,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
       if (needSlotbar) // There is a slotbar in this scene
         this.msgBox("not_available",
-          ::loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
+          loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
         ::gui_start_modal_wnd(::gui_handlers.changeAircraftForBuilder, { shopAir = unit })
@@ -312,7 +321,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if (!isTestFlightAvailable())
       return this.msgBox("not_available", getCantFlyText(unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
 
-    if (::isInArray(getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
+    if (isInArray(getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
       if (!::check_diff_pkg(::g_difficulty.SIMULATOR.diffCode))
         return
 
@@ -323,7 +332,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       return goBack()
 
     ::queues.checkAndStart(
-      ::Callback(function() {
+      Callback(function() {
         applyFunc = function()
         {
           if (::get_gui_option(::USEROPT_DIFFICULTY) == "custom")
@@ -352,7 +361,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     let misName = getTestFlightMisName(unit.testFlight)
     let misBlk = ::get_mission_meta_info(misName)
     if (!misBlk)
-      return ::dagor.assertf(false, "Error: wrong testflight mission " + misName)
+      return assert(false, "Error: wrong testflight mission " + misName)
 
     ::current_campaign_mission <- misName
 
@@ -360,7 +369,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     ::g_decorator.setCurSkinToHangar(unit.name)
 
     ::mergeToBlk({
-        _gameMode = ::GM_TEST_FLIGHT
+        _gameMode = GM_TEST_FLIGHT
         name      = misName
         chapter   = "training"
         takeOffOnStart = false
@@ -429,7 +438,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     }
     ++bulIdx
 
-    while(bulIdx < ::BULLETS_SETS_QUANTITY) {
+    while(bulIdx < BULLETS_SETS_QUANTITY) {
       ::set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
       ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
       ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
@@ -455,10 +464,10 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       getSlotbar().updateDifficulty()
 
     let unitNestObj = unit ? scene.findObject("unit_nest") : null
-    if (::checkObj(unitNestObj))
+    if (checkObj(unitNestObj))
     {
       let obj = unitNestObj.findObject("rank_text")
-      if (::checkObj(obj))
+      if (checkObj(obj))
         obj.setValue(::get_unit_rank_text(unit, null, true, getCurrentEdiff()))
     }
   }
@@ -505,7 +514,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       return
     }
 
-    applyFunc = ::Callback(function()
+    applyFunc = Callback(function()
       {
         unit = crewUnit
         updateAircraft()
@@ -541,7 +550,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if ("hints" in option)
       obj.tooltip = option.hints[ obj.getValue() ]
     else if ("hint" in option)
-      obj.tooltip = ::g_string.stripTags( ::loc(option.hint, "") )
+      obj.tooltip = ::g_string.stripTags( loc(option.hint, "") )
     checkBulletsRows()
     updateWeaponOptions()
   }

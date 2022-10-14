@@ -4,23 +4,24 @@
   "mandatoryLandquality": 1,
   "z_far": 120000.0,
   "tank_z_far": 16000.0,
-  "hmapLodCount": 3,
-  "hmapDistanceMul": 1.0,
+  "hmapLodCount": 4,
+  "hmapDistanceMul": 0.5,
+  "clipmap_tex_mips": 7,
   "mapCoord0": [
-    -63488.0,
-    -63488.0
+    -65536.0,
+    -65536.0
   ],
   "mapCoord1": [
-    67584.0,
-    67584.0
+    65536.0,
+    65536.0
   ],
   "aiMapCoord0": [
-    -63488.0,
-    -63488.0
+    -65536.0,
+    -65536.0
   ],
   "aiMapCoord1": [
-    67584.0,
-    67584.0
+    65536.0,
+    65536.0
   ],
   "minAreaSize": [
     12000.0,
@@ -31,20 +32,20 @@
     2048.0
   ],
   "aiTanksMapCoord0": [
-    -2048.0,
-    -2048.0
+    -4096.0,
+    -4096.0
   ],
   "aiTanksMapCoord1": [
-    2048.0,
-    2048.0
+    0.0,
+    0.0
   ],
   "tankMapCoord0": [
-    -2048.0,
-    -2048.0
+    -4096.0,
+    -4096.0
   ],
   "tankMapCoord1": [
-    2048.0,
-    2048.0
+    0.0,
+    0.0
   ],
   "tankGridSteps": [
     256.0,
@@ -86,7 +87,7 @@
   "layeredFogDensityMul": 0.3,
   "micro_details": {
     "micro_detail": [
-      "microdetail_stone_b_tex_n*",
+      "microdetail_stone_a_tex_n*",
       "microdetail_scan_gravel_a_tex_n*",
       "microdetail_sand_c_tex_n*",
       "microdetail_soil_b_tex_n*",
@@ -182,9 +183,12 @@
       "coloring": 0.15
     },
     "microdetail_stone_a_tex_n*": {
-      "coloring": 0.15
+      "coloring": 0.55
     },
     "microdetail_stone_b_tex_n*": {
+      "coloring": 0.55
+    },
+    "microdetail_stone_c_tex_n*": {
       "coloring": 0.55
     },
     "microdetail_vegetation_a_tex_n*": {
@@ -389,7 +393,7 @@
           "diffuse": "grass_generic_grass_small_a_tex_d",
           "normal": "grass_generic_grass_small_a_tex_n",
           "variations": 1,
-          "height": 0.3,
+          "height": 0.33,
           "ht_rnd_add": 0.2,
           "hor_size": 0.4,
           "hor_size_rnd_add": 0.2,
@@ -416,15 +420,18 @@
         "red_channel_grass": {
           "id": [
             0,
-            3
+            3,
+            6
           ],
           "generic_grass_small_a": 5.0,
-          "generic_bush_dead_a": 1.0
+          "generic_bush_dead_a": 1.0,
+          "generic_grass_tall_a": 2.0
         },
         "green_channel_grass": {
           "id": [
             1,
-            4
+            4,
+            7
           ],
           "generic_grass_small_a": 2.0,
           "generic_grass_tall_a": 3.0,
@@ -625,7 +632,7 @@
   "overrideRiLodRange": {
     "angular_solid_rock_g": {
       "lod0": 1000.0,
-      "lod1": 2000.0,
+      "lod1": 1800.0,
       "lod2": 12000.0
     },
     "pavement_border_a": {
@@ -652,6 +659,30 @@
       "lod0": 170.0,
       "lod1": 1500.0
     },
+    "norway_stone_grey_small_a": {
+      "lod0": 200.0,
+      "lod1": 1200.0
+    },
+    "norway_stone_grey_small_b": {
+      "lod0": 200.0,
+      "lod1": 1200.0
+    },
+    "norway_stone_grey_small_c": {
+      "lod0": 200.0,
+      "lod1": 1200.0
+    },
+    "norway_stone_grey_small_d": {
+      "lod0": 200.0,
+      "lod1": 1200.0
+    },
+    "norway_stone_grey_small_e": {
+      "lod0": 200.0,
+      "lod1": 1200.0
+    },
+    "norway_stone_grey_small_j": {
+      "lod0": 200.0,
+      "lod1": 1200.0
+    },
     "concrete_wall_pier_b": {
       "lod0": 100.0,
       "lod1": 700.0,
@@ -661,6 +692,100 @@
       "lod0": 100.0,
       "lod1": 700.0,
       "lod2": 4500.0
+    },
+    "angular_solid_rock_a": {
+      "lod0": 800.0,
+      "lod1": 1300.0,
+      "lod2": 9000.0
+    },
+    "angular_solid_rock_c": {
+      "lod0": 500.0,
+      "lod1": 1100.0,
+      "lod2": 8000.0
+    },
+    "angular_solid_rock_d": {
+      "lod0": 700.0,
+      "lod1": 1200.0,
+      "lod2": 9000.0
+    },
+    "angular_solid_rock_e": {
+      "lod0": 500.0,
+      "lod1": 1100.0,
+      "lod2": 8000.0
+    },
+    "angular_solid_rock_f": {
+      "lod0": 500.0,
+      "lod1": 1100.0,
+      "lod2": 8000.0
+    },
+    "masses_rounded_green_rock_a": {
+      "lod0": 1000.0,
+      "lod1": 1800.0,
+      "lod2": 12000.0
+    },
+    "masses_rounded_green_rock_b": {
+      "lod0": 1000.0,
+      "lod1": 1800.0,
+      "lod2": 12000.0
+    },
+    "masses_rounded_green_rock_c": {
+      "lod0": 1000.0,
+      "lod1": 1800.0,
+      "lod2": 12000.0
+    },
+    "masses_rounded_green_rock_d": {
+      "lod0": 1000.0,
+      "lod1": 1800.0,
+      "lod2": 12000.0
+    },
+    "sharp_layered_rock_a": {
+      "lod0": 700.0,
+      "lod1": 2300.0,
+      "lod2": 12000.0
+    },
+    "sharp_layered_rock_b": {
+      "lod0": 700.0,
+      "lod1": 2300.0,
+      "lod2": 12000.0
+    },
+    "sharp_layered_rock_c": {
+      "lod0": 700.0,
+      "lod1": 2300.0,
+      "lod2": 12000.0
+    },
+    "sharp_layered_rock_d": {
+      "lod0": 700.0,
+      "lod1": 2300.0,
+      "lod2": 12000.0
+    },
+    "sharp_layered_rock_e": {
+      "lod0": 700.0,
+      "lod1": 2300.0,
+      "lod2": 12000.0
+    },
+    "sharp_layered_rock_f": {
+      "lod0": 700.0,
+      "lod1": 2300.0,
+      "lod2": 12000.0
+    },
+    "railway_tube_brick_a": {
+      "lod0": 150.0,
+      "lod1": 400.0,
+      "lod2": 1600.0
+    },
+    "vietnam_bridge_a": {
+      "lod0": 50.0,
+      "lod1": 200.0,
+      "lod2": 400.0,
+      "lod3": 1500.0
+    },
+    "small_rock_moss_a_secondlayer": {
+      "lod0": 150.0,
+      "lod1": 700.0
+    },
+    "small_rock_moss_b_secondlayer": {
+      "lod0": 150.0,
+      "lod1": 700.0
     }
   },
   "forceTexLQ": {
@@ -677,8 +802,6 @@
       "country_road_all_tex_d*",
       "country_road_all_tex_r*",
       "concrete_logs_a_tex_d*",
-      "glass_clean_a_tex_d*",
-      "glass_clean_a_tex_n*",
       "vietnam_ricksha_tex_d*",
       "vietnam_ricksha_tex_n*",
       "wood_lath_tex_a_d*",
@@ -697,18 +820,28 @@
       "power_pole_tex_n*",
       "sandbags_tex_d*",
       "sandbags_tex_n*",
-      "cracks_a_d*",
-      "cracks_a_n*",
       "debris_coal_a_tex_d*",
       "debris_coal_a_tex_n*",
       "hay_roof_tex_d*",
       "hay_roof_tex_n*",
       "hay_roof_corner_tex_d*",
-      "hay_roof_corner_tex_n*"
+      "hay_roof_corner_tex_n*",
+      "detail_forest_tex_d*",
+      "detail_grass_a_tex_d*",
+      "detail_grass_pebbles_tex_d*",
+      "detail_ground_tex_d*",
+      "detail_sand_ground_tex_d*",
+      "detail_scorched_earth_tex_d*",
+      "detail_snow_wave_tex_d*",
+      "detail_tropic_deadgrass_tex_d*",
+      "detail_tropic_deadleaves_tex_d*"
     ]
   },
   "forceTexMQ": {
     "tex": [
+      "avg_northern_india_fields_a_tex_d*",
+      "florida_island_jungle_b*",
+      "tzr_snow_rocks_a*",
       "buildings_overlay_tex_d*",
       "vietnam_basket_boat_a_tex_d*",
       "vietnam_basket_boat_a_tex_n*",
@@ -724,6 +857,8 @@
       "ceramic_plates_a_dmg_tex_n*",
       "decal_asphalt_road_worn_a_tex_d*",
       "decal_asphalt_road_worn_a_tex_n*",
+      "glass_tile_a_tex_d*",
+      "glass_tile_a_tex_n*",
       "ussr_locomotive_e_1298_d*",
       "ussr_locomotive_e_1298_n*",
       "coal_tower_tex_d*",
@@ -743,7 +878,6 @@
       "metal_tar_roof_b_tex_d*",
       "metal_sheet_a_tex_d*",
       "metal_painted_a_tex_d*",
-      "metal_clean_a_tex_d*",
       "thin_river_tex_b_d*",
       "stone_bridge_damaged*"
     ]

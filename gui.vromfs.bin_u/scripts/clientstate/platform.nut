@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let {
   platformId,
   isXboxScarlett,
@@ -9,7 +14,7 @@ let {
   is_console,
   consoleRevision } = require("%sqstd/platform.nut")
 
-let {is_running_on_steam_deck} = ::require_native("steam")
+let {is_running_on_steam_deck} = require_native("steam")
 
 let {
   isXBoxPlayerName,
@@ -22,9 +27,9 @@ let remapNick = require("%scripts/user/remapNick.nut")
 let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
 
 let PS4_REGION_NAMES = {
-  [::SCE_REGION_SCEE]  = "scee",
-  [::SCE_REGION_SCEA]  = "scea",
-  [::SCE_REGION_SCEJ]  = "scej"
+  [SCE_REGION_SCEE]  = "scee",
+  [SCE_REGION_SCEA]  = "scea",
+  [SCE_REGION_SCEJ]  = "scej"
 }
 
 let getPlayerName = function(name)
@@ -32,7 +37,7 @@ let getPlayerName = function(name)
   if (name == ::my_user_name || getRealName(name) == ::my_user_name) //local usage
   {
     if (!::get_gui_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY, true))
-      return ::loc("multiplayer/name")
+      return loc("multiplayer/name")
   }
 
   return getFakeName(name) ?? remapNick(name)
@@ -50,7 +55,7 @@ let isPs4XboxOneInteractionAvailable = function(name)
 {
   let isPS4Player = isPS4PlayerName(name)
   let isXBOXPlayer = isXBoxPlayerName(name)
-  if (((isMePS4Player() && isXBOXPlayer) || (isMeXBOXPlayer() && isPS4Player)) && !::has_feature("Ps4XboxOneInteraction"))
+  if (((isMePS4Player() && isXBOXPlayer) || (isMeXBOXPlayer() && isPS4Player)) && !hasFeature("Ps4XboxOneInteraction"))
     return false
   return true
 }
@@ -68,7 +73,7 @@ let canInteractCrossConsole = function(name) {
   if (!isPs4XboxOneInteractionAvailable(name))
     return false
 
-  return ::has_feature("XboxCrossConsoleInteraction")
+  return hasFeature("XboxCrossConsoleInteraction")
 }
 
 return {

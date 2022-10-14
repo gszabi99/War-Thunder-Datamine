@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
@@ -60,7 +67,7 @@ let function _update(p, trigger, isAlreadyFilled) {
 options.template <- {
   id = "" // Generated from type name
   sortId = 0
-  getLabelText = @() ::loc($"options/{id}")
+  getLabelText = @() loc($"options/{id}")
   userOption = -1
   triggerUpdateBitMask = 0
   triggerUpdContentBitMask = 0
@@ -104,7 +111,7 @@ options.addTypes({
     getUseropt = function(p) {
       let skinsOpt = ::g_decorator.getSkinsOption(p.unit?.name ?? "")
       skinsOpt.items = skinsOpt.items.map(@(v, idx) v.__merge({
-        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[idx].id, ::UNLOCKABLE_SKIN) }
+        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[idx].id, UNLOCKABLE_SKIN) }
       }))
       return skinsOpt
     }
@@ -115,7 +122,7 @@ options.addTypes({
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
-    isAvailableInMission = @() ::has_feature("UserSkins")
+    isAvailableInMission = @() hasFeature("UserSkins")
     isShowForUnit = @(p) true
   }
   gun_target_dist = {

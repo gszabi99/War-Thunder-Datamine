@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
@@ -10,6 +15,7 @@ let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { hasChat } = require("%scripts/user/matchingFeature.nut")
 
 //-----------------------------
 // params keys:
@@ -38,19 +44,19 @@ let getPlayerCardInfoTable = function(uid, name)
   return info
 }
 
-let showLiveCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(::loc("xbox/actionNotAvailableLiveCommunications"))
-let showCrossNetworkPlayRestrictionMsgBox = @() ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
-let showCrossNetworkCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkCommunications"))
-let showNotAvailableActionPopup = @() ::g_popups.add(null, ::loc("xbox/actionNotAvailableDiffPlatform"))
-let showBlockedPlayerPopup = @(playerName) ::g_popups.add(null, ::loc("chat/player_blocked", {playerName = platformModule.getPlayerName(playerName)}))
-let showNoInviteForDiffPlatformPopup = @() ::g_popups.add(null, ::loc("msg/squad/noPlayersForDiffConsoles"))
-let showXboxPlayerMuted = @(playerName) ::g_popups.add(null, ::loc("popup/playerMuted", {playerName = platformModule.getPlayerName(playerName)}))
+let showLiveCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableLiveCommunications"))
+let showCrossNetworkPlayRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+let showCrossNetworkCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkCommunications"))
+let showNotAvailableActionPopup = @() ::g_popups.add(null, loc("xbox/actionNotAvailableDiffPlatform"))
+let showBlockedPlayerPopup = @(playerName) ::g_popups.add(null, loc("chat/player_blocked", {playerName = platformModule.getPlayerName(playerName)}))
+let showNoInviteForDiffPlatformPopup = @() ::g_popups.add(null, loc("msg/squad/noPlayersForDiffConsoles"))
+let showXboxPlayerMuted = @(playerName) ::g_popups.add(null, loc("popup/playerMuted", {playerName = platformModule.getPlayerName(playerName)}))
 
 let notifyPlayerAboutRestriction = function(contact, isInvite = false)
 {
   let isCrossNetworkMessagesAllowed = isCrossNetworkMessageAllowed(contact.name)
   let isXBoxOnePlayer = platformModule.isPlayerFromXboxOne(contact.name)
-  if (::is_platform_xbox)
+  if (is_platform_xbox)
   {
     attemptShowOverlayMessage(contact.name, isInvite)
     //There is no system level error message, added custom.
@@ -89,7 +95,7 @@ let getActions = function(contact, params)
   let canInteractCrossConsole = platformModule.canInteractCrossConsole(name)
   let canInteractCrossPlatform = isPS4Player || isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
   let showCrossPlayIcon = canInteractCrossConsole && crossplayModule.needShowCrossPlayInfo() && (!isXBoxOnePlayer || !isPS4Player)
-  let hasChat = isChatEnabled()
+  let hasChatEnable = isChatEnabled()
 
   let roomId = params?.roomId
   let roomData = roomId? ::g_chat.getRoomById(roomId) : null
@@ -100,14 +106,14 @@ let getActions = function(contact, params)
 
   local chatLog = params?.chatLog ?? roomData?.getLogForBanhammer()
   let isInPsnBlockList = platformModule.isPlatformSony && contact.isInBlockGroup()
-  let canInviteToSesson = (isXBoxOnePlayer == ::is_platform_xbox) && !isInPsnBlockList
+  let canInviteToSesson = (isXBoxOnePlayer == is_platform_xbox) && !isInPsnBlockList
 
   local canComplain = !isMe && (params?.canComplain ?? false)
 
   let actions = []
 //---- <Session Join> ---------
   actions.append({
-    text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, ::loc("multiplayer/invite_to_session"))
+    text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("multiplayer/invite_to_session"))
     show = canInviteToChatRoom && ::SessionLobby.canInvitePlayer(uid) && canInviteToSesson
     isVisualDisabled = !canInteractCrossConsole || !canInteractCrossPlatform
     action = function () {
@@ -136,7 +142,7 @@ let getActions = function(contact, params)
     if (event && ::events.isEnableFriendsJoin(event))
     {
       actions.append({
-        text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, ::loc("contacts/join_team"))
+        text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("contacts/join_team"))
         show = canInviteToSesson
         isVisualDisabled = !canInteractCrossConsole || !canInteractCrossPlatform
         action = function() {
@@ -158,8 +164,8 @@ let getActions = function(contact, params)
 //---- <Common> ----------------
   actions.append(
     {
-      text = ::loc("contacts/message")
-      show = !isMe && ::ps4_is_chat_enabled() && ::has_feature("Chat") && !u.isEmpty(name)
+      text = loc("contacts/message")
+      show = !isMe && ::ps4_is_chat_enabled() && hasChat.value && !u.isEmpty(name)
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       action = function() {
         if (isBlock)
@@ -175,30 +181,30 @@ let getActions = function(contact, params)
       }
     }
     {
-      text = ::loc("mainmenu/btnUserCard")
-      show = ::has_feature("UserCards") && getPlayerCardInfoTable(uid, name).len() > 0
+      text = loc("mainmenu/btnUserCard")
+      show = hasFeature("UserCards") && getPlayerCardInfoTable(uid, name).len() > 0
       action = @() ::gui_modal_userCard(getPlayerCardInfoTable(uid, name))
     }
     {
-      text = ::loc("mainmenu/btnPsnProfile")
+      text = loc("mainmenu/btnPsnProfile")
       show = !isMe && contact.canOpenPSNActionWindow()
       action = @() contact.openPSNProfile()
     }
     {
-      text = ::loc("mainmenu/btnXboxProfile")
+      text = loc("mainmenu/btnXboxProfile")
       show = isXBoxOnePlayer && !isMe
       action = @() contact.openXboxProfile()
     }
     {
-      text = ::loc("mainmenu/btnClanCard")
-      show = ::has_feature("Clans") && !u.isEmpty(clanTag) && clanTag != ::clan_get_my_clan_tag()
+      text = loc("mainmenu/btnClanCard")
+      show = hasFeature("Clans") && !u.isEmpty(clanTag) && clanTag != ::clan_get_my_clan_tag()
       action = @() ::showClanPage("", "", clanTag)
     }
   )
 //---- </Common> ------------------
 
 //---- <Squad> --------------------
-  if (::has_feature("Squad"))
+  if (hasFeature("Squad"))
   {
     let meLeader = ::g_squad_manager.isSquadLeader()
     let inMySquad = ::g_squad_manager.isInMySquad(name, false)
@@ -208,17 +214,17 @@ let getActions = function(contact, params)
 
     actions.append(
       {
-        text = ::loc("squadAction/openChat")
-        show = !isMe && ::g_chat.isSquadRoomJoined() && inMySquad && hasChat
+        text = loc("squadAction/openChat")
+        show = !isMe && ::g_chat.isSquadRoomJoined() && inMySquad && hasChatEnable
         action = @() ::g_chat.openChatRoom(::g_chat.getMySquadRoomId())
       }
       {
         text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, hasApplicationInMySquad
-            ? ::loc("squad/accept_membership")
-            : ::loc("squad/invite_player")
+            ? loc("squad/accept_membership")
+            : loc("squad/invite_player")
           )
         isVisualDisabled = !canInvite || !canInteractCrossConsole || !canInteractCrossPlatform || !canInviteDiffConsole
-        show = ::has_feature("SquadInviteIngame")
+        show = hasFeature("SquadInviteIngame")
                && canInviteToChatRoom
                && !isMe
                && !isBlock
@@ -248,12 +254,12 @@ let getActions = function(contact, params)
         }
       }
       {
-        text = ::loc("squad/revoke_invite")
+        text = loc("squad/revoke_invite")
         show = squadMemberData && meLeader && squadMemberData?.isInvite
         action = @() ::g_squad_manager.revokeSquadInvite(uid)
       }
       {
-        text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, ::loc("squad/accept_membership"))
+        text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("squad/accept_membership"))
         isVisualDisabled = !canInvite || !canInteractCrossConsole || !canInteractCrossPlatform || !canInviteDiffConsole
         show = squadMemberData && meLeader && squadMemberData?.isApplication
         action = function() {
@@ -273,18 +279,18 @@ let getActions = function(contact, params)
         }
       }
       {
-        text = ::loc("squad/deny_membership")
+        text = loc("squad/deny_membership")
         show = squadMemberData && meLeader && squadMemberData?.isApplication
         action = @() ::g_squad_manager.denyMembershipAplication(uidInt64,
           @(response) ::g_squad_manager.removeApplication(uidInt64))
       }
       {
-        text = ::loc("squad/remove_player")
+        text = loc("squad/remove_player")
         show = ::g_squad_manager.canDismissMember(uid)
         action = @() ::g_squad_manager.dismissFromSquad(uid)
       }
       {
-        text = ::loc("squad/tranfer_leadership")
+        text = loc("squad/tranfer_leadership")
         show = !isMe && ::g_squad_manager.canTransferLeadership(uid)
         action = @() ::g_squad_manager.transferLeadership(uid)
       }
@@ -293,11 +299,11 @@ let getActions = function(contact, params)
 //---- </Squad> -------------------
 
 //---- <XBox Specific> ------------
-  if (::is_platform_xbox && isXBoxOnePlayer)
+  if (is_platform_xbox && isXBoxOnePlayer)
   {
     let isXboxPlayerMuted = contact.isXboxChatMuted()
     actions.append({
-      text = isXboxPlayerMuted? ::loc("mainmenu/btnUnmute") : ::loc("mainmenu/btnMute")
+      text = isXboxPlayerMuted? loc("mainmenu/btnUnmute") : loc("mainmenu/btnMute")
       show = !isMe && ::xbox_is_player_in_chat(uidInt64)
       action = @() ::xbox_mute_chat_player(uidInt64, !isXboxPlayerMuted)
     })
@@ -306,7 +312,7 @@ let getActions = function(contact, params)
 
 //---- <Clan> ---------------------
   let clanData = params?.clanData
-  if (::has_feature("Clans") && clanData)
+  if (hasFeature("Clans") && clanData)
   {
     let clanId = clanData?.id ?? "-1"
     let myClanId = ::clan_get_my_clan_id()
@@ -318,14 +324,14 @@ let getActions = function(contact, params)
 
     actions.append(
       {
-        text = ::loc("clan/activity")
-        show = ::has_feature("ClanActivity")
+        text = loc("clan/activity")
+        show = hasFeature("ClanActivity")
         action = @() ::gui_start_clan_activity_wnd(uid, clanData)
       }
       {
-        text = ::loc("clan/btnChangeRole")
+        text = loc("clan/btnChangeRole")
         show = (isMyClan
-                && ::isInArray("MEMBER_ROLE_CHANGE", myClanRights)
+                && isInArray("MEMBER_ROLE_CHANGE", myClanRights)
                 && ::g_clans.haveRankToChangeRoles(clanData)
                 && isMyRankHigher
                )
@@ -333,10 +339,10 @@ let getActions = function(contact, params)
         action = @() ::gui_start_change_role_wnd(contact, clanData)
       }
       {
-        text = ::loc("clan/btnDismissMember")
+        text = loc("clan/btnDismissMember")
         show = (!isMe
                 && isMyClan
-                && ::isInArray("MEMBER_DISMISS", myClanRights)
+                && isInArray("MEMBER_DISMISS", myClanRights)
                 && isMyRankHigher
                )
                || isClanAdmin
@@ -347,56 +353,56 @@ let getActions = function(contact, params)
 //---- </Clan> ---------------------
 
 //---- <Contacts> ------------------
-  if (::has_feature("Friends"))
+  if (hasFeature("Friends"))
   {
     let canBlock = !platformModule.isPlatformXboxOne || !isXBoxOnePlayer
 
     actions.append(
       {
-        text = ::loc("contacts/friendlist/add")
+        text = loc("contacts/friendlist/add")
         show = !isMe && !isFriend && !isBlock
         isVisualDisabled = !canInteractCrossConsole
         action = function() {
           if (!canInteractCrossConsole)
             showNotAvailableActionPopup()
           else
-            ::editContactMsgBox(contact, ::EPL_FRIENDLIST, true)
+            ::editContactMsgBox(contact, EPL_FRIENDLIST, true)
         }
       }
       {
-        text = ::loc("contacts/friendlist/remove")
+        text = loc("contacts/friendlist/remove")
         show = isFriend && contact.isInFriendGroup()
-        action = @() ::editContactMsgBox(contact, ::EPL_FRIENDLIST, false)
+        action = @() ::editContactMsgBox(contact, EPL_FRIENDLIST, false)
       }
       {
-        text = ::loc("contacts/psn/friends/request")
+        text = loc("contacts/psn/friends/request")
         show = !isMe && isPS4Player && !isBlock && !contact.isInPSNFriends()
-        action = @() contact.sendPsnFriendRequest(::EPL_FRIENDLIST)
+        action = @() contact.sendPsnFriendRequest(EPL_FRIENDLIST)
       }
       {
-        text = ::loc("contacts/facebooklist/remove")
-        show = params?.curContactGroup == ::EPL_FACEBOOK && ::isPlayerInContacts(uid, ::EPL_FACEBOOK)
-        action = @() ::editContactMsgBox(contact, ::EPL_FACEBOOK, false)
+        text = loc("contacts/facebooklist/remove")
+        show = params?.curContactGroup == EPL_FACEBOOK && ::isPlayerInContacts(uid, EPL_FACEBOOK)
+        action = @() ::editContactMsgBox(contact, EPL_FACEBOOK, false)
       }
       {
-        text = ::loc("contacts/steamlist/remove")
-        show = params?.curContactGroup == ::EPL_STEAM && ::isPlayerInContacts(uid, ::EPL_STEAM)
-        action = @() ::editContactMsgBox(contact, ::EPL_STEAM, false)
+        text = loc("contacts/steamlist/remove")
+        show = params?.curContactGroup == EPL_STEAM && ::isPlayerInContacts(uid, EPL_STEAM)
+        action = @() ::editContactMsgBox(contact, EPL_STEAM, false)
       }
       {
-        text = ::loc("contacts/blacklist/add")
+        text = loc("contacts/blacklist/add")
         show = !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
-        action = @() ::editContactMsgBox(contact, ::EPL_BLOCKLIST, true)
+        action = @() ::editContactMsgBox(contact, EPL_BLOCKLIST, true)
       }
       {
-        text = ::loc("contacts/blacklist/remove")
+        text = loc("contacts/blacklist/remove")
         show = isBlock && canBlock && (!isPS4Player || (isPS4Player && contact.isInPSNFriends()))
-        action = @() ::editContactMsgBox(contact, ::EPL_BLOCKLIST, false)
+        action = @() ::editContactMsgBox(contact, EPL_BLOCKLIST, false)
       }
       {
-        text = ::loc("contacts/psn/blacklist/request")
+        text = loc("contacts/psn/blacklist/request")
         show = !isMe && isPS4Player && !isBlock
-        action = @() contact.sendPsnFriendRequest(::EPL_BLOCKLIST)
+        action = @() contact.sendPsnFriendRequest(EPL_BLOCKLIST)
       }
     )
   }
@@ -405,7 +411,7 @@ let getActions = function(contact, params)
 //---- <MP Lobby> -------------------
   if (isMPLobby)
     actions.append({
-      text = ::loc("mainmenu/btnKick")
+      text = loc("mainmenu/btnKick")
       show = !isMe && ::SessionLobby.isRoomOwner && !::SessionLobby.isEventRoom
       action = @() ::SessionLobby.kickPlayer(::SessionLobby.getMemberByName(name))
     })
@@ -414,24 +420,24 @@ let getActions = function(contact, params)
 //---- <In Battle> ------------------
   if (::is_in_flight())
     actions.append({
-      text = ::loc(localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO) ? "mpRadio/enable" : "mpRadio/disable")
+      text = loc(localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO) ? "mpRadio/enable" : "mpRadio/disable")
       show = !isMe && !isBlock
       action = function() {
         localDevoice.switchMuted(name, localDevoice.DEVOICE_RADIO)
         let popupLocId = localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO) ? "mpRadio/disabled/msg" : "mpRadio/enabled/msg"
-        ::g_popups.add(null, ::loc(popupLocId, { player = ::colorize("activeTextColor", platformModule.getPlayerName(name)) }))
+        ::g_popups.add(null, loc(popupLocId, { player = colorize("activeTextColor", platformModule.getPlayerName(name)) }))
       }
     })
 //---- </In Battle> -----------------
 
 //---- <Chat> -----------------------
-  if (::has_feature("Chat"))
+  if (hasChat.value)
   {
-    if (hasChat && canInviteToChatRoom)
+    if (hasChatEnable && canInviteToChatRoom)
     {
       let inviteMenu = ::g_chat.generateInviteMenu(name)
       actions.append({
-        text = ::loc("chat/invite_to_room")
+        text = loc("chat/invite_to_room")
         isVisualDisabled = !canChat || !canInteractCrossConsole || !canInteractCrossPlatform || isProfileMuted || isBlock
         show = inviteMenu && inviteMenu.len() > 0
         action = function() {
@@ -454,12 +460,12 @@ let getActions = function(contact, params)
     if (roomData)
       actions.append(
         {
-          text = ::loc("chat/kick_from_room")
+          text = loc("chat/kick_from_room")
           show = !::g_chat.isRoomSquad(roomId) && !::SessionLobby.isLobbyRoom(roomId) && ::g_chat.isImRoomOwner(roomData)
           action = @() ::menu_chat_handler ? ::menu_chat_handler.kickPlayeFromRoom(name) : null
         }
         {
-          text = ::loc("contacts/copyNickToEditbox")
+          text = loc("contacts/copyNickToEditbox")
           show = !isMe && ::show_console_buttons && ::menu_chat_handler
           action = @() ::menu_chat_handler ? ::menu_chat_handler.addNickToEdit(name) : null
         }
@@ -486,7 +492,7 @@ let getActions = function(contact, params)
 //---- <Complain> ------------------
   if (canComplain)
     actions.append({
-      text = ::loc("mainmenu/btnComplain")
+      text = loc("mainmenu/btnComplain")
       action = function() {
         let config = {
           userId = uid,
@@ -519,12 +525,12 @@ let getActions = function(contact, params)
   if (::is_myself_anyof_moderators() && (roomId || isMPChat || isMPLobby))
     actions.append(
       {
-        text = ::loc("contacts/moderator_copyname")
+        text = loc("contacts/moderator_copyname")
         action = @() ::copy_to_clipboard(platformModule.getPlayerName(name))
         hasSeparator = true
       }
       {
-        text = ::loc("contacts/moderator_ban")
+        text = loc("contacts/moderator_ban")
         show = ::myself_can_devoice() || ::myself_can_ban()
         action = @() ::gui_modal_ban(contact, chatLog)
       }
@@ -539,14 +545,14 @@ let getActions = function(contact, params)
 let showMenu = function(v_contact, handler, params = {})
 {
   let contact = v_contact || verifyContact(params)
-  let showMenu = ::callee()
+  let showMenu = callee()
   if (contact && contact.needCheckXboxId())
     return contact.getXboxId(@() showMenu(contact, handler, params))
 
   if (!contact && params?.playerName)
     return ::find_contact_by_name_and_do(params.playerName, @(c) c && showMenu(c, handler, params))
 
-  updateContactsStatusByContacts([contact], ::Callback(function() {
+  updateContactsStatusByContacts([contact], Callback(function() {
     let menu = getActions(contact, params)
     ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
   }, this))

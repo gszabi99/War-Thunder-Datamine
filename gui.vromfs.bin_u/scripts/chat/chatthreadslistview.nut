@@ -1,8 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_handlers.ChatThreadsListView <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ChatThreadsListView <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/chat/chatThreadsList.blk"
   backFunc = null
@@ -44,7 +51,7 @@ let time = require("%scripts/time.nut")
     if (!forceUpdate && ::g_chat_latest_threads.isListNewest(curListUid))
       return
 
-    if (!::checkObj(listObj))
+    if (!checkObj(listObj))
       return
 
     let selThread = getThreadByObj()
@@ -83,7 +90,7 @@ let time = require("%scripts/time.nut")
     let canRefresh = !isWaiting && ::g_chat_latest_threads.canRefresh()
     btnObj.enable(canRefresh)
 
-    local tooltip = ::loc("mainmenu/btnRefresh")
+    local tooltip = loc("mainmenu/btnRefresh")
     let timeLeft = ::g_chat_latest_threads.getTimeToRefresh()
     if (timeLeft > 0)
       tooltip += " (" + time.secondsToString(0.001 * timeLeft, true, true) + ")"
@@ -116,7 +123,7 @@ let time = require("%scripts/time.nut")
 
     local text = ""
     if (::g_chat_categories.isSearchAnyCategory())
-      text = ::loc("chat/allCategories")
+      text = loc("chat/allCategories")
     else
     {
       let textsList = ::u.map(::g_chat_categories.getSearchCategoriesLList(),
@@ -156,7 +163,7 @@ let time = require("%scripts/time.nut")
     if (rId && rId.len())
       return ::g_chat.getThreadInfo(rId)
 
-    if (!::checkObj(listObj))
+    if (!checkObj(listObj))
       return null
 
     let value = listObj.getValue() || 0
@@ -194,7 +201,7 @@ let time = require("%scripts/time.nut")
 
     local pos = null
     let nameObj = listObj.findObject("ownerName_" + actionThread.roomId)
-    if (::checkObj(nameObj))
+    if (checkObj(nameObj))
     {
       pos = nameObj.getPosRC()
       pos[0] += nameObj.getSize()[0]
@@ -224,17 +231,17 @@ let time = require("%scripts/time.nut")
   function onThreadSelect()
   {
     //delayed callbac
-    if (!::checkObj(listObj) || !listObj.childrenCount())
+    if (!checkObj(listObj) || !listObj.childrenCount())
       return
 
     //sellImg is bigger than item, so for correct view while selecting by gamepad need to scroll to selImg
     let val = ::get_obj_valid_index(listObj)
     local childObj = listObj.getChild(val < 0? 0 : val)
-    if (!::check_obj(childObj))
+    if (!checkObj(childObj))
       childObj = listObj.getChild(0)
 
     let selImg = childObj.findObject("thread_row_sel_img")
-    if (::checkObj(selImg))
+    if (checkObj(selImg))
       selImg.scrollToView()
   }
 
@@ -272,12 +279,12 @@ let time = require("%scripts/time.nut")
 
   function onEventChatRoomJoin(p)
   {
-    updateRoomInList(::getTblValue("room", p))
+    updateRoomInList(getTblValue("room", p))
   }
 
   function onEventChatRoomLeave(p)
   {
-    updateRoomInList(::getTblValue("room", p))
+    updateRoomInList(getTblValue("room", p))
   }
 
   function onEventChatFilterChanged(p)
@@ -286,7 +293,7 @@ let time = require("%scripts/time.nut")
     if (isSceneActive())
     {
       //wait to apply all options before update scene.
-      let cb = ::Callback(updateAll, this)
+      let cb = Callback(updateAll, this)
       guiScene.performDelayed(this, (@(cb) function() { cb() })(cb))
     }
   }

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 global enum msquadErrorId
 {
   ALREADY_IN_SQUAD = "ALREADY_IN_SQUAD"

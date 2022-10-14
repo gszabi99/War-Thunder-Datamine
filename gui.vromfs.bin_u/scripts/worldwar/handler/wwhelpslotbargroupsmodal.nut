@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
@@ -9,7 +18,7 @@ const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
   function initScreen()
   {
-    let title = " ".concat(::loc("hotkeys/ID_HELP"), ::loc("ui/mdash"), ::loc("worldwar/vehicleGroups"))
+    let title = " ".concat(loc("hotkeys/ID_HELP"), loc("ui/mdash"), loc("worldwar/vehicleGroups"))
     scene.findObject("wnd_title").setValue(title)
 
     guiScene.replaceContent(scene.findObject("wnd_content"), "%gui/help/wwarSlotbarGroups.blk", this)

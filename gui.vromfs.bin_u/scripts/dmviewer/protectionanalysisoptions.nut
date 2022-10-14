@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -31,11 +38,11 @@ local options = {
 }
 
 let targetTypeToThreatTypes = {
-  [::ES_UNIT_TYPE_AIRCRAFT]   = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
-  [::ES_UNIT_TYPE_HELICOPTER] = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
-  [::ES_UNIT_TYPE_TANK] = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
-  [::ES_UNIT_TYPE_SHIP] = [ ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_BOAT ],
-  [::ES_UNIT_TYPE_BOAT] = [ ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_BOAT ],
+  [ES_UNIT_TYPE_AIRCRAFT]   = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
+  [ES_UNIT_TYPE_HELICOPTER] = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
+  [ES_UNIT_TYPE_TANK] = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
+  [ES_UNIT_TYPE_SHIP] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT ],
+  [ES_UNIT_TYPE_BOAT] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT ],
 }
 
 let function getThreatEsUnitTypes()
@@ -47,7 +54,7 @@ let function getThreatEsUnitTypes()
 
 let function updateDistanceNativeUnitsText(obj) {
   let descObj = obj.findObject("distanceNativeUnitsText")
-  if (!::check_obj(descObj))
+  if (!checkObj(descObj))
     return
   let distance = options.DISTANCE.value
   let desc = ::g_measure_type.DISTANCE.getMeasureUnitsText(distance)
@@ -56,9 +63,9 @@ let function updateDistanceNativeUnitsText(obj) {
 
 let function updateArmorPiercingText(obj) {
   let descObj = obj.findObject("armorPiercingText")
-  if (!::check_obj(descObj))
+  if (!checkObj(descObj))
     return
-  local desc = ::loc("ui/mdash")
+  local desc = loc("ui/mdash")
 
   let bullet   = options.BULLET.value
   let distance = options.DISTANCE.value
@@ -90,7 +97,7 @@ let function updateArmorPiercingText(obj) {
     if (pMin && pMax)
     {
       let armor = stdMath.lerp(pMin.dist, pMax.dist, pMin.armor, pMax.armor, distance)
-      desc = stdMath.round(armor).tointeger() + " " + ::loc("measureUnits/mm")
+      desc = stdMath.round(armor).tointeger() + " " + loc("measureUnits/mm")
     }
   }
 
@@ -110,7 +117,7 @@ options.template <- {
   defValue = null
   valueWidth = null
 
-  getLabel = @() labelLocId && ::loc(labelLocId)
+  getLabel = @() labelLocId && loc(labelLocId)
   getControlMarkup = function() {
     return ::create_option_combobox(id, [], -1, "onChangeOption", true,
       { controlStyle = controlStyle })
@@ -125,7 +132,7 @@ options.template <- {
   }
 
   isVisible = @() true
-  getValFromObj = @(obj) ::check_obj(obj) ? values?[obj.getValue()] : null
+  getValFromObj = @(obj) checkObj(obj) ? values?[obj.getValue()] : null
   afterChangeFunc = null
 
   updateDependentOptions = function(handler, scene) {
@@ -145,7 +152,7 @@ options.template <- {
     let idx = values.indexof(value) ?? -1
     let markup = ::create_option_combobox(null, items, idx, null, false)
     let obj = scene.findObject(id)
-    if (::check_obj(obj))
+    if (checkObj(obj))
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)
   }
 
@@ -182,19 +189,19 @@ options.addTypes({
       items  = ::u.map(types, @(t) { text = "{0} {1}".subst(t.fontIcon, t.getArmyLocName()) })
       let preferredEsUnitType = value ?? options.targetUnit.esUnitType
       value = values.indexof(preferredEsUnitType) != null ? preferredEsUnitType
-        : (values?[0] ?? ::ES_UNIT_TYPE_INVALID)
+        : (values?[0] ?? ES_UNIT_TYPE_INVALID)
     }
   }
   COUNTRY = {
     sortId = sortIdCount++
     controlStyle = "iconType:t='small';"
-    getLabel = @() options.UNITTYPE.isVisible() ? null : ::loc("mainmenu/threat")
+    getLabel = @() options.UNITTYPE.isVisible() ? null : loc("mainmenu/threat")
 
     updateParams = function(handler, scene)
     {
       let unitType = options.UNITTYPE.value
       values = ::u.filter(shopCountriesList, @(c) isCountryHaveUnitType(c, unitType))
-      items  = ::u.map(values, @(c) { text = ::loc(c), image = ::get_country_icon(c) })
+      items  = ::u.map(values, @(c) { text = loc(c), image = ::get_country_icon(c) })
       let preferredCountry = value ?? options.targetUnit.shopCountry
       value = values.indexof(preferredCountry) != null ? preferredCountry
         : (values?[0] ?? "")
@@ -212,7 +219,7 @@ options.addTypes({
         if (hasUnitAtRank(rank, unitType, country, true, false))
           values.append(rank)
       items = ::u.map(values, @(r) {
-        text = format(::loc("conditions/unitRank/format"), get_roman_numeral(r))
+        text = format(loc("conditions/unitRank/format"), ::get_roman_numeral(r))
       })
       let preferredRank = value ?? options.targetUnit.rank
       value = values?[::find_nearest(preferredRank, values)] ?? 0
@@ -304,8 +311,8 @@ options.addTypes({
             local isDub = false
             if (isBulletBelt)
             {
-              locName = " ".concat(format(::loc("caliber/mm"), bulletsSet.caliber),
-                ::loc($"{bulletName}/name/short"))
+              locName = " ".concat(format(loc("caliber/mm"), bulletsSet.caliber),
+                loc($"{bulletName}/name/short"))
               let bulletType = bulletName
               bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
               // Find bullet dub by params
@@ -314,11 +321,11 @@ options.addTypes({
               if(!isDub)
                 bulletSetData.append(bulletParams)
               // Need change name for the same bullet type but different params
-              if(::isInArray(locName, bulletNamesSet))
+              if(isInArray(locName, bulletNamesSet))
                 locName = $"{locName}{bulletsList.items[i].text}"
             }
             else
-              isDub = ::isInArray(locName, bulletNamesSet)
+              isDub = isInArray(locName, bulletNamesSet)
 
             if (isDub)
               continue
@@ -366,7 +373,7 @@ options.addTypes({
 
       foreach (weap in weapons)
       {
-        if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, knownWeapBlkArray))
+        if (!weap?.blk || weap?.dummy || isInArray(weap.blk, knownWeapBlkArray))
           continue
         knownWeapBlkArray.append(weap.blk)
 
@@ -377,8 +384,8 @@ options.addTypes({
           bulletBlk = bulletBlk ?? weaponBlk?[t]
 
         let locName = ::g_string.utf8ToUpper(
-          ::loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
-        if (!bulletBlk || ::isInArray(locName, bulletNamesSet))
+          loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
+        if (!bulletBlk || isInArray(locName, bulletNamesSet))
           continue
 
         bulletNamesSet.append(locName)
@@ -440,7 +447,7 @@ options.addTypes({
       let res = [{
         valueId = "armorPiercingText"
         valueWidth = valueWidth
-        label = ::loc("bullet_properties/armorPiercing") + ::loc("ui/colon")
+        label = loc("bullet_properties/armorPiercing") + loc("ui/colon")
       }]
 
       if (::g_measure_type.DISTANCE.isMetricSystem() == false)
@@ -453,11 +460,11 @@ options.addTypes({
       return res
     }
 
-    getValFromObj = @(obj) ::check_obj(obj) ? obj.getValue() : 0
+    getValFromObj = @(obj) checkObj(obj) ? obj.getValue() : 0
 
     afterChangeFunc = function(obj) {
       let parentObj = obj.getParent().getParent()
-      parentObj.findObject("value_" + id).setValue(value + ::loc("measureUnits/meters_alt"))
+      parentObj.findObject("value_" + id).setValue(value + loc("measureUnits/meters_alt"))
       ::enableBtnTable(parentObj, {
         buttonInc = value < maxValue
         buttonDec = value > minValue

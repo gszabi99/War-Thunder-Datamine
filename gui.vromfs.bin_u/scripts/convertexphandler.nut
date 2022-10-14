@@ -1,9 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { research } = require("%scripts/unit/unitActions.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 enum windowState
 {
@@ -14,7 +22,7 @@ enum windowState
 
 ::gui_modal_convertExp <- function gui_modal_convertExp(unit = null)
 {
-  if (!::has_feature("SpendGold") || !::has_feature("SpendFreeRP"))
+  if (!hasFeature("SpendGold") || !hasFeature("SpendFreeRP"))
     return
   if (unit && !::can_spend_gold_on_unit_with_popup(unit))
     return
@@ -212,7 +220,7 @@ enum windowState
   function initUnitTypes()
   {
     let listObj = scene.findObject("unit_types_list")
-    if (!::check_obj(listObj))
+    if (!checkObj(listObj))
       return
 
     unitTypesList = unitTypes.types
@@ -224,7 +232,7 @@ enum windowState
       view.items.append({
         id = unitType.armyId
         text = unitType.fontIcon + " " + unitType.getArmyLocName()
-        tooltip = unitType.canSpendGold() ? null : ::loc("msgbox/unitTypeRestrictFromSpendGold")
+        tooltip = unitType.canSpendGold() ? null : loc("msgbox/unitTypeRestrictFromSpendGold")
       })
 
     let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
@@ -234,7 +242,7 @@ enum windowState
   function updateUnitTypesList()
   {
     let listObj = scene.findObject("unit_types_list")
-    if (!::check_obj(listObj))
+    if (!checkObj(listObj))
       return
 
     local curIdx = 0
@@ -259,7 +267,7 @@ enum windowState
   function fillSlider()
   {
     let sliderDivObj = scene.findObject("exp_slider_nest")
-    if (!::checkObj(sliderDivObj))
+    if (!checkObj(sliderDivObj))
       return
 
     let is_enough_availExp = availableExp > 0
@@ -295,7 +303,7 @@ enum windowState
   function fillUnitResearchedContent()
   {
     let noExpObj = scene.findObject("buy_unit_cost")
-    if (!::checkObj(noExpObj))
+    if (!checkObj(noExpObj))
       return
 
     let unitCost = ::wp_get_cost(unit.name)
@@ -325,7 +333,7 @@ enum windowState
     let needNoUnitText = currentState == windowState.noUnit
     noUnitMsgObj.show(needNoUnitText)
     if (needNoUnitText)
-      noUnitMsgObj.setValue(::loc(getAvailableUnitForConversion() != null ? ::loc("pr_conversion/no_unit") : ::loc("pr_conversion/all_units_researched")))
+      noUnitMsgObj.setValue(loc(getAvailableUnitForConversion() != null ? loc("pr_conversion/no_unit") : loc("pr_conversion/all_units_researched")))
 
     if (currentState == windowState.research)
     {
@@ -352,8 +360,8 @@ enum windowState
 
   function showNoRPmsgbox()
   {
-    if (!::checkObj(guiScene["no_rp_msgbox"]))
-      this.msgBox("no_rp_msgbox", ::loc("msgbox/no_rp"), [["ok", function () {}]], "ok", { cancel_fn = function() {}})
+    if (!checkObj(guiScene["no_rp_msgbox"]))
+      this.msgBox("no_rp_msgbox", loc("msgbox/no_rp"), [["ok", function () {}]], "ok", { cancel_fn = function() {}})
   }
 
   function updateSliderText()
@@ -365,7 +373,7 @@ enum windowState
                             ? format("<color=@activeTextColor> +%s</color>", ::Cost().setFrp(expToBuy).tostring())
                             : ""
     let strRequiredExp = ::g_language.decimalFormat(::getUnitReqExp(unit))
-    let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, ::loc("ui/slash"), strRequiredExp)
+    let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, loc("ui/slash"), strRequiredExp)
     sliderTextObj.setValue(sliderText)
   }
 
@@ -491,7 +499,7 @@ enum windowState
       return
     }
 
-    research(newUnit, true, ::Callback(cb, this))
+    research(newUnit, true, Callback(cb, this))
   }
 
   function getAvailableUnitForConversion()
@@ -549,18 +557,18 @@ enum windowState
   function onApply()
   {
     if (::get_gui_balance().gold <= 0)
-      return ::check_balance_msgBox(::Cost(0, curGoldValue), ::Callback(updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
+      return ::check_balance_msgBox(::Cost(0, curGoldValue), Callback(updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
 
     let curGold = curGoldValue - minGoldValue
     if (curGold == 0)
-      return ::showInfoMsgBox(::loc("exp/convert/noGold"), "no_exp_msgbox")
+      return ::showInfoMsgBox(loc("exp/convert/noGold"), "no_exp_msgbox")
 
     if (availableExp < expPerGold)
-      return ::showInfoMsgBox(::loc("msgbox/no_rp"), "no_rp_msgbox")
+      return ::showInfoMsgBox(loc("msgbox/no_rp"), "no_rp_msgbox")
 
     let curExp = getCurExpValue()
     let cost = ::Cost(0, curGold)
-    let msgText = warningIfGold(::loc("exp/convert/needMoneyQuestion",
+    let msgText = ::warningIfGold(loc("exp/convert/needMoneyQuestion",
         {exp = ::Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance()}),
       cost)
     this.msgBox("need_money", msgText,
@@ -614,7 +622,7 @@ enum windowState
 
   function onEventUnitBought(params)
   {
-    let unitName = ::getTblValue("unitName", params)
+    let unitName = getTblValue("unitName", params)
     if (!unitName || unit?.name != unitName)
       return
 

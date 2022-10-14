@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getRespawnBaseNameById, isDefaultRespawnBase } = require("guiRespawn")
 
 let MAP_SELECT_NOTHING = -1
@@ -27,9 +34,9 @@ local RespawnBase = class
 
   function getTitle()
   {
-    local res = (name == "") ? ::loc("missions/spawn_number", { number = id + 1 }) : ::loc(name)
+    local res = (name == "") ? loc("missions/spawn_number", { number = id + 1 }) : loc(name)
     if (isAutoSelected)
-      res = ::loc("missions/auto_spawn", { spawn = res })
+      res = loc("missions/auto_spawn", { spawn = res })
     return res
   }
 

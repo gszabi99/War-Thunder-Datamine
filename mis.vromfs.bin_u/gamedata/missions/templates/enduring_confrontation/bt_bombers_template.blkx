@@ -48,6 +48,9 @@
           },
           {
             "value": ""
+          },
+          {
+            "value": "loadbeh tree for units"
           }
         ],
         "missionGetBalanceLevel": {
@@ -101,6 +104,22 @@
           {
             "value": "bt_t2_fighter",
             "var": "bt_t2_fighter_name"
+          }
+        ],
+        "unitLoadBehTree": [
+          {
+            "name": "missionBomber",
+            "objects": [
+              "bt_t1_bomber",
+              "bt_t2_bomber"
+            ]
+          },
+          {
+            "name": "missionFighter",
+            "objects": [
+              "bt_t1_fighter",
+              "bt_t2_fighter"
+            ]
           }
         ]
       },
@@ -547,14 +566,21 @@
         }
       },
       "actions": {
-        "comment": {
-          "value": ""
-        },
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
         "varSetString": [
           {
-            "value": "",
-            "var": "bt_t1_target_name",
-            "input_var": "bt_t1_search_target_name"
+            "value": "bdt_t2_bomb_zone_",
+            "var": "bt_t1_target_var_name"
           },
           {
             "value": "",
@@ -567,9 +593,20 @@
             "input_var": "bt_t1_search_target_name"
           }
         ],
-        "varAddString": {
-          "value": "_bomb_target",
-          "digits": 0,
+        "varAddString": [
+          {
+            "value": "@bt_t1_bdt_target_generation_idx",
+            "digits": 2,
+            "var": "bt_t1_target_var_name"
+          },
+          {
+            "value": "_bomb_target",
+            "digits": 0,
+            "var": "bt_t1_target_var_name"
+          }
+        ],
+        "varGetStringValue": {
+          "from_var_name": "bt_t1_target_var_name",
           "var": "bt_t1_target_name"
         },
         "triggerEnable": {
@@ -654,7 +691,9 @@
               "bt_t1_bombers_saved",
               "bt_t1_bombers_not_saved",
               "bt_t1_check_t2_quest_fail",
-              "bt_t1_check_t2_quest_success"
+              "bt_t1_check_t2_quest_success",
+              "bt_t1_check_out_area",
+              "bt_t1_check_attack_done"
             ]
           }
         ],
@@ -831,9 +870,17 @@
         }
       },
       "actions": {
-        "comment": {
-          "value": "bombery ryadom s cel'yu"
-        },
+        "comment": [
+          {
+            "value": "bombery ryadom s cel'yu"
+          },
+          {
+            "value": "settiing flag that attack has been started"
+          },
+          {
+            "value": ""
+          }
+        ],
         "unitMoveTo": {
           "target": "bt_t1_retreat_point",
           "follow_target": false,
@@ -861,6 +908,10 @@
           "object": "@bt_t1_bomber_name",
           "target": "@bt_t1_target_name",
           "attackNumMax": 2
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "bt_t1_attack_done"
         },
         "triggerDisable": {
           "target": "bt_t1_bombers_target_destroyed"
@@ -890,10 +941,6 @@
         }
       },
       "actions": {
-        "__missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": false
-        },
         "missionGetBombingAreaHP": {
           "target": "@bt_t1_target_area_name",
           "input_var": "bt_t1_target_hp"
@@ -1492,8 +1539,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@bt_t1_bomber_name",
-          "object_var_value": 0
+          "object": "@bt_t1_bomber_name"
         }
       },
       "actions": {
@@ -1789,14 +1835,21 @@
         }
       },
       "actions": {
-        "comment": {
-          "value": ""
-        },
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
         "varSetString": [
           {
-            "value": "",
-            "var": "bt_t2_target_name",
-            "input_var": "bt_t2_search_target_name"
+            "value": "bdt_t1_bomb_zone_",
+            "var": "bt_t2_target_var_name"
           },
           {
             "value": "",
@@ -1809,9 +1862,20 @@
             "input_var": "bt_t2_search_target_name"
           }
         ],
-        "varAddString": {
-          "value": "_bomb_target",
-          "digits": 0,
+        "varAddString": [
+          {
+            "value": "@bt_t2_bdt_target_generation_idx",
+            "digits": 2,
+            "var": "bt_t2_target_var_name"
+          },
+          {
+            "value": "_bomb_target",
+            "digits": 0,
+            "var": "bt_t2_target_var_name"
+          }
+        ],
+        "varGetStringValue": {
+          "from_var_name": "bt_t2_target_var_name",
           "var": "bt_t2_target_name"
         },
         "triggerEnable": {
@@ -1896,7 +1960,9 @@
               "bt_t2_bombers_saved",
               "bt_t2_bombers_not_saved",
               "bt_t2_check_t1_quest_fail",
-              "bt_t2_check_t1_quest_success"
+              "bt_t2_check_t1_quest_success",
+              "bt_t2_check_out_area",
+              "bt_t2_check_attack_done"
             ]
           }
         ],
@@ -2074,9 +2140,17 @@
         }
       },
       "actions": {
-        "comment": {
-          "value": "bombery ryadom s cel'yu"
-        },
+        "comment": [
+          {
+            "value": "bombery ryadom s cel'yu"
+          },
+          {
+            "value": "settiing flag that attack has been started"
+          },
+          {
+            "value": ""
+          }
+        ],
         "unitMoveTo": {
           "target": "bt_t2_retreat_point",
           "follow_target": false,
@@ -2104,6 +2178,10 @@
           "object": "@bt_t2_bomber_name",
           "target": "@bt_t2_target_name",
           "attackNumMax": 2
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "bt_t2_attack_done"
         },
         "triggerDisable": {
           "target": "bt_t2_bombers_target_destroyed"
@@ -2133,10 +2211,6 @@
         }
       },
       "actions": {
-        "__missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": false
-        },
         "missionGetBombingAreaHP": {
           "target": "@bt_t2_target_area_name",
           "input_var": "bt_t2_target_hp"
@@ -2668,7 +2742,7 @@
         "unitWhenEnemyNear": {
           "object_type": "isActive",
           "object_marking": 0,
-          "enemy_type": "isTeamB",
+          "enemy_type": "isTeamA",
           "distance": 5500.0,
           "check_objects": "any",
           "object_var_name": "",
@@ -3523,6 +3597,9 @@
         "actions": {
           "comment": [
             {
+              "value": "setting attack completed flag off"
+            },
+            {
               "value": "bombers indication"
             },
             {
@@ -3541,6 +3618,10 @@
               "value": "vklyuchaem dop skripty"
             }
           ],
+          "varSetBool": {
+            "value": false,
+            "var": "bt_t1_attack_done"
+          },
           "unitSetIndication": [
             {
               "set": true,
@@ -3591,7 +3672,8 @@
               "target": [
                 "bt_t1_activity_end",
                 "bt_t1_is_detect_alowed",
-                "bt_t1_bombers_not_saved"
+                "bt_t1_bombers_not_saved",
+                "bt_t1_check_out_area"
               ]
             }
           ],
@@ -4077,6 +4159,9 @@
         "actions": {
           "comment": [
             {
+              "value": "setting attack completed flag off"
+            },
+            {
               "value": "spavnim istrebitelej"
             },
             {
@@ -4095,6 +4180,10 @@
               "value": "vklyuchaem dop skripty"
             }
           ],
+          "varSetBool": {
+            "value": false,
+            "var": "bt_t1_attack_done"
+          },
           "unitSetIndication": [
             {
               "set": true,
@@ -4145,7 +4234,8 @@
               "target": [
                 "bt_t2_activity_end",
                 "bt_t2_is_detect_alowed",
-                "bt_t2_bombers_not_saved"
+                "bt_t2_bombers_not_saved",
+                "bt_t2_check_out_area"
               ]
             }
           ],
@@ -6090,6 +6180,222 @@
           }
         }
       }
+    },
+    "bt_battle_area_checks": {
+      "isCategory": true,
+      "is_enabled": true,
+      "bt_t1_check_out_area": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 30.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "all",
+            "object": "@bt_t1_bomber_name",
+            "target": "flt_battle_area"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "units are n area. do nothing"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "units are left area and it's strange"
+          },
+          "triggerEnable": {
+            "target": "bt_t1_check_attack_done"
+          }
+        }
+      },
+      "bt_t1_check_attack_done": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "bt_t1_attack_done",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "attackas are done need to complete"
+            },
+            {
+              "value": "they are not dead"
+            }
+          ],
+          "unitPutToSleep": {
+            "target": "@bt_t1_bomber_name"
+          },
+          "triggerDisable": {
+            "target": "bt_t1_bombers_not_saved"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "attack not done. trying to change target"
+            },
+            {
+              "value": "reload for beh tree to fix posssible AI code glitches"
+            },
+            {
+              "value": "choosing new target"
+            }
+          ],
+          "varSetString": {
+            "value": "lost target",
+            "var": "bt_t1_search_target_mode"
+          },
+          "unitLoadBehTree": [
+            {
+              "name": "missionBomber",
+              "objects": "bt_t1_bomber"
+            },
+            {
+              "name": "missionFighter",
+              "objects": "bt_t1_fighter"
+            }
+          ],
+          "triggerEnable": {
+            "target": "bt_t1_choose_bdt_target_restart"
+          }
+        }
+      },
+      "bt_t2_check_out_area": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 30.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "all",
+            "object": "@bt_t2_bomber_name",
+            "target": "flt_battle_area"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "units are n area. do nothing"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "units are left area and it's strange"
+          },
+          "triggerEnable": {
+            "target": "bt_t2_check_attack_done"
+          }
+        }
+      },
+      "bt_t2_check_attack_done": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "bt_t2_attack_done",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "attackas are done need to complete"
+            },
+            {
+              "value": "they are not dead"
+            }
+          ],
+          "unitPutToSleep": {
+            "target": "@bt_t2_bomber_name"
+          },
+          "triggerDisable": {
+            "target": "bt_t2_bombers_not_saved"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "attack not done. trying to change target"
+            },
+            {
+              "value": "reload for beh tree to fix posssible AI code glitches"
+            },
+            {
+              "value": "choosing new target"
+            }
+          ],
+          "varSetString": {
+            "value": "lost target",
+            "var": "bt_t2_search_target_mode"
+          },
+          "unitLoadBehTree": [
+            {
+              "name": "missionBomber",
+              "objects": "bt_t2_bomber"
+            },
+            {
+              "name": "missionFighter",
+              "objects": "bt_t2_fighter"
+            }
+          ],
+          "triggerEnable": {
+            "target": "bt_t2_choose_bdt_target_restart"
+          }
+        }
+      }
     }
   },
   "mission_objectives": {
@@ -6210,7 +6516,11 @@
     "bt_t1_hunter_name": "ht_t1_hunter",
     "bt_t2_hunter_name": "ht_t2_hunter",
     "bt_t1_target_hp": 0.0,
-    "bt_t2_target_hp": 0.0
+    "bt_t2_target_hp": 0.0,
+    "bt_t1_target_var_name": "",
+    "bt_t2_target_var_name": "",
+    "bt_t1_attack_done": false,
+    "bt_t2_attack_done": false
   },
   "dialogs": {},
   "airfields": {},

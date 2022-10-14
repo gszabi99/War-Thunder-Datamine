@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let {
   is_mplayer_host = @() ::is_mplayer_host() //compatibility with 2.16.0.X
 } = require_optional("multiplayer")
@@ -15,7 +22,7 @@ let { is_replay_playing } = require("replays")
   ::flight_menu_handler = ::handlersManager.loadHandler(::gui_handlers.FlightMenu)
 }
 
-::gui_start_flight_menu_failed <- gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
+::gui_start_flight_menu_failed <- ::gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
 ::gui_start_flight_menu_psn <- function gui_start_flight_menu_psn() {} //unused atm, but still have a case in code
 
 ::gui_handlers.FlightMenu <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -35,7 +42,7 @@ let { is_replay_playing } = require("replays")
 
   function initScreen()
   {
-    setSceneTitle(getCurMpTitle())
+    setSceneTitle(::getCurMpTitle())
 
     menuButtonsCfg = flightMenuButtonTypes.types.filter(@(btn) btn.isAvailableInMission())
     let markup = ::handyman.renderCached("%gui/flightMenu/menuButtons", { buttons = menuButtonsCfg })
@@ -47,7 +54,7 @@ let { is_replay_playing } = require("replays")
 
   function reinitScreen(params = null)
   {
-    isMissionFailed = ::get_mission_status() == ::MISSION_STATUS_FAIL
+    isMissionFailed = ::get_mission_status() == MISSION_STATUS_FAIL
     usePause = !::is_game_paused()
 
     if (!::handlersManager.isFullReloadInProgress)
@@ -63,7 +70,7 @@ let { is_replay_playing } = require("replays")
 
   function updateButtons()
   {
-    if (!::check_obj(scene))
+    if (!checkObj(scene))
       return
 
     foreach (btn in menuButtonsCfg)
@@ -151,7 +158,7 @@ let { is_replay_playing } = require("replays")
     if (("is_offline_version" in getroottable()) && ::is_offline_version)
       return ::restart_mission();
 
-    if ([ ::GM_CAMPAIGN, ::GM_SINGLE_MISSION, ::GM_DYNAMIC ].contains(::get_game_mode()))
+    if ([ GM_CAMPAIGN, GM_SINGLE_MISSION, GM_DYNAMIC ].contains(::get_game_mode()))
        goForward(::gui_start_briefing_restart)
     else
       ::restart_current_mission()
@@ -167,9 +174,9 @@ let { is_replay_playing } = require("replays")
     if (isMissionFailed)
       restartBriefing()
     else
-    if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
+    if (::get_mission_status() == MISSION_STATUS_RUNNING)
     {
-      this.msgBox("question_restart_mission", ::loc("flightmenu/questionRestartMission"),
+      this.msgBox("question_restart_mission", loc("flightmenu/questionRestartMission"),
       [
         ["yes", restartBriefing],
         ["no"]
@@ -211,28 +218,28 @@ let { is_replay_playing } = require("replays")
     {
       quitToDebriefing()
     }
-    else if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
+    else if (::get_mission_status() == MISSION_STATUS_RUNNING)
     {
       local text = ""
       if (is_mplayer_host())
-        text = ::loc("flightmenu/questionQuitMissionHost")
-      else if (::get_game_mode() == ::GM_DOMINATION)
+        text = loc("flightmenu/questionQuitMissionHost")
+      else if (::get_game_mode() == GM_DOMINATION)
       {
         let unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
         let unitsTexts = ::u.map(unitsData,
                                    function(ud)
                                    {
-                                     local res = ::colorize("userlogColoredText", ::getUnitName(ud.unit))
+                                     local res = colorize("userlogColoredText", ::getUnitName(ud.unit))
                                      if (ud.comment.len())
-                                       res += ::loc("ui/parentheses/space", { text = ud.comment })
+                                       res += loc("ui/parentheses/space", { text = ud.comment })
                                      return res
                                    })
         if (unitsTexts.len())
-          text = ::loc("flightmenu/haveAvailableCrews") + "\n" + ::g_string.implode(unitsTexts, ", ") + "\n\n"
+          text = loc("flightmenu/haveAvailableCrews") + "\n" + ::g_string.implode(unitsTexts, ", ") + "\n\n"
 
-        text += ::loc("flightmenu/questionQuitMissionInProgress")
+        text += loc("flightmenu/questionQuitMissionInProgress")
       } else
-        text = ::loc("flightmenu/questionQuitMission")
+        text = loc("flightmenu/questionQuitMission")
       this.msgBox("question_quit_mission", text,
       [
         ["yes", sendDisconnectMessage],
@@ -241,7 +248,7 @@ let { is_replay_playing } = require("replays")
     }
     else if (isMissionFailed)
     {
-      let text = ::loc("flightmenu/questionQuitMission")
+      let text = loc("flightmenu/questionQuitMission")
       this.msgBox("question_quit_mission", text,
       [
         ["yes", function()
@@ -269,7 +276,7 @@ let { is_replay_playing } = require("replays")
 
   function onQuitGame(obj)
   {
-    this.msgBox("question_quit_flight", ::loc("flightmenu/questionQuitGame"),
+    this.msgBox("question_quit_flight", loc("flightmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no"]
@@ -307,7 +314,7 @@ let { is_replay_playing } = require("replays")
 
   function onMenuBtnHover(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
     let id = obj.id
     let isHover = obj.isHovered()
@@ -329,7 +336,7 @@ let { is_replay_playing } = require("replays")
 {
   ::in_flight_menu(false)
   ::pause_game(false)
-  gui_start_hud()
+  ::gui_start_hud()
   ::broadcastEvent("PlayerQuitMission")
 
   if (::is_multiplayer())

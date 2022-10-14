@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {strip, startswith} = require("string")
 
 let function parse(hotkey){

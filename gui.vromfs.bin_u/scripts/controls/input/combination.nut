@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 
 /**
@@ -47,7 +54,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
     if (elements.len())
       return elements[0].getDeviceId()
 
-    return ::NULL_INPUT_DEVICE_ID
+    return NULL_INPUT_DEVICE_ID
   }
 
   function hasImage()

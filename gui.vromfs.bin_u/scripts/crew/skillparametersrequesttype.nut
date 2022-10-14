@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
@@ -7,7 +14,7 @@ let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
   types = []
 }
 
-g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit)
+::g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit)
 {
   if (unit == null)
     return null
@@ -23,12 +30,12 @@ g_skill_parameters_request_type._getParameters <- function _getParameters(crewId
   return res
 }
 
-g_skill_parameters_request_type._getValues <- function _getValues()
+::g_skill_parameters_request_type._getValues <- function _getValues()
 {
   return {}
 }
 
-g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit)
+::g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit)
 {
   if (unit == null)
     return null
@@ -59,7 +66,7 @@ g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedP
   return res
 }
 
-g_skill_parameters_request_type._getCachePrefix <- function _getCachePrefix()
+::g_skill_parameters_request_type._getCachePrefix <- function _getCachePrefix()
 {
   return "skillParamRqst" + typeName
 }

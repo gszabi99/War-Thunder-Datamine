@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
@@ -41,9 +48,9 @@ global enum CLAN_SEASON_MEDAL_TYPE
 
   function isEnabled()
   {
-    if (!::has_feature("ClanSeasons_3_0"))
+    if (!hasFeature("ClanSeasons_3_0"))
       return false
-    return ::getTblValue("seasonsEnable", getRewardsBlk(), true)
+    return getTblValue("seasonsEnable", getRewardsBlk(), true)
   }
 
 
@@ -115,7 +122,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
         local place = currentPlace
         for (; place < min(maxPlaceForBlock, till); ++place)
         {
-          let gold = ::getTblValue("place" + (place + 1) + "Gold", rewardsData, 0)
+          let gold = getTblValue("place" + (place + 1) + "Gold", rewardsData, 0)
           let regalia = getRagalia(rewardsData, place + 1)
           let hasAnyRewards = gold > 0 || getRegaliaPrizes(regalia).len() > 0
           if (hasAnyRewards)
@@ -311,7 +318,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     let info = ::clan_get_current_season_info()
     let year = unixtime_to_utc_timetbl(info.startDay).year.tostring()
     let num  = ::get_roman_numeral(info.numberInYear + CLAN_SEASON_NUM_IN_YEAR_SHIFT)
-    return ::loc("clan/battle_season/name", { year = year, num = num })
+    return loc("clan/battle_season/name", { year = year, num = num })
   }
 
 
@@ -347,7 +354,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     if (place != 0 && (placeRegaliaId in rewardsData))
       return rewardsData[placeRegaliaId]
 
-    return ::getTblValue("regalia", rewardsData, "")
+    return getTblValue("regalia", rewardsData, "")
   }
 
 

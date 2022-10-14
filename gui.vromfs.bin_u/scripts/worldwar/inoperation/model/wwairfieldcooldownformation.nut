@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
@@ -34,7 +41,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   {
     let cooldownTime = getCooldownTime()
     if (cooldownTime == 0)
-      return ::loc("worldwar/state/ready")
+      return loc("worldwar/state/ready")
 
     return time.secondsToString(time.millisecondsToSeconds(cooldownTime), false)
   }

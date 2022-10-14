@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 //to allow to able temporary handle different stats versions at once
 //before new one completely applied to all circuits
 ::queue_stats_versions <- {}
@@ -85,17 +92,17 @@ const MULTICLUSTER_NAME = "multi"
     recountQueueOnce()
     if (isMultiCluster)
       cluster = MULTICLUSTER_NAME
-    return ::getTblValue(cluster || maxClusterName, teamsQueueTable)
+    return getTblValue(cluster || maxClusterName, teamsQueueTable)
   }
 
   function getQueueTableByTeam(teamName, cluster = null)
   {
-    return ::getTblValue(teamName, getTeamsQueueTable(cluster))
+    return getTblValue(teamName, getTeamsQueueTable(cluster))
   }
 
   function getPlayersCountByTeam(teamName, cluster = null)
   {
-    return ::getTblValue("playersCount", getQueueTableByTeam(teamName, cluster), 0)
+    return getTblValue("playersCount", getQueueTableByTeam(teamName, cluster), 0)
   }
 
   function getPlayersCountOfAllRanks(cluster = null)
@@ -112,11 +119,11 @@ const MULTICLUSTER_NAME = "multi"
   {
     let rankStr = myRankInQueue.tostring()
     if (isSymmetric)
-      return ::getTblValue(rankStr, getQueueTableByTeam("teamA", cluster), 0)
+      return getTblValue(rankStr, getQueueTableByTeam("teamA", cluster), 0)
 
     local res = 0
     foreach(teamName in teamNamesList)
-      res += ::getTblValue(rankStr, getQueueTableByTeam(teamName, cluster), 0)
+      res += getTblValue(rankStr, getQueueTableByTeam(teamName, cluster), 0)
     return res
   }
 
@@ -125,13 +132,13 @@ const MULTICLUSTER_NAME = "multi"
     recountQueueOnce()
     if (isMultiCluster)
       cluster = MULTICLUSTER_NAME
-    return ::getTblValue(cluster || maxClusterName, countriesQueueTable)
+    return getTblValue(cluster || maxClusterName, countriesQueueTable)
   }
 
   //for clans queues
   function getClansCount()
   {
-    return ::getTblValue("clansCount", getClansQueueTable(), 0)
+    return getTblValue("clansCount", getClansQueueTable(), 0)
   }
 
   function getMyClanQueueTable()

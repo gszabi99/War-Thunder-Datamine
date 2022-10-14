@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 ::gui_bhv.Timer <- class
 {
   function onTimer(obj, dt)
@@ -7,5 +10,5 @@
       ud[obj?.timer_handler_func ?? "onTimer"](obj, dt)
   }
 
-  eventMask = ::EV_TIMER
+  eventMask = EV_TIMER
 }

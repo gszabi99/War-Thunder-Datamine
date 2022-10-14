@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
@@ -115,17 +123,17 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
     if (!(view.needShowProgressBar ?? false) && view.needShowProgressValue)
     {
-      let progressValueText = ::loc("ui/parentheses/space",
+      let progressValueText = loc("ui/parentheses/space",
         {text = "".concat(view.progressValue, "/", view.progressMaxValue)})
       view.collapsedText = $"{view.collapsedText}{progressValueText}"
     }
-    let maxTextWidth = ::to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
+    let maxTextWidth = to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
       view.taskStatus != null ? "-1@modStatusHeight" : "",
       view.newIconWidget != null ? "-1@arrowButtonHeight" : ""))
     view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
-    let iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", guiScene) + ::to_pixels("1@blockInterval")
+    let iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", guiScene) + to_pixels("1@blockInterval")
     if (getStringWidthPx(view.collapsedText, "fontNormal", guiScene) > maxTextWidth - iconSize)
-      view.shortInfoBlockWidth <- ::to_pixels("1@arrowButtonWidth-1@blockInterval")
+      view.shortInfoBlockWidth <- to_pixels("1@arrowButtonWidth-1@blockInterval")
     view.hasMarginCollapsedIcon <- view.collapsedText != "" && view.taskDifficultyImage != ""
     view.hasCollapsedText <- view.collapsedText != ""
     let taskHeaderCondition = view?.taskHeaderCondition ?? ""
@@ -134,11 +142,11 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     if (getStringWidthPx(view.title, "fontNormal", guiScene) > maxTextWidth)
       view.headerWidth <- maxTextWidth
     view.performActionId <- ::g_promo.getActionParamsKey(id)
-    view.taskId <- ::getTblValue("id", reqTask)
+    view.taskId <- getTblValue("id", reqTask)
     view.action <- ::g_promo.PERFORM_ACTON_NAME
 
 
-    view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && ::has_feature("PromoBattleTasksRadioButtons"))
+    view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && hasFeature("PromoBattleTasksRadioButtons"))
     view.radioButtons <- difficultyGroupArray
     view.otherTasksNumText <- view.otherTasksNum > 0 ? "#mainmenu/battleTasks/OtherTasksCount" : ""
     let isEmptyTask = view.taskId == null
@@ -231,14 +239,14 @@ let promoButtonId = "current_battle_tasks_mainmenu_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "battleTask"
-  collapsedIcon = ::loc("icon/battleTasks")
+  collapsedIcon = loc("icon/battleTasks")
   collapsedText = "title"
   updateFunctionInHandler = function() {
     let id = promoButtonId
     let show = ::g_battle_tasks.isAvailableForUser()
       && ::g_promo.getVisibilityById(id)
     let buttonObj = ::showBtn(id, show, scene)
-    if (!show || !::checkObj(buttonObj))
+    if (!show || !checkObj(buttonObj))
       return
 
     ::gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })

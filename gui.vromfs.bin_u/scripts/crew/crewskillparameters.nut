@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
@@ -64,37 +69,37 @@ let function getBaseDescriptionText(memberName, skillName, crew) {
   local locParams = null
 
   if (skillName == "eyesight"
-    && ::isInArray(memberName, ["driver", "tank_gunner", "commander", "loader", "radio_gunner"])) {
+    && isInArray(memberName, ["driver", "tank_gunner", "commander", "loader", "radio_gunner"])) {
     locId = "crew/eyesight/tank/tooltip"
 
     let blk = ::dgs_get_game_params()
     let detectDefaults = blk?.detectDefaults
     locParams = {
-      targetingMul = ::getTblValue("distanceMultForTargetingView", detectDefaults, 1.0)
-      binocularMul = ::getTblValue("distanceMultForBinocularView", detectDefaults, 1.0)
+      targetingMul = getTblValue("distanceMultForTargetingView", detectDefaults, 1.0)
+      binocularMul = getTblValue("distanceMultForBinocularView", detectDefaults, 1.0)
     }
   }
 
-  return ::loc(locId, locParams)
+  return loc(locId, locParams)
 }
 
 let function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit) {
   let resArray = [getBaseDescriptionText(memberName, skillName, crew)]
   if (unit && unit.unitType.crewUnitType != crewUnitType) {
-    let text = ::loc("crew/skillsWorkWithUnitsSameType")
-    resArray.append(::colorize("warningTextColor", text))
+    let text = loc("crew/skillsWorkWithUnitsSameType")
+    resArray.append(colorize("warningTextColor", text))
   }
   else if (crew && memberName == "groundService" && skillName == "repair") {
     let fullParamsList = ::g_skill_parameters_request_type.CURRENT_VALUES.getParameters(crew.id, unit)
     let repairRank = fullParamsList?[difficulty.crewSkillName][memberName].repairRank.groundServiceRepairRank ?? 0
     if (repairRank!=0 && unit && unit.rank > repairRank)
     {
-      let text = ::loc("crew/notEnoughRepairRank", {
-                          rank = ::colorize("activeTextColor", ::get_roman_numeral(unit.rank))
-                          level = ::colorize("activeTextColor",
+      let text = loc("crew/notEnoughRepairRank", {
+                          rank = colorize("activeTextColor", ::get_roman_numeral(unit.rank))
+                          level = colorize("activeTextColor",
                             getMinSkillsUnitRepairRank(unit.rank))
                          })
-      resArray.append(::colorize("warningTextColor", text))
+      resArray.append(colorize("warningTextColor", text))
     }
   }
   else if (memberName == "loader" && skillName == "loading_time_mult")
@@ -102,8 +107,8 @@ let function getTooltipText(memberName, skillName, crewUnitType, crew, difficult
     let wBlk = ::get_wpcost_blk()
     if (unit && wBlk?[unit.name].primaryWeaponAutoLoader)
     {
-      let text = ::loc("crew/loader/loading_time_mult/tooltipauto")
-      resArray.append(::colorize("warningTextColor", text))
+      let text = loc("crew/loader/loading_time_mult/tooltipauto")
+      resArray.append(colorize("warningTextColor", text))
     }
   }
 
@@ -129,7 +134,7 @@ let function getColumnsTypesList(skillsList, crewUnitType) {
 
 let function getSkillListHeaderRow(crew, columnTypes, unit) {
   let res = {
-    descriptionLabel = ::loc("crewSkillParameterTable/descriptionLabel")
+    descriptionLabel = loc("crewSkillParameterTable/descriptionLabel")
     valueItems = []
   }
 
@@ -179,7 +184,7 @@ let function getParametersByRequestType(crewId, skillsList, difficulty, requestT
 let function getSortedArrayByParamsTable(parameters, crewUnitType) {
   let res = []
   foreach(name, valuesArr in parameters) {
-    if (crewUnitType != ::CUT_AIRCRAFT && name == "airfieldMinRepairTime")
+    if (crewUnitType != CUT_AIRCRAFT && name == "airfieldMinRepairTime")
       continue
     res.append({
       name = name
@@ -217,10 +222,10 @@ let function parseParameters(columnTypes,
 let function filterSkillsList(skillsList) {
   let res = []
   foreach(skill in skillsList) {
-    let group = ::getTblValue(skill.skillName, skillGroups)
+    let group = getTblValue(skill.skillName, skillGroups)
     if (group) {
       let resSkill = ::u.search(res, (@(skill, group) function(resSkill) {
-                         return skill.skillName == resSkill.skillName && ::isInArray(resSkill.memberName, group)
+                         return skill.skillName == resSkill.skillName && isInArray(resSkill.memberName, group)
                        })(skill, group))
       if (resSkill)
         continue
@@ -272,13 +277,13 @@ let function getSkillDescriptionView(crew, difficulty, memberName, skillName, cr
   }]
 
   let view = {
-    skillName = ::loc("crew/" + skillName)
+    skillName = loc("crew/" + skillName)
     tooltipText = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit)
 
     // First item in this array is table's header.
     parameterRows = getSkillListParameterRowsView(crew, difficulty, skillsList, crewUnitType, unit)
-    footnoteText = ::loc("shop/all_info_relevant_to_current_game_mode")
-      + ::loc("ui/colon") + difficulty.getLocName()
+    footnoteText = loc("shop/all_info_relevant_to_current_game_mode")
+      + loc("ui/colon") + difficulty.getLocName()
   }
 
   if (!view.parameterRows.len())
@@ -288,9 +293,9 @@ let function getSkillDescriptionView(crew, difficulty, memberName, skillName, cr
   view.headerItems <- view.parameterRows[0].valueItems
 
   //getprogressbarFrom a first row (it the same for all rows, so we showing it in a top of tooltip
-  let firstRow = ::getTblValue(1, view.parameterRows)
-  view.progressBarValue <- ::getTblValue("progressBarValue", firstRow)
-  view.progressBarSelectedValue <- ::getTblValue("progressBarSelectedValue", firstRow)
+  let firstRow = getTblValue(1, view.parameterRows)
+  view.progressBarValue <- getTblValue("progressBarValue", firstRow)
+  view.progressBarSelectedValue <- getTblValue("progressBarSelectedValue", firstRow)
 
   return view
 }

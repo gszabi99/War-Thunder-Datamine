@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
@@ -27,7 +36,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
   function initScreen()
   {
-    if (!::checkObj(showObj))
+    if (!checkObj(showObj))
       return goBack()
 
     let image = showObj?["background-image"]
@@ -150,7 +159,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
   function initScreen()
   {
     let rootObj = scene.findObject("root-box")
-    if (!::checkObj(rootObj))
+    if (!checkObj(rootObj))
       return goBack()
 
     rootObj["transparent"] = "100"
@@ -159,7 +168,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     frameObj.pos = "50%pw-50%w, 45%ph-50%h"
 
     let imgObj = frameObj.findObject("image")
-    if (!::checkObj(imgObj))
+    if (!checkObj(imgObj))
       return goBack()
 
     if (!maxSize)

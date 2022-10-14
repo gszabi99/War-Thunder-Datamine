@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
@@ -32,8 +41,8 @@ let function openOptionsWnd(group = null) {
 
   let params = {
     titleText = isInFlight
-      ? ::is_multiplayer() ? null : ::loc("flightmenu/title")
-      : ::loc("mainmenu/btnGameplay")
+      ? ::is_multiplayer() ? null : loc("flightmenu/title")
+      : loc("mainmenu/btnGameplay")
     optGroups = options
     wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
     sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
@@ -80,7 +89,7 @@ let function openOptionsWnd(group = null) {
         navImagesText = ::get_navigation_images_text(idx, optGroups.len())
       })
 
-      if (::getTblValue("selected", gr) == true)
+      if (getTblValue("selected", gr) == true)
         curOption = idx
     }
 
@@ -91,7 +100,7 @@ let function openOptionsWnd(group = null) {
     groupsObj.show(true)
     groupsObj.setValue(curOption)
 
-    let showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
+    let showWebUI = is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
     this.showSceneBtn("web_ui_button", showWebUI)
   }
 
@@ -154,7 +163,7 @@ let function openOptionsWnd(group = null) {
     let fObj = this.showSceneBtn("facebook_frame", hasFacebook)
     if (hasFacebook && fObj)
     {
-      fObj.findObject("facebook_like_btn").tooltip = ::loc("guiHints/facebookLike") + ::loc("ui/colon") + ::get_unlock_reward("facebook_like")
+      fObj.findObject("facebook_like_btn").tooltip = loc("guiHints/facebookLike") + loc("ui/colon") + ::get_unlock_reward("facebook_like")
       checkFacebookLoginStatus()
     }
   }
@@ -167,7 +176,7 @@ let function openOptionsWnd(group = null) {
 
   function isSearchInCurrentGroupAvaliable()
   {
-    return ::getTblValue("isSearchAvaliable", optGroups[curGroup])
+    return getTblValue("isSearchAvaliable", optGroups[curGroup])
   }
 
   function onFilterEditBoxChangeValue()
@@ -189,7 +198,7 @@ let function openOptionsWnd(group = null) {
   function applySearchFilter()
   {
     let filterEditBox = scene.findObject("filter_edit_box")
-    if (!::checkObj(filterEditBox))
+    if (!checkObj(filterEditBox))
       return
 
     filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
@@ -232,14 +241,14 @@ let function openOptionsWnd(group = null) {
 
     let filterNotifyObj = this.showSceneBtn("filter_notify", needShowSearchNotify)
     if (needShowSearchNotify && filterNotifyObj != null)
-      filterNotifyObj.setValue(::loc("menu/options/maxNumFilterOptions",
+      filterNotifyObj.setValue(loc("menu/options/maxNumFilterOptions",
         { num = MAX_NUM_VISIBLE_FILTER_OPTIONS }))
   }
 
   function resetSearch()
   {
     let filterEditBox = scene.findObject("filter_edit_box")
-    if ( ! ::checkObj(filterEditBox))
+    if ( ! checkObj(filterEditBox))
       return
 
     filterEditBox.setValue("")
@@ -259,7 +268,7 @@ let function openOptionsWnd(group = null) {
 
   function onFacebookLogin()
   {
-    make_facebook_login_and_do(checkFacebookLoginStatus, this)
+    ::make_facebook_login_and_do(checkFacebookLoginStatus, this)
   }
 
   function onFacebookLike()
@@ -267,7 +276,7 @@ let function openOptionsWnd(group = null) {
     if (!::facebook_is_logged_in())
       return;
 
-    ::facebook_like(::loc("facebook/like_url"), "");
+    ::facebook_like(loc("facebook/like_url"), "");
     onFacebookLikeShared();
   }
 
@@ -283,22 +292,22 @@ let function openOptionsWnd(group = null) {
 
   function checkFacebookLoginStatus()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     let fbObj = scene.findObject("facebook_frame")
-    if (!::checkObj(fbObj))
+    if (!checkObj(fbObj))
       return
 
     let facebookLogged = ::facebook_is_logged_in();
     ::showBtn("facebook_login_btn", !facebookLogged, fbObj)
     fbObj.findObject("facebook_friends_btn").enable(facebookLogged)
 
-    let showLikeBtn = ::has_feature("FacebookWallPost")
+    let showLikeBtn = hasFeature("FacebookWallPost")
     let likeBtn = ::showBtn("facebook_like_btn", showLikeBtn, fbObj)
-    if (::checkObj(likeBtn) && showLikeBtn)
+    if (checkObj(likeBtn) && showLikeBtn)
     {
-      let alreadyLiked = ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, "facebook_like")
+      let alreadyLiked = ::is_unlocked_scripted(UNLOCKABLE_ACHIEVEMENT, "facebook_like")
       likeBtn.enable(facebookLogged && !alreadyLiked && !isPlatformSony)
       likeBtn.show(!isPlatformSony)
     }
@@ -359,7 +368,7 @@ let function openOptionsWnd(group = null) {
 
   function onAssignInternetRadioButton()
   {
-    assignButtonWindow(this, bindInternetRadioButton);
+    ::assignButtonWindow(this, bindInternetRadioButton);
   }
   function bindInternetRadioButton(devs, btns)
   {
@@ -371,7 +380,7 @@ let function openOptionsWnd(group = null) {
   }
   function onAssignInternetRadioPrevButton()
   {
-    assignButtonWindow(this, bindInternetRadioPrevButton);
+    ::assignButtonWindow(this, bindInternetRadioPrevButton);
   }
   function bindInternetRadioPrevButton(devs, btns)
   {
@@ -383,7 +392,7 @@ let function openOptionsWnd(group = null) {
   }
   function onAssignInternetRadioNextButton()
   {
-    assignButtonWindow(this, bindInternetRadioNextButton);
+    ::assignButtonWindow(this, bindInternetRadioNextButton);
   }
   function bindInternetRadioNextButton(devs, btns)
   {
@@ -418,7 +427,7 @@ let function openOptionsWnd(group = null) {
       data = "<color=@hotkeyColor>" + ::hackTextAssignmentForR2buttonOnPS4(data) + "</color>"
 
     scene.findObject("ptt_shortcut").setValue(data)
-    ::showBtn("ptt_buttons_block", get_option(::USEROPT_PTT).value, scene)
+    ::showBtn("ptt_buttons_block", ::get_option(::USEROPT_PTT).value, scene)
 
     let echoButton = scene.findObject("joinEchoButton");
     if (echoButton) echoButton.enable(true)
@@ -426,7 +435,7 @@ let function openOptionsWnd(group = null) {
 
   function onAssignVoiceButton()
   {
-    assignButtonWindow(this, bindVoiceButton);
+    ::assignButtonWindow(this, bindVoiceButton);
   }
 
   function bindVoiceButton(devs, btns)
@@ -476,8 +485,8 @@ let function openOptionsWnd(group = null) {
     joinEchoChannel(!echoTest);
     if(echoButton)
     {
-      echoButton.text = (echoTest)? (::loc("options/leaveEcho")) : (::loc("options/joinEcho"));
-      echoButton.tooltip = (echoTest)? (::loc("guiHints/leaveEcho")) : (::loc("guiHints/joinEcho"));
+      echoButton.text = (echoTest)? (loc("options/leaveEcho")) : (loc("options/joinEcho"));
+      echoButton.tooltip = (echoTest)? (loc("guiHints/leaveEcho")) : (loc("guiHints/joinEcho"));
     }
   }
 
@@ -505,10 +514,10 @@ let function openOptionsWnd(group = null) {
 
   function passValueToParent(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
     let objParent = obj.getParent()
-    if (!::checkObj(objParent))
+    if (!checkObj(objParent))
       return
     let val = obj.getValue()
     if (objParent.getValue() != val)
@@ -564,7 +573,7 @@ let function openOptionsWnd(group = null) {
 
   function onPostFxSettings(obj)
   {
-    applyFunc = gui_start_postfx_settings
+    applyFunc = ::gui_start_postfx_settings
     applyOptions()
     joinEchoChannel(false)
   }
@@ -629,7 +638,7 @@ let function openOptionsWnd(group = null) {
     if (!nameRadio)
       return
     this.msgBox("warning",
-      format(::loc("options/msg_remove_radio"), nameRadio),
+      format(loc("options/msg_remove_radio"), nameRadio),
       [
         ["ok", (@(nameRadio) function() {
           ::remove_internet_radio_station(nameRadio);
@@ -664,9 +673,9 @@ let function openOptionsWnd(group = null) {
   {
     ::scene_msg_box("ask_reveal_notifications",
       null,
-      ::loc("mainmenu/btnRevealNotifications/askPlayer"),
+      loc("mainmenu/btnRevealNotifications/askPlayer"),
       [
-        ["yes", ::Callback(resetNotifications, this)],
+        ["yes", Callback(resetNotifications, this)],
         ["no", @() null]
       ],
       "yes", { cancel_fn = @() null })
@@ -685,7 +694,7 @@ let function openOptionsWnd(group = null) {
 
     //To notify player about success, it is only for player,
     // to be sure, that operation is done.
-    ::g_popups.add("", ::loc("mainmenu/btnRevealNotifications/onSuccess"))
+    ::g_popups.add("", loc("mainmenu/btnRevealNotifications/onSuccess"))
   }
 
   function resetVolumes()

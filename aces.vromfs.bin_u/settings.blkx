@@ -3,6 +3,8 @@
   "version-specific": "",
   "compatibilityHangarBlk": "config/hangar_airfield.blk",
   "nvidia_app_id": 10839111,
+  "dasMain": "%appGame/main.das",
+  "game_das_script_init": "%appGame/wt_init.das",
   "__allowedConfigOverrides": {
     "graphicsQuality": "",
     "renderer": "",
@@ -719,101 +721,97 @@
     "patchRoot": "patch"
   },
   "mountPoints": {
-    "darg": {
+    "%darg": {
       "forSource": "..\\..\\prog\\scripts\\sq\\daRg",
       "forVromfs": "daRg"
     },
-    "sqstd": {
+    "%sqstd": {
       "forSource": "..\\..\\prog\\scripts\\sq\\std",
       "forVromfs": "std"
     },
-    "daeditor": {
+    "%daeditor": {
       "forSource": "..\\..\\prog\\scripts\\sq\\daeditor",
       "forVromfs": "daeditor"
     },
-    "sonyLib": {
+    "%sonyLib": {
       "forSource": "..\\..\\prog\\scripts\\sonyLib",
       "forVromfs": "sonyLib"
     },
-    "xboxLib": {
+    "%xboxLib": {
       "forSource": "..\\..\\prog\\scripts\\xboxLib",
       "forVromfs": "xboxLib"
     },
-    "scripts": {
-      "forSource": "../prog/scripts/scripts",
+    "%scripts": {
+      "forSource": "../prog/scripts/wt/scripts",
       "forVromfs": "scripts"
     },
-    "gui": {
-      "forSource": "../prog/scripts/gui",
+    "%gui": {
+      "forSource": "../prog/scripts/wt/gui",
       "forVromfs": "gui"
     },
-    "game": {
+    "%game": {
       "forSource": "../prog/scripts/game",
-      "forVromfs": "game"
+      "forVromfs": "gameCommon"
     },
-    "rGui": {
-      "forSource": "../../skyquake/prog/scripts/reactiveGui",
+    "%rGui": {
+      "forSource": "../prog/scripts/wt/reactiveGui",
       "forVromfs": "reactivegui"
     },
-    "globalScripts": {
-      "forSource": "../../skyquake/prog/scripts/globalScripts",
-      "forVromfs": "globalScripts"
+    "%globalScripts": {
+      "forSource": "../prog/scripts/globalScripts",
+      "forVromfs": "globalscripts"
     },
-    "dedScripts": {
-      "forSource": "../prog/scripts/dedicatedScripts",
-      "forVromfs": "dedicatedScripts"
+    "%appGame": {
+      "forSource": "../../skyquake/prog/scripts/wt/game",
+      "forVromfs": "game"
     },
-    "nativeModuleCompatibility": {
-      "forSource": "../../skyquake/prog/scripts/nativeModuleCompatibility",
+    "%appGlobals": {
+      "forSource": "../prog/scripts/wt/globals",
+      "forVromfs": "globals"
+    },
+    "%dedScripts": {
+      "forSource": "../prog/scripts/wt/dedicatedScripts",
+      "forVromfs": "dedicatedscripts"
+    },
+    "%nativeModuleCompatibility": {
+      "forSource": "../prog/scripts/nativeModuleCompatibility",
       "forVromfs": "nativeModuleCompatibility"
     },
-    "sqDagui": {
+    "%sqDagui": {
       "forSource": "../prog/scripts/sqDagui",
       "forVromfs": "sqDagui"
     },
-    "sqStdLibs": {
+    "%sqStdLibs": {
       "forSource": "../prog/scripts/sqStdLibs",
       "forVromfs": "sqStdLibs"
     },
-    "daslib": {
+    "%daslib": {
       "forSource": "../../prog/1stPartyLibs/daScript/daslib",
       "forVromfs": "daslib"
     },
-    "dasGameLibs": {
+    "%dasGameLibs": {
       "forSource": "../../prog/gameLibs/das",
       "forVromfs": "das"
     },
-    "danetlibs": {
+    "%danetlibs": {
       "forSource": "../../prog/daNetGameLibs",
       "forVromfs": "danetlibs"
     },
-    "lang": {
+    "%lang": {
       "forSource": "../develop/gameBase/lang_src/lang",
       "forVromfs": "lang"
     },
-    "langRegional": {
+    "%langRegional": {
       "forSource": "../develop/gameBase/config_regional/lang/lang",
       "forVromfs": "lang"
     },
-    "guiConfig": {
-      "forSource": "../prog/scripts/config",
+    "%guiConfig": {
+      "forSource": "../prog/scripts/wt/config",
       "forVromfs": "config"
     },
-    "gameDev": {
-      "forSource": "../prog/scripts/game_pkg_dev",
+    "%gameDev": {
+      "forSource": "../prog/scripts/wt/game_pkg_dev",
       "forVromfs": "game_pkg_dev"
-    },
-    "wtScripts": {
-      "forSource": "../prog/scripts/wt/scripts",
-      "forVromfs": "wt/scripts"
-    },
-    "mechaScripts": {
-      "forSource": "../prog/scripts/mecha/scripts",
-      "forVromfs": "mecha/scripts"
-    },
-    "mechaGui": {
-      "forSource": "../prog/scripts/mecha/gui",
-      "forVromfs": "mecha/gui"
     }
   },
   "addons": {
@@ -914,7 +912,7 @@
     "mem_reserve_mb": 256,
     "emergency_buffer_pages": 20,
     "shader_garlic_size_kb": 2048,
-    "dynbuf_heap_garlic_mb": 96,
+    "dynbuf_heap_garlic_mb": 32,
     "dynbuf_heap_onion_mb": 32,
     "dynbuf_garlic_threshold_kb": 1024,
     "dynbuf_onion_threshold_kb": 1024,

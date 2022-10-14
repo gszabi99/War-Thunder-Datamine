@@ -1,20 +1,29 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
 ::hidden_userlogs <- [
-  ::EULT_NEW_STREAK,
-  ::EULT_SESSION_START,
-  ::EULT_WW_START_OPERATION,
-  ::EULT_WW_CREATE_OPERATION,
-  ::EULT_WW_END_OPERATION,
-  ::EULT_WW_AWARD
+  EULT_NEW_STREAK,
+  EULT_SESSION_START,
+  EULT_WW_START_OPERATION,
+  EULT_WW_CREATE_OPERATION,
+  EULT_WW_END_OPERATION,
+  EULT_WW_AWARD
 ]
 
 ::popup_userlogs <- [
-  ::EULT_SESSION_RESULT
+  EULT_SESSION_RESULT
   {
-    type = ::EULT_CHARD_AWARD
+    type = EULT_CHARD_AWARD
     rewardType = [
       "WagerWin"
       "WagerFail"
@@ -22,7 +31,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       "WagerStageFail"
     ]
   }
-  ::EULT_EXCHANGE_WARBONDS
+  EULT_EXCHANGE_WARBONDS
 ]
 
 ::userlog_pages <- [
@@ -32,21 +41,21 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   }
   {
     id="battle"
-    show = [::EULT_EARLY_SESSION_LEAVE, ::EULT_SESSION_RESULT,
-            ::EULT_AWARD_FOR_PVE_MODE]
+    show = [EULT_EARLY_SESSION_LEAVE, EULT_SESSION_RESULT,
+            EULT_AWARD_FOR_PVE_MODE]
   }
   {
     id="economic"
-    show = [::EULT_BUYING_AIRCRAFT, ::EULT_REPAIR_AIRCRAFT, ::EULT_REPAIR_AIRCRAFT_MULTI,
-            ::EULT_BUYING_WEAPON, ::EULT_BUYING_WEAPONS_MULTI, ::EULT_BUYING_WEAPON_FAIL,
-            ::EULT_SESSION_RESULT, ::EULT_BUYING_MODIFICATION, ::EULT_BUYING_SPARE_AIRCRAFT,
-            ::EULT_BUYING_UNLOCK, ::EULT_BUYING_RESOURCE,
-            ::EULT_CHARD_AWARD, ::EULT_ADMIN_ADD_GOLD,
-            ::EULT_ADMIN_REVERT_GOLD, ::EULT_BUYING_SCHEME, ::EULT_OPEN_ALL_IN_TIER,
-            ::EULT_BUYING_MODIFICATION_MULTI, ::EULT_BUYING_MODIFICATION_FAIL, ::EULT_BUY_ITEM,
-            ::EULT_BUY_BATTLE, ::EULT_CONVERT_EXPERIENCE, ::EULT_SELL_BLUEPRINT,
-            ::EULT_EXCHANGE_WARBONDS, ::EULT_CLAN_ACTION,
-            ::EULT_BUYENTITLEMENT, ::EULT_OPEN_TROPHY, ::EULT_CLAN_UNITS]
+    show = [EULT_BUYING_AIRCRAFT, EULT_REPAIR_AIRCRAFT, EULT_REPAIR_AIRCRAFT_MULTI,
+            EULT_BUYING_WEAPON, EULT_BUYING_WEAPONS_MULTI, EULT_BUYING_WEAPON_FAIL,
+            EULT_SESSION_RESULT, EULT_BUYING_MODIFICATION, EULT_BUYING_SPARE_AIRCRAFT,
+            EULT_BUYING_UNLOCK, EULT_BUYING_RESOURCE,
+            EULT_CHARD_AWARD, EULT_ADMIN_ADD_GOLD,
+            EULT_ADMIN_REVERT_GOLD, EULT_BUYING_SCHEME, EULT_OPEN_ALL_IN_TIER,
+            EULT_BUYING_MODIFICATION_MULTI, EULT_BUYING_MODIFICATION_FAIL, EULT_BUY_ITEM,
+            EULT_BUY_BATTLE, EULT_CONVERT_EXPERIENCE, EULT_SELL_BLUEPRINT,
+            EULT_EXCHANGE_WARBONDS, EULT_CLAN_ACTION,
+            EULT_BUYENTITLEMENT, EULT_OPEN_TROPHY, EULT_CLAN_UNITS]
     checkFunc = function(userlogBlk)
     {
       let body = userlogBlk?.body
@@ -54,54 +63,54 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
         return true
 
       let logType = userlogBlk?.type
-      if (logType == ::EULT_CLAN_ACTION
-          || logType == ::EULT_BUYING_UNLOCK
-          || logType == ::EULT_BUYING_RESOURCE)
-        return ::getTblValue("goldCost", body, 0) > 0 || ::getTblValue("wpCost", body, 0) > 0
+      if (logType == EULT_CLAN_ACTION
+          || logType == EULT_BUYING_UNLOCK
+          || logType == EULT_BUYING_RESOURCE)
+        return getTblValue("goldCost", body, 0) > 0 || getTblValue("wpCost", body, 0) > 0
 
-      if (logType == ::EULT_BUYENTITLEMENT)
-        return ::getTblValue("cost", body, 0) > 0
+      if (logType == EULT_BUYENTITLEMENT)
+        return getTblValue("cost", body, 0) > 0
 
-      if (logType == ::EULT_OPEN_TROPHY)
-        return ::getTblValue("gold", body, 0) > 0 || ::getTblValue("warpoints", body, 0) > 0
+      if (logType == EULT_OPEN_TROPHY)
+        return getTblValue("gold", body, 0) > 0 || getTblValue("warpoints", body, 0) > 0
 
       return true
     }
   }
   {
     id="achivements"
-    show = [::EULT_NEW_RANK, ::EULT_NEW_UNLOCK, ::EULT_CHARD_AWARD]
+    show = [EULT_NEW_RANK, EULT_NEW_UNLOCK, EULT_CHARD_AWARD]
     checkFunc = function(userlog) { return !::g_battle_tasks.isUserlogForBattleTasksGroup(userlog.body) }
   }
   {
     id="battletasks"
     reqFeature = "BattleTasks"
-    show = [::EULT_PUNLOCK_ACCEPT, ::EULT_PUNLOCK_CANCELED, ::EULT_PUNLOCK_REROLL_PROPOSAL,
-            ::EULT_PUNLOCK_EXPIRED, ::EULT_PUNLOCK_NEW_PROPOSAL, ::EULT_NEW_UNLOCK, ::EULT_PUNLOCK_ACCEPT_MULTI]
-    unlocks = [::UNLOCKABLE_ACHIEVEMENT, ::UNLOCKABLE_TROPHY, ::UNLOCKABLE_WARBOND, ::UNLOCKABLE_AWARD]
+    show = [EULT_PUNLOCK_ACCEPT, EULT_PUNLOCK_CANCELED, EULT_PUNLOCK_REROLL_PROPOSAL,
+            EULT_PUNLOCK_EXPIRED, EULT_PUNLOCK_NEW_PROPOSAL, EULT_NEW_UNLOCK, EULT_PUNLOCK_ACCEPT_MULTI]
+    unlocks = [UNLOCKABLE_ACHIEVEMENT, UNLOCKABLE_TROPHY, UNLOCKABLE_WARBOND, UNLOCKABLE_AWARD]
     checkFunc = function(userlog) { return ::g_battle_tasks.isUserlogForBattleTasksGroup(userlog.body) }
   }
   {
     id="crew"
-    show = [::EULT_BUYING_SLOT, ::EULT_TRAINING_AIRCRAFT, ::EULT_UPGRADING_CREW,
-            ::EULT_SPECIALIZING_CREW, ::EULT_PURCHASINGSKILLPOINTS]
+    show = [EULT_BUYING_SLOT, EULT_TRAINING_AIRCRAFT, EULT_UPGRADING_CREW,
+            EULT_SPECIALIZING_CREW, EULT_PURCHASINGSKILLPOINTS]
   }
   {
     id = "items"
     reqFeature = "Items"
-    show = [::EULT_BUY_ITEM, ::EULT_OPEN_TROPHY, ::EULT_NEW_ITEM, ::EULT_NEW_UNLOCK,
-            ::EULT_ACTIVATE_ITEM, ::EULT_REMOVE_ITEM, ::EULT_TICKETS_REMINDER,
-            ::EULT_CONVERT_BLUEPRINTS, ::EULT_INVENTORY_ADD_ITEM, ::EULT_INVENTORY_FAIL_ITEM]
-    unlocks = [::UNLOCKABLE_TROPHY]
+    show = [EULT_BUY_ITEM, EULT_OPEN_TROPHY, EULT_NEW_ITEM, EULT_NEW_UNLOCK,
+            EULT_ACTIVATE_ITEM, EULT_REMOVE_ITEM, EULT_TICKETS_REMINDER,
+            EULT_CONVERT_BLUEPRINTS, EULT_INVENTORY_ADD_ITEM, EULT_INVENTORY_FAIL_ITEM]
+    unlocks = [UNLOCKABLE_TROPHY]
   }
   {
     id="onlineShop"
-    show = [::EULT_BUYENTITLEMENT, ::EULT_BUYING_UNLOCK]
+    show = [EULT_BUYENTITLEMENT, EULT_BUYING_UNLOCK]
   }
   {
     id="worldWar"
     reqFeature = "WorldWar"
-    show = [::EULT_WW_START_OPERATION, ::EULT_WW_CREATE_OPERATION, ::EULT_WW_END_OPERATION, ::EULT_WW_AWARD]
+    show = [EULT_WW_START_OPERATION, EULT_WW_CREATE_OPERATION, EULT_WW_END_OPERATION, EULT_WW_AWARD]
   }
 ]
 
@@ -115,7 +124,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/userlog.blk"
 
-  fullLogs = null // Pure log with dub instances to match with user log count in blk
+  fullLogs = null // Pure logObj with dub instances to match with user logObj count in blk
   logs = null // Without dub instances (everyDayLoginAward)
   listObj = null
   curPage = null
@@ -132,7 +141,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function initScreen()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return goBack()
 
     listObj = scene.findObject("items_list")
@@ -152,7 +161,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     }
     foreach(idx, page in ::userlog_pages)
     {
-      if (::getTblValue("reqFeature", page) && !::has_feature(page.reqFeature))
+      if (getTblValue("reqFeature", page) && !hasFeature(page.reqFeature))
         continue
       view.tabs.append({
         id = "page_" + idx
@@ -195,7 +204,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!page) return
     curPage = page
 
-    fullLogs = getUserLogsList(curPage)
+    fullLogs = ::getUserLogsList(curPage)
     logs = fullLogs.filter(@(p) !p?.isDubTrophy)
     guiScene.replaceContentFromText(listObj, "", 0, this)
     nextLogId = 0
@@ -212,7 +221,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     let msgObj = scene.findObject("middle_message")
     msgObj.show(logs.len()==0)
     if (logs.len()==0)
-      msgObj.setValue(::loc("userlog/noMessages"))
+      msgObj.setValue(loc("userlog/noMessages"))
   }
 
   function addLogsPage()
@@ -243,11 +252,11 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     guiScene.setUpdatesEnabled(true, true)
   }
 
-  function fillLog(log)
+  function fillLog(logObj)
   {
-    let rowName = "row"+log.idx
+    let rowName = "row"+logObj.idx
     let rowObj = listObj.findObject(rowName)
-    let rowData = ::get_userlog_view_data(log)
+    let rowData = ::get_userlog_view_data(logObj)
     if ((rowData?.descriptionBlk ?? "") != "")
       rowData.hasExpandImg <- true
     let viewBlk = ::handyman.renderCached(logRowTplName, rowData)
@@ -255,13 +264,13 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     guiScene.replaceContentFromText(rowObj, viewBlk, viewBlk.len(), this)
 
     rowObj.tooltip = rowData.tooltip
-    if (log.enabled)
+    if (logObj.enabled)
       rowObj.status="owned"
   }
 
-  function addNextButton(log)
+  function addNextButton(logObj)
   {
-    let rowName = "row"+log.idx
+    let rowName = "row"+logObj.idx
     local rowObj = listObj.findObject(rowName)
     if (!rowObj)
     {
@@ -272,7 +281,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
     let viewBlk = ::handyman.renderCached(logRowTplName,
       {
-        middle = ::loc("userlog/showMore")
+        middle = loc("userlog/showMore")
       })
     guiScene.replaceContentFromText(rowObj, viewBlk, viewBlk.len(), this)
   }
@@ -280,7 +289,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function saveOnlineJobWithUpdate()
   {
     taskId = saveOnlineJob()
-    ::dagor.debug("saveOnlineJobWithUpdate")
+    log("saveOnlineJobWithUpdate")
     if (taskId >= 0)
     {
       ::set_char_cb(this, slotOpCb)
@@ -292,10 +301,10 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   {
     local needSave = false
     if (fullLogs)
-      foreach(log in fullLogs)
-        if (log.enabled && log.idx >= 0 && log.idx < ::get_user_logs_count())
+      foreach(logObj in fullLogs)
+        if (logObj.enabled && logObj.idx >= 0 && logObj.idx < ::get_user_logs_count())
         {
-          if (::disable_user_log_entry(log.idx))
+          if (::disable_user_log_entry(logObj.idx))
             needSave = true
         }
 
@@ -313,7 +322,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     {
       let blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
-      if (!::isInArray(blk?.type, ::hidden_userlogs))
+      if (!isInArray(blk?.type, ::hidden_userlogs))
       {
         if (index == counter && !blk?.disabled)
         {
@@ -333,17 +342,17 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function updateTabNewIconWidgets()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     let newMsgs = getNewMessagesByPages()
     foreach(idx, count in newMsgs)
     {
       let obj = scene.findObject("img_new_" + ::userlog_pages[idx].id)
-      if (::checkObj(obj))
+      if (checkObj(obj))
         obj.show(count > 0)
     }
-    update_gamercards();
+    ::update_gamercards()
   }
 
   function goBack()
@@ -385,7 +394,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     }
     guiScene.applyPendingChanges(false)
     let childObj = obj.getChild(selectedIndex)
-    if (!::check_obj(childObj))
+    if (!checkObj(childObj))
       return
 
     childObj.scrollToView()
@@ -399,7 +408,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       return
 
     let idx = ::to_integer_safe(::getObjIdByPrefix(obj.getChild(value), "page_"), -1)
-    let newPage = ::getTblValue(idx, ::userlog_pages)
+    let newPage = getTblValue(idx, ::userlog_pages)
     if (!newPage || newPage == curPage)
       return
 
@@ -429,10 +438,10 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (logs)
       for(local i=0; i<nextLogId; i++)
       {
-        log = logs[i]
-        if (::isInArray(log.type, [ ::EULT_INVENTORY_ADD_ITEM, ::EULT_OPEN_TROPHY ]))
+        logObj = logs[i]
+        if (isInArray(logObj.type, [ EULT_INVENTORY_ADD_ITEM, EULT_OPEN_TROPHY ]))
         {
-          fillLog(log)
+          fillLog(logObj)
         }
       }
   }
@@ -445,12 +454,12 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function onUserLogAction(obj)
   {
     let logIdx = obj?.logIdx
-    let log = logIdx != null
+    let logObj = logIdx != null
       ? ::u.search(logs, @(l) l.idx == logIdx.tointeger())
       : logs?[selectedIndex]
-    if (!log)
+    if (!logObj)
       return
 
-    actionByLogType?[log.type](log)
+    actionByLogType?[logObj.type](logObj)
   }
 }

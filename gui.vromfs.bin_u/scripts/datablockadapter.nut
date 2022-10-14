@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isDataBlock } = require("%sqstd/underscore.nut")
 
 //to use table by DataBlock api
@@ -166,7 +173,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
   function formatAsString()
   {
     let res = []
-    ::debugTableData(___originData___, {
+    debugTableData(___originData___, {
       recursionLevel = 4,
       showBlockBrackets = true,
       silentMode = true,

@@ -1,10 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 ::tonemappingMode_list <- ["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"];
 ::lut_list <- ["#options/hudDefault"];
 ::lut_textures <- [""];
 ::lenseFlareMode_list <- ["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"];
 
-::g_script_reloader.registerPersistentData("PostFxGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("PostFxGlobals", getroottable(),
   [
     "lut_list", "lut_textures"
   ])
@@ -26,12 +33,12 @@ const firstColumnWidth = 0.45
 
 ::get_default_lut_texture <- function get_default_lut_texture()
 {
-  return ::getTblValue(0, ::lut_textures, "")
+  return getTblValue(0, ::lut_textures, "")
 }
 
 ::check_cur_lut_texture <- function check_cur_lut_texture()
 {
-  if (!::isInArray(::get_lut_texture(), ::lut_textures))
+  if (!isInArray(::get_lut_texture(), ::lut_textures))
     ::set_lut_texture(::get_default_lut_texture())
 }
 
@@ -119,7 +126,7 @@ const firstColumnWidth = 0.45
     createOneSlider("sharpenCockpit", ::get_sharpenCockpit() * scale, "onSharpenCockpitChanged",
       { min = 0, max = 0.7 * scale }, false)
 
-    createOneSpinner("lutTexture", ::lut_list, get_lut_index_by_texture(::get_lut_texture()), "onLutTextureChanged");
+    createOneSpinner("lutTexture", ::lut_list, ::get_lut_index_by_texture(::get_lut_texture()), "onLutTextureChanged");
 
     if (::use_lense_flares())
     {
@@ -145,7 +152,7 @@ const firstColumnWidth = 0.45
   function setValue(name, value)
   {
     let sliderObj = scene.findObject(name);
-    if (::checkObj(sliderObj))
+    if (checkObj(sliderObj))
       sliderObj.setValue(value);
   }
   function getValue(name)
@@ -182,7 +189,7 @@ const firstColumnWidth = 0.45
     setValue("postfx_settings_U_F", ::get_default_U_F() * scale);
     setValue("postfx_settings_UWhite", ::get_default_UWhite() * scale);
     setValue("postfx_settings_fxaa", ::get_default_fxaa());
-    setValue("postfx_settings_lutTexture", get_lut_index_by_texture(::get_default_lut_texture()));
+    setValue("postfx_settings_lutTexture", ::get_lut_index_by_texture(::get_default_lut_texture()));
     setValue("postfx_settings_tonemappingMode", ::get_default_tonemappingMode());
     if (::use_lense_flares())
     {

@@ -2116,39 +2116,14 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/us_an_apr_25.blk"
+      "blk": "gameData/sensors/uk_ari_18223.blk"
     }
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": "fuse2"
-    },
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 130,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon2_dm",
-        "bullets": 130,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "aden_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2157,121 +2132,547 @@
         "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_default.blk"
       },
       {
-        "name": "harrier_gr3_bomb_500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_500lbs.blk",
-        "reqModification": "sea_hawk_2x500lb"
-      },
-      {
-        "name": "harrier_gr3_bomb_dlt_500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_dlt_500lbs.blk",
-        "reqModification": "sea_hawk_2x500lb"
-      },
-      {
-        "name": "harrier_gr3_bomb_1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_1000lbs.blk",
-        "reqModification": "sea_hawk_2x1000lb"
-      },
-      {
-        "name": "harrier_gr3_bomb_dlt_1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_dlt_1000lbs.blk",
-        "reqModification": "sea_hawk_2x1000lb"
+        "name": "harrier_gr3_rocket_aim9",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_rocket_aim9.blk"
       },
       {
         "name": "harrier_gr3_rocket_matra155_dlt_matra155",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_rocket_matra155_dlt_matra155.blk",
-        "reqModification": "fr_matra_sneb",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_late.blk",
-            "amountPerTier": 18.0,
-            "iconType": "nar_ap_large",
-            "tier": [
+        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_rocket_matra155_dlt_matra155.blk"
+      },
+      {
+        "name": "harrier_gr3_bomb_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_500lbs.blk"
+      },
+      {
+        "name": "harrier_gr3_bomb_dlt_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_dlt_500lbs.blk"
+      },
+      {
+        "name": "harrier_gr3_bomb_1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_1000lbs.blk"
+      },
+      {
+        "name": "harrier_gr3_bomb_dlt_1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_dlt_1000lbs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 4000.0,
+    "maxloadMassLeftConsoles": 2000.0,
+    "maxloadMassRightConsoles": 2000.0,
+    "maxDisbalance": 1500.0,
+    "HideNodes": {
+      "node": [
+        "pylon_e_l",
+        "pylon_e_l_upor",
+        "adu299_l",
+        "lau7_l",
+        "pylon_i_l",
+        "pylon_i_l_upor",
+        "dlt_001",
+        "pylon_c",
+        "pylon_c_upor",
+        "pylon_i_r",
+        "pylon_i_r_upor",
+        "dlt_002",
+        "pylon_e_r",
+        "pylon_e_r_upor",
+        "adu299_r",
+        "lau7_r",
+        "fuse2"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cannon1_dm",
+        "cover4_dm",
+        "cannon2_dm",
+        "cover5_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "name": "aden_common",
+            "HideNodes": {
+              "node": "fuse2"
+            },
+            "ShowDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cover4_dm",
+                "cannon2_dm",
+                "cover5_dm"
+              ]
+            },
+            "Weapon": [
               {
-                "idx": 3
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon1_dm",
+                "bullets": 130,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
               },
               {
-                "idx": 4
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "shell": "emtr_shellrejection2",
+                "dm": "cannon2_dm",
+                "bullets": 130,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              }
+            ]
+          },
+          {
+            "name": "aden_ltc_common",
+            "HideNodes": {
+              "node": "fuse2"
+            },
+            "ShowDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cover4_dm",
+                "cannon2_dm",
+                "cover5_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon1_dm",
+                "bullets": 130,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
               },
               {
-                "idx": 5
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "shell": "emtr_shellrejection2",
+                "dm": "cannon2_dm",
+                "bullets": 130,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
               },
               {
-                "idx": 7
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 30,
+                "external": true,
+                "separate": false
               },
               {
-                "idx": 8
-              },
-              {
-                "idx": 9
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 30,
+                "external": true,
+                "separate": false
               }
             ]
           }
-        }
-      },
-      {
-        "name": "harrier_gr3_rocket_aim9",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_rocket_aim9.blk",
-        "reqModification": "us_aim_9g"
-      },
-      {
-        "name": "harrier_gr3_bomb_500lbs_aim9",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_500lbs_aim9.blk",
-        "reqModification": [
-          "sea_hawk_2x500lb",
-          "us_aim_9g"
         ]
       },
       {
-        "name": "harrier_gr3_bomb_1000lbs_aim9",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_bomb_1000lbs_aim9.blk",
-        "reqModification": [
-          "sea_hawk_2x1000lb",
-          "us_aim_9g"
-        ]
-      },
-      {
-        "name": "harrier_gr3_rocket_matra155_dlt_aim9",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_gr3_rocket_matra155_dlt_aim9.blk",
-        "reqModification": [
-          "fr_matra_sneb",
-          "us_aim_9g"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim9g",
+            "reqModification": "us_aim_9g",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_l",
+                "adu299_l",
+                "lau7_l"
               ]
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_late.blk",
-              "amountPerTier": 18.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
+              "emitter": "aim_9_001",
+              "bullets": 1
             }
-          ]
-        }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_155",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_l",
+                "pylon_e_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
+              "emitter": "matra_155_pod_b001",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_l",
+                "pylon_e_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "emitter": "500lbs_he_mc_mk2_001",
+              "bullets": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "matra_155_left",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_l",
+                "pylon_i_l_upor",
+                "dlt_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_matra_155_sneb_type23_x2_left_wing.blk",
+              "emitter": "dlt_001",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "emitter": "500lbs_he_mc_mk2_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_x2_left",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "dlt_001",
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_500_he_mc_x2_left_wing.blk",
+              "emitter": "dlt_001"
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000lbs_gp_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "1000lbs_x2",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "dlt_001",
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_left_wing.blk",
+              "emitter": "dlt_001"
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_c",
+                "pylon_c_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "emitter": "500lbs_he_mc_mk2_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_c",
+                "pylon_c_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000lbs_gp_002",
+              "bullets": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "matra_155_right",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_r",
+                "pylon_i_r_upor",
+                "dlt_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_matra_155_sneb_type23_x2_right_wing.blk",
+              "emitter": "dlt_002",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "emitter": "500lbs_he_mc_mk2_004",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_x2_right",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "dlt_002",
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_500_he_mc_x2_right_wing.blk",
+              "emitter": "dlt_002"
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000lbs_gp_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "1000lbs_x2",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "dlt_002",
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_left_wing.blk",
+              "emitter": "dlt_002"
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim9g",
+            "reqModification": "us_aim_9g",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_r",
+                "adu299_r",
+                "lau7_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
+              "emitter": "aim_9_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_155",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_r",
+                "pylon_e_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
+              "emitter": "matra_155_pod_b004",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_r",
+                "pylon_e_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "emitter": "500lbs_he_mc_mk2_005",
+              "bullets": 1
+            }
+          }
+        ]
       }
     ]
   },
@@ -2455,53 +2856,10 @@
       "tier": 1,
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "node": "fuse2"
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon1_dm",
-              "bullets": 130,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "shell": "emtr_shellrejection2",
-              "dm": "cannon2_dm",
-              "bullets": 130,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            }
-          ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "aden_ltc_common"
+          }
         }
       }
     },

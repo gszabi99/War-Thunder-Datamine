@@ -1,9 +1,17 @@
-::gui_handlers.CreateEventRoomWnd <- class extends ::gui_handlers.GenericOptionsModal
-{
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.CreateEventRoomWnd <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneNavBlkName = null
   wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
-  wndGameMode = ::GM_DOMINATION
+  wndGameMode = GM_DOMINATION
 
   mGameMode = null
 
@@ -12,15 +20,17 @@
 
   slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "repair"]
 
+  prevRanges = ""
+
   function initScreen()
   {
     if (!mGameMode)
       return goBack()
 
     initSizes()
-    scene.findObject("header_name").setValue(::loc("mainmenu/btnCreateSession"))
+    scene.findObject("header_name").setValue(loc("mainmenu/btnCreateSession"))
 
-    roomCreationContext = ::EventRoomCreationContext(mGameMode, ::Callback(reinitSlotbar, this))
+    roomCreationContext = ::EventRoomCreationContext(mGameMode, Callback(reinitSlotbar, this))
     options = roomCreationContext.getOptionsList()
     optionsConfig = roomCreationContext.getOptionsConfig()
 
@@ -33,6 +43,32 @@
       afterFullUpdate = updateApplyButton
     })
     updateApplyButton()
+    prevRanges = rangesToString(optionsConfig.brRanges)
+  }
+
+  function onEventEventsDataUpdated(params)
+  {
+    let customMgm = ::queue_classes.Event.getCustomMgm(mGameMode.name)
+    if(customMgm == null)
+      return
+
+    let newRanges = rangesToString(customMgm.matchmaking.mmRanges)
+    if(prevRanges != newRanges) {
+      mGameMode = customMgm
+      roomCreationContext = ::EventRoomCreationContext(mGameMode, Callback(reinitSlotbar, this))
+      options = roomCreationContext.getOptionsList()
+      optionsConfig = roomCreationContext.getOptionsConfig()
+      prevRanges = newRanges
+      loadOptions(options, currentContainerName)
+    }
+  }
+
+  function rangesToString(ranges)
+  {
+    local res = []
+    foreach (idx, range in ranges)
+      res.append("-".concat(range[0], range[1]))
+    return ";".join(res)
   }
 
   function initSizes()
@@ -80,15 +116,15 @@
     {
       let chosenAmount = roomCreationContext.chosenMissionsList.len()
       if (roomCreationContext.isAllMissionsSelected())
-        misBtnText = ::loc("misList/allMissionsSelected")
+        misBtnText = loc("misList/allMissionsSelected")
       else if (chosenAmount == 1)
       {
         let selMission = roomCreationContext.chosenMissionsList[0]
-        misBtnText = ::loc("misList/oneMissionSelected",
+        misBtnText = loc("misList/oneMissionSelected",
           { mission = roomCreationContext.misListType.getMissionNameText(selMission) })
       }
       else
-        misBtnText = ::loc("misList/severalMissionsSelected", { amount = chosenAmount })
+        misBtnText = loc("misList/severalMissionsSelected", { amount = chosenAmount })
     }
     let misBtn = this.showSceneBtn("btn_missions", misBtnText.len() > 0)
     misBtn.setValue(misBtnText)
@@ -113,7 +149,7 @@
     ::gui_handlers.ChooseMissionsListWnd.open({
       missionsList = roomCreationContext.fullMissionsList
       selMissions = roomCreationContext.chosenMissionsList
-      onApplyListCb = ::Callback(function(selList)
+      onApplyListCb = Callback(function(selList)
       {
         roomCreationContext.setChosenMissions(selList)
         updateMissionsBtn()

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.ModOverdrive <- class extends BaseItemModClass
@@ -28,7 +35,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
   {
     if (amount && canActivate())
       return {
-        btnName = ::loc("item/activate")
+        btnName = loc("item/activate")
       }
 
     return base.getMainActionData(isShort, params)

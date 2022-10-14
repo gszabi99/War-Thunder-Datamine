@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let stdMath = require("%sqstd/math.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -15,7 +24,7 @@ enum UNAVAILABLE_BATTLES_CATEGORIES {
 let battlesFilters = [
   {
     multiSelectId = "by_unit_type"
-    title = @() ::loc("worldwar/battlesFilter/byUnitType")
+    title = @() loc("worldwar/battlesFilter/byUnitType")
     flow = "horizontal"
     onCancelEdit = "goBack"
     list = []
@@ -31,22 +40,22 @@ let battlesFilters = [
       apply(id, filterMasks)
     }
     getFilterMaskByObj = function(obj, valueList) {
-      let masks = get_array_by_bit_value(obj.getValue(), valueList)
+      let masks = ::get_array_by_bit_value(obj.getValue(), valueList)
       let masksList = {}
       foreach(mask in valueList)
-        masksList[mask.tostring()] <- ::isInArray(mask, masks)
+        masksList[mask.tostring()] <- isInArray(mask, masks)
 
       return masksList
     }
   },
   {
     multiSelectId = "by_available_battles"
-    title = @() ::loc("worldwar/battlesFilter/byAvailableBattles")
+    title = @() loc("worldwar/battlesFilter/byAvailableBattles")
     onCancelEdit = "goBack"
     list = [
       {
         value = UNAVAILABLE_BATTLES_CATEGORIES.NO_AVAILABLE_UNITS
-        text = @() ::loc("worldwar/battle/filter/show_if_no_avaliable_units")
+        text = @() loc("worldwar/battle/filter/show_if_no_avaliable_units")
         needShow = function(bitMask) {
           let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
             WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
@@ -55,19 +64,19 @@ let battlesFilters = [
       },
       {
         value = UNAVAILABLE_BATTLES_CATEGORIES.NO_FREE_SPACE
-        text = @() ::loc("worldwar/battle/filter/show_if_no_space")
+        text = @() loc("worldwar/battle/filter/show_if_no_space")
       },
       {
         value = UNAVAILABLE_BATTLES_CATEGORIES.IS_UNBALANCED
-        text = @()  ::loc("worldwar/battle/filter/show_unbalanced")
+        text = @()  loc("worldwar/battle/filter/show_unbalanced")
       },
       {
         value = UNAVAILABLE_BATTLES_CATEGORIES.LOCK_BY_TIMER
-        text = @()  ::loc("worldwar/battle/filter/show_if_lock_by_timer")
+        text = @()  loc("worldwar/battle/filter/show_if_lock_by_timer")
       },
       {
         value = UNAVAILABLE_BATTLES_CATEGORIES.NOT_STARTED
-        text = @()  ::loc("worldwar/battle/filter/show_not_started")
+        text = @()  loc("worldwar/battle/filter/show_not_started")
       },
     ]
     checkChangeValue = function(filterBitMasks, newFilterBitMasks, apply, cancel) {
@@ -75,7 +84,7 @@ let battlesFilters = [
       if (!(UNAVAILABLE_BATTLES_CATEGORIES.NOT_STARTED & filterBitMasks.by_available_battles)
         && (UNAVAILABLE_BATTLES_CATEGORIES.NOT_STARTED & newFilterBitMasks))
       {
-        ::scene_msg_box("showNotStarted", null,::loc("worldwar/showNotStarted/msgBox"),
+        ::scene_msg_box("showNotStarted", null,loc("worldwar/showNotStarted/msgBox"),
           [["yes", @() apply(filterId, newFilterBitMasks) ],
             ["no", @() cancel(filterId)]],
           "no", { cancel_fn = @() cancel(filterId)})
@@ -226,17 +235,17 @@ subscriptions.addListenersWithoutEnv({
   function onChangeValue(obj)
   {
     let filterId = obj.id
-    let apply = ::Callback(function(id, selBitMask)
+    let apply = Callback(function(id, selBitMask)
       {
         filterBitMasks[id] <- selBitMask
         setBattlesFilterMask(filterBitMasks)
         if (onChangeValuesBitMaskCb)
           onChangeValuesBitMaskCb()
       }, this)
-    let cancel = ::Callback(function(id)
+    let cancel = Callback(function(id)
       {
         let multiSelectObj = scene.findObject(id)
-        if (::check_obj(multiSelectObj))
+        if (checkObj(multiSelectObj))
           multiSelectObj.setValue(filterBitMasks[id])
       }, this)
 

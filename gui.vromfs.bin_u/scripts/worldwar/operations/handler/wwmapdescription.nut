@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 //show info about WwMap, WwOperation or WwOperationgroup
 ::gui_handlers.WwMapDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -81,14 +90,14 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   function updateName()
   {
     let nameObj = scene.findObject("item_name")
-    if (::checkObj(nameObj))
+    if (checkObj(nameObj))
       nameObj.setValue(descItem.getNameText())
   }
 
   function updateDescription()
   {
     let desctObj = scene.findObject("item_desc")
-    if (::checkObj(desctObj))
+    if (checkObj(desctObj))
       desctObj.setValue(descItem.getDescription())
   }
 
@@ -106,7 +115,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   function updateCountriesList()
   {
     let obj = scene.findObject("div_before_text")
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let cuntriesByTeams = descItem.getCountriesByTeams()
@@ -115,7 +124,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
       sides.append(mapCountriesToView(cuntriesByTeams?[side] ?? []))
     let view = {
       sides = sides
-      vsText = ::loc("country/VS") + "\n "
+      vsText = loc("country/VS") + "\n "
     }
 
     let data = ::handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo", view)
@@ -126,7 +135,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   function updateTotalClansText()
   {
     let obj = scene.findObject("total_members_text")
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     obj.setValue(descItem.getClansNumberInQueueText())
@@ -135,7 +144,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   function updateAvailableText()
   {
     let obj = scene.findObject("available_text")
-    if (!::check_obj(obj) || !descItem)
+    if (!checkObj(obj) || !descItem)
       return
 
     obj.setValue(descItem.getMapChangeStateTimeText())

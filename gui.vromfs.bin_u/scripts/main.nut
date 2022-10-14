@@ -1,28 +1,23 @@
+from "%scripts/dagui_library.nut" import *
 #default:no-func-decl-sugar
 #default:no-class-decl-sugar
-from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+#default:explicit-this
+#default:no-root-fallback
 
+from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 clear_vm_entity_systems()
 start_es_loading()
 
 require("%globalScripts/ui_globals.nut")
 
-foreach (name, func in require("dagor.localize"))
-  ::dagor[name] <- func
+let sqdebugger = require_optional("sqdebugger")
+let console = require("console")
 
-let __math = require("math")
-::fabs<-__math.fabs
-::kwarg <- require("%sqstd/functools.nut").kwarg
-::memoize <- require("%sqstd/functools.nut").memoize
+sqdebugger?.setObjPrintFunc(debugTableData)
+console.setObjPrintFunc(debugTableData)
 
-let frp = require("frp")
-::Watched <- frp.Watched
-::Computed <-frp.Computed
-
-::script_protocol_version <- null
 require("%globalScripts/version.nut")
 require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-require("%globalScripts/sqModuleHelpers.nut")
 require("%sqStdLibs/helpers/backCompatibility.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
@@ -37,12 +32,6 @@ if (::disable_network())
 ::TEXT_EULA <- 0
 ::TEXT_NDA <- 1
 
-::target_platform <- ::get_platform()
-::is_platform_pc <- ["win32", "win64", "macosx", "linux64"].indexof(::target_platform) != null
-::is_platform_windows <- ["win32", "win64"].indexof(::target_platform) != null
-::is_platform_android <- ::target_platform == "android"
-::is_platform_xbox <- ::target_platform == "xboxOne" || ::target_platform == "xboxScarlett"
-
 ::is_dev_version <- false // WARNING : this is unsecure
 
 ::INVALID_USER_ID <- ::make_invalid_user_id()
@@ -55,18 +44,21 @@ if (::disable_network())
 ::show_console_buttons <- false
 ::ps4_vsync_enabled <- true
 
-::cross_call_api <- {}
+
+::cross_call_api <- {
+  hasFeature = require("%scripts/user/features.nut").hasFeature
+}
 
 ::FORCE_UPDATE <- true
-global const LOST_DELAYED_ACTION_MSEC = 500
 
-::g_script_reloader.registerPersistentData("MainGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
   [
     "nda_version", "nda_version_tanks", "eula_version",
     "is_debug_mode_enabled", "first_generation",
     "show_console_buttons", "is_dev_version"
   ])
 
+global const LOST_DELAYED_ACTION_MSEC = 500
 //------- vvv enums vvv ----------
 
 global enum EVENT_TYPE { //bit values for easy multi-type search
@@ -80,8 +72,7 @@ global enum EVENT_TYPE { //bit values for easy multi-type search
   ANY             = 15,
   ANY_BASE_EVENTS = 5,
 }
-
-global enum GAME_EVENT_TYPE
+ global enum GAME_EVENT_TYPE
 {
   /** Used for events that are neither race nor tournament. */
   TM_NONE = "TM_NONE"
@@ -96,8 +87,7 @@ global enum GAME_EVENT_TYPE
   TM_DOUBLE_ELIMINATION = "TM_DOUBLE_ELIMINATION"
 }
 
-global enum weaponsItem
-{
+global enum weaponsItem {
   primaryWeapon
   weapon  //secondary, weapon presets
   modification
@@ -110,8 +100,7 @@ global enum weaponsItem
   unknown
 }
 
-global enum BATTLE_TYPES
-{
+global enum BATTLE_TYPES {
   AIR      = 0,
   TANK     = 1,
   UNKNOWN
@@ -183,8 +172,7 @@ global enum itemType { //bit values for easy multitype search
   INVENTORY_ALL   = 0xAFFFBFFFFF //~CRAFT_PART ~CRAFT_PROCESS ~WARBONDS
 }
 
-global enum PREVIEW_MODE
-{
+global enum PREVIEW_MODE {
   NONE      = 0x0000
   UNIT      = 0x0001
   SKIN      = 0x0002
@@ -197,8 +185,7 @@ global enum prizesStack {
   BY_TYPE
 }
 
-global enum HELP_CONTENT_SET
-{
+global enum HELP_CONTENT_SET {
   MISSION
   LOADING
   CONTROLS
@@ -233,24 +220,20 @@ global enum INFO_DETAIL //text detalization level. for weapons and modifications
   EXTENDED   //full description + addtitional info for more detailed tooltip
 }
 
-global enum voiceChatStats
-{
+global enum voiceChatStats {
   online
   offline
   talking
   muted
 }
 
-global enum squadMemberState
-{
+global enum squadMemberState {
   NOT_IN_SQUAD
   SQUAD_LEADER //leader cant be offline or not ready.
   SQUAD_MEMBER
   SQUAD_MEMBER_READY
   SQUAD_MEMBER_OFFLINE
 }
-
-::ES_UNIT_TYPE_TOTAL_RELEASED <- 3
 
 global const SAVE_ONLINE_JOB_DIGIT = 123 //super secure digit for job tag :)
 global const SAVE_WEAPON_JOB_DIGIT = 321
@@ -261,12 +244,14 @@ global enum COLOR_TAG {
   TEAM_BLUE = "tb"
   TEAM_RED = "tr"
 }
+
 let colorTagToColors = {
   [COLOR_TAG.ACTIVE] = "activeTextColor",
   [COLOR_TAG.USERLOG] = "userlogColoredText",
   [COLOR_TAG.TEAM_BLUE] = "teamBlueColor",
   [COLOR_TAG.TEAM_RED] = "teamRedColor",
 }
+
 
 global enum SEEN {
   TITLES = "titles"
@@ -293,8 +278,7 @@ global enum xboxMediaItemType { //values by microsoft IDE, others not used
   GameConsumable = 5
 }
 
-global enum contactEvent
-{
+global enum contactEvent {
   CONTACTS_UPDATED = "ContactsUpdated"
   CONTACTS_GROUP_ADDED = "ContactsGroupAdd"
   CONTACTS_GROUP_UPDATE = "ContactsGroupUpdate"
@@ -317,8 +301,7 @@ global enum USERLOG_POPUP {
   NONE                  = 0x0000
 }
 
-global enum squadState
-{
+global enum squadState {
   NOT_IN_SQUAD
   JOINING
   IN_SQUAD
@@ -345,32 +328,21 @@ global const LEADERBOARD_VALUE_INHISTORY = "value_inhistory"
 
 ::g_string <- require("%sqstd/string.nut") //put g_string to root_table
 ::u <- require("%sqStdLibs/helpers/u.nut") //put u to roottable
-::Callback <- require("%sqStdLibs/helpers/callback.nut").Callback
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-::g_listener_priority <- {
-  DEFAULT = 0
-  DEFAULT_HANDLER = 1
-  UNIT_CREW_CACHE_UPDATE = 2
-  USER_PRESENCE_UPDATE = 2
-  CONFIG_VALIDATION = 2
-  LOGIN_PROCESS = 3
-  MEMOIZE_VALIDATION = 4
-}
+::g_listener_priority <- require("g_listener_priority.nut")
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 ::broadcastEvent <- subscriptions.broadcast
 ::add_event_listener <- subscriptions.addEventListener
 ::subscribe_handler <- subscriptions.subscribeHandler
-
-::has_feature <- require("%scripts/user/features.nut").hasFeature
 
 let guiOptions = require("guiOptions")
 foreach(name in [
   "get_gui_option", "set_gui_option", "get_unit_option", "set_unit_option",
   "get_cd_preset", "set_cd_preset"
 ])
-  if (name not in ::getroottable())
-    ::getroottable()[name] <- guiOptions[name]
+  if (name not in getroottable())
+    getroottable()[name] <- guiOptions[name]
 
 ::add_big_query_record <- require("chard")?.addBigQueryRecord
   ?? ::add_big_query_record // Compatibility with 2.15.0.X
@@ -381,11 +353,7 @@ foreach(fn in [
 ])
   require(fn)
 
-let game = require("app").getShortAppName()
-let gameMnt = { mecha = "%mechaScripts", wt = "%wtScripts" }?[game]
-::dagor.debug($"Load UI scripts by game: {game} (mnt = {gameMnt})")
-require_optional($"{gameMnt}/onScriptLoad.nut")
-
+require("onScriptLoad.nut")
 
 foreach (fn in [
   "%globalScripts/sharedEnums.nut"
@@ -461,18 +429,6 @@ foreach (fn in [
   "%scripts/wndLib/editBoxHandler.nut"
   "%scripts/wndLib/rightClickMenu.nut"
   "%scripts/actionsList.nut"
-
-  "%scripts/debugTools/dbgEnum.nut"
-  "%scripts/debugTools/debugWnd.nut"
-  "%scripts/debugTools/dbgTimer.nut"
-  "%scripts/debugTools/dbgDumpTools.nut"
-  "%scripts/debugTools/dbgUtils.nut"
-  "%scripts/debugTools/dbgImage.nut"
-  "%scripts/debugTools/dbgFonts.nut"
-  "%scripts/debugTools/dbgAvatarsList.nut"
-  "%scripts/debugTools/dbgMarketplace.nut"
-  "%scripts/debugTools/dbgCrewLock.nut"
-
   //used before xbox login
   "%scripts/social/xboxSquadManager/xboxSquadManager.nut"
 
@@ -498,22 +454,30 @@ foreach(bhvName, bhvClass in ::gui_bhv_deprecated)
 )
 
   // Independent Modules (before login)
+require("%scripts/matching/matchingGameSettings.nut")
 require("%sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(::script_net_assert_once)
 require("%scripts/clientState/elems/dlDataStatElem.nut")
 require("%scripts/clientState/elems/copyrightText.nut")
 require("%sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
+
+  //debug scripts
+require("%scripts/debugTools/dbgAvatarsList.nut")
+require("%scripts/debugTools/dbgDumpTools.nut")
+require("%scripts/debugTools/dbgFonts.nut")
+require("%scripts/debugTools/dbgUtils.nut")
+require("%scripts/debugTools/dbgImage.nut")
+require("%scripts/debugTools/dbgMarketplace.nut")
+require("%scripts/debugTools/dbgCrewLock.nut")
+require("%globalScripts/debugTools/dbgTimer.nut").registerConsoleCommand("dagui")
   // end of Independent Modules
 
 end_es_loading()
 
 let platform = require("%scripts/clientState/platform.nut")
+
 ::cross_call_api.platform <- {
   getPlayerName = platform.getPlayerName
-  is_pc = @() platform.isPlatformPC
 }
-
-let { is_stereo_mode } = ::require_native("vr")
-::cross_call_api.isInVr <- @() is_stereo_mode()
 
 //------- ^^^ files before login ^^^ ----------
 
@@ -531,8 +495,7 @@ local isFullScriptsLoaded = false
   require("%scripts/baseGuiHandlerWT.nut")
   // end of Independent Modules with mainHandler
 
-  ::dagor.debug($"Load UI scripts by game after login: {game} (mnt = {gameMnt})")
-  require_optional($"{gameMnt}/onScriptLoadAfterLogin.nut")
+  require("%scripts/onScriptLoadAfterLogin.nut")
 
   // Independent Modules (after login)
   require("%scripts/social/playerInfoUpdater.nut")
@@ -577,7 +540,7 @@ local isFullScriptsLoaded = false
   }
 }
 
-if (::is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug/netLogerr") == null)
+if (is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug/netLogerr") == null)
   ::setSystemConfigOption("debug/netLogerr", true)
 
 if (::g_login.isAuthorized() //scripts reload

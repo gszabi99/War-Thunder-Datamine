@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
@@ -7,8 +12,8 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let netAssertsList = []
 ::script_net_assert_once <- function script_net_assert_once(id, msg)
 {
-  if (::isInArray(id, netAssertsList))
-    return ::dagor.debug(msg)
+  if (isInArray(id, netAssertsList))
+    return log(msg)
 
   netAssertsList.append(id)
   return ::script_net_assert(msg)
@@ -16,10 +21,10 @@ let netAssertsList = []
 
 ::assertf_once <- function assertf_once(id, msg)
 {
-  if (::isInArray(id, netAssertsList))
-    return ::dagor.debug(msg)
+  if (isInArray(id, netAssertsList))
+    return log(msg)
   netAssertsList.append(id)
-  return ::dagor.assertf(false, msg)
+  return assert(false, msg)
 }
 
 ::unreachable <- function unreachable()
@@ -33,9 +38,9 @@ let netAssertsList = []
 callback.setContextDbgNameFunction(function(context)
 {
   if (!u.isTable(context))
-    return ::toString(context, 0)
+    return toString(context, 0)
 
-  foreach(key, value in ::getroottable())
+  foreach(key, value in getroottable())
     if (value == context)
       return key
   return "unknown table"

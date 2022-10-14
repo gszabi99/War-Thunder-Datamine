@@ -1,51 +1,51 @@
-missionGenFunctions.append( function (isFreeFlight)
-{
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
+} = require("%scripts/dynamic/misGenFuncTools.nut")
+
+let function genCombatPatrolMission(isFreeFlight) {
   let mission_preset_name = "dogfight_preset01";
-  ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/"+mission_preset_name+".blk");
+  ::mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk");
   let startPos = ::mgCreateStartPoint(0);
   let playerSide = ::mgGetPlayerSide();
   let enemySide = ::mgGetEnemySide();
-
 
 //planes cost and warpoint ratio calculate
   let ws = ::get_warpoints_blk();
   local wpMax = ws.dynPlanesMaxCost;
   let playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
   local playerPlaneCost = ::getAircraftCost(playerFighterPlane);
-  if (playerPlaneCost == 0){playerPlaneCost = 250}
+  if (playerPlaneCost == 0)
+    playerPlaneCost = 250
 
-  let enemyFighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
+  let enemyFighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
   local enemyPlaneCost = ::getAircraftCost(enemyFighterPlane);
-  if (enemyPlaneCost == 0){enemyPlaneCost = 250}
+  if (enemyPlaneCost == 0)
+    enemyPlaneCost = 250
 
-  let planeCost = ::planeCostCalculate(playerPlaneCost, enemyPlaneCost);
+  let planeCost = planeCostCalculate(playerPlaneCost, enemyPlaneCost);
 
   if (playerFighterPlane == "" || enemyFighterPlane == "")
     return;
 
   let playerSpeed = ::getDistancePerMinute(playerFighterPlane);
-
-
-
-
   let enemy1FighterPlane = enemyFighterPlane;
   let enemy1FighterSpeed = ::getDistancePerMinute(enemy1FighterPlane);
-  let enemy2FighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
+  let enemy2FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
   let enemy2FighterSpeed = ::getDistancePerMinute(enemy1FighterPlane);
-  let enemy3FighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
+  let enemy3FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
   let enemy3FighterSpeed = ::getDistancePerMinute(enemy1FighterPlane);
 
-  let ally1FighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, playerSide);
+  let ally1FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, playerSide);
   let ally1FighterSpeed = ::getDistancePerMinute(ally1FighterPlane);
-  let ally2FighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, playerSide);
+  let ally2FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, playerSide);
   let ally2FighterSpeed = ::getDistancePerMinute(ally2FighterPlane);
-  let ally3FighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, playerSide);
+  let ally3FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, playerSide);
   let ally3FighterSpeed = ::getDistancePerMinute(ally3FighterPlane);
 
-
-  local maxWpTime = 60+40/(playerSpeed/2000.0);
-  if (maxWpTime > 120){maxWpTime = 120}
-
+  let maxWpTime = max(60+40/(playerSpeed/2000.0), 120)
   let wpTime1 = ::rndRange(60, maxWpTime)/60.0;
   let wpTime2 = ::rndRange(60, maxWpTime)/60.0;
   let wpTime3 = ::rndRange(60, maxWpTime)/60.0;
@@ -57,12 +57,7 @@ missionGenFunctions.append( function (isFreeFlight)
   let rndHeight = ::rndRange(1000, 2000);
   ::mgSetInt("variables/wp_max", wpMax);
 
-  local enemyTotal = ::rndRangeInt(4*(wpMax-1), 32)/planeCost;
-  if (enemyTotal < 4*(wpMax-1))
-    enemyTotal = 4*(wpMax-1);
-  if (enemyTotal > 32)
-    enemyTotal = 32;
-
+  let enemyTotal = clamp(::rndRangeInt(4*(wpMax-1), 32)/planeCost, 4*(wpMax-1), 32)
   let enemyPerWp = enemyTotal/(wpMax-1);
 
   local allyWp1Count = 0;
@@ -83,8 +78,7 @@ missionGenFunctions.append( function (isFreeFlight)
   let offsetPoints = ["waypoint00", "waypoint01", "waypoint02"];
 
   local lastWp = "waypoint02";
-  if (wpMax > 2)
-  {
+  if (wpMax > 2) {
     ::mgSetupArea("waypoint03", "waypoint02", "waypoint01", ::rndRange(-60,60), -wpDist2, 0);
     ::mgSetupArea("enemy_evac02", "waypoint03", "waypoint02", 90, 60000, 0);
     lastWp = "waypoint03";
@@ -93,8 +87,7 @@ missionGenFunctions.append( function (isFreeFlight)
   else
     ::mgRemoveStrParam("mission_settings/briefing/part", "waypoint03");
 
-  if (wpMax > 3)
-  {
+  if (wpMax > 3) {
     ::mgSetupArea("waypoint04", "waypoint03", "waypoint02", ::rndRange(-60,60), -wpDist3, 0);
     ::mgSetupArea("enemy_evac03", "waypoint04", "waypoint03", 90, 60000, 0);
     lastWp = "waypoint04";
@@ -117,7 +110,6 @@ missionGenFunctions.append( function (isFreeFlight)
   let battle_point_wp03Time = ::rndRange(40, wpTime3*60-20)/60.0;
   let battle_point_wp03Dist = playerSpeed*battle_point_wp03Time;
 
-
   if (battle_point_wp01Dist < 3000)
     battle_point_wp01Dist = 3000;
 
@@ -133,8 +125,7 @@ missionGenFunctions.append( function (isFreeFlight)
 
   local allySet = (allyFromStartCount+4)/planeCost;
 
-  for (local j = 1; j <= (wpMax-1); j++)
-  {
+  for (local j = 1; j <= (wpMax-1); j++) {
     local event = ::rndRangeInt(1,6);
     local point = "";
     local lookAt = "";
@@ -182,13 +173,11 @@ missionGenFunctions.append( function (isFreeFlight)
 
     if (event < 4)
       allyWpCount = 0;
-    else if (event > 4)
-    {
+    else if (event > 4) {
       enemyWpCount = 0;
       noEnemy = -2;
     }
-    else
-    {
+    else {
       enemyWpCount = (enemyPerWp*::rndRange(0.5,1)-enemyAllyRatio)/planeCost;
       if (enemyWpCount < 4)
         enemyWpCount = 4;
@@ -202,12 +191,8 @@ missionGenFunctions.append( function (isFreeFlight)
         allyWpCount = enemyPerWp;
     }
 
-
-
-    switch(j)
-    {
-      case 1:
-      {
+    switch(j) {
+      case 1: {
         dist = battle_point_wp01Dist;
         time = battle_point_wp01Time;
         enemySpeed = enemy1FighterSpeed;
@@ -215,12 +200,11 @@ missionGenFunctions.append( function (isFreeFlight)
         allyPlane = ally1FighterPlane;
         allySpeed = ally1FighterSpeed;
         if (allyFromStartCount > 0)
-          ::mgSetupArmada("#ally07.fighter", "waypoint00", Point3(-300, 0, 0), "waypoint01",
+          ::mgSetupArmada("#ally07.fighter", "waypoint00", ::Point3(-300, 0, 0), "waypoint01",
                         "#ally_fromstart", allyFromStartCount, allyFromStartCount, playerFighterPlane);
       }
       break;
-      case 2:
-      {
+      case 2: {
         dist = battle_point_wp02Dist;
         time = battle_point_wp02Time;
         enemySpeed = enemy2FighterSpeed;
@@ -229,8 +213,7 @@ missionGenFunctions.append( function (isFreeFlight)
         allySpeed = ally2FighterSpeed;
       }
       break;
-      case 3:
-      {
+      case 3: {
         dist = battle_point_wp03Dist;
         time = battle_point_wp03Time;
         enemySpeed = enemy3FighterSpeed;
@@ -241,69 +224,57 @@ missionGenFunctions.append( function (isFreeFlight)
       break;
     }
 
-
-
-
-
     ::mgSetupArea("battle_point_wp0"+j, "waypoint0"+j, "waypoint0"+(j+1), 0, dist, 0);
-
     ::mgSetupArea("forAttack_wp0"+j+"_moveTo", "battle_point_wp0"+j, "waypoint0"+(j+1), ::rndRange(-30, 30),
-                30000, ::rndRange(-500, 0));
+      30000, ::rndRange(-500, 0));
     ::mgSetupArea("headOnCourse_wp0"+j, "battle_point_wp0"+j, "waypoint0"+(j+1), ::rndRange(-60,60),
-                enemySpeed*time, ::rndRange(-500, 500));
+      enemySpeed*time, ::rndRange(-500, 500));
     ::mgSetupArea("fromBack_wp0"+j, "waypoint0"+j, "waypoint0"+(j-1), ::rndRange(-30,30),
-                enemySpeed*0.2, 3000);
+      enemySpeed*0.2, 3000);
     ::mgSetupArea("battle_enemy_wp0"+j, "battle_point_wp0"+j, "waypoint0"+(j+1), 90,
-                enemySpeed*20/60, ::rndRange(-500, 500));
+      enemySpeed*20/60, ::rndRange(-500, 500));
     ::mgSetupArea("battle_ally_wp0"+j, "battle_point_wp0"+j, "waypoint0"+(j+1), -90,
-                allySpeed*20/60, ::rndRange(-500, 500));
+      allySpeed*20/60, ::rndRange(-500, 500));
     ::mgSetupArea("reinforsment_enemy_wp0"+j, "battle_point_wp0"+j, "waypoint0"+(j+1), ::rndRange(45, 135),
-                enemySpeed*::rndRange(30, 90)/60.0, ::rndRange(-500, 500));
+      enemySpeed*::rndRange(30, 90)/60.0, ::rndRange(-500, 500));
     ::mgSetupArea("reinforsment_ally_wp0"+j, "battle_point_wp0"+j, "waypoint0"+(j+1), ::rndRange(-45, -135),
-                allySpeed*::rndRange(30, 90)/60.0, ::rndRange(-500, 500));
+      allySpeed*::rndRange(30, 90)/60.0, ::rndRange(-500, 500));
 
     let k = event;
 
-    switch(k)
-    {
-      case 1:
-      {
+    switch(k) {
+      case 1: {
         point = "headOnCourse_wp0"+j;
         lookAt = "waypoint0"+j;
         squad = "#enemy_attack_player_wp0"+j;
       }
       break;
-      case 2:
-      {
+      case 2: {
         point = "battle_point_wp0"+j;
         lookAt = "waypoint0"+(j+1);
         squad = "#enemy_move_wp0"+j;
       }
       break;
-      case 3:
-      {
+      case 3: {
         point = "fromBack_wp0"+j;
         lookAt = "waypoint0"+j;
         squad = "#enemy_attack_player_wp0"+j;
       }
       break;
-      case 4:
-      {
+      case 4: {
         point = "battle_enemy_wp0"+j;
         lookAt = "battle_point_wp0"+j;
         squad = "#enemy_battle_wp0"+j;
-        ::mgSetupArmada("#ally0"+j+".fighter", "battle_ally_wp0"+j, Point3(0, 0, 0), "waypoint0"+j,
-                    "#ally_battle_wp0"+j, allyWpCount, allyWpCount, allyPlane);
+        ::mgSetupArmada("#ally0"+j+".fighter", "battle_ally_wp0"+j, ::Point3(0, 0, 0), "waypoint0"+j,
+          "#ally_battle_wp0"+j, allyWpCount, allyWpCount, allyPlane);
       }
       break;
-      case 5:
-      {
-        ::mgSetupArmada("#ally0"+j+".fighter", "fromBack_wp0"+j, Point3(0, 0, 0), "waypoint0"+j,
-                      "#ally_move_wp0"+j, allyWpCount, allyWpCount, allyPlane);
+      case 5: {
+        ::mgSetupArmada("#ally0"+j+".fighter", "fromBack_wp0"+j, ::Point3(0, 0, 0), "waypoint0"+j,
+          "#ally_move_wp0"+j, allyWpCount, allyWpCount, allyPlane);
       }
       break;
-      case 6:
-      {
+      case 6: {
         allyWpCount = 0;
       }
       break;
@@ -312,17 +283,16 @@ missionGenFunctions.append( function (isFreeFlight)
     let enemyReinfCount = enemyWpCount*::rndRange(0, 0.25);
     let allyReinfCount = allyWpCount*::rndRange(0, 0.25);
 
-    if (event < 5)
-    {
-      ::mgSetupArmada("#enemy0"+j+".fighter", point, Point3(0, 0, 0), lookAt,
-                    squad, enemyWpCount, enemyWpCount, enemyPlane);
+    if (event < 5) {
+      ::mgSetupArmada("#enemy0"+j+".fighter", point, ::Point3(0, 0, 0), lookAt,
+        squad, enemyWpCount, enemyWpCount, enemyPlane);
       let reinf = ::rndRange(0,1);
       if (reinf > 0.75 && reinf < 0.90 && enemyReinfCount >= 3)
-          ::mgSetupArmada("#enemy0"+(j+3)+".fighter", "reinforsment_enemy_wp0"+j, Point3(0, 0, 0), lookAt,
-                        "#enemy_reinforcements0"+j, enemyReinfCount, enemyReinfCount, enemyPlane);
+        ::mgSetupArmada("#enemy0"+(j+3)+".fighter", "reinforsment_enemy_wp0"+j, ::Point3(0, 0, 0), lookAt,
+          "#enemy_reinforcements0"+j, enemyReinfCount, enemyReinfCount, enemyPlane);
       if (reinf > 0.85 && allyReinfCount >= 4)
-          ::mgSetupArmada("#ally0"+(j+3)+".fighter", "reinforsment_ally_wp0"+j, Point3(0, 0, 0), lookAt,
-                        "#ally_reinforcements0"+j, allyReinfCount, allyReinfCount, allyPlane);
+        ::mgSetupArmada("#ally0"+(j+3)+".fighter", "reinforsment_ally_wp0"+j, ::Point3(0, 0, 0), lookAt,
+          "#ally_reinforcements0"+j, allyReinfCount, allyReinfCount, allyPlane);
     }
     else
       enemyWpCount = 0;
@@ -330,8 +300,7 @@ missionGenFunctions.append( function (isFreeFlight)
     enemySet = (enemyWpCount + enemyReinfCount)*planeCost;
     allySet = allySet + (allyWpCount+allyReinfCount)/planeCost;
 
-    if (enemyWpCount > 0)
-    {
+    if (enemyWpCount > 0) {
       let res1 = (enemySet - allySet * 3 / 2);
       let res2 = (allySet - enemySet * 3 / 2);
       enemySet = (res1 - res2 / 2);
@@ -342,35 +311,30 @@ missionGenFunctions.append( function (isFreeFlight)
         allySet = 0;
     }
 
-    switch(j)
-    {
-      case 1:
-      {
+    switch(j) {
+      case 1: {
         enemyWp1Count = enemyWpCount;
         allyWp1Count = allyWpCount;
       }
       break;
-      case 2:
-      {
+      case 2: {
         enemyWp2Count = enemyWpCount;
         allyWp2Count = allyWpCount;
       }
       break;
-      case 3:
-      {
+      case 3: {
         enemyWp3Count = enemyWpCount;
         allyWp3Count = allyWpCount;
       }
       break;
     }
-
   }
 
   let enemyTotalCount = enemyWp1Count + enemyWp2Count + enemyWp3Count;
   let allyTotalCount = allyWp1Count + allyWp2Count + allyWp3Count + allyFromStartCount;
 
-  ::mgSetupArmada("#player.fighter", "waypoint00", Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane);
-  ::mgSetupArmada("#player_cut.any", "waypoint00", Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane);
+  ::mgSetupArmada("#player.fighter", "waypoint00", ::Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane);
+  ::mgSetupArmada("#player_cut.any", "waypoint00", ::Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane);
   ::gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter");
 
   let mission_mult = ::sqrt(enemyTotalCount/15.0);
@@ -379,10 +343,9 @@ missionGenFunctions.append( function (isFreeFlight)
   ::mgSetMinMaxAircrafts("ally", "fighter", 0, 44);
   ::mgSetMinMaxAircrafts("enemy", "fighter", 0, 44);
 
-
 //mission warpoint cost calculate
   let missionWpCost = warpointCalculate(mission_preset_name, allyTotalCount, enemyTotalCount, planeCost,
-                                          playerFighterPlane, mission_mult);
+    playerFighterPlane, mission_mult);
   ::mgSetInt("mission_settings/mission/wpAward", missionWpCost);
 
   ::mgSetEffShootingRate(0.5);
@@ -390,12 +353,15 @@ missionGenFunctions.append( function (isFreeFlight)
   if (playerFighterPlane == "" || enemyFighterPlane == "")
     return
 
-  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
+  slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
 
   //mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testPatrol_temp.blk");
   if (::mgFullLogs())
-    dagor.debug_dump_stack();
+    ::dagor.debug_dump_stack();
 
   ::mgAcceptMission();
 }
-);
+
+return {
+  genCombatPatrolMission
+}

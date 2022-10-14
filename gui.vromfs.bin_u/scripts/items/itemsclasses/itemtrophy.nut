@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
@@ -114,15 +121,15 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       return ""
 
     if (t == 0)
-      return ::loc(itemExpiredLocId)
+      return loc(itemExpiredLocId)
 
     let res = "".concat(
-      ::loc("icon/hourglass"),
+      loc("icon/hourglass"),
       ::nbsp,
       ::stringReplace(hoursToString(secondsToHours(t), false, true, true), " ", ::nbsp))
 
-    return t <= TIME_DAY_IN_SECONDS  ? ::colorize("@red", res)
-         : t <= TIME_WEEK_IN_SECONDS ? ::colorize("@itemSoonExpireColor", res)
+    return t <= TIME_DAY_IN_SECONDS  ? colorize("@red", res)
+         : t <= TIME_WEEK_IN_SECONDS ? colorize("@itemSoonExpireColor", res)
          : res
   }
 
@@ -157,12 +164,12 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function _unpackContent(recursionUsedIds, useRecursion = true)
   {
-    if (::isInArray(id, recursionUsedIds))
+    if (isInArray(id, recursionUsedIds))
     {
-      ::dagor.debug("id = " + id)
-      ::debugTableData(recursionUsedIds)
+      log("id = " + id)
+      debugTableData(recursionUsedIds)
       ::script_net_assert_once("trophy recursion",
-                               "Infinite recursion detected in trophy: " + id + ". Array " + ::toString(recursionUsedIds))
+                               "Infinite recursion detected in trophy: " + id + ". Array " + toString(recursionUsedIds))
       return null
     }
 
@@ -180,7 +187,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       let countMul = i?.count ?? 1
       if (subTrophy)
       {
-        if (::getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
+        if (getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
           content.append(i)
         else
         {
@@ -216,12 +223,12 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function _extractTopPrize(recursionUsedIds)
   {
-    if (::isInArray(id, recursionUsedIds))
+    if (isInArray(id, recursionUsedIds))
     {
-      ::dagor.debug("id = " + id)
-      ::debugTableData(recursionUsedIds)
+      log("id = " + id)
+      debugTableData(recursionUsedIds)
       ::script_net_assert_once("trophy recursion",
-                               "Infinite recursion detected in trophy: " + id + ". Array " + ::toString(recursionUsedIds))
+                               "Infinite recursion detected in trophy: " + id + ". Array " + toString(recursionUsedIds))
       return
     }
 
@@ -308,14 +315,14 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       let awardCount = content[0]?.count ?? 1
       let awardType = ::PrizesView.getPrizeTypeName(content[0], false)
       return (awardCount > 1)
-        ? ::loc("multiAward/name/count/singleType", { awardType, awardCount })
-        : ::loc(awardType)
+        ? loc("multiAward/name/count/singleType", { awardType, awardCount })
+        : loc(awardType)
     }
 
-    local name = locId ? "".join(::g_localization.getLocIdsArray(locId).map(@(id) ::loc(id))) : ::loc(("item/" + id), "")
+    local name = locId ? "".join(::g_localization.getLocIdsArray(locId).map(@(id) loc(id))) : loc(("item/" + id), "")
     let hasCustomName = name != ""
     if (!hasCustomName)
-      name = ::loc("item/" + defaultLocId)
+      name = loc("item/" + defaultLocId)
 
     let showType = showTypeInName != null ? showTypeInName : !hasCustomName
     if (showType)
@@ -326,8 +333,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       else
         prizeTypeName = ::PrizesView.getPrizeTypeName(getTopPrize(), colored)
 
-      local comment = prizeTypeName.len() ? ::loc("ui/parentheses/space", { text = prizeTypeName }) : ""
-      comment = colored ? ::colorize("commonTextColor", comment) : comment
+      local comment = prizeTypeName.len() ? loc("ui/parentheses/space", { text = prizeTypeName }) : ""
+      comment = colored ? colorize("commonTextColor", comment) : comment
       name += comment
     }
     return name
@@ -341,8 +348,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   function _getDescHeader(fixedAmount = 1)
   {
     let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
-    local headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
-    return ::colorize("grayOptionColor", headerText)
+    local headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
+    return colorize("grayOptionColor", headerText)
   }
 
   function getLongDescription()
@@ -389,7 +396,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   {
     let blk = ::DataBlock()
     blk["name"] = id
-    blk["index"] = ::getTblValue("index", params, -1)
+    blk["index"] = getTblValue("index", params, -1)
     blk["cost"] = params.cost
     blk["costGold"] = params.costGold
     return ::char_send_blk("cln_buy_trophy", blk)
@@ -398,7 +405,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   function getMainActionData(isShort = false, params = {})
   {
     if (!isInventoryItem && needOpenTrophyGroupOnBuy())
-      return { btnName = ::loc("mainmenu/btnExpand") }
+      return { btnName = loc("mainmenu/btnExpand") }
 
     return base.getMainActionData(isShort, params)
   }
@@ -427,13 +434,13 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function getOpeningCaption()
   {
-    return ::loc(openingCaptionLocId || "mainmenu/trophyReward/title")
+    return loc(openingCaptionLocId || "mainmenu/trophyReward/title")
   }
 
   function getHiddenTopPrizeParams() { return null }
   function isHiddenTopPrize(prize) { return false }
 
-  needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy") && showDropChance
+  needShowDropChance = @() hasFeature("ShowDropChanceInTrophy") && showDropChance
 
   function getTableData() {
     if (!needShowDropChance())
@@ -459,9 +466,9 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       return timeText
 
     return "".concat(
-      ::loc("items/expireTimeBeforeActivation"),
-      ::loc("ui/colon"),
-      ::colorize("activeTextColor", timeText))
+      loc("items/expireTimeBeforeActivation"),
+      loc("ui/colon"),
+      colorize("activeTextColor", timeText))
   }
 
   canBuyTrophyByLimit = @() numTotal == 0 || numTotal > (::get_trophy_info(id)?.openCount ?? 0)

@@ -1,7 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 /*
   config {
-    purchaseData = (OnlineShopModel.getPurchaseData) //required
+    purchaseData = (::OnlineShopModel.getPurchaseData) //required
     image = (string)  //full path to image
     imageRatioHeight = (float)
     header = (string)

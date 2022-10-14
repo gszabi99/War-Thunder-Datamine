@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -152,9 +159,9 @@ local WwGlobalBattle = class extends ::WwBattle
   function getSideByCountry(country = null)
   {
     if (!country)
-      return ::SIDE_NONE
+      return SIDE_NONE
 
-    return sidesByCountry?[country] ?? ::SIDE_NONE
+    return sidesByCountry?[country] ?? SIDE_NONE
   }
 }
 
