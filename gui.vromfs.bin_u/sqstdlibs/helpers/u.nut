@@ -1,3 +1,6 @@
+#no-root-fallback
+#explicit-this
+
 /**
  * u is a set of utility functions, trashbin
   it also provide export for underscore.nut for legacy reasons
@@ -58,7 +61,7 @@ local function map(list, func) {
 local function keys(data) {
   if (typeof data == "array"){
     local res = array(data.len())
-    foreach (i, k in res)
+    foreach (i, _k in res)
       res[i]=i
     return res
   }
@@ -117,8 +120,6 @@ local function registerClass(className, classRef, isEqualFunc = null, isEmptyFun
   this[funcName] <- function(value) {
     if (value instanceof classRef)
       return true
-    if ("dagor2" in rootTable && className in ::dagor2)
-      return value instanceof ::dagor2[className]
     return false
   }
 

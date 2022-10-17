@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::queue_stats_versions.StatsVer1 <- class extends ::queue_stats_versions.Base
 {
   queueWeak = null //need to able recalc some stats and convertion to countries list from teams list
@@ -10,7 +17,7 @@
   function applyQueueInfo(queueInfo)
   {
     if (!source.len())
-      isSymmetric = isSymmetric || ::getTblValue("symmetric", queueInfo, false)
+      isSymmetric = isSymmetric || getTblValue("symmetric", queueInfo, false)
     source[queueInfo.cluster] <- queueInfo
     resetCache()
     return true
@@ -30,7 +37,7 @@
       local playersCount = 0
       foreach(teamName in teamNamesList)
       {
-        infoByTeams[teamName] <- gatherTeamStats(::getTblValue(teamName, queueInfo))
+        infoByTeams[teamName] <- gatherTeamStats(getTblValue(teamName, queueInfo))
         playersCount += infoByTeams[teamName].playersCount
       }
       infoByTeams.playersCount <- playersCount
@@ -53,12 +60,12 @@
     if (!queueInfoTeam)
       return res
 
-    let tiers = ::getTblValue("tiers", queueInfoTeam)
+    let tiers = getTblValue("tiers", queueInfoTeam)
     if (tiers)
       foreach(rank, value in tiers)
         res[rank] <- value
 
-    res.playersCount <- ::getTblValue("players_cnt", queueInfoTeam, 0)
+    res.playersCount <- getTblValue("players_cnt", queueInfoTeam, 0)
     return res
   }
 
@@ -73,12 +80,12 @@
 
   function gatherClansData(queueInfo)
   {
-    let teamInfo = ::getTblValue("teamA", queueInfo) //clans are symmetric, so all data in teamA
-    let clansList = ::getTblValue("clans", teamInfo)
+    let teamInfo = getTblValue("teamA", queueInfo) //clans are symmetric, so all data in teamA
+    let clansList = getTblValue("clans", teamInfo)
     if (!clansList)
       return false
 
-    let myClanInfo = ::getTblValue(::clan_get_my_clan_tag(), clansList)
+    let myClanInfo = getTblValue(::clan_get_my_clan_tag(), clansList)
     if (myClanInfo)
       myClanQueueTable = clone myClanInfo
 
@@ -103,7 +110,7 @@
       let teamData = ::events.getTeamData(event, teamNum)
       let teamCountries = ::events.getCountries(teamData)
       let teamName = ::events.getTeamName(teamNum)
-      let teamTable = ::getTblValue(teamName, infoByTeams)
+      let teamTable = getTblValue(teamName, infoByTeams)
 
       foreach(country in teamCountries)
       {

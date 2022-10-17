@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 
 /*
 API:
@@ -34,7 +41,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
 
 //********** PUBLIC **********//
 
-g_popups.add <- function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0)
+::g_popups.add <- function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0)
 {
   savePopup(
     ::Popup({
@@ -52,7 +59,7 @@ g_popups.add <- function add(title, msg, onClickPopupAction = null, buttons = nu
   performDelayedFlushPopupsIfCan()
 }
 
-g_popups.removeByHandler <- function removeByHandler(handler)
+::g_popups.removeByHandler <- function removeByHandler(handler)
 {
   if (handler == null)
     return
@@ -70,7 +77,7 @@ g_popups.removeByHandler <- function removeByHandler(handler)
 }
 
 //********** PRIVATE **********//
-g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfCan()
+::g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfCan()
 {
   let curTime = ::dagor.getCurTime()
   if (curTime - lastPerformDelayedCallTime < LOST_DELAYED_ACTION_MSEC)
@@ -102,7 +109,7 @@ g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfC
   )
 }
 
-g_popups.show <- function show(popup)
+::g_popups.show <- function show(popup)
 {
   let popupByGroup = getByGroup(popup)
   if (popupByGroup)
@@ -116,12 +123,12 @@ g_popups.show <- function show(popup)
   popupsList.append(popup)
 }
 
-g_popups.getPopupCount <- function getPopupCount()
+::g_popups.getPopupCount <- function getPopupCount()
 {
   return popupsList.len()
 }
 
-g_popups.remove <- function remove(popup, needFlushSuspended = true)
+::g_popups.remove <- function remove(popup, needFlushSuspended = true)
 {
   for(local i = 0; i < popupsList.len(); i++)
   {
@@ -137,7 +144,7 @@ g_popups.remove <- function remove(popup, needFlushSuspended = true)
     performDelayedFlushPopupsIfCan()
 }
 
-g_popups.getByGroup <- function getByGroup(sourcePopup)
+::g_popups.getByGroup <- function getByGroup(sourcePopup)
 {
   if (!sourcePopup.groupName)
     return null
@@ -148,7 +155,7 @@ g_popups.getByGroup <- function getByGroup(sourcePopup)
   )
 }
 
-g_popups.savePopup <- function savePopup(newPopup)
+::g_popups.savePopup <- function savePopup(newPopup)
 {
   local index = -1
   if (newPopup.groupName)
@@ -160,16 +167,16 @@ g_popups.savePopup <- function savePopup(newPopup)
   suspendedPopupsList.insert(max(index, 0), newPopup)
 }
 
-g_popups.canShowPopup <- function canShowPopup()
+::g_popups.canShowPopup <- function canShowPopup()
 {
   let popupNestObj = ::get_active_gc_popup_nest_obj()
-  if (!::check_obj(popupNestObj))
+  if (!checkObj(popupNestObj))
     return false
 
   return popupNestObj.getModalCounter() == 0
 }
 
-g_popups.removeInvalidPopups <- function removeInvalidPopups()
+::g_popups.removeInvalidPopups <- function removeInvalidPopups()
 {
   for(local i = popupsList.len()-1; i >= 0; i--)
     if (!popupsList[i].isValidView())
@@ -178,7 +185,7 @@ g_popups.removeInvalidPopups <- function removeInvalidPopups()
 
 //********** EVENT HANDLERDS ***********//
 
-g_popups.onEventActiveHandlersChanged <- function onEventActiveHandlersChanged(params)
+::g_popups.onEventActiveHandlersChanged <- function onEventActiveHandlersChanged(params)
 {
   performDelayedFlushPopupsIfCan()
 }

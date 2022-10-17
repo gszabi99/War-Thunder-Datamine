@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 let DaguiSceneTimers = require("daguiSceneTimers.nut")
 
 const REPAY_TIME = 0.5

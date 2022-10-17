@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")
+let { send } = require("eventbus")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 ::classic_control_preset <- "classic"
@@ -18,7 +26,7 @@ if (isPlatformXboxOne)
   [PERSISTENT_DATA_PARAMS] = ["eventHandler"]
   eventHandler = null
 
-  getControlsList = ::kwarg(function getControlsList(unitType = null, classType = null, unitTags = [])
+  getControlsList = kwarg(function getControlsList(unitType = null, classType = null, unitTags = [])
   {
     local isHeaderPassed = true
     local isSectionPassed = true
@@ -38,10 +46,10 @@ if (isPlatformXboxOne)
         isSectionPassed = true // reset previous sectino setting
 
         if (isHeaderPassed && classType != null)
-          isHeaderPassed = sc?.unitClassTypes == null || ::isInArray(classType, sc.unitClassTypes)
+          isHeaderPassed = sc?.unitClassTypes == null || isInArray(classType, sc.unitClassTypes)
 
         if (isHeaderPassed)
-          isHeaderPassed = (unitTags.len() == 0 && sc?.unitTag == null) || ::isInArray(sc?.unitTag ?? "", unitTags)
+          isHeaderPassed = (unitTags.len() == 0 && sc?.unitTag == null) || isInArray(sc?.unitTag ?? "", unitTags)
       }
       else if (sc.type == CONTROL_TYPE.SECTION)
         isSectionPassed = isHeaderPassed
@@ -115,7 +123,7 @@ if (isPlatformXboxOne)
     foreach (button in shortcut)
       if (button && button.dev.len() >= 0)
         foreach(d in button.dev)
-          if (d > 0 && d <= ::STD_GESTURE_DEVICE_ID)
+          if (d > 0 && d <= STD_GESTURE_DEVICE_ID)
               return true
     return false
   }
@@ -126,23 +134,23 @@ if (isPlatformXboxOne)
 ::on_connected_controller <- function on_connected_controller()
 {
   //calls from c++ code, no event on PS4 or XBoxOne
-  ::call_darg("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
-  if (!::isInMenu() || !::has_feature("ControlsDeviceChoice"))
+  send("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
+  if (!::isInMenu() || !hasFeature("ControlsDeviceChoice"))
     return
   let action = function() { ::gui_start_controls_type_choice() }
   let buttons = [{
       id = "change_preset",
-      text = ::loc("msgbox/btn_yes"),
+      text = loc("msgbox/btn_yes"),
       func = action
     },
     { id = "cancel",
-      text = ::loc("msgbox/btn_no"),
+      text = loc("msgbox/btn_no"),
       func = null
     }]
 
   ::g_popups.add(
-    ::loc("popup/newcontroller"),
-    ::loc("popup/newcontroller/message"),
+    loc("popup/newcontroller"),
+    loc("popup/newcontroller/message"),
     action,
     buttons,
     null,
@@ -155,7 +163,7 @@ local is_keyboard_or_mouse_connected_before = false
 
 let on_controller_event = function()
 {
-  if (!::has_feature("ControlsDeviceChoice") || !::has_feature("ControlsPresets"))
+  if (!hasFeature("ControlsDeviceChoice") || !hasFeature("ControlsPresets"))
     return
   let is_keyboard_or_mouse_connected = controllerState.is_keyboard_connected()
     || controllerState.is_mouse_connected()
@@ -167,17 +175,17 @@ let on_controller_event = function()
   let action = function() { ::gui_modal_controlsWizard() }
   let buttons = [{
       id = "change_preset",
-      text = ::loc("msgbox/btn_yes"),
+      text = loc("msgbox/btn_yes"),
       func = action
     },
     { id = "cancel",
-      text = ::loc("msgbox/btn_no"),
+      text = loc("msgbox/btn_no"),
       func = null
     }]
 
   ::g_popups.add(
-    ::loc("popup/keyboard_or_mouse_connected"),
-    ::loc("popup/keyboard_or_mouse_connected/message"),
+    loc("popup/keyboard_or_mouse_connected"),
+    loc("popup/keyboard_or_mouse_connected/message"),
     action,
     buttons,
     null,
@@ -198,7 +206,7 @@ if (controllerState?.add_event_handler)
   let presets = isPlatformSony ? {
     [::classic_control_preset] = "default",
     [::shooter_control_preset] = "dualshock4"
-  } : ::is_platform_xbox ? {
+  } : is_platform_xbox ? {
     [::classic_control_preset] = "xboxone_simulator",
     [::shooter_control_preset] = "xboxone_ma",
     [::thrustmaster_hotas_one_preset_type] = "xboxone_thrustmaster_hotas_one"
@@ -223,6 +231,6 @@ if (controllerState?.add_event_handler)
 }
 
 ::on_lost_controller <- function on_lost_controller() {
-  ::call_darg("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
-  ::add_msg_box("cannot_session", ::loc("pl1/lostController"), [["ok", function() {}]], "ok")
+  send("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
+  ::add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }

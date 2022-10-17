@@ -205,39 +205,6 @@ let function range(m, n=null, step=1) {
     yield i
 }
 
-let function enumerate(obj) {
-  foreach (k, v in obj)
-    yield [k, v]
-}
-
-/*
-print(breakable_reduce(array(10).map(@(_,i) i), function(a,b) {
-  if (b<5) return a+b
-  throw null
-}, 1000))
-*/
-/*
-**reversed_enumerate**
-
-the most common usecase is to delete some indecies in array
-Example:
-local arr = ["a", "b", "c", "d"]
-foreach (pair in reversed_enumerate(arr)) { // unfortunatel we have no destructuring in foreach and functions. And no tuples only
-  local [idx, val] = pair
-  print($"[{idx}]: {val}\n")
-}
-// [3]: d
-// [2]: c
-// [1]: b
-// [0]: a
-*/
-let function reversed_enumerate(obj) {
-  assert(isArray(obj), "reversed supported only for arrays")
-  let l = obj.len()
-  for (local i=l-1; i>=0; --i)
-    yield [i, obj[i]]
-}
-
 //not recursive isEqual, for simple lists or tables
 let function isEqualSimple(list1, list2, compareFunc=null) {
   compareFunc = compareFunc ?? @(a,b) a!=b
@@ -420,8 +387,6 @@ return {
   partition
   pluck
   range
-  enumerate
-  reversed_enumerate
   do_in_scope
   unique
   arrayByRows

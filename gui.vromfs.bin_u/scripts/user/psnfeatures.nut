@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage } = require("sony.user")
 let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { suggest_psplus } = require("sony.store")
@@ -24,16 +29,16 @@ let function startPremiumFeatureReporting() {
           reportPremiumFeatureUsage(isCrossPlayEnabled(), ::isPlayerDedicatedSpectator())
       },
       1,
-      ::EPTF_IN_FLIGHT,
-      ::EPTT_SKIP_MISSED,
+      EPTF_IN_FLIGHT,
+      EPTT_SKIP_MISSED,
       true)
 }
 
 let function enablePremiumFeatureReporting() {
-  ::dagor.debug("[PLUS] enable multiplayer reporting")
+  log("[PLUS] enable multiplayer reporting")
   ::add_event_listener("LobbyStatusChange", function(p) {
-      if (::SessionLobby.myState == ::PLAYER_IN_FLIGHT) {
-        ::dagor.debug("[PLUS] start reporting")
+      if (::SessionLobby.myState == PLAYER_IN_FLIGHT) {
+        log("[PLUS] start reporting")
         startPremiumFeatureReporting()
       }
     })

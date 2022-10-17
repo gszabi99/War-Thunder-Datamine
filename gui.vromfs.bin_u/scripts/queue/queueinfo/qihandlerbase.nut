@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 
 ::gui_handlers.QiHandlerBase <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -90,7 +99,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
     let timerObj = scene.findObject("wait_time_block")
     let iconObj = scene.findObject("queue_wait_icon")
     ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
-      iconObj, ::loc("yn1/waiting_for_game_query"))
+      iconObj, loc("yn1/waiting_for_game_query"))
   }
 
   function leaveQueue(obj) { if (leaveQueueCb) leaveQueueCb() }

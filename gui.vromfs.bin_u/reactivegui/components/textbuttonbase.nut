@@ -1,7 +1,7 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let fontsState = require("%rGui/style/fontsState.nut")
 let defStyle = require("textButton.style.nut")
-let hdpx = ::hdpx
-let pw = ::pw
 
 let function textColor(sf, style=null, isEnabled = true) {
   let styling = defStyle.__merge(style ?? {})
@@ -41,8 +41,8 @@ let function fillColorTransp(sf, style=null, _isEnabled = true) {
 let defTextCtor = @(text, _params, _handler, _group, _sf) text
 let textButton = @(fill_color, border_width) function(text, handler, params={}) {
   let isEnabled = params?.isEnabled ?? true
-  let group = ::ElemGroup()
-  let stateFlags = params?.stateFlags ?? ::Watched(0)
+  let group = ElemGroup()
+  let stateFlags = params?.stateFlags ?? Watched(0)
   let style = params?.style ?? defStyle
   let btnMargin =  params?.margin ?? defStyle.btnMargin
   let textMargin = params?.textMargin ?? defStyle.textMargin
@@ -102,7 +102,7 @@ let export = class{
   Flat = textButton(fillColor, 0)
   Transp = textButton(fillColorTransp, 0)
 
-  _call = @(_self, text, handler, params={}) Flat(text, handler, params)
+  _call = @(_self, text, handler, params={}) this.Flat(text, handler, params)
 }()
 
 

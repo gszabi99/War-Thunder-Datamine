@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
@@ -17,15 +24,15 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   static function getUidByParams(params)
   {
-    return "TB_" + ::getTblValue("battleId", params, "")
+    return "TB_" + getTblValue("battleId", params, "")
   }
 
   function updateCustomParams(params, initial = false)
   {
-    battleId = ::getTblValue("battleId", params, battleId)
-    inviteTime = ::getTblValue("inviteTime", params, inviteTime)
-    startTime = ::getTblValue("startTime", params, startTime)
-    endTime = ::getTblValue("endTime", params, endTime)
+    battleId = getTblValue("battleId", params, battleId)
+    inviteTime = getTblValue("inviteTime", params, inviteTime)
+    startTime = getTblValue("startTime", params, startTime)
+    endTime = getTblValue("endTime", params, endTime)
     isAccepted = false
 
     setTimedParams( inviteTime, startTime )
@@ -40,10 +47,10 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   {
     return "<Link={0}>{1}</Link>".subst(
       getTournamentBattleLink(),
-      ::colorize(inviteActiveColor,
+      colorize(inviteActiveColor,
         getTextWithCrossplayIcon(
           needShowCrossPlayInfo(),
-          ::loc("multiplayer/invite_to_tournament_battle_link_text")
+          loc("multiplayer/invite_to_tournament_battle_link_text")
         )
       )
     )
@@ -51,7 +58,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function getInviteText()
   {
-    return getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("multiplayer/invite_to_tournament_battle_message"))
+    return getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("multiplayer/invite_to_tournament_battle_message"))
   }
 
   function getPopupText()
@@ -74,8 +81,8 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       let blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
 
-      if ( (blk.type == ::EULT_INVITE_TO_TOURNAMENT) &&
-           (::getTblValue("battleId", blk.body, "")  == battleId) &&
+      if ( (blk.type == EULT_INVITE_TO_TOURNAMENT) &&
+           (getTblValue("battleId", blk.body, "")  == battleId) &&
            (::disable_user_log_entry(i)) )
         needSave = true
     }
@@ -90,7 +97,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     if (needSave)
     {
-      ::dagor.debug("Invites: Tournament: invite - needSave")
+      log("Invites: Tournament: invite - needSave")
       saveOnlineJob()
     }
   }
@@ -106,13 +113,13 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return ""
 
     if (isOutdated())
-      return ::loc("multiplayer/invite_is_overtimed")
+      return loc("multiplayer/invite_is_overtimed")
     if (!isMultiplayerPrivilegeAvailable.value)
-      return ::loc("xbox/noMultiplayer")
+      return loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
-      return ::loc("xbox/crossPlayRequired")
+      return loc("xbox/crossPlayRequired")
 
-    return ::loc("invite/session/cant_apply_in_flight")
+    return loc("invite/session/cant_apply_in_flight")
   }
 
   function accept()
@@ -132,9 +139,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     }
 
     if (!isAvailableByCrossPlay())
-      return ::g_popups.add(null, ::loc("xbox/crossPlayRequired"))
+      return ::g_popups.add(null, loc("xbox/crossPlayRequired"))
 
-    ::dagor.debug($"Invites: Tournament: Going to join to battleId({battleId}) via accepted invite")
+    log($"Invites: Tournament: Going to join to battleId({battleId}) via accepted invite")
     ::SessionLobby.joinBattle(battleId)
 
     isAccepted = true

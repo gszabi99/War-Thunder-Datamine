@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let stdMath = require("%sqstd/math.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
@@ -62,7 +71,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
   function loadBitMask()
   {
-    bitMask = ::getTblValue("openMask", trophyInfo)
+    bitMask = getTblValue("openMask", trophyInfo)
     if (bitMask)
       return
 
@@ -72,11 +81,11 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   function updateHeader()
   {
     let headerObj = scene.findObject("group_trophy_header")
-    if (!::checkObj(headerObj))
+    if (!checkObj(headerObj))
       return
 
-    let restText = ::getTblValue("openCount", trophyInfo, 0) + ::loc("ui/slash") + trophy.numTotal
-    headerObj.setValue(::loc("mainmenu/itemReceived") + ::loc("ui/parentheses/space", {text = restText}))
+    let restText = getTblValue("openCount", trophyInfo, 0) + loc("ui/slash") + trophy.numTotal
+    headerObj.setValue(loc("mainmenu/itemReceived") + loc("ui/parentheses/space", {text = restText}))
   }
 
   function getMaxSizeInItems(reduceSize = false)
@@ -165,7 +174,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
   function onItemAction(obj)
   {
-    if (::checkObj(obj) && obj?.holderId)
+    if (checkObj(obj) && obj?.holderId)
       doAction(obj.holderId.tointeger())
   }
 
@@ -173,7 +182,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
   function doAction(index)
   {
-    trophy.doMainAction(::Callback((@(index) function(params) {afterSuccessBoughtItemAction(index)})(index), this),
+    trophy.doMainAction(Callback((@(index) function(params) {afterSuccessBoughtItemAction(index)})(index), this),
                         this,
                         {index = index})
   }
@@ -205,7 +214,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
   function updateButtons(obj = null)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let isPurchased = isTrophyPurchased(obj.getValue())

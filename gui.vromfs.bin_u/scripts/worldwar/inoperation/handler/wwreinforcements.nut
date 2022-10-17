@@ -1,5 +1,13 @@
-::gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler
-{
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapReinforcementsList"
   sceneBlkName = null
@@ -18,8 +26,8 @@
   {
     return {
       consoleButtonsIconName = ::show_console_buttons ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
-      controlHelpText = ::show_console_buttons ? null : ::loc("key/RMB")
-      controlHelpDesc = ::loc("worldwar/state/reinforcement_control")
+      controlHelpText = ::show_console_buttons ? null : loc("key/RMB")
+      controlHelpDesc = loc("worldwar/state/reinforcement_control")
     }
   }
 
@@ -37,7 +45,7 @@
 
   function isValid()
   {
-    return ::checkObj(scene) && ::checkObj(scene.findObject("reinforcements_list"))
+    return checkObj(scene) && checkObj(scene.findObject("reinforcements_list"))
   }
 
   function updateScene()
@@ -69,13 +77,13 @@
     {
       let reinforcement = reinforcementsInfo.reinforcements.getBlock(i)
       let wwReinforcementArmy = ::WwReinforcementArmy(reinforcement)
-      if (!::has_feature("worldWarMaster") &&
+      if (!hasFeature("worldWarMaster") &&
           (!wwReinforcementArmy.isMySide(playerSide) ||
            !wwReinforcementArmy.hasManageAccess())
           )
         continue
 
-      if (::isInArray(wwReinforcementArmy.getView().getId(), readyArmiesNames))
+      if (isInArray(wwReinforcementArmy.getView().getId(), readyArmiesNames))
         existedArmies.append(wwReinforcementArmy)
       else
         newArmies.append(wwReinforcementArmy)
@@ -111,13 +119,13 @@
 
     let taskId = ::g_world_war.sendReinforcementRequest(
       params.cellIdx, currentReinforcementName)
-    ::g_tasker.addTask(taskId, null, ::Callback(afterSendReinforcement, this),
-      ::Callback(onSendReinforcementError, this))
+    ::g_tasker.addTask(taskId, null, Callback(afterSendReinforcement, this),
+      Callback(onSendReinforcementError, this))
   }
 
   function afterSendReinforcement()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     let mapObj = guiScene["worldwar_map"]
@@ -169,17 +177,17 @@
       return
 
     let textObj = scene.findObject("arrival_speed_text")
-    if (!::check_obj(textObj))
+    if (!checkObj(textObj))
       return
 
     local speedText = ""
     if (newSpeedup > 0)
     {
-      speedText = ::colorize("goodTextColor", ::loc("keysPlus") + newSpeedup)
-      speedText = ::loc("worldwar/state/reinforcement_arrival_speed", {speedup = speedText})
+      speedText = colorize("goodTextColor", loc("keysPlus") + newSpeedup)
+      speedText = loc("worldwar/state/reinforcement_arrival_speed", {speedup = speedText})
     }
     else
-      speedText = ::loc("worldwar/state/reinforcement_arrival_basic_speed")
+      speedText = loc("worldwar/state/reinforcement_arrival_basic_speed")
 
     textObj.setValue(speedText)
     reinforcementSpeedup = newSpeedup
@@ -188,7 +196,7 @@
   function fillArmiesList(viewsArray, id, isReady)
   {
     let placeObj = scene.findObject(id)
-    if (!::checkObj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     let view = {
@@ -239,7 +247,7 @@
     }
 
     let obj = scene.findObject(selectedArmy.getView().getId())
-    if (::checkObj(obj))
+    if (checkObj(obj))
     {
       obj.setValue(select)
       if (destroy)
@@ -258,7 +266,7 @@
   function fillTimer()
   {
     let placeObj = scene.findObject("reinforcements_list")
-    if (!::check_obj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     timerHandler = ::Timer(
@@ -269,14 +277,14 @@
         foreach (reinforcementHandler in armiesBlocks)
         {
           let id = reinforcementHandler.getView().getId()
-          if (reinforcementHandler.isReady() && !::isInArray(id, readyArmiesNames))
+          if (reinforcementHandler.isReady() && !isInArray(id, readyArmiesNames))
           {
             readyArmiesNames.append(id)
             haveNewReinforcementsReady = true
           }
 
           let reinfObj = placeObj.findObject(id)
-          if (!::check_obj(reinfObj))
+          if (!checkObj(reinfObj))
             continue
 
           let timeTextObj = reinfObj.findObject("arrival_time_text")
@@ -302,7 +310,7 @@
           continue
 
         let reinforcementObj = reinforcementsObj.findObject(armyView.getId())
-        if (!::check_obj(reinforcementObj))
+        if (!checkObj(reinforcementObj))
           continue
 
         reinforcementObj.setValue(true)

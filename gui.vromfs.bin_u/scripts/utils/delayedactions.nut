@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { rnd_int } = require("dagor.random")
 
@@ -73,8 +78,8 @@ let function addDelayedAction(action, delay_ms) {
     if (runInstantActionsTaskId == null) {
       runInstantActionsTaskId = ::periodic_task_register_ex(this,
                                                                runInstantActions, 1,
-                                                             ::EPTF_EXECUTE_IMMEDIATELY,
-                                                             ::EPTT_BEST_EFFORT, true)
+                                                             EPTF_EXECUTE_IMMEDIATELY,
+                                                             EPTT_BEST_EFFORT, true)
     }
   }
 }
@@ -89,7 +94,7 @@ let function test() {
     let rndDelay = rnd_int(0, 9)
 
     add((@(i, rndDelay, curTime) function() {
-          ::dagor.debug(format("[%d] %d run action with delay %d seconds", curTime, i, rndDelay))
+          log(format("[%d] %d run action with delay %d seconds", curTime, i, rndDelay))
         })(i, rndDelay, curTime),
     rndDelay * 1000)
   }

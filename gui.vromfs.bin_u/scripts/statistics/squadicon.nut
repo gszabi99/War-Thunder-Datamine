@@ -1,8 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let listLabelsSquad = {}
 let nextLabel = { team1 = 1, team2 = 1}
 local topSquads = {}
 let playersInfo = persist("playersInfo", @() Watched({}))
-let { getRealName } = require("scripts/user/nameMapping.nut")
+let { getRealName } = require("%scripts/user/nameMapping.nut")
 
 let getPlayersInfo = @() playersInfo.value
 let function updateIconPlayersInfo()
@@ -53,7 +58,7 @@ let function updateListLabelsSquad()
         squadId = squadId
         count = 1
         label = ""
-        autoSquad = ::getTblValue("auto_squad", member, false)
+        autoSquad = getTblValue("auto_squad", member, false)
         teamId = member.team
       }
   }
@@ -83,12 +88,12 @@ let function getSquadInfoByMemberName(name)
   return null
 }
 
-let isShowSquad = @() ::SessionLobby.getGameMode() != ::GM_SKIRMISH
+let isShowSquad = @() ::SessionLobby.getGameMode() != GM_SKIRMISH
 let function updateTopSquadScore(mplayers)
 {
   if (!isShowSquad())
     return
-  let teamId = mplayers.len() ? ::getTblValue("team", mplayers[0], null) : null
+  let teamId = mplayers.len() ? getTblValue("team", mplayers[0], null) : null
   if (teamId == null)
     return
 
@@ -98,11 +103,11 @@ let function updateTopSquadScore(mplayers)
   let squads = {}
   foreach (player in mplayers)
   {
-    let squadScore = ::getTblValue("squadScore", player, 0)
+    let squadScore = getTblValue("squadScore", player, 0)
     if (!squadScore || squadScore < topSquadScore)
       continue
-    let name = ::getTblValue("name", player, "")
-    let squadId = ::getTblValue("squadId", getSquadInfoByMemberName(name), INVALID_SQUAD_ID)
+    let name = getTblValue("name", player, "")
+    let squadId = getTblValue("squadId", getSquadInfoByMemberName(name), INVALID_SQUAD_ID)
     if (squadId == INVALID_SQUAD_ID)
       continue
     if (squadScore > topSquadScore)
@@ -110,7 +115,7 @@ let function updateTopSquadScore(mplayers)
       topSquadScore = squadScore
       squads.clear()
     }
-    let score = ::getTblValue("score", player, 0)
+    let score = getTblValue("score", player, 0)
     if (!(squadId in squads))
       squads[squadId] <- { playerScore = 0, members = 0 }
     squads[squadId].playerScore += score

@@ -1,3 +1,5 @@
+#explicit-this
+#no-root-fallback
 let eventbus = require("eventbus")
 let {log} = require("%sqstd/log.nut")()
 let {isEqual} = require("%sqstd/underscore.nut")

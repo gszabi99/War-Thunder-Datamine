@@ -1,3 +1,9 @@
+#explicit-this
+#no-root-fallback
+
+let {handlerType} = require("handlerType.nut")
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
+
 ::BaseGuiHandler <- class
 {
   wndType = handlerType.BASE
@@ -46,7 +52,7 @@
 
   function initCustomHandlerScene()
   {
-    if (!::check_obj(this.scene))
+    if (!check_obj(this.scene))
       return false
 
     this.guiScene = this.scene.getScene()
@@ -87,7 +93,7 @@
 
   function isValid()
   {
-    return ::check_obj(this.scene)
+    return check_obj(this.scene)
   }
 
   function isInCurrentScene()
@@ -101,7 +107,7 @@
     if(!markup && !this.sceneNavBlkName)
       return
     let obj = this.scene.findObject("nav-help")
-    if (!::check_obj(obj))
+    if (!check_obj(obj))
       return
 
     if (markup)
@@ -114,7 +120,7 @@
 
   function isSceneActive()
   {
-    return ::check_obj(this.scene) && this.scene.isEnabled()
+    return check_obj(this.scene) && this.scene.isEnabled()
   }
 
   function isSceneActiveNoModals()
@@ -148,7 +154,7 @@
 
   function getObj(name)
   {
-    if (!::check_obj(this.scene))
+    if (!check_obj(this.scene))
       return null
     return this.scene.findObject(name)
   }
@@ -269,7 +275,7 @@
       if (typeof(func) == "function")
         func()
       else
-        ::dagor.assertf(false, "doWhenActive recieved " + func + ", instead of function")
+        assert(false, "doWhenActive recieved " + func + ", instead of function")
     }
     else
       this.delayedActions.append(func)
@@ -277,7 +283,7 @@
 
   function doWhenActiveOnce(funcName)
   {
-    ::dagor.assertf(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
+    assert(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
 
     let prevIdx = this.delayedActions.indexof(funcName)
     if (prevIdx != null)
@@ -323,4 +329,9 @@
 
     this.subHandlers.append(handler.weakref())
   }
+
+  _tostring = @() $"BaseGuiHandler(sceneBlkName = {this.sceneBlkName})"
+}
+return {
+  BaseGuiHandler = ::BaseGuiHandler
 }

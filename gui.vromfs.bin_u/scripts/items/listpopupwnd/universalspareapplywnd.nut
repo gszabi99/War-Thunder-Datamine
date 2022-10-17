@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::gui_handlers.UniversalSpareApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
 {
   sceneTplName = "%gui/items/universalSpareApplyWnd"
@@ -16,7 +23,7 @@
     list = ::u.filter(list, @(item) item.canActivateOnUnit(unitToActivate))
     if (!list.len())
     {
-      ::showInfoMsgBox(::loc("msg/noUniversalSpareForUnit"))
+      ::showInfoMsgBox(loc("msg/noUniversalSpareForUnit"))
       return
     }
     ::handlersManager.loadHandler(::gui_handlers.UniversalSpareApplyWnd,
@@ -67,7 +74,7 @@
 
   function updateText()
   {
-    amountTextObj.setValue(curAmount + ::loc("icon/universalSpare"))
+    amountTextObj.setValue(curAmount + loc("icon/universalSpare"))
     scene.findObject("buttonMax").enable(curAmount != maxAmount)
   }
 
@@ -123,8 +130,8 @@
 
   function onActivate()
   {
-    let text = ::loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) })
-    let goBackSaved = ::Callback(goBack, this)
+    let text = loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) })
+    let goBackSaved = Callback(goBack, this)
     let aUnit= unit
     let item = curItem
     let amount = curAmount

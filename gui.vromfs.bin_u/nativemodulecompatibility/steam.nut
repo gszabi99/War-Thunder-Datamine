@@ -1,3 +1,4 @@
+#allow-root-table
 return {
   is_running = ::steam_is_running
   get_app_id = ::steam_get_app_id

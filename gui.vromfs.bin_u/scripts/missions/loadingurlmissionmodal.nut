@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 ::gui_handlers.LoadingUrlMissionModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -49,11 +58,11 @@ let { format } = require("string")
 
   function loadUrlMission()
   {
-    let requestCallback = ::Callback(function(success, blk) {
+    let requestCallback = Callback(function(success, blk) {
                                           onLoadingEnded(success, blk)
                                         }, this)
 
-    let progressCallback = ::Callback(function(dltotal, dlnow) {
+    let progressCallback = Callback(function(dltotal, dlnow) {
                                           onProgress(dltotal, dlnow)
                                         }, this)
 
@@ -78,7 +87,7 @@ let { format } = require("string")
       progressChanged = false
       if (loadingProgress >= 0)
       {
-        updateText(::loc("wait/missionDownload", {name = urlMission.name, progress = loadingProgress.tostring()}))
+        updateText(loc("wait/missionDownload", {name = urlMission.name, progress = loadingProgress.tostring()}))
       }
     }
 
@@ -98,7 +107,7 @@ let { format } = require("string")
     if (isCancel)
       return goBack()
 
-    local errorText = ::loc("wait/ugm_download_failed")
+    local errorText = loc("wait/ugm_download_failed")
     if (success)
     {
       ::upgrade_url_mission(blk)
@@ -106,7 +115,7 @@ let { format } = require("string")
       requestSuccess = ::u.isEmpty(errorText)
       success = requestSuccess
       if (!success)
-        errorText = ::loc("wait/ugm_not_valid", {errorText = errorText})
+        errorText = loc("wait/ugm_not_valid", {errorText = errorText})
     }
 
     ::g_url_missions.setLoadingCompeteState(urlMission, !success, blk)

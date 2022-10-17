@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let keys = [
 @"
 -----BEGIN PUBLIC KEY-----
@@ -14,15 +19,15 @@ j+eTYc35NQIDAQAB
 
 let function initPublicKeys()
 {
-  if (::is_platform_xbox)
+  if (is_platform_xbox)
   {
-    ::dagor.debug("Content signature verification temporary disabled for xboxone")
+    log("Content signature verification temporary disabled for xboxone")
     return false
   }
 
   if (::inventory?.addContentPublicKey == null)
   {
-    ::dagor.debug("Content signature verification is not supported")
+    log("Content signature verification is not supported")
     return false
   }
 

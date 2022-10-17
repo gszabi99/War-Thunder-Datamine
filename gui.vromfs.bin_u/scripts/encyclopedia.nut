@@ -1,11 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let persistent = { encyclopediaData = [] }
 
 ::g_script_reloader.registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
 
 let initEncyclopediaData = function()
 {
-  if (persistent.encyclopediaData.len() || !::has_feature("Encyclopedia"))
+  if (persistent.encyclopediaData.len() || !hasFeature("Encyclopedia"))
     return
 
   let blk = ::DataBlock()
@@ -29,14 +37,14 @@ let initEncyclopediaData = function()
       let showPlatform = blkArticle.getStr("showPlatform", "")
       let hidePlatform = blkArticle.getStr("hidePlatform", "")
 
-      if ((showPlatform.len() > 0 && showPlatform != ::target_platform)
-          || hidePlatform == ::target_platform)
+      if ((showPlatform.len() > 0 && showPlatform != target_platform)
+          || hidePlatform == target_platform)
         continue
 
       let articleDesc = {}
       articleDesc.id <- blkArticle.getBlockName()
 
-      if (::is_vietnamese_version() && ::isInArray(articleDesc.id, ["historical_battles", "realistic_battles"]))
+      if (::is_vietnamese_version() && isInArray(articleDesc.id, ["historical_battles", "realistic_battles"]))
         continue
 
       articleDesc.haveHint <- blkArticle.getBool("haveHint",false)
@@ -80,7 +88,7 @@ let open = function()
     ::req_unlock_by_client("view_encyclopedia", false)
 
     let blockObj = scene.findObject("chapter_include_block")
-    if (::checkObj(blockObj))
+    if (checkObj(blockObj))
       blockObj.show(true)
 
     let view = { tabs = [] }
@@ -99,7 +107,7 @@ let open = function()
     chaptersObj.setValue(0)
     onChapterSelect(chaptersObj)
 
-    let canShowLinkButtons = !::is_vendor_tencent() && ::has_feature("AllowExternalLink")
+    let canShowLinkButtons = !::is_vendor_tencent() && hasFeature("AllowExternalLink")
     foreach(btn in ["faq", "support", "wiki"])
       this.showSceneBtn("button_" + btn, canShowLinkButtons)
     ::move_mouse_on_child_by_value(scene.findObject("items_list"))
@@ -107,7 +115,7 @@ let open = function()
 
   function onChapterSelect(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let value = obj.getValue()
@@ -115,7 +123,7 @@ let open = function()
       return
 
     let objArticles = scene.findObject("items_list")
-    if (!::check_obj(objArticles))
+    if (!checkObj(objArticles))
       return
 
     curChapter = persistent.encyclopediaData[value]
@@ -144,10 +152,10 @@ let open = function()
       return
 
     let article = curChapter.articles[index]
-    let txtDescr = ::loc("encyclopedia/" + article.id + "/desc")
+    let txtDescr = loc("encyclopedia/" + article.id + "/desc")
     let objDesc = scene.findObject("item_desc")
     objDesc.findObject("item_desc_text").setValue(txtDescr)
-    objDesc.findObject("item_name").setValue(::loc("encyclopedia/" + article.id))
+    objDesc.findObject("item_name").setValue(loc("encyclopedia/" + article.id))
 
     let objImgDiv = scene.findObject("div_before_text")
     local data = ""

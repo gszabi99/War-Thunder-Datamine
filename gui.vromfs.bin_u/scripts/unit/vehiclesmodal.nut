@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -57,7 +66,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     })
   }
 
-  getWndTitle = @() ::loc(wndTitleLocId)
+  getWndTitle = @() loc(wndTitleLocId)
   getNavBarView = @() null
   updateButtons = @() null
 
@@ -113,7 +122,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           id = isUnitType ? $"unit_{inst.unitType.esUnitType}" : inst.id
           idx = isUnitType ? inst.unitType.esUnitType : inst.idx
           image = isUnitType ? inst.unitType.testFlightIcon : ::get_country_icon(inst.id)
-          text = isUnitType ? inst.unitType.getArmyLocName() : ::loc(inst.id)
+          text = isUnitType ? inst.unitType.getArmyLocName() : loc(inst.id)
           value = false
         })
       }
@@ -154,7 +163,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   function fillUnitsList()
   {
     let listObj = scene.findObject("units_list")
-    if (!::check_obj(listObj))
+    if (!checkObj(listObj))
       return
 
     let data = getUnitsListData()
@@ -215,7 +224,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       hasActions         = true
       isInTable          = false
       fullBlock          = false
-      showBR             = ::has_feature("GlobalShowBattleRating")
+      showBR             = hasFeature("GlobalShowBattleRating")
       tooltipParams      = { needShopInfo = true }
     }
   }
@@ -233,7 +242,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateUnitItem(unit, placeObj)
   {
-    if (!::check_obj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     let unitBlock = ::build_aircraft_item(unit.name, unit, getUnitItemParams(unit))
@@ -265,7 +274,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     lastSelectedUnit = null
     let slotObj = getCurSlotObj()
-    if (::check_obj(slotObj))
+    if (checkObj(slotObj))
       lastSelectedUnit = ::getAircraftByName(slotObj.unit_name)
 
     updateButtons()

@@ -1,9 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 
 let function getWorldWarPromoText(isWwEnabled = null) {
-  local text = ::loc("mainmenu/btnWorldwar")
+  local text = loc("mainmenu/btnWorldwar")
   if (!::is_worldwar_enabled())
     return text
 
@@ -15,7 +22,7 @@ let function getWorldWarPromoText(isWwEnabled = null) {
   }
 
   text = getTextWithCrossplayIcon(needShowCrossPlayInfo(), text)
-  return "{0} {1}".subst(::loc("icon/worldWar"), text)
+  return "{0} {1}".subst(loc("icon/worldWar"), text)
 }
 
 addPromoAction("world_war", @(handler, params, obj) ::g_world_war.openMainWnd(params?[0] == "openMainMenu"))
@@ -25,7 +32,7 @@ let promoButtonId = "world_war_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   getText = getWorldWarPromoText
-  collapsedIcon = ::loc("icon/worldWar")
+  collapsedIcon = loc("icon/worldWar")
   needUpdateByTimer = true
   updateFunctionInHandler = function() {
     let id = promoButtonId
@@ -34,7 +41,7 @@ addPromoButtonConfig({
       || (isWwEnabled && ::g_world_war.isWWSeasonActiveShort())
 
     let buttonObj = ::showBtn(id, isVisible, scene)
-    if (!isVisible || !::checkObj(buttonObj))
+    if (!isVisible || !checkObj(buttonObj))
       return
 
     ::g_promo.setButtonText(buttonObj, id, getWorldWarPromoText(isWwEnabled))

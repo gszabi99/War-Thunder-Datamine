@@ -1,7 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
+let { getFullUnlockCondsDesc,
+  getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::items_classes.Booster <- class extends ::BaseItem
 {
@@ -38,10 +47,6 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
                               iconImg = "#ui/gameuiskin#item_type_booster_event_assist.svg"
                             }]
 
-  eventType = null
-  conditions = null
-
-  stopData = null
   stopConditions = null
   eventConditions = null
   stopProgress = null
@@ -51,7 +56,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     base.constructor(blk, invBlk, slotData)
     _initBoosterParams(blk?.rateBoosterParams)
     if (isActive())
-      stopProgress = ::getTblValue("progress", invBlk, 0)
+      stopProgress = getTblValue("progress", invBlk, 0)
   }
 
   function _initBoosterParams(blk)
@@ -67,14 +72,9 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
     let event = blk?.event
     if (event != null)
-    {
-      eventType = event?.type
-      foreach(cond in event % "conditon")
-        if (typeof(cond)=="instance" && (cond instanceof ::DataBlock))
-          conditions.append(::buildTableFromBlk(cond))
       eventConditions = ::UnlockConditions.loadConditionsFromBlk(event)
-    }
 
+    let eventType = event?.type
     foreach(idx, block in eventTypesTable)
       if (block.name == eventType)
       {
@@ -84,10 +84,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       }
 
     if (blk?.stop != null)
-    {
-      stopData = ::buildTableFromBlk(blk.stop)
       stopConditions = ::UnlockConditions.loadConditionsFromBlk(blk.stop)
-    }
   }
 
   function getBoostersEffectsDiffByItem()
@@ -140,9 +137,9 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       return false
 
     local res = false
-    let total = ::get_current_booster_count(INVALID_USER_ID)
+    let total = ::get_current_booster_count(::INVALID_USER_ID)
     for (local i = 0; i < total; i++)
-      if (::isInArray(::get_current_booster_uid(INVALID_USER_ID, i), uids))
+      if (isInArray(::get_current_booster_uid(::INVALID_USER_ID, i), uids))
       {
         res = true
         break
@@ -161,7 +158,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       return res
     if (isInventoryItem && amount && !isActive())
       return {
-        btnName = ::loc("item/activate")
+        btnName = loc("item/activate")
       }
 
     return null
@@ -209,7 +206,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   function showPenaltyBoosterMessageBox(handler, checkParams = null)
   {
     let effectsDiff = getBoostersEffectsDiffByItem()
-    let bodyText = ::loc("msgbox/existingBoosters", {
+    let bodyText = loc("msgbox/existingBoosters", {
                         newBooster = getName(),
                         newBoosterEffect = getDiffEffectText(format("%.02f", effectsDiff).tofloat())
                       })
@@ -226,7 +223,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function showIsInFlightAlertMessageBox(handler, checkParams = null)
   {
-    let bodyText = ::loc("msgbox/isInFlightBooster")
+    let bodyText = loc("msgbox/isInFlightBooster")
     let savedThis = this
     handler.msgBox("activate_in_flight_booster", bodyText, [[
       "yes", (@(handler, savedThis, checkParams) function () {
@@ -254,7 +251,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     if (!handler)
       handler = ::get_cur_base_gui_handler()
 
-    let checkIsInFlight = ::getTblValue("checkIsInFlight", checkParams, false)
+    let checkIsInFlight = getTblValue("checkIsInFlight", checkParams, false)
     if (checkIsInFlight && ::is_in_flight())
     {
       if (cb)
@@ -268,7 +265,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       return false
     }
 
-    let checkActive = ::getTblValue("checkActive", checkParams, false)
+    let checkActive = getTblValue("checkActive", checkParams, false)
     if (checkActive && haveActiveBoosters())
     {
       if (cb)
@@ -386,13 +383,13 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     local desc = getEffectText(wpRate, xpRate, colored)
 
     if (!personal)
-      desc += format(" (%s)", ::loc("boostEffect/group"))
+      desc += format(" (%s)", loc("boostEffect/group"))
     return desc
   }
 
   function _formatEffectText(value, currencyMark)
   {
-    return ::colorize("activeTextColor", "+" + value + "%") + currencyMark
+    return colorize("activeTextColor", "+" + value + "%") + currencyMark
   }
 
   function getEffectText(wpRateNum = 0, xpRateNum = 0, colored = true)
@@ -400,13 +397,13 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     let text = []
     if (wpRateNum > 0.0)
       if (colored)
-        text.append(_formatEffectText(wpRateNum, ::loc("warpoints/short/colored")))
+        text.append(_formatEffectText(wpRateNum, loc("warpoints/short/colored")))
       else
-        text.append("+" + wpRateNum + "%" + ::loc("warpoints/short/colored"))
+        text.append("+" + wpRateNum + "%" + loc("warpoints/short/colored"))
 
     if (xpRateNum > 0.0)
       if (colored)
-        text.append(_formatEffectText(xpRateNum, ::loc("currency/researchPoints/sign/colored")))
+        text.append(_formatEffectText(xpRateNum, loc("currency/researchPoints/sign/colored")))
       else
         text.append(::getRpPriceText("+" + xpRateNum + "%", true))
 
@@ -423,7 +420,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       effectDesc = getEffectDesc()
     }
     if (wpRate != 0 || xpRate != 0)
-      desc += ::loc(locString, locParams)
+      desc += loc(locString, locParams)
     if (eventConditions != null)
       desc += " " + getEventConditionsText()
 
@@ -456,15 +453,13 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   {
     local desc = getName(colored)
     if (eventConditions)
-      desc += ::loc("ui/parentheses/space", { text = getEventConditionsText() })
+      desc += loc("ui/parentheses/space", { text = getEventConditionsText() })
     return desc
   }
 
   function getEventConditionsText()
   {
-    if (!eventConditions)
-      return ""
-    return ::UnlockConditions.getConditionsText(eventConditions, null, null, { inlineText = true })
+    return getFullUnlockCondsDescInline(eventConditions)
   }
 
   _totalStopSessions = -1
@@ -473,7 +468,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     if (_totalStopSessions < 0)
     {
       let mainCondition = ::UnlockConditions.getMainProgressCondition(stopConditions)
-      _totalStopSessions = ::getTblValue("num", mainCondition, 0)
+      _totalStopSessions = getTblValue("num", mainCondition, 0)
     }
     return _totalStopSessions
   }
@@ -505,10 +500,10 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     // Shows progress as count down 6, 5, 4, ... instead of 0/6, 1/6, ...
     let curValue = getLeftStopSessions()
     let params = { locEnding = isActive() ? "/inverted" : "/activeFor" }
-    textsList.append(::UnlockConditions.getConditionsText(stopConditions, null, curValue, params))
+    textsList.append(getFullUnlockCondsDesc(stopConditions, null, curValue, params))
 
     if (spentInSessionTimeMin)
-      textsList.append(::colorize("fadedTextColor", ::loc("booster/progressFrequency", { num = spentInSessionTimeMin })))
+      textsList.append(colorize("fadedTextColor", loc("booster/progressFrequency", { num = spentInSessionTimeMin })))
 
     return ::g_string.implode(textsList, "\n")
   }
@@ -532,7 +527,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getEventTypeIcon()
   {
-    return ::getTblValue("iconImg", eventTypeData)
+    return getTblValue("iconImg", eventTypeData)
   }
 
   function canStack(item)
@@ -554,10 +549,10 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
         continue
 
       let efTypeName = efType.name
-      let valTbl = ::getTblValue(efTypeName, stackParams, {})
-      let minVal = ::getTblValue("min", valTbl)
+      let valTbl = getTblValue(efTypeName, stackParams, {})
+      let minVal = getTblValue("min", valTbl)
       valTbl.min <- minVal ? min(minVal, value) : value
-      let maxVal = ::getTblValue("max", valTbl)
+      let maxVal = getTblValue("max", valTbl)
       valTbl.max <- maxVal ? max(maxVal, value) : value
       stackParams[efTypeName] <- valTbl
     }
@@ -565,11 +560,11 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getStackName(stackParams)
   {
-    local res = ::colorize("activeTextColor", ::loc("item/" + defaultLocId))
+    local res = colorize("activeTextColor", loc("item/" + defaultLocId))
     let effects = []
     foreach (efType in boosterEffectType)
     {
-      let valTbl = ::getTblValue(efType.name, stackParams)
+      let valTbl = getTblValue(efType.name, stackParams)
       if (!valTbl || (!("min" in valTbl)))
         continue
 
@@ -577,7 +572,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       if (valTbl.min == valTbl.max)
         effects.append(minText)
       else
-        effects.append(::loc("item/effect/from_to", {
+        effects.append(loc("item/effect/from_to", {
                          min = minText
                          max = _formatEffectText(valTbl.max, efType.currencyMark)
                        }))
@@ -613,7 +608,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getDescription()
   {
-    local desc = base.getDescription() + ::loc("ui/colon") + getEffectDesc()
+    local desc = base.getDescription() + loc("ui/colon") + getEffectDesc()
     if (!isInventoryItem)
       return desc
 
@@ -630,7 +625,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     if (bonusArray.len())
     {
       desc += "\n"
-      desc += ::loc("item/FakeBoosterForNetCafeLevel/squad", {num = ::g_squad_manager.getSameCyberCafeMembersNum()}) + ::loc("ui/colon")
+      desc += loc("item/FakeBoosterForNetCafeLevel/squad", {num = ::g_squad_manager.getSameCyberCafeMembersNum()}) + loc("ui/colon")
       desc += ::g_string.implode(bonusArray, ", ")
     }
 
@@ -648,7 +643,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       desc = getEffectText(wpRate, xpRate, colored)
 
     if (!personal)
-      desc += format(" (%s)", ::loc("boostEffect/group"))
+      desc += format(" (%s)", loc("boostEffect/group"))
     return desc
   }
 

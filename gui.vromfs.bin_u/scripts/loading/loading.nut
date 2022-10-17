@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { loading_is_finished, loading_press_apply, loading_get_briefing } = require("loading")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
@@ -8,7 +13,7 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
   let briefing = loading_get_briefing()
   if (::g_login.isLoggedIn() && isMissionLoading && (briefing.blockCount() > 0))
   {
-    ::dagor.debug("briefing loaded, place = "+briefing.getStr("place_loc", ""))
+    log("briefing loaded, place = "+briefing.getStr("place_loc", ""))
     ::handlersManager.loadHandler(::gui_handlers.LoadingBrief, { briefing = briefing })
   }
   else if (::g_login.isLoggedIn())
@@ -28,10 +33,10 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
   {
     animBgLoad()
     setVersionText()
-    setHelpTextOnLoading(scene.findObject("help_text"))
+    setHelpTextOnLoading(this.scene.findObject("help_text"))
 
-    let updObj = scene.findObject("cutscene_update")
-    if (::checkObj(updObj))
+    let updObj = this.scene.findObject("cutscene_update")
+    if (checkObj(updObj))
       updObj.setUserData(this)
   }
 

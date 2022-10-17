@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let DataBlock = require("DataBlock")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
@@ -20,7 +27,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     blk.comment = descr.comment
     blk.path = descr.path
 
-    let cb = ::Callback(onBackupSaved, this)
+    let cb = Callback(onBackupSaved, this)
     ::request_save_controls_backup(@(result) cb(result), blk)
   }
 
@@ -29,7 +36,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   {
     showWaitAnimation(false)
     if (!params.success)
-      ::showInfoMsgBox(::loc("msgbox/errorSavingPreset"))
+      ::showInfoMsgBox(loc("msgbox/errorSavingPreset"))
     goBack()
   }
 
@@ -41,7 +48,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     blk.path = descr.path
     blk.comment = descr.comment
 
-    let cb = ::Callback(onBackupLoaded, this)
+    let cb = Callback(onBackupLoaded, this)
     ::request_load_controls_backup(@(result) cb(result), blk)
   }
 
@@ -55,7 +62,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       ::broadcastEvent("ControlsPresetChanged")
     }
     else
-      ::showInfoMsgBox(::loc("msgbox/errorSavingPreset"))
+      ::showInfoMsgBox(loc("msgbox/errorSavingPreset"))
     goBack()
   }
 
@@ -67,7 +74,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     blk.path = descr.path
     blk.comment = descr.comment
 
-    let cb = ::Callback(onBackupDeleted, this)
+    let cb = Callback(onBackupDeleted, this)
     ::request_delete_controls_backup(@(result) cb(result), blk)
   }
 
@@ -81,7 +88,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   static function isAvailable()
   {
-    return (isPlatformSony || isPlatformXboxOne) && "request_list_controls_backup" in ::getroottable()
+    return (isPlatformSony || isPlatformXboxOne) && "request_list_controls_backup" in getroottable()
   }
 
 

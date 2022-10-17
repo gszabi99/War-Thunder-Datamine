@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 ::g_invites_classes.ChatRoom <- class extends ::BaseInvite
 {
@@ -7,12 +14,12 @@ let { format } = require("string")
 
   static function getUidByParams(params)
   {
-    return "CR_" + ::getTblValue("inviterName", params, "") + "/" + ::getTblValue("roomId", params, "")
+    return "CR_" + getTblValue("inviterName", params, "") + "/" + getTblValue("roomId", params, "")
   }
 
   function updateCustomParams(params, initial = false)
   {
-    roomId = ::getTblValue("roomId", params, "")
+    roomId = getTblValue("roomId", params, "")
     roomType = ::g_chat_room_type.getRoomType(roomId)
 
     if (roomType == ::g_chat_room_type.THREAD)
@@ -24,7 +31,7 @@ let { format } = require("string")
       if (initial)
         ::add_event_listener("ChatThreadInfoChanged",
                              function (data) {
-                               if (::getTblValue("roomId", data) == roomId)
+                               if (getTblValue("roomId", data) == roomId)
                                  setDelayed(false)
                              },
                              this)
@@ -49,14 +56,14 @@ let { format } = require("string")
     let nameF = "<Link=%s><Color="+inviteActiveColor+">%s</Color></Link>"
 
     let clickNameText = roomType.getInviteClickNameText(roomId)
-    return ::loc(roomType.inviteLocIdFull,
+    return loc(roomType.inviteLocIdFull,
                  { player = format(nameF, getChatInviterLink(), getInviterName()),
                    channel = format(nameF, getChatLink(), clickNameText) })
   }
 
   function getInviteText()
   {
-    return ::loc(roomType.inviteLocIdNoNick,
+    return loc(roomType.inviteLocIdNoNick,
                  {
                    channel = roomType.getRoomName(roomId)
                  })
@@ -64,7 +71,7 @@ let { format } = require("string")
 
   function getPopupText()
   {
-    return ::loc(roomType.inviteLocIdFull,
+    return loc(roomType.inviteLocIdFull,
                  {
                    player = getInviterName()
                    channel = roomType.getRoomName(roomId)

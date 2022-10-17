@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isFakeBullet, getBulletsSetData } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
@@ -5,9 +12,9 @@ let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificatio
 } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarItems, getWheelBarItems, activateActionBarAction,
-  getActionBarUnitName } = ::require_native("hudActionBar")
+  getActionBarUnitName } = require_native("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
-} = ::require_native("hudActionBarConst")
+} = require_native("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
 
@@ -34,7 +41,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   isFootballMission = false
 
   constructor(nestObj) {
-    if (!::checkObj(nestObj))
+    if (!checkObj(nestObj))
       return
     scene     = nestObj
     guiScene  = nestObj.getScene()
@@ -43,7 +50,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
     canControl = !::isPlayerDedicatedSpectator() && !is_replay_playing()
 
-    isFootballMission = (::get_game_type() & ::GT_FOOTBALL) != 0
+    isFootballMission = (::get_game_type() & GT_FOOTBALL) != 0
 
     updateVisibility()
 
@@ -82,7 +89,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function isValid()
   {
-    return ::checkObj(scene)
+    return checkObj(scene)
   }
 
   function getActionBarUnit()
@@ -92,7 +99,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function fill()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     curActionBarUnit = getActionBarUnit()
@@ -137,7 +144,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
       let scInput = shType.getFirstInput(shortcutId)
       shortcutText = scInput.getText()
-      isXinput = scInput.hasImage() && scInput.getDeviceId() != ::STD_KEYBOARD_DEVICE_ID
+      isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
       showShortcut = isXinput || shortcutText !=""
     }
 
@@ -179,8 +186,8 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
     if (!modifName && item.type != EII_BULLET && item.type != EII_FORCED_GUN)
     {
-      let killStreakTag = ::getTblValue("killStreakTag", item)
-      let killStreakUnitTag = ::getTblValue("killStreakUnitTag", item)
+      let killStreakTag = getTblValue("killStreakTag", item)
+      let killStreakUnitTag = getTblValue("killStreakUnitTag", item)
       viewItem.icon <- actionBarType.getIcon(killStreakUnitTag)
       viewItem.name <- actionBarType.getTitle(killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
@@ -245,15 +252,15 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     foreach(item in actionItems)
     {
       let itemObj = scene.findObject(__action_id_prefix + item.id)
-      if (!::checkObj(itemObj))
+      if (!checkObj(itemObj))
         continue
 
       let amountObj = itemObj.findObject("amount_text")
-      if (::check_obj(amountObj))
+      if (checkObj(amountObj))
         amountObj.setValue(getActionItemAmountText(item))
 
       let automaticObj = itemObj.findObject("automatic_text")
-      if (::check_obj(automaticObj))
+      if (checkObj(automaticObj))
         automaticObj.show(ship && item?.automatic)
 
       if (item.type != EII_BULLET && !itemObj.isEnabled() && isActionReady(item))
@@ -268,9 +275,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       let mainActionButtonObj = itemObj.findObject("mainActionButton")
       let activatedActionButtonObj = itemObj.findObject("activatedActionButton")
       let cancelButtonObj = itemObj.findObject("cancelButton")
-      if (::checkObj(mainActionButtonObj) &&
-          ::checkObj(activatedActionButtonObj) &&
-          ::checkObj(cancelButtonObj))
+      if (checkObj(mainActionButtonObj) &&
+          checkObj(activatedActionButtonObj) &&
+          checkObj(cancelButtonObj))
       {
           mainActionButtonObj.show(!item.active)
           activatedActionButtonObj.show(item.active)
@@ -280,12 +287,12 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
       let backgroundImage = actionBarType.getIcon()
       let iconObj = itemObj.findObject("action_icon")
-      if (::checkObj(iconObj))
+      if (checkObj(iconObj))
       {
         if (backgroundImage.len() > 0)
           iconObj["background-image"] = backgroundImage
       }
-      if (item.type == EII_EXTINGUISHER && ::checkObj(mainActionButtonObj))
+      if (item.type == EII_EXTINGUISHER && checkObj(mainActionButtonObj))
         mainActionButtonObj.show(item.cooldown == 0)
       if (item.type == EII_ARTILLERY_TARGET && item.active != artillery_target_mode)
       {
@@ -330,13 +337,13 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   function blink(obj)
   {
     let blinkObj = obj.findObject("availability")
-    if (::checkObj(blinkObj))
+    if (checkObj(blinkObj))
       blinkObj["_blink"] = "yes"
   }
 
   function updateVisibility()
   {
-    if (::checkObj(scene))
+    if (checkObj(scene))
       scene.show(!::g_hud_live_stats.isVisible())
   }
 
@@ -348,7 +355,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
    * */
   function getActionBar()
   {
-    let isUnitValid = ::get_es_unit_type(getActionBarUnit()) != ::ES_UNIT_TYPE_INVALID
+    let isUnitValid = ::get_es_unit_type(getActionBarUnit()) != ES_UNIT_TYPE_INVALID
     let rawActionBarItem = isUnitValid ? getActionBarItems() : []
     if (!useWheelmenu)
       return rawActionBarItem
@@ -392,15 +399,15 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
     if (streakId >= 0) //something goes wrong; -1 is valid situation = player does not choose smthng
     {
-      ::debugTableData(killStreaksActionsOrdered)
-      callstack()
-      ::dagor.assertf(false, "Error: killStreak id out of range.")
+      debugTableData(killStreaksActionsOrdered)
+      ::dagor.debug_dump_stack()
+      assert(false, "Error: killStreak id out of range.")
     }
   }
 
   function activateWeapon(streakId)
   {
-    let action = ::getTblValue(streakId, weaponActions)
+    let action = getTblValue(streakId, weaponActions)
     if (action)
     {
       let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getActionBarUnit())
@@ -420,7 +427,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function toggleKillStreakWheel(open)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     if (open)
@@ -495,7 +502,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function toggleSelectWeaponWheel(open)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     if (open)

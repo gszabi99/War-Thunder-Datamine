@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let regexp2 = require("regexp2")
 
 let reUnitLocNameSeparators = regexp2(@"[ \-_/.()"+::nbsp+"]")
@@ -6,7 +11,7 @@ let searchTokensCache = {}
 
 local function comparePrep(text)
 {
-  text = ::utf8(::g_string.utf8ToLower(text)).strtr(translit.cyr, translit.lat)
+  text = utf8(::g_string.utf8ToLower(text)).strtr(translit.cyr, translit.lat)
   return reUnitLocNameSeparators.replace("", text)
 }
 

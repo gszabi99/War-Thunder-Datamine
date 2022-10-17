@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let avatars = require("%scripts/user/avatars.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 
@@ -130,7 +137,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null)
 
   let usersList = ::g_string.implode(users, ";")
 
-  let requestBlk = DataBlock()
+  let requestBlk = ::DataBlock()
   requestBlk.setStr("usersList", usersList)
 
   let function fullSuccessCb(response) {

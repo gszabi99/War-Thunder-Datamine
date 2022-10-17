@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let interopGen = require("interopGen.nut")
 
 let compassState = {

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
@@ -38,15 +45,15 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   static function getUidByParams(params) //must be uniq between invites classes
   {
-    return "ERR_" + ::getTblValue("inviterName", params, "")
+    return "ERR_" + getTblValue("inviterName", params, "")
   }
 
   function updateParams(params, initial = false)
   {
     reloadParams = params
     receivedTime = ::dagor.getCurTime()
-    inviterName = ::getTblValue("inviterName", params, inviterName)
-    inviterUid = ::getTblValue("inviterUid", params, inviterUid)
+    inviterName = getTblValue("inviterName", params, inviterName)
+    inviterUid = getTblValue("inviterUid", params, inviterUid)
 
     updateCustomParams(params, initial)
 
@@ -171,7 +178,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
     if (!msg.len())
       return
 
-    msg = [::colorize(inviteColor, msg)]
+    msg = [colorize(inviteColor, msg)]
     msg.append(getRestrictionText())
 
     let buttons = []
@@ -179,11 +186,11 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
     {
       buttons.append(
         { id = "reject_invite",
-          text = ::loc("invite/reject"),
+          text = loc("invite/reject"),
           func = reject
         }
         { id = "accept_invite",
-          text = ::loc("contacts/accept_invitation"),
+          text = loc("contacts/accept_invitation"),
           func = accept
         }
       )

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 
 ::queue_classes.WwBattle <- class extends ::queue_classes.Base
@@ -35,12 +42,12 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
 
   static function getName(params)
   {
-    return ::getTblValue("operationId", params, "") + "_" + ::getTblValue("battleId", params, "")
+    return getTblValue("operationId", params, "") + "_" + getTblValue("battleId", params, "")
   }
 
   function getBattleName()
   {
-    return ::loc("mainmenu/btnWorldwar")
+    return loc("mainmenu/btnWorldwar")
   }
 
   function getQueueWwBattleId()

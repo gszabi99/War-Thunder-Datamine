@@ -1,8 +1,10 @@
-let { format } = require("string")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-
 #explicit-this
 #no-root-fallback
+
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { format } = require("string")
+let {handlerType} = require("handlerType.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
@@ -86,7 +88,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     else
       handler = this.loadBaseHandler(handlerClass, params)
 
-    ::dagor.debug(format("GuiManager: loading time = %d (%s)", (::dagor.getCurTime() - startTime),  dbgName))
+    println(format("GuiManager: loading time = %d (%s)", (::dagor.getCurTime() - startTime),  dbgName))
 
     if (restoreData?.stateData)
       handler.restoreHandler(restoreData.stateData)
@@ -123,7 +125,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function onLoadHandlerDebug(handlerClass, params)
   {
     let handlerName = this.getHandlerClassDebugName(handlerClass)
-    ::dagor.debug("GuiManager: load handler " + handlerName)
+    println("GuiManager: load handler " + handlerName)
 
     this.lastLoadedHandlerName = handlerName
     return handlerName
@@ -147,12 +149,12 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       let hType = this.getHandlerType(handler.getclass())
       if (hType == handlerType.MODAL)
       {
-        if (::check_obj(handler.scene))
+        if (check_obj(handler.scene))
           ::get_cur_gui_scene().destroyElement(handler.scene)
       }
       else if (hType == handlerType.CUSTOM)
       {
-        if (::check_obj(handler.scene))
+        if (check_obj(handler.scene))
           ::get_cur_gui_scene().replaceContentFromText(handler.scene, "", 0, null)
         handler.scene = null
       }
@@ -232,8 +234,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!handler.sceneBlkName)
     {
-      ::callstack()
-      ::dagor.assertf(false, "Error: cant load base handler w/o sceneBlkName.")
+      ::dagor.debug_dump_stack()
+      assert(false, "Error: cant load base handler w/o sceneBlkName.")
       return null
     }
 
@@ -270,8 +272,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!handlerClass.sceneBlkName && !handlerClass.sceneTplName)
     {
-      ::callstack()
-      ::dagor.assertf(handlerClass.sceneBlkName!=null, "Error: cant load modal handler w/o sceneBlkName or sceneTplName.")
+      ::dagor.debug_dump_stack()
+      assert(handlerClass.sceneBlkName!=null, "Error: cant load modal handler w/o sceneBlkName or sceneTplName.")
       return null
     }
     local handler = this.findHandlerClassInScene(handlerClass)
@@ -303,8 +305,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     let handler = this.createHandler(handlerClass, guiScene, params)
     if (!handler.sceneBlkName && !handler.sceneTplName)
     {
-      ::callstack()
-      ::dagor.assertf(false, "Error: cant load custom handler w/o sceneBlkName or sceneTplName.")
+      ::dagor.debug_dump_stack()
+      assert(false, "Error: cant load custom handler w/o sceneBlkName or sceneTplName.")
       return null
     }
 
@@ -476,7 +478,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function emptyScreen()
   {
-    ::dagor.debug("GuiManager: load emptyScreen")
+    println("GuiManager: load emptyScreen")
     this.setLastBaseHandlerStartFunc(function() { ::handlersManager.emptyScreen() })
     this.lastLoadedHandlerName = "emptyScreen"
 
@@ -506,14 +508,14 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     rootObj["css-hier-invalidate"] = "all"  //need to update scene after set this parameters
     guiScene.performDelayed(this, function() {
-      if (::check_obj(rootObj))
+      if (check_obj(rootObj))
         rootObj["css-hier-invalidate"] = "no"
     })
   }
 
   function needReloadScene()
   {
-    return this.needFullReload || ::always_reload_scenes || !::check_obj(::get_cur_gui_scene()["root_loaded"])
+    return this.needFullReload || ::always_reload_scenes || !check_obj(::get_cur_gui_scene()["root_loaded"])
            || this.isNeedReloadSceneSpecific()
   }
 

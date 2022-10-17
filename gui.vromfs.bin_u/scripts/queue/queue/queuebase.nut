@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
@@ -25,7 +32,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
     typeBit = queueType.bit
     queueUidsList = {}
-    selfActivated = ::getTblValue("queueSelfActivated", params, false)
+    selfActivated = getTblValue("queueSelfActivated", params, false)
 
     init()
     addQueueByParams(params)
@@ -73,7 +80,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
   function getTeamCode()
   {
-    return ::getTblValue("team", params, Team.Any)
+    return getTblValue("team", params, Team.Any)
   }
 
   function getBattleName()
@@ -81,8 +88,8 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
     return ""
   }
 
-  getDescription = @() "".concat( ::colorize("activeTextColor", getBattleName()), "\n",
-    ::loc("options/country"), ::loc("ui/colon"), ::loc(params?.country ?? ""))
+  getDescription = @() "".concat( colorize("activeTextColor", getBattleName()), "\n",
+    loc("options/country"), loc("ui/colon"), loc(params?.country ?? ""))
 
   function getActiveTime()
   {
@@ -105,4 +112,6 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   function switchCustomMode(shouldQueue) {}
   static function isAllowedToSwitchCustomMode()
     { return !::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader() }
+  hasActualQueueData = @() true
+  actualizeData = @() null
 }

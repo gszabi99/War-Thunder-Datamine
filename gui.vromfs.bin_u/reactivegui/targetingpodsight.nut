@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let { bw } = require("style/screenState.nut")
 let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax } = require("airHudElems.nut")
 let { TargetPodMask, EmptyMask, HudColor  } = require("airState.nut")

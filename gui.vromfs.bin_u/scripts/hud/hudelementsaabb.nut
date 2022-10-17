@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let hudState = require("hudState")
 let { getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
 

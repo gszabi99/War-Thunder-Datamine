@@ -1,3 +1,7 @@
+#explicit-this
+#no-root-fallback
+
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let focusTarget = require("%sqDagui/focusFrame/bhvFocusFrameTarget.nut")
 
 //uses the first child to play anim.
@@ -37,7 +41,7 @@ let function setDelay(obj, timeMsec) {
 
 let function restoreTargetImage(obj) {
   let curData = obj.getUserData()
-  if (::check_obj(curData?.obj))
+  if (check_obj(curData?.obj))
     focusTarget.unhideImage(curData.obj)
 }
 
@@ -58,13 +62,13 @@ let function play(obj, targetObj) {
     return
 
   let animObj = obj.getChild(0)
-  if (!::check_obj(animObj) || !::check_obj(targetObj))
+  if (!check_obj(animObj) || !check_obj(targetObj))
     return
 
   let prevData = obj.getUserData()
   let curData = gatherObjData(targetObj)
   if (!needAnim(curData, prevData)) {
-    if (::check_obj(curData?.obj))
+    if (check_obj(curData?.obj))
       focusTarget.unhideImage(curData.obj)
     return
   }
@@ -105,19 +109,19 @@ let function play(obj, targetObj) {
 
 
 let class bhvFocusFrameAnim {
-  eventMask = ::EV_TIMER
+  eventMask = EV_TIMER
 
   function onAttach(obj) {
     setDelay(obj, SWITCH_OFF_TIME)
     if (registerFunc)
       registerFunc(obj)
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
   function onDetach(obj) {
     if (unregisterFunc)
       unregisterFunc(obj)
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
   function onTimer(obj, dt) {

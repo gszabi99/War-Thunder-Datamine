@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 ::Input.Button <- class extends ::Input.InputBase
@@ -27,12 +34,12 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
       view = {}
     }
 
-    if (deviceId == ::JOYSTICK_DEVICE_0_ID && gamepadIcons.hasTextureByButtonIdx(buttonId))
+    if (deviceId == JOYSTICK_DEVICE_0_ID && gamepadIcons.hasTextureByButtonIdx(buttonId))
     {
       data.template = "%gui/gamepadButton"
       data.view.buttonImage <- gamepadIcons.getTextureByButtonIdx(buttonId)
     }
-    else if (deviceId == ::STD_MOUSE_DEVICE_ID && gamepadIcons.hasMouseTexture(buttonId))
+    else if (deviceId == STD_MOUSE_DEVICE_ID && gamepadIcons.hasMouseTexture(buttonId))
     {
       data.template = "%gui/gamepadButton"
       data.view.buttonImage <- gamepadIcons.getMouseTexture(buttonId)
@@ -58,9 +65,9 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
   function getImage()
   {
-    if (deviceId == ::JOYSTICK_DEVICE_0_ID && gamepadIcons.hasTextureByButtonIdx(buttonId))
+    if (deviceId == JOYSTICK_DEVICE_0_ID && gamepadIcons.hasTextureByButtonIdx(buttonId))
       return gamepadIcons.getTextureByButtonIdx(buttonId)
-    else if (deviceId == ::STD_MOUSE_DEVICE_ID && gamepadIcons.hasMouseTexture(buttonId))
+    else if (deviceId == STD_MOUSE_DEVICE_ID && gamepadIcons.hasMouseTexture(buttonId))
       return gamepadIcons.getMouseTexture(buttonId)
 
     return null

@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -42,7 +51,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     curWb = wbList[curWbIdx]
 
     let obj = scene.findObject("warbond_shop_progress_block")
-    if (::check_obj(obj))
+    if (checkObj(obj))
       obj.show(true)
 
     initItemsListSize()
@@ -112,10 +121,10 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
     let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
     let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-0.08@scrn_tgt-1@blockInterval"
-    let itemsCountX = max(::to_pixels("@rw-1@shopInfoMinWidth-3@itemSpacing")
-      / max(1, ::to_pixels(itemWidthWithSpace)), 1)
-    let itemsCountY = max(::to_pixels(mainBlockHeight)
-      / max(1, ::to_pixels(itemHeightWithSpace)), 1)
+    let itemsCountX = max(to_pixels("@rw-1@shopInfoMinWidth-3@itemSpacing")
+      / max(1, to_pixels(itemWidthWithSpace)), 1)
+    let itemsCountY = max(to_pixels(mainBlockHeight)
+      / max(1, to_pixels(itemHeightWithSpace)), 1)
     let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     getItemsListObj().width = contentWidth
@@ -193,7 +202,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
   function getCurAward()
   {
     let value = getItemsListObj().getValue()
-    return ::getTblValue(value, curPageAwards)
+    return getTblValue(value, curPageAwards)
   }
 
   function getCurAwardObj()
@@ -242,14 +251,14 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
 
   function updateButtonsBar() {
     let obj = getItemsListObj()
-    let isButtonsVisible =  isMouseMode || (::check_obj(obj) && obj.isHovered())
+    let isButtonsVisible =  isMouseMode || (checkObj(obj) && obj.isHovered())
     this.showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
 
   function updateButtons()
   {
-    if (::has_feature("BattlePass"))
+    if (hasFeature("BattlePass"))
       this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
 
     if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
@@ -267,7 +276,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     if (!award)
       return
 
-    if (::check_obj(mainActionBtn))
+    if (checkObj(mainActionBtn))
     {
       mainActionBtn.visualStyle = "purchase"
       mainActionBtn.inactiveColor = award.canBuy() ? "no" : "yes"
@@ -281,8 +290,8 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     local tooltip = ""
     if (curWb)
     {
-      text = ::loc("warbonds/currentAmount", { warbonds = curWb.getBalanceText() })
-      tooltip = ::loc("warbonds/maxAmount", { warbonds = ::g_warbonds.getLimit() })
+      text = loc("warbonds/currentAmount", { warbonds = curWb.getBalanceText() })
+      tooltip = loc("warbonds/maxAmount", { warbonds = ::g_warbonds.getLimit() })
     }
     let textObj = scene.findObject("balance_text")
     textObj.setValue(text)
@@ -297,21 +306,21 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     {
       let childObj = listObj.getChild(i)
       let priceObj = childObj.findObject("price")
-      if (!::checkObj(priceObj)) //price obj always exist in item. so it check that childObj valid
+      if (!checkObj(priceObj)) //price obj always exist in item. so it check that childObj valid
         continue
 
       priceObj.setValue(curPageAwards[i].getCostText())
 
       let isAllBought = curPageAwards[i].isAllBought()
       let iconObj = childObj.findObject("all_bougt_icon")
-      if (::checkObj(iconObj))
+      if (checkObj(iconObj))
       {
         iconObj.show(isAllBought)
         priceObj.show(!isAllBought)
       }
 
       let btnObj = childObj.findObject("actionBtn")
-      if (isAllBought && ::checkObj(btnObj))
+      if (isAllBought && checkObj(btnObj))
         guiScene.destroyElement(btnObj)
     }
   }
@@ -323,7 +332,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     {
       let id = getTabId(idx) + "_text"
       let obj = tabsObj.findObject(id)
-      if (!::checkObj(obj))
+      if (!checkObj(obj))
         continue
 
       local timeText = ""
@@ -331,7 +340,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
       if (timeLeft > 0)
       {
         timeText = time.hoursToString(time.secondsToHours(timeLeft), false, true)
-        timeText = " " + ::loc("ui/parentheses", { text = timeText })
+        timeText = " " + loc("ui/parentheses", { text = timeText })
       }
       obj.setValue(timeText)
     }
@@ -501,7 +510,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     if (!::show_console_buttons)
       return
     let containerObj = scene.findObject("item_info_nest")
-    if (::check_obj(containerObj) && containerObj.isHovered())
+    if (checkObj(containerObj) && containerObj.isHovered())
       ::move_mouse_on_obj(getCurAwardObj())
     else
       ::move_mouse_on_obj(containerObj)

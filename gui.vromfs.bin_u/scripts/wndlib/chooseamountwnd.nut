@@ -1,3 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 ::gui_handlers.ChooseAmountWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -26,13 +35,13 @@
       res[key] <- this[key]
 
     res.needSlider <- minValue != maxValue
-    res.hasPopupMenuArrow <- ::check_obj(parentObj)
+    res.hasPopupMenuArrow <- checkObj(parentObj)
     return res
   }
 
   function initScreen()
   {
-    if (::check_obj(parentObj))
+    if (checkObj(parentObj))
       align = ::g_dagui_utils.setPopupMenuPosAndAlign(parentObj, align, scene.findObject("popup_frame"))
     updateButtons()
     updateValueText()
@@ -41,10 +50,10 @@
   function updateButtons()
   {
     let buttonDecObj = scene.findObject("buttonDec")
-    if (::check_obj(buttonDecObj))
+    if (checkObj(buttonDecObj))
       buttonDecObj.enable(curValue != minValue)
     let buttonIncObj = scene.findObject("buttonInc")
-    if (::check_obj(buttonIncObj))
+    if (checkObj(buttonIncObj))
       buttonIncObj.enable(curValue != maxValue)
   }
 

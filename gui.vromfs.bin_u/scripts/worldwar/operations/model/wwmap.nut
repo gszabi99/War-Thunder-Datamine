@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { fabs } = require("math")
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -21,7 +29,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function _tostring()
   {
-    return "WwMap(" + name + ", " + ::toString(data) + ")"
+    return "WwMap(" + name + ", " + toString(data) + ")"
   }
 
   function getId()
@@ -36,18 +44,18 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function isVisible()
   {
-    return (getChapterId() != "" || ::has_feature("worldWarShowTestMaps"))
+    return (getChapterId() != "" || hasFeature("worldWarShowTestMaps"))
   }
 
   function getChapterId()
   {
-    return ::getTblValue("operationChapter", data, "")
+    return getTblValue("operationChapter", data, "")
   }
 
   function getChapterText()
   {
     let chapterId = getChapterId()
-    return ::loc(chapterId != "" ? ("ww_operation_chapter/" + chapterId) : "chapters/test")
+    return loc(chapterId != "" ? ("ww_operation_chapter/" + chapterId) : "chapters/test")
   }
 
   function isDebugChapter()
@@ -57,12 +65,12 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getNameText()
   {
-    return ::loc(getNameLocId())
+    return loc(getNameLocId())
   }
 
   static function getNameTextByMapName(mapName)
   {
-    return ::loc("worldWar/map/" + mapName)
+    return loc("worldWar/map/" + mapName)
   }
 
   function getNameLocId()
@@ -81,29 +89,29 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getDescription(needShowGroupInfo = true)
   {
-    let baseDesc = ::loc("worldWar/map/" + name + "/desc", "")
+    let baseDesc = loc("worldWar/map/" + name + "/desc", "")
     if (!needShowGroupInfo)
       return baseDesc
 
     let txtList = []
     if (getOpGroup().isMyClanParticipate())
-      txtList.append(::colorize("userlogColoredText", ::loc("worldwar/yourClanInOperationHere")))
+      txtList.append(colorize("userlogColoredText", loc("worldwar/yourClanInOperationHere")))
     txtList.append(baseDesc)
     return ::g_string.implode(txtList, "\n")
   }
 
   function getGeoCoordsText()
   {
-    let latitude  = ::getTblValue("worldMapLatitude", data, 0.0)
-    let longitude = ::getTblValue("worldMapLongitude", data, 0.0)
+    let latitude  = getTblValue("worldMapLatitude", data, 0.0)
+    let longitude = getTblValue("worldMapLongitude", data, 0.0)
 
-    let ud = ::loc("measureUnits/deg")
-    let um = ::loc("measureUnits/degMinutes")
-    let us = ::loc("measureUnits/degSeconds")
+    let ud = loc("measureUnits/deg")
+    let um = loc("measureUnits/degMinutes")
+    let us = loc("measureUnits/degSeconds")
 
     let cfg = [
-      { deg = ::fabs(latitude),  hem = latitude  >= 0 ? "N" : "S" }
-      { deg = ::fabs(longitude), hem = longitude >= 0 ? "E" : "W" }
+      { deg = fabs(latitude),  hem = latitude  >= 0 ? "N" : "S" }
+      { deg = fabs(longitude), hem = longitude >= 0 ? "E" : "W" }
     ]
 
     let coords = []
@@ -115,7 +123,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       let s = (t - m) * 60
       coords.append(format("%d%s%02d%s%02d%s%s", d, ud, m, um, s, us, c.hem))
     }
-    return ::g_string.implode(coords, ::loc("ui/comma"))
+    return ::g_string.implode(coords, loc("ui/comma"))
   }
 
   function isActive()
@@ -155,13 +163,13 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
           (isActive() ? "beUnavailableIn" : "beAvailableIn")
         let changeStateTime = time.hoursToString(
           time.secondsToHours(secToChangeState), false, true)
-        text = ::loc(changeStateLocId, {time = changeStateTime})
+        text = loc(changeStateLocId, {time = changeStateTime})
       }
       else if (secToChangeState < 0)
         refreshGlobalStatusData()
     }
     else if (!isActive())
-      text = ::loc("worldwar/operation/unavailable")
+      text = loc("worldwar/operation/unavailable")
 
     return text
   }
@@ -219,7 +227,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
         let defaultUnit = group.defaultUnit
         wwUnitsList.append({
-          name         = ::loc(group.name)
+          name         = loc(group.name)
           icon         = ::getUnitClassIco(defaultUnit)
           shopItemType = getUnitRole(defaultUnit)
         })
@@ -247,8 +255,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     let countries = getCountryToSideTbl()
     foreach(c in shopCountriesList)
     {
-      let side = ::getTblValue(c, countries, ::SIDE_NONE)
-      if (side == ::SIDE_NONE)
+      let side = getTblValue(c, countries, SIDE_NONE)
+      if (side == SIDE_NONE)
         continue
 
       if (!(side in _cachedCountriesByTeams))
@@ -271,7 +279,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   {
     let countriesByTeams = getCountriesByTeams()
     foreach(cList in countriesByTeams)
-      if (::isInArray(country, cList))
+      if (isInArray(country, cList))
         return true
     return false
   }
@@ -304,17 +312,17 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getMinClansCondition()
   {
-    return ::getTblValue("minClanCount", data, 0)
+    return getTblValue("minClanCount", data, 0)
   }
 
   function getClansConditionText(isSideInfo = false)
   {
     let minNumb = getMinClansCondition()
-    let maxNumb = ::getTblValue("maxClanCount", data, 0)
+    let maxNumb = getTblValue("maxClanCount", data, 0)
     local prefix = isSideInfo ? "side_" : ""
     return minNumb == maxNumb ?
-      ::loc("worldwar/operation/" + prefix + "clans_number", {numb = maxNumb}) :
-      ::loc("worldwar/operation/" + prefix + "clans_limits", {min = minNumb, max = maxNumb})
+      loc("worldwar/operation/" + prefix + "clans_number", {numb = maxNumb}) :
+      loc("worldwar/operation/" + prefix + "clans_limits", {min = minNumb, max = maxNumb})
   }
 
   function getClansNumberInQueueText()
@@ -378,8 +386,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   function isClanQueueAvaliable()
   {
     let reasonData = ::WwQueue.getCantJoinAnyQueuesReasonData()
-    return ::has_feature("WorldWarClansQueue") &&
-           ::has_feature("Clans") &&
+    return hasFeature("WorldWarClansQueue") &&
+           hasFeature("Clans") &&
            ::is_in_clan() && isActive() &&
            (reasonData.canJoin || reasonData.hasRestrictClanRegister)
   }

@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
@@ -7,11 +12,11 @@ local lastRequestTimeMsec = 0
 local isUpdating = false
 local userData = null
 
-let brInfoByGamemodeId = persist("brInfoByGamemodeId", @() ::Watched({}))
-let recentBrGameModeId = persist("recentBrGameModeId", @() ::Watched(""))
-let recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() ::Watched(null))
-let recentBR = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
-let recentBRData = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
+let brInfoByGamemodeId = persist("brInfoByGamemodeId", @() Watched({}))
+let recentBrGameModeId = persist("recentBrGameModeId", @() Watched(""))
+let recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() Watched(null))
+let recentBR = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
+let recentBRData = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
 
 recentBR.subscribe(@(_) ::broadcastEvent("BattleRatingChanged"))
 
@@ -67,7 +72,7 @@ let function getCrafts(data, country = null) {
   foreach (name in craftData)
   {
      let craft = ::getAircraftByName(name)
-     if (craft == null || ::isInArray(name, brokenAirs))
+     if (craft == null || isInArray(name, brokenAirs))
        continue
 
      crafts.append({

@@ -1,5 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::gui_handlers.ShopViewWnd <- class extends ::gui_handlers.ShopMenuHandler
 {
@@ -64,10 +74,10 @@ let function openShopViewWndFromPromo(params) {
     needHighlight = unitName != ""
   })
 
-  let acceptCallback = ::Callback( function() {
-    ::switch_profile_country(country)
+  let acceptCallback = Callback( function() {
+    switchProfileCountry(country)
     showUnitInShop() }, this)
-  if (country != ::get_profile_country_sq())
+  if (country != profileCountrySq.value)
     ::queues.checkAndStart(
       acceptCallback,
       null,

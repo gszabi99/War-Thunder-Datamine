@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -31,7 +36,7 @@ local replaceFunctionsTable = {}
 let langsByChatId = {}
 let langsListForInventory = {}
 local currentLanguage = null
-let currentLanguageW = ::Watched(currentLanguage)
+let currentLanguageW = Watched(currentLanguage)
 local currentSteamLanguage = ""
 local shortLangName = ""
 local isListInited = false
@@ -68,16 +73,16 @@ let function chineseStyleNumberCut(num) {
     return roundNum.tostring()
 
   if (roundNum >= 100000000)
-    return (0.00000001 * roundNum) + ::loc("100m_shortSymbol")
-  return (0.0001 * roundNum) + ::loc("10k_shortSymbol")
+    return (0.00000001 * roundNum) + loc("100m_shortSymbol")
+  return (0.0001 * roundNum) + loc("10k_shortSymbol")
 }
 
 let function tencentAddLineBreaks(text) {
   local res = ""
-  let total = ::utf8(text).charCount()
+  let total = utf8(text).charCount()
   for(local i = 0; i < total; i++)
   {
-    let nextChar = ::utf8(text).slice(i, i + 1)
+    let nextChar = utf8(text).slice(i, i + 1)
     if (nextChar == "\t")
       continue
     res += nextChar + (i < total - 1 ? "\t" : "")
@@ -130,7 +135,7 @@ let function updateFunctions() {
     foreach(table in block.replaceFunctions)
     {
       let langsArray = table?.language ?? []
-      if (!::isInArray(getLanguageName(), langsArray))
+      if (!isInArray(getLanguageName(), langsArray))
         continue
 
       ::g_language[funcName] <- table.action
@@ -150,7 +155,7 @@ let function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, 
 
   let langInfo = ::g_language.getEmptyLangInfo()
   langInfo.id = id
-  langInfo.title = "".concat(isDev ? "[DEV] " : "", ::loc($"language/{id}"))
+  langInfo.title = "".concat(isDev ? "[DEV] " : "", loc($"language/{id}"))
   langInfo.icon = icon || ""
   langInfo.chatId = chatId || "en"
   langInfo.isMainChatId = true
@@ -186,7 +191,7 @@ let function checkInitList() {
   for (local l = 0; l < preset.blockCount(); l++)
   {
     let lang = preset.getBlock(l)
-    if (::isInArray(lang.id, existingLangs))
+    if (isInArray(lang.id, existingLangs))
       _addLangOnce(lang.id, lang.icon, lang.chatId, lang.hasUnitSpeech)
   }
 
@@ -243,7 +248,7 @@ let function saveLanguage(langName) {
   if (currentLanguage == langName)
     return
   currentLanguage = langName
-  shortLangName = ::loc("current_lang")
+  shortLangName = loc("current_lang")
   onChangeLanguage()
 }
 
@@ -329,7 +334,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
   example config:
   {
     text = "..."   //default text. returned when not found lang specific.
-    text_ru = "#locId"  //russian text, taken from localization  ::loc("locId")
+    text_ru = "#locId"  //russian text, taken from localization  loc("locId")
     text_en = "localized text"  //english text. already localized.
   }
 */
@@ -346,7 +351,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
     return defaultValue || id
 
   if (res.len() > 1 && res.slice(0, 1) == "#")
-    return ::loc(res.slice(1))
+    return loc(res.slice(1))
   return res
 }
 
@@ -356,7 +361,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
     return true
 
   let availableForLangs = split_by_chars(block.showForLangs, ";")
-  return ::isInArray(getLanguageName(), availableForLangs)
+  return isInArray(getLanguageName(), availableForLangs)
 }
 
 ::g_language.onEventInitConfigs <- function onEventInitConfigs(p)

@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
@@ -6,6 +14,7 @@ let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.n
 let { APP_ID } = require("app")
 let { isCollectionPrize } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -20,7 +29,7 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
     return "not_logged_in"
   if (!::is_in_hangar())
     return "not_in_hangar"
-  if (!hangar_is_loaded())
+  if (!::hangar_is_loaded())
     return "hangar_not_ready"
   if (!::isInMenu() || ::checkIsInQueue()
       || (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
@@ -36,7 +45,7 @@ let function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCusto
 {
   let reason = getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene)
   if (shouldShowFordiddenPopup && reason == "temporarily_forbidden")
-    ::g_popups.add("", ::loc("mainmenu/itemPreviewForbidden"))
+    ::g_popups.add("", loc("mainmenu/itemPreviewForbidden"))
   return reason == ""
 }
 
@@ -90,7 +99,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
   if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
     return unit
 
-  let countryId = ::get_profile_country_sq()
+  let countryId = profileCountrySq.value
   let crews = ::get_crews_list_by_country(countryId)
 
   foreach (crew in crews)
@@ -109,7 +118,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
         return unit
     }
 
-  local allowedUnitType = ::ES_UNIT_TYPE_TANK
+  local allowedUnitType = ES_UNIT_TYPE_TANK
   foreach (unitType in unitTypes.types) {
     if (isAllowedByUnitTypesFn(unitType.tag)) {
       allowedUnitType = unitType.esUnitType
@@ -198,7 +207,7 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null)
 
   if (guidParser.isGuid(resource))
   {
-    downloadProgressBox = ::scene_msg_box("live_resource_requested", null, ::loc("msgbox/please_wait"),
+    downloadProgressBox = ::scene_msg_box("live_resource_requested", null, loc("msgbox/please_wait"),
       [["cancel"]], "cancel", { waitAnim = true, delayedButtons = downloadTimeoutSec })
     ::live_preview_resource_by_guid(resource, resourceType)
   }
@@ -219,7 +228,7 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null)
 
 let function liveSkinPreview(params)
 {
-  if (!::has_feature("EnableLiveSkins"))
+  if (!hasFeature("EnableLiveSkins"))
     return "not_allowed"
   let reason = getCantStartPreviewSceneReason(true)
   if (reason != "")
@@ -329,25 +338,25 @@ let function showDecoratorAccessRestriction(decorator, unit) {
 
   let text = []
   if (decorator.isLockedByCountry(unit))
-    text.append(::loc("mainmenu/decalNotAvailable"))
+    text.append(loc("mainmenu/decalNotAvailable"))
 
   if (decorator.isLockedByUnit(unit)) {
     let unitsList = []
     foreach(unitName in decorator.units)
-      unitsList.append(::colorize("userlogColoredText", ::getUnitName(unitName)))
-    text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
-      decoratorName = ::colorize("activeTextColor", decorator.getName()),
+      unitsList.append(colorize("userlogColoredText", ::getUnitName(unitName)))
+    text.append(loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
+      decoratorName = colorize("activeTextColor", decorator.getName()),
       unitsList = ::g_string.implode(unitsList, ",")}))
   }
 
   if (!decorator.isAllowedByUnitTypes(unit.unitType.tag))
-    text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnitTypes", {
-      decoratorName = ::colorize("activeTextColor", decorator.getName()),
+    text.append(loc("mainmenu/decoratorAvaiblableOnlyForUnitTypes", {
+      decoratorName = colorize("activeTextColor", decorator.getName()),
       unitTypesList = decorator.getLocAllowedUnitTypes()
     }))
 
   if (decorator.lockedByDLC != null)
-    text.append(format(::loc("mainmenu/decalNoCampaign"), ::loc($"charServer/entitlement/{decorator.lockedByDLC}")))
+    text.append(format(loc("mainmenu/decalNoCampaign"), loc($"charServer/entitlement/{decorator.lockedByDLC}")))
 
   if (text.len() != 0) {
     ::g_popups.add("", ::g_string.implode(text, ", "))
@@ -360,19 +369,19 @@ let function showDecoratorAccessRestriction(decorator, unit) {
   if (hasAvailableCollections() && isCollectionPrize(decorator)) {
     ::g_popups.add(
       null,
-      ::loc("mainmenu/decoratorNoCompletedCollection" {
-        decoratorName = ::colorize("activeTextColor", decorator.getName())
+      loc("mainmenu/decoratorNoCompletedCollection" {
+        decoratorName = colorize("activeTextColor", decorator.getName())
       }),
       null,
       [{
         id = "gotoCollection"
-        text = ::loc("collection/go_to_collection")
+        text = loc("collection/go_to_collection")
         func = @() openCollectionsWnd({ selectedDecoratorId = decorator.id })
       }])
     return true
   }
 
-  ::g_popups.add("", ::loc("mainmenu/decalNoAchievement"))
+  ::g_popups.add("", loc("mainmenu/decalNoAchievement"))
   return true
 }
 
@@ -388,7 +397,7 @@ let function useDecorator(decorator, decoratorUnit, decoratorSlot) {
   })
 }
 
-let doDelayed = @(action) get_gui_scene().performDelayed({}, action)
+let doDelayed = @(action) ::get_gui_scene().performDelayed({}, action)
 
 globalCallbacks.addTypes({
   ITEM_PREVIEW = {
@@ -425,12 +434,12 @@ globalCallbacks.addTypes({
 /**
  * Creates global funcs, which are called from client.
  */
-let rootTable = ::getroottable()
+let rootTable = getroottable()
 rootTable["on_live_skin_data_loaded"] <- @(unitId, skinGuid, result) onSkinDownloaded(unitId, skinGuid, result)
 rootTable["live_start_unit_preview"]  <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)
-web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))
-web_rpc.register_handler("market_view_item", @(params) marketViewItem(params))
-web_rpc.register_handler("request_view_unit", @(params) requestUnitPreview(params))
+::web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))
+::web_rpc.register_handler("market_view_item", @(params) marketViewItem(params))
+::web_rpc.register_handler("request_view_unit", @(params) requestUnitPreview(params))
 
 subscriptions.addListenersWithoutEnv({
   ItemsShopUpdate = @(p) onEventItemsShopUpdate(p)

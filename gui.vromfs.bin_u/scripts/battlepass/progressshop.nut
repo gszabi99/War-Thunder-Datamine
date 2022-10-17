@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { FRP_INITIAL } = require("frp")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { refreshUserstatUnlocks, isUserstatMissingData
@@ -28,9 +37,9 @@ let findExchangeItem = @(battlePassUnlockExchangeId) ::ItemsManager.findItemById
   ::to_integer_safe(battlePassUnlockExchangeId ?? -1, battlePassUnlockExchangeId ?? -1, false))
 
 //do not update anything in battle or profile not recived, as it can be time consuming and not needed in battle anyway
-let canUpdateConfig = ::Computed(@() isProfileReceived.value && !isInBattleState.value)
+let canUpdateConfig = Computed(@() isProfileReceived.value && !isInBattleState.value)
 
-let seasonShopConfig = ::Computed(function(prev) {
+let seasonShopConfig = Computed(function(prev) {
   if (prev != FRP_INITIAL && !canUpdateConfig.value)
     return prev
   else if (prev == FRP_INITIAL && !canUpdateConfig.value)
@@ -44,7 +53,7 @@ let seasonShopConfig = ::Computed(function(prev) {
   }
 })
 
-let seenBattlePassShopRows = ::Computed(@() (seasonShopConfig.value?.purchaseWndItems ?? [])
+let seenBattlePassShopRows = Computed(@() (seasonShopConfig.value?.purchaseWndItems ?? [])
   .map(function(config) {
     let { battlePassUnlock = "", additionalTrophy = [], battlePassUnlockExchangeId = null } = config
     if (battlePassUnlockExchangeId != null && (hasBattlePass.value || !canExchangeItem(findExchangeItem(battlePassUnlockExchangeId))))
@@ -91,7 +100,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateWindow() {
-    scene.findObject("wnd_title").setValue(::loc("battlePass"))
+    scene.findObject("wnd_title").setValue(loc("battlePass"))
     let rootObj = scene.findObject("wnd_frame")
     rootObj["class"] = "wnd"
     rootObj.width = "@onlineShopWidth + 2@blockInterval"
@@ -101,7 +110,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     rootObj.setValue(stashBhvValueConfig([{
       watch = seasonShopConfig
-      updateFunc = ::Callback(@(obj, shopConfig) updateContent(shopConfig), this)
+      updateFunc = Callback(@(obj, shopConfig) updateContent(shopConfig), this)
     }]))
   }
 
@@ -144,7 +153,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
           rowName = g.rowIdx
           rowEven = (idx%2 == 0) ? "yes" :"no"
           amount = $"{g.name} {g.valueText}"
-          cost = g.passExchangeItem != null ? null : $"{isRealyBought ? ::loc("check_mark/green") : ""} {g.cost.tostring()}"
+          cost = g.passExchangeItem != null ? null : $"{isRealyBought ? loc("check_mark/green") : ""} {g.cost.tostring()}"
           isDisabled = g.isDisabled
           unseenIcon = g.unseenIcon
           customCostMarkup = g.passExchangeItem?.getDescRecipesMarkup({
@@ -161,7 +170,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let contentObj = scene.findObject("wnd_content")
     let data = ::handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow"), {
       chImages = "#ui/onlineShop/battle_pass_header.ddsx"
-      descText = ::loc("battlePass/buy/desc", { count = maxSeasonLvl.value })
+      descText = loc("battlePass/buy/desc", { count = maxSeasonLvl.value })
       rows = rowsView
     })
     guiScene.replaceContentFromText(contentObj, data, data.len(), this)
@@ -180,7 +189,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function buyGood(goodsConfig) {
     let { additionalTrophyItem, battlePassUnlock, rowIdx } = goodsConfig
-    ::dagor.debug($"Buy Battle Pass goods. goodsIdx: {rowIdx}")
+    log($"Buy Battle Pass goods. goodsIdx: {rowIdx}")
 
     let function tryBuyAdditionalTrophy() {
       if (additionalTrophyItem == null)
@@ -190,7 +199,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     if (battlePassUnlock != null)
-      g_unlocks.buyUnlock(battlePassUnlock, function() {
+      ::g_unlocks.buyUnlock(battlePassUnlock, function() {
         tryBuyAdditionalTrophy()
         refreshUserstatUnlocks()
         ::broadcastEvent("BattlePassPurchased")
@@ -218,13 +227,13 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     let { passExchangeItem } = goodsConfig
     if (passExchangeItem != null) {
-      ::dagor.debug($"Exchange items to battle Pass goods. goodsIdx: {goodsConfig.rowIdx}")
+      log($"Exchange items to battle Pass goods. goodsIdx: {goodsConfig.rowIdx}")
       passExchangeItem.assemble()
       return
     }
 
     let msgText = ::warningIfGold(
-      ::loc("onlineShop/needMoneyQuestion", {
+      loc("onlineShop/needMoneyQuestion", {
           purchase = $"{goodsConfig.name} {goodsConfig.valueText}",
           cost = goodsConfig.cost.getTextAccordingToBalance()}),
       goodsConfig.cost)
@@ -270,13 +279,13 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (hasAdditionalTrophyItem) {
       let topPrize = additionalTrophyItem.getTopPrize()
       name = ::PrizesView.getPrizeTypeName(topPrize, false)
-      valueText = ::loc("ui/parentheses", { text = ::PrizesView.getPrizeText(topPrize, false) })
+      valueText = loc("ui/parentheses", { text = ::PrizesView.getPrizeText(topPrize, false) })
       cost = cost + additionalTrophyItem.getCost()
     }
     let isImprovedBattlePass = isBattlePassConfig && hasAdditionalTrophyItem
     if (isBattlePassConfig) {
       let prizeLocId = isImprovedBattlePass ? "battlePass/improvedBattlePassName" : "battlePass/name"
-      name = ::loc(prizeLocId, { name = ::loc($"battlePass/seasonName/{seasonId}") })
+      name = loc(prizeLocId, { name = loc($"battlePass/seasonName/{seasonId}") })
       isBought = isGoodsBought(goodsConfig)
       isDisabled = isBought
       if (hasAdditionalTrophyItem)
@@ -313,7 +322,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 let function openBattlePassShopWnd() {
   if (isUserstatMissingData.value) {
-    ::showInfoMsgBox(::loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
+    ::showInfoMsgBox(loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
     return
   }
 

@@ -1,7 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let string = require("%sqstd/string.nut")
-let stdMath = require("%sqstd/math.nut")
+let { floatToStringRounded } = require("%sqstd/string.nut")
+let { round_by_value, PI, fabs } = require("%sqstd/math.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { KGF_TO_NEWTON } = require("%scripts/weaponry/weaponryInfo.nut")
 
@@ -25,12 +32,12 @@ local needToShowDiff = false
 let presetsList = {
   SPEED = {
     measureType = MEASURE_UNIT_SPEED
-    validateValue = @(value) ::fabs(value) * 3.6 > 0.1 ? value : null
+    validateValue = @(value) fabs(value) * 3.6 > 0.1 ? value : null
     presize = 0.1
   }
   CLIMB_SPEED = {
     measureType = MEASURE_UNIT_CLIMB_SPEED
-    validateValue = @(value) ::fabs(value) > 0.1 ? value : null
+    validateValue = @(value) fabs(value) > 0.1 ? value : null
   }
   PERCENT_FLOAT = {
     measureType = "percent"
@@ -40,7 +47,7 @@ let presetsList = {
     measureType = "percent"
     validateValue = @(v) 100.0 * v
     isInverted = true
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
     getText = function (unit, effects, modeId)
     {
       if (!canShowForUnit(unit))
@@ -50,7 +57,7 @@ let presetsList = {
       if (value2 != null)
         value2 = validateValue(value2)
       if (value != null && value2 != null)
-        return ::loc(getLocId(unit, effects),
+        return loc(getLocId(unit, effects),
                   {
                     valueWithMod = valueToString(value),
                     valueWithoutMod = valueToString(value2)
@@ -65,7 +72,7 @@ let presetsList = {
         return ""
       let value = getValue(unit, effects, modeId)
       if (value != null)
-        return ::loc(getLocId(unit, effects),
+        return loc(getLocId(unit, effects),
                   {
                     value = value,
                     valueColored = valueToString(value)
@@ -98,10 +105,10 @@ let effectTypeTemplate = {
       res = countMeasure(measureType, value)
     else {
       let measureText = measureType != ""
-        ? "".concat(measureSeparate, ::loc($"measureUnits/{measureType}"))
+        ? "".concat(measureSeparate, loc($"measureUnits/{measureType}"))
         : ""
       res = "".concat(
-        string.floatToStringRounded(stdMath.round_by_value(value, presize), presize),
+        floatToStringRounded(round_by_value(value, presize), presize),
         measureText
       )
     }
@@ -109,7 +116,7 @@ let effectTypeTemplate = {
     if (value > 0 || (needAdditionToZero && value == 0))
       res = "+" + res
     if (value != 0)
-      res = ::colorize(
+      res = colorize(
         !shouldColorByValue ? NEUTRAL_COLOR
           : (value < 0 == isInverted) ? GOOD_COLOR
           : BAD_COLOR,
@@ -137,7 +144,7 @@ let effectTypeTemplate = {
       if (value != null)
         res += value
     }
-    return ::fabs(res / presize) > 0.5 ? res : null
+    return fabs(res / presize) > 0.5 ? res : null
   }
 
   getText = function(unit, effects, modeId)
@@ -148,7 +155,7 @@ let effectTypeTemplate = {
     if (value == null)
       return ""
 
-    local res = format(::loc(getLocId(unit, effects)), valueToString(value))
+    local res = format(loc(getLocId(unit, effects)), valueToString(value))
     if (!needToShowDiff)
       return res
 
@@ -164,7 +171,7 @@ let effectTypeTemplate = {
       return res
 
     addValueText = valueToString(getValuePart(unit, effects, modeId) ?? 0.0) + addValueText
-    res += ::loc("ui/parentheses/space", { text = addValueText })
+    res += loc("ui/parentheses/space", { text = addValueText })
 
     return res
   }
@@ -190,7 +197,7 @@ enums.addTypes(effectsType, [
   { id = "cutProbability",         measureType = "percent" }
   { id = "overheadCooldown",       measureType = "percent", isInverted = true }
   { id = "mass",                   measureType = "kg", isInverted = true, presize = 0.1
-    validateValue = @(value) ::fabs(value) > 0.5 ? value : null
+    validateValue = @(value) fabs(value) > 0.5 ? value : null
   }
   { id = "oswalds",                measureType = "percent", presize = 0.001 }
   { id = "cdMinFusel",             measureType = "percent", presize = 0.01, isInverted = true }
@@ -202,7 +209,7 @@ enums.addTypes(effectsType, [
   { id = "elevThrSpd",             preset = "SPEED" }
 
   { id = "horsePowers",             measureType = "hp", presize = 0.1
-    canShowForUnit = @(unit) !unit?.isTank() || ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) !unit?.isTank() || hasFeature("TankModEffect")
     getLocId = function(unit, effects) {
       let key = effects?.modifName == "new_tank_transmission" ? "horsePowersTransmission" : "horsePowers"
       return "modification/" + key + "_change"
@@ -223,47 +230,47 @@ enums.addTypes(effectsType, [
 
   /****************************** TANK EFFECTS ***********************************************/
   { id = "turnTurretSpeedK",       preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "gunPitchSpeedK",         preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "maxInclination",         measureType = "deg", measureSeparate = "",
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
     validateValue = @(value) value * 180.0 / PI
   }
   { id = "maxDeltaAngleK",         preset = "PERCENT_FLOAT", isInverted = true
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "maxDeltaAngleVerticalK", preset = "PERCENT_FLOAT", isInverted = true
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "maxBrakeForceK",         preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "suspensionDampeningForceK", preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "timeToBrake",            measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "distToBrake",            measureType = "meters_alt", isInverted = true, presize = 0.1
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "trackFricFrontalK",      preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "accelTime",              measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "partHpMult",             preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "viewDist",               preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "reloadTime",             measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) hasFeature("TankModEffect")
   }
   { id = "respawnCost_killScore_exp_fighter",  preset = "TANK_RESPAWN_COST" }
   { id = "respawnCost_killScore_exp_assault", preset = "TANK_RESPAWN_COST"  }
@@ -286,56 +293,56 @@ enums.addTypes(effectsType, [
 
   /****************************** SHIP EFFECTS ***********************************************/
   { id = "waterMassVelTime",       measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "mainSpeedYawK",          preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "mainSpeedPitchK",        preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "auxSpeedYawK",           preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "auxSpeedPitchK",         preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "aaSpeedYawK",            preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "aaSpeedPitchK",          preset = "PERCENT_FLOAT"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "shipDistancePrecision",  measureType = "percent"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
     validateValue = @(value) -100.0 * value
   }
   { id = "turnRadius",             preset = "PERCENT_FLOAT", isInverted = true
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "turnTime",               preset = "PERCENT_FLOAT", isInverted = true
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "distToLiveTorpedo",      measureType = "meters_alt"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "maxSpeedInWaterTorpedo", measureType = "metersPerSecond_climbSpeed"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "diveDepthTorpedo",       measureType = "meters_alt", shouldColorByValue = false
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "speedShip",              preset = "SPEED"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "reverseSpeed",           preset = "SPEED"
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "timeToMaxSpeed",         measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
   { id = "timeToMaxReverseSpeed",  measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(unit) ::has_feature("Ships")
+    canShowForUnit = @(unit) hasFeature("Ships")
   }
 ],
 effectTypeConstructor)
@@ -398,7 +405,7 @@ let function prepareCalculationParams(unit, effects, modeId)
         || hasNotZeroDiff(effects?[modeId], effects?[key]?[modeId])
         || hasNotZeroDiffSublist(effects?.weaponMods, effects?[key]?.weaponMods))
       upgradesKeys.append(key)
-  needToShowDiff = upgradesKeys.len() > 0 && ::has_feature("ModUpgradeDifference")
+  needToShowDiff = upgradesKeys.len() > 0 && hasFeature("ModUpgradeDifference")
 }
 
 let DESC_PARAMS = { needComment = true, curEdiff = null }
@@ -414,7 +421,7 @@ local function getDesc(unit, effects, p = DESC_PARAMS)
   local res = ""
   local desc = effectsType.types.reduce(getEffectsStackFunc(unit, effects, modeId), "")
   if (desc != "")
-    res = "\n" + ::loc("modifications/specs_change") + ::loc("ui/colon") + desc
+    res = "\n" + loc("modifications/specs_change") + loc("ui/colon") + desc
 
   if ("weaponMods" in effects)
     foreach(idx, w in effects.weaponMods)
@@ -424,11 +431,11 @@ local function getDesc(unit, effects, p = DESC_PARAMS)
 
       desc = weaponEffectsType.types.reduce(getEffectsStackFunc(unit, w, modeId), "")
       if (desc.len())
-        res += "\n" + ::loc(w.name) + ::loc("ui/colon") + desc
+        res += "\n" + loc(w.name) + loc("ui/colon") + desc
     }
 
   if(p.needComment && res != "")
-    res += "\n" + "<color=@fadedTextColor>" + ::loc("weaponry/modsEffectsNotification") + "</color>"
+    res += "\n" + "<color=@fadedTextColor>" + loc("weaponry/modsEffectsNotification") + "</color>"
   return res
 }
 

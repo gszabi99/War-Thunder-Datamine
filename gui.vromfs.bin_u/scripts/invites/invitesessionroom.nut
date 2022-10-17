@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
@@ -15,13 +22,13 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   static function getUidByParams(params)
   {
-    return "SR_" + ::getTblValue("inviterName", params, "") + "/" + ::getTblValue("roomId", params, "")
+    return "SR_" + getTblValue("inviterName", params, "") + "/" + getTblValue("roomId", params, "")
   }
 
   function updateCustomParams(params, initial = false)
   {
-    roomId = ::getTblValue("roomId", params, roomId)
-    password = ::getTblValue("password", params, password)
+    roomId = getTblValue("roomId", params, roomId)
+    password = getTblValue("password", params, password)
 
     if (::g_squad_manager.isMySquadLeader(inviterUid))
     {
@@ -78,16 +85,16 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let room = ::g_mroom_info.get(roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     local modeId = "skirmish"
-    let params = { player = ::colorize(activeColor, getInviterName()) }
+    let params = { player = colorize(activeColor, getInviterName()) }
     if (event)
     {
       modeId = "event"
-      params.eventName <- ::colorize(activeColor, ::events.getEventNameText(event))
+      params.eventName <- colorize(activeColor, ::events.getEventNameText(event))
     }
     else
-      params.missionName <- room ? ::colorize(activeColor, ::SessionLobby.getMissionNameLoc(room)) : ""
+      params.missionName <- room ? colorize(activeColor, ::SessionLobby.getMissionNameLoc(room)) : ""
 
-    return ::loc(format(locIdFormat, modeId), params)
+    return loc(format(locIdFormat, modeId), params)
   }
 
   function getInviteText()
@@ -124,12 +131,12 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (haveRestrictions())
     {
       if (!isMultiplayerPrivilegeAvailable.value)
-        return ::loc("xbox/noMultiplayer")
+        return loc("xbox/noMultiplayer")
       if (!isAvailableByCrossPlay())
-        return ::loc("xbox/crossPlayRequired")
+        return loc("xbox/crossPlayRequired")
       if (!isMissionAvailable())
-        return ::loc("invite/session/ugc_restriction")
-      return ::loc("invite/session/cant_apply_in_flight")
+        return loc("invite/session/ugc_restriction")
+      return loc("invite/session/cant_apply_in_flight")
     }
     return ""
   }
@@ -162,7 +169,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function implAccept(ignoreCheckSquad = false)
   {
-    if (!::check_gamemode_pkg(::GM_SKIRMISH))
+    if (!::check_gamemode_pkg(GM_SKIRMISH))
       return
 
     let room = ::g_mroom_info.get(roomId).getFullRoomData()
@@ -173,7 +180,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     let canJoin = ignoreCheckSquad
                     ||  ::g_squad_utils.canJoinFlightMsgBox(
-                          { isLeaderCanJoin = true }, ::Callback(_implAccept, this))
+                          { isLeaderCanJoin = true }, Callback(_implAccept, this))
     if (canJoin)
       _implAccept()
   }

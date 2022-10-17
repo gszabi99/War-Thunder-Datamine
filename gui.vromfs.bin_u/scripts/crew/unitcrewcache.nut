@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 //
 // Unit crew data cache.
 // Used to speed up 'get_aircraft_crew_by_id' calls.
@@ -14,7 +21,7 @@
   }
 }
 
-g_unit_crew_cache.getUnitCrewDataById <- function getUnitCrewDataById(crewId, unit)
+::g_unit_crew_cache.getUnitCrewDataById <- function getUnitCrewDataById(crewId, unit)
 {
   if (crewId == null)
     return null
@@ -30,7 +37,7 @@ g_unit_crew_cache.getUnitCrewDataById <- function getUnitCrewDataById(crewId, un
   return lastUnitCrewData
 }
 
-g_unit_crew_cache.initCache <- function initCache()
+::g_unit_crew_cache.initCache <- function initCache()
 {
   ::add_event_listener("CrewSkillsChanged", onEventCrewSkillsChanged,
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
@@ -40,12 +47,12 @@ g_unit_crew_cache.initCache <- function initCache()
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 }
 
-g_unit_crew_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(params)
+::g_unit_crew_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(params)
 {
   invalidateCache()
 }
 
-g_unit_crew_cache.onEventCrewChanged <- function onEventCrewChanged(params)
+::g_unit_crew_cache.onEventCrewChanged <- function onEventCrewChanged(params)
 {
   invalidateCache()
 }

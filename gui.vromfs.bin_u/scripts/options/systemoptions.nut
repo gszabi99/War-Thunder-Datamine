@@ -1,6 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { subscribe, send } = require("eventbus")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
-let { is_stereo_configured, configure_stereo } = ::require_native("vr")
+let { is_stereo_configured, configure_stereo } = require_native("vr")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -47,6 +53,7 @@ let compModeGraphicsOptions = {
     compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
+    xess              = { compMode = false }
     dlss              = { compMode = false }
     dlssSharpness     = { compMode = false }
   }
@@ -78,6 +85,7 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_left"
     items = [
+      "xess"
       "dlss"
       "dlssSharpness"
       "anisotropy"
@@ -86,7 +94,6 @@ local mUiStruct = [
       "taau_ratio"
       "ssaa"
       "latency"
-      "latencyFlash"
       "perfMetrics"
       "texQuality"
       "shadowQuality"
@@ -145,7 +152,7 @@ let getGuiValue = @(id, defVal=null) (id in mCfgCurrent) ? mCfgCurrent[id] : def
 
 let function logError(from="", msg="") {
   let fullMsg = $"[sysopt] ERROR {from}: {msg}"
-  ::dagor.debug(fullMsg)
+  log(fullMsg)
   return fullMsg
 }
 
@@ -158,7 +165,7 @@ let function getOptionDesc(id) {
 }
 
 let function validateGuiValue(id, value) {
-  if (!::is_platform_pc)
+  if (!is_platform_pc)
     return value
 
   let desc = getOptionDesc(id)
@@ -200,8 +207,8 @@ let function getGuiWidget(id) {
   }
 
   let widgetId = getOptionDesc(id)?.widgetId
-  let obj = (widgetId && ::check_obj(mContainerObj)) ? mContainerObj.findObject(widgetId) : null
-  return ::check_obj(obj) ? obj : null
+  let obj = (widgetId && checkObj(mContainerObj)) ? mContainerObj.findObject(widgetId) : null
+  return checkObj(obj) ? obj : null
 }
 
 local function setGuiValue(id, value, skipUI=false) {
@@ -236,8 +243,8 @@ local function setGuiValue(id, value, skipUI=false) {
 let function enableGuiOption(id, state) {
   if (mSkipUI)
     return
-  let rowObj = ::check_obj(mContainerObj) ? mContainerObj.findObject(id + "_tr") : null
-  if (::check_obj(rowObj))
+  let rowObj = checkObj(mContainerObj) ? mContainerObj.findObject(id + "_tr") : null
+  if (checkObj(rowObj))
     rowObj.enable(state)
 }
 
@@ -259,7 +266,7 @@ let function checkChanges(config1, config2) {
       let needApply = id != "graphicsQuality"
       if (needApply)
       {
-        let requiresRestart = ::getTblValue("restart", desc)
+        let requiresRestart = getTblValue("restart", desc)
         if (requiresRestart)
           changes.needClientRestart = true
         else
@@ -277,17 +284,17 @@ let isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineRe
 
 let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
 
-let canUseGraphicsOptions = @() ::is_platform_pc && ::has_feature("GraphicsOptions")
-let canShowGpuBenchmark = @() canUseGraphicsOptions() && ::target_platform != "macosx"
+let canUseGraphicsOptions = @() is_platform_pc && hasFeature("GraphicsOptions")
+let canShowGpuBenchmark = @() canUseGraphicsOptions() && target_platform != "macosx"
 
 let function updateGuiNavbar(show=true) {
   let scene = mHandler?.scene
-  if (!::check_obj(scene))
+  if (!checkObj(scene))
     return
 
   let showText = show && isRestartPending()
   let showRestartButton = showText && canRestartClient()
-  let applyText = ::loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
+  let applyText = loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
 
   ::showBtn("btn_reset", show && isSavePending(), scene)
   ::showBtn("restart_suggestion", showText, scene)
@@ -295,7 +302,7 @@ let function updateGuiNavbar(show=true) {
   ::showBtn("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
 
   let objNavbarApplyButton = scene.findObject("btn_apply")
-  if (::check_obj(objNavbarApplyButton))
+  if (checkObj(objNavbarApplyButton))
     objNavbarApplyButton.setValue(applyText)
 }
 
@@ -328,7 +335,7 @@ let function localizaQualityPreset(presetName) {
   let txt = (presetName == "ultralow" || presetName == "min") ? "ultra_low"
     : presetName == "ultrahigh" ? "ultra_high"
     : presetName
-  return ::loc($"options/quality_{txt}")
+  return loc($"options/quality_{txt}")
 }
 
 let function localize(optionId, valueId) {
@@ -336,14 +343,14 @@ let function localize(optionId, valueId) {
     case "resolution":
     {
       if (valueId == "auto")
-        return ::loc("options/auto")
+        return loc("options/auto")
       else
         return valueId
     }
     case "anisotropy":
     case "ssaa":
     case "msaa":
-      return ::loc("options/" + valueId)
+      return loc("options/" + valueId)
     case "graphicsQuality":
     case "texQuality":
     case "shadowQuality":
@@ -354,10 +361,10 @@ let function localize(optionId, valueId) {
     case "giQuality":
     case "dirtSubDiv":
       if (valueId == "none")
-        return ::loc("options/none")
+        return loc("options/none")
       return localizaQualityPreset(valueId)
   }
-  return ::loc(format("options/%s_%s", optionId, valueId), valueId)
+  return loc(format("options/%s_%s", optionId, valueId), valueId)
 }
 
 let function parseResolution(resolution) {
@@ -369,6 +376,22 @@ let function parseResolution(resolution) {
     w = sides?[0] ?? 0
     h = sides?[1] ?? 0
   }
+}
+
+let function getAvailableXessModes()
+{
+  let values = ["off"]
+  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
+  if (::is_xess_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
+    values.append("performance")
+  if (::is_xess_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
+    values.append("balanced")
+  if (::is_xess_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
+    values.append("quality")
+  if (::is_xess_quality_available_at_resolution(3, selectedResolution.w, selectedResolution.h))
+    values.append("ultra_quality")
+
+  return values;
 }
 
 let function getAvailableDlssModes()
@@ -483,7 +506,7 @@ mShared = {
         updateGuiNavbar(true)
       }
       ::scene_msg_box("msg_sysopt_compatibility", null,
-        ::loc("msgbox/compatibilityMode"),
+        loc("msgbox/compatibilityMode"),
         [
           ["yes", ok_func],
           ["no", cancel_func],
@@ -507,7 +530,7 @@ mShared = {
     desc.init(null, desc) //list of dlss values depends only on resolution
     setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
     let obj = getGuiWidget(id)
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let markup = getListOption(id, desc, "onSystemOptionChanged", false)
@@ -515,7 +538,12 @@ mShared = {
   }
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness" ])
+    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
+      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
+  }
+
+  xessClick = function() {
+    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -576,7 +604,7 @@ mShared = {
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      ::scene_msg_box("msg_sysopt_ssaa", null, ::loc("msgbox/ssaa_warning"),
+      ::scene_msg_box("msg_sysopt_ssaa", null, loc("msgbox/ssaa_warning"),
         [
           ["ok", okFunc],
           ["cancel", cancelFunc],
@@ -598,7 +626,7 @@ mShared = {
         updateGuiNavbar(true)
       }
       ::scene_msg_box("msg_sysopt_fxres", null,
-        ::loc("msgbox/fxres_warning"),
+        loc("msgbox/fxres_warning"),
         [
           ["ok", okFunc],
           ["cancel", cancelFunc],
@@ -622,7 +650,7 @@ mShared = {
         updateGuiNavbar(true)
       }
       ::scene_msg_box("msg_sysopt_compatibility", null,
-        ::loc("msgbox/compatibilityMode"),
+        loc("msgbox/compatibilityMode"),
         [
           ["yes", ok_func],
           ["no", cancel_func],
@@ -650,10 +678,10 @@ mShared = {
     data.sort(sortFunc)
 
     // Fixing the truncated list when working via Remote Desktop (RDP).
-    if (isListTruncated && ::is_platform_windows) {
+    if (isListTruncated && is_platform_windows) {
       let resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
         "1920 x 1080", "2520 x 1080", "2560 x 1440", "3840 x 1080", "3840 x 2160" ]
-      let psi = ::is_platform_windows ? get_primary_screen_info() : {}
+      let psi = is_platform_windows ? get_primary_screen_info() : {}
       let maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
       let maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
       ::u.appendOnce($"{maxW} x {maxH}", resolutions)
@@ -726,19 +754,19 @@ mSettings = {
       let curResolution = mShared.getCurResolution(blk, desc)
       desc.values <- mShared.getVideoModes(curResolution)
       desc.def <- curResolution
-      desc.restart <- !::is_platform_windows
+      desc.restart <- !is_platform_windows
     }
     onChanged = "resolutionClick"
   }
   mode = { widgetType="list" def="fullscreenwindowed" blk="video/mode" restart=true
     init = function(blk, desc) {
       desc.values <- ["windowed"]
-      if (::is_platform_windows)
+      if (is_platform_windows)
         desc.values.append("fullscreenwindowed")
       if (!::is_vendor_tencent())
         desc.values.append("fullscreen")
       desc.def = desc.values.top()
-      desc.restart <- !::is_platform_windows
+      desc.restart <- !is_platform_windows
     }
     setToBlk = function(blk, desc, val) {
       set_blk_value_by_path(blk, desc.blk, val)
@@ -763,6 +791,20 @@ mSettings = {
   graphicsQuality = { widgetType="tabs" def="high" blk="graphicsQuality" restart=false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
+  }
+  xess = { widgetType="list" def="off" blk="video/xessQuality" restart=false
+    init = function(blk, desc) {
+      desc.values <- getAvailableXessModes()
+    }
+    onChanged = "xessClick"
+    getFromBlk = function(blk, desc) {
+      let quality = get_blk_value_by_path(blk, desc.blk, -1)
+      return (quality == 0) ? "performance" : (quality == 1) ? "balanced" : (quality == 2) ? "quality" : (quality == 3) ? "ultra_quality" : "off"
+    }
+    setToBlk = function(blk, desc, val) {
+      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : (val == "ultra_quality") ? 2 : -1
+      set_blk_value_by_path(blk, desc.blk, quality)
+    }
   }
   dlss = { widgetType="list" def="off" blk="video/dlssQuality" restart=false
     init = function(blk, desc) {
@@ -810,7 +852,7 @@ mSettings = {
   }
     onChanged = "antiaAliasingClick"
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
   }
   taau_ratio = { widgetType="slider" def=100 min=50 max=100 blk="video/temporalResolutionScale" restart=false
     enabled = @() !getGuiValue("compatibilityMode")
@@ -820,7 +862,7 @@ mSettings = {
   }
   ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -834,7 +876,7 @@ mSettings = {
   latency = { widgetType="list" def="off" blk="video/latency" restart=false
     init = function(blk, desc) {
       desc.values <- getAvailableLatencyModes()
-      desc.items <- desc.values.map(@(value) {text = localize("latency", value), tooltip = ::loc($"guiHints/latency_{value}") })
+      desc.items <- desc.values.map(@(value) {text = localize("latency", value), tooltip = loc($"guiHints/latency_{value}") })
     }
     getFromBlk = function(blk, desc) {
       let quality = get_blk_value_by_path(blk, desc.blk, -1)
@@ -845,8 +887,6 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, quality)
     }
     onChanged = "latencyClick"
-  }
-  latencyFlash = { widgetType="checkbox" def=false blk="video/latencyFlash" restart=false
   }
   perfMetrics = { widgetType="list" def="fps" blk="video/perfMetrics" restart=false
     init = function(blk, desc) {
@@ -871,14 +911,14 @@ mSettings = {
 
       let restrictedValueName = localize("texQuality", desc.values[sysTexQuality])
       let restrictedValueItem = {
-        text = ::colorize("badTextColor", restrictedValueName + " **")
+        text = colorize("badTextColor", restrictedValueName + " **")
         textStyle = "textStyle:t='textarea';"
       }
       desc.items <- []
       foreach (index, item in desc.values)
         desc.items.append((index <= sysTexQuality) ? localize("texQuality", item) : restrictedValueItem)
-      desc.tooltipExtra <- ::colorize("badTextColor", "** " + ::loc("msgbox/graphicsOptionValueReduced/lowVideoMemory",
-        { name = ::loc("options/texQuality"), value = restrictedValueName }))
+      desc.tooltipExtra <- colorize("badTextColor", "** " + loc("msgbox/graphicsOptionValueReduced/lowVideoMemory",
+        { name = loc("options/texQuality"), value = restrictedValueName }))
     }
     values =   [ "low", "medium", "high" ]
   }
@@ -904,7 +944,7 @@ mSettings = {
     }
     enabled = @() !getGuiValue("antialiasing") == "low_taa"
     setToBlk = function(blk, desc, val) {
-      local res = ::getTblValue(val, desc.blkValues, desc.def)
+      local res = getTblValue(val, desc.blkValues, desc.def)
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
         res = 2.0
       set_blk_value_by_path(blk, desc.blk, res)
@@ -955,7 +995,7 @@ mSettings = {
     values = [ "none", "medium", "high", "ultrahigh" ]
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 0)
-      return ::getTblValue(val, desc.values, desc.def)
+      return getTblValue(val, desc.values, desc.def)
     }
     setToBlk = function(blk, desc, val) {
       let res = desc.values.indexof(val) ?? 0
@@ -1018,7 +1058,7 @@ mSettings = {
       configure_stereo(val)
       return set_blk_value_by_path(blk, desc.blk, val)
     }
-    enabled = @() ::is_platform_windows && (::target_platform == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
+    enabled = @() is_platform_windows && (target_platform == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
   }
   vrMirror = { widgetType="list" def="left" blk="video/vreye" restart=false values = [ "left", "right", "both" ]
   }
@@ -1038,7 +1078,7 @@ mSettings = {
 let function validateInternalConfigs() {
   let errorsList = []
   foreach (id, desc in mSettings) {
-    let widgetType = ::getTblValue("widgetType", desc)
+    let widgetType = getTblValue("widgetType", desc)
     if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "tabs"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Option '"+id+"' - 'widgetType' invalid or undefined."))
@@ -1049,7 +1089,7 @@ let function validateInternalConfigs() {
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Option '"+id+"' - 'onChanged' function not found in sysopt.shared."))
 
-    let def = ::getTblValue("def", desc)
+    let def = getTblValue("def", desc)
     if (def == null)
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Option '"+id+"' - 'def' undefined."))
@@ -1080,7 +1120,7 @@ let function validateInternalConfigs() {
         if (def != null && uiType != "string")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             "Option '"+id+"' - 'widgetType'/'def' conflict."))
-        let values = ::getTblValue("values", desc, [])
+        let values = getTblValue("values", desc, [])
         if (!values.len())
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             "Option '"+id+"' - 'values' is empty or undefined."))
@@ -1092,7 +1132,7 @@ let function validateInternalConfigs() {
         if (def != null && uiType != "integer" && uiType != "float" && uiType != "string")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
                                      "Option '"+id+"' - 'widgetType'/'def' conflict."))
-        let maxlength = ::getTblValue("maxlength", desc, -1)
+        let maxlength = getTblValue("maxlength", desc, -1)
         if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             "Option '"+id+"' - 'maxlength'/'def' conflict."))
@@ -1123,9 +1163,9 @@ let function validateInternalConfigs() {
 
   foreach (sectIndex, section in mUiStruct)
   {
-    let container = ::getTblValue("container", section)
-    let id = ::getTblValue("id", section)
-    let items = ::getTblValue("items", section)
+    let container = getTblValue("container", section)
+    let id = getTblValue("id", section)
+    let items = getTblValue("items", section)
     if (!container || (!id && !items))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Array uiStruct - Index "+sectIndex+" contains invalid data."))
@@ -1167,14 +1207,14 @@ let function configRead() {
 }
 
 let function configWrite() {
-  if (! ::is_platform_pc)
+  if (! is_platform_pc)
     return;
   if (!mBlk) return
-  ::dagor.debug("[sysopt] Saving config:")
+  log("[sysopt] Saving config:")
   foreach (id, _ in mCfgCurrent) {
     let value = getGuiValue(id)
     if (mCfgInitial?[id] != value)
-      ::dagor.debug("[sysopt] " + id + ": " + (mCfgInitial?[id] ?? "null") + " -> " + value)
+      log("[sysopt] " + id + ": " + (mCfgInitial?[id] ?? "null") + " -> " + value)
     let desc = getOptionDesc(id)
     if ("setToBlk" in desc)
       desc.setToBlk(mBlk, desc, value)
@@ -1182,7 +1222,7 @@ let function configWrite() {
       set_blk_value_by_path(mBlk, desc.blk, value)
   }
   mBlk.saveToTextFile(::get_config_name())
-  ::dagor.debug("[sysopt] Config saved.")
+  log("[sysopt] Config saved.")
 }
 
 let function init() {
@@ -1234,7 +1274,7 @@ let function configMaintain() {
   if (mMaintainDone)
     return
   mMaintainDone = true
-  if (!::is_platform_pc)
+  if (!is_platform_pc)
     return
   if (!mScriptValid)
     return
@@ -1251,7 +1291,7 @@ let function configMaintain() {
   mShared.presetCheck()
 
   if (isSavePending()) {
-    ::dagor.debug("[sysopt] Graphics settings maintenance, config.blk repaired.")
+    log("[sysopt] Graphics settings maintenance, config.blk repaired.")
     configWrite()
   }
 
@@ -1269,10 +1309,10 @@ let function applyRestartEngine(reloadScene = false) {
         resolution = mCfgCurrent.resolution
         screenMode = mCfgCurrent.mode
     }
-    cb = @() ::call_darg("updateExtWatched", params)
+    cb = @() send("updateExtWatched", params)
   }
 
-  ::dagor.debug("[sysopt] Resetting renderer.")
+  log("[sysopt] Resetting renderer.")
   applyRendererSettingsChange(reloadScene, true, cb)
 }
 
@@ -1302,14 +1342,14 @@ let function hotReloadOrRestart() {
     }
 
     if (canRestartClient()) {
-      let message = ::loc("msgbox/client_restart_required") + "\n" + ::loc("msgbox/restart_now")
+      let message = loc("msgbox/client_restart_required") + "\n" + loc("msgbox/restart_now")
       ::scene_msg_box("sysopt_apply", null, message, [
           ["restart", func_restart],
           ["no"],
         ], "restart", { cancel_fn = @() null })
     }
     else {
-      let message = ::loc("msgbox/client_restart_required")
+      let message = loc("msgbox/client_restart_required")
       ::scene_msg_box("sysopt_apply", null, message, [
           ["ok"],
         ], "ok", { cancel_fn = @() null })
@@ -1321,7 +1361,7 @@ let function onConfigApply() {
   if (!mScriptValid)
     return
 
-  if (!::check_obj(mContainerObj))
+  if (!checkObj(mContainerObj))
     return
 
   mShared.presetCheck()
@@ -1341,7 +1381,7 @@ let isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
   ?? ::getSystemConfigOption("video/compatibilityMode", false)
 
 let function onGuiOptionChanged(obj) {
-  let widgetId = ::check_obj(obj) ? obj?.id : null
+  let widgetId = checkObj(obj) ? obj?.id : null
   if (!widgetId)
     return
   let id = widgetId.slice(("sysopt_").len())
@@ -1355,7 +1395,7 @@ let function onGuiOptionChanged(obj) {
     return
   }
 
-  let curValue = ::getTblValue(id, mCfgCurrent)
+  let curValue = getTblValue(id, mCfgCurrent)
   if (curValue == null)  //not inited or already cleared?
     return
 
@@ -1407,12 +1447,12 @@ let function onGuiOptionChanged(obj) {
 }
 
 let function fillGuiOptions(containerObj, handler) {
-  if (!::check_obj(containerObj) || !handler)
+  if (!checkObj(containerObj) || !handler)
     return
   let guiScene = containerObj.getScene()
 
   if (!mScriptValid) {
-    let msg = ::loc("msgbox/internal_error_header") + "\n" + mValidationError
+    let msg = loc("msgbox/internal_error_header") + "\n" + mValidationError
     let data = format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
     guiScene.replaceContentFromText(containerObj.id, data, data.len(), handler)
     return
@@ -1423,7 +1463,7 @@ let function fillGuiOptions(containerObj, handler) {
   mContainerObj = containerObj
   mHandler = handler
 
-  if (::get_video_modes().len() == 0 && !::is_platform_windows) // Hiding resolution, mode, vsync.
+  if (::get_video_modes().len() == 0 && !is_platform_windows) // Hiding resolution, mode, vsync.
   {
     let topBlockId = "sysopt_top"
     if (topBlockId in guiScene)
@@ -1471,12 +1511,12 @@ let function fillGuiOptions(containerObj, handler) {
           let items = []
           foreach (valueId in desc.values)
           {
-            local warn = ::loc(format("options/%s_%s/comment", id, valueId), "")
-            warn = warn.len() ? ("\n" + ::colorize("badTextColor", warn)) : ""
+            local warn = loc(format("options/%s_%s/comment", id, valueId), "")
+            warn = warn.len() ? ("\n" + colorize("badTextColor", warn)) : ""
 
             items.append({
               text = localize(id, valueId)
-              tooltip = ::loc(format("guiHints/%s_%s", id, valueId)) + warn
+              tooltip = loc(format("guiHints/%s_%s", id, valueId)) + warn
             })
           }
           option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
@@ -1494,13 +1534,13 @@ let function fillGuiOptions(containerObj, handler) {
       if (isTable)
       {
         let enable = (desc?.enabled() ?? true) ? "yes" : "no"
-        let requiresRestart = ::getTblValue("restart", desc, false)
+        let requiresRestart = getTblValue("restart", desc, false)
         let tooltipExtra = desc?.tooltipExtra ?? ""
-        let optionName = ::loc($"options/{id}")
+        let optionName = loc($"options/{id}")
         let label = ::g_string.stripTags("".join([optionName, requiresRestart ? $"{::nbsp}*" : $"{::nbsp}{::nbsp}"]))
         let tooltip = ::g_string.stripTags("\n".join(
-          [ ::loc($"guiHints/{id}", optionName),
-            requiresRestart ? ::colorize("warningTextColor", ::loc("guiHints/restart_required")) : "",
+          [ loc($"guiHints/{id}", optionName),
+            requiresRestart ? colorize("warningTextColor", loc("guiHints/restart_required")) : "",
             tooltipExtra
           ], true)
         )
@@ -1530,7 +1570,12 @@ let function setQualityPreset(presetName) {
 
 //------------------------------------------------------------------------------
 init()
-::cross_call_api.sysopt <- { getGuiValue = getGuiValue }
+
+subscribe("updateScreenStates", @(_) send("updateExtWatched", {
+  resolution = getGuiValue("resolution", "1024 x 768")
+  screenMode = getGuiValue("mode", "fullscreen")
+}))
+
 //------------------------------------------------------------------------------
 return {
   fillSystemGuiOptions = fillGuiOptions

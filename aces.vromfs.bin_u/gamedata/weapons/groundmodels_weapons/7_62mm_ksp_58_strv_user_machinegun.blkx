@@ -31,11 +31,12 @@
   "soundLoop": true,
   "bullet": [
     {
-      "mass": 0.0108,
+      "mass": 0.01073718,
       "caliber": 0.00762,
       "speed": 853.0,
       "Cx": 0.4,
       "maxDistance": 2000.0,
+      "modelName": "tank_bullet_ball",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -44,7 +45,6 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
         300.0,
@@ -109,28 +109,32 @@
       },
       "armorpower": {
         "ArmorPower0m": [
-          10.0,
+          13.0,
           10.0
         ],
         "ArmorPower100m": [
-          9.0,
+          12.0,
           100.0
         ],
+        "ArmorPower300m": [
+          9.0,
+          300.0
+        ],
         "ArmorPower500m": [
-          7.0,
-          500.0
+          6.0,
+          600.0
         ],
         "ArmorPower1000m": [
-          4.0,
+          3.0,
           1000.0
         ],
-        "ArmorPower1450m": [
-          1.0,
-          1450.0
-        ],
-        "ArmorPower1500m": [
-          0.0,
+        "ArmorPower150m": [
+          1.5,
           1500.0
+        ],
+        "ArmorPower1600m": [
+          0.0,
+          1600.0
         ]
       },
       "visual": {
@@ -223,11 +227,12 @@
       }
     },
     {
-      "mass": 0.0095,
+      "mass": 0.009849433,
       "caliber": 0.00762,
       "speed": 835.0,
       "Cx": 0.4,
       "maxDistance": 2000.0,
+      "modelName": "tank_bullet_ball",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -236,8 +241,6 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_ball",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_ball",
-      "hitPowerMult": 2.9,
       "onHitChanceMultFire": 1.5,
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
@@ -248,6 +251,7 @@
         200.0,
         1000.0
       ],
+      "hitPowerMult": 2.9,
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",

@@ -1,7 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format, split_by_chars } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
-let mkWatched = require("%globalScripts/mkWatched.nut")
 let { APP_ID } = require("app")
 
 enum validationCheckBitMask {
@@ -49,7 +53,7 @@ let requestInternal = function(requestData, data, callback, progressBoxData = nu
 let getErrorId = @(result) result.error.split(":")[0]
 let priceEagles = mkWatched(persist, "priceEagles", {})
 let priceWarPoint = mkWatched(persist, "priceWarPoint", {})
-let prices = ::Computed(function(){
+let prices = Computed(function(){
   let res = clone priceWarPoint.value
 
   foreach(key, value in priceEagles.value){
@@ -68,11 +72,153 @@ let function notifyPricesChanged()
 }
 prices.subscribe(@(_) notifyPricesChanged())
 
-local InventoryClient = class {
+const REQUEST_TIMEOUT_MSEC = 15000
+
+let validateResponseData = {
+  item_json = {
+    [ validationCheckBitMask.VITAL ] = {
+      itemid = ""
+      itemdef = -1
+    },
+    [ validationCheckBitMask.REQUIRED ] = {
+      accountid = ""
+      position = 0
+      quantity = 0
+      state = "none"
+      timestamp = ""
+    },
+    [ validationCheckBitMask.VARTYPE ] = {
+    },
+  }
+  itemdef_json = {
+    [ validationCheckBitMask.VITAL ] = {
+      itemdefid = -1
+    },
+    [ validationCheckBitMask.REQUIRED ] = {
+      type = ""
+      Timestamp = ""
+      marketable = false
+      tradable = false
+      exchange = ""
+      background_color = ""
+      name_color = ""
+      promo = ""
+      item_quality = 0
+      meta = ""
+      tags = ""
+      item_slot = ""
+    },
+    [ validationCheckBitMask.REQUIRED_AND_VALUE ] = {
+      icon_url = ""
+      icon_url_large = ""
+    },
+    [ validationCheckBitMask.VARTYPE ] = {
+      bundle = ""
+      name = ""
+      name_english = ""
+      description = ""
+      description_english = ""
+    },
+  }
+}
+
+let tagsValueRemap = {
+  yes         = true,
+  no          = false,
+  ["true"]    = true,
+  ["false"]   = false,
+}
+
+
+let function _validate(data, name)
+{
+  let validation = validateResponseData?[name]
+  if (!data || !validation)
+    return data
+
+  if (!::u.isArray(data))
+    return null
+
+  local itemsBroken  = []
+  local keysMissing   = {}
+  local keysWrongType = {}
+
+  for (local i = data.len() - 1; i >= 0; i--)
+  {
+    let item = data[i]
+    local isItemValid = ::u.isTable(item)
+    local itemErrors = 0
+
+    foreach (checks, keys in validation)
+    {
+      let shouldInvalidate     = (checks & validationCheckBitMask.INVALIDATE) != 0
+      let shouldCheckExistence = (checks & validationCheckBitMask.EXISTENCE) != 0
+      let shouldCheckType      = (checks & validationCheckBitMask.VARTYPE) != 0
+      let shouldValidateValue  = (checks & validationCheckBitMask.VALUE) != 0
+
+      if (isItemValid)
+        foreach (key, defVal in keys)
+        {
+          let isExist = (key in item)
+          let val = item?[key]
+          let isTypeCorrect = isExist && (type(val) == type(defVal) || ::is_numeric(val) == ::is_numeric(defVal))
+
+          let isMissing   = shouldCheckExistence && !isExist
+          let isWrongType = shouldCheckType && isExist && !isTypeCorrect
+          if (isMissing || isWrongType)
+          {
+            itemErrors++
+
+            if (isMissing)
+              keysMissing[key] <- true
+            if (isWrongType)
+              keysWrongType[key] <- type(val) + "," + val
+
+            if (shouldInvalidate)
+              isItemValid = false
+
+            item[key] <- defVal
+          }
+
+          if (shouldValidateValue)
+            item[key] = validateValueFunction[key](item[key])
+        }
+    }
+
+    if (!isItemValid || itemErrors)
+    {
+      let itemDebug = []
+      foreach (checks, keys in validation)
+        if (checks & validationCheckBitMask.INVALIDATE)
+          foreach (key, val in keys)
+            if (key in item)
+              itemDebug.append(key + "=" + item[key])
+      itemDebug.append(isItemValid ? ("err=" + itemErrors) : "INVALID")
+      itemDebug.append(::u.isTable(item) ? ("len=" + item.len()) : ("var=" + type(item)))
+
+      itemsBroken.append(::g_string.implode(itemDebug, ","))
+    }
+
+    if (!isItemValid)
+      data.remove(i)
+  }
+
+  if (itemsBroken.len() || keysMissing.len() || keysWrongType.len())
+  {
+    itemsBroken = ::g_string.implode(itemsBroken, ";") // warning disable: -assigned-never-used
+    keysMissing = ::g_string.implode(keysMissing.keys(), ";") // warning disable: -assigned-never-used
+    keysWrongType = ";".join(keysWrongType.topairs().map(@(i) i[0] + "=" + i[1])) // warning disable: -assigned-never-used
+    ::script_net_assert_once("inventory client bad response", $"InventoryClient: Response has errors: {name}")
+  }
+
+  return data
+}
+
+
+let class InventoryClient {
   items = {}
   itemdefs = {}
 
-  REQUEST_TIMEOUT_MSEC = 15000
   lastUpdateTime = -1
   lastRequestTime = -1
 
@@ -81,84 +227,26 @@ local InventoryClient = class {
   pendingItemDefRequest = null
 
   firstProfileLoadComplete = false
-
   needRefreshItems = false
-
   haveInitializedPublicKeys = false
-
-  validateResponseData = {
-    item_json = {
-      [ validationCheckBitMask.VITAL ] = {
-        itemid = ""
-        itemdef = -1
-      },
-      [ validationCheckBitMask.REQUIRED ] = {
-        accountid = ""
-        position = 0
-        quantity = 0
-        state = "none"
-        timestamp = ""
-      },
-      [ validationCheckBitMask.VARTYPE ] = {
-      },
-    }
-    itemdef_json = {
-      [ validationCheckBitMask.VITAL ] = {
-        itemdefid = -1
-      },
-      [ validationCheckBitMask.REQUIRED ] = {
-        type = ""
-        Timestamp = ""
-        marketable = false
-        tradable = false
-        exchange = ""
-        background_color = ""
-        name_color = ""
-        promo = ""
-        item_quality = 0
-        meta = ""
-        tags = ""
-        item_slot = ""
-      },
-      [ validationCheckBitMask.REQUIRED_AND_VALUE ] = {
-        icon_url = ""
-        icon_url_large = ""
-      },
-      [ validationCheckBitMask.VARTYPE ] = {
-        bundle = ""
-        name = ""
-        name_english = ""
-        description = ""
-        description_english = ""
-      },
-    }
-  }
-
-  tagsValueRemap = {
-    yes         = true,
-    no          = false,
-    ["true"]    = true,
-    ["false"]   = false,
-  }
-
 
   constructor()
   {
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     if (::g_login.isProfileReceived())
-      refreshDataOnAuthorization()
+      this.refreshDataOnAuthorization()
   }
 
   function onEventProfileUpdated(p) {
-    if (!firstProfileLoadComplete)
-      refreshDataOnAuthorization()
-    firstProfileLoadComplete = true
+    if (!this.firstProfileLoadComplete)
+      this.refreshDataOnAuthorization()
+    this.firstProfileLoadComplete = true
   }
 
   function refreshDataOnAuthorization()
   {
-    refreshItems()
-    requestPrices()
+    this.refreshItems()
+    this.requestPrices()
   }
 
 
@@ -166,9 +254,9 @@ local InventoryClient = class {
   {
     headers.appid <- APP_ID
     let requestData = {
-      add_token = true,
-      headers = headers,
-      action = action
+      add_token = true
+      headers
+      action
     }
     requestInternal(requestData, data, callback.bindenv(this), progressBoxData)
   }
@@ -177,7 +265,7 @@ local InventoryClient = class {
   function requestWithSignCheck(action, headers, data, callback, progressBoxData = null)
   {
     if (!contentSignKeys.initialized)
-      return request(action, headers, data, callback, progressBoxData)
+      return this.request(action, headers, data, callback, progressBoxData)
 
     headers.appid <- APP_ID
     let requestData = {
@@ -196,90 +284,6 @@ local InventoryClient = class {
     return _validate(data, name)
   }
 
-  function _validate(data, name)
-  {
-    let validation = validateResponseData?[name]
-    if (!data || !validation)
-      return data
-
-    if (!::u.isArray(data))
-      return null
-
-    local itemsBroken  = []
-    local keysMissing   = {}
-    local keysWrongType = {}
-
-    for (local i = data.len() - 1; i >= 0; i--)
-    {
-      let item = data[i]
-      local isItemValid = ::u.isTable(item)
-      local itemErrors = 0
-
-      foreach (checks, keys in validation)
-      {
-        let shouldInvalidate     = (checks & validationCheckBitMask.INVALIDATE) != 0
-        let shouldCheckExistence = (checks & validationCheckBitMask.EXISTENCE) != 0
-        let shouldCheckType      = (checks & validationCheckBitMask.VARTYPE) != 0
-        let shouldValidateValue  = (checks & validationCheckBitMask.VALUE) != 0
-
-        if (isItemValid)
-          foreach (key, defVal in keys)
-          {
-            let isExist = (key in item)
-            let val = item?[key]
-            let isTypeCorrect = isExist && (type(val) == type(defVal) || ::is_numeric(val) == ::is_numeric(defVal))
-
-            let isMissing   = shouldCheckExistence && !isExist
-            let isWrongType = shouldCheckType && isExist && !isTypeCorrect
-            if (isMissing || isWrongType)
-            {
-              itemErrors++
-
-              if (isMissing)
-                keysMissing[key] <- true
-              if (isWrongType)
-                keysWrongType[key] <- type(val) + "," + val
-
-              if (shouldInvalidate)
-                isItemValid = false
-
-              item[key] <- defVal
-            }
-
-            if (shouldValidateValue)
-              item[key] = validateValueFunction[key](item[key])
-          }
-      }
-
-      if (!isItemValid || itemErrors)
-      {
-        let itemDebug = []
-        foreach (checks, keys in validation)
-          if (checks & validationCheckBitMask.INVALIDATE)
-            foreach (key, val in keys)
-              if (key in item)
-                itemDebug.append(key + "=" + item[key])
-        itemDebug.append(isItemValid ? ("err=" + itemErrors) : "INVALID")
-        itemDebug.append(::u.isTable(item) ? ("len=" + item.len()) : ("var=" + type(item)))
-
-        itemsBroken.append(::g_string.implode(itemDebug, ","))
-      }
-
-      if (!isItemValid)
-        data.remove(i)
-    }
-
-    if (itemsBroken.len() || keysMissing.len() || keysWrongType.len())
-    {
-      itemsBroken = ::g_string.implode(itemsBroken, ";") // warning disable: -assigned-never-used
-      keysMissing = ::g_string.implode(keysMissing.keys(), ";") // warning disable: -assigned-never-used
-      keysWrongType = ";".join(keysWrongType.topairs().map(@(i) i[0] + "=" + i[1])) // warning disable: -assigned-never-used
-      ::script_net_assert_once("inventory client bad response", $"InventoryClient: Response has errors: {name}")
-    }
-
-    return data
-  }
-
   function getMarketplaceBaseUrl()
   {
     let circuit = ::get_cur_circuit_name();
@@ -290,17 +294,17 @@ local InventoryClient = class {
 
     return "auto_login auto_local sso_service=any " + url + "?a=" + APP_ID +
       (::steam_is_running()
-        ? format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
+        ? format("&app_id=%d&steam_id=%s", ::steam_get_app_id(), ::steam_get_my_id())
         : "")
   }
 
   function getMarketplaceItemUrl(itemdefid, itemid = null)
   {
-    let marketplaceBaseUrl = getMarketplaceBaseUrl()
+    let marketplaceBaseUrl = this.getMarketplaceBaseUrl()
     if (!marketplaceBaseUrl)
       return null
 
-    let item = itemdefid && itemdefs?[itemdefid]
+    let item = itemdefid && this.itemdefs?[itemdefid]
     if ((item?.market_hash_name ?? "") != "")
       return marketplaceBaseUrl+ "&viewitem&n=" + ::encode_uri_component(item.market_hash_name)
 
@@ -310,10 +314,10 @@ local InventoryClient = class {
   function addInventoryItem(item)
   {
     let itemdefid = item.itemdef
-    let shouldUpdateItemdDefs = addItemDefIdToRequest(itemdefid)
+    let shouldUpdateItemdDefs = this.addItemDefIdToRequest(itemdefid)
     item.itemdefid <- itemdefid
-    item.itemdef = itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
-    items[item.itemid] <- item
+    item.itemdef = this.itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
+    this.items[item.itemid] <- item
     return shouldUpdateItemdDefs
   }
 
@@ -321,58 +325,58 @@ local InventoryClient = class {
   {
     if (params.func == "changed")
     {
-      refreshItems()
+      this.refreshItems()
     }
   }
 
   function refreshItems()
   {
-    if (needRefreshItems)
+    if (this.needRefreshItems)
       return
 
-    if (!canRefreshData())
+    if (!this.canRefreshData())
       return
 
-    needRefreshItems = true
-    ::dagor.debug("schedule requestItems")
-    g_delayed_actions.add(requestItemsInternal.bindenv(this), 100)
+    this.needRefreshItems = true
+    log("schedule requestItems")
+    ::g_delayed_actions.add(this.requestItemsInternal.bindenv(this), 100)
   }
 
-  isWaitForInventory = @() canRefreshData() && lastUpdateTime < 0
+  isWaitForInventory = @() this.canRefreshData() && this.lastUpdateTime < 0
 
   function requestItemsInternal()
   {
-    needRefreshItems = false
-    if (!canRefreshData())
+    this.needRefreshItems = false
+    if (!this.canRefreshData())
       return
 
-    let wasWaitForInventory = isWaitForInventory()
-    lastRequestTime = ::dagor.getCurTime()
-    requestInventory(function(result) {
-      lastUpdateTime = ::dagor.getCurTime()
+    let wasWaitForInventory = this.isWaitForInventory()
+    this.lastRequestTime = ::dagor.getCurTime()
+    this.requestInventory(function(result) {
+      this.lastUpdateTime = ::dagor.getCurTime()
       local hasInventoryChanges = false
       if (wasWaitForInventory)
         hasInventoryChanges = true //need event about we received inventory once, even if it empty.
 
-      let itemJson = getResultData(result, "item_json");
+      let itemJson = this.getResultData(result, "item_json");
       if (!itemJson)
       {
         if (wasWaitForInventory)
-          notifyInventoryUpdate(hasInventoryChanges)
+          this.notifyInventoryUpdate(hasInventoryChanges)
         return
       }
 
-      let oldItems = items
+      let oldItems = this.items
       local shouldUpdateItemdefs = false
-      items = {}
+      this.items = {}
       foreach (item in itemJson) {
-        let oldItem = ::getTblValue(item.itemid, oldItems)
+        let oldItem = getTblValue(item.itemid, oldItems)
         if (oldItem) {
           if (oldItem.timestamp != item.timestamp) {
             hasInventoryChanges = true
           }
 
-          addInventoryItem(item)
+          this.addInventoryItem(item)
           delete oldItems[item.itemid]
 
           continue
@@ -382,7 +386,7 @@ local InventoryClient = class {
           continue
 
         hasInventoryChanges = true
-        shouldUpdateItemdefs = addInventoryItem(item) || shouldUpdateItemdefs
+        shouldUpdateItemdefs = this.addInventoryItem(item) || shouldUpdateItemdefs
       }
 
       if (oldItems.len() > 0) {
@@ -390,151 +394,152 @@ local InventoryClient = class {
       }
 
       if (shouldUpdateItemdefs) {
-        requestItemDefs()
+        this.requestItemDefs()
       }
       else {
-        notifyInventoryUpdate(hasInventoryChanges)
+        this.notifyInventoryUpdate(hasInventoryChanges)
       }
     })
   }
 
   function requestInventory(callback) {
-    request("GetInventory", {}, null, callback)
+    this.request("GetInventory", {}, null, callback)
   }
 
-  isItemdefRequestInProgress = @() lastItemdefsRequestTime >= 0
-    && lastItemdefsRequestTime + REQUEST_TIMEOUT_MSEC > ::dagor.getCurTime()
+  isItemdefRequestInProgress = @() this.lastItemdefsRequestTime >= 0
+    && this.lastItemdefsRequestTime + REQUEST_TIMEOUT_MSEC > ::dagor.getCurTime()
 
   function updatePendingItemDefRequest(cb, shouldRefreshAll)
   {
-    if (!pendingItemDefRequest)
-      pendingItemDefRequest = {
+    if (!this.pendingItemDefRequest)
+      this.pendingItemDefRequest = {
         cbList = [],
         shouldRefreshAll = false,
         fireCb = function() {
-          foreach(c in cbList)
+          foreach(c in this.cbList)
             c()
         }
       }
-    pendingItemDefRequest.shouldRefreshAll = shouldRefreshAll || pendingItemDefRequest.shouldRefreshAll
+    this.pendingItemDefRequest.shouldRefreshAll = shouldRefreshAll || this.pendingItemDefRequest.shouldRefreshAll
     if (cb)
-      pendingItemDefRequest.cbList.append(::Callback(cb, this))
+      this.pendingItemDefRequest.cbList.append(Callback(cb, this))
   }
 
   _lastDelayedItemdefsRequestTime = 0
+
   function requestItemDefs(cb = null, shouldRefreshAll = false) {
-    updatePendingItemDefRequest(cb, shouldRefreshAll)
-    if (isItemdefRequestInProgress()
-        || (_lastDelayedItemdefsRequestTime && _lastDelayedItemdefsRequestTime < ::dagor.getCurTime() + LOST_DELAYED_ACTION_MSEC))
+    this.updatePendingItemDefRequest(cb, shouldRefreshAll)
+    if (this.isItemdefRequestInProgress()
+        || (this._lastDelayedItemdefsRequestTime
+          && this._lastDelayedItemdefsRequestTime < ::dagor.getCurTime() + LOST_DELAYED_ACTION_MSEC))
       return
-    _lastDelayedItemdefsRequestTime = ::dagor.getCurTime()
+    this._lastDelayedItemdefsRequestTime = ::dagor.getCurTime()
     ::handlersManager.doDelayed(function() {
-      _lastDelayedItemdefsRequestTime = 0
-      requestItemDefsImpl()
+      this._lastDelayedItemdefsRequestTime = 0
+      this.requestItemDefsImpl()
     }.bindenv(this))
   }
 
   function requestItemDefsImpl() {
-    if (isItemdefRequestInProgress() || !pendingItemDefRequest)
+    if (this.isItemdefRequestInProgress() || !this.pendingItemDefRequest)
       return
-    let requestData = pendingItemDefRequest
-    pendingItemDefRequest = null
+    let requestData = this.pendingItemDefRequest
+    this.pendingItemDefRequest = null
 
     if (requestData.shouldRefreshAll)
-      itemdefidsRequested.clear()
+      this.itemdefidsRequested.clear()
 
     let itemdefidsRequest = []
-    foreach(itemdefid, value in itemdefs)
-    {
-      if (!requestData.shouldRefreshAll && (!::u.isEmpty(value) || itemdefidsRequested?[itemdefid]))
+    foreach(itemdefid, value in this.itemdefs) {
+      if (!requestData.shouldRefreshAll && (!::u.isEmpty(value) || this.itemdefidsRequested?[itemdefid]))
         continue
 
       itemdefidsRequest.append(itemdefid)
-      itemdefidsRequested[itemdefid] <- true
+      this.itemdefidsRequested[itemdefid] <- true
     }
 
     if (!itemdefidsRequest.len())
       return requestData.fireCb()
 
     let itemdefidsString = ::g_string.implode(itemdefidsRequest, ",")
-    ::dagor.debug("Request itemdefs " + itemdefidsString)
+    log("Request itemdefs " + itemdefidsString)
 
-    lastItemdefsRequestTime = ::dagor.getCurTime()
+    this.lastItemdefsRequestTime = ::dagor.getCurTime()
     let steamLanguage = ::g_language.getCurrentSteamLanguage()
-    requestWithSignCheck("GetItemDefsClient", {itemdefids = itemdefidsString, language = steamLanguage}, null,
+    this.requestWithSignCheck("GetItemDefsClient", {itemdefids = itemdefidsString, language = steamLanguage}, null,
       function(result) {
-        lastItemdefsRequestTime = -1
-        let itemdef_json = getResultData(result, "itemdef_json");
+        this.lastItemdefsRequestTime = -1
+        let itemdef_json = this.getResultData(result, "itemdef_json");
         if (!itemdef_json || steamLanguage != ::g_language.getCurrentSteamLanguage())
         {
           requestData.fireCb()
-          requestItemDefsImpl()
+          this.requestItemDefsImpl()
           return
         }
 
         local hasItemDefChanges = false
         foreach (itemdef in itemdef_json) {
           let itemdefid = itemdef.itemdefid
-          if (itemdefid in itemdefidsRequested)
-            delete itemdefidsRequested[itemdefid]
-          hasItemDefChanges = hasItemDefChanges || requestData.shouldRefreshAll || ::u.isEmpty(itemdefs?[itemdefid])
-          addItemDef(itemdef)
+          if (itemdefid in this.itemdefidsRequested)
+            delete this.itemdefidsRequested[itemdefid]
+          hasItemDefChanges = hasItemDefChanges || requestData.shouldRefreshAll || ::u.isEmpty(this.itemdefs?[itemdefid])
+          this.addItemDef(itemdef)
         }
 
-        notifyInventoryUpdate(true, hasItemDefChanges)
+        this.notifyInventoryUpdate(true, hasItemDefChanges)
         requestData.fireCb()
-        requestItemDefsImpl()
+        this.requestItemDefsImpl()
       })
   }
 
   function removeItem(itemid) {
-    if (itemid in items)
-      delete items[itemid]
-    notifyInventoryUpdate(true)
+    if (itemid in this.items)
+      delete this.items[itemid]
+    this.notifyInventoryUpdate(true)
   }
 
   function notifyInventoryUpdate(hasInventoryChanges = false, hasItemDefChanges = false) {
     if (hasItemDefChanges) {
-      ::dagor.debug("ExtInventory itemDef changed")
+      log("ExtInventory itemDef changed")
       ::broadcastEvent("ItemDefChanged")
     }
     if (hasInventoryChanges) {
-      ::dagor.debug("ExtInventory changed")
+      log("ExtInventory changed")
       ::broadcastEvent("ExtInventoryChanged")
     }
   }
 
-  getItems             = @() items
-  getItemdefs          = @() itemdefs
+  getItems             = @() this.items
+  getItemdefs          = @() this.itemdefs
   getItemCost          = @(itemdefid) prices.value?[itemdefid] ?? ::zero_money
 
   function addItemDefIdToRequest(itemdefid)
   {
-    if (itemdefid == null || itemdefid in itemdefs)
+    if (itemdefid == null || itemdefid in this.itemdefs)
       return false
 
-    itemdefs[itemdefid] <- {}
+    this.itemdefs[itemdefid] <- {}
     return true
   }
 
   function requestItemdefsByIds(itemdefIdsList, cb = null)
   {
     foreach (itemdefid in itemdefIdsList)
-      addItemDefIdToRequest(itemdefid)
-    requestItemDefs(cb)
+      this.addItemDefIdToRequest(itemdefid)
+    this.requestItemDefs(cb)
   }
 
   function addItemDef(itemdef) {
-    let originalItemDef = itemdefs?[itemdef.itemdefid] || {}
+    let originalItemDef = this.itemdefs?[itemdef.itemdefid] || {}
     originalItemDef.clear()
     originalItemDef.__update(itemdef)
-    originalItemDef.tags = getTagsItemDef(originalItemDef)
-    itemdefs[itemdef.itemdefid] <- originalItemDef
+    originalItemDef.tags = this.getTagsItemDef(originalItemDef)
+    this.itemdefs[itemdef.itemdefid] <- originalItemDef
   }
 
   function getTagsItemDef(itemdef)
   {
-    let tags = ::getTblValue("tags" , itemdef, null)
+    let tags = getTblValue("tags" , itemdef, null)
     if (!tags)
       return null
 
@@ -600,7 +605,7 @@ local InventoryClient = class {
       return
     }
 
-    let itemJson = getResultData(result, "item_json")
+    let itemJson = this.getResultData(result, "item_json")
     if (!itemJson)
       return
 
@@ -608,10 +613,10 @@ local InventoryClient = class {
     local shouldUpdateItemdefs = false
     local hasInventoryChanges = false
     foreach (item in itemJson) {
-      let oldItem = ::getTblValue(item.itemid, items)
+      let oldItem = getTblValue(item.itemid, this.items)
       if (item.quantity == 0) {
         if (oldItem) {
-          delete items[item.itemid]
+          delete this.items[item.itemid]
           hasInventoryChanges = true
         }
 
@@ -619,21 +624,21 @@ local InventoryClient = class {
       }
 
       if (oldItem) {
-        addInventoryItem(item)
+        this.addInventoryItem(item)
         hasInventoryChanges = true
         continue
       }
 
       newItems.append(item)
       hasInventoryChanges = true
-      shouldUpdateItemdefs = addInventoryItem(item) || shouldUpdateItemdefs
+      shouldUpdateItemdefs = this.addInventoryItem(item) || shouldUpdateItemdefs
     }
 
     if (!shouldCheckInventory)
       return cb(newItems)
 
     if (shouldUpdateItemdefs) {
-      requestItemDefs(function() {
+      this.requestItemDefs(function() {
         if (cb) {
           for (local i = newItems.len() - 1; i >= 0; --i) {
             if (typeof(newItems[i].itemdef) != "table") {
@@ -646,7 +651,7 @@ local InventoryClient = class {
       })
     }
     else {
-      notifyInventoryUpdate(hasInventoryChanges)
+      this.notifyInventoryUpdate(hasInventoryChanges)
       if (cb) {
         cb(newItems)
       }
@@ -656,18 +661,18 @@ local InventoryClient = class {
   function exchangeViaChard(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
     let json = {
       outputitemdefid = outputItemDefId
-      materials = materials
+      materials
     }
     if (::u.isString(requirement) && requirement.len() > 0)
     {
       json["permission"] <- requirement
     }
 
-    let internalCb = ::Callback((@(cb, shouldCheckInventory) function(data) {
-                                     handleItemsDelta(data, cb, errocCb, shouldCheckInventory)
+    let internalCb = Callback((@(cb, shouldCheckInventory) function(data) {
+                                     this.handleItemsDelta(data, cb, errocCb, shouldCheckInventory)
                                  })(cb, shouldCheckInventory), this)
     let taskId = ::char_send_custom_action("cln_inventory_exchange_items",
-                                             ::EATT_JSON_REQUEST,
+                                             EATT_JSON_REQUEST,
                                              ::DataBlock(),
                                              ::json_to_string(json, false),
                                              -1)
@@ -676,13 +681,13 @@ local InventoryClient = class {
 
   function exchangeDirect(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true) {
     let req = {
-        outputitemdefid = outputItemDefId,
-        materials = materials
+      outputitemdefid = outputItemDefId,
+      materials
     }
 
-    request("ExchangeItems", {}, req,
+    this.request("ExchangeItems", {}, req,
       function(result) {
-        handleItemsDelta(result, cb, errocCb, shouldCheckInventory)
+        this.handleItemsDelta(result, cb, errocCb, shouldCheckInventory)
       },
       { }
     )
@@ -696,16 +701,16 @@ local InventoryClient = class {
 
     if (!::u.isString(requirement) || requirement.len() == 0)
     {
-      exchangeDirect(materials, outputItemDefId, cb, errocCb, shouldCheckInventory)
+      this.exchangeDirect(materials, outputItemDefId, cb, errocCb, shouldCheckInventory)
       return
     }
 
-    exchangeViaChard(materials, outputItemDefId, cb, errocCb, shouldCheckInventory, requirement)
+    this.exchangeViaChard(materials, outputItemDefId, cb, errocCb, shouldCheckInventory, requirement)
   }
 
   function getChestGeneratorItemdefIds(itemdefid) {
-    let usedToCreate = itemdefs?[itemdefid]?.used_to_create
-    let parsedRecipes = parseRecipesString(usedToCreate)
+    let usedToCreate = this.itemdefs?[itemdefid]?.used_to_create
+    let parsedRecipes = this.parseRecipesString(usedToCreate)
 
     let res = []
     foreach (recipeCfg in parsedRecipes)
@@ -719,14 +724,14 @@ local InventoryClient = class {
 
   function canRefreshData()
   {
-    return ::has_feature("ExtInventory")
+    return hasFeature("ExtInventory")
   }
 
   function forceRefreshItemDefs(cb)
   {
-    requestItemDefs(function() {
+    this.requestItemDefs(function() {
       cb()
-      notifyInventoryUpdate(true, true)
+      this.notifyInventoryUpdate(true, true)
     }, true)
   }
 
@@ -745,43 +750,43 @@ local InventoryClient = class {
       if (itemdefid == null)
         continue
       res[itemdefid] <- typeOfPrice == WAR_THUNDER_EAGLES ? ::Cost(0, data?.price) : ::Cost(data?.price, 0)
-      shouldRequestItemdefs = addItemDefIdToRequest(itemdefid) || shouldRequestItemdefs
+      shouldRequestItemdefs = this.addItemDefIdToRequest(itemdefid) || shouldRequestItemdefs
     }
     watch(res)
 
     if (shouldRequestItemdefs)
-      requestItemDefs(notifyPricesChanged)
+      this.requestItemDefs(notifyPricesChanged)
   }
 
   function requestPrices()
   {
-    request("GetItemPrices",
+    this.request("GetItemPrices",
       { currency = WAR_THUNDER_EAGLES },
       null,
-      @(result) updatePrice(priceEagles, result, WAR_THUNDER_EAGLES)
+      @(result) this.updatePrice(priceEagles, result, WAR_THUNDER_EAGLES)
     )
 
-    request("GetItemPrices",
+    this.request("GetItemPrices",
       { currency = WAR_THUNDER_WARPOINTS },
       null,
-      @(result) updatePrice(priceWarPoint, result, WAR_THUNDER_WARPOINTS)
+      @(result) this.updatePrice(priceWarPoint, result, WAR_THUNDER_WARPOINTS)
     )
   }
 
   function onEventSignOut(p)
   {
-    lastUpdateTime = -1
-    firstProfileLoadComplete = false
+    this.lastUpdateTime = -1
+    this.firstProfileLoadComplete = false
     priceEagles.value.clear()
     priceWarPoint.value.clear()
-    items.clear()
+    this.items.clear()
   }
 
   function cancelDelayedExchange(itemUid, cb = null, errocCb = null) {
-    request("CancelDelayedExchange",
+    this.request("CancelDelayedExchange",
       { itemId = itemUid },
       null,
-      @(result) handleItemsDelta(result, cb, errocCb)
+      @(result) this.handleItemsDelta(result, cb, errocCb)
     )
   }
 

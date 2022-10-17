@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let function getReqAirPosInArray(reqName, arr)
 {
@@ -70,7 +77,7 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null)
     else {
       curAir = item
       if (item?.reqAir)
-        prevAir = getAircraftByName(item.reqAir)
+        prevAir = ::getAircraftByName(item.reqAir)
       if (prevAir)
         curAir.reqAir <- prevAir.name
     }
@@ -143,7 +150,7 @@ let function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem=nul
       if (bItem?.reqAir && bItem.reqAir=="" && bItem.rank >= curBranch[0].rank)
       {
         foreach(k, curItem in curBranch)
-          branches[branches.len()-1].insert(bIdx+k, curBranch[k])
+          branches[branches.len()-1].insert(bIdx+k, curBranch[k]) //warning disable: -modified-container
         placeFound = true
         break
       }
@@ -205,7 +212,7 @@ let function getBranchesTbl(rangeData)
     foreach(idx, item in b)
       test += ((idx==0)? "\n" : ", ") + item.air.name + " ("+item.air.rank+","+item.childs+")"
                + (item?.reqAir ? "("+item.reqAir+")":"")
-  ::dagor.debug(test)
+  log(test)
 */
   return branches
 }
@@ -413,7 +420,7 @@ let function generatePageTreeByRank(page)
             if (item != null)
             {
               if (rangeTree[i][j + firstCol] != null)
-                ::dagor.debug("GP: try to fill not empty cell!!!!! ")
+                log("GP: try to fill not empty cell!!!!! ")
               rangeTree[i][j + firstCol] = item
             }
         }
@@ -442,7 +449,7 @@ let function generatePageTreeByRankPosXY(page)
         let rankPosXY = unit?.rankPosXY
         if (!rankPosXY)
         {
-          if (!::isInArray(unit.name, unitsWithWrongPositions))
+          if (!isInArray(unit.name, unitsWithWrongPositions))
             unitsWithWrongPositions.append(unit.name)
           continue
         }
@@ -454,9 +461,9 @@ let function generatePageTreeByRankPosXY(page)
         if (page.tree[absolutePosY-1][absolutePosX-1] != null)
         {
           let curUnit = page.tree[absolutePosY-1][absolutePosX-1]
-          if (!::isInArray(unit.name, unitsWithWrongPositions))
+          if (!isInArray(unit.name, unitsWithWrongPositions))
             unitsWithWrongPositions.append(unit.name)
-          if (!::isInArray(curUnit, unitsWithWrongPositions))
+          if (!isInArray(curUnit, unitsWithWrongPositions))
             unitsWithWrongPositions.append(curUnit.name)
         }
         page.tree[absolutePosY-1][absolutePosX-1] = unit?.air ?? unit
@@ -527,7 +534,7 @@ let function generateTreeData(page)
       if (typeof(item)=="integer") testText += "."
       else testText += "A"
     }
-  ::dagor.debug(testText + "\n done.")
+  log(testText + "\n done.")
 */
   //fill Lines and clear table
   fillLinesInPage(page)

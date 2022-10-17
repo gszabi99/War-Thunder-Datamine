@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 
 ::items_classes.CraftPart <- class extends ItemExternal {

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
@@ -28,7 +35,7 @@ elemViewType.addTypes({
         return
 
       let nestObj = obj.getParent().getParent()
-      if (!::check_obj(nestObj))
+      if (!checkObj(nestObj))
         return
 
       let isWidgetVisible = nestObj.getFinalProp("isClanOnly") != "yes" ||
@@ -94,14 +101,14 @@ elemViewType.addTypes({
         updateMemberView(obj, memberIndex++, null)
 
       let emptyVoiceObj = nestObj.findObject("voice_chat_no_activity")
-      if (::check_obj(emptyVoiceObj))
+      if (checkObj(emptyVoiceObj))
         emptyVoiceObj.fade = !isAnybodyTalk() ? "in" : "out"
     }
 
     updateMemberView = function(obj, objIndex, uid)
     {
       let memberObj = objIndex < obj.childrenCount() ? obj.getChild(objIndex) : null
-      if (!::check_obj(memberObj))
+      if (!checkObj(memberObj))
         return
 
       let contact = ::getContact(uid)
@@ -114,7 +121,7 @@ elemViewType.addTypes({
     fillContainer = function(obj, childRequired)
     {
       let data = ::handyman.renderCached("%gui/chat/voiceChatElement",
-        { voiceChatElement = ::array(childRequired, {}) })
+        { voiceChatElement = array(childRequired, {}) })
       obj.getScene().replaceContentFromText(obj, data, data.len(), this)
 
       let heightEnd = obj.getParent().getFinalProp("isSmall") == "yes"

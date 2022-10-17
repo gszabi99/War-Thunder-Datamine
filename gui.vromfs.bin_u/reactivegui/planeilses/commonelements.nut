@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
       TimeBeforeBombRelease, AimLocked, TargetPos, TargetPosValid,
       RocketMode, CannonMode} = require("%rGui/planeState/planeToolsState.nut")

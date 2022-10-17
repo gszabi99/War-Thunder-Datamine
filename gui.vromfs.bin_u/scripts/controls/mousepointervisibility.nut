@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /**
  * Informs when in-game mouse pointer visibility toggles. In the battle, mouse
  * pointer is usually hidden in HUD, it shows either when some GUI scene is opened
@@ -5,8 +10,8 @@
  * ID_SHOW_MOUSE_CURSOR shortcut button.
  */
 
-let isMouseCursorVisible = ::Watched(::is_cursor_visible_in_gui())
-let forceHideCursor = ::Watched(false)
+let isMouseCursorVisible = Watched(::is_cursor_visible_in_gui())
+let forceHideCursor = Watched(false)
 // Called from client
 ::on_changed_cursor_visibility <- @(oldValue) isMouseCursorVisible(::is_cursor_visible_in_gui())
 

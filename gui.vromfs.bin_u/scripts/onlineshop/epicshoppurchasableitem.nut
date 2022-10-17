@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let statsd = require("statsd")
 let { GUI } = require("%scripts/utils/configs.nut")
 
@@ -34,107 +39,107 @@ local EpicShopPurchasableItem = class {
   isMultiConsumable = false
 
   constructor(blk) {
-    id = blk.id
-    apiVersion = blk?.ApiVersion ?? 1
-    serverIndex = blk?.ServerIndex ?? 1
-    catalogNamespace = blk?.CatalogNamespace ?? "dlc"
-    expirationTimestamp = blk?.ExpirationTimestamp ?? 0
+    this.id = blk.id
+    this.apiVersion = blk?.ApiVersion ?? 1
+    this.serverIndex = blk?.ServerIndex ?? 1
+    this.catalogNamespace = blk?.CatalogNamespace ?? "dlc"
+    this.expirationTimestamp = blk?.ExpirationTimestamp ?? 0
 
     let purchLimit = blk?.PurchaseLimit ?? 1
-    isMultiConsumable = purchLimit == -1
+    this.isMultiConsumable = purchLimit == -1
 
-    if (isMultiConsumable) {
-      defaultIconStyle = "reward_gold"
-      mediaItemType = "gold"
+    if (this.isMultiConsumable) {
+      this.defaultIconStyle = "reward_gold"
+      this.mediaItemType = "gold"
     }
 
-    name = blk?.TitleText ?? ""
-    description = blk?.DescriptionText ?? ""
-    longDescription = blk?.LongDescriptionText ?? ""
+    this.name = blk?.TitleText ?? ""
+    this.description = blk?.DescriptionText ?? ""
+    this.longDescription = blk?.LongDescriptionText ?? ""
 
-    price = (blk?.CurrentPrice ?? 0) * 0.01 // 100 = kopeyki
-    listPrice = (blk?.OriginalPrice ?? 0) * 0.01
-    priceText = price.tostring()
-    listPriceText = listPrice.tostring()
-    currencyCode = blk?.CurrencyCode
-    discount = blk?.DiscountPercentage ?? 0
-    isPurchasable = blk?.bAvailableForPurchase ?? false
+    this.price = (blk?.CurrentPrice ?? 0) * 0.01 // 100 = kopeyki
+    this.listPrice = (blk?.OriginalPrice ?? 0) * 0.01
+    this.priceText = this.price.tostring()
+    this.listPriceText = this.listPrice.tostring()
+    this.currencyCode = blk?.CurrencyCode
+    this.discount = blk?.DiscountPercentage ?? 0
+    this.isPurchasable = blk?.bAvailableForPurchase ?? false
 
-    if (isPurchasable)
-      amount = getPriceText()
+    if (this.isPurchasable)
+      this.amount = this.getPriceText()
 
     let shopBlk = GUI.get()?.epic_ingame_shop
     let ingameShopImages = shopBlk?.items
-    if (ingameShopImages?[id] && shopBlk?.mainPart && shopBlk?.fileExtension)
-      imagePath = $"!{shopBlk.mainPart}{id}{shopBlk.fileExtension}"
+    if (ingameShopImages?[this.id] && shopBlk?.mainPart && shopBlk?.fileExtension)
+      this.imagePath = $"!{shopBlk.mainPart}{this.id}{shopBlk.fileExtension}"
 
-    update(blk)
+    this.update(blk)
   }
 
   update = function(blk) {
-    isBought = isMultiConsumable? false : ((blk?.PurchasedCount ?? 0) > 0)
+    this.isBought = this.isMultiConsumable? false : ((blk?.PurchasedCount ?? 0) > 0)
   }
 
   getPriceText = function() {
-    if (priceText == "")
+    if (this.priceText == "")
       return ""
 
-    let color = haveDiscount() ? "goodTextColor" : ""
-    let text = price == 0.0 ? ::loc("shop/free") : " ".join([priceText, currencyCode], true)
-    return ::colorize(color, text)
+    let color = this.haveDiscount() ? "goodTextColor" : ""
+    let text = this.price == 0.0 ? loc("shop/free") : " ".join([this.priceText, this.currencyCode], true)
+    return colorize(color, text)
   }
 
-  haveDiscount = @() !isBought && price != listPrice
-  getDiscountPercent = @() discount
+  haveDiscount = @() !this.isBought && this.price != this.listPrice
+  getDiscountPercent = @() this.discount
 
   getDescription = function() {
-    local strPrice = getPriceText()
+    local strPrice = this.getPriceText()
     if (strPrice == "")
-      return description
+      return this.description
 
-    if (haveDiscount())
+    if (this.haveDiscount())
       strPrice = "{0} {1}{2}{3} {4}".subst(
-        ::loc("ugm/price"),
-        ::loc("ugm/withDiscount"),
-        ::loc("ui/colon"),
-        ::colorize("oldPrice", " ".join([listPrice, currencyCode])),
+        loc("ugm/price"),
+        loc("ugm/withDiscount"),
+        loc("ui/colon"),
+        colorize("oldPrice", " ".join([this.listPrice, this.currencyCode])),
         strPrice
       )
     else
-      strPrice = "".join([::loc("ugm/price"), ::loc("ui/colon"), strPrice])
+      strPrice = "".join([loc("ugm/price"), loc("ui/colon"), strPrice])
 
-    return "\n".join([strPrice, description])
+    return "\n".join([strPrice, this.description])
   }
 
   getViewData = @(params = {}) {
-    isAllBought = isBought
-    price = getPriceText()
-    layered_image = getIcon()
+    isAllBought = this.isBought
+    price = this.getPriceText()
+    layered_image = this.getIcon()
     enableBackground = true
-    isInactive = isInactive()
-    isItemLocked = !isPurchasable
-    itemHighlight = isBought
+    isInactive = this.isInactive()
+    isItemLocked = !this.isPurchasable
+    itemHighlight = this.isBought
     needAllBoughtIcon = true
-    headerText = shortName
+    headerText = this.shortName
   }.__merge(params)
 
-  isCanBuy = @() isPurchasable && !isBought
-  isInactive = @() !isPurchasable || isBought
+  isCanBuy = @() this.isPurchasable && !this.isBought
+  isInactive = @() !this.isPurchasable || this.isBought
 
-  getIcon = @(...) imagePath ? ::LayersIcon.getCustomSizeIconData(imagePath, "pw, ph")
-                             : ::LayersIcon.getIconData(null, null, 1.0, defaultIconStyle)
+  getIcon = @(...) this.imagePath ? ::LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
+                             : ::LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
 
-  getSeenId = @() id.tostring()
-  canBeUnseen = @() isBought
+  getSeenId = @() this.id.tostring()
+  canBeUnseen = @() this.isBought
 
   showDetails = function(metricPlaceCall = "ingame_store") {
     statsd.send_counter($"sq.{metricPlaceCall}.open_product", 1)
     ::add_big_query_record("open_product",
       ::save_to_json({
-        itemId = id
+        itemId = this.id
       })
     )
-    ::epic_buy_item(id)
+    ::epic_buy_item(this.id)
   }
   showDescription = @() null
 }

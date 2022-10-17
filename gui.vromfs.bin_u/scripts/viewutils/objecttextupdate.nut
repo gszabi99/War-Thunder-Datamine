@@ -1,21 +1,26 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
 } = require("app")
 
 local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
-  if (!::check_obj(nestObj) || firstBtnId == "")
+  if (!checkObj(nestObj) || firstBtnId == "")
     return null
 
   if (!secondText)
     secondText = firstText
 
   let fObj = nestObj.findObject(firstBtnId)
-  if(!::check_obj(fObj))
+  if(!checkObj(fObj))
     return null
 
   local hasTextBlock = textBlock != null
   let textBlockObj = ::showBtn($"{firstBtnId}_text_block", hasTextBlock, fObj)
-  hasTextBlock = hasTextBlock && ::check_obj(textBlockObj)
+  hasTextBlock = hasTextBlock && checkObj(textBlockObj)
   if (hasTextBlock) {
     let guiScene = ::get_cur_gui_scene()
     if (guiScene != null)
@@ -24,7 +29,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
 
   fObj.setValue(hasTextBlock ? null : firstText)
   let sObj = ::showBtn($"{firstBtnId}_text", !hasTextBlock, fObj)
-  if(!hasTextBlock && ::check_obj(sObj))
+  if(!hasTextBlock && checkObj(sObj))
     sObj.setValue(secondText)
 
   return fObj
@@ -63,30 +68,29 @@ let function placePriceTextToButton(nestObj, btnId, localizedText, arg1=0, arg2=
 }
 
 let function setHelpTextOnLoading(nestObj = null) {
-  if (!::checkObj(nestObj))
+  if (!checkObj(nestObj))
     return
 
-  let text = ::show_console_buttons? "" : ::loc("loading/help_tip01")
+  let text = ::show_console_buttons? "" : loc("loading/help_tip01")
   nestObj.setValue(text)
 }
 
 let function setVersionText(scene=null) {
   let verObj = scene ? scene.findObject("version_text") : ::get_cur_gui_scene()["version_text"]
-  if(::checkObj(verObj))
-    verObj.setValue(format(::loc("mainmenu/version"), get_game_version_str()))
+  if(checkObj(verObj))
+    verObj.setValue(format(loc("mainmenu/version"), get_game_version_str()))
 }
 
 let function formatLocalizationArrayToDescription(locArr) {
   local descr = ""
 
-  foreach (idx, loc in locArr)
-  {
-    local str = loc.text
+  foreach (idx, locObj in locArr) {
+    local str = locObj.text
 
-    if (loc.isBold)
+    if (locObj.isBold)
       str = "".concat("<b>", str, "</b>")
-    if (loc.color != null)
-      str = "".concat($"<color={loc.color}>", str, "</color>")
+    if (locObj.color != null)
+      str = "".concat($"<color={locObj.color}>", str, "</color>")
 
     descr = "".concat(descr, idx != 0 ? "\u2022 " : "", str, "\n")
   }

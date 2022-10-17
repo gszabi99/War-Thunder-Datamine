@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let statsd = require("statsd")
 let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
@@ -26,17 +34,17 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 ::open_browser_modal <- function open_browser_modal(url="", tags=[], baseUrl = "")
 {
-  ::gui_start_modal_wnd(::gui_handlers.BrowserModalHandler, { url = url, urlTags = tags, baseUrl = baseUrl })
+  ::gui_start_modal_wnd(::gui_handlers.BrowserModalHandler, { url, urlTags=tags, baseUrl })
 }
 
 ::close_browser_modal <- function close_browser_modal()
 {
   let handler = ::handlersManager.findHandlerClassInScene(
-    ::gui_handlers.BrowserModalHandler);
+    ::gui_handlers.BrowserModalHandler)
 
   if (handler == null)
   {
-    ::dagor.debug("[BRWS] Couldn't find embedded browser modal handler");
+    log("[BRWS] Couldn't find embedded browser modal handler")
     return
   }
 
@@ -66,10 +74,10 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
   function initScreen()
   {
-    let browserObj = scene.findObject("browser_area")
-    browserObj.url=url
-    lastLoadedUrl = baseUrl
-    browser_go(url)
+    let browserObj = this.scene.findObject("browser_area")
+    browserObj.url = this.url
+    this.lastLoadedUrl = this.baseUrl
+    ::browser_go(this.url)
   }
 
   function browserCloseAndUpdateEntitlements()
@@ -77,45 +85,45 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     ::g_tasker.addTask(::update_entitlements_limited(),
                        {
                          showProgressBox = true
-                         progressBoxText = ::loc("charServer/checking")
+                         progressBoxText = loc("charServer/checking")
                        },
                        @() ::update_gamercards())
-    goBack();
+    this.goBack()
   }
 
   function browserGoBack()
   {
-    ::browser_go_back();
+    ::browser_go_back()
   }
 
   function onBrowserBtnReload()
   {
-    ::browser_reload_page();
+    ::browser_reload_page()
   }
 
   function browserForceExternal()
   {
-    local taggedUrl = isLoadingPage
-      ? lastLoadedUrl
+    local taggedUrl = this.isLoadingPage
+      ? this.lastLoadedUrl
       : ::browser_get_current_url()
-    if (!u.isEmpty(urlTags) && taggedUrl != "")
+    if (!::u.isEmpty(this.urlTags) && taggedUrl != "")
     {
-      let tagsStr = " ".join(urlTags)
+      let tagsStr = " ".join(this.urlTags)
       if (!::g_string.startsWith(taggedUrl, tagsStr))
         taggedUrl = " ".concat(tagsStr, taggedUrl)
     }
 
-    let newUrl = u.isEmpty(externalUrl) ? taggedUrl : externalUrl
-    openUrl(u.isEmpty(newUrl) ? baseUrl : newUrl, true, false, "internal_browser")
+    let newUrl = ::u.isEmpty(this.externalUrl) ? taggedUrl : this.externalUrl
+    openUrl(::u.isEmpty(newUrl) ? this.baseUrl : newUrl, true, false, "internal_browser")
   }
 
   function setTitle(title)
   {
-    if (u.isEmpty(title))
-      return;
+    if (::u.isEmpty(title))
+      return
 
-    let titleObj = scene.findObject("wnd_title")
-    if (::checkObj(titleObj))
+    let titleObj = this.scene.findObject("wnd_title")
+    if (checkObj(titleObj))
       titleObj.setValue(title)
   }
 
@@ -123,55 +131,55 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   {
     switch (params.eventType)
     {
-      case ::BROWSER_EVENT_DOCUMENT_READY:
-        lastLoadedUrl = ::browser_get_current_url()
-        toggleWaitAnimation(false)
+      case BROWSER_EVENT_DOCUMENT_READY:
+        this.lastLoadedUrl = ::browser_get_current_url()
+        this.toggleWaitAnimation(false)
         break;
-      case ::BROWSER_EVENT_FAIL_LOADING_FRAME:
+      case BROWSER_EVENT_FAIL_LOADING_FRAME:
         if (params.isMainFrame)
         {
-          toggleWaitAnimation(false)
-          let message = "".concat(::loc("browser/error_load_url"), ::loc("ui/dot"),
-            "\n", ::loc("browser/error_code"), ::loc("ui/colon"), params.errorCode, ::loc("ui/comma"), params.errorDesc)
-          let urlCommentMarkup = getUrlCommentMarkupForMsgbox(params.url)
+          this.toggleWaitAnimation(false)
+          let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
+            "\n", loc("browser/error_code"), loc("ui/colon"), params.errorCode, loc("ui/comma"), params.errorDesc)
+          let urlCommentMarkup = this.getUrlCommentMarkupForMsgbox(params.url)
           this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
         }
         break;
-      case ::BROWSER_EVENT_NEED_RESEND_FRAME:
-        toggleWaitAnimation(false)
+      case BROWSER_EVENT_NEED_RESEND_FRAME:
+        this.toggleWaitAnimation(false)
 
-        this.msgBox("error", ::loc("browser/error_should_resend_data"),
-            [["#mainmenu/btnBack", browserGoBack()],
+        this.msgBox("error", loc("browser/error_should_resend_data"),
+            [["#mainmenu/btnBack", this.browserGoBack],
              ["#mainmenu/btnRefresh", (@(params) function() { ::browser_go(params.url) })(params)]],
              "#mainmenu/btnBack")
         break;
-      case ::BROWSER_EVENT_CANT_DOWNLOAD:
-        toggleWaitAnimation(false)
-        showInfoMsgBox(::loc("browser/error_cant_download"))
+      case BROWSER_EVENT_CANT_DOWNLOAD:
+        this.toggleWaitAnimation(false)
+        ::showInfoMsgBox(loc("browser/error_cant_download"))
         break;
-      case ::BROWSER_EVENT_BEGIN_LOADING_FRAME:
+      case BROWSER_EVENT_BEGIN_LOADING_FRAME:
         if (params.isMainFrame)
         {
-          toggleWaitAnimation(true)
-          setTitle(params.title)
+          this.toggleWaitAnimation(true)
+          this.setTitle(params.title)
         }
         break;
-      case ::BROWSER_EVENT_FINISH_LOADING_FRAME:
-        lastLoadedUrl = ::browser_get_current_url()
+      case BROWSER_EVENT_FINISH_LOADING_FRAME:
+        this.lastLoadedUrl = ::browser_get_current_url()
         if (params.isMainFrame)
         {
-          toggleWaitAnimation(false)
-          setTitle(params.title)
+          this.toggleWaitAnimation(false)
+          this.setTitle(params.title)
         }
         break;
-      case ::BROWSER_EVENT_BROWSER_CRASHED:
-        ::dagor.debug("[BRWS] embedded browser crashed, forcing external")
+      case BROWSER_EVENT_BROWSER_CRASHED:
+        log("[BRWS] embedded browser crashed, forcing external")
         statsd.send_counter("sq.browser.crash", 1, {reason = params.errorDesc})
-        browserForceExternal()
-        goBack()
+        this.browserForceExternal()
+        this.goBack()
         break;
       default:
-        ::dagor.debug("[BRWS] onEventEmbeddedBrowser: unknown event type "
+        log("[BRWS] onEventEmbeddedBrowser: unknown event type "
           + params.eventType);
         break;
     }
@@ -180,7 +188,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   function onEventWebPollAuthResult(param)
   {
     // WebPollAuthResult event may come before browser opens the page
-    let currentUrl = ::u.isEmpty(::browser_get_current_url()) ? url : ::browser_get_current_url()
+    let currentUrl = ::u.isEmpty(::browser_get_current_url()) ? this.url : ::browser_get_current_url()
     if(::u.isEmpty(currentUrl))
       return
     // we have to update externalUrl for any pollId
@@ -188,15 +196,15 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     let pollId = getPollIdByFullUrl(currentUrl)
     if( ! pollId)
       return
-    externalUrl = generatePollUrl(pollId, false)
+    this.externalUrl = generatePollUrl(pollId, false)
   }
 
   function toggleWaitAnimation(show)
   {
-    isLoadingPage = show
+    this.isLoadingPage = show
 
-    let waitSpinner = scene.findObject("browserWaitAnimation");
-    if (::checkObj(waitSpinner))
+    let waitSpinner = this.scene.findObject("browserWaitAnimation");
+    if (checkObj(waitSpinner))
       waitSpinner.show(show);
   }
 
@@ -213,7 +221,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     let lines = str.split("\n")
     foreach (line in lines)
     {
-      let unicodeLine = ::utf8(line)
+      let unicodeLine = utf8(line)
       let strLen = unicodeLine.charCount()
       for (local pos = 0; pos < strLen; pos += width)
         wrapped.append(unicodeLine.slice(pos, pos + width))
@@ -229,12 +237,12 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     // Splitting too long URL because daGUI textarea don't break words on word-wrap.
     let fontSizePropName = "smallFont"
     let fontSizeCssId = "fontSmall"
-    let maxWidthPx = ::to_pixels("0.8@rw")
-    let textWidthPx = getStringWidthPx(urlStr, fontSizeCssId, guiScene)
+    let maxWidthPx = to_pixels("0.8@rw")
+    let textWidthPx = getStringWidthPx(urlStr, fontSizeCssId, this.guiScene)
     if (textWidthPx != 0 && textWidthPx > maxWidthPx)
     {
-      let splitByChars = (1.0 * maxWidthPx / textWidthPx * ::utf8(urlStr).charCount()).tointeger()
-      urlStr = wordWrapText(urlStr, splitByChars)
+      let splitByChars = (1.0 * maxWidthPx / textWidthPx * utf8(urlStr).charCount()).tointeger()
+      urlStr = this.wordWrapText(urlStr, splitByChars)
     }
     return format("textareaNoTab { %s:t='yes'; overlayTextColor:t='faded'; text:t='%s'; }",
       fontSizePropName, ::g_string.stripTags(urlStr))

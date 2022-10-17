@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { updateContactsGroups } = require("%scripts/contacts/contactsManager.nut")
 
 let function on_presences_update(params)
@@ -12,8 +19,8 @@ let function on_presences_update(params)
     }
     if (typeof(player.uid) != "string")
     {
-      let errText = "on_presences_update cant update presence of player:\n" + ::toString(p)
-      ::script_net_assert_once(::toString(player), errText)
+      let errText = "on_presences_update cant update presence of player:\n" + toString(p)
+      ::script_net_assert_once(toString(player), errText)
       continue
     }
 
@@ -66,13 +73,13 @@ let function on_presences_update(params)
 
 ::reload_contact_list <- function reload_contact_list()
 {
-  matching_api_func("mpresence.reload_contact_list",
+  ::matching_api_func("mpresence.reload_contact_list",
                     function(...){})
 }
 
 ::set_presence <- function set_presence(presence)
 {
-  matching_api_func("mpresence.set_presence", function(...) {}, presence)
+  ::matching_api_func("mpresence.set_presence", function(...) {}, presence)
 }
 
 foreach (notificationName, callback in
@@ -81,9 +88,9 @@ foreach (notificationName, callback in
 
             ["mpresence.on_added_to_contact_list"] = function (params)
               {
-                let userData = ::getTblValue("user", params)
+                let userData = getTblValue("user", params)
                 if (userData)
-                  ::g_invites.addFriendInvite(::getTblValue("name", userData, ""), ::getTblValue("userId", userData, ""))
+                  ::g_invites.addFriendInvite(getTblValue("name", userData, ""), getTblValue("userId", userData, ""))
               }
           }
         )

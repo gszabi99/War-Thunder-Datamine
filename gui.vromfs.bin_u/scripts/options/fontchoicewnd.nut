@@ -1,9 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let FONT_CHOICE_SAVE_ID = "tutor/fontChange"
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 local wasOpened = false
 
-::gui_handlers.FontChoiceWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.FontChoiceWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/options/fontChoiceWnd"
 

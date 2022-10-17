@@ -1,14 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let {UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX} = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
-
-::exportUnitInfo <- function exportUnitInfo(params)
-{
-    UnitInfoExporter(params["langs"], params["path"])
-    return "ok"
-}
 
 const COUNTRY_GROUP = "country"
 global const ARMY_GROUP = "army"
@@ -17,10 +18,7 @@ const COMMON_PARAMS_GROUP = "common"
 const BASE_GROUP = "base"
 const EXTENDED_GROUP = "extended"
 
-
-web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
-
-::UnitInfoExporter <- class
+let class UnitInfoExporter
 {
   static EXPORT_TIME_OUT = 20000
   static activeUnitInfoExporters = []
@@ -32,7 +30,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
   langBeforeExport = ""
   curLang = ""
 
-  debugLog = ::dlog // warning disable: -forbidden-function
+  debugLog = dlog // warning disable: -forbidden-function
   isToStringForDebug = true
 
   fullBlk = null
@@ -64,7 +62,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
   function _tostring()
   {
-    return format("Exporter(%s, '%s')", ::toString(langsList), path)
+    return format("Exporter(%s, '%s')", toString(langsList), path)
   }
 
   function isReadyStartExporter()
@@ -192,13 +190,13 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     fBlk[COUNTRY_GROUP] = ::DataBlock()
 
     foreach(country in shopCountriesList)
-      fBlk[COUNTRY_GROUP][country] = ::loc(country)
+      fBlk[COUNTRY_GROUP][country] = loc(country)
   }
 
   function exportRank(fBlk)
   {
     fBlk[RANK_GROUP] = ::DataBlock()
-    fBlk[RANK_GROUP].header = ::loc("shop/age")
+    fBlk[RANK_GROUP].header = loc("shop/age")
     fBlk[RANK_GROUP].texts = ::DataBlock()
 
     for(local rank = 1; rank <= ::max_country_rank; rank++)
@@ -238,7 +236,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars)
     {
       debugLog($"Exporter: wait for calculating parameters for unit {curUnit.name}")
-      return check_unit_mods_update(curUnit, null, true, true)
+      return ::check_unit_mods_update(curUnit, null, true, true)
     }
 
     let groupId = curUnit.showOnlyWhenBought? EXTENDED_GROUP : BASE_GROUP
@@ -272,3 +270,11 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     return true
   }
 }
+
+let function exportUnitInfo(params)
+{
+  UnitInfoExporter(params["langs"], params["path"])
+  return "ok"
+}
+
+::web_rpc.register_handler("exportUnitInfo", exportUnitInfo)

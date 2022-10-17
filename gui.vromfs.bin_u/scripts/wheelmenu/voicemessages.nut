@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
@@ -46,7 +51,7 @@ let function initVoiceMessageList() {
 }
 initVoiceMessageList()
 
-let getCategoryLoc = @(category) ::loc($"voice_message_category/{category}")
+let getCategoryLoc = @(category) loc($"voice_message_category/{category}")
 
 let function getFavoriteVoiceMessagesVariants() {
   let result = ["#options/none"];
@@ -65,8 +70,8 @@ let function getFavoriteVoiceMessagesVariants() {
     }
     indexInCategory++;
 
-    result.append("" + categoryIndex + "-" + indexInCategory + ": " + format(::loc(record.name + "_0"),
-      ::loc("voice_message_target_placeholder")));
+    result.append("" + categoryIndex + "-" + indexInCategory + ": " + format(loc(record.name + "_0"),
+      loc("voice_message_target_placeholder")));
   }
   return result;
 }
@@ -88,20 +93,20 @@ let function getVoiceMessageListLine(index, is_category, name, squad, targetName
 
   return {
     shortcutText = scText
-    name = is_category ? getCategoryLoc(name) : format(::loc(name + "_0"), targetName)
+    name = is_category ? getCategoryLoc(name) : format(loc(name + "_0"), targetName)
     chatMode = squad ? "squad" : "team"
   }
 }
 
 let function getCantUseVoiceMessagesReason(isForSquad) {
   if (!::is_multiplayer())
-    return ::loc("ui/unavailable")
+    return loc("ui/unavailable")
   if (!::is_mode_with_teams(::get_game_type()))
-    return ::loc("chat/no_team")
-  if (isForSquad && ::get_mp_mode() == ::GM_SKIRMISH)
-    return ::loc("squad/no_squads_in_custom_battles")
+    return loc("chat/no_team")
+  if (isForSquad && ::get_mp_mode() == GM_SKIRMISH)
+    return loc("squad/no_squads_in_custom_battles")
   if (isForSquad && !::g_squad_manager.isInSquad())
-    return ::loc("squad/not_a_member")
+    return loc("squad/not_a_member")
   return ""
 }
 
@@ -129,7 +134,7 @@ let function showVoiceMessageList(show, category, squad, targetName) {
   {
     if (category == "") //list of categories
     {
-      if (::isInArray(record.category, categories)
+      if (isInArray(record.category, categories)
           || record.category == HIDDEN_CATEGORY_NAME)
         continue;
 
@@ -143,9 +148,9 @@ let function showVoiceMessageList(show, category, squad, targetName) {
       if (record.category != category)
         continue;
 
-      if ((::getTblValue("forAircraft", record, false) && heroIsTank)
-         || (::getTblValue("forTank", record, false) && !heroIsTank)
-         || (::getTblValue("haveTarget", record, false) && targetName == ""))
+      if ((getTblValue("forAircraft", record, false) && heroIsTank)
+         || (getTblValue("forTank", record, false) && !heroIsTank)
+         || (getTblValue("haveTarget", record, false) && targetName == ""))
       {
         shortcutTable = {}
       }
@@ -167,14 +172,14 @@ let function showVoiceMessageList(show, category, squad, targetName) {
         break
 
       let messageIndex = ::get_option_favorite_voice_message(i)
-      let record = ::getTblValue(messageIndex, voiceMessageNames)
+      let record = getTblValue(messageIndex, voiceMessageNames)
       if (!record)
         continue
 
       if (
-          (::getTblValue("haveTarget", record, false) && targetName == "")
-          || (::getTblValue("forAircraft", record, false) && heroIsTank)
-          || (::getTblValue("forTank", record, false) && !heroIsTank)
+          (getTblValue("haveTarget", record, false) && targetName == "")
+          || (getTblValue("forAircraft", record, false) && heroIsTank)
+          || (getTblValue("forTank", record, false) && !heroIsTank)
          )
       {
         menu.append({})
@@ -199,14 +204,14 @@ let function showVoiceMessageList(show, category, squad, targetName) {
 let removeFavoriteVoiceMessage = @(index) ::set_option_favorite_voice_message(index, -1)
 
 let function resetFastVoiceMessages() {
-  for (local i = 0; i < ::NUM_FAST_VOICE_MESSAGES; i++)
+  for (local i = 0; i < NUM_FAST_VOICE_MESSAGES; i++)
     removeFavoriteVoiceMessage(i)
 }
 
 ::is_voice_messages_muted <- function is_voice_messages_muted(name) //used from native code
 {
   return localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO)
-    || ::isPlayerNickInContacts(name, ::EPL_BLOCKLIST)
+    || ::isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
 //////////////////////////////////////////////////////

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 ::gui_handlers.WwQueueDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription
@@ -12,15 +19,15 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
         let customViewCountryData = getCustomViewCountryData(countryId, mapName)
         let customLocId = customViewCountryData.locId
         let countryNameText = countryId == customLocId
-          ? ::loc(countryId)
-          : "".concat(::loc(customLocId), ::loc("ui/parentheses/space", {text = ::loc(countryId)}))
+          ? loc(countryId)
+          : "".concat(loc(customLocId), loc("ui/parentheses/space", {text = loc(countryId)}))
         return {
           countryNameText = countryNameText
           countryId       = countryId
           countryIcon     = customViewCountryData.icon
-          isJoined        = ::isInArray(countryId, joinedCountries)
+          isJoined        = isInArray(countryId, joinedCountries)
           side            = side
-          isLeftAligned   = side == ::SIDE_1
+          isLeftAligned   = side == SIDE_1
         }
       })
     }
@@ -29,7 +36,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   function updateCountriesList()
   {
     let obj = scene.findObject("div_before_text")
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let amountByCountry = descItem.getArmyGroupsAmountByCountries()
@@ -39,7 +46,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
       sides.append(mapCountriesToView(side, amountByCountry, joinedCountries))
     let view = {
       sides = sides
-      vsText = ::loc("country/VS") + "\n "
+      vsText = loc("country/VS") + "\n "
     }
 
     let lastSelectedValue = ::get_obj_valid_index(obj.findObject("countries_container"))

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 enum PLAYBACK_STATUS
 {
   INVALID,
@@ -12,29 +19,29 @@ enum PLAYBACK_STATUS
   curPlaying = ""
 }
 
-g_sound.onCachedMusicDowloaded <- function onCachedMusicDowloaded(playbackId, success)
+::g_sound.onCachedMusicDowloaded <- function onCachedMusicDowloaded(playbackId, success)
 {
   playbackStatus[playbackId] <- success? PLAYBACK_STATUS.VALID : PLAYBACK_STATUS.INVALID
   ::broadcastEvent("PlaybackDownloaded", {id = playbackId, success = success})
 }
 
-g_sound.onCachedMusicPlayEnd <- function onCachedMusicPlayEnd(playbackId)
+::g_sound.onCachedMusicPlayEnd <- function onCachedMusicPlayEnd(playbackId)
 {
   curPlaying = ""
   ::broadcastEvent("FinishedPlayback", {id = playbackId})
 }
 
-g_sound.preparePlayback <- function preparePlayback(url, playbackId)
+::g_sound.preparePlayback <- function preparePlayback(url, playbackId)
 {
   if (::u.isEmpty(url)
       || getPlaybackStatus(playbackId) != PLAYBACK_STATUS.INVALID)
     return
 
   playbackStatus[playbackId] <- PLAYBACK_STATUS.DOWNLOADING
-  ::set_cached_music(::CACHED_MUSIC_MISSION, url, playbackId)
+  ::set_cached_music(CACHED_MUSIC_MISSION, url, playbackId)
 }
 
-g_sound.play <- function play(playbackId = "")
+::g_sound.play <- function play(playbackId = "")
 {
   if (playbackId == "" && curPlaying == "")
     return
@@ -46,28 +53,28 @@ g_sound.play <- function play(playbackId = "")
     curPlaying = playbackId
 }
 
-g_sound.stop <- function stop()
+::g_sound.stop <- function stop()
 {
   ::play_cached_music("")
   curPlaying = ""
 }
 
-g_sound.getPlaybackStatus <- function getPlaybackStatus(playbackId)
+::g_sound.getPlaybackStatus <- function getPlaybackStatus(playbackId)
 {
-  return ::getTblValue(playbackId, playbackStatus, PLAYBACK_STATUS.INVALID)
+  return getTblValue(playbackId, playbackStatus, PLAYBACK_STATUS.INVALID)
 }
 
-g_sound.canPlay <- function canPlay(playbackId)
+::g_sound.canPlay <- function canPlay(playbackId)
 {
   return getPlaybackStatus(playbackId) == PLAYBACK_STATUS.VALID
 }
 
-g_sound.isPlaying <- function isPlaying(playbackId)
+::g_sound.isPlaying <- function isPlaying(playbackId)
 {
   return playbackId == curPlaying && curPlaying != ""
 }
 
-g_sound.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p)
+::g_sound.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p)
 {
   stop()
   playbackStatus.clear()

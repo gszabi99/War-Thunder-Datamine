@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { subscribe, send } = require("eventbus")
 let { format } = require("string")
 let persistent = {
   unitsCfg = null
@@ -44,7 +50,7 @@ let function init()
     }
     persistent.unitsCfg.append(units)
   }
-  ::call_darg("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
+  send("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
 }
 
 let function getOption(useroptId)
@@ -91,7 +97,7 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
   })
   local result = separator.join(valuesList)
   if (addMeasureUnits)
-    result = "{0} {1}".subst(result, ::loc($"measureUnits/{unit.name}"))
+    result = "{0} {1}".subst(result, loc($"measureUnits/{unit.name}"))
   return result
 }
 
@@ -101,9 +107,9 @@ let function isMetricSystem(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 
-::cross_call_api.measureUnits <- {
-  isInitialized = @() isInitialized()
-}
+subscribe("updateIsInitializedMeasureUnits", @(_) send("updateExtWatched", {
+  isInitializedMeasureUnits = isInitialized()
+}))
 
 return {
   init = init

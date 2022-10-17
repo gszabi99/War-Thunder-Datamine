@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { updateModItem, createModItem } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -63,7 +72,7 @@ local armyIdByMask = {
 
   hasUnitsToFly = false
   prevSelectedUnitsMask = WW_UNIT_CLASS.NONE
-  iconAir = ::loc("worldwar/iconAir")
+  iconAir = loc("worldwar/iconAir")
 
   unitsGroups = null
 
@@ -98,9 +107,9 @@ local armyIdByMask = {
       headerTabs = getHeaderTabs()
       unitTypes = unitsTypesList[airfield.airfieldType]
       hintText = airfield.airfieldType != airfieldTypes.AT_HELIPAD
-        ? "\n".concat(::loc("worldwar/airfield/armies_hint_title"),
-          ::loc("worldwar/airfield/fighter_armies_hint", getAirsTypeViewParams()),
-            ::loc("worldwar/airfield/combined_armies_hint", getAirsTypeViewParams()))
+        ? "\n".concat(loc("worldwar/airfield/armies_hint_title"),
+          loc("worldwar/airfield/fighter_armies_hint", getAirsTypeViewParams()),
+            loc("worldwar/airfield/combined_armies_hint", getAirsTypeViewParams()))
         : null
       hasUnitsGroups = unitsGroups != null
     }
@@ -129,10 +138,10 @@ local armyIdByMask = {
           unit = unit
           unitName = name
           unitItem = getGroupUnitMarkUp(name, displayUnit, group,
-            {nameLoc = ::loc(group?.name ?? "")})
+            {nameLoc = loc(group?.name ?? "")})
           unitClassIconText = wwUnitClassParams.getIconText(unitClass)
           unitClassName = wwUnitClassParams.getText(unitClass)
-          unitClassTooltipText = ::loc(unitClassData.tooltipTextLocId)
+          unitClassTooltipText = loc(unitClassData.tooltipTextLocId)
           unitClass = unitClassData.flyOutUnitClass
           unitClassesView = isUnitsGroup ? getUnitClassesView(unit, unitClass) : null
           maxValue = min(maxUnitClassValue, maxValue)
@@ -175,7 +184,7 @@ local armyIdByMask = {
 
   function getFlyTimeText(timeInSeconds)
   {
-    return time.hoursToString(time.secondsToHours(timeInSeconds), false, true) + " " + ::loc("icon/timer")
+    return time.hoursToString(time.secondsToHours(timeInSeconds), false, true) + " " + loc("icon/timer")
   }
 
   function getHeaderTabs()
@@ -220,7 +229,7 @@ local armyIdByMask = {
 
   function initScreen()
   {
-    ::g_world_war_render.setCategory(::ERC_AIRFIELD_ARROW, false)
+    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
 
     sendButtonObj = scene.findObject("send_aircrafts_button")
     updateVisibleUnits()
@@ -244,14 +253,14 @@ local armyIdByMask = {
     if (tabVal < 0)
     {
       let listObj = scene.findObject("armies_tabs")
-      if (::checkObj(listObj))
+      if (checkObj(listObj))
         tabVal = listObj.getValue()
     }
 
     if (tabVal < 0)
       tabVal = 0
 
-    selectedGroupIdx = ::getTblValue(tabVal, availableArmiesArray, availableArmiesArray[0]).getArmyGroupIdx()
+    selectedGroupIdx = getTblValue(tabVal, availableArmiesArray, availableArmiesArray[0]).getArmyGroupIdx()
     selectedGroupFlyArmies = calcSelectedGroupAirArmiesNumber()
 
     let formation = airfield.getFormationByGroupIdx(selectedGroupIdx)
@@ -294,7 +303,7 @@ local armyIdByMask = {
     let unitsArray = getReqDataFromSelectedUnitsInfo(selUnitsInfo, unitTable.unitClass, "names", [])
     let isReachedMaxUnitsLimit = isMaxUnitsNumSet(selUnitsInfo)
 
-    let isSetSomeUnits = ::isInArray(unitTable.unitName, unitsArray)
+    let isSetSomeUnits = isInArray(unitTable.unitName, unitsArray)
 
     let isEnabled = hasUnitsToFly
                       && (isSetSomeUnits
@@ -304,7 +313,7 @@ local armyIdByMask = {
     foreach (buttonId in ["btn_max", "btn_inc", "btn_dec"])
     {
       let buttonObj = unitSliderObj.findObject(buttonId)
-      if (!::checkObj(buttonObj))
+      if (!checkObj(buttonObj))
         return
 
       if (buttonId != "btn_dec")
@@ -367,7 +376,7 @@ local armyIdByMask = {
 
   function setupSendButton()
   {
-    if (!::checkObj(sendButtonObj))
+    if (!checkObj(sendButtonObj))
       return
 
     let selUnitsInfo = getSelectedUnitsInfo()
@@ -384,25 +393,25 @@ local armyIdByMask = {
 
     local cantSendText = ""
     if (!canSendArmy)
-      cantSendText = ::loc("worldwar/reached_air_armies_limit")
+      cantSendText = loc("worldwar/reached_air_armies_limit")
     else if (hasUnitsToFly)
       cantSendText = isEnable ? getSelectedUnitsFlyTimeText(selectedGroupIdx) :
-        ::loc("worldwar/airfield/army_not_equipped")
+        loc("worldwar/airfield/army_not_equipped")
 
     let cantSendTextObj = scene.findObject("cant_send_reason")
-    if (::checkObj(cantSendTextObj))
+    if (checkObj(cantSendTextObj))
       cantSendTextObj.setValue(cantSendText)
   }
 
   function fillArmyLimitDescription()
   {
     let textObj = scene.findObject("armies_limit_text")
-    if (!::checkObj(textObj))
+    if (!checkObj(textObj))
       return
 
     let armiesLimit = currentOperation.getGroupAirArmiesLimit(airfield.airfieldType.name)
     textObj.setValue(
-      ::loc("".concat("worldwar/group_", airfield.airfieldType.locId, "_armies_limit"),
+      loc("".concat("worldwar/group_", airfield.airfieldType.locId, "_armies_limit"),
         { cur = selectedGroupFlyArmies,
           max = armiesLimit }))
   }
@@ -425,23 +434,23 @@ local armyIdByMask = {
     if (needFullUpdate || !hasUnitsToFly || isMaxUnitsNumSet(selUnitsInfo))
     {
       let armyTypeTextObj = scene.findObject("army_info_text")
-      if (!::check_obj(armyTypeTextObj))
+      if (!checkObj(armyTypeTextObj))
         return
 
       local armyInfoText = ""
       if (!hasUnitsToFly)
-        armyInfoText = ::colorize("warningTextColor", ::loc("worldwar/airfield/not_enough_units_to_send"))
+        armyInfoText = colorize("warningTextColor", loc("worldwar/airfield/not_enough_units_to_send"))
       else
       {
-        armyInfoText = ::loc("worldwar/airfield/army_type_" + formedArmyId)
+        armyInfoText = loc("worldwar/airfield/army_type_" + formedArmyId)
         if (isMaxUnitsNumSet(selUnitsInfo))
         {
           let maxValue = currentOperation.maxUniqueUnitsOnFlyout
-          let maxValueText = ::colorize("white", ::loc("worldwar/airfield/unit_various_limit",
+          let maxValueText = colorize("white", loc("worldwar/airfield/unit_various_limit",
             { types = maxValue }))
-          armyInfoText += ::loc("ui/parentheses/space", { text = maxValueText })
+          armyInfoText += loc("ui/parentheses/space", { text = maxValueText })
         }
-        armyTypeTextObj.tooltip = ::loc(
+        armyTypeTextObj.tooltip = loc(
           "worldwar/airfield/" + formedArmyId + "_armies_hint", getAirsTypeViewParams(), "")
       }
       armyTypeTextObj.setValue(armyInfoText)
@@ -453,7 +462,7 @@ local armyIdByMask = {
     foreach (classMask, bitsList in currentOperation.getUnitsFlyoutRange())
     {
       let unitClassBlockObj = scene.findObject("unit_class_" + classMask)
-      if (!::check_obj(unitClassBlockObj))
+      if (!checkObj(unitClassBlockObj))
         continue
 
       let isUnitClassEnabled = (formedArmyMask & classMask) > 0
@@ -461,7 +470,7 @@ local armyIdByMask = {
 
       let amountRange = currentOperation.getQuantityToFlyOut(classMask, formedArmyMask)
       let unitClassAmountTextObj = unitClassBlockObj.findObject("amount_text")
-      if (::check_obj(unitClassAmountTextObj))
+      if (checkObj(unitClassAmountTextObj))
       {
         let unitsAmount = getReqDataFromSelectedUnitsInfo(selUnitsInfo, classMask, "amount", 0)
         unitClassAmountTextObj.setValue(getUnitTypeAmountText(unitsAmount, amountRange))
@@ -471,7 +480,7 @@ local armyIdByMask = {
         continue
 
       let unitClassRequiredTextObj = unitClassBlockObj.findObject("required_text")
-      if (::check_obj(unitClassRequiredTextObj))
+      if (checkObj(unitClassRequiredTextObj))
         unitClassRequiredTextObj.setValue(getUnitTypeRequirementText(amountRange))
     }
   }
@@ -479,12 +488,12 @@ local armyIdByMask = {
   function getUnitTypeAmountText(amount, range)
   {
     if (!amount)
-      return ::loc("worldwar/airfield/selectedZero")
+      return loc("worldwar/airfield/selectedZero")
 
     let color = (amount >= range.x && amount <= range.y) ? "goodTextColor" : "badTextColor"
-    let text = ::colorize(color, amount + " " + iconAir)
+    let text = colorize(color, amount + " " + iconAir)
 
-    return ::loc("worldwar/airfield/selected", { amountText = text })
+    return loc("worldwar/airfield/selected", { amountText = text })
   }
 
   function getUnitTypeRequirementText(range)
@@ -493,8 +502,8 @@ local armyIdByMask = {
       return ""
 
     return range.x == range.y
-      ? ::loc("worldwar/airfield/required_number", { numb = range.y })
-      : ::loc("worldwar/airfield/required_range",  { min = range.x, max = range.y })
+      ? loc("worldwar/airfield/required_number", { numb = range.y })
+      : loc("worldwar/airfield/required_range",  { min = range.x, max = range.y })
   }
 
   function isMaxUnitsNumSet(selUnitsInfo)
@@ -523,14 +532,14 @@ local armyIdByMask = {
   function configureMaxUniqueUnitsChosen(selUnitsInfo)
   {
     let blockObj = scene.findObject("unit_blocks_place")
-    if (!::checkObj(blockObj))
+    if (!checkObj(blockObj))
       return
 
     foreach (unitTable in unitsList)
       if (unitTable.armyGroupIdx == selectedGroupIdx)
       {
         let unitSliderObj = blockObj.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
-        if (!::checkObj(unitSliderObj))
+        if (!checkObj(unitSliderObj))
           return
 
         setUnitSliderEnable(unitSliderObj, selUnitsInfo, unitTable)
@@ -580,7 +589,7 @@ local armyIdByMask = {
   function updateSlider(unitTable, selUnitsInfo)
   {
     let blockObj = scene.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
-    if (!::checkObj(blockObj))
+    if (!checkObj(blockObj))
       return
 
     let sliderObj = blockObj.findObject("progress_slider")
@@ -596,7 +605,7 @@ local armyIdByMask = {
   function updateSliderText(sliderObj, unitTable)
   {
     let sliderTextObj = sliderObj.findObject("slider_button_text")
-    if (::checkObj(sliderTextObj))
+    if (checkObj(sliderTextObj))
       sliderTextObj.setValue(getSliderButtonText(
         unitTable.value, unitTable.totalValue))
   }
@@ -619,7 +628,7 @@ local armyIdByMask = {
   function getSelectedItemObj()
   {
     let itemsContainerObj = scene.findObject("unit_blocks_place")
-    if (!::check_obj(itemsContainerObj))
+    if (!checkObj(itemsContainerObj))
       return null
 
     let itemObjIdx = itemsContainerObj.getValue()
@@ -629,7 +638,7 @@ local armyIdByMask = {
   function onUnitAmountDec(obj)
   {
     let itemObj = getSelectedItemObj()
-    if (!::check_obj(itemObj))
+    if (!checkObj(itemObj))
       return
 
     onButtonDec(itemObj.findObject("btn_dec"))
@@ -638,7 +647,7 @@ local armyIdByMask = {
   function onUnitAmountInc(obj)
   {
     let itemObj = getSelectedItemObj()
-    if (!::check_obj(itemObj))
+    if (!checkObj(itemObj))
       return
 
     onButtonInc(itemObj.findObject("btn_inc"))
@@ -667,7 +676,7 @@ local armyIdByMask = {
   function onUnitAmountMax(obj)
   {
     let itemObj = getSelectedItemObj()
-    if (!::check_obj(itemObj))
+    if (!checkObj(itemObj))
       return
 
     onButtonMax(itemObj.findObject("btn_max"))
@@ -675,7 +684,7 @@ local armyIdByMask = {
 
   function onDestroy()
   {
-    ::g_world_war_render.setCategory(::ERC_AIRFIELD_ARROW, true)
+    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
   }
 
   function fillUnitWeaponPreset(unitTable)
@@ -689,10 +698,10 @@ local armyIdByMask = {
       return
 
     let blockObj = scene.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
-    if (!::check_obj(blockObj))
+    if (!checkObj(blockObj))
       return
     let containerObj = blockObj.findObject("secondary_weapon")
-    if (!::check_obj(containerObj))
+    if (!checkObj(containerObj))
       return
 
     local modItemObj = containerObj.findObject(unit.name)
@@ -704,7 +713,7 @@ local armyIdByMask = {
       hasMenu = hasPresetToChoose(unit)
       curEdiff = ::g_world_war.defaultDiffCode
     }
-    if (!::check_obj(modItemObj))
+    if (!checkObj(modItemObj))
       modItemObj = createModItem(
         unit.name, unit, weapon, weapon.type, containerObj, this,
         params.__merge({shortcutIcon = "X"}))
@@ -714,7 +723,7 @@ local armyIdByMask = {
     modItemObj.pos = "0, 2"
 
     let centralBlockObj = modItemObj.findObject("centralBlock")
-    if (::checkObj(centralBlockObj))
+    if (checkObj(centralBlockObj))
       centralBlockObj.unitName = unitTable.unitName
   }
 
@@ -734,7 +743,7 @@ local armyIdByMask = {
     let unitBlockObj = scene.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
     let unitClassObj = unitBlockObj.findObject("unit_class_icon_text")
     unitClassObj.unitType = wwUnitClassParams.getText(unitClass)
-    unitClassObj.tooltip = ::loc(unitClassData.tooltipTextLocId)
+    unitClassObj.tooltip = loc(unitClassData.tooltipTextLocId)
     unitClassObj.setValue(wwUnitClassParams.getIconText(unitClass))
   }
 
@@ -749,7 +758,7 @@ local armyIdByMask = {
     if (!hasPresetToChoose(unit))
       return
 
-    let cb = ::Callback(function (unitName, weaponName) {
+    let cb = Callback(function (unitName, weaponName) {
       changeUnitWeapon(unitName, weaponName)
     }, this)
     ::gui_start_choose_unit_weapon(unit, cb, {
@@ -771,7 +780,7 @@ local armyIdByMask = {
   function onOpenPresetsList(obj)
   {
     let itemObj = getSelectedItemObj()
-    if (unitsGroups != null || !::check_obj(itemObj))
+    if (unitsGroups != null || !checkObj(itemObj))
       return
 
     onModItemClick(itemObj.findObject("centralBlock"))
@@ -791,7 +800,7 @@ local armyIdByMask = {
 
   function getAvailableGroup(armyGroupIdx)
   {
-    return u.search(airfield.formations, @(group) group.owner.armyGroupIdx == armyGroupIdx)
+    return ::u.search(airfield.formations, @(group) group.owner.armyGroupIdx == armyGroupIdx)
   }
 
   function getSelectedUnitsFlyTimeText(armyGroupIdx)
@@ -801,7 +810,7 @@ local armyIdByMask = {
       if (unitTable.armyGroupIdx == selectedGroupIdx && unitTable.value > 0)
         minTime = minTime <= 0 ? unitTable.maxFlyTime : min(minTime, unitTable.maxFlyTime)
 
-    return ::loc("worldwar/airfield/army_fly_time") + ::loc("ui/colon") + getFlyTimeText(minTime)
+    return loc("worldwar/airfield/army_fly_time") + loc("ui/colon") + getFlyTimeText(minTime)
   }
 
   function getUnitClassMaxValue(unitClass)
@@ -813,11 +822,11 @@ local armyIdByMask = {
   function sendAircrafts()
   {
     let listObj = scene.findObject("armies_tabs")
-    if (!::checkObj(listObj))
+    if (!checkObj(listObj))
       return
 
     local isAircraftsChoosen = false
-    let armyGroupIdx = ::getTblValue(listObj.getValue(), availableArmiesArray, -1).getArmyGroupIdx()
+    let armyGroupIdx = getTblValue(listObj.getValue(), availableArmiesArray, -1).getArmyGroupIdx()
     let units = {}
     foreach (unitTable in unitsList)
       if (unitTable.armyGroupIdx == armyGroupIdx)
@@ -839,7 +848,7 @@ local armyIdByMask = {
 
     if (errorLocId != "")
     {
-      ::g_popups.add("", ::loc(errorLocId), null, null, null, "WwFlyoutError")
+      ::g_popups.add("", loc(errorLocId), null, null, null, "WwFlyoutError")
       return
     }
 
@@ -859,7 +868,7 @@ local armyIdByMask = {
       funcName = "onUnitClassChange"
       values = unitClassesDataArray.map(@(unitClassData) {
         valueId = unitClassData.expClass
-        text = ::loc(unitClassData.tooltipTextLocId)
+        text = loc(unitClassData.tooltipTextLocId)
         isSelected = unitClassData.unitClass == curUnitClass
       })
     }

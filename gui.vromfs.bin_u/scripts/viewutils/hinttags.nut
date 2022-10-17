@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 enum hintTagCheckOrder {
@@ -14,10 +19,10 @@ enum hintTagCheckOrder {
   typeName = ""
   checkOrder = hintTagCheckOrder.EXACT_WORD
 
-  checkTag = function(tagName) { return typeName == tagName }
+  checkTag = function(tagName) { return this.typeName == tagName }
   getViewSlices = function(tagName, params) { return [] }
-  makeTag = function(params = null) { return typeName }
-  makeFullTag = @(params = null) ::g_hints.hintTags[0] + makeTag(params) + ::g_hints.hintTags[1]
+  makeTag = function(params = null) { return this.typeName }
+  makeFullTag = @(params = null) ::g_hints.hintTags[0] + this.makeTag(params) + ::g_hints.hintTags[1]
   getSeparator = @() ""
 }
 
@@ -26,14 +31,14 @@ enums.addTypesByGlobalName("g_hint_tag", {
     typeName = "@"
     getViewSlices = function(tagName, params)
     {
-      let total = (::getTblValue("time", params, 0) + 0.5).tointeger()
-      let offset = ::getTblValue("timeoffset", params, 0)
+      let total = (getTblValue("time", params, 0) + 0.5).tointeger()
+      let offset = getTblValue("timeoffset", params, 0)
       return [{
                timer = {
                  incFactor = total ? 360.0 / total : 0
                  angle = (offset && total) ? (360 * offset / total).tointeger() : 0
-                 hideWhenStopped = ::getTblValue("hideWhenStopped", params, false)
-                 timerOffsetX = ::getTblValue("timerOffsetX", params)
+                 hideWhenStopped = getTblValue("hideWhenStopped", params, false)
+                 timerOffsetX = getTblValue("timerOffsetX", params)
                }
              }]
     }
@@ -43,7 +48,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
     typeName = ""
     checkOrder = hintTagCheckOrder.ALL_OTHER
     checkTag = function(tagName) { return true }
-    getSeparator = @() ::loc("hints/shortcut_separator")
+    getSeparator = @() loc("hints/shortcut_separator")
 
     getViewSlices = function(tagName, params) //tagName == shortcutId
     {
@@ -65,7 +70,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
             }
         })
         if (i < (shortcutsCount - 1))
-          slices.append({text = getSeparator()})
+          slices.append({text = this.getSeparator()})
       }
       return slices
     }
@@ -74,49 +79,46 @@ enums.addTypesByGlobalName("g_hint_tag", {
   IMAGE = {
     typeName = "img="
     checkOrder = hintTagCheckOrder.REGULAR
-    checkTag = function(tagName) { return ::g_string.startsWith(tagName, typeName) }
+    checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
     colorParam = "color="
     sizeParam = "sizeStyle="
     delimiter = " "
     getViewSlices = function(tagName, params)
     {
-      let paramsList = split_by_chars(tagName, delimiter)
+      let paramsList = split_by_chars(tagName, this.delimiter)
       let res = {
-        image = ::g_string.cutPrefix(paramsList[0], typeName,  "")
+        image = ::g_string.cutPrefix(paramsList[0], this.typeName,  "")
         color = null
         sizeStyle = null
       }
       for(local i = 1; i < paramsList.len(); i++)
       {
-        res.color = res.color || ::g_string.cutPrefix(paramsList[i], colorParam)
-        res.sizeStyle = res.sizeStyle || ::g_string.cutPrefix(paramsList[i], sizeParam)
+        res.color = res.color || ::g_string.cutPrefix(paramsList[i], this.colorParam)
+        res.sizeStyle = res.sizeStyle || ::g_string.cutPrefix(paramsList[i], this.sizeParam)
       }
       return [res]
     }
     makeTag = function(params = null)
     {
-      return typeName + (params?.image || "")
-        + (params?.color      ? delimiter + colorParam + params.color : "")
-        + (params?.sizeStyle  ? delimiter + sizeParam + params.sizeStyle : "")
+      return this.typeName + (params?.image || "")
+        + (params?.color      ? this.delimiter + this.colorParam + params.color : "")
+        + (params?.sizeStyle  ? this.delimiter + this.sizeParam + params.sizeStyle : "")
     }
   }
 
   MISSION_ATTEMPTS_LEFT = {
     typeName = "attempts_left" //{{attempts_left}} or {{attempts_left=locId}}
     checkOrder = hintTagCheckOrder.REGULAR
-    checkTag = function(tagName) { return ::g_string.startsWith(tagName, typeName) }
+    checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
     getViewSlices = function(tagName, params)
     {
       let attempts = ::get_num_attempts_left()
-      local attemptsText = attempts < 0 ? ::loc("options/attemptsUnlimited") : attempts
+      local attemptsText = attempts < 0 ? loc("options/attemptsUnlimited") : attempts
 
-      if (tagName.len() > typeName.len() + 1) //{{attempts_left=locId}}
+      if (tagName.len() > this.typeName.len() + 1) //{{attempts_left=locId}}
       {
-        let locId = tagName.slice(typeName.len() + 1)
-        attemptsText = ::loc(locId, {
-          attemptsText = attemptsText
-          attempts = attempts
-        })
+        let locId = tagName.slice(this.typeName.len() + 1)
+        attemptsText = loc(locId, {attemptsText, attempts})
       }
       return [{
         text = attemptsText
@@ -128,13 +130,13 @@ enums.addTypesByGlobalName("g_hint_tag", {
     typeName = "INPUT_BUTTON"
     delimiter = " "
     checkOrder = hintTagCheckOrder.REGULAR
-    checkTag = function(tagName) { return ::g_string.startsWith(tagName, typeName) }
+    checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
 
     getViewSlices = function(tagName, params) //tagName == shortcutId
     {
-      let paramsList = split_by_chars(tagName, delimiter)
+      let paramsList = split_by_chars(tagName, this.delimiter)
       let shortcut = ::SHORTCUT?[paramsList?[1]]
-      if (!u.isTable(shortcut))
+      if (!::u.isTable(shortcut))
         return []
 
       let input = ::Input.Button(shortcut.dev[0], shortcut.btn[0])
@@ -153,11 +155,11 @@ enums.addTypesByGlobalName("g_hint_tag", {
   return 0
 })
 
-g_hint_tag.getHintTagType <- function getHintTagType(tagName)
+::g_hint_tag.getHintTagType <- function getHintTagType(tagName)
 {
-  foreach(tagType in types)
+  foreach (tagType in this.types)
     if (tagType.checkTag(tagName))
       return tagType
 
-  return SHORTCUT
+  return this.SHORTCUT
 }

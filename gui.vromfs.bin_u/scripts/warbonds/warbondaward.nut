@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
@@ -5,7 +12,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 {
   id = ""
   idx = 0
-  awardType = ::g_wb_award_type[::EWBAT_INVALID]
+  awardType = ::g_wb_award_type[EWBAT_INVALID]
   warbondWeak = null
   blk = null
   ordinaryTasks = 0
@@ -112,13 +119,13 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
   function getBuyText(isShort = true)
   {
-    let res = ::loc("mainmenu/btnBuy")
+    let res = loc("mainmenu/btnBuy")
     if (isShort)
       return res
 
     let cost = getCost()
     let costText = warbondWeak ? warbondWeak.getPriceText(cost) : cost
-    return res + ((costText == "")? "" : ::loc("ui/parentheses/space", { text = costText }))
+    return res + ((costText == "")? "" : loc("ui/parentheses/space", { text = costText }))
   }
 
   function buy()
@@ -127,7 +134,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
       return
     if (!canBuy())
     {
-      local reason = ::loc("warbond/msg/alreadyBoughtMax", { purchase = ::colorize("userlogColoredText", getNameText()) })
+      local reason = loc("warbond/msg/alreadyBoughtMax", { purchase = colorize("userlogColoredText", getNameText()) })
       if (!isAvailableForCurrentWarbondShop())
         reason = getNotAvailableForCurrentShopText(false)
       else if (!awardType.canBuy(warbondWeak, blk))
@@ -144,18 +151,18 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     let costWb = getCost()
     let balanceWb = warbondWeak.getBalance()
     if (costWb > balanceWb)
-      return ::showInfoMsgBox(::loc("not_enough_currency",
+      return ::showInfoMsgBox(loc("not_enough_currency",
                                     { currency = warbondWeak.getPriceText(costWb - balanceWb, true, false) }))
 
 
-    let msgText = ::loc("onlineShop/needMoneyQuestion",
-                          { purchase = ::colorize("userlogColoredText", getNameText()),
-                            cost = ::colorize("activeTextColor", getCostText())
+    let msgText = loc("onlineShop/needMoneyQuestion",
+                          { purchase = colorize("userlogColoredText", getNameText()),
+                            cost = colorize("activeTextColor", getCostText())
                           })
 
     ::scene_msg_box("purchase_ask", null, msgText,
       [
-        ["purchase", ::Callback(_buy, this) ],
+        ["purchase", Callback(_buy, this) ],
         ["cancel", function() {} ]
       ],
       "purchase",
@@ -169,7 +176,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
       return
 
     let taskId = awardType.requestBuy(warbondWeak, blk)
-    let cb = ::Callback(onBought, this)
+    let cb = Callback(onBought, this)
     ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
   }
 
@@ -200,10 +207,10 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
       return ""
     let leftAmount = getLeftBoughtCount()
     if (!hasIncreasingLimit && leftAmount == 0)
-      return ::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax"))
+      return colorize("warningTextColor", loc("warbond/alreadyBoughtMax"))
     if (!awardType.showAvailableAmount)
       return ""
-    return ::loc("warbond/availableForPurchase") + ::loc("ui/colon") + leftAmount
+    return loc("warbond/availableForPurchase") + loc("ui/colon") + leftAmount
   }
 
   getLeftBoughtCount = @() isValid()
@@ -305,8 +312,8 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!isValid() || !isRequiredSpecialTasksComplete())
       return ""
 
-    let text = ::loc(awardType.canBuyReasonLocId(warbondWeak, blk))
-    return colored? ::colorize("warningTextColor", text) : text
+    let text = loc(awardType.canBuyReasonLocId(warbondWeak, blk))
+    return colored? colorize("warningTextColor", text) : text
   }
 
   function isRequiredSpecialTasksComplete()
@@ -320,8 +327,8 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (isAvailableForCurrentWarbondShop())
       return ""
 
-    let text = ::loc("warbonds/shop/notAvailableForCurrentShop")
-    return colored? ::colorize("badTextColor", text) : text
+    let text = loc("warbonds/shop/notAvailableForCurrentShop")
+    return colored? colorize("badTextColor", text) : text
   }
 
   function getRequiredShopLevelText(colored = true)
@@ -329,10 +336,10 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!haveOrdinaryRequirement())
       return ""
 
-    let text = ::loc("warbonds/shop/requiredLevel", {
+    let text = loc("warbonds/shop/requiredLevel", {
       level = getShopLevelText(ordinaryTasks)
     })
-    return isAvailableByShopLevel() || !colored? text : ::colorize("badTextColor", text)
+    return isAvailableByShopLevel() || !colored? text : colorize("badTextColor", text)
   }
 
   function getRequiredMedalsLevelText(colored = true)
@@ -340,10 +347,10 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!haveSpecialRequirement())
       return ""
 
-    let text = ::loc("warbonds/shop/requiredMedals", {
+    let text = loc("warbonds/shop/requiredMedals", {
       count = getMedalsCountNum()
     })
-    return isAvailableByMedalsCount() || !colored? text : ::colorize("badTextColor", text)
+    return isAvailableByMedalsCount() || !colored? text : colorize("badTextColor", text)
   }
 
   function getRequiredUnitsRankLevel(colored = true)
@@ -351,10 +358,10 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (reqMaxUnitRank < 2)
       return ""
 
-    let text = ::loc("warbonds/shop/requiredUnitRank", {
+    let text = loc("warbonds/shop/requiredUnitRank", {
       unitRank = reqMaxUnitRank
     })
-    return isAvailableByUnitsRank() || !colored? text : ::colorize("badTextColor", text)
+    return isAvailableByUnitsRank() || !colored? text : colorize("badTextColor", text)
   }
 
   getSeenId = @() (isValid() ? (warbondWeak.getSeenId() + "_") : "") + id

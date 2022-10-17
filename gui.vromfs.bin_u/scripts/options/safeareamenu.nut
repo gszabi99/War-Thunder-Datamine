@@ -1,7 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let sony = require("sony")
-let { is_stereo_mode } = ::require_native("vr")
+let { is_stereo_mode } = require_native("vr")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 let defValue  = 1.0
@@ -33,7 +38,7 @@ let getValue = function()
     return value
 
   value = compatibleGetValue()
-  return ::isInArray(value, values) ? value : defValue
+  return isInArray(value, values) ? value : defValue
 }
 
 local setValue = function(value)
@@ -41,7 +46,7 @@ local setValue = function(value)
   if (!::g_login.isAuthorized())
     return
 
-  value = ::isInArray(value, values) ? value : defValue
+  value = isInArray(value, values) ? value : defValue
   ::setSystemConfigOption("video/safearea", value == defValue ? null : value)
   ::set_gui_option_in_mode(::USEROPT_MENU_SCREEN_SAFE_AREA, value, ::OPTIONS_MODE_GAMEPLAY)
 }
@@ -51,8 +56,6 @@ let getValueOptionIndex = @() values.indexof(getValue())
 let canChangeValue = @() getFixedValue() == -1
 
 let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getMenuWidthLimit())
-
-::cross_call_api.getMenuSafearea <- getSafearea
 
 let export = {
   getValue = getValue

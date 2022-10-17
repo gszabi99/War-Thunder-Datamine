@@ -1,4 +1,9 @@
-global const MAX_FETCH_RETRIES = 5
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
 
 ::online_stats <- {
   players_total = 0
@@ -36,10 +41,10 @@ global const MAX_FETCH_RETRIES = 5
 ::online_info_server_time_param <- 0
 ::online_info_server_time_recieved <- 0
 
-::g_script_reloader.registerPersistentData("onlineInfoGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("onlineInfoGlobals", getroottable(),
   ["online_stats", "online_info_server_time_param", "online_info_server_time_recieved"])
 
 ::get_matching_server_time <- function get_matching_server_time()
 {
-  return ::online_info_server_time_param + (dagor.getCurTime()/1000 - ::online_info_server_time_recieved)
+  return ::online_info_server_time_param + (::dagor.getCurTime()/1000 - ::online_info_server_time_recieved)
 }

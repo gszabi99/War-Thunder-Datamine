@@ -1,5 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::gui_handlers.ShopSearchBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -7,7 +16,7 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
   sceneBlkName = "%gui/shop/shopSearchBox.blk"
 
   curCountry = ""
-  curEsUnitType = ::ES_UNIT_TYPE_INVALID
+  curEsUnitType = ES_UNIT_TYPE_INVALID
   cbOwnerSearchHighlight = null
   cbOwnerSearchCancel = null
   cbOwnerShowUnit = null
@@ -30,9 +39,9 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
     foreach (id in [ "search_btn_start", "search_btn_close" ])
     {
       let obj = scene.findObject(id)
-      if (::check_obj(obj))
-        obj["tooltip"] += ::colorize("hotkeyColor",
-        ::loc("ui/parentheses/space", { text = ::loc(obj?["hotkeyLoc"] ?? "") }))
+      if (checkObj(obj))
+        obj["tooltip"] += colorize("hotkeyColor",
+        loc("ui/parentheses/space", { text = loc(obj?["hotkeyLoc"] ?? "") }))
     }
 
     searchClear()
@@ -47,7 +56,7 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
     isClear = true
 
     let obj = scene.findObject("search_edit_box")
-    if (::check_obj(obj)) {
+    if (checkObj(obj)) {
       obj.setValue("")
       // Toggling enable status to make it lose focus.
       obj.enable(false)
@@ -64,15 +73,15 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 
   function updateHint(isEditboxClear, countGlobal, countLocal)
   {
-    local hintText = isEditboxClear ? ::loc("shop/search/hint")
-      : !countGlobal ? ::loc("shop/search/global/notFound")
-      : countLocal ? ::loc("shop/search/local/found", { count = countLocal })
-      : ::loc("shop/search/local/notFound")
+    local hintText = isEditboxClear ? loc("shop/search/hint")
+      : !countGlobal ? loc("shop/search/global/notFound")
+      : countLocal ? loc("shop/search/local/found", { count = countLocal })
+      : loc("shop/search/local/notFound")
     //With IME window with all variants wil be open automatically
     if (countGlobal > countLocal)
-      hintText += "\n" + ::loc("shop/search/global/found", { count = countGlobal })
+      hintText += "\n" + loc("shop/search/global/found", { count = countGlobal })
     let obj = scene.findObject("search_hint_text")
-    if (::check_obj(obj))
+    if (checkObj(obj))
       obj.setValue(hintText)
   }
 
@@ -117,7 +126,7 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
   function onSearchEditBoxActivate(obj = null)
   {
     obj = obj || scene.findObject("search_edit_box")
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
     let searchStr = ::g_string.trim(obj.getValue())
     if (searchStr != "")
@@ -139,11 +148,11 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
     isActive = v_isActive
 
     local obj = scene.findObject("search_buttons")
-    if (::check_obj(obj))
+    if (checkObj(obj))
       obj.show(isActive && !::show_console_buttons)
 
     obj = scene.findObject("search_box_result")
-    if (::check_obj(obj))
+    if (checkObj(obj))
       obj.show(isActive)
 
     if (!isActive)
@@ -152,11 +161,11 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 
   function onSearchEditBoxFocusChanged(obj)
   {
-    guiScene.performDelayed(this, @() ::check_obj(obj) && onActiveStateChanged(obj.isFocused()))
+    guiScene.performDelayed(this, @() checkObj(obj) && onActiveStateChanged(obj.isFocused()))
   }
 
   function onSearchEditBoxMouseChanged(obj) {
-    if (!::show_console_buttons || !::check_obj(obj))
+    if (!::show_console_buttons || !checkObj(obj))
       return
 
     onActiveStateChanged(obj.isMouseOver())
@@ -177,7 +186,7 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 
   function onEventCountryChanged(p)
   {
-    curCountry = ::get_profile_country_sq()
+    curCountry = profileCountrySq.value
     searchCancel()
   }
 

@@ -1,3 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 local clanBlackList = [
   { id = "nick", type = ::g_lb_data_type.NICK },
   { id = "initiator_nick", type = ::g_lb_data_type.NICK },
@@ -29,18 +38,18 @@ local clanBlackList = [
 
   function initScreen()
   {
-    myRights = ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ::ECMR_CLANADMIN : ::clan_get_my_role())
+    myRights = ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : ::clan_get_my_role())
 
     blacklistData = clanData.blacklist
     updateBlacklistTable()
     let tObj = scene.findObject("clan_title_table")
     if(tObj)
-      tObj.setValue(::loc("clan/blacklist"))
+      tObj.setValue(loc("clan/blacklist"))
   }
 
   function updateBlacklistTable()
   {
-    if (!::check_obj(scene) || !blacklistData)
+    if (!checkObj(scene) || !blacklistData)
       return
 
     if (curPage > 0 && blacklistData.len() <= curPage * rowsPerPage)
@@ -101,7 +110,7 @@ local clanBlackList = [
     {
       let comments = ("comments" in block) ? block.comments : ""
       rowObj.tooltip = comments.len()
-        ? ::loc("clan/blacklistRowTooltip", {comments = comments}) : ""
+        ? loc("clan/blacklistRowTooltip", {comments = comments}) : ""
 
       foreach(item in clanBlackList)
       {
@@ -130,7 +139,7 @@ local clanBlackList = [
         curCandidate = blacklistData[index]
     }
 
-    this.showSceneBtn("btn_removeBlacklist", curCandidate != null && ::isInArray("MEMBER_BLACKLIST", myRights))
+    this.showSceneBtn("btn_removeBlacklist", curCandidate != null && isInArray("MEMBER_BLACKLIST", myRights))
     this.showSceneBtn("btn_user_options", curCandidate != null && ::show_console_buttons)
   }
 
@@ -157,7 +166,7 @@ local clanBlackList = [
   function onUserAction()
   {
     let table = scene.findObject("candidatesList")
-    if (!::checkObj(table))
+    if (!checkObj(table))
       return
 
     let index = table.getValue()
@@ -175,12 +184,12 @@ local clanBlackList = [
 
     let menu = [
       {
-        text = ::loc("msgbox/btn_delete")
-        show = ::isInArray("MEMBER_BLACKLIST", myRights)
+        text = loc("msgbox/btn_delete")
+        show = isInArray("MEMBER_BLACKLIST", myRights)
         action = onDeleteFromBlacklist
       }
       {
-        text = ::loc("mainmenu/btnUserCard")
+        text = loc("mainmenu/btnUserCard")
         action = @() ::gui_modal_userCard({ uid = curCandidate.uid })
       }
     ]

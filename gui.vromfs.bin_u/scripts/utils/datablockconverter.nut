@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /**
  *  dataToBlk(data)
  *    Serializes data of any supported type to data type prepared for
@@ -37,7 +42,7 @@ let strToKey = function(str)
     : "__unsupported"
 }
 
-let dataToBlk = function(data)
+let function dataToBlk(data)
 {
   let dataType = isDataBlock(data) ? "DataBlock" : type(data)
   switch (dataType)
@@ -64,11 +69,11 @@ let dataToBlk = function(data)
       blk.__datablock <- true
       return blk
     default:
-      return "__unsupported " + ::toString(data)
+      return "__unsupported " + toString(data)
   }
 }
 
-let blkToData = function(blk)
+let function blkToData(blk)
 {
   if (::u.isString(blk) && ::g_string.startsWith(blk, "__unsupported"))
   {
@@ -104,8 +109,8 @@ let blkToData = function(blk)
 }
 
 return {
-  dataToBlk = dataToBlk
-  blkToData = blkToData
-  keyToStr  = keyToStr
-  strToKey  = strToKey
+  dataToBlk
+  blkToData
+  keyToStr
+  strToKey
 }

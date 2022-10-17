@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { split_by_chars } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { isString, isArray, isTable, isFunction } = require("%sqStdLibs/helpers/u.nut")
@@ -15,6 +22,8 @@ let { getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
 let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers
 } = require("%scripts/unit/initUnitWeapons.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
+let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -33,7 +42,7 @@ local Unit = class
 
    expClass = unitClassType.UNKNOWN
    unitType = unitTypes.INVALID
-   esUnitType = ::ES_UNIT_TYPE_INVALID
+   esUnitType = ES_UNIT_TYPE_INVALID
    isPkgDev = false
 
    cost = 0
@@ -211,7 +220,7 @@ local Unit = class
     customImage = uWpCost?.customImage ?? ::get_unit_preset_img(name)
     if (!customImage && ::is_tencent_unit_image_reqired(this))
       customImage = ::get_tomoe_unit_icon(name)
-    if (customImage && !::isInArray(customImage.slice(0, 1), ["#", "!"]))
+    if (customImage && !isInArray(customImage.slice(0, 1), ["#", "!"]))
       customImage = ::get_unit_icon_by_unit(this, customImage)
     shopSearchCore.cacheUnitSearchTokens(this)
 
@@ -255,13 +264,13 @@ local Unit = class
     disableFlyout = shopUnitBlk?.disableFlyout ?? false
   }
 
-  isAir                 = @() esUnitType == ::ES_UNIT_TYPE_AIRCRAFT
-  isTank                = @() esUnitType == ::ES_UNIT_TYPE_TANK
-  isShip                = @() esUnitType == ::ES_UNIT_TYPE_SHIP
-  isBoat                = @() esUnitType == ::ES_UNIT_TYPE_BOAT
-  isShipOrBoat          = @() esUnitType == ::ES_UNIT_TYPE_SHIP || esUnitType == ::ES_UNIT_TYPE_BOAT
-  isSubmarine           = @() esUnitType == ::ES_UNIT_TYPE_SHIP && tags.indexof("submarine") != null
-  isHelicopter          = @() esUnitType == ::ES_UNIT_TYPE_HELICOPTER
+  isAir                 = @() esUnitType == ES_UNIT_TYPE_AIRCRAFT
+  isTank                = @() esUnitType == ES_UNIT_TYPE_TANK
+  isShip                = @() esUnitType == ES_UNIT_TYPE_SHIP
+  isBoat                = @() esUnitType == ES_UNIT_TYPE_BOAT
+  isShipOrBoat          = @() esUnitType == ES_UNIT_TYPE_SHIP || esUnitType == ES_UNIT_TYPE_BOAT
+  isSubmarine           = @() esUnitType == ES_UNIT_TYPE_SHIP && tags.indexof("submarine") != null
+  isHelicopter          = @() esUnitType == ES_UNIT_TYPE_HELICOPTER
   //
 
 
@@ -379,9 +388,11 @@ local Unit = class
       return false
     if (showOnlyWhenResearch && !isInResearch() && getExp() <= 0)
       return false
-    if (hideFeature != null && ::has_feature(hideFeature))
+    if (hideFeature != null && hasFeature(hideFeature))
       return false
     if (::isUnitGift(this) && !canSpendRealMoney())
+      return false
+    if(shopPromoteUnits.value?[name] != null && !promoteUnits.value?[name].isActive)
       return false
     return true
   }
@@ -460,7 +471,7 @@ local Unit = class
       contentPreview.showUnitSkin(name)
   }
 
-  isDepthChargeAvailable = @() hasDepthCharge || shop_is_modification_enabled(name, "ship_depth_charge")
+  isDepthChargeAvailable = @() hasDepthCharge || ::shop_is_modification_enabled(name, "ship_depth_charge")
 
   function getNVDSights(modName) {
     if (!isTank())
@@ -516,7 +527,7 @@ local Unit = class
   isSquadronVehicle       = @() researchType == "clanVehicle"
   getOpenCost             = @() ::Cost(0, ::clan_get_unit_open_cost_gold(name))
   getWeapons = function() {
-    if (!hasWeaponSlots || !::has_feature("WeaponryCustomPresets"))
+    if (!hasWeaponSlots || !hasFeature("WeaponryCustomPresets"))
       return weapons
 
     return [].extend(weapons, getWeaponryCustomPresets(this))

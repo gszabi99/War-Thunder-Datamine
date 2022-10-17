@@ -1,6 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.CreateRoomWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -53,12 +61,12 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
     let roomNameBoxObj = scene.findObject("room_name")
     roomNameBoxObj["max-len"] = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
 
-    scene.findObject("thread_title_header").setValue(::loc("chat/threadTitle/limits",
+    scene.findObject("thread_title_header").setValue(loc("chat/threadTitle/limits",
       {
         min = ::g_chat.threadTitleLenMin
         max = ::g_chat.threadTitleLenMax
       }))
-    scene.findObject("chat_room_name_text").setValue(::loc("chat/roomName/limits",
+    scene.findObject("chat_room_name_text").setValue(loc("chat/roomName/limits",
       {
         maxSymbols = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
         maxDigits = ::g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
@@ -74,7 +82,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
     }
     foreach(idx, tab in tabsList)
       view.tabs.append({
-        tabName = ::loc(tab.locId)
+        tabName = loc(tab.locId)
         navImagesText = ::get_navigation_images_text(idx, tabsList.len())
       })
 

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
 
@@ -31,7 +38,7 @@ enum HintShowState {
   {
     subscribe()
 
-    if (!::checkObj(v_nest))
+    if (!checkObj(v_nest))
       return
     nest = v_nest
 
@@ -86,7 +93,7 @@ enum HintShowState {
   function findSceneObjects()
   {
     scene = nest.findObject("hud_hints_nest")
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return false
 
     guiScene = scene.getScene()
@@ -116,7 +123,7 @@ enum HintShowState {
     {
       if(!hint.isEnabled() || isHintShowCountExceeded(hint))
       {
-        ::dagor.debug("Hints: " + (hint?.showEvent ?? "_") + " is disabled")
+        log("Hints: " + (hint?.showEvent ?? "_") + " is disabled")
         continue
       }
 
@@ -197,7 +204,7 @@ enum HintShowState {
     if (lifeTime <= 0)
       return
 
-    hintData.lifeTimerWeak = timers.addTimer(lifeTime, ::Callback(function () {
+    hintData.lifeTimerWeak = timers.addTimer(lifeTime, Callback(function () {
       hideHint(hintData, false)
       removeFromList(hintData)
       removeDelayedShowTimer(hintData.hint)
@@ -276,11 +283,11 @@ enum HintShowState {
 
   function showHint(hintData)
   {
-    if (!::checkObj(nest))
+    if (!checkObj(nest))
       return
 
     let hintNestObj = nest.findObject(hintData.hint.getHintNestId())
-    if (!::checkObj(hintNestObj))
+    if (!checkObj(hintNestObj))
       return
 
     checkRemovedHints(hintData.hint) //remove hints with not finished animation if needed
@@ -302,12 +309,12 @@ enum HintShowState {
       return
 
     let hintObj = hintData.hintObj
-    if (!::checkObj(hintObj))
+    if (!checkObj(hintObj))
       return
 
     hintData.secondsUpdater <- SecondsUpdater(hintObj, (@(hintData) function (obj, params) {
       let textObj = obj.findObject("time_text")
-      if (!::checkObj(textObj))
+      if (!checkObj(textObj))
         return false
 
       let lifeTime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
@@ -325,7 +332,7 @@ enum HintShowState {
   function hideHint(hintData, isInstant)
   {
     let hintObject = hintData.hintObj
-    if (!::check_obj(hintObject))
+    if (!checkObj(hintObject))
       return
 
     let needFinalizeRemove = hintData.hint.hideHint(hintObject, isInstant)
@@ -346,7 +353,7 @@ enum HintShowState {
     for(local i = animatedRemovedHints.len() - 1; i >= 0; i--)
     {
       let hintData = animatedRemovedHints[i]
-      if (::check_obj(hintData.hintObj))
+      if (checkObj(hintData.hintObj))
       {
         if (!hint.hintType.isSameReplaceGroup(hintData.hint, hint))
           continue
@@ -370,13 +377,13 @@ enum HintShowState {
     updateRemoveTimer(hintData)
 
     let hintObj = hintData.hintObj
-    if (!::checkObj(hintObj))
+    if (!checkObj(hintObj))
       return showHint(hintData)
 
     setCoutdownTimer(hintData)
 
     let timeBarObj = hintObj.findObject("time_bar")
-    if (::checkObj(timeBarObj))
+    if (checkObj(timeBarObj))
     {
       let totaltime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
       let currentTime = hintData.hint.getTimerCurrentTimeSec(hintData.eventData, hintData.addTime)
@@ -416,7 +423,7 @@ enum HintShowState {
   function isHintShowCountExceeded(hint)
   {
     if(hint.maskId >= 0 || (hint?.totalCount ?? 0) > 0)
-      ::dagor.debug("Hints: " + (hint?.showEvent ?? "_")
+      log("Hints: " + (hint?.showEvent ?? "_")
       + " maskId = " + hint.maskId
       + " totalCount = " + (hint?.totalCount ?? "_")
       + " showedCount = " + ::get_hint_seen_count(hint.maskId))
@@ -432,7 +439,7 @@ enum HintShowState {
     if(delayedShowTimers?[hint.name])
       return
 
-    delayedShowTimers[hint.name] <- timers.addTimer(hint.delayTime, ::Callback(function () {
+    delayedShowTimers[hint.name] <- timers.addTimer(hint.delayTime, Callback(function () {
       if(delayedShowTimers?[hint.name])
         onShowEvent(hint, eventData)
     }, this)).weakref()

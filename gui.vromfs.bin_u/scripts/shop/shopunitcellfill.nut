@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format, split_by_chars } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
@@ -170,7 +175,7 @@ let function updateCardStatus(obj, id, statusTbl) {
     discountObj.setValue("")
   else {
     discountObj.setValue($"-{discount}%")
-    discountObj.tooltip = format(::loc("discount/buy/tooltip"), discount.tostring())
+    discountObj.tooltip = format(loc("discount/buy/tooltip"), discount.tostring())
   }
 
   let hasBonus = expMul > 1 || wpMul > 1
@@ -183,9 +188,9 @@ let function updateCardStatus(obj, id, statusTbl) {
     let locEnd = isGroup ? "/group/tooltip" : "/tooltip"
     let tooltipArr = []
     if (expMul > 1)
-      tooltipArr.append(format(::loc($"bonus/expitemAircraftMul{locEnd}"), $"x{expMul}"))
+      tooltipArr.append(format(loc($"bonus/expitemAircraftMul{locEnd}"), $"x{expMul}"))
     if (wpMul > 1)
-      tooltipArr.append(format(::loc($"bonus/wpitemAircraftMul{locEnd}"), $"x{wpMul}"))
+      tooltipArr.append(format(loc($"bonus/wpitemAircraftMul{locEnd}"), $"x{wpMul}"))
     bonusObj.tooltip = "\n".join(tooltipArr, true)
   }
 }
@@ -260,7 +265,7 @@ let getUnitStatusTbl = function(unit, params) {
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
-  if (forceNotInResearch || !::isUnitInResearch(unit) || ::has_feature("SpendGold")) //it not look like good idea to calc it here
+  if (forceNotInResearch || !::isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
     if (::show_console_buttons)
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
     else
@@ -324,7 +329,7 @@ let function getFakeUnitStatusTbl(unit, params) {
   return {
     unitName             = unit.name
     unitImage            = unit.image
-    nameText             = ::loc(unit?.nameLoc ?? $"mainmenu/type_{nameForLoc}")
+    nameText             = loc(unit?.nameLoc ?? $"mainmenu/type_{nameForLoc}")
     isInactive           = true
     shopStatus           = getUnitItemStatusText(bitStatus, true)
     unitRankText         = ::get_unit_rank_text(unit, null, showBR, getEdiffFunc())
@@ -435,7 +440,7 @@ let function getGroupStatusTbl(group, params) {
     //primary unit params
     primaryUnitId       = primaryUnit.name,
     unitImage,
-    nameText            = needUnitNameOnPlate ? ::getUnitName(primaryUnit) : ::loc($"shop/group/{group.name}")
+    nameText            = needUnitNameOnPlate ? ::getUnitName(primaryUnit) : loc($"shop/group/{group.name}")
     unitRarity          = getUnitRarity(primaryUnit)
     unitClassIcon       = getUnitRoleIcon(primaryUnit)
     unitClass           = getUnitRole(primaryUnit)

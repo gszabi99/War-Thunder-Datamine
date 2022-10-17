@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -32,14 +39,14 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
   }
 }
 
-g_weaponry_types._getUnlockCost <- function _getUnlockCost(unit, item)
+::g_weaponry_types._getUnlockCost <- function _getUnlockCost(unit, item)
 {
   if (item.name == "")
     return ::Cost()
   return ::Cost(0, ::wp_get_modification_open_cost_gold(unit.name, item.name))
 }
 
-g_weaponry_types._getCost <- function _getCost(unit, item)
+::g_weaponry_types._getCost <- function _getCost(unit, item)
 {
   if (item.name == "")
     return ::Cost()
@@ -49,7 +56,7 @@ g_weaponry_types._getCost <- function _getCost(unit, item)
   )
 }
 
-g_weaponry_types._getAmount <- function _getAmount(unit, item)
+::g_weaponry_types._getAmount <- function _getAmount(unit, item)
 {
   if (("isDefaultForGroup" in item) && item.isDefaultForGroup >= 0)
     return 1
@@ -63,8 +70,8 @@ enums.addTypesByGlobalName("g_weaponry_types", {
   WEAPON = {
     type = weaponsItem.weapon
     getLocName = @ (unit, item, limitedName = false) getWeaponNameText(unit, false, item.name, ",  ")
-    getHeader = @(unit) (unit.isAir() || unit.isHelicopter()) ? ::loc("options/secondary_weapons")
-       : ::loc("options/additional_weapons")
+    getHeader = @(unit) (unit.isAir() || unit.isHelicopter()) ? loc("options/secondary_weapons")
+       : loc("options/additional_weapons")
     getCost = function(unit, item) {
       return ::Cost(
         ::wp_get_cost2(unit.name, item.name),
@@ -87,8 +94,8 @@ enums.addTypesByGlobalName("g_weaponry_types", {
         return ""
 
       if (::g_mis_custom_state.getCurMissionRules().getCurSpawnScore() < fullCost)
-        weapCost = ::colorize("badTextColor", weapCost)
-      return ::loc("shop/spawnScore", { cost = weapCost })
+        weapCost = colorize("badTextColor", weapCost)
+      return loc("shop/spawnScore", { cost = weapCost })
     }
   }
 
@@ -128,8 +135,8 @@ enums.addTypesByGlobalName("g_weaponry_types", {
         return ""
 
       if (::g_mis_custom_state.getCurMissionRules().getCurSpawnScore() < fullCost)
-        bulletCost = ::colorize("badTextColor", bulletCost)
-      return ::loc("shop/spawnScore", { cost = bulletCost })
+        bulletCost = colorize("badTextColor", bulletCost)
+      return loc("shop/spawnScore", { cost = bulletCost })
     }
   }
 
@@ -147,7 +154,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //********************** SPARE *************************************************
   SPARE = {
     type = weaponsItem.spare
-    getLocName = function(unit, item, ...) { return ::loc("spare/" + item.name) }
+    getLocName = function(unit, item, ...) { return loc("spare/" + item.name) }
     getCost = function(unit, ...) { return ::Cost(
       ::wp_get_spare_cost(unit.name),
       ::wp_get_spare_cost_gold(unit.name)
@@ -195,7 +202,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //********************** NEXT UNIT *********************************************
   NEXTUNIT = {
     type = weaponsItem.nextUnit
-    getLocName = function(unit, item, ...) { return ::loc("elite/" + item.name) }
+    getLocName = function(unit, item, ...) { return loc("elite/" + item.name) }
   }
 }, null, "typeName")
 
@@ -206,7 +213,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
   return 0
 })*/
 
-g_weaponry_types.getUpgradeTypeByItem <- function getUpgradeTypeByItem(item)
+::g_weaponry_types.getUpgradeTypeByItem <- function getUpgradeTypeByItem(item)
 {
   if (!("type" in item))
     return ::g_weaponry_types.UNKNOWN

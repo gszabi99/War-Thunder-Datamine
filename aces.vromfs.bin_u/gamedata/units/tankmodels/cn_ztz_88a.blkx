@@ -388,6 +388,11 @@
         "armorClass": "RHA_tank_modern"
       }
     },
+    "turret_grille_armor": {
+      "hp": 300.0,
+      "armorClass": "grille_air",
+      "composite_armor_turret_01_dm": {}
+    },
     "optics": {
       "armorClass": "optics_tank",
       "optic_gun_dm": {
@@ -877,24 +882,35 @@
     }
   },
   "xray_viewer_data": {
-    "armorArrayHull": {
-      "xrayDmPart": "composite_armor_hull_01_dm",
-      "armorArrayText": {
-        "layer": [
-          {
-            "dmPart": "turret_05_side_dm"
-          },
-          {
-            "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 50.0
-          },
-          {
-            "dmPart": "turret_02_back_dm",
-            "xrayTextThickness": 100.0
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "armorArrayText": {
+          "layer": [
+            {
+              "dmPart": "turret_05_side_dm"
+            },
+            {
+              "dmPart": "composite_armor_hull_01_dm",
+              "xrayTextThickness": 50.0
+            },
+            {
+              "dmPart": "turret_02_back_dm",
+              "xrayTextThickness": 100.0
+            }
+          ]
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_turret_01_dm",
+        "titleLoc": "grille_air",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_turret_01_dm"
           }
-        ]
+        }
       }
-    }
+    ]
   },
   "attachables": {
     "ex_armor_01_dm": true,

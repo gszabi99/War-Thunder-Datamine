@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
@@ -15,10 +24,12 @@ let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockI
 let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { APP_ID } = require("app")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {
-  if (!::has_feature("UserCards"))
+  if (!hasFeature("UserCards"))
     return
   ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, {info = playerInfo})
 }
@@ -43,7 +54,7 @@ let { APP_ID } = require("app")
   profileInited = false
 
   airStatsList = null
-  statsType = ::ETTI_VALUE_INHISORY
+  statsType = ETTI_VALUE_INHISORY
   statsMode = ""
   countryStats = null
   unitStats = null
@@ -57,7 +68,7 @@ let { APP_ID } = require("app")
   searchPlayerByNick = false
   infoReady = false
 
-  curMode = ::DIFFICULTY_ARCADE
+  curMode = DIFFICULTY_ARCADE
   lbMode  = ""
   lbModesList = null
 
@@ -98,7 +109,7 @@ let { APP_ID } = require("app")
     else if ("id" in player)
     {
       taskId = ::req_player_public_statinfo_by_player_id(player.id)
-      let selfPlayerId = ::getTblValue("uid", ::get_local_mplayer())
+      let selfPlayerId = getTblValue("uid", ::get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == player.id)
         isMyPage = true
       else
@@ -148,7 +159,7 @@ let { APP_ID } = require("app")
   function initStatsParams()
   {
     curMode = ::get_current_wnd_difficulty()
-    statsType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
+    statsType = ::loadLocalByAccount("leaderboards_type", ETTI_VALUE_INHISORY)
   }
 
   function goBack()
@@ -158,7 +169,7 @@ let { APP_ID } = require("app")
 
   function notFoundPlayerMsg()
   {
-    this.msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = ("name" in player)? player.name : "" }),
+    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = ("name" in player)? player.name : "" }),
         [
           ["ok", function() { goBack() } ]
         ], "ok")
@@ -188,7 +199,7 @@ let { APP_ID } = require("app")
     if (searchPlayerByNick)
       return onSearchResult()
 
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return;
 
     let blk = ::DataBlock()
@@ -196,7 +207,7 @@ let { APP_ID } = require("app")
 
     if (!blk?.nick || blk.nick == "") //!!FIX ME: Check incorrect user by no uid in answer.
     {
-      this.msgBox("user_not_played", ::loc("msg/player_not_played_our_game"),
+      this.msgBox("user_not_played", loc("msg/player_not_played_our_game"),
         [
           ["ok", function() { goBack() } ]
         ], "ok")
@@ -220,7 +231,7 @@ let { APP_ID } = require("app")
     {
       let show = div == name
       let divObj = scene.findObject(div + "-container")
-      if (::checkObj(divObj))
+      if (checkObj(divObj))
       {
         divObj.show(show)
         if (show)
@@ -249,7 +260,7 @@ let { APP_ID } = require("app")
 
   function fillProfile()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     fillTitleName(player.title, false)
@@ -271,13 +282,13 @@ let { APP_ID } = require("app")
 
       name = "empty_title"
     }
-    fillAdditionalName(::get_unlock_name_text(::UNLOCKABLE_TITLE, name), "title")
+    fillAdditionalName(getUnlockNameText(UNLOCKABLE_TITLE, name), "title")
     scene.findObject("profile-currentUser-title")["inactive"] = isOwnStats ? "no" : "yes"
   }
 
   function onProfileStatsModeChange(obj)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
     let value = obj.getValue()
 
@@ -317,19 +328,19 @@ let { APP_ID } = require("app")
 
   function fillAdditionalName(name, link)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     let nameObj = scene.findObject("profile-currentUser-" + link)
-    if (!::check_obj(nameObj))
+    if (!checkObj(nameObj))
       return
 
-    nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : ::loc("profile/" + link)}{name}")
+    nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : loc("profile/" + link)}{name}")
   }
 
   function fillClanInfo(playerData)
   {
-    if (!::has_feature("Clans"))
+    if (!hasFeature("Clans"))
       return
 
     let clanTagObj = scene.findObject("profile-clanTag");
@@ -337,7 +348,7 @@ let { APP_ID } = require("app")
     {
       let clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
       let text = ::checkClanTagForDirtyWords(playerData.clanTag);
-      clanTagObj.setValue(::colorize(clanType.color, text));
+      clanTagObj.setValue(colorize(clanType.color, text));
       clanTagObj.tooltip = ::ps4CheckAndReplaceContentDisabledText(playerData.clanName);
     }
   }
@@ -345,7 +356,7 @@ let { APP_ID } = require("app")
   function fillShortCountryStats(profile)
   {
     let countryStatsNest = scene.findObject("country_stats_nest")
-    if (!::checkObj(countryStatsNest))
+    if (!checkObj(countryStatsNest))
       return
 
     let columns = shopCountriesList.map(@(c) {
@@ -356,7 +367,7 @@ let { APP_ID } = require("app")
 
     let blk = ::handyman.renderCached(("%gui/profile/country_stats_table"), {
       columns = columns,
-      tableName = ::loc("lobby/vehicles")
+      tableName = loc("lobby/vehicles")
     })
     guiScene.replaceContentFromText(countryStatsNest, blk, blk.len(), this)
   }
@@ -368,11 +379,11 @@ let { APP_ID } = require("app")
 
   function updateDifficultySwitch(parentObj)
   {
-    if (!::checkObj(parentObj))
+    if (!checkObj(parentObj))
       return
 
     let switchObj = parentObj.findObject("modes_list")
-    if (!::checkObj(switchObj))
+    if (!checkObj(switchObj))
       return
 
     let childrenCount = switchObj.childrenCount()
@@ -384,7 +395,7 @@ let { APP_ID } = require("app")
 
   function onStatsModeChange(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let value = obj.getValue()
@@ -399,7 +410,7 @@ let { APP_ID } = require("app")
 
   function fillAwardsBlock(pl)
   {
-    if (::has_feature("ProfileMedals"))
+    if (hasFeature("ProfileMedals"))
       fillMedalsBlock(pl)
     else // Tencent
       fillTitlesBlock(pl)
@@ -407,7 +418,7 @@ let { APP_ID } = require("app")
 
   function fillMedalsBlock(pl)
   {
-    local curCountryId = ::get_profile_country_sq()
+    local curCountryId = profileCountrySq.value
     local maxMedals = 0
     if (!isOwnStats)
     {
@@ -449,7 +460,7 @@ let { APP_ID } = require("app")
   function onMedalsCountrySelect(obj)
   {
     let nestObj = scene.findObject("medals_nest")
-    if (!::check_obj(obj) || !::check_obj(nestObj))
+    if (!checkObj(obj) || !checkObj(nestObj))
       return
 
     let countryId = shopCountriesList?[obj.getValue()]
@@ -510,7 +521,7 @@ let { APP_ID } = require("app")
       if (!titleUnlock || titleUnlock?.hidden)
         continue
 
-      let locText = ::loc("title/" + id)
+      let locText = loc("title/" + id)
       titles.append({
         name = id
         text = locText
@@ -547,14 +558,14 @@ let { APP_ID } = require("app")
   function onStatsTypeChange(obj)
   {
     if (!obj) return
-    statsType = obj.getValue()? ::ETTI_VALUE_INHISORY : ::ETTI_VALUE_TOTAL
+    statsType = obj.getValue()? ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL
     ::saveLocalByAccount("leaderboards_type", statsType)
     fillLeaderboard()
   }
 
   function onLbModeSelect(obj)
   {
-    if (!::checkObj(obj) || lbModesList == null)
+    if (!checkObj(obj) || lbModesList == null)
       return
 
     let newLbMode = lbModesList?[obj.getValue()]
@@ -571,7 +582,7 @@ let { APP_ID } = require("app")
 
   function fillStatistics()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     showSheetDiv("stats")
@@ -580,7 +591,7 @@ let { APP_ID } = require("app")
 
   function fillAirStats()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     if (!airStatsInited)
@@ -667,11 +678,11 @@ let { APP_ID } = require("app")
         id    = inst
         idx   = idx
         image = ::get_country_icon(inst)
-        text  = ::loc(inst)
+        text  = loc(inst)
       }
 
     if (!countryStats)
-      countryStats = [::get_profile_country_sq()]
+      countryStats = [profileCountrySq.value]
   }
 
   function getFiltersView()
@@ -689,7 +700,7 @@ let { APP_ID } = require("app")
           idx = inst.idx
           image = inst.image
           text = inst.text
-          value = !isUnitType && ::isInArray(idx, selectedArr)
+          value = !isUnitType && isInArray(idx, selectedArr)
         })
 
       view.checkbox.sort(@(a,b) a.idx <=> b.idx)
@@ -722,7 +733,7 @@ let { APP_ID } = require("app")
 
   function fillAirStatsScene(airStats)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     airStatsList = []
@@ -740,7 +751,7 @@ let { APP_ID } = require("app")
     {
       let air = ::getAircraftByName(item.name)
       let unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
-      if (!::isInArray(unitTypeShopId, filterUnits))
+      if (!isInArray(unitTypeShopId, filterUnits))
           continue
       if (!("country" in item))
       {
@@ -749,7 +760,7 @@ let { APP_ID } = require("app")
       }
       if ( ! ("locName" in item))
         item.locName <- air ? ::getUnitName(air, true) : ""
-      if (::isInArray(item.country, filterCountry))
+      if (isInArray(item.country, filterCountry))
         airStatsList.append(item)
     }
 
@@ -813,7 +824,7 @@ let { APP_ID } = require("app")
           needText = false
         })
     }
-    data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+    data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
     let tooltips = {}
     let fromIdx = curStatsPage*statsPerPage
@@ -833,7 +844,7 @@ let { APP_ID } = require("app")
         {
           id="unit",
           width=rcWidth,
-          image=getUnitClassIco(airData.name),
+          image=::getUnitClassIco(airData.name),
           tooltipId = unitTooltipId,
           cellType="splitRight",
           needText = false
@@ -858,7 +869,7 @@ let { APP_ID } = require("app")
           rowData.append(cell)
         }
       }
-      data += buildTableRow(rowName, rowData, idx%2==0)
+      data += ::buildTableRow(rowName, rowData, idx%2==0)
     }
 
     let tblObj = scene.findObject("airs_stats_table")
@@ -893,10 +904,10 @@ let { APP_ID } = require("app")
       return
 
     let typeProfileObj = scene.findObject("stats_type_profile")
-    if (::checkObj(typeProfileObj))
+    if (checkObj(typeProfileObj))
     {
       typeProfileObj.show(true)
-      typeProfileObj.setValue(statsType == ::ETTI_VALUE_INHISORY)
+      typeProfileObj.setValue(statsType == ETTI_VALUE_INHISORY)
     }
 
     let tblObj = scene.findObject("profile_leaderboard")
@@ -916,7 +927,7 @@ let { APP_ID } = require("app")
           needText = false
         })
 
-    data = buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+    data = ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
     let rows = [
       {
@@ -929,15 +940,15 @@ let { APP_ID } = require("app")
       }
     ]
 
-    let valueFieldName = (statsType == ::ETTI_VALUE_TOTAL)
+    let valueFieldName = (statsType == ETTI_VALUE_TOTAL)
                            ? LEADERBOARD_VALUE_TOTAL
                            : LEADERBOARD_VALUE_INHISTORY
-    let lb = ::getTblValue(valueFieldName, ::getTblValue(lbMode, stats.leaderboard), {})
+    let lb = getTblValue(valueFieldName, getTblValue(lbMode, stats.leaderboard), {})
     let standartRow = {}
 
     foreach (idx, fieldTbl in lb)
     {
-      standartRow[idx] <- ::getTblValue(valueFieldName, fieldTbl, -1)
+      standartRow[idx] <- getTblValue(valueFieldName, fieldTbl, -1)
     }
 
     foreach (row in rows)
@@ -978,7 +989,7 @@ let { APP_ID } = require("app")
         }
 
       rowIdx++
-      data += buildTableRow(rowName, rowData, rowIdx % 2 == 0, "")
+      data += ::buildTableRow(rowName, rowData, rowIdx % 2 == 0, "")
     }
     guiScene.replaceContentFromText(tblObj, data, data.len(), this)
 
@@ -1009,10 +1020,10 @@ let { APP_ID } = require("app")
 
     foreach(idx, mode in ::leaderboard_modes)
     {
-      let diffCode = ::getTblValue("diffCode", mode)
-      if (!::g_difficulty.isDiffCodeAvailable(diffCode, ::GM_DOMINATION))
+      let diffCode = getTblValue("diffCode", mode)
+      if (!::g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
         continue
-      let reqFeature = ::getTblValue("reqFeature", mode)
+      let reqFeature = getTblValue("reqFeature", mode)
       if (!hasAllFeatures(reqFeature))
         continue
 
@@ -1027,10 +1038,10 @@ let { APP_ID } = require("app")
 
   function updateButtons()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
-    let hasFeatureFriends = ::has_feature("Friends")
+    let hasFeatureFriends = hasFeature("Friends")
 
     let contact = ::getContact(player?.uid, player.name)
     let isMe = contact?.isMe() ?? false
@@ -1055,38 +1066,38 @@ let { APP_ID } = require("app")
       btn_blacklistRemove = showProfBar && hasFeatureFriends && isBlock && canBlock && !isPS4Player
       btn_moderatorBan = showProfBar && ::is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
-      btn_achievements_url = showProfBar && ::has_feature("AchievementsUrl")
-        && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
+      btn_achievements_url = showProfBar && hasFeature("AchievementsUrl")
+        && hasFeature("AllowExternalLink") && !::is_vendor_tencent()
     })
   }
 
   function onBlacklistBan()
   {
-    let clanTag = ::getTblValue("clanTag", player, "")
-    let playerName = ::getTblValue("name", player, "")
-    let userId = ::getTblValue("uid", player, "")
+    let clanTag = getTblValue("clanTag", player, "")
+    let playerName = getTblValue("name", player, "")
+    let userId = getTblValue("uid", player, "")
 
     ::gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
   }
 
   function onFriendAdd()
   {
-    ::editContactMsgBox(player, ::EPL_FRIENDLIST, true)
+    ::editContactMsgBox(player, EPL_FRIENDLIST, true)
   }
 
   function onFriendRemove()
   {
-    ::editContactMsgBox(player, ::EPL_FRIENDLIST, false)
+    ::editContactMsgBox(player, EPL_FRIENDLIST, false)
   }
 
   function onBlacklistAdd()
   {
-    ::editContactMsgBox(player, ::EPL_BLOCKLIST, true)
+    ::editContactMsgBox(player, EPL_BLOCKLIST, true)
   }
 
   function onBlacklistRemove()
   {
-    ::editContactMsgBox(player, ::EPL_BLOCKLIST, false)
+    ::editContactMsgBox(player, EPL_BLOCKLIST, false)
   }
 
   function onComplain()
@@ -1136,7 +1147,7 @@ let { APP_ID } = require("app")
 
   function onOpenAchievementsUrl()
   {
-    openUrl(::loc("url/achievements",
+    openUrl(loc("url/achievements",
         { appId = APP_ID, name = player.name}),
       false, false, "profile_page")
   }

@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 require("ingameConsoleStore.nut")
 let statsd = require("statsd")
 
@@ -10,7 +15,7 @@ let sheetsArray = [
   {
     id = "epic_game_gold"
     locId = "itemTypes/epicGameGold"
-    getSeenId = @() "##epic_item_sheet_" + mediaType
+    getSeenId = @() "##epic_item_sheet_gold"
     mediaType = "gold"
     sortParams = [
       {param = "price", asc = false}
@@ -22,7 +27,7 @@ let sheetsArray = [
   {
     id = "epic_game_items"
     locId = "itemTypes/epicGameContent"
-    getSeenId = @() "##epic_item_sheet_" + mediaType
+    getSeenId = @() "##epic_item_sheet_dlc"
     mediaType = "dlc"
     sortParams = [
       {param = "price", asc = false}
@@ -49,24 +54,24 @@ foreach (sh in sheetsArray)
   isLoadingInProgress = false
 
   function loadCurSheetItemsList() {
-    itemsList = itemsCatalog?[curSheet.mediaType] ?? []
+    this.itemsList = this.itemsCatalog?[this.curSheet.mediaType] ?? []
   }
 
   function onEventEpicShopItemUpdated(p) {
-    updateSorting()
-    fillItemsList()
+    this.updateSorting()
+    this.fillItemsList()
   }
 
   function onEventEpicShopDataUpdated(p) {
-    isLoadingInProgress = p?.isLoadingInProgress ?? false
-    fillItemsList()
-    updateItemInfo()
+    this.isLoadingInProgress = p?.isLoadingInProgress ?? false
+    this.fillItemsList()
+    this.updateItemInfo()
   }
 }
 
-let openIngameStore = ::kwarg(
+let openIngameStore = kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
-    if (!::isInArray(chapter, [null, "", "eagles"]))
+    if (!isInArray(chapter, [null, "", "eagles"]))
       return false
 
     if (shopData.canUseIngameShop()) {

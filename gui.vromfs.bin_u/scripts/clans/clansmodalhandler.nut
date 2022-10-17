@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("%scripts/clans/clanTablesConfig.nut")
@@ -211,7 +219,7 @@ local leaderboardFilterArray = [
 
   function onStatsModeChange(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let diffCode = obj.getChild(obj.getValue()).holderDiffCode.tointeger()
@@ -317,7 +325,7 @@ local leaderboardFilterArray = [
     if (updateMyClanRow && ::clan_get_my_clan_id() != "-1")
     {
       let requestPage = curPage
-      let cbSuccess = ::Callback((@(seasonOrdinalNumber) function(myClanRowBlk) {
+      let cbSuccess = Callback((@(seasonOrdinalNumber) function(myClanRowBlk) {
                                       if (requestPage != curPage)
                                         return
 
@@ -345,7 +353,7 @@ local leaderboardFilterArray = [
   function requestLbData(seasonOrdinalNumber)
   {
     let requestPage = curPage
-    let cbSuccess = ::Callback(function(data)
+    let cbSuccess = Callback(function(data)
                                  {
                                    if (requestPage == curPage)
                                      lbDataCb(data)
@@ -380,11 +388,11 @@ local leaderboardFilterArray = [
 
   function lbDataCb(lbBlk)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     let lbPageObj = scene.findObject("clans_list_content")
-    if (!::checkObj(lbPageObj))
+    if (!checkObj(lbPageObj))
       return
 
     ::showBtn("btn_back_to_clanlist", isSearchMode, lbPageObj)
@@ -402,7 +410,7 @@ local leaderboardFilterArray = [
 
     let paginatorObj = lbPageObj.findObject("mid_nav_bar")
     let myPage = (myClanLbData != null && "pos" in myClanLbData) ? ::floor(myClanLbData.pos / clansPerPage) : null
-    generatePaginator(paginatorObj, this, curClanLbPage, curClanLbPage + (isLastPage? 0 : 1), myPage)
+    ::generatePaginator(paginatorObj, this, curClanLbPage, curClanLbPage + (isLastPage? 0 : 1), myPage)
   }
 
   function showEmptySearchResult(show)
@@ -415,7 +423,7 @@ local leaderboardFilterArray = [
   function printLeaderboards(clanLbBlk)
   {
     let lbPageObj = scene.findObject("clans_list_content")
-    if (!::checkObj(lbPageObj))
+    if (!checkObj(lbPageObj))
       return
 
     local data = []
@@ -469,7 +477,7 @@ local leaderboardFilterArray = [
         image = item.getIcon(getCurDMode())
         tooltip = item.tooltip
         active = clansLbSortByPage[curPage].id == item.id
-        text = ::loc(item?.text ?? "")
+        text = loc(item?.text ?? "")
         needText = (item?.text ?? "") != ""
       }
       if(!("field" in item) || !item.sort)
@@ -507,7 +515,7 @@ local leaderboardFilterArray = [
     let desc = rowBlk.desc == "" ? "" : rowBlk.desc == " " ? "" : rowBlk.desc
     let rowName = "row_" + rowIdx
 
-    let clanType = ::g_clan_type.getTypeByName(::getTblValue("type", rowBlk, ""))
+    let clanType = ::g_clan_type.getTypeByName(getTblValue("type", rowBlk, ""))
     let highlightRow = myClanLbData != null && myClanLbData._id == rowBlk._id ? true : false
     rowsTexts[rowName] <- {
       txt_name = colorizeClanText(clanType, rowBlk.name, highlightRow)
@@ -533,13 +541,13 @@ local leaderboardFilterArray = [
       if (isColForDisplay(item))
         rowData.append(getItemCell(item, rowBlk, rowName))
 
-    ::dagor.assertf(typeof(rowBlk._id) == "string", "leaderboards receive _id type " + typeof(rowBlk._id) + ", instead of string on clan_request_page_of_leaderboard")
-    return buildTableRow(rowName, rowData, rowIdx % 2 != 0, highlightRow ? "mainPlayer:t='yes';" : "")
+    assert(typeof(rowBlk._id) == "string", "leaderboards receive _id type " + typeof(rowBlk._id) + ", instead of string on clan_request_page_of_leaderboard")
+    return ::buildTableRow(rowName, rowData, rowIdx % 2 != 0, highlightRow ? "mainPlayer:t='yes';" : "")
   }
 
   function colorizeClanText(clanType, clanText, isMainPlayer)
   {
-    return isMainPlayer ? clanText : ::colorize(clanType.color, clanText)
+    return isMainPlayer ? clanText : colorize(clanType.color, clanText)
   }
 
   function getItemCell(item, rowBlk, rowName)
@@ -584,8 +592,8 @@ local leaderboardFilterArray = [
     if (curPage != "clans_leaderboards" || colName.len() < ::ranked_column_prefix.len()
       || colName.slice(0, ::ranked_column_prefix.len()) != ::ranked_column_prefix)
     {
-      let showByFeature = ::getTblValue("showByFeature", column, null)
-      if (showByFeature != null && !::has_feature(showByFeature))
+      let showByFeature = getTblValue("showByFeature", column, null)
+      if (showByFeature != null && !hasFeature(showByFeature))
         return false
 
       return true
@@ -596,7 +604,7 @@ local leaderboardFilterArray = [
 
   function onCategory(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     if (isClanInfo && isWorldWarMode)
@@ -634,7 +642,7 @@ local leaderboardFilterArray = [
   {
     if (::show_console_buttons)
       return
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let dataIdx = obj.getValue() - 1 // skiping header row
@@ -645,7 +653,7 @@ local leaderboardFilterArray = [
   {
     if (!::show_console_buttons)
       return
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let isHover = obj.isHovered()
@@ -673,7 +681,7 @@ local leaderboardFilterArray = [
     })
 
     let reqButton = curPageObj.findObject("btn_membership_req")
-    if(::checkObj(reqButton))
+    if(checkObj(reqButton))
     {
       local opened = true
       if(curPageData)
@@ -684,7 +692,7 @@ local leaderboardFilterArray = [
             break
           }
       reqButton.enable(opened)
-      reqButton.tooltip = opened ? "" : ::loc("clan/was_closed")
+      reqButton.tooltip = opened ? "" : loc("clan/was_closed")
     }
   }
 
@@ -701,13 +709,13 @@ local leaderboardFilterArray = [
   function onClanInfo()
   {
     if (curClanId != null)
-      showClanPage(curClanId, "", "")
+      ::showClanPage(curClanId, "", "")
   }
 
   function onSelectClansList(obj)
   {
     guiScene.performDelayed(this, function() {
-      if (::check_obj(scene))
+      if (checkObj(scene))
         onSelectClan(scene.findObject("clan_lboard_table"))
     })
   }
@@ -720,14 +728,14 @@ local leaderboardFilterArray = [
 
   function onCreateClanWnd()
   {
-    if (::has_feature("Clans")){
+    if (hasFeature("Clans")){
       if (!::ps4_is_ugc_enabled())
         ::ps4_show_ugc_restriction()
       else
         ::gui_modal_new_clan()
     }
     else
-      this.msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      this.msgBox("not_available", loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
   function onEventClanInfoUpdate(params = {})
@@ -748,7 +756,7 @@ local leaderboardFilterArray = [
   function onCancelRequest()
   {
     this.msgBox("cancel_request_question",
-           ::loc("clan/cancel_request_question"),
+           loc("clan/cancel_request_question"),
            [
              ["ok", @() ::g_clans.cancelMembership()],
              ["cancel", @() null]
@@ -761,7 +769,7 @@ local leaderboardFilterArray = [
   function fillClanReward()
   {
     let objFrameBlock = scene.findObject("clan_battle_season_frame_block")
-    if (!::checkObj(objFrameBlock))
+    if (!checkObj(objFrameBlock))
       return
 
     //Don't show any rewards if seasons disabled
@@ -775,19 +783,19 @@ local leaderboardFilterArray = [
       return
     }
 
-    let showAttributes = ::has_feature("ClanSeasonAttributes")
+    let showAttributes = hasFeature("ClanSeasonAttributes")
 
     let seasonName = ::g_clan_seasons.getSeasonName()
     let diff = ::g_difficulty.getDifficultyByDiffCode(getCurDMode())
 
     //Fill current season name
     let objSeasonName = scene.findObject("clan_battle_season_name")
-    if (::checkObj(objSeasonName) && showAttributes)
-      objSeasonName.setValue(::loc("clan/battle_season/title") + ::loc("ui/colon") + ::colorize("userlogColoredText", seasonName))
+    if (checkObj(objSeasonName) && showAttributes)
+      objSeasonName.setValue(loc("clan/battle_season/title") + loc("ui/colon") + colorize("userlogColoredText", seasonName))
 
     //Fill season logo medal
     let objTopMedal = scene.findObject("clan_battle_season_logo_medal")
-    if (::checkObj(objTopMedal) && showAttributes)
+    if (checkObj(objTopMedal) && showAttributes)
     {
       objTopMedal.show(true)
       let iconStyle = "clan_season_logo_" + diff.egdLowercaseName
@@ -797,15 +805,15 @@ local leaderboardFilterArray = [
 
     //Fill current seasons end date
     let objEndsDuel = scene.findObject("clan_battle_season_ends")
-    if (::checkObj(objEndsDuel))
+    if (checkObj(objEndsDuel))
     {
-      let endDateText = ::loc("clan/battle_season/ends") + ::loc("ui/colon") + " " + ::g_clan_seasons.getSeasonEndDate()
+      let endDateText = loc("clan/battle_season/ends") + loc("ui/colon") + " " + ::g_clan_seasons.getSeasonEndDate()
       objEndsDuel.setValue(endDateText)
     }
 
     //Fill top rewards
     let clanTableObj = scene.findObject("clan_battle_season_reward_table")
-    if (::checkObj(clanTableObj))
+    if (checkObj(clanTableObj))
     {
       let rewards = ::g_clan_seasons.getFirstPrizePlacesRewards(
         CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW,
@@ -816,8 +824,8 @@ local leaderboardFilterArray = [
       foreach (reward in rewards)
       {
         let placeText = (reward.place >= 1 && reward.place <= 3) ?
-          ::loc("clan/season_award/place/place" + reward.place) :
-          ::loc("clan/season_award/place/placeN", { placeNum = reward.place })
+          loc("clan/season_award/place/place" + reward.place) :
+          loc("clan/season_award/place/placeN", { placeNum = reward.place })
 
         rowData.append({
           text = placeText,
@@ -843,19 +851,19 @@ local leaderboardFilterArray = [
     }
 
     let objInfoBtn = scene.findObject("clan_battle_season_info_btn")
-    if (::checkObj(objInfoBtn) && showAttributes)
+    if (checkObj(objInfoBtn) && showAttributes)
       objInfoBtn.show(true)
   }
 
   function fillClanReward_old()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
     let objFrameBlock = scene.findObject("clan_battle_season_frame_block_old")
-    if (!::checkObj(objFrameBlock))
+    if (!checkObj(objFrameBlock))
       return
 
-    let battleSeasonAvailable = ::has_feature("ClanBattleSeasonAvailable")
+    let battleSeasonAvailable = hasFeature("ClanBattleSeasonAvailable")
     objFrameBlock.show(battleSeasonAvailable)
     scene.findObject("clan_battle_season_coming_soon").show(!battleSeasonAvailable)
     if (!battleSeasonAvailable)
@@ -869,8 +877,8 @@ local leaderboardFilterArray = [
     }
     let endsDate = time.buildDateTimeStr(dateDuel, false, false)
     let objEndsDuel = scene.findObject("clan_battle_season_ends")
-    if (::checkObj(objEndsDuel))
-      objEndsDuel.setValue(::loc("clan/battle_season/ends") + ::loc("ui/colon") + endsDate)
+    if (checkObj(objEndsDuel))
+      objEndsDuel.setValue(loc("clan/battle_season/ends") + loc("ui/colon") + endsDate)
 
     let blk = ::get_game_settings_blk()
     if (!blk)
@@ -885,22 +893,22 @@ local leaderboardFilterArray = [
 
     objFrameBlock.show(true)
     let rewObj = scene.findObject("clan_battle_season_reward_description")
-    if (::checkObj(rewObj))
-      rewObj.setValue(format(::loc("clan/battle_season/reward_description"), topPlayersRewarded))
+    if (checkObj(rewObj))
+      rewObj.setValue(format(loc("clan/battle_season/reward_description"), topPlayersRewarded))
 
     let clanTableObj = scene.findObject("clan_battle_season_reward_table");
-    if (!::checkObj(clanTableObj))
+    if (!checkObj(clanTableObj))
       return
 
     local rowBlock = ""
     let rowData = []
     for (local i=1; i<=3; i++)
     {
-      rowData.append({text = ::loc("clan/battle_season/place_"+i), active = false, tdalign="right"})
+      rowData.append({text = loc("clan/battle_season/place_"+i), active = false, tdalign="right"})
       rowData.append({
         needText=false,
         rawParam="text { text-align:t='right'; text:t='" +
-          ::Cost(0, ::getTblValue("place"+i+"Gold", rewards, 0)).tostring() +
+          ::Cost(0, getTblValue("place"+i+"Gold", rewards, 0)).tostring() +
           "'; size:t='pw,ph'; style:t='re-type:textarea; behaviour:textarea;'; }",
         active = false
       })
@@ -911,7 +919,7 @@ local leaderboardFilterArray = [
 
   function onClanSeasonInfo()
   {
-    if (!::g_clan_seasons.isEnabled() || !::has_feature("ClanSeasonAttributes"))
+    if (!::g_clan_seasons.isEnabled() || !hasFeature("ClanSeasonAttributes"))
       return
     let diff = ::g_difficulty.getDifficultyByDiffCode(getCurDMode())
     ::show_clan_season_info(diff)
@@ -942,7 +950,7 @@ local leaderboardFilterArray = [
       onSelect = "onChangeLeaderboardFilter"
       value = filterMask
       list = leaderboardFilterArray.map(@(filter) {
-        text = ::loc(filter.locId)
+        text = loc(filter.locId)
         show = true
       })
     }

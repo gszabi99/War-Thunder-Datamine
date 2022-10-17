@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { regexp } = require("string")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
@@ -152,7 +157,7 @@ let function _handleVersion(preset)
 
     foreach (version in versions)
     {
-      let patchNote = ::loc("presets/" + currentPreset.name + "_ver" + version + "/patchnote", "")
+      let patchNote = loc("presets/" + currentPreset.name + "_ver" + version + "/patchnote", "")
       if (patchNote.len())
         result += (result.len() ? "\n" : "") + patchNote
     }
@@ -217,7 +222,7 @@ let function _handleVersion(preset)
     {
       let blk = ::DataBlock()
       blk.load($"{controlsPresetConfigPath.value}config/hotkeys/list.blk")
-      local platform = isPlatformSteamDeck ? "steamdeck" : ::target_platform
+      local platform = isPlatformSteamDeck ? "steamdeck" : target_platform
       this.presetsListCached = (blk?[platform] != null)
         ? blk[platform] % "preset"
         : blk % "preset"

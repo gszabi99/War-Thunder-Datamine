@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 
 ::gui_handlers.WwOperationDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription
@@ -46,7 +53,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
   function fillOperationBackground()
   {
     let operationBgObj = scene.findObject("operation_background")
-    if (!::check_obj(operationBgObj))
+    if (!checkObj(operationBgObj))
       return
 
     operationBgObj["background-image"] = map.getBackground()
@@ -55,7 +62,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
   function updateDescription()
   {
     let desctObj = scene.findObject("item_desc")
-    if (::check_obj(desctObj))
+    if (checkObj(desctObj))
       desctObj.setValue(map.getDescription(false))
   }
 
@@ -70,15 +77,15 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
     ::g_world_war_render.setPreviewCategories()
 
     let mapNestObj = scene.findObject("map_nest_obj")
-    if (!::checkObj(mapNestObj))
+    if (!checkObj(mapNestObj))
       return
 
     let descObj = scene.findObject("item_desc")
-    let itemDescHeight = ::checkObj(descObj) ? descObj.getSize()[1] : 0
+    let itemDescHeight = checkObj(descObj) ? descObj.getSize()[1] : 0
     let startDataObj = scene.findObject("operation_start_date")
     let operationDescText = scene.findObject("operation_short_info_text")
-    let statusTextHeight = (::checkObj(startDataObj) ? startDataObj.getSize()[1] : 0)
-      + (::checkObj(operationDescText) ? operationDescText.getSize()[1] : 0)
+    let statusTextHeight = (checkObj(startDataObj) ? startDataObj.getSize()[1] : 0)
+      + (checkObj(operationDescText) ? operationDescText.getSize()[1] : 0)
 
     let maxHeight = guiScene.calcString("ph-2@blockInterval", mapNestObj) - itemDescHeight - statusTextHeight
     local minSize = maxHeight
@@ -86,7 +93,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
     foreach(side in ::g_world_war.getCommonSidesOrder())
     {
       let sideStrenghtObj = scene.findObject("strenght_" + ::ww_side_val_to_name(side))
-      if (::checkObj(sideStrenghtObj))
+      if (checkObj(sideStrenghtObj))
       {
         let curWidth = ::g_dagui_utils.toPixels(
           guiScene,
@@ -102,7 +109,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
     mapNestObj.pos = "50%pw-50%w, 0.5*(" + maxHeight + "-" + minSize + ")+" + top
 
     if (descItem)
-      ::g_world_war.updateOperationPreviewAndDo(descItem.id, ::Callback(function() {
+      ::g_world_war.updateOperationPreviewAndDo(descItem.id, Callback(function() {
           updateStatus()
           updateTeamsInfo()
         }, this), true)
@@ -116,13 +123,13 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
       return
 
     let startDateObj = scene.findObject("operation_start_date")
-    if (::checkObj(startDateObj))
+    if (checkObj(startDateObj))
       startDateObj.setValue(
-        ::loc("worldwar/operation/started", { date = descItem.getStartDateTxt() })
+        loc("worldwar/operation/started", { date = descItem.getStartDateTxt() })
       )
 
     let activeBattlesCountObj = scene.findObject("operation_short_info_text")
-    if (::checkObj(activeBattlesCountObj))
+    if (checkObj(activeBattlesCountObj))
     {
       let battlesCount = ::g_world_war.getBattles(
         function(wwBattle) {
@@ -133,20 +140,20 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 
       activeBattlesCountObj.setValue(
         battlesCount > 0
-          ? ::loc("worldwar/operation/activeBattlesCount", { count = battlesCount } )
-          : ::loc("worldwar/operation/noActiveBattles")
+          ? loc("worldwar/operation/activeBattlesCount", { count = battlesCount } )
+          : loc("worldwar/operation/noActiveBattles")
       )
     }
 
     let isClanParticipateObj = scene.findObject("is_clan_participate_text")
-    if (::checkObj(isClanParticipateObj))
+    if (checkObj(isClanParticipateObj))
     {
       local isMyClanParticipateText = ""
       if (descItem.isMyClanParticipate())
         foreach(idx, side in ::g_world_war.getCommonSidesOrder())
           if (descItem.isMyClanSide(side))
           {
-            isMyClanParticipateText = ::loc("worldwar/operation/isClanParticipate")
+            isMyClanParticipateText = loc("worldwar/operation/isClanParticipate")
             isClanParticipateObj["text-align"] = (idx == 0 ? "left" : "right")
             break
           }
@@ -161,7 +168,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
     foreach(side in ::g_world_war.getCommonSidesOrder())
     {
       let sideName = ::ww_side_val_to_name(side)
-      let isInvert = side == ::SIDE_2
+      let isInvert = side == SIDE_2
 
       let unitListObjPlace = scene.findObject("team_" + sideName + "_unit_info")
       let unitListBlk = ::handyman.renderCached(sceneTplTeamStrenght, getUnitsListViewBySide(side, isInvert))
@@ -173,9 +180,9 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
       guiScene.replaceContentFromText(armyGroupObjPlace, armyGroupsBlk, armyGroupsBlk.len(), this)
 
       let clanBlockTextObj = armyGroupObjPlace.findObject("clan_block_text")
-      if (::check_obj(clanBlockTextObj))
+      if (checkObj(clanBlockTextObj))
         clanBlockTextObj.setValue(descItem ?
-          ::loc("worldwar/operation/participating_clans") :
+          loc("worldwar/operation/participating_clans") :
           map.getClansConditionText(true))
 
       let countryesObjPlace = scene.findObject("team_" + sideName + "_countryes_info")

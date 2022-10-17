@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -22,20 +31,20 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     updateSkipCheckBox()
 
     let msgTextObj = scene.findObject("msgText")
-    if (::check_obj(msgTextObj))
+    if (checkObj(msgTextObj))
       msgTextObj.setValue(message)
 
     let listTextObj = scene.findObject("listText")
-    if (::check_obj(listTextObj))
+    if (checkObj(listTextObj))
       listTextObj.setValue(list)
 
     let btnSelectObj = scene.findObject("btn_select")
-    if (::check_obj(btnSelectObj))
+    if (checkObj(btnSelectObj))
       btnSelectObj.show(ableToStartAndSkip)
 
     let btnCancelObj = scene.findObject("btn_cancel")
-    if(::check_obj(btnCancelObj))
-      btnCancelObj.setValue(::loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
+    if(checkObj(btnCancelObj))
+      btnCancelObj.setValue(loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
     if (startBtnText != "")
       setDoubleTextToButton(scene, "btn_select", startBtnText)
@@ -44,7 +53,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   function updateSkipCheckBox()
   {
     let skipObj = scene.findObject("skip_this")
-    if (::check_obj(skipObj))
+    if (checkObj(skipObj))
     {
       skipObj.show(ableToStartAndSkip && skipFunc)
       skipObj.enable(ableToStartAndSkip && skipFunc)

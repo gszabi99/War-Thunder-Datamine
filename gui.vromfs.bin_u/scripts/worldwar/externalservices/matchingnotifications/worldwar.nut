@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotify, unsubscribeOperationNotify } = require("%scripts/worldWar/services/wwService.nut")
 
@@ -6,9 +11,9 @@ foreach (notificationName, callback in
     ["worldwar.on_join_to_battle"] = function(params)
       {
         let operationId = params?.operationId ?? ""
-        let team = params?.team ?? ::SIDE_1
+        let team = params?.team ?? SIDE_1
         let country = params?.country ?? ""
-        let battleIds = ::getTblValue("battleIds", params, [])
+        let battleIds = getTblValue("battleIds", params, [])
         foreach (battleId in battleIds)
         {
           let queue = ::queues.createQueue({
@@ -30,7 +35,7 @@ foreach (notificationName, callback in
         let reason = params?.reason ?? ""
         let isBattleStarted = reason == "battle-started"
         let msgText = !isBattleStarted
-          ? ::loc("worldWar/leaveBattle/" + reason, "")
+          ? loc("worldWar/leaveBattle/" + reason, "")
           : ""
 
         ::queues.afterLeaveQueue(queue, msgText.len() ? msgText : null)
@@ -61,13 +66,13 @@ foreach (notificationName, callback in
         if (messageType == "operation_finished")
         {
           let operation = getOperationById(operationId)
-          text = operation ? ::loc("worldwar/operation_complete_battle_results_ignored_full_text",
+          text = operation ? loc("worldwar/operation_complete_battle_results_ignored_full_text",
             {operationInfo = operation.getNameText()})
-                           : ::loc("worldwar/operation_complete_battle_results_ignored")
+                           : loc("worldwar/operation_complete_battle_results_ignored")
         }
         else if (messageType == "zone_captured")
         {
-          text = ::loc(isOwnSide ? "worldwar/operation_zone_captured"
+          text = loc(isOwnSide ? "worldwar/operation_zone_captured"
                                  : "worldwar/operation_zone_lost",
             {zoneName = params?.customParam ?? ""})
         }
@@ -76,12 +81,12 @@ foreach (notificationName, callback in
           let misBlk = ::DataBlock()
           ::get_current_mission_desc(misBlk)
           if (params?.customParam == misBlk?.customRules.battleId)
-            text = ::loc(isOwnSide ? "worldwar/operation_air_reinforcements_arrived_our"
+            text = loc(isOwnSide ? "worldwar/operation_air_reinforcements_arrived_our"
                                    : "worldwar/operation_air_reinforcements_arrived_enemy")
         }
         else if (messageType == "battle_finished")
         {
-          text = ::loc(isOwnSide ? "worldwar/operation_battle_won_our"
+          text = loc(isOwnSide ? "worldwar/operation_battle_won_our"
                                  : "worldwar/operation_battle_won_enemy",
             {zoneName = params?.customParam ?? ""})
         }

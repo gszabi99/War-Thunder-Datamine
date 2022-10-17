@@ -1,6 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let checkUnitSpeechLangPackWatch = persist("checkUnitSpeechLangPackWatch", @() ::Watched(false))
+let checkUnitSpeechLangPackWatch = persist("checkUnitSpeechLangPackWatch", @() Watched(false))
 
 let function checkUnitSpeechLangPack(params) {
   if (!checkUnitSpeechLangPackWatch.value)
@@ -23,5 +28,5 @@ subscriptions.addListenersWithoutEnv({
 
 return {
   checkUnitSpeechLangPackWatch
-  isTripleColorSmokeAvailable = @() ::has_feature("AerobaticTricolorSmoke") && (::get_option_aerobatics_smoke_type() == ::TRICOLOR_INDEX)
+  isTripleColorSmokeAvailable = @() hasFeature("AerobaticTricolorSmoke") && (::get_option_aerobatics_smoke_type() == TRICOLOR_INDEX)
 }

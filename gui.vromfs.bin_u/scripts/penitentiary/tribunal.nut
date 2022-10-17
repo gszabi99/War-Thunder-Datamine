@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 ::tribunal <- {
   maxComplaintCount = 10
@@ -22,23 +29,23 @@ let { format } = require("string")
 
   function checkComplaintCounts()
   {
-    if (!::has_feature("Tribunal"))
+    if (!hasFeature("Tribunal"))
       return
 
-    ::tribunal.complaintsData = get_player_complaint_counts()
+    ::tribunal.complaintsData = ::get_player_complaint_counts()
     if (::tribunal.complaintsData?.is_need_complaint_notify)
       ::tribunal.showComplaintMessageBox(::tribunal.complaintsData)
   }
 
   function canComplaint()
   {
-    if (!::has_feature("Tribunal"))
+    if (!hasFeature("Tribunal"))
       return true
 
-    ::tribunal.complaintsData = get_player_complaint_counts()
+    ::tribunal.complaintsData = ::get_player_complaint_counts()
     if (complaintsData && complaintsData.complaint_count_own >= maxComplaintsFromMe)
     {
-      let text = format(::loc("charServer/complaintsLimitExpired"), maxComplaintsFromMe)
+      let text = format(loc("charServer/complaintsLimitExpired"), maxComplaintsFromMe)
       ::showInfoMsgBox(text, "tribunal_msg_box")
       return false
     }
@@ -62,7 +69,7 @@ let { format } = require("string")
         continue
 
       complaintsCount += count
-      let reasonText = ::loc("charServer/ban/reason/" + reason)
+      let reasonText = loc("charServer/ban/reason/" + reason)
       if (reason == "OTHER")
         reasonsList.append(reasonText)
       else
@@ -73,7 +80,7 @@ let { format } = require("string")
       return
 
     let textReasons = ::g_string.implode(reasonsList, "\n")
-    local text = ::loc("charServer/complaintToYou"
+    local text = loc("charServer/complaintToYou"
       + (complaintsCount >= maxComplaintCount ? "MoreThen" : ""))
 
     text = format(text, min(complaintsCount, maxComplaintCount)) + "\n" + textReasons

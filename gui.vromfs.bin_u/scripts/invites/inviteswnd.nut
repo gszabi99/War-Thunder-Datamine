@@ -1,4 +1,12 @@
-local { checkAndShowMultiplayerPrivilegeWarning,
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::gui_start_invites <- function gui_start_invites()
@@ -48,7 +56,7 @@ local { checkAndShowMultiplayerPrivilegeWarning,
   function updateSingleInvite(invite)
   {
     let inviteObj = scene.findObject("invite_" + invite.uid)
-    if (!::check_obj(inviteObj))
+    if (!checkObj(inviteObj))
       return
 
     inviteObj.findObject("text").setValue(invite.getInviteText())
@@ -148,7 +156,7 @@ local { checkAndShowMultiplayerPrivilegeWarning,
 
     local pos = null
     let nameObj = scene.findObject("inviterName_" + invite.uid)
-    if (::checkObj(nameObj))
+    if (checkObj(nameObj))
     {
       pos = nameObj.getPosRC()
       pos[0] += nameObj.getSize()[0]

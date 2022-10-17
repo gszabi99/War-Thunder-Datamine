@@ -1,5 +1,5 @@
 {
-  "model": "panzerjager_panther",
+  "model": "panzerjager_panther_g1",
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
@@ -76,8 +76,14 @@
       "superstructure_top_dm": {
         "armorThickness": 25.0
       },
+      "turret_bottom_dm": {
+        "armorThickness": 20.0
+      },
       "body_bottom_dm": {
         "armorThickness": 20.0
+      },
+      "superstructure_side_dm": {
+        "armorThickness": 40.0
       },
       "superstructure_bottom_dm": {
         "armorThickness": 16.0
@@ -96,6 +102,12 @@
       },
       "turret_01_back_dm": {
         "armorThickness": 5.0
+      },
+      "turret_02_top_dm": {
+        "armorThickness": 5.0
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 10.0
       }
     },
     "body_shields": {
@@ -533,6 +545,9 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -1768,10 +1783,7 @@
     },
     "collisionProps": {
       "cls_body_01": "convex_hull",
-      "cls_body_02": "convex_hull",
-      "cls_body_03": "convex_hull",
-      "cls_body_04": "convex_hull",
-      "cls_body_05": "convex_hull"
+      "cls_body_02": "convex_hull"
     },
     "engine": {
       "horsePowers": 700.0,
@@ -1783,7 +1795,7 @@
       "driveGearRadius": 0.4,
       "mainGearRatio": 13.4,
       "sideGearRatio": 1.063,
-      "neutralGearRatio": 16.0,
+      "neutralGearRatio": 9.21,
       "gearRatios": {
         "ratio": [
           -9.07,

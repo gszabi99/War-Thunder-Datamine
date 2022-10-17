@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -68,7 +76,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function loadRequirementsBattles( rawClanMemberRequirementsBlk )
   {
     foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != ::EGD_NONE)
+      if (diff.egdCode != EGD_NONE)
       {
         let option = ::get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false)
@@ -91,7 +99,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
         continue
 
       let obj = scene.findObject("rankReq" + unitType.name)
-      if (!::check_obj(obj))
+      if (!checkObj(obj))
         continue
 
       local ranksRequired = 0
@@ -114,7 +122,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
         continue
 
       let obj = scene.findObject("rankReq" + unitType.name)
-      if (!::check_obj(obj))
+      if (!checkObj(obj))
         continue
 
       let ranksRequired = obj.getValue()
@@ -129,7 +137,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   {
     local nonEmptyBattlesReqCount = 0
     foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != ::EGD_NONE)
+      if (diff.egdCode != EGD_NONE)
       {
         let option = ::get_option(diff.clanReqOption)
         let optIdx = scene.findObject(option.id).getValue()
@@ -189,7 +197,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       return true;
 
     let errText = format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
-    callstack()
+    ::dagor.debug_dump_stack()
     ::script_net_assert_once("bad clan requirements", errText)
     return false
   }
@@ -206,7 +214,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
         continue
 
       let obj = scene.findObject("rankReq" + unitType.name)
-      if (!::check_obj(obj))
+      if (!checkObj(obj))
         continue
 
       let rankVal = obj.getValue()
@@ -231,7 +239,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function appendRequirementsBattles( newRequirements )
   {
     foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != ::EGD_NONE)
+      if (diff.egdCode != EGD_NONE)
       {
         let option = ::get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false);
@@ -250,7 +258,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function sendRequirementsToChar( newRequirements, autoAccept )
   {
-    let resultCB = ::Callback((@(newRequirements, autoAccept) function() {
+    let resultCB = Callback((@(newRequirements, autoAccept) function() {
       clanData.membershipRequirements = newRequirements;
       clanData.autoAcceptMembership = autoAccept;
 
@@ -261,7 +269,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       goBack()
     })(newRequirements, autoAccept), this )
 
-    let taskId = clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
+    let taskId = ::clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
 
     ::g_tasker.addTask(taskId, {showProgressBox = true}, resultCB)
   }

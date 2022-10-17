@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { hasClanUnitChosenResearch, saveClanUnitResearchChosen,
@@ -27,9 +34,9 @@ local handlerClass = class extends vehiclesModal.handlerClass
     if (flushExp <= 0 || needChosenResearchOfSquadron())
       locId = "mainmenu/nextResearchSquadronVehicle"
 
-    local expText = flushExp ? ::loc("ui/parentheses/space",
+    local expText = flushExp ? loc("ui/parentheses/space",
         {text = ::Balance(0, 0, 0, 0, flushExp).getTextAccordingToBalance()}) : ""
-    expText = ::loc(locId) + expText
+    expText = loc(locId) + expText
 
     return expText
   }
@@ -68,7 +75,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
   function updateTitle()
   {
     let titleObj = scene.findObject("header_text")
-    if (!::check_obj(titleObj))
+    if (!checkObj(titleObj))
       return
 
     titleObj.setValue(getWndTitle())
@@ -86,7 +93,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
     if (!needShowBuyUnitBtn)
       return
 
-    let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(lastSelectedUnit.name) })
+    let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(lastSelectedUnit.name) })
     let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(lastSelectedUnit) : ::Cost()
     placePriceTextToButton(scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
   }
@@ -104,12 +111,12 @@ local handlerClass = class extends vehiclesModal.handlerClass
     if (!needShowSpendBtn)
       return
 
-    let textWord = ::loc(
+    let textWord = loc(
       (flushExp <= 0 || needChosenResearchOfSquadron())
         ? "shop/researchUnit"
         : "shop/investToUnit",
       { unit = ::getUnitName(lastSelectedUnit.name) })
-    let textValue = flushExp > 0 ? ::loc("ui/parentheses/space",
+    let textValue = flushExp > 0 ? loc("ui/parentheses/space",
       {text = ::Cost().setSap(flushExp).tostring()}) : ""
     let coloredText = textWord + textValue
 
@@ -127,7 +134,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
     hasSpendExpProcess = true
 
-    let afterDoneFunc = ::Callback(function() {hasSpendExpProcess = false}, this)
+    let afterDoneFunc = Callback(function() {hasSpendExpProcess = false}, this)
     if (!::isUnitInResearch(unit)) {
       unitActions.setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc)
       return
@@ -147,7 +154,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
     isSquadronResearchMode = true
     needChosenResearchOfSquadron = needChosenResearchOfSquadron()
     isSlotbarEnabled = false
-    onSpendExcessExp = ::Callback(onSpendExcessExp, this)
+    onSpendExcessExp = Callback(onSpendExcessExp, this)
   }
 
   needChosenResearchOfSquadron = @() !hasClanUnitChosenResearch()

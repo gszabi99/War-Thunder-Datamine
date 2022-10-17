@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let scrollbarBase = require("scrollbarBase.nut")
 let colors = require("%rGui/style/colors.nut")
 
@@ -16,15 +18,15 @@ let styling = {
         rendObj = ROBJ_SOLID
         color = colors.menu.scrollbarBgColor
         opacity = 1
-        _width = ::fpx(8)
-        _height = ::fpx(8)
+        _width = fpx(8)
+        _height = fpx(8)
         skipDirPadNav=true
       }
     } else {
       return class {
         opacity = 0
-        _width = ::fpx(8)
-        _height = ::fpx(8)
+        _width = fpx(8)
+        _height = fpx(8)
         skipDirPadNav=true
       }
     }

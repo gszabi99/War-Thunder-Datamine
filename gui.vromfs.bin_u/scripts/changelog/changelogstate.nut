@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { get_base_game_version = @() ::get_base_game_version() //compatibility with 2.15.1.X
 } = require("app")
 let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
@@ -9,7 +14,7 @@ let eventbus = require("eventbus")
 let http = require("dagor.http")
 let { send_counter } = require("statsd")
 let { get_time_msec } = require("dagor.time")
-let { setInterval, clearTimer } = require("dagor.workcycle")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
@@ -20,19 +25,19 @@ const PatchnoteIds = "PatchnoteIds"
 const PatchnoteReceived = "PatchnoteReceived"
 
 let ERROR_PAGE = {
-  title = ::loc("matching/SERVER_ERROR_BAD_REQUEST")
-  content = {v = ::loc("matching/SERVER_ERROR_INTERNAL")}
+  title = loc("matching/SERVER_ERROR_BAD_REQUEST")
+  content = {v = loc("matching/SERVER_ERROR_INTERNAL")}
 }
-let chosenPatchnote = ::Watched(null)
-let chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @()::Watched(false))
+let chosenPatchnote = Watched(null)
+let chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @()Watched(false))
 let chosenPatchnoteContent = persist("chosenPatchnoteContent",
-  @()::Watched({title = "", text = ""}))
-let patchnotesReceived = persist("patchnotesReceived", @()::Watched(false))
-let patchnotesCache = persist("patchnotesCache", @() ::Watched({}))
-let versions = persist("versions", @() ::Watched([]))
+  @()Watched({title = "", text = ""}))
+let patchnotesReceived = persist("patchnotesReceived", @()Watched(false))
+let patchnotesCache = persist("patchnotesCache", @() Watched({}))
+let versions = persist("versions", @() Watched([]))
 let requestMadeTime = persist("requestMadeTime", @() {value = null})
-let lastSeenVersionInfoNum = ::Watched(-1)
-let lastLoadedVersionInfoNum = ::Watched(-1)
+let lastSeenVersionInfoNum = Watched(-1)
+let lastLoadedVersionInfoNum = Watched(-1)
 
 let function loadSavedVersionInfoNum() {
   if (!::g_login.isProfileReceived())
@@ -52,7 +57,7 @@ let function logError(event, params = {}) {
   foreach (idx, p in params)
     if (typeof(p) == "string")
       txt = $"{txt} {idx} = {p}"
-  ::dagor.debug(txt)
+  log(txt)
   send_counter(event, 1, {
     exe_version = get_base_game_version()
     language = ::g_language.getShortName()
@@ -173,20 +178,20 @@ local function findBestVersionToshow(versionsList, lastSeenVersionNum) {
       break
   return res
 }
-let haveNewVersions = ::Computed(@() versions.value?[0].iVersion
+let haveNewVersions = Computed(@() versions.value?[0].iVersion
   ? lastLoadedVersionInfoNum.value < versions.value[0].iVersion : false)
-let unseenPatchnote = ::Computed(function() {
+let unseenPatchnote = Computed(function() {
   if (lastSeenVersionInfoNum.value == -1)
     return null
   return findBestVersionToshow(versions.value, lastSeenVersionInfoNum.value)
 })
 
-let curPatchnote = ::Computed(@()
+let curPatchnote = Computed(@()
   chosenPatchnote.value ?? unseenPatchnote.value ?? versions.value?[0])
-let curPatchnoteIdx = ::Computed(
+let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value.id) ?? 0)
-let haveUnseenVersions = ::Computed(@() unseenPatchnote.value != null)
-let needShowChangelog = @() !isInBattleState.value && ::has_feature("Changelog")
+let haveUnseenVersions = Computed(@() unseenPatchnote.value != null)
+let needShowChangelog = @() !isInBattleState.value && hasFeature("Changelog")
   && haveNewVersions.value && !::my_stats.isMeNewbie()
 
 let function afterGetRequestedPatchnote(result){
@@ -222,10 +227,10 @@ let function cachePatchnote(response){
   }
   logError("changelog_success_patchnote", { reason = "Patchnotes received successfully" })
   if (result?.id)
-    patchnotesCache.value[result.id] <- result
+    patchnotesCache.mutate(@(value) value[result.id] <- result)
 }
 
-let function requestPatchnote(v = curPatchnote.value) {
+let function requestPatchnote(v) {
   if (!v)
     return
 
@@ -268,25 +273,23 @@ let function openChangelog() {
   emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
 }
 
-chosenPatchnoteContent.subscribe(@(value)
-  ::call_darg("updateExtWatched", { chosenPatchnoteContent = value }))
-versions.subscribe(@(value) ::call_darg("updateExtWatched", { changelogsVersions = value }))
-curPatchnote.subscribe(@(value) ::call_darg("updateExtWatched", { curPatchnote = value }))
-curPatchnoteIdx.subscribe(@(value) ::call_darg("updateExtWatched", { curPatchnoteIdx = value }))
+chosenPatchnoteContent.subscribe(@(value) eventbus.send("updateChosenPatchnoteContent", { value }))
+versions.subscribe(@(value) eventbus.send("updateChangelogsVersions", { value }))
+curPatchnote.subscribe(@(value) eventbus.send("updateCurPatchnote", { value }))
 chosenPatchnoteLoaded.subscribe(function (value) {
   clearTimer(openChangelog)
-  ::call_darg("updateExtWatched", { chosenPatchnoteLoaded = value })
+  eventbus.send("updateChosenPatchnoteLoaded", { value })
   if (!needShowChangelog())
     return
 
-  setInterval(0.1, openChangelog)
+  setTimeout(0.1, openChangelog)
 })
 patchnotesReceived.subscribe(function(value){
-    ::call_darg("updateExtWatched", { patchnotesReceived = value })
-    if (!value || !haveUnseenVersions.value)
-      return
-    requestPatchnote()
-  })
+  eventbus.send("updatePatchnotesReceived", { value })
+  if (!value || !haveUnseenVersions.value)
+    return
+  requestPatchnote(curPatchnote.value)
+})
 
 addListenersWithoutEnv({
   ProfileReceived = @(p) loadSavedVersionInfoNum()
@@ -296,18 +299,18 @@ addListenersWithoutEnv({
   }
 })
 
-::cross_call_api.changelog <- {
-  getVersions = @() versions.value
-  getChosenPatchnoteContent = @() chosenPatchnoteContent.value
-  getCurPatchnote = @() curPatchnote.value
-  getCurPatchnoteIdx = @() curPatchnoteIdx.value
-  getChosenPatchnoteLoaded = @() chosenPatchnoteLoaded.value
-  getPatchnotesReceived = @() patchnotesReceived.value
-  choosePatchnote = choosePatchnote
-  changePatchNote = changePatchNote
-}
-
 loadSavedVersionInfoNum()
+
+eventbus.subscribe("getChangeLogsStates", @(_) eventbus.send("updateChangeLogsStates", {
+  versions = versions.value
+  chosenPatchnoteContent = chosenPatchnoteContent.value
+  curPatchnote = curPatchnote.value
+  chosenPatchnoteLoaded = chosenPatchnoteLoaded.value
+  patchnotesReceived = patchnotesReceived.value
+}))
+eventbus.subscribe("choosePatchnote", @(data) choosePatchnote(data.value))
+eventbus.subscribe("changePatchNote", @(data) changePatchNote(data.delta))
+
 eventbus.subscribe(PatchnoteIds, processPatchnotesList)
 eventbus.subscribe(PatchnoteReceived, cachePatchnote)
 

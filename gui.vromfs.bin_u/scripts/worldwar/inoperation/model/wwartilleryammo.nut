@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 ::WwArtilleryAmmo <- class
 {
@@ -35,8 +42,8 @@ let time = require("%scripts/time.nut")
       return
 
     hasArtilleryStrike = true
-    nextStrikeTimeMillis = ::getTblValue("nextStrikeTimeMillis", strikeBlk, 0)
-    strikesDone = ::getTblValue("strikesDone", strikeBlk, 0)
+    nextStrikeTimeMillis = getTblValue("nextStrikeTimeMillis", strikeBlk, 0)
+    strikesDone = getTblValue("strikesDone", strikeBlk, 0)
   }
 
   function getAmmoCount()
@@ -111,9 +118,9 @@ let time = require("%scripts/time.nut")
     if (!params)
       return
 
-    maxAmmoCount = ::getTblValue("maxAmmo", params, 0)
-    maxStrikesPerAttack = ::getTblValue("maxStrikesPerAttack", params, 0)
-    cooldownAfterMoveSec = ::getTblValue("cooldownAfterMoveSec", params, 0)
-    strikeIntervalSec = ::getTblValue("strikeIntervalSec", params, 0)
+    maxAmmoCount = getTblValue("maxAmmo", params, 0)
+    maxStrikesPerAttack = getTblValue("maxStrikesPerAttack", params, 0)
+    cooldownAfterMoveSec = getTblValue("cooldownAfterMoveSec", params, 0)
+    strikeIntervalSec = getTblValue("strikeIntervalSec", params, 0)
   }
 }

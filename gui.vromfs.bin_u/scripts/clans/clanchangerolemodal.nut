@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData)
 {
@@ -8,9 +16,9 @@ let { getPlayerName } = require("%scripts/clientState/platform.nut")
     let myClanRights = ::g_clans.getMyClanRights()
     let leadersCount = ::g_clans.getLeadersCount(clanData)
     if (contact.name == ::my_user_name
-        && ::isInArray("LEADER", myClanRights)
+        && isInArray("LEADER", myClanRights)
         && leadersCount <= 1)
-      return ::g_popups.add("", ::loc("clan/leader/cant_change_my_role"))
+      return ::g_popups.add("", loc("clan/leader/cant_change_my_role"))
   }
 
   local changeRolePlayer = {
@@ -43,20 +51,20 @@ let { getPlayerName } = require("%scripts/clientState/platform.nut")
     local roleOptions = "";
     let roleListObj = scene.findObject("change_role_list");
     let titleObj = scene.findObject("title_text");
-    let myRole = adminMode? ::ECMR_CLANADMIN : ::clan_get_my_role()
+    let myRole = adminMode? ECMR_CLANADMIN : ::clan_get_my_role()
     let myRank = ::clan_get_role_rank(myRole)
 
-    if (::check_obj(titleObj))
-      titleObj.setValue("{0} {1}".subst(::loc("clan/changeRoleTitle"), getPlayerName(changeRolePlayer.name)))
+    if (checkObj(titleObj))
+      titleObj.setValue("{0} {1}".subst(loc("clan/changeRoleTitle"), getPlayerName(changeRolePlayer.name)))
 
-    for (local role = 0; role<::ECMR_MAX_TOTAL; role++)
+    for (local role = 0; role<ECMR_MAX_TOTAL; role++)
     {
        let roleName = ::clan_get_role_name(role);
        if (!roleName)
          continue;
        let rank = ::clan_get_role_rank(role);
-       if (rank != 0 && (role != ::ECMR_LEADER || adminMode)
-           && !::isInArray("HIDDEN", ::clan_get_role_rights(role))
+       if (rank != 0 && (role != ECMR_LEADER || adminMode)
+           && !isInArray("HIDDEN", ::clan_get_role_rights(role))
            && clanType.isRoleAllowed(role))
          roles.append({
            name = roleName,
@@ -84,8 +92,8 @@ let { getPlayerName } = require("%scripts/clientState/platform.nut")
     foreach(idx, role in roles)
     {
       let option = scene.findObject("role_"+idx)
-      option.findObject("text").setValue(::loc("clan/"+role.name))
-      option.tooltip = (role.current? (::loc("clan/currentRole")+"\n\n") : "") + g_lb_data_type.ROLE.getPrimaryTooltipText(role.id)
+      option.findObject("text").setValue(loc("clan/"+role.name))
+      option.tooltip = (role.current? (loc("clan/currentRole")+"\n\n") : "") + ::g_lb_data_type.ROLE.getPrimaryTooltipText(role.id)
     }
     roleListObj.setValue(curIdx)
     ::move_mouse_on_child(roleListObj, curIdx)
@@ -93,8 +101,8 @@ let { getPlayerName } = require("%scripts/clientState/platform.nut")
 
   function sortRoles(role1, role2)
   {
-    let rank1 = ::getTblValue("rank", role1, -1)
-    let rank2 = ::getTblValue("rank", role2, -1)
+    let rank1 = getTblValue("rank", role1, -1)
+    let rank2 = getTblValue("rank", role2, -1)
     if (rank1 != rank2)
       return rank1 > rank2 ? 1 : -1
     return 0
@@ -114,7 +122,7 @@ let { getPlayerName } = require("%scripts/clientState/platform.nut")
       return;
     }
 
-    let msg = ::loc("clan/roleChanged") + " " + ::loc("clan/"+roles[newRoleIdx].name)
+    let msg = loc("clan/roleChanged") + " " + loc("clan/"+roles[newRoleIdx].name)
     let taskId = ::clan_request_change_member_role(changeRolePlayer.uid, roles[newRoleIdx].name)
 
     if (taskId >= 0 && !adminMode)

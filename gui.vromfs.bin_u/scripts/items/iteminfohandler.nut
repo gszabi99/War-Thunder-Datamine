@@ -1,7 +1,14 @@
-let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
 
-local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/items/itemDesc.blk"
 
@@ -38,7 +45,7 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
   function openCategory(categoryId)
   {
     let containerObj = scene.findObject("item_info_collapsable_prizes")
-    if (!::check_obj(containerObj))
+    if (!checkObj(containerObj))
       return
     let total = containerObj.childrenCount()
     local visible = false
@@ -77,7 +84,7 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 ::gui_handlers.ItemInfoHandler <- ItemInfoHandler
 
 return function(scene) {
-  if (!::check_obj(scene))
+  if (!checkObj(scene))
     return null
   return ::handlersManager.loadHandler(ItemInfoHandler, { scene = scene })
 }

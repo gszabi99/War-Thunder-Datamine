@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let gbuAimState = require("guidedBombsAimState.nut")
 let opticWeaponAim = require("opticWeaponAim.nut")
 

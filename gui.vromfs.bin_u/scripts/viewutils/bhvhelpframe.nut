@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let BhvHelpFrame = class
 {
   isUpdateInProgressPID  = ::dagui_propid.add_name_id("_isUpdateInProgress")
@@ -10,7 +17,7 @@ let BhvHelpFrame = class
         if (obj.isValid())
           updateView(obj)
       })
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
   function setValue(obj, newValue)
@@ -27,7 +34,7 @@ let BhvHelpFrame = class
 
     if (obj?.value)
     {
-      let markup = ::g_hints.buildHintMarkup(::loc(obj.value), {})
+      let markup = ::g_hints.buildHintMarkup(loc(obj.value), {})
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
     }
 

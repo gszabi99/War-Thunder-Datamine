@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getTitleLogo } = require("%scripts/viewUtils/getTitleLogo.nut")
 
 return function(scene = null, logoHeight = -1)
@@ -10,7 +15,7 @@ return function(scene = null, logoHeight = -1)
   }
 
   let obj = scene? scene.findObject("titleLogo") : guiScene["titleLogo"]
-  if (!::check_obj(obj))
+  if (!checkObj(obj))
     return
 
   let logo = getTitleLogo(logoHeight)
@@ -21,11 +26,11 @@ return function(scene = null, logoHeight = -1)
   if (!showLogo)
   {
     let placeObj = scene? scene.findObject("top_gamercard_bg") : guiScene["top_gamercard_bg"]
-    if (::check_obj(placeObj))
+    if (checkObj(placeObj))
       placeObj.needRedShadow = "no"
 
     let logoPlaceObj = scene? scene.findObject("gamercard_logo_place") : guiScene["gamercard_logo_place"]
-    if (::check_obj(logoPlaceObj))
+    if (checkObj(logoPlaceObj))
       logoPlaceObj.show(showLogo)
   }
 }

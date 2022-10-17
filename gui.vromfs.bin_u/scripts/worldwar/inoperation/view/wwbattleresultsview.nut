@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
@@ -70,25 +77,25 @@ enum UNIT_STATS {
   function getBattleTitle()
   {
     let localizedName = getLocName()
-    let missionTitle = (localizedName != "") ? localizedName : ::loc("worldwar/autoModeBattle")
-    let battleName = ::loc("worldWar/battleName", { number = battleRes.ordinalNumber })
+    let missionTitle = (localizedName != "") ? localizedName : loc("worldwar/autoModeBattle")
+    let battleName = loc("worldWar/battleName", { number = battleRes.ordinalNumber })
     return battleName + " " + missionTitle
   }
 
   function getBattleDescText()
   {
     let operationName = getOperation()?.getNameText() ?? ""
-    let zoneName = battleRes.zoneName != "" ? (::loc("options/dyn_zone") + " " + battleRes.zoneName) : ""
+    let zoneName = battleRes.zoneName != "" ? (loc("options/dyn_zone") + " " + battleRes.zoneName) : ""
     let dateTime = time.buildDateStr(battleRes.time) + " " + time.buildTimeStr(battleRes.time)
-    return ::g_string.implode([ operationName, zoneName, dateTime ], ::loc("ui/semicolon"))
+    return ::g_string.implode([ operationName, zoneName, dateTime ], loc("ui/semicolon"))
   }
 
   function getBattleResultText()
   {
     let isWinner = battleRes.isWinner()
     let color = isWinner ? "wwTeamAllyColor" : "wwTeamEnemyColor"
-    let result = ::loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
-    return ::colorize(color, result)
+    let result = loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
+    return colorize(color, result)
   }
 
   function isBattleResultsIgnored()
@@ -98,9 +105,9 @@ enum UNIT_STATS {
 
   function getArmyStateText(wwArmy, armyState)
   {
-    local res = ::loc(::getTblValue(armyState, armyStateTexts, ""))
+    local res = loc(getTblValue(armyState, armyStateTexts, ""))
     if (armyState == "EASAB_DEAD" && wwArmy.deathReason != "")
-      res += ::loc("ui/parentheses/space", { text = ::loc("worldwar/log/army_died_" + wwArmy.deathReason) })
+      res += loc("ui/parentheses/space", { text = loc("worldwar/log/army_died_" + wwArmy.deathReason) })
     return res
   }
 
@@ -170,10 +177,10 @@ enum UNIT_STATS {
         stats[UNIT_STATS.REMAIN]    += remainActive
       }
 
-      if (wwUnitType.esUnitCode == ::ES_UNIT_TYPE_INVALID) // fake unit
+      if (wwUnitType.esUnitCode == ES_UNIT_TYPE_INVALID) // fake unit
         continue
 
-      let isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
+      let isShowInactiveCount = isInArray(wwUnitTypeCode, unitTypesInactive)
 
       let stats = array(UNIT_STATS.TOTAL, 0)
       stats[UNIT_STATS.INITIAL]   = initialActive
@@ -198,7 +205,7 @@ enum UNIT_STATS {
         continue
 
       let wwUnitType = ::g_ww_unit_type.getUnitTypeByCode(wwUnitTypeCode)
-      let isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
+      let isShowInactiveCount = isInArray(wwUnitTypeCode, unitTypesInactive)
 
       res.unitTypes.append({
         name = "#debriefing/ww_total_" + wwUnitType.name
@@ -227,8 +234,8 @@ enum UNIT_STATS {
 
       local tooltip = null
       if (isShowInactiveCount && values.len() == 2 && valuesSum > 0)
-          tooltip = ::loc("debriefing/destroyed") + ::loc("ui/colon") + values[0] +
-            "\n" + ::loc("debriefing/ww_inactive/Aircraft") + ::loc("ui/colon") + values[1]
+          tooltip = loc("debriefing/destroyed") + loc("ui/colon") + values[0] +
+            "\n" + loc("debriefing/ww_inactive/Aircraft") + loc("ui/colon") + values[1]
 
       row.append({
         col = val
@@ -252,7 +259,7 @@ enum UNIT_STATS {
       foreach (army in team.armies)
         armies.append({
           armyView = army.getView()
-          armyStateText = getArmyStateText(army, ::getTblValue(army.name, team.armyStates))
+          armyStateText = getArmyStateText(army, getTblValue(army.name, team.armyStates))
         })
 
       teams.append({
@@ -269,12 +276,12 @@ enum UNIT_STATS {
   function hasReplay()
   {
     return !::u.isEmpty(battleRes.getSessionId()) &&
-           ::has_feature("WorldWarReplay")
+           hasFeature("WorldWarReplay")
   }
 
   function getReplayBtnTooltip()
   {
-    return ::loc("mainmenu/btnViewReplayTooltip", {sessionID = battleRes.getSessionId()})
+    return loc("mainmenu/btnViewReplayTooltip", {sessionID = battleRes.getSessionId()})
   }
 
   function getOperation()

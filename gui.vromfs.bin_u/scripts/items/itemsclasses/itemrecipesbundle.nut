@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
@@ -8,7 +15,7 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
   static typeIcon = "#ui/gameuiskin#items_blueprint.png"
 
   isDisassemble         = @() itemDef?.tags?.isDisassemble == true
-  updateNameLoc         = @(locName) isDisassemble() ? ::loc("item/disassemble_header", { name = locName })
+  updateNameLoc         = @(locName) isDisassemble() ? loc("item/disassemble_header", { name = locName })
     : base.updateNameLoc(locName)
 
   canConsume            = @() false
@@ -23,8 +30,8 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
   function _getDescHeader(fixedAmount = 1)
   {
     let locId = (fixedAmount > 1) ? "trophy/recipe_result/many" : "trophy/recipe_result"
-    let headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
-    return ::colorize("grayOptionColor", headerText)
+    let headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
+    return colorize("grayOptionColor", headerText)
   }
 
   function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "")
@@ -33,10 +40,10 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
       return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
 
     let locId = totalAmount == 1 ? "item/disassemble_recipes/single" : "item/disassemble_recipes"
-    return ::loc(locId,
+    return loc(locId,
       {
         count = totalAmount
-        countColored = ::colorize("activeTextColor", totalAmount)
+        countColored = colorize("activeTextColor", totalAmount)
         exampleCount = showAmount
       })
   }
@@ -53,11 +60,11 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
   }
 
   getAssembleHeader     = @() isDisassemble() ? getName() : base.getAssembleHeader()
-  getAssembleText       = @() isDisassemble() ? ::loc(getLocIdsList().disassemble) : ::loc(getLocIdsList().assemble)
-  getAssembleButtonText = @() isDisassemble() ? ::loc(getLocIdsList().disassemble) : base.getAssembleButtonText()
+  getAssembleText       = @() isDisassemble() ? loc(getLocIdsList().disassemble) : loc(getLocIdsList().assemble)
+  getAssembleButtonText = @() isDisassemble() ? loc(getLocIdsList().disassemble) : base.getAssembleButtonText()
   getConfirmMessageData = @(recipe) !isDisassemble() ? ItemExternal.getConfirmMessageData.call(this, recipe)
     : getEmptyConfirmMessageData().__update({
-        text = ::loc(getLocIdsList().msgBoxConfirm)
+        text = loc(getLocIdsList().msgBoxConfirm)
         needRecipeMarkup = true
       })
 

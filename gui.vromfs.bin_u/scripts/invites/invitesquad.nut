@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let platformModule = require("%scripts/clientState/platform.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -16,30 +23,30 @@ let { needProceedSquadInvitesAccept,
 
   static function getUidByParams(params)
   {
-    return "SQ_" + ::getTblValue("squadId", params, "")
+    return "SQ_" + getTblValue("squadId", params, "")
   }
 
   function updateCustomParams(params, initial = false)
   {
-    squadId = ::getTblValue("squadId", params, squadId)
-    leaderId = ::getTblValue("leaderId", params, leaderId)
+    squadId = getTblValue("squadId", params, squadId)
+    leaderId = getTblValue("leaderId", params, leaderId)
 
     updateInviterContact()
 
     if (inviterName.len() != 0)
     {
       //Don't show invites from xbox players, as notification comes from system overlay
-      ::dagor.debug("InviteSquad: invitername != 0 " + platformModule.isPlayerFromXboxOne(inviterName))
+      log("InviteSquad: invitername != 0 " + platformModule.isPlayerFromXboxOne(inviterName))
       if (platformModule.isPlayerFromXboxOne(inviterName))
         setDelayed(true)
     }
     else
     {
       setDelayed(true)
-      let cb = ::Callback(function(r)
+      let cb = Callback(function(r)
                             {
                               updateInviterContact()
-                              ::dagor.debug("InviteSquad: Callback: invitername == 0 " + platformModule.isPlayerFromXboxOne(inviterName))
+                              log("InviteSquad: Callback: invitername == 0 " + platformModule.isPlayerFromXboxOne(inviterName))
                               if (platformModule.isPlayerFromXboxOne(inviterName))
                               {
                                 setDelayed(true)
@@ -77,7 +84,7 @@ let { needProceedSquadInvitesAccept,
 
   function checkAutoAcceptXboxInvite()
   {
-    if (!::is_platform_xbox
+    if (!is_platform_xbox
         || !leaderContact
         || (haveRestrictions() && !::isInMenu())
         || !needProceedSquadInvitesAccept()
@@ -87,7 +94,7 @@ let { needProceedSquadInvitesAccept,
     if (leaderContact.xboxId != "")
       autoacceptXboxInvite(leaderContact.xboxId)
     else
-      leaderContact.getXboxId(::Callback(@() autoacceptXboxInvite(leaderContact.xboxId), this))
+      leaderContact.getXboxId(Callback(@() autoacceptXboxInvite(leaderContact.xboxId), this))
   }
 
   function autoacceptXboxInvite(leaderXboxId = "") {
@@ -127,7 +134,7 @@ let { needProceedSquadInvitesAccept,
 
   function getInviteText()
   {
-    return ::loc("multiplayer/squad/invite/desc",
+    return loc("multiplayer/squad/invite/desc",
                  {
                    name = getInviterName() || platformModule.getPlayerName(inviterName)
                  })
@@ -135,7 +142,7 @@ let { needProceedSquadInvitesAccept,
 
   function getPopupText()
   {
-    return ::loc("multiplayer/squad/invite/desc",
+    return loc("multiplayer/squad/invite/desc",
                  {
                    name = getInviterName() || platformModule.getPlayerName(inviterName)
                  })
@@ -144,13 +151,13 @@ let { needProceedSquadInvitesAccept,
   function getRestrictionText()
   {
     if (!isMultiplayerPrivilegeAvailable.value)
-      return ::loc("xbox/noMultiplayer")
+      return loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
-      return ::loc("xbox/crossPlayRequired")
+      return loc("xbox/crossPlayRequired")
     if (!isAvailableByChatRestriction())
-      return ::loc("xbox/actionNotAvailableLiveCommunications")
+      return loc("xbox/actionNotAvailableLiveCommunications")
     if (haveRestrictions())
-      return ::loc("squad/cant_join_in_flight")
+      return loc("squad/cant_join_in_flight")
     return ""
   }
 
@@ -182,7 +189,7 @@ let { needProceedSquadInvitesAccept,
       return
     }
 
-    let acceptCallback = ::Callback(_implAccept, this)
+    let acceptCallback = Callback(_implAccept, this)
     let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_invite" },

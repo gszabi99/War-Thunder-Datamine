@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
@@ -61,7 +68,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   function getFullName()
   {
     local fullName = getName()
-    fullName += ::loc("ui/parentheses/space", {text = getDescription()})
+    fullName += loc("ui/parentheses/space", {text = getDescription()})
 
     return fullName
   }
@@ -71,24 +78,24 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     let desc = []
 
     if (morale >= 0)
-      desc.append(::loc("worldwar/morale", {morale = (morale + 0.5).tointeger()}))
+      desc.append(loc("worldwar/morale", {morale = (morale + 0.5).tointeger()}))
 
     if (suppliesEndMillisec > 0)
     {
       let elapsed = max(0, (suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
 
-      desc.append(::loc("worldwar/suppliesfinishedIn",
+      desc.append(loc("worldwar/suppliesfinishedIn",
           {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
     }
 
     let elapsed = secondsLeftToEntrench();
     if (elapsed == 0)
     {
-      desc.append(::loc("worldwar/armyEntrenched"))
+      desc.append(loc("worldwar/armyEntrenched"))
     }
     else if (elapsed > 0)
     {
-      desc.append(::loc("worldwar/armyEntrenching",
+      desc.append(loc("worldwar/armyEntrenching",
           {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
     }
 
@@ -109,7 +116,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   {
     let arrivalTime = getArrivalTime()
     if (arrivalTime == 0)
-      return ::loc("worldwar/state/reinforcement_ready")
+      return loc("worldwar/state/reinforcement_ready")
 
     return time.secondsToString(time.millisecondsToSeconds(arrivalTime), false)
   }

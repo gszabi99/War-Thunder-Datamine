@@ -1,5 +1,13 @@
-::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/wndWidgets/navigationPanel"
   sceneBlkName = null
@@ -66,7 +74,7 @@
   function setNavItems(navItems)
   {
     let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    if (!checkObj(navListObj))
       return
 
     itemList = navItems
@@ -107,7 +115,7 @@
   function doNavigate(itemIdx, isRelative = false)
   {
     let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    if (!checkObj(navListObj))
       return false
 
     let itemsCount = itemList.len()
@@ -145,7 +153,7 @@
   function onNavClick(obj = null)
   {
     let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    if (!checkObj(navListObj))
       return false
 
     let itemIdx = navListObj.getValue()
@@ -156,7 +164,7 @@
   function onNavSelect(obj = null)
   {
     let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    if (!checkObj(navListObj))
       return false
 
     notifyNavChanged(navListObj.getValue())
@@ -179,8 +187,8 @@
   function onCollapse(obj)
   {
     let itemObj = obj?.collapse_header ? obj : obj.getParent()
-    let listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
-    if (!::check_obj(listObj) || !itemObj?.collapse_header)
+    let listObj = checkObj(itemObj) ? itemObj.getParent() : null
+    if (!checkObj(listObj) || !itemObj?.collapse_header)
       return
 
     itemObj.collapsing = "yes"

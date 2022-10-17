@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
@@ -17,30 +22,32 @@ enum REASON_DOMAIN {
   onDisconnectCb = null
 }
 
-g_matching_connect.onConnect <- function onConnect()
+::g_matching_connect.onConnect <- function onConnect()
 {
-  destroyProgressBox()
-  if (onConnectCb) onConnectCb()
-  resetCallbacks()
+  this.destroyProgressBox()
+  if (this.onConnectCb)
+    this.onConnectCb()
+  this.resetCallbacks()
 
   //matching not save player info on diconnect (lobby, squad, queue)
   ::broadcastEvent("MatchingConnect")
 }
 
-g_matching_connect.onDisconnect <- function onDisconnect()
+::g_matching_connect.onDisconnect <- function onDisconnect()
 {
   //we still trying to reconnect after this event
   ::broadcastEvent("MatchingDisconnect")
 }
 
-g_matching_connect.onFailToReconnect <- function onFailToReconnect()
+::g_matching_connect.onFailToReconnect <- function onFailToReconnect()
 {
-  destroyProgressBox()
-  if (onDisconnectCb) onDisconnectCb()
-  resetCallbacks()
+  this.destroyProgressBox()
+  if (this.onDisconnectCb)
+    this.onDisconnectCb()
+  this.resetCallbacks()
 }
 
-g_matching_connect.connect <- function connect(successCb = null, errorCb = null, needProgressBox = true)
+::g_matching_connect.connect <- function connect(successCb = null, errorCb = null, needProgressBox = true)
 {
   if (::is_online_available())
   {
@@ -48,34 +55,34 @@ g_matching_connect.connect <- function connect(successCb = null, errorCb = null,
     return
   }
 
-  onConnectCb = successCb
-  onDisconnectCb = errorCb
+  this.onConnectCb = successCb
+  this.onDisconnectCb = errorCb
 
   if (needProgressBox)
   {
     let cancelFunc = function()
     {
-      ::scene_msg_box("no_online_warning", null, ::loc("mainmenu/noOnlineWarning"),
+      ::scene_msg_box("no_online_warning", null, loc("mainmenu/noOnlineWarning"),
         [["ok", function() { ::g_matching_connect.onDisconnect() }]],
         "ok")
     }
-    showProgressBox(cancelFunc)
+    this.showProgressBox(cancelFunc)
   }
 }
 
-g_matching_connect.resetCallbacks <- function resetCallbacks()
+::g_matching_connect.resetCallbacks <- function resetCallbacks()
 {
-  onConnectCb = null
-  onDisconnectCb = null
+  this.onConnectCb = null
+  this.onDisconnectCb = null
 }
 
-g_matching_connect.showProgressBox <- function showProgressBox(cancelFunc = null)
+::g_matching_connect.showProgressBox <- function showProgressBox(cancelFunc = null)
 {
-  if (::checkObj(progressBox))
+  if (checkObj(this.progressBox))
     return
-  progressBox = ::scene_msg_box("matching_connect_progressbox",
+  this.progressBox = ::scene_msg_box("matching_connect_progressbox",
                                 null,
-                                ::loc("yn1/connecting_msg"),
+                                loc("yn1/connecting_msg"),
                                 [["cancel", cancelFunc ?? function(){}]],
                                 "cancel",
                                 { waitAnim = true,
@@ -83,27 +90,27 @@ g_matching_connect.showProgressBox <- function showProgressBox(cancelFunc = null
                                 })
 }
 
-g_matching_connect.destroyProgressBox <- function destroyProgressBox()
+::g_matching_connect.destroyProgressBox <- function destroyProgressBox()
 {
-  if(::checkObj(progressBox))
+  if(checkObj(this.progressBox))
   {
-    progressBox.getScene().destroyElement(progressBox)
+    this.progressBox.getScene().destroyElement(this.progressBox)
     ::broadcastEvent("ModalWndDestroy")
   }
-  progressBox = null
+  this.progressBox = null
 }
 
 // special handlers for char errors that require more complex actions than
 // showing message box and logout
-g_matching_connect.checkSpecialCharErrors <- function checkSpecialCharErrors(errorCode)
+::g_matching_connect.checkSpecialCharErrors <- function checkSpecialCharErrors(errorCode)
 {
   if (errorCode == ::ERRCODE_EMPTY_NICK)
   {
     if (::is_vendor_tencent())
     {
-      ::change_nickname(::Callback(
+      ::change_nickname(Callback(
                           function() {
-                            connect(onConnectCb, onDisconnectCb)
+                            this.connect(this.onConnectCb, this.onDisconnectCb)
                           },
                           this
                         )
@@ -114,13 +121,13 @@ g_matching_connect.checkSpecialCharErrors <- function checkSpecialCharErrors(err
   return false
 }
 
-g_matching_connect.logoutWithMsgBox <- function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false)
+::g_matching_connect.logoutWithMsgBox <- function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false)
 {
   if (reasonDomain == REASON_DOMAIN.CHAR)
-    if (checkSpecialCharErrors(reason))
+    if (this.checkSpecialCharErrors(reason))
       return
 
-  onFailToReconnect()
+  this.onFailToReconnect()
 
   local needExit = forceExit
   if (!needExit) //logout
@@ -128,7 +135,7 @@ g_matching_connect.logoutWithMsgBox <- function logoutWithMsgBox(reason, message
     let handler = ::handlersManager.getActiveBaseHandler()
     if (!("isDelayedLogoutOnDisconnect" in handler)
         || !handler.isDelayedLogoutOnDisconnect())
-      needExit = !doLogout()
+      needExit = !this.doLogout()
   }
 
   let btnName = needExit ? "exit" : "ok"
@@ -139,12 +146,12 @@ g_matching_connect.logoutWithMsgBox <- function logoutWithMsgBox(reason, message
     { saved = true, cancel_fn = msgCb}, message)
 }
 
-g_matching_connect.exitWithMsgBox <- function exitWithMsgBox(reason, message, reasonDomain)
+::g_matching_connect.exitWithMsgBox <- function exitWithMsgBox(reason, message, reasonDomain)
 {
-  logoutWithMsgBox(reason, message, reasonDomain, true)
+  this.logoutWithMsgBox(reason, message, reasonDomain, true)
 }
 
-g_matching_connect.doLogout <- function doLogout()
+::g_matching_connect.doLogout <- function doLogout()
 {
   if (!canLogout())
     return false

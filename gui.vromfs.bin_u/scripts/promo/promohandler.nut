@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
@@ -79,11 +86,11 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     needUpdateByTimerArr = []
     let data = generateData()
     let topPositionPromoPlace = scene.findObject("promo_mainmenu_place_top")
-    if (::checkObj(topPositionPromoPlace))
+    if (checkObj(topPositionPromoPlace))
       guiScene.replaceContentFromText(topPositionPromoPlace, data.upper, data.upper.len(), this)
 
     let bottomPositionPromoPlace = scene.findObject("promo_mainmenu_place_bottom")
-    if (::checkObj(bottomPositionPromoPlace))
+    if (checkObj(bottomPositionPromoPlace))
       guiScene.replaceContentFromText(bottomPositionPromoPlace, data.bottom, data.bottom.len(), this)
 
     ::g_promo.initWidgets(scene, widgetsTable)
@@ -156,7 +163,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
   function setTplView(tplPath, object, view = {})
   {
-    if (!::checkObj(object))
+    if (!checkObj(object))
       return
 
     let data = ::handyman.renderCached(tplPath, view)
@@ -182,7 +189,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
         continue
 
       let btnObj = scene.findObject(id)
-      if (::check_obj(btnObj))
+      if (checkObj(btnObj))
         btnObj.setUserData(this)
     }
   }
@@ -210,11 +217,11 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     objScene.performDelayed(
       this,
       (@(owner, obj, widgetsTable) function() {
-        if (!::checkObj(obj))
+        if (!checkObj(obj))
           return
 
         if (!::g_promo.performAction(owner, obj))
-          if (::checkObj(obj))
+          if (checkObj(obj))
             ::g_promo.setSimpleWidgetData(widgetsTable, obj.id)
       })(owner, obj, widgetsTable)
     )
@@ -237,7 +244,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
       return false
 
     let chBoxObj = scene.findObject("checkbox_show_all_promo_blocks")
-    if (!::checkObj(chBoxObj))
+    if (!checkObj(chBoxObj))
       return false
 
     return chBoxObj.getValue()
@@ -248,7 +255,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     if (!sourceDataBlock?[id][param])
       return null
 
-    local show = ::getTblValue(param, sourceDataBlock[id], defaultValue)
+    local show = getTblValue(param, sourceDataBlock[id], defaultValue)
     if (::u.isString(show))
       show = show == "yes"? true : false
 
@@ -257,7 +264,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
   function isValid()
   {
-    return ::check_obj(scene)
+    return checkObj(scene)
   }
 
   function onPromoBlocksUpdate(obj, dt)
@@ -295,7 +302,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
   function updateWebPollButton(param)
   {
     let pollId = param?.pollId
-    let objectId = ::getTblValue(pollId, pollIdToObjectId)
+    let objectId = getTblValue(pollId, pollIdToObjectId)
     if (objectId == null)
       return
 
@@ -326,7 +333,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
   function onEventShowAllPromoBlocksValueChanged(p) { updatePromoBlocks() }
   function onEventPartnerUnlocksUpdated(p) { updatePromoBlocks(true) }
-  function onEventShopWndVisible(p) { toggleSceneVisibility(!::getTblValue("isShopShow", p, false)) }
+  function onEventShopWndVisible(p) { toggleSceneVisibility(!getTblValue("isShopShow", p, false)) }
   function onEventXboxMultiplayerPrivilegeUpdated(p) { updatePromoBlocks(true) }
   function onEventWebPollAuthResult(p) { updateWebPollButton(p) }
   function onEventWebPollTokenInvalidated(p) {
@@ -339,12 +346,12 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
   function setTimers()
   {
     local timerObj = owner.scene.findObject("promo_blocks_timer_slow")
-    if (::check_obj(timerObj))
+    if (checkObj(timerObj))
       timerObj.setUserData(this)
 
     let isNeedFrequentUpdate = needUpdateByTimerArr.len() > 0
     timerObj = owner.scene.findObject("promo_blocks_timer_fast")
-    if (::check_obj(timerObj))
+    if (checkObj(timerObj))
       timerObj.setUserData(isNeedFrequentUpdate ? this : null)
   }
 

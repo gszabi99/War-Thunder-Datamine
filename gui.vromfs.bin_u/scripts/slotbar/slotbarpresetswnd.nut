@@ -1,5 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null)
 {
@@ -37,7 +46,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     hoveredValue = -1
 
     let objPresets = scene.findObject("items_list")
-    if (!::checkObj(objPresets))
+    if (!checkObj(objPresets))
       return
 
     let view = { items = [] }
@@ -45,7 +54,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     {
       local title = preset.title
       if (idx == activePreset)
-        title += ::nbsp + ::loc("shop/current")
+        title += ::nbsp + loc("shop/current")
 
       view.items.append({
         itemTag = preset.enabled ? "mission_item_unlocked" : "mission_item_locked"
@@ -67,7 +76,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
   function updateDescription()
   {
     let objDesc = scene.findObject("item_desc")
-    if (!::checkObj(objDesc))
+    if (!checkObj(objDesc))
       return
 
     if (chosenValue in presets)
@@ -77,7 +86,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
       let unitItems = []
 
       local presetBattleRatingText = ""
-      if (::has_feature("SlotbarShowBattleRating"))
+      if (hasFeature("SlotbarShowBattleRating"))
       {
         let ediff = getCurrentEdiff()
         local battleRatingMin = 0
@@ -89,19 +98,19 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
           battleRatingMin = !battleRatingMin ? br : min(battleRatingMin, br)
           battleRatingMax = !battleRatingMax ? br : max(battleRatingMax, br)
         }
-        let battleRatingRange = format("%.1f %s %.1f", battleRatingMin, ::loc("ui/mdash"), battleRatingMax)
-        presetBattleRatingText = ::loc("shop/battle_rating") + ::loc("ui/colon") + battleRatingRange + "\n"
+        let battleRatingRange = format("%.1f %s %.1f", battleRatingMin, loc("ui/mdash"), battleRatingMax)
+        presetBattleRatingText = loc("shop/battle_rating") + loc("ui/colon") + battleRatingRange + "\n"
       }
 
       let gameMode = ::game_mode_manager.getGameModeById(preset.gameModeId)??
                        ::game_mode_manager.getCurrentGameMode()
-      let presetGameMode = gameMode != null ? ::loc("options/mp_mode") +
-                                                ::loc("ui/colon") + gameMode.text + "\n" : ""
+      let presetGameMode = gameMode != null ? loc("options/mp_mode") +
+                                                loc("ui/colon") + gameMode.text + "\n" : ""
 
       let header = "".concat(::g_string.stripTags(presetBattleRatingText),
         ::g_string.stripTags(presetGameMode),
-        ::loc("shop/slotbarPresets/contents"),
-        ::loc("ui/colon"))
+        loc("shop/slotbarPresets/contents"),
+        loc("ui/colon"))
       let markupList = ["textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } ".subst(header)]
 
       let unitsMarkupList = []
@@ -114,7 +123,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
         let params = {
           hasActions = false
           status = unit.unitType.isAvailable() ? "owned" : "locked"
-          showBR = ::has_feature("SlotbarShowBattleRating")
+          showBR = hasFeature("SlotbarShowBattleRating")
           getEdiffFunc = getCurrentEdiff.bindenv(this)
           position = "absolute"
           posX = idx % perRow
@@ -130,7 +139,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
       if (!preset.enabled)
         markupList.append("textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } "
-          .subst(::colorize("badTextColor", ::g_string.stripTags(::loc("shop/slotbarPresets/forbidden/unitTypes")))))
+          .subst(colorize("badTextColor", ::g_string.stripTags(loc("shop/slotbarPresets/forbidden/unitTypes")))))
 
       let markup = "\n".join(markupList)
       guiScene.replaceContentFromText(objDesc, markup, markup.len(), this)
@@ -139,7 +148,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     }
     else
     {
-      let data = format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(::loc("shop/slotbarPresets/presetUnknown")))
+      let data = format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(loc("shop/slotbarPresets/presetUnknown")))
       guiScene.replaceContentFromText(objDesc, data, data.len(), this)
     }
 
@@ -179,7 +188,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     let isCurrentPresetSelected = chosenValue == activePreset
     let isNonCurrentPresetSelected = isAnyPresetSelected && !isCurrentPresetSelected
     let selectedPresetEnabled = isCurrentPresetSelected || ((chosenValue in presets) ? presets[chosenValue].enabled : false)
-    let canEdit = ::slotbarPresets.canEditCountryPresets(::get_profile_country_sq())
+    let canEdit = ::slotbarPresets.canEditCountryPresets(profileCountrySq.value)
 
     ::enableBtnTable(scene, {
         btn_preset_create = canEdit
@@ -192,14 +201,14 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     })
 
     let objBtn = scene.findObject("btn_preset_load")
-    if (::checkObj(objBtn))
-      objBtn.text = ::loc(isNonCurrentPresetSelected ? "mainmenu/btnApply" : "mainmenu/btnClose")
+    if (checkObj(objBtn))
+      objBtn.text = loc(isNonCurrentPresetSelected ? "mainmenu/btnApply" : "mainmenu/btnClose")
   }
 
   function onItemSelect(obj)
   {
     let objPresets = scene.findObject("items_list")
-    if (!::checkObj(objPresets))
+    if (!checkObj(objPresets))
       return
     chosenValue = objPresets.getValue()
     updateDescription()
@@ -208,10 +217,10 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
   function showNotAllowedMessage()
   {
     let reason = ::slotbarPresets.havePresetsReserve()
-      ? ::loc("shop/slotbarPresetsReserve",
+      ? loc("shop/slotbarPresetsReserve",
         { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus], unitTypes = ::slotbarPresets.getPresetsReseveTypesText()})
-      : ::loc("shop/slotbarPresetsMax")
-    showInfoMsgBox(format(::loc("weaponry/action_not_allowed"), reason))
+      : loc("shop/slotbarPresetsMax")
+    ::showInfoMsgBox(format(loc("weaponry/action_not_allowed"), reason))
   }
 
   function onBtnPresetAdd(obj)
@@ -239,12 +248,12 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
       return
 
     let preset = presets[chosenValue]
-    let msgText = ::loc("msgbox/genericRequestDelete", { item = preset.title })
+    let msgText = loc("msgbox/genericRequestDelete", { item = preset.title })
 
     let unitNames = []
     foreach (unitId in preset.units)
-      unitNames.append(::loc(unitId + "_shop"))
-    local comment = "(" + ::loc("shop/slotbarPresets/contents") + ::loc("ui/colon") + ::g_string.implode(unitNames, ::loc("ui/comma")) + ")"
+      unitNames.append(loc(unitId + "_shop"))
+    local comment = "(" + loc("shop/slotbarPresets/contents") + loc("ui/colon") + ::g_string.implode(unitNames, loc("ui/comma")) + ")"
     comment = format("textarea{overlayTextColor:t='bad'; text:t='%s'}", ::g_string.stripTags(comment))
 
     this.msgBox("question_delete_preset", msgText,
@@ -314,7 +323,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
   function onEventSlotbarPresetsChanged(params)
   {
-    reinit(::getTblValue("showPreset", params, -1))
+    reinit(getTblValue("showPreset", params, -1))
   }
 
   function onEventModalWndDestroy(params)

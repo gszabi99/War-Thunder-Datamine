@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { round } = require("math")
 let { format, split_by_chars } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -15,39 +20,41 @@ let { GUI } = require("%scripts/utils/configs.nut")
                             id = layer id
 */
 
+let layersCfgParams = {
+  x = {
+    formatValue = "%.2fpw",
+    defaultValue = "(pw-w)/2",
+    returnParamName = "posX"
+  }
+  y = {
+    formatValue = "%.2fph",
+    defaultValue = "(ph-h)/2",
+    returnParamName = "posY"
+  }
+  w = {
+    formatValue = "%.2fpw",
+    defaultValue = "pw",
+    returnParamName = "width"
+  }
+  h = {
+    formatValue = "%.2fph",
+    defaultValue = "ph",
+    returnParamName = "height"
+  }
+  position = {
+    defaultValue = "absolute"
+    returnParamName = "position"
+  }
+}
+
+let iconLayer = @"iconLayer {
+  {id} size:t='{size}'; pos:t='{posX},{posY}'; position:t='{pos}'
+  background-image:t='{image}'; background-svg-size:t='{texSize}'; {props} }"
+
 ::LayersIcon <- {
   [PERSISTENT_DATA_PARAMS] = ["config"]
 
   config = null
-  iconLayer = @"iconLayer {
-    {id} size:t='{size}'; pos:t='{posX},{posY}'; position:t='{pos}'
-    background-image:t='{image}'; background-svg-size:t='{texSize}'; {props} }"
-  layersCfgParams = {
-    x = {
-      formatValue = "%.2fpw",
-      defaultValue = "(pw-w)/2",
-      returnParamName = "posX"
-    }
-    y = {
-      formatValue = "%.2fph",
-      defaultValue = "(ph-h)/2",
-      returnParamName = "posY"
-    }
-    w = {
-      formatValue = "%.2fpw",
-      defaultValue = "pw",
-      returnParamName = "width"
-    }
-    h = {
-      formatValue = "%.2fph",
-      defaultValue = "ph",
-      returnParamName = "height"
-    }
-    position = {
-      defaultValue = "absolute"
-      returnParamName = "position"
-    }
-  }
 
   function replaceIconByIconData(iconObj, iconData) {
     if (!iconObj?.isValid())
@@ -98,8 +105,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
       if (!layerCfg)
         continue
 
-      let layerId = ::getTblValue("id", layerCfg, layerName)
-      let layerParams = ::getTblValue(layerId, iconParams)
+      let layerId = getTblValue("id", layerCfg, layerName)
+      let layerParams = getTblValue(layerId, iconParams)
       if (layerParams)
       {
         layerCfg = clone layerCfg
@@ -107,7 +114,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
           layerCfg[id] <- value
       }
 
-      if (::getTblValue("type", layerCfg, "image") == "text")
+      if (getTblValue("type", layerCfg, "image") == "text")
         data += ::LayersIcon.getTextDataFromLayer(layerCfg)
       else
         data += ::LayersIcon.genDataFromLayer(layerCfg, "", containerSizePx)
@@ -126,7 +133,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
         : [ ratio * containerSizePx, containerSizePx ]
       texSize = ", ".join(texSz.map(@(v) round(v)))
     }
-    data = this.iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize,
+    data = iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize,
       posX ="(pw-w)/2", posY = "(ph-h)/2",
       pos = "absolute", image, props = "" })
   }
@@ -136,19 +143,19 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
 ::LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size)
 {
-  return this.iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize = size,
+  return iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize = size,
     posX = "(pw-w)/2", posY = "(ph-h)/2",
     pos = "absolute", image, props = "" })
 }
 
 ::LayersIcon.findLayerCfg <- function findLayerCfg(id)
 {
-  return "layers" in this.config ? ::getTblValue(id.tolower(), this.config.layers) : null
+  return "layers" in this.config ? getTblValue(id.tolower(), this.config.layers) : null
 }
 
 ::LayersIcon.findStyleCfg <- function findStyleCfg(id)
 {
-  return "styles" in this.config ? ::getTblValue(id.tolower(), this.config?.styles) : null
+  return "styles" in this.config ? getTblValue(id.tolower(), this.config?.styles) : null
 }
 
 let function calcLayerBaseParams(layerCfg, containerSizePx) {
@@ -181,11 +188,11 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 {
   let baseParams = calcLayerBaseParams(layerCfg, containerSizePx)
 
-  let offsetX = ::getTblValue("offsetX", layerCfg, "")
-  let offsetY = ::getTblValue("offsetY", layerCfg, "")
+  let offsetX = getTblValue("offsetX", layerCfg, "")
+  let offsetY = getTblValue("offsetY", layerCfg, "")
 
-  let id = ::getTblValue("id", layerCfg)? "id:t='" + layerCfg.id + "';" : ""
-  let img = ::getTblValue("img", layerCfg, "")
+  let id = getTblValue("id", layerCfg)? "id:t='" + layerCfg.id + "';" : ""
+  let img = getTblValue("img", layerCfg, "")
 
   local props = []
   foreach(key in [ "background-svg-size" ])
@@ -193,7 +200,7 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
       props.append($"{key}:t='{layerCfg[key]}';")
   props = "".join(props)
 
-  return this.iconLayer.subst({
+  return iconLayer.subst({
     id,
     size = $"{baseParams.width}, {baseParams.height}",
     texSize = $"{baseParams.texSize}",
@@ -208,7 +215,7 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
   foreach(layerCfg in insertLayersArrayCfg)
     if (layerCfg)
     {
-      if (::getTblValue("type", layerCfg, "image") == "text")
+      if (getTblValue("type", layerCfg, "image") == "text")
         insertLayers += ::LayersIcon.getTextDataFromLayer(layerCfg)
       else
         insertLayers += ::LayersIcon.genDataFromLayer(layerCfg)
@@ -220,7 +227,7 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 ::LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image=null, ratio=null,
   defStyle=null, iconParams=null, iconConfig=null, containerSizePx = 0)
 {
-  if (!::checkObj(iconObj))
+  if (!checkObj(iconObj))
     return
 
   let guiScene = iconObj.getScene()
@@ -230,8 +237,8 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 
 ::LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg)
 {
-  local props = format("color:t='%s';", ::getTblValue("color", layerCfg, "@commonTextColor"))
-  props += format("font:t='%s';", ::getTblValue("font", layerCfg, "@fontNormal"))
+  local props = format("color:t='%s';", getTblValue("color", layerCfg, "@commonTextColor"))
+  props += format("font:t='%s';", getTblValue("font", layerCfg, "@fontNormal"))
   foreach(id in ["font-ht", "max-width", "text-align", "shadeStyle"])
     if (id in layerCfg)
       props += format("%s:t='%s';", id, layerCfg[id])
@@ -240,11 +247,11 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 
   let posX = ("x" in layerCfg)? layerCfg.x.tostring() : "(pw-w)/2"
   let posY = ("y" in layerCfg)? layerCfg.y.tostring() : "(ph-h)/2"
-  let position = ::getTblValue("position", layerCfg, "absolute")
+  let position = getTblValue("position", layerCfg, "absolute")
 
   return format("blankTextArea {%s text:t='%s'; pos:t='%s, %s'; position:t='%s'; %s}",
                       idTag,
-                      ::g_string.stripTags(::getTblValue("text", layerCfg, "")),
+                      ::g_string.stripTags(getTblValue("text", layerCfg, "")),
                       posX, posY,
                       position,
                       props)

@@ -1,3 +1,5 @@
+//warning disable: -file:egyptian-braces
+
 // Note:
 // This enums is shared between squirrel and C++ code
 // any change requires version.nut update.

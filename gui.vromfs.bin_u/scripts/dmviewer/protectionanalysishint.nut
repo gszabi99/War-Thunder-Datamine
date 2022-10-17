@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let results = require("%scripts/dmViewer/protectionAnalysisHintResults.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { set_protection_analysis_editing } = require("hangarEventCommand")
 
 ::gui_handlers.ProtectionAnalysisHint <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -49,34 +58,34 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     penetratedArmor = function(val) {
       if (!val)
         return ""
-      return ::loc("protection_analysis/hint/armor") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val)) + " " + ::loc("measureUnits/mm")
+      return loc("protection_analysis/hint/armor") + loc("ui/colon") +
+        colorize("activeTextColor", ::round(val)) + " " + loc("measureUnits/mm")
     }
     ricochetProb = function(val) {
       if (val < 0.1)
         return ""
-      return ::loc("protection_analysis/hint/ricochetProb") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val * 100) + ::loc("measureUnits/percent"))
+      return loc("protection_analysis/hint/ricochetProb") + loc("ui/colon") +
+        colorize("activeTextColor", ::round(val * 100) + loc("measureUnits/percent"))
     }
     parts = function(val) {
       if (::u.isEmpty(val))
         return ""
-      let prefix = ::loc("ui/bullet") + " "
-      let partNames = [ ::loc("protection_analysis/hint/parts/list") + ::loc("ui/colon") ]
+      let prefix = loc("ui/bullet") + " "
+      let partNames = [ loc("protection_analysis/hint/parts/list") + loc("ui/colon") ]
       foreach (partId, isShow in val)
         if (isShow)
-          partNames.append(prefix + ::loc("dmg_msg_short/" + partId))
+          partNames.append(prefix + loc("dmg_msg_short/" + partId))
       return ::g_string.implode(partNames, "\n")
     }
     angle = function(val)
     {
-      return ::loc("bullet_properties/hitAngle") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val)) + ::loc("measureUnits/deg")
+      return loc("bullet_properties/hitAngle") + loc("ui/colon") +
+        colorize("activeTextColor", ::round(val)) + loc("measureUnits/deg")
     }
     headingAngle = function(val)
     {
-      return ::loc("protection_analysis/hint/headingAngle") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val)) + ::loc("measureUnits/deg")
+      return loc("protection_analysis/hint/headingAngle") + loc("ui/colon") +
+        colorize("activeTextColor", ::round(val)) + loc("measureUnits/deg")
     }
   }
 
@@ -108,7 +117,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
       return
     lastHintParams = params
 
-    if (!::check_obj(cursorObj) || !::check_obj(hintObj))
+    if (!checkObj(cursorObj) || !checkObj(hintObj))
       return
 
     let isShow = isCursorActive && !::u.isEmpty(params)
@@ -124,7 +133,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
 
     let getValue = getValueByResultCfg
     let printValue = printValueByParam
-    let title = ::colorize(resultCfg.color, ::loc(resultCfg.loc))
+    let title = colorize(resultCfg.color, loc(resultCfg.loc))
     local desc = ::u.map(resultCfg.params, function(id) {
       let gFunc = getValue?[id]
       let val = gFunc ? gFunc(params, id, resultCfg) : 0
@@ -139,7 +148,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
 
   function onTargetingCursorTimer(obj, dt)
   {
-    if(!::check_obj(obj))
+    if(!checkObj(obj))
       return
     let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     obj.left = cursorPos[0] - cursorRadius
@@ -154,7 +163,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
 
 return {
   open = function (scene) {
-    if (::check_obj(scene))
+    if (checkObj(scene))
       ::handlersManager.loadHandler(::gui_handlers.ProtectionAnalysisHint, { scene = scene })
   }
 }

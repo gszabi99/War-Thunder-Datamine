@@ -1,7 +1,14 @@
-let platformModule = require("%scripts/clientState/platform.nut")
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
 
-::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let platformModule = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/leaderboard/leaderboardTable"
@@ -73,7 +80,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
         }
         headerRow.append(block)
       }
-      data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+      data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
     }
 
     isLastPage = false
@@ -86,7 +93,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
       if (rowIdx < rowsInPage)
       {
         for(local i = rowIdx; i < rowsInPage; i++)
-          data += buildTableRow("row_" + i, [], i % 2 == 0, "inactive:t='yes';")
+          data += ::buildTableRow("row_" + i, [], i % 2 == 0, "inactive:t='yes';")
         isLastPage = true
       }
 
@@ -111,7 +118,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
     let playerName = platformModule.getPlayerName(row?.name ?? "")
     let rowData = [
       {
-        text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
+        text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
       }
       {
         id = "name"
@@ -131,7 +138,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     let highlightRow = selfPos == row.pos && row.pos >= 0
     let rowParamsText = $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
-    let data = buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
+    let data = ::buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
   }
@@ -150,7 +157,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
     if (!selfRow || selfRow.len() <= 0)
       return ""
 
-    let emptyRow = buildTableRow("row_"+rowsInPage, ["..."], null,
+    let emptyRow = ::buildTableRow("row_"+rowsInPage, ["..."], null,
       "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
 
     return emptyRow + generateRowTableData(selfRow[0], rowsInPage + 1, selfRow)
@@ -164,7 +171,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
     let playerName = platformModule.getPlayerName(row?.name ?? "")
     let rowData = [
       {
-        text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
+        text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
       },
       {
         id = "name"
@@ -184,7 +191,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
 
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     let highlightRow = selfRow == row.pos && row.pos >= 0
-    let data = buildTableRow(rowName, rowData, rowIdx % 2 == 0,
+    let data = ::buildTableRow(rowName, rowData, rowIdx % 2 == 0,
       $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}")
 
     return data
@@ -194,7 +201,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
   {
     if (::show_console_buttons)
       return
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let dataIdx = obj.getValue() - 1 // skiping header row
@@ -205,7 +212,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
   {
     if (!::show_console_buttons)
       return
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let isHover = obj.isHovered()

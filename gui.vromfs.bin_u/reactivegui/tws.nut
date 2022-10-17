@@ -1,3 +1,6 @@
+from "%rGui/globals/ui_library.nut" import *
+
+let math = require("math")
 let {rwrTargetsTriggers, lwsTargetsTriggers, mlwsTargetsTriggers, mlwsTargets, lwsTargets, rwrTargets, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime} = require("twsState.nut")
 let {MlwsLwsForMfd, RwrForMfd} = require("airState.nut");
 let {isColorOrWhite} = require("style/airHudStyle.nut")
@@ -411,7 +414,7 @@ let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale
   }
 }
 
-let tws = ::kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, needDrawCentralIcon = true, scale = 1.0) {
+let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, needDrawCentralIcon = true, scale = 1.0) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value

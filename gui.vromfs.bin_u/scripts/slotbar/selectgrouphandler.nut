@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
 let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
@@ -36,7 +43,7 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
     slotbarPresets.setGroup({
       crew = crew
       group = unit
-      onFinishCb = ::Callback(onTakeProcessFinish, this)
+      onFinishCb = Callback(onTakeProcessFinish, this)
     })
   }
 
@@ -54,7 +61,7 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
       status = !isEnabled ? "disabled" : "mounted"
       fullBlock = false
       nameLoc = ::getUnitName(unit.name)
-      bottomLineText = ::loc(
+      bottomLineText = loc(
         slotbarPresets.getVehiclesGroupByUnit(unit, countryGroupsList)?.name ?? "")
     }
 

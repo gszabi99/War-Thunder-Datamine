@@ -1,13 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
-let curData = persist("curData", @() ::Watched(null))
-let validListsMask = persist("validListsMask", @() ::Watched(0))
-let lastUpdatetTime = persist("lastUpdatetTime", @() ::Watched(-1))
-let lastRequestTime = persist("lastRequestTime", @() ::Watched(-1))
+let curData = persist("curData", @() Watched(null))
+let validListsMask = persist("validListsMask", @() Watched(0))
+let lastUpdatetTime = persist("lastUpdatetTime", @() Watched(-1))
+let lastRequestTime = persist("lastRequestTime", @() Watched(-1))
 
 let function reset() {
   curData(null)
@@ -21,7 +26,7 @@ let function pushStatusChangedEvent(changedListsMask) {
 }
 
 local function canRefreshData(refreshDelay = null) {
-  if (!::has_feature("WorldWar"))
+  if (!hasFeature("WorldWar"))
     return false
   refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshGlobalStatusTimeSec", refreshMinTimeSec)
   let refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
@@ -57,7 +62,7 @@ let function onGlobalStatusReceived(newData) {
 //special actions with global status in successCb
 local function actionWithGlobalStatusRequest(actionName, requestBlk, taskOptions = null, onSuccessCb = null, onErrorCb = null) {
   lastRequestTime(::dagor.getCurTime())
-  let cb = ::Callback(function(data) {
+  let cb = Callback(function(data) {
     onGlobalStatusReceived(data)
     if (onSuccessCb)
       onSuccessCb()

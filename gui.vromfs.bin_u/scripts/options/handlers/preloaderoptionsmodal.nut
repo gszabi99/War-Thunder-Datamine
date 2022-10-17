@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
   getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -20,7 +27,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
 
     fillLoadingScreenList()
-    this.showSceneBtn("items_list_msg", false).setValue(::loc("shop/search/global/notFound"))
+    this.showSceneBtn("items_list_msg", false).setValue(loc("shop/search/global/notFound"))
 
     updateListItems()
     updateButtons()
@@ -85,15 +92,15 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     let banBtnObj = this.showSceneBtn("btn_ban", isBanBtnVisible)
     if (isBanBtnVisible)
       banBtnObj.setValue(havePremium.value && isLoadingScreenBanned(selectedId)
-        ? ::loc("maps/preferences/removeBan")
-        : ::loc("maps/preferences/ban"))
+        ? loc("maps/preferences/removeBan")
+        : loc("maps/preferences/ban"))
 
     let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
     if (isFavBtnVisible) {
       let unlockId = getUnlockIdByLoadingBg(selectedId)
       favBtnObj.setValue(::g_unlocks.isUnlockFav(unlockId)
-        ? ::loc("preloaderSettings/untrackProgress")
-        : ::loc("preloaderSettings/trackProgress"))
+        ? loc("preloaderSettings/untrackProgress")
+        : loc("preloaderSettings/trackProgress"))
     }
   }
 
@@ -106,12 +113,12 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     if (!havePremium.value)
-      return this.msgBox("need_money", ::loc("mainmenu/onlyWithPremium"), [
+      return this.msgBox("need_money", loc("mainmenu/onlyWithPremium"), [
         ["purchase", (@() onOnlineShopPremium()).bindenv(this)],
         ["cancel"]], "purchase")
 
     if (!isLoadingScreenBanned(selectedId) && !canBan())
-      return this.msgBox("max_banned_count", ::loc("preloaderSettings/maxBannedCount"), [
+      return this.msgBox("max_banned_count", loc("preloaderSettings/maxBannedCount"), [
         ["ok"]], "ok")
 
     toggleLoadingScreenBan(selectedId)

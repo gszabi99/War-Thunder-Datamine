@@ -1,6 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
-local { emulateShortcut } = ::require_native("controls")
+local { emulateShortcut } = require_native("controls")
 
 //--------------------------------------------------------------------------------------------------
 
@@ -34,7 +41,7 @@ local { emulateShortcut } = ::require_native("controls")
   {
     let objCaption = scene.findObject("wheel_menu_category")
     let text = getMfmSectionTitle(mfmDescription[curSectionId])
-    objCaption.setValue(::colorize("hudGreenTextColor", text))
+    objCaption.setValue(colorize("hudGreenTextColor", text))
   }
 
   function toggleShortcut(shortcutId)
@@ -71,8 +78,8 @@ local { emulateShortcut } = ::require_native("controls")
   {
     if (isActive)
     {
-      foreach (escapingSectionId in path.reverse())
-        mfmDescription[escapingSectionId]?.onExit()
+      for ( local i=0; i<path.len()-1; i++)
+        mfmDescription[path[i]]?.onExit()
       path.clear()
       showScene(false)
     }

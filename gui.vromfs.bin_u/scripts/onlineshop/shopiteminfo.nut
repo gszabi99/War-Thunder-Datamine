@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let json = require("json")
 let http = require("dagor.http")
 let { getPlayerToken } = require("auth_wt")
@@ -25,10 +30,10 @@ let function requestMultipleItems(guids, onSuccess, onFailure = null) {
 
         try {
           let body = response.body.as_string()
-          ::dagor.debug($"shopItemInfo: requested [{",".join(guids)}], got\n{body}")
+          log($"shopItemInfo: requested [{",".join(guids)}], got\n{body}")
 
           if (body.len() > 6 && body.slice(0, 6) == "<html>") { //error 404 and other html pages
-            ::dagor.debug(ONLINE_STORE_API_URL,
+            log(ONLINE_STORE_API_URL,
               $"ShopState: Request result is html page instead of data {ONLINE_STORE_API_URL}")
             onFailure?()
             return
@@ -41,7 +46,7 @@ let function requestMultipleItems(guids, onSuccess, onFailure = null) {
             onFailure?()
         }
         catch(e) {
-          ::dagor.debug($"shopTimeInfo: failed getting [{",".join(guids)}]: {e}")
+          log($"shopTimeInfo: failed getting [{",".join(guids)}]: {e}")
           onFailure?()
         }
       }

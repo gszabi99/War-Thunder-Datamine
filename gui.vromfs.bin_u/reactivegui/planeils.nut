@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {IlsVisible, IlsPosSize, CannonMode, RocketMode, BombCCIPMode,
         BlkFileName, BombingMode} = require("planeState/planeToolsState.nut")
 let DataBlock = require("DataBlock")

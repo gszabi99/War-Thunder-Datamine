@@ -1,4 +1,4 @@
-from "daRg" import *
+from "%rGui/globals/ui_library.nut" import *
 
 let function make(log_state) {
   let scrollHandler = ScrollHandler()

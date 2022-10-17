@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
@@ -20,17 +27,17 @@ let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
   debugLastModified = -1
 }
 
-g_hud_tutorial_elements.init <- function init(v_nest)
+::g_hud_tutorial_elements.init <- function init(v_nest)
 {
   let blkPath = getCurBlkName()
   active = !!blkPath
 
-  if (!::checkObj(v_nest))
+  if (!checkObj(v_nest))
     return
   nest  = v_nest
 
   initNestObjects()
-  if (!::checkObj(scene))
+  if (!checkObj(scene))
     return
 
   scene.show(active)
@@ -40,12 +47,12 @@ g_hud_tutorial_elements.init <- function init(v_nest)
   if (::u.isEmpty(blkOptFromPath(blkPath)))
   {
     let msg = $"Hud_tutorial_elements: blk file is empty. (blkPath = {blkPath})"
-    ::dagor.debug(msg)
-    ::dagor.assertf(false, msg)
+    log(msg)
+    assert(false, msg)
     return
   }
 
-  ::dagor.debug($"Hud_tutorial_elements: loaded {blkPath}")
+  log($"Hud_tutorial_elements: loaded {blkPath}")
 
   let guiScene = scene.getScene()
   guiScene.replaceContent(scene, blkPath, this)
@@ -69,13 +76,13 @@ g_hud_tutorial_elements.init <- function init(v_nest)
     }, this)
 }
 
-g_hud_tutorial_elements.initNestObjects <- function initNestObjects()
+::g_hud_tutorial_elements.initNestObjects <- function initNestObjects()
 {
   scene = nest.findObject("tutorial_elements_nest")
   timersNest = nest.findObject("hud_message_timers")
 }
 
-g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName()
+::g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName()
 {
   if (isDebugMode)
     return debugBlkName
@@ -83,7 +90,7 @@ g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName()
   return getBlkNameByCurMission()
 }
 
-g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission()
+::g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission()
 {
   let misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
@@ -93,18 +100,18 @@ g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMissio
   return ::u.isString(res) ? res : null
 }
 
-g_hud_tutorial_elements.reinit <- function reinit()
+::g_hud_tutorial_elements.reinit <- function reinit()
 {
-  if (!active || !::checkObj(nest))
+  if (!active || !checkObj(nest))
     return
 
   initNestObjects()
   refreshObjects()
 }
 
-g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1)
+::g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1)
 {
-  local htObj = ::getTblValue(id, visibleHTObjects)
+  local htObj = getTblValue(id, visibleHTObjects)
   if (!show)
   {
     if (htObj)
@@ -129,9 +136,9 @@ g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, 
   return htObj
 }
 
-g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
+::g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
 {
-  let curTimer = ::getTblValue(objId, timers)
+  let curTimer = getTblValue(objId, timers)
   if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime())
   {
     if (curTimer)
@@ -149,7 +156,7 @@ g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
     return
   }
 
-  if (!::checkObj(timersNest))
+  if (!checkObj(timersNest))
     return
 
   timers[objId] <- ::Timer(timersNest, timeLeft, (@(objId) function () {
@@ -159,25 +166,25 @@ g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
   })(objId), this)
 }
 
-g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data)
+::g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data)
 {
-  if (!active || !::checkObj(scene))
+  if (!active || !checkObj(scene))
     return
 
-  let objId   = ::getTblValue("element", data, null)
-  let show  = ::getTblValue("show", data, false)
-  let timeSec = ::getTblValue("time", data, 0)
+  let objId   = getTblValue("element", data, null)
+  let show  = getTblValue("show", data, false)
+  let timeSec = getTblValue("time", data, 0)
 
   let htObj = updateVisibleObject(objId, show, timeSec)
   updateObjTimer(objId, htObj)
 }
 
-g_hud_tutorial_elements.getAABB <- function getAABB(name)
+::g_hud_tutorial_elements.getAABB <- function getAABB(name)
 {
   return hudElementsAabb(name)
 }
 
-g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
+::g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
 {
   let invalidObjects = []
   foreach(id, htObj in visibleHTObjects)
@@ -203,12 +210,12 @@ g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
   needUpdateAabb = false
 }
 
-g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(params)
+::g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(params)
 {
   needUpdateAabb = true
 }
 
-g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(params)
+::g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(params)
 {
   if (::is_in_flight())
     return
@@ -219,7 +226,7 @@ g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStat
   isDebugMode = false
 }
 
-g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer()
+::g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer()
 {
   SecondsUpdater(scene,
                    function(...)
@@ -229,7 +236,7 @@ g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer()
                    false)
 }
 
-g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate()
+::g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate()
 {
   if (!isDebugMode)
     return true
@@ -251,7 +258,7 @@ g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate()
 }
 
  //blkName = null to switchOff, blkName = "" to autodetect
-g_hud_tutorial_elements.debug <- function debug(blkName = "")
+::g_hud_tutorial_elements.debug <- function debug(blkName = "")
 {
   if (blkName == "")
     blkName = getBlkNameByCurMission()

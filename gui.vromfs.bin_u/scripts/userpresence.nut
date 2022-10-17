@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::g_user_presence <- {
   inited = false
@@ -6,7 +14,7 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
   helperObj = {}
 }
 
-g_user_presence.init <- function init()
+::g_user_presence.init <- function init()
 {
   updateBattlePresence()
 
@@ -25,21 +33,21 @@ g_user_presence.init <- function init()
   }
 }
 
-g_user_presence.updateBattlePresence <- function updateBattlePresence()
+::g_user_presence.updateBattlePresence <- function updateBattlePresence()
 {
   if (isInBattleState.value || ::SessionLobby.isInRoom())
     setBattlePresence("in_game", ::SessionLobby.getRoomEvent())
   else if (::queues.isAnyQueuesActive())
   {
     let queue = ::queues.findQueue({})
-    let event = ::events.getEvent(::getTblValue("name", queue, null))
+    let event = ::events.getEvent(getTblValue("name", queue, null))
     setBattlePresence("in_queue", event)
   }
   else
     setBattlePresence(null)
 }
 
-g_user_presence.setBattlePresence <- function setBattlePresence(presenceName = null, event = null)
+::g_user_presence.setBattlePresence <- function setBattlePresence(presenceName = null, event = null)
 {
   if (presenceName == null || event == null)
     setPresence({status = null}) // Sets presence to "Online".
@@ -47,7 +55,7 @@ g_user_presence.setBattlePresence <- function setBattlePresence(presenceName = n
   {
     setPresence({status = {
       [presenceName] = {
-        country = ::get_profile_country_sq()
+        country = profileCountrySq.value
         diff = ::events.getEventDiffCode(event)
         eventId = event.name
       }
@@ -55,28 +63,28 @@ g_user_presence.setBattlePresence <- function setBattlePresence(presenceName = n
   }
 }
 
-g_user_presence.updateClanTagPresence <- function updateClanTagPresence()
+::g_user_presence.updateClanTagPresence <- function updateClanTagPresence()
 {
-  let clanTag = ::getTblValue("tag", ::my_clan_info, null) || ""
+  let clanTag = getTblValue("tag", ::my_clan_info, null) || ""
   setPresence({ clanTag = clanTag })
 }
 
-g_user_presence.onEventLobbyStatusChange <- function onEventLobbyStatusChange(params)
+::g_user_presence.onEventLobbyStatusChange <- function onEventLobbyStatusChange(params)
 {
   updateBattlePresence()
 }
 
-g_user_presence.onEventQueueChangeState <- function onEventQueueChangeState(params)
+::g_user_presence.onEventQueueChangeState <- function onEventQueueChangeState(params)
 {
   updateBattlePresence()
 }
 
-g_user_presence.onEventClanInfoUpdate <- function onEventClanInfoUpdate(params)
+::g_user_presence.onEventClanInfoUpdate <- function onEventClanInfoUpdate(params)
 {
   updateClanTagPresence()
 }
 
-g_user_presence.setPresence <- function setPresence(presence)
+::g_user_presence.setPresence <- function setPresence(presence)
 {
   if (!::g_login.isLoggedIn() || !checkPresence(presence))
     return
@@ -94,7 +102,7 @@ g_user_presence.setPresence <- function setPresence(presence)
  * to skip 'set_presence' call if nothing
  * changed.
  */
-g_user_presence.checkPresence <- function checkPresence(presence)
+::g_user_presence.checkPresence <- function checkPresence(presence)
 {
   if (presence == null)
     return false
@@ -103,7 +111,7 @@ g_user_presence.checkPresence <- function checkPresence(presence)
   // Selecting only properties that can
   // be inequal with current presence.
   foreach (key, value in presence)
-    helperObj[key] <- ::getTblValue(key, currentPresence)
+    helperObj[key] <- getTblValue(key, currentPresence)
 
   return !::u.isEqual(helperObj, presence)
 }

@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {PI, cos, sin} = require("%sqstd/math.nut")
 let {
   isAllMachineGunsEmpty, GunOverheatState, GunDirectionX, IsCannonEmpty, isAllCannonsEmpty,
@@ -66,7 +68,7 @@ let ccipDashTurretSight = [
 
 let triggerGun = {}
 let isGunBlinking = keepref(Computed(@() GunInDeadZone.value))
-isGunBlinking.subscribe(@(v) v ? ::anim_start(triggerGun) : ::anim_request_stop(triggerGun))
+isGunBlinking.subscribe(@(v) v ? anim_start(triggerGun) : anim_request_stop(triggerGun))
 
 let gunDirection = @(colorWatch, isSightHud, isBackground) function() {
 
@@ -359,13 +361,13 @@ let function laserDesignatorComponent(colorWatch, posX, posY, isBackground) {
 
 
 let laserTrigger = {}
-IsLaserDesignatorEnabled.subscribe(@(v) !v ? ::anim_start(laserTrigger) : ::anim_request_stop(laserTrigger))
+IsLaserDesignatorEnabled.subscribe(@(v) !v ? anim_start(laserTrigger) : anim_request_stop(laserTrigger))
 
 let function laserDesignatorStatusComponent(colorWatch, posX, posY, _isBackground) {
   let laserDesignatorStatus = @() styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
-    text = IsLaserDesignatorEnabled.value ? ::loc("HUD/TXT_LASER_DESIGNATOR") : ::loc("HUD/TXT_ENABLE_LASER_NOW")
+    text = IsLaserDesignatorEnabled.value ? loc("HUD/TXT_LASER_DESIGNATOR") : loc("HUD/TXT_ENABLE_LASER_NOW")
     color = colorWatch.value
     watch = [IsLaserDesignatorEnabled, colorWatch]
     animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = !IsLaserDesignatorEnabled.value, loop = true, easing = InOutSine, trigger = laserTrigger }]
@@ -385,7 +387,7 @@ let function agmTrackerStatusComponent(colorWatch, posX, posY, _isBackground) {
   let agmTrackerStatus = @() styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
-    text = NoLosToATGM.value ? ::loc("HUD/TXT_NO_LOS_ATGM") : ::loc("HUD/TXT_ATGM_OUT_OF_TRACKER_SECTOR")
+    text = NoLosToATGM.value ? loc("HUD/TXT_NO_LOS_ATGM") : loc("HUD/TXT_ATGM_OUT_OF_TRACKER_SECTOR")
     color = colorWatch.value
     watch = [NoLosToATGM, colorWatch]
     animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = true, loop = true, easing = InOutCubic}]

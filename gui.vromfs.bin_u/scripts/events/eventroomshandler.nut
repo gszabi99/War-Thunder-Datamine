@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let stdMath = require("%sqstd/math.nut")
@@ -79,7 +87,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (!event)
       return
 
-    if (::events.getEventDiffCode(event) == ::DIFFICULTY_HARDCORE &&
+    if (::events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return
 
@@ -162,7 +170,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (selItemIdx < 0 || selItemIdx >= roomsListObj.childrenCount())
       return
     let selItemObj = roomsListObj.getChild(selItemIdx)
-    if (!::check_obj(selItemObj) || !selItemObj?.id)
+    if (!checkObj(selItemObj) || !selItemObj?.id)
       return
 
     let selChapterId = getChapterNameByObjId(selItemObj.id)
@@ -239,7 +247,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function onOpenClusterSelect(obj)
   {
     ::queues.checkAndStart(
-      ::Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
+      Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
   }
@@ -284,7 +292,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     let reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
-      reasonData.reasonText = ::loc("multiplayer/no_room_selected")
+      reasonData.reasonText = loc("multiplayer/no_room_selected")
 
     let roomMGM = ::SessionLobby.getMGameMode(getCurRoom())
     let isReady = ::g_squad_manager.isMeReady()
@@ -296,12 +304,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let availTeams = ::events.getAvailableTeams(roomMGM)
     local startText = ""
     if (isSquadMember)
-      startText = ::loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
+      startText = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
     else if (roomMGM && !::events.isEventSymmetricTeams(roomMGM) && availTeams.len() == 1)
-      startText = ::loc("events/join_event_by_team",
+      startText = loc("events/join_event_by_team",
         { team = ::g_team.getTeamByCode(availTeams[0]).getShortName() })
     else
-      startText = ::loc("events/join_event")
+      startText = loc("events/join_event")
 
     let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
@@ -317,8 +325,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
     {
-      let isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
-      startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+      let isCollapsedChapter = isInArray(curChapterId, collapsedChapterNamesArray)
+      startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
   }
@@ -393,7 +401,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let teamSize = ::events.getMaxTeamSize(event)
     foreach(room in roomsList)
     {
-      let wasFlags = ::getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
+      let wasFlags = getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
       let mGameMode = ::events.getMGameMode(event, room)
 
@@ -451,14 +459,13 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       local color = ""
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
-
-      let rankText = ::events.getTierTextByRules(reqUnits)
+      let rankText = ::events.getBrTextByRules(reqUnits)
       let ruleTexts = ::u.map(reqUnits, getRuleText)
-      let rulesText = ::colorize(color, ::g_string.implode(ruleTexts, ::loc("ui/comma")))
+      let rulesText = colorize(color, ::g_string.implode(ruleTexts, loc("ui/comma")))
 
-      text = ::colorize(color, rankText) + " " + text
+      text = colorize(color, rankText) + " " + text
       if (rulesText.len())
-        text += ::loc("ui/comma") + rulesText
+        text += loc("ui/comma") + rulesText
     }
 
     return {
@@ -481,7 +488,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     local infoText = ""
     if (!visibleRoomsAmount && !needWaitIcon)
-      infoText = ::loc(roomsListData.getList().len() ? "multiplayer/no_rooms_by_clusters" : "multiplayer/no_rooms")
+      infoText = loc(roomsListData.getList().len() ? "multiplayer/no_rooms_by_clusters" : "multiplayer/no_rooms")
 
     scene.findObject("items_list_msg").setValue(infoText)
     roomsListObj.enable(visibleRoomsAmount && !needWaitIcon)
@@ -509,7 +516,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
       let itemView = {
         itemText = isSeparateCustomRoomsList
-          ? ::colorize("activeTextColor", ::loc("events/playersRooms"))
+          ? colorize("activeTextColor", loc("events/playersRooms"))
           : null
       }
       local name = ""
@@ -663,7 +670,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateCollapseChaptersStatuses()
   {
-    if (!::check_obj(roomsListObj))
+    if (!checkObj(roomsListObj))
       return
 
     for (local i = 0; i < roomsListObj.childrenCount(); i++)
@@ -671,7 +678,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       let obj = roomsListObj.getChild(i)
       let chapterName = getChapterNameByObjId(obj.id)
 
-      let isCollapsedChapter = ::isInArray(chapterName, collapsedChapterNamesArray)
+      let isCollapsedChapter = isInArray(chapterName, collapsedChapterNamesArray)
       if (!isCollapsedChapter)
         continue
 
@@ -699,7 +706,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function collapse(itemName = null)
   {
-    if (!::check_obj(roomsListObj))
+    if (!checkObj(roomsListObj))
       return
 
     let chapterId = itemName && getChapterNameByObjId(itemName)
@@ -720,7 +727,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       if (iChapter != chapterId)
         continue
 
-      let show = !::isInArray(iChapter, collapsedChapterNamesArray)
+      let show = !isInArray(iChapter, collapsedChapterNamesArray)
       obj.enable(show)
       obj.show(show)
     }
@@ -833,7 +840,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function onHoveredItemSelect(obj)
   {
-    if (hoveredIdx != -1 && ::check_obj(roomsListObj))
+    if (hoveredIdx != -1 && checkObj(roomsListObj))
       roomsListObj.setValue(hoveredIdx)
   }
 

@@ -1,10 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { send } = require("eventbus")
 
 ::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled()
 {
   return isPlatformSony
          || isPlatformXboxOne
-         || ::is_platform_android
+         || is_platform_android
          || ::is_platform_shield_tv()
          || (::is_steam_big_picture() && ::have_xinput_device())
 }
@@ -28,7 +34,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     return false
 
   ::show_console_buttons = showCB
-  ::call_darg("updateExtWatched", { showConsoleButtons = showCB })
+  send("updateExtWatched", { showConsoleButtons = showCB })
   ::set_dagui_mouse_last_time_used(!showCB)
 
   if (!::g_login.isProfileReceived())
@@ -39,5 +45,3 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   ::handlersManager.markfullReloadOnSwitchScene()
   return true
 }
-
-::cross_call_api.isConsoleModeEnabled <- @() ::get_is_console_mode_enabled()

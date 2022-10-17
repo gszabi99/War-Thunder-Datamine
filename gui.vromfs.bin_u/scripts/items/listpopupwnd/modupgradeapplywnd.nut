@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
 ::gui_handlers.ModUpgradeApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
@@ -13,7 +20,7 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
     list = ::u.filter(list, @(item) item.canActivateOnMod(unitToActivate, modToActivate))
     if (!list.len())
     {
-      ::showInfoMsgBox(::loc("msg/noUpgradeItemsForMod"))
+      ::showInfoMsgBox(loc("msg/noUpgradeItemsForMod"))
       return
     }
     ::handlersManager.loadHandler(::gui_handlers.ModUpgradeApplyWnd,
@@ -50,6 +57,6 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
   function onActivate()
   {
-    curItem.activateOnMod(unit, mod, ::Callback(goBack, this))
+    curItem.activateOnMod(unit, mod, Callback(goBack, this))
   }
 }

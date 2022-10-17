@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::gui_handlers.WwObjectivesInfo <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -48,7 +57,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   function initSideBlock(side, objId)
   {
     let operationBlockObj = scene.findObject(objId)
-    if (!::checkObj(operationBlockObj))
+    if (!checkObj(operationBlockObj))
       return
 
     let objectiveHandler = ::handlersManager.loadHandler(::gui_handlers.wwObjective, {

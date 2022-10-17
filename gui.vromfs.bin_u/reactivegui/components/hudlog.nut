@@ -1,11 +1,13 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let colors = require("%rGui/style/colors.nut")
 let scrollbar = require("scrollbar.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 
 let logContainer = @() {
   size = [flex(), SIZE_TO_CONTENT]
-  gap = ::fpx(3)
-  padding = [::scrn_tgt(0.005) , ::scrn_tgt(0.005)]
+  gap = fpx(3)
+  padding = [scrn_tgt(0.005) , scrn_tgt(0.005)]
   flow = FLOW_VERTICAL
 }
 
@@ -24,7 +26,7 @@ let hudLog = function (params) {
   return @() {
     watch = cursorVisible
     rendObj = ROBJ_SOLID
-    size = [flex(), ::scrn_tgt(0.135)]
+    size = [flex(), scrn_tgt(0.135)]
     clipChildren = true
     valign = ALIGN_BOTTOM
     color = colors.hud.hudLogBgColor

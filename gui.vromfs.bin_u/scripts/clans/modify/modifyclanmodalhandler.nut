@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -45,17 +54,17 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     guiScene.replaceContentFromText(contentObj, data, data.len(), this)
 
     let newClanTypeObj = scene.findObject("newclan_type")
-    if (::checkObj(newClanTypeObj))
+    if (checkObj(newClanTypeObj))
       newClanTypeObj.setValue(0)
 
     lastShownHintObj = scene.findObject("req_newclan_name")
 
     let regionObj = scene.findObject("region_nest")
-    if (!::has_feature("ClanRegions") && ::checkObj(regionObj))
+    if (!hasFeature("ClanRegions") && checkObj(regionObj))
       regionObj.show(false)
 
     let announcementNest = scene.findObject("announcement_nest")
-    if (!::has_feature("ClanAnnouncements") && ::checkObj(announcementNest))
+    if (!hasFeature("ClanAnnouncements") && checkObj(announcementNest))
       announcementNest.show(false)
 
     updateReqs()
@@ -70,7 +79,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
   function getSelectedClanType()
   {
     let newClanTypeObj = scene.findObject("newclan_type")
-    if (!::checkObj(newClanTypeObj))
+    if (!checkObj(newClanTypeObj))
       return ::g_clan_type.UNKNOWN
     let selectedIndex = newClanTypeObj.getValue()
     if (selectedIndex == -1)
@@ -97,7 +106,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     if (errorMsg == "")
       return false
 
-    this.msgBox("clan_creating_error", ::loc(errorMsg), [["ok", function(){}]], "ok")
+    this.msgBox("clan_creating_error", loc(errorMsg), [["ok", function(){}]], "ok")
     return true
   }
 
@@ -146,7 +155,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
   function resetTagDecorationObj(selectedTag = null)
   {
     let tagDecorationObj = scene.findObject("newclan_tag_decoration")
-    if (!::checkObj(tagDecorationObj))
+    if (!checkObj(tagDecorationObj))
       return
     let view = {
       decoratorItems = []
@@ -186,27 +195,27 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
   function updateDescription()
   {
     let descObj = scene.findObject("newclan_description")
-    if (::checkObj(descObj))
+    if (checkObj(descObj))
       descObj.show(newClanType.isDescriptionChangeAllowed())
     let captionObj = scene.findObject("not_allowed_description_caption")
-    if (::checkObj(captionObj))
+    if (checkObj(captionObj))
       captionObj.show(!newClanType.isDescriptionChangeAllowed())
   }
 
   function updateAnnouncement()
   {
     let descObj = scene.findObject("newclan_announcement")
-    if (::checkObj(descObj))
+    if (checkObj(descObj))
       descObj.show(newClanType.isAnnouncementAllowed())
     let captionObj = scene.findObject("not_allowed_announcement_caption")
-    if (::checkObj(captionObj))
+    if (checkObj(captionObj))
       captionObj.show(!newClanType.isAnnouncementAllowed())
   }
 
   function prepareClanDataTextValue(valueName, objId)
   {
     let obj = scene.findObject(objId)
-    if (::checkObj(obj))
+    if (checkObj(obj))
       this[valueName] = obj.getValue()
   }
 
@@ -234,17 +243,17 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     newClanAnnouncement  = newClanAnnouncement.len() > 0 ? clearBorderSymbols(newClanAnnouncement, [" "]) : ""
 
     if(!::checkClanTagForDirtyWords(newClanTag, false))
-      err += ::loc("clan/error/bad_words_in_clanTag")
+      err += loc("clan/error/bad_words_in_clanTag")
 
     if(newClanTag.len() <= 0)
-      err += ::loc("clan/error/empty_tag") + "\n"
+      err += loc("clan/error/empty_tag") + "\n"
 
     let tagLengthLimit = newClanType.getTagLengthLimit()
     if (!edit && tagLengthLimit > 0 && ::utf8_strlen(newClanTag) > tagLengthLimit)
-      err += ::loc("clan/error/tag_length", { maxLength = tagLengthLimit }) + "\n"
+      err += loc("clan/error/tag_length", { maxLength = tagLengthLimit }) + "\n"
 
     if((!edit && newClanName.len() <= 0) || newClanName.len() < 3)
-      err += ::loc("clan/error/empty_name") + "\n"
+      err += loc("clan/error/empty_name") + "\n"
 
     if(err.len() > 0)
     {
@@ -274,12 +283,12 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
   function updateHint(obj, isShow)
   {
     let hintObj = obj?.id != null ? scene.findObject($"req_{obj.id}") : null
-    if (::check_obj(lastShownHintObj) && (hintObj == null || !lastShownHintObj.isEqual(hintObj)))
+    if (checkObj(lastShownHintObj) && (hintObj == null || !lastShownHintObj.isEqual(hintObj)))
     {
       lastShownHintObj.show(false)
       lastShownHintObj = null
     }
-    if (::check_obj(hintObj))
+    if (checkObj(hintObj))
     {
       hintObj.show(isShow)
       lastShownHintObj = hintObj
@@ -297,13 +306,13 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
   function updateReqs()
   {
     let reqTextObj = scene.findObject("req_newclan_tag_text")
-    if (::checkObj(reqTextObj))
+    if (checkObj(reqTextObj))
     {
       let locId = format("clan/newclan_tag_req/%s", newClanType.getTypeName())
       let locParams = {
         tagLengthLimit = newClanType.getTagLengthLimit()
       }
-      let text = ::loc(locId, locParams)
+      let text = loc(locId, locParams)
       reqTextObj.setValue(text)
     }
   }
@@ -311,7 +320,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
   function updateTagMaxLength()
   {
     let newClanTagObj = scene.findObject("newclan_tag")
-    if (::checkObj(newClanTagObj))
+    if (checkObj(newClanTagObj))
     {
       let tagLengthLimit = newClanType.getTagLengthLimit()
       newClanTagObj["max-len"] = tagLengthLimit.tostring()

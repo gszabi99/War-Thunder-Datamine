@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let api = require("dagor.webpoll")
@@ -139,7 +144,7 @@ let function generatePollUrl(pollId, needAuthorization = true) {
   }
 
   if (authorizedPollsRequestTimeOut?[pollIdInt] == 0) {
-    let url = ::loc("url/webpoll_url",
+    let url = loc("url/webpoll_url",
       { base_url = pollBaseUrl, survey_id = pollId, disposable_token = cachedToken })
     pollIdByFullUrl[url] <- pollId
     return url
@@ -174,17 +179,17 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(p) invalidateData()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
-web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
+::web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
 
 ::webpoll_event <- function webpoll_event(id, token, voted) { //use in native code
   webpollEvent(id, token, voted)
 }
 
 return {
-  setPollBaseUrl = setPollBaseUrl
-  getPollIdByFullUrl = getPollIdByFullUrl
-  generatePollUrl = generatePollUrl
-  isPollVoted = isPollVoted
-  clearOldVotedPolls = clearOldVotedPolls
-  invalidateTokensCache = invalidateTokensCache
+  setPollBaseUrl
+  getPollIdByFullUrl
+  generatePollUrl
+  isPollVoted
+  clearOldVotedPolls
+  invalidateTokensCache
 }

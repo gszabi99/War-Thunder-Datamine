@@ -1,9 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let stdpath = require("%sqstd/path.nut")
 
-::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
 
@@ -127,7 +134,7 @@ let stdpath = require("%sqstd/path.nut")
     name = {
       header = "#filesystem/fileName"
       getValue = function(file, fileDialog) {
-        return ::getTblValue("name", file)
+        return getTblValue("name", file)
       }
       comparator = function(lhs, rhs) {
         return ::gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
@@ -146,7 +153,7 @@ let stdpath = require("%sqstd/path.nut")
     mTime = {
       header = "#filesystem/fileMTime"
       getValue = function(file, fileDialog) {
-        return ::getTblValue("modifyTime", file)
+        return getTblValue("modifyTime", file)
       }
       comparator = function(lhs, rhs) {
         return ::gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
@@ -172,7 +179,7 @@ let stdpath = require("%sqstd/path.nut")
     directory = {
       header = ""
       getValue = function(file, fileDialog) {
-        return ::getTblValue("isDirectory", file, false)
+        return getTblValue("isDirectory", file, false)
       }
       comparator = function(lhs, rhs) {
         return (lhs ? 1 : 0) - (rhs ? 1 : 0)
@@ -194,7 +201,7 @@ let stdpath = require("%sqstd/path.nut")
     extension = {
       header = "#filesystem/fileExtension"
       getValue = function(file, fileDialog) {
-        if (::getTblValue("isDirectory", file, false))
+        if (getTblValue("isDirectory", file, false))
           return "."
 
         let filename = file?.name ?? ""
@@ -217,7 +224,7 @@ let stdpath = require("%sqstd/path.nut")
         else if (value == "")
           extType = "#filesystem/file"
         else
-          extType = ::loc("filesystem/file") + " " + value
+          extType = loc("filesystem/file") + " " + value
         return {
           text = extType
           tooltip = extType
@@ -229,7 +236,7 @@ let stdpath = require("%sqstd/path.nut")
     size = {
       header = "#filesystem/fileSize"
       getValue = function(file, fileDialog) {
-        return ::getTblValue("size", file)
+        return getTblValue("size", file)
       }
       comparator = function(lhs, rhs) {
         return ::gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
@@ -276,7 +283,7 @@ let stdpath = require("%sqstd/path.nut")
     validatePath = function(path)
     {
       return (path && path != ""
-        && (::is_platform_windows
+        && (is_platform_windows
           ? (path.len() >= 2 && path[1] == ':')
           : path[0] == '/'))
     }
@@ -298,7 +305,7 @@ let stdpath = require("%sqstd/path.nut")
         return null
       let basename = stdpath.fileName(path)
       local files = ::find_files_ex(path, 1)
-      if (files.len() > 0 && ::getTblValue("name", files[0]) == basename)
+      if (files.len() > 0 && getTblValue("name", files[0]) == basename)
         return files[0]
 
       if (files.len() == 0)
@@ -309,11 +316,11 @@ let stdpath = require("%sqstd/path.nut")
     }
 
     getFileName = function(file) {
-      return ::getTblValue("name", file, "")
+      return getTblValue("name", file, "")
     }
 
     getFileFullPath = function(file) {
-      return ::getTblValue("fullPath", file, "")
+      return getTblValue("fullPath", file, "")
     }
 
     isExists = function(file) {
@@ -321,7 +328,7 @@ let stdpath = require("%sqstd/path.nut")
     }
 
     isDirectory = function(file) {
-      return file != null && ::getTblValue("isDirectory", file, false)
+      return file != null && getTblValue("isDirectory", file, false)
     }
 
     getNavElements = function()
@@ -338,7 +345,7 @@ let stdpath = require("%sqstd/path.nut")
         ]
       })
 
-      if (::is_platform_windows)
+      if (is_platform_windows)
       {
         let disks = {name = "#filesystem/winDiskDrives", childs = []}
         for (local diskChar = 'C' ; diskChar <= 'Z'; diskChar++)
@@ -348,7 +355,7 @@ let stdpath = require("%sqstd/path.nut")
         }
         favorites.append(disks)
       }
-      else if (::target_platform == "macosx")
+      else if (target_platform == "macosx")
       {
         favorites.append({
           name = "#filesystem/fsMountPoints"
@@ -389,7 +396,7 @@ let stdpath = require("%sqstd/path.nut")
     // Init defaults
     if (dirPath != "")
       dirPath = stdpath.normalize(dirPath)
-    else if (::is_platform_windows)
+    else if (is_platform_windows)
       dirPath = "C:"
     else
       dirPath = "/"
@@ -404,12 +411,12 @@ let stdpath = require("%sqstd/path.nut")
     ]
 
     filters = (filters && filters.len() > 0) ? filters : []
-    if (currentFilter && !::isInArray(currentFilter, filters))
+    if (currentFilter && !isInArray(currentFilter, filters))
       filters.append(currentFilter)
-    if (shouldAddAllFilesFilter && !::isInArray(allFilesFilter, filters))
+    if (shouldAddAllFilesFilter && !isInArray(allFilesFilter, filters))
       filters.append(allFilesFilter)
     currentFilter = currentFilter ||
-      (::isInArray(allFilesFilter, filters) ? allFilesFilter : filters[0])
+      (isInArray(allFilesFilter, filters) ? allFilesFilter : filters[0])
 
     if (extension && currentFilter != allFilesFilter && extension != currentFilter)
     {
@@ -452,7 +459,7 @@ let stdpath = require("%sqstd/path.nut")
 
     // Update screen
     getObj("dialog_header").setValue(
-      ::loc(isSaveFile ? "filesystem/savefile" : "filesystem/openfile"))
+      loc(isSaveFile ? "filesystem/savefile" : "filesystem/openfile"))
     updateAllDelayed()
 
     ::move_mouse_on_child_by_value(getObj("file_table"))
@@ -527,7 +534,7 @@ let stdpath = require("%sqstd/path.nut")
     {
       updateSelectedFileName()
 
-      let fullPath = ::getTblValue(fileName, cachedFileFullPathByFileName) ||
+      let fullPath = getTblValue(fileName, cachedFileFullPathByFileName) ||
         stdpath.join(dirPath, fileName)
       if (fullPath != "")
         openFileOrDir(fullPath)
@@ -698,7 +705,7 @@ let stdpath = require("%sqstd/path.nut")
         if (::u.isString(columnInfo.column))
         {
           let columnName = columnInfo.column
-          columns[columnName] <- ::getTblValue(columnName, columns, {})
+          columns[columnName] <- getTblValue(columnName, columns, {})
           columnInfo.column = columns[columnName]
         }
       }
@@ -738,7 +745,7 @@ let stdpath = require("%sqstd/path.nut")
           {
             ::script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format(
               "ERROR: FileDialog column " +
-              ::getTblValue("name", column, "[UNDEFINED name]") +
+              getTblValue("name", column, "[UNDEFINED name]") +
               " has not attribute " + attr + " but it is required!"))
             return false
           }
@@ -762,7 +769,7 @@ let stdpath = require("%sqstd/path.nut")
       return
 
     let childObj = fileTableObj.getChild(selectedRowIdx)
-    if (!::check_obj(childObj) ||
+    if (!checkObj(childObj) ||
       !(childObj?.id in cachedFileNameByTableRowId))
       return
 
@@ -781,8 +788,8 @@ let stdpath = require("%sqstd/path.nut")
 
     let settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
     let loadBlk = ::load_local_account_settings(settingName)
-    dirPath  = ::getTblValue("dirPath",  loadBlk, dirPath)
-    fileName = ::getTblValue("fileName", loadBlk, fileName)
+    dirPath  = getTblValue("dirPath",  loadBlk, dirPath)
+    fileName = getTblValue("fileName", loadBlk, fileName)
 
     while (!isDirectory(readFileInfo(dirPath)))
     {
@@ -819,7 +826,7 @@ let stdpath = require("%sqstd/path.nut")
       shouldUseSaveButton = !isDirectory(file)
     }
     getObj("btn_open").setValue(
-      ::loc(shouldUseSaveButton ? "filesystem/btnSave" : "filesystem/btnOpen"))
+      loc(shouldUseSaveButton ? "filesystem/btnSave" : "filesystem/btnOpen"))
     getObj("btn_backward").enable(dirHistoryBefore.len() > 0)
     getObj("btn_forward").enable(dirHistoryAfter.len() > 0)
   }
@@ -878,7 +885,7 @@ let stdpath = require("%sqstd/path.nut")
       return true
     }
     else
-      ::showInfoMsgBox(::loc("filesystem/folderDeleted", {path = path}))
+      ::showInfoMsgBox(loc("filesystem/folderDeleted", {path = path}))
   }
 
 
@@ -896,11 +903,11 @@ let stdpath = require("%sqstd/path.nut")
         let folderPath = stdpath.parentPath(path)
         if (shouldAskOnRewrite && isExists(file))
           ::scene_msg_box("filesystem_rewrite_msg_box", null,
-            ::loc("filesystem/askRewriteFile", {path = path}),
-            [["ok", ::Callback(executeSelectCallback, this) ],
+            loc("filesystem/askRewriteFile", {path = path}),
+            [["ok", Callback(executeSelectCallback, this) ],
             ["cancel", function() {} ]], "cancel", {})
         else if (!isDirectory(readFileInfo(folderPath)))
-          ::showInfoMsgBox(::loc("filesystem/folderDeleted", {path = folderPath}))
+          ::showInfoMsgBox(loc("filesystem/folderDeleted", {path = folderPath}))
         else
         {
           if (!isExists(file) && extension
@@ -914,7 +921,7 @@ let stdpath = require("%sqstd/path.nut")
         if (isExists(file))
           executeSelectCallback()
         else
-          ::showInfoMsgBox(::loc("filesystem/fileNotExists", {path = path}))
+          ::showInfoMsgBox(loc("filesystem/fileNotExists", {path = path}))
       }
     }
   }
@@ -937,7 +944,7 @@ let stdpath = require("%sqstd/path.nut")
     if (!fileTableObj)
       return
 
-    let selectedFile = ::getTblValue(dirPath, lastSelectedFileByPath, fileName)
+    let selectedFile = getTblValue(dirPath, lastSelectedFileByPath, fileName)
     if (selectedFile in cachedTableRowIdxByFileName)
     {
       let rowIdx = cachedTableRowIdxByFileName[selectedFile]
@@ -991,7 +998,7 @@ let stdpath = require("%sqstd/path.nut")
     isDirPathObjFocused = isFocused
 
     getObj("btn_refresh")["tooltip"] =
-      ::loc(isFocused ? "filesystem/btnGo" : "filesystem/btnRefresh")
+      loc(isFocused ? "filesystem/btnGo" : "filesystem/btnRefresh")
     getObj("btn_refresh_img")["background-image"] = isFocused ?
       "#ui/gameuiskin#spinnerListBox_arrow_up.svg" : "#ui/gameuiskin#refresh.svg"
     getObj("btn_refresh_img")["rotation"] = isFocused ?
@@ -1266,11 +1273,11 @@ let stdpath = require("%sqstd/path.nut")
       foreach (sortInfo in columnSource)
       {
         let column = sortInfo.column
-        let lhsValue = ::getTblValue(column.name, lhs, null)
-        let rhsValue = ::getTblValue(column.name, rhs, null)
+        let lhsValue = getTblValue(column.name, lhs, null)
+        let rhsValue = getTblValue(column.name, rhs, null)
         let result = column.comparator(lhsValue, rhsValue)
         if (result != 0)
-          return result * (::getTblValue("reverse", sortInfo, false) ? -1 : 1)
+          return result * (getTblValue("reverse", sortInfo, false) ? -1 : 1)
       }
     return 0
   }

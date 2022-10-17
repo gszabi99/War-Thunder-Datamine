@@ -1,7 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 
 let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -28,7 +36,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let headerObj = scene.findObject("decals_wnd_header")
-    headerObj.setValue(::loc(curDecorType.listHeaderLocId))
+    headerObj.setValue(loc(curDecorType.listHeaderLocId))
 
     let decorType = curDecorType
     let decorCache = getDecorCache()

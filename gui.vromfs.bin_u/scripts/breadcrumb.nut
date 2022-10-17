@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let backToMainScene = require("%scripts/mainmenu/backToMainScene.nut")
 local lastBaseHandlerStartData = null
 
@@ -9,7 +14,7 @@ let function updateBackSceneObj(handler) {
   if (!backSceneObj?.isValid())
     return
 
-  backSceneObj.setValue(::loc(handlerLocId))
+  backSceneObj.setValue(loc(handlerLocId))
 }
 
 let function setBreadcrumbGoBackParams(handler) {

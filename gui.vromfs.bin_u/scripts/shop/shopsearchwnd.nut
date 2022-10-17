@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -24,7 +33,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     let countriesView = getCountriesView(unitsData)
 
     return {
-      windowTitle = wndTitle ?? (::loc("shop/search/results") + ::loc("ui/colon") + searchString)
+      windowTitle = wndTitle ?? (loc("shop/search/results") + loc("ui/colon") + searchString)
       countriesCount = countriesView.len()
       countriesTotal = shopCountriesList.len()
       countries = countriesView
@@ -88,7 +97,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
           continue
 
         let armyView = {
-          armyName = ::colorize("fadedTextColor", unitType.getArmyLocName())
+          armyName = colorize("fadedTextColor", unitType.getArmyLocName())
           unitPlates = isUseUnitPlates ? [] : null
           units      = isUseUnitPlates ? null : []
           isTooltipByHold = ::show_console_buttons
@@ -110,7 +119,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
               ico = ::getUnitClassIco(u)
               type = getUnitRole(u)
               tooltipId = ::g_tooltip.getIdUnit(u.name)
-              text = ::colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
+              text = colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
                 ::nbsp + ::getUnitName(u, true)
               isUsable = u.isUsable()
               canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
@@ -145,9 +154,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getIsUseUnitPlates(unitsData)
   {
-    let visibleHeight = ::to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
+    let visibleHeight = to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
       "-@cIco -6@blockInterval -0.02@sf)")
-    let slotHeight  = ::to_pixels("@slot_height + 2@slot_interval")
+    let slotHeight  = to_pixels("@slot_height + 2@slot_interval")
     local maxColumnHeight = 0
     foreach (countryUnits in unitsData)
     {

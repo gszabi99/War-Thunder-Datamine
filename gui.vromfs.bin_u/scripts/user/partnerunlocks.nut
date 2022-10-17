@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 
 
@@ -12,7 +19,7 @@ let time = require("%scripts/time.nut")
   partnerExectutedUnlocks = {}
 }
 
-g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks()
+::g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks()
 {
   if (!canRefreshData())
     return
@@ -34,7 +41,7 @@ g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks()
                             successCb)
 }
 
-g_partner_unlocks.canRefreshData <- function canRefreshData()
+::g_partner_unlocks.canRefreshData <- function canRefreshData()
 {
   if (lastRequestTime > lastUpdateTime && lastRequestTime + REQUEST_TIMEOUT_MSEC > ::dagor.getCurTime())
     return false
@@ -44,7 +51,7 @@ g_partner_unlocks.canRefreshData <- function canRefreshData()
   return true
 }
 
-g_partner_unlocks.getPartnerUnlockTime <- function getPartnerUnlockTime(unlockId)
+::g_partner_unlocks.getPartnerUnlockTime <- function getPartnerUnlockTime(unlockId)
 {
   if (::u.isEmpty(unlockId))
     return null
@@ -59,7 +66,7 @@ g_partner_unlocks.getPartnerUnlockTime <- function getPartnerUnlockTime(unlockId
   return partnerExectutedUnlocks[unlockId]
 }
 
-g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockData(result)
+::g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockData(result)
 {
   if (!::u.isDataBlock(result))
     return false
@@ -72,7 +79,7 @@ g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockDat
   return true
 }
 
-g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(unlockId, durationMin = null)
+::g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(unlockId, durationMin = null)
 {
   if (!unlockId)
     return true
@@ -89,7 +96,7 @@ g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(
   return endSec > ::get_charserver_time_sec()
 }
 
-g_partner_unlocks.onEventSignOut <- function onEventSignOut(p)
+::g_partner_unlocks.onEventSignOut <- function onEventSignOut(p)
 {
   lastRequestTime = -9999999999
   lastUpdateTime = -9999999999

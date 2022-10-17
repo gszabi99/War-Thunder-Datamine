@@ -1,4 +1,8 @@
+#explicit-this
+#no-root-fallback
+
 let u = require("%sqStdLibs/helpers/u.nut")
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
 ::g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")  //!!FIX ME: better to make this modules too
 
 let class SecondsUpdater
@@ -30,7 +34,7 @@ let class SecondsUpdater
   constructor(nestObj_, updateFunc_, useNestAsTimerObj = true, params_ = {})
   {
     if (!updateFunc_)
-      return ::dagor.assertf(false, "Error: no updateFunc in seconds updater.")
+      return assert(false, "Error: no updateFunc in seconds updater.")
 
     this.nestObj    = nestObj_
     this.updateFunc = updateFunc_
@@ -71,7 +75,7 @@ let class SecondsUpdater
 
   function remove()
   {
-    if (!::check_obj(this.timerObj))
+    if (!check_obj(this.timerObj))
       return
 
     this.timerObj.setUserData(null)

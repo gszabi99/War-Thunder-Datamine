@@ -58,6 +58,15 @@ let filter = nameFilter(filterText, {
   function onEscape() {
     set_kb_focus(null)
   }
+
+  function onReturn() {
+    set_kb_focus(null)
+  }
+
+  function onClear() {
+    filterText.update("")
+    set_kb_focus(null)
+  }
 })
 
 let templPostfix = nameFilter(templatePostfixText, {
@@ -68,6 +77,15 @@ let templPostfix = nameFilter(templatePostfixText, {
   }
 
   function onEscape() {
+    set_kb_focus(null)
+  }
+
+  function onReturn() {
+    set_kb_focus(null)
+  }
+
+  function onClear() {
+    templatePostfixText.update("")
     set_kb_focus(null)
   }
 })
@@ -84,7 +102,7 @@ let function listRow(tpl_name, idx) {
     if (isSelected) {
       color = colors.Active
     } else {
-      color = (stateFlags.value & S_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
+      color = (stateFlags.value & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
     }
 
     return {
@@ -97,7 +115,7 @@ let function listRow(tpl_name, idx) {
       watch = stateFlags
       onHover = @(on) templateTooltip(on ? mkTemplateTooltip(tpl_name) : null)
       onClick = @() doSelectTemplate(tpl_name)
-      onElemState = @(sf) stateFlags.update(sf & S_HOVER)
+      onElemState = @(sf) stateFlags.update(sf & S_TOP_HOVER)
 
       children = {
         rendObj = ROBJ_TEXT

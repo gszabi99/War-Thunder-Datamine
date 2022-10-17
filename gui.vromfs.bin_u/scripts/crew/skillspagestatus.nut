@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//-file:undefined-const
+//-file:undefined-variable
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_skills_page_status <-
 {
@@ -53,10 +60,10 @@ enums.addTypesByGlobalName("g_skills_page_status", {
   */
 })
 
-g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints)
+::g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints)
 {
   local res = ::g_skills_page_status.NONE
-  let items = ::getTblValue("items", page)
+  let items = getTblValue("items", page)
   if (!items || !items.len())
     return res
 

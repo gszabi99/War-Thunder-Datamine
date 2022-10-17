@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let fileCheck = require("%scripts/clientState/fileCheck.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -30,21 +35,21 @@ let function loadBgBlk(name) {
     return res
 
   let errText = ::dd_file_exist(fullName) ? "errors in file" : "not found file"
-  loadErrorText = "Error: cant load login bg blk {0}: {1}".subst(::colorize("userlogColoredText", fullName), errText)
+  loadErrorText = "Error: cant load login bg blk {0}: {1}".subst(colorize("userlogColoredText", fullName), errText)
 
   if (isDebugMode)
     return res //no need to change bg in debugMode
 
   res = null
   removeLoadingBgFromLists(name)
-  ::dagor.assertf(false, loadErrorText)
+  assert(false, loadErrorText)
   return res
 }
 
 local function load(blkFilePath = "", obj = null, curBgData = null) {
   if (!obj)
     obj = ::get_cur_gui_scene()["animated_bg_picture"]
-  if (!::check_obj(obj))
+  if (!checkObj(obj))
     return
 
   curBgData = curBgData ?? getCurLoadingBgData()
@@ -57,7 +62,7 @@ local function load(blkFilePath = "", obj = null, curBgData = null) {
   else
     if (::g_login.isLoggedIn() || lastBg == "") //no change bg during first load
     {
-      if (::has_feature("LoadingBackgroundFilter")
+      if (hasFeature("LoadingBackgroundFilter")
         && ::g_login.isProfileReceived() && havePremium.value)
       {
         let filteredCurBgList = curBgList.filter(@(v, id) !isLoadingScreenBanned(id))
