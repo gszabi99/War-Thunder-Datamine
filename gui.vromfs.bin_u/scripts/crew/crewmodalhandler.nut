@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -15,13 +8,13 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_modal_crew <- function gui_modal_crew(params = {}) {
-  if (hasFeature("CrewSkills"))
+::gui_modal_crew <- function gui_modal_crew(params = {})
+{
+  if (::has_feature("CrewSkills"))
     ::gui_start_modal_wnd(::gui_handlers.CrewModalHandler, params)
   else
-    ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+    ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
 }
 
 ::gui_handlers.CrewModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -35,7 +28,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   idInCountry = -1
   showTutorial = false
   crew = null
-  curCrewUnitType = CUT_INVALID
+  curCrewUnitType = ::CUT_INVALID
   curPage = 0
   curPageId = null
   pageBonuses = 0
@@ -100,21 +93,21 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (curUnit != null && curUnit.getCrewUnitType() == curCrewUnitType)
     {
       text = ::g_string.implode([
-        loc("crew/currentAircraft") + loc("ui/colon")
-          + colorize("activeTextColor", ::getUnitName(curUnit))
-        loc("crew/totalCrew") + loc("ui/colon")
-          + colorize("activeTextColor", curUnit.getCrewTotalCount())
-      ], loc("ui/comma"))
+        ::loc("crew/currentAircraft") + ::loc("ui/colon")
+          + ::colorize("activeTextColor", ::getUnitName(curUnit))
+        ::loc("crew/totalCrew") + ::loc("ui/colon")
+          + ::colorize("activeTextColor", curUnit.getCrewTotalCount())
+      ], ::loc("ui/comma"))
       if (curUnit.unitType.hasAiGunners && (curUnit?.gunnersCount ?? 0) > 0)
-        text += "\n" + loc("crew/numDefensiveArmamentTurrets") + loc("ui/colon")
-          + colorize("activeTextColor", curUnit.gunnersCount)
+        text += "\n" + ::loc("crew/numDefensiveArmamentTurrets") + ::loc("ui/colon")
+          + ::colorize("activeTextColor", curUnit.gunnersCount)
     }
     scene.findObject("crew-info-text").setValue(text)
   }
 
   function initMainParams(reloadSkills=true, reinitUnitType = false)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     curUnit = getCrewUnit(crew)
@@ -139,7 +132,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       foreach(item in page.items)
       {
         let value = getSkillValue(crew.id, curUnit, page.id, item.name)
-        let newValue = getTblValue("newValue", item, value)
+        let newValue = ::getTblValue("newValue", item, value)
         if (newValue > value)
           curPoints -= ::g_crew.getSkillCost(item, newValue, value)
       }
@@ -175,7 +168,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateUnitTypeRadioButtons()
   {
     let rbObj = scene.findObject("rb_unit_type")
-    if (!checkObj(rbObj))
+    if (!::checkObj(rbObj))
       return
 
     local data = ""
@@ -187,7 +180,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         continue
 
       let crewUnitType = unitType.crewUnitType
-      if (isInArray(crewUnitType,crewUnitTypes))
+      if (::isInArray(crewUnitType,crewUnitTypes))
         continue
 
       if (!isCountryHaveUnitType(getCurCountryName(), unitType.esUnitType))
@@ -241,7 +234,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
       let tabData = {
         id = page.id
-        tabName = loc("crew/"+ page.id)
+        tabName = ::loc("crew/"+ page.id)
         navImagesText = ::get_navigation_images_text(index, pages.len())
       }
 
@@ -273,7 +266,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach(tab in viewTabs)
       width += daguiFonts.getStringWidthPx(tab.tabName, "fontNormal", guiScene)
 
-    width += viewTabs.len() * to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
+    width += viewTabs.len() * ::to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
     if (::show_console_buttons)
       width += 2*targetSize[1] //gamepad navigation icons width = ph
 
@@ -321,11 +314,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     scene.findObject("crew_cur_points").setValue(isMaxLevel ? "" : curPointsText)
 
     local levelIncText = ""
-    local levelIncTooltip = loc("crew/usedSkills/tooltip")
+    local levelIncTooltip = ::loc("crew/usedSkills/tooltip")
     if (isMaxLevel)
     {
-      levelIncText = loc("ui/parentheses/space", { text = loc("options/quality_max") })
-      levelIncTooltip += "\n" + loc("crew/availablePoints") + curPointsText
+      levelIncText = ::loc("ui/parentheses/space", { text = ::loc("options/quality_max") })
+      levelIncTooltip += "\n" + ::loc("crew/availablePoints") + curPointsText
     }
     else if (crewLevelInc > 0.005)
       levelIncText = "+" + stdMath.round_by_value(crewLevelInc, 0.01)
@@ -334,7 +327,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     scene.findObject("crew_level_block").tooltip = levelIncTooltip
     scene.findObject("btn_apply").enable(crewLevelInc > 0)
     this.showSceneBtn("crew_cur_points_block", !isMaxLevel)
-    this.showSceneBtn("btn_buy", hasFeature("SpendGold") && !isMaxLevel && crew.id != -1)
+    this.showSceneBtn("btn_buy", ::has_feature("SpendGold") && !isMaxLevel && crew.id != -1)
   }
 
   function updatePointsAdvice()
@@ -351,12 +344,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateBuyAllButton()
   {
-    if (!hasFeature("CrewBuyAllSkills"))
+    if (!::has_feature("CrewBuyAllSkills"))
       return
 
     let totalPointsToMax = ::g_crew.getSkillPointsToMaxAllSkills(crew, curUnit, curCrewUnitType)
     this.showSceneBtn("btn_buy_all", totalPointsToMax > 0 && crew.id != -1)
-    let text = loc("mainmenu/btnBuyAll") + loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
+    let text = ::loc("mainmenu/btnBuyAll") + ::loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
     setColoredDoubleTextToButton(scene, "btn_buy_all", text)
   }
 
@@ -382,7 +375,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (!isSkillsPage(page))
         continue
       let obj = pagesObj.findObject(getCornerImgId(page))
-      if (!checkObj(obj))
+      if (!::checkObj(obj))
         continue
 
       let statusType = ::g_skills_page_status.getPageStatus(
@@ -401,7 +394,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     updateAirList()
 
     let obj = scene.findObject("buyPoints_discount")
-    let buyPointsDiscount = getTblValue("buyPoints", discountInfo, 0)
+    let buyPointsDiscount = ::getTblValue("buyPoints", discountInfo, 0)
     ::showCurBonus(obj, buyPointsDiscount, "buyPoints", true, true)
   }
 
@@ -415,7 +408,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach(unit in ::all_units)
       if (unit.name in crew.trainedSpec && unit.getCrewUnitType() == curCrewUnitType)
       {
-        let isCurrent = getTblValue("aircraft", crew, "") == unit.name
+        let isCurrent = ::getTblValue("aircraft", crew, "") == unit.name
         if (isCurrent)
           airList.append(unit)
         else
@@ -447,7 +440,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         crew = crew
         curCrewUnitType = curCrewUnitType
         curPoints = curPoints
-        onSkillRowChangeCb = Callback(onSkillRowChange, this)
+        onSkillRowChangeCb = ::Callback(onSkillRowChange, this)
         unit = curUnit
       }
       if (unitSpecHandler != null)
@@ -485,7 +478,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onBuyPoints()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     updateDiscountInfo()
@@ -551,7 +544,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function checkSkillPointsAndDo(action, cancelAction = function() {}, updateAfterApply = true)
   {
-    let crewPoints = getTblValue("skillPoints", crew, 0)
+    let crewPoints = ::getTblValue("skillPoints", crew, 0)
     if (curPoints == crewPoints)
       return action()
 
@@ -564,7 +557,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       ["no", action]
     ]
 
-    this.msgBox("applySkills", loc("crew/applySkills"), msgOptions, "yes", {
+    this.msgBox("applySkills", ::loc("crew/applySkills"), msgOptions, "yes", {
       cancel_fn = cancelAction
       checkDuplicateId = true
     })
@@ -577,7 +570,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function goForward(startFunc, needFade=true)
   {
-    checkSkillPointsAndDo(Callback(@() baseGoForward(startFunc, needFade), this))
+    checkSkillPointsAndDo(::Callback(@() baseGoForward(startFunc, needFade), this))
   }
 
   function onSlotDblClick(slotCrew)
@@ -608,47 +601,47 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let steps = [
       {
         obj = ["crew_cur_points_block"]
-        text = loc("tutorials/upg_crew/total_skill_points")
+        text = ::loc("tutorials/upg_crew/total_skill_points")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
       },
       {
         obj = [["crew_pages_list", "driver_available"]]
-        text = loc("tutorials/upg_crew/skill_groups")
+        text = ::loc("tutorials/upg_crew/skill_groups")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
       },
       {
         obj = [getObj("skill_row0").findObject("incCost"), "skill_row0"]
-        text = loc("tutorials/upg_crew/take_skill_points")
+        text = ::loc("tutorials/upg_crew/take_skill_points")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
       },
       {
         obj = [getObj("skill_row0").findObject("buttonInc"), "skill_row0"]
-        text = loc("tutorials/upg_crew/inc_skills")
+        text = ::loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = Callback(@() onButtonInc(getObj("skill_row0").findObject("buttonInc")), this)
+        cb = ::Callback(@() onButtonInc(getObj("skill_row0").findObject("buttonInc")), this)
       },
       {
         obj = [getObj("skill_row1").findObject("buttonInc"), "skill_row1"]
-        text = loc("tutorials/upg_crew/inc_skills")
+        text = ::loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = Callback(@() onButtonInc(getObj("skill_row1").findObject("buttonInc")), this)
+        cb = ::Callback(@() onButtonInc(getObj("skill_row1").findObject("buttonInc")), this)
       },
       {
         obj = ["btn_apply"]
-        text = loc("tutorials/upg_crew/apply_upgr_skills")
+        text = ::loc("tutorials/upg_crew/apply_upgr_skills")
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = Callback(function() {
+        cb = ::Callback(function() {
           afterApplyAction = canUpgradeCrewSpec(crew) ? onUpgrCrewSpec1Tutorial
             : onUpgrCrewTutorFinalStep
           onApply() }, this)
@@ -675,7 +668,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onUpgrCrewSpec1Tutorial()
   {
     let tblObj = scene.findObject("skills_table")
-    if (!checkObj(tblObj))
+    if (!::check_obj(tblObj))
       return
 
     local skillRowObj = null
@@ -684,11 +677,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     for(local i = 0; i < tblObj.childrenCount(); i++)
     {
       skillRowObj = tblObj.findObject("skill_row" + i)
-      if (!checkObj(skillRowObj))
+      if (!::check_obj(skillRowObj))
         continue
 
       btnSpecObj = skillRowObj.findObject("btn_spec1")
-      if (checkObj(btnSpecObj) && btnSpecObj.isVisible())
+      if (::check_obj(btnSpecObj) && btnSpecObj.isVisible())
         break
 
       btnSpecObj = null
@@ -700,11 +693,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let steps = [
       {
         obj = [btnSpecObj, skillRowObj]
-        text = loc("tutorials/upg_crew/spec1")
+        text = ::loc("tutorials/upg_crew/spec1")
         actionType = tutorAction.ANY_CLICK
         nextActionShortcut = "help/NEXT_ACTION"
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = Callback(onUpgrCrewSpec1ConfirmTutorial, this)
+        cb = ::Callback(onUpgrCrewSpec1ConfirmTutorial, this)
       }
     ]
     ::gui_modal_tutor(steps, this)
@@ -733,7 +726,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let steps = [
       {
         obj = [[specMsgBox.findObject("buttons_holder"), specMsgBox.findObject("msgText")]]
-        text = loc("tutorials/upg_crew/confirm_spec1")
+        text = ::loc("tutorials/upg_crew/confirm_spec1")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -748,7 +741,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     let steps = [
       {
-        text = loc("tutorials/upg_crew/final_massage")
+        text = ::loc("tutorials/upg_crew/final_massage")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
@@ -760,7 +753,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onEventCrewSkillsChanged(params)
   {
     crew = getSlotCrew()
-    initMainParams(!getTblValue("isOnlyPointsChanged", params, false))
+    initMainParams(!::getTblValue("isOnlyPointsChanged", params, false))
   }
 
   /** Triggered from CrewUnitSpecHandler. */

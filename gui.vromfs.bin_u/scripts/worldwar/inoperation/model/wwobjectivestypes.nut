@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -59,7 +52,7 @@ let time = require("%scripts/time.nut")
   {
     let additionalTextLocId = dataBlk?.additionalDescriptionTextLocId
     let descList = [
-      additionalTextLocId ? loc(additionalTextLocId, "") : "",
+      additionalTextLocId ? ::loc(additionalTextLocId, "") : "",
       getLocText(dataBlk, side, prefixNameLocId, "/desc", "", getTitleLocId(dataBlk, statusBlk))
     ]
 
@@ -74,19 +67,19 @@ let time = require("%scripts/time.nut")
   getLocText = function(blk, side, prefix = "", postfix = "", spec = "", name = "", params = null)
   {
     if (name != "" && name == currentStateParam)
-      return loc("wwar_obj/params/currentState/name")
-    local locText = loc(prefix + name + postfix, "", params)
+      return ::loc("wwar_obj/params/currentState/name")
+    local locText = ::loc(prefix + name + postfix, "", params)
     if (blk?.type == null)
       return locText
 
     if (locText == "")
-      locText = loc(prefix + blk.type + "/" + name + postfix, "", params)
+      locText = ::loc(prefix + blk.type + "/" + name + postfix, "", params)
     if (locText == "")
-      locText = loc(prefix + blk.type + "/" + getActionString(blk, side) + postfix, "", params)
+      locText = ::loc(prefix + blk.type + "/" + getActionString(blk, side) + postfix, "", params)
     if (locText == "")
-      locText = loc(prefix + blk.type + "/" + getActionString(blk, side) + "/" + name + postfix + spec, "", params)
+      locText = ::loc(prefix + blk.type + "/" + getActionString(blk, side) + "/" + name + postfix + spec, "", params)
     if (locText == "")
-      locText = loc(prefix + blk.type + postfix, "", params)
+      locText = ::loc(prefix + blk.type + postfix, "", params)
     return locText
   }
   getTitleLocId = function(dataBlk, statusBlk) { return dataBlk?.id }
@@ -123,7 +116,7 @@ let time = require("%scripts/time.nut")
     unitCount = @(value, blk)
       value + ::g_ww_unit_type.getUnitTypeByTextCode(blk?.unitType).fontIcon
     advantage = @(value, blk)
-      loc("wwar_obj/params/advantage/value", {advantageFactor = ::round(value, 2)})
+      ::loc("wwar_obj/params/advantage/value", {advantageFactor = ::round(value, 2)})
   }
 
   isParamVisible = {
@@ -133,7 +126,7 @@ let time = require("%scripts/time.nut")
   colorize = {
     holdTimeSec = "warning"
   }
-  getColorizeByParam = function(param) { return getTblValue(param, colorize) }
+  getColorizeByParam = function(param) { return ::getTblValue(param, colorize) }
 
   getValueByParam = function(param, blk, side = null, useConverter = true) {
     local value = blk?[param]
@@ -164,7 +157,7 @@ let time = require("%scripts/time.nut")
   {
     local statusCode = -1
     if (sideValue)
-      statusCode = sideValue == side? MISSION_OBJECTIVE_STATUS_COMPLETED : MISSION_OBJECTIVE_STATUS_FAILED
+      statusCode = sideValue == side? ::MISSION_OBJECTIVE_STATUS_COMPLETED : ::MISSION_OBJECTIVE_STATUS_FAILED
     return ::g_objective_status.getObjectiveStatusByCode(statusCode)
   }
 
@@ -179,7 +172,7 @@ let time = require("%scripts/time.nut")
       return []
 
     side = invertUpdateValue ?
-      ::ww_side_val_to_name(::g_world_war.getOppositeSide(::ww_side_name_to_val(side))) :
+      ::ww_side_val_to_name(::g_world_war.getOppositeSide(ww_side_name_to_val(side))) :
       side
 
     let res = []
@@ -222,7 +215,7 @@ let time = require("%scripts/time.nut")
   timerUpdateFunctionTables = {
     timeSecScaled = function(nestObj, dataBlk, statusBlk, t, updateParam, side)
     {
-      if (!checkObj(nestObj))
+      if (!::checkObj(nestObj))
         return true
 
       let sideName = ::ww_side_val_to_name(side)
@@ -234,7 +227,7 @@ let time = require("%scripts/time.nut")
     zones = function(nestObj, dataBlk, statusBlk, t, zoneName)
     {
       let valueObj = nestObj.findObject("pValue")
-      if (!checkObj(valueObj))
+      if (!::checkObj(valueObj))
         return true
 
       let captureTimeSec = ::ww_get_zone_capture_time_sec(zoneName)
@@ -250,7 +243,7 @@ let time = require("%scripts/time.nut")
   {
     let t = this
     let obj = scene.findObject(objId)
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return []
 
     let setVisibleFunc = ::g_ww_objective_type.getTimerSetVisibleFunctionTableByParam(t, timerParam)
@@ -259,7 +252,7 @@ let time = require("%scripts/time.nut")
       return []
 
     let updateFunc = ::g_ww_objective_type.getTimerUpdateFuncByParam(t, timerParam)
-    let update = Callback(function(nestObj, dataBlk) {
+    let update = ::Callback(function(nestObj, dataBlk) {
       return updateFunc(nestObj, dataBlk, statusBlk, t, updateParam, side)
     }, handler)
 
@@ -306,7 +299,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
       holdTimeSec = function(nestObj, dataBlk, statusBlk, t, updateParam, side)
       {
         let pValueObj = nestObj.findObject("pValue")
-        if (!checkObj(pValueObj))
+        if (!::checkObj(pValueObj))
           return
 
         let zonesArray = split_by_chars(dataBlk.zone, ";")
@@ -331,7 +324,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     timerSetVisibleFunctionTable = {
       holdTimeSec = function(nestObj, dataBlk, statusBlk, t, side)
       {
-        if (!checkObj(nestObj))
+        if (!::checkObj(nestObj))
           return false
 
         local show = false
@@ -379,7 +372,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         {
           local teamName = "none"
           local mapLayer = WW_MAP_HIGHLIGHT.LAYER_0
-          if (holderSide != ::ww_side_val_to_name(SIDE_NONE))
+          if (holderSide != ::ww_side_val_to_name(::SIDE_NONE))
           {
             teamName = side == holderSide ? "blue" : "red"
             mapLayer = side == holderSide ? WW_MAP_HIGHLIGHT.LAYER_1 : WW_MAP_HIGHLIGHT.LAYER_2
@@ -416,10 +409,10 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
       if (speedupPerc <= 0)
         return ""
 
-      local speedupText = loc("worldwar/valueWithPercent", {percent = speedupPerc})
-      speedupText = colorize("goodTextColor", loc("keysPlus") + speedupText)
-      speedupText = loc("worldWar/iconReinforcement") + speedupText
-      return loc("ui/parentheses", {text = speedupText})
+      local speedupText = ::loc("worldwar/valueWithPercent", {percent = speedupPerc})
+      speedupText = ::colorize("goodTextColor", ::loc("keysPlus") + speedupText)
+      speedupText = ::loc("worldWar/iconReinforcement") + speedupText
+      return ::loc("ui/parentheses", {text = speedupText})
     }
 
     getReinforcementSpeedupPercent = function(dataBlk, statusBlk, side)
@@ -441,7 +434,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
       return zonesNeeded < zonesCount ? "/approximate" : "/accurate"
     }
 
-    getUpdatableParamsDescriptionTooltip = @(...) loc("worldwar/state/reinforcement_arrival_speedup")
+    getUpdatableParamsDescriptionTooltip = @(...) ::loc("worldwar/state/reinforcement_arrival_speedup")
   }
 
   OT_DOMINATION_ZONE = {
@@ -478,7 +471,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     timerSetVisibleFunctionTable = {
       timeSec = function(nestObj, dataBlk, statusBlk, t, side)
       {
-        if (!checkObj(nestObj))
+        if (!::checkObj(nestObj))
           return false
 
         let attackerSide = ::g_world_war.getOppositeSide(::ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
@@ -516,7 +509,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     getName = function(dataBlk, statusBlk, side)
     {
       let isMeLost = side != ::ww_side_val_to_name(::ww_get_operation_winner())
-      return loc(isMeLost
+      return ::loc(isMeLost
         ? "worldwar/objectives/myTechnicalDefeat"
         : "worldwar/objectives/enemyTechnicalDefeat")
     }
@@ -524,12 +517,12 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
 }, null, "typeName")
 
-::g_ww_objective_type.getTypeByTypeName <- function getTypeByTypeName(typeName)
+g_ww_objective_type.getTypeByTypeName <- function getTypeByTypeName(typeName)
 {
   return enums.getCachedType("typeName", typeName, ::g_ww_objective_type.cache.byTypeName, ::g_ww_objective_type, ::g_ww_objective_type.UNKNOWN)
 }
 
-::g_ww_objective_type.getTimerUpdateFuncByParam <- function getTimerUpdateFuncByParam(t, param)
+g_ww_objective_type.getTimerUpdateFuncByParam <- function getTimerUpdateFuncByParam(t, param)
 {
   if (param in t.timerUpdateFunctionTables)
     return t.timerUpdateFunctionTables[param]
@@ -537,7 +530,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
   return function(...){}
 }
 
-::g_ww_objective_type.getTimerSetVisibleFunctionTableByParam <- function getTimerSetVisibleFunctionTableByParam(t, param)
+g_ww_objective_type.getTimerSetVisibleFunctionTableByParam <- function getTimerSetVisibleFunctionTableByParam(t, param)
 {
   if (param in t.timerSetVisibleFunctionTable)
     return t.timerSetVisibleFunctionTable[param]

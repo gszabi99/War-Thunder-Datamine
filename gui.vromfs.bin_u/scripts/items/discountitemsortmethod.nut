@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 let discountPostfixArray = ["_premium", ""]

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 
 let function getDecorLockStatusText(decorator, unit) {
@@ -30,7 +25,7 @@ let function getDecorButtonView(decorator, unit, params = null) {
   let lockCountryImg = ::get_country_flag_img($"decal_locked_{::getUnitCountry(unit)}")
   let unitLocked = decorator.getUnitTypeLockIcon()
   let cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
-    : decorator.canBuyCouponOnMarketplace(unit) ? colorize("warningTextColor", loc("currency/gc/sign"))
+    : decorator.canBuyCouponOnMarketplace(unit) ? ::colorize("warningTextColor", ::loc("currency/gc/sign"))
     : null
   let statusLock = !isTrophyContent ? getDecorLockStatusText(decorator, unit)
     : (isUnlocked || cost != null) ? null

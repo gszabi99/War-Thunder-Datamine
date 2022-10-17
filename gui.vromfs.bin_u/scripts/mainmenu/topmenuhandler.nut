@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let time = require("%scripts/time.nut")
 let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -90,7 +81,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   function initTopMenuTimer()
   {
     let obj = getObj("top_menu_scene_timer")
-    if (checkObj(obj))
+    if (::checkObj(obj))
       obj.setUserData(this)
   }
 
@@ -103,7 +94,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     checkAdvert()
 
-    let hasResearch = getTblValue("hasTopMenuResearch", handler, true)
+    let hasResearch = ::getTblValue("hasTopMenuResearch", handler, true)
     this.showSceneBtn("topmenu_btn_shop_wnd", hasResearch)
     if (!hasResearch)
       closeShop()
@@ -132,9 +123,9 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function checkAdvert()
   {
-    if (!::is_news_adver_actual())
+    if (!is_news_adver_actual())
     {
-      let t = ::req_news()
+      let t = req_news()
       if (t >= 0)
         return ::add_bg_task_cb(t, updateAdvert, this)
     }
@@ -144,12 +135,12 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   function updateAdvert()
   {
     let obj = scene.findObject("topmenu_advert")
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let blk = ::DataBlock()
     ::get_news_blk(blk)
-    let text = loc(blk?.advert ?? "", "")
+    let text = ::loc(blk?.advert ?? "", "")
     SecondsUpdater(obj, function(tObj, params)
     {
       let stopUpdate = text.indexof("{time_countdown=") == null
@@ -182,11 +173,11 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   function updateSceneShade()
   {
     local obj = getObj("topmenu_backshade_dark")
-    if (checkObj(obj))
+    if (::check_obj(obj))
       obj.animation = isInQueue ? "show" : "hide"
 
     obj = getObj("topmenu_backshade_light")
-    if (checkObj(obj))
+    if (::check_obj(obj))
       obj.animation = !isInQueue && topMenuShopActive.value ? "show" : "hide"
   }
 
@@ -239,7 +230,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
     if(showButton)
       guiScene.playSound("menu_appear")
-    if(checkObj(closeResearch))
+    if(::checkObj(closeResearch))
       closeResearch.show(showButton)
     activateShopImpl(topMenuShopActive.value, unitType)
     if (shopWeak && shopWeak.getCurrentEdiff() != ::get_current_ediff())
@@ -260,11 +251,11 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     if (topMenuShopActive.value)
     {
       let shopMove = getObj("shop_wnd_move")
-      if (!checkObj(shopMove))
+      if (!::checkObj(shopMove))
         return
 
       let closeResearch = getObj("research_closeButton")
-      if(checkObj(closeResearch))
+      if(::checkObj(closeResearch))
         closeResearch.show(true)
 
       shopMove.moveOut = "yes"
@@ -327,7 +318,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
         let shopHandler = ::handlersManager.loadHandler(::gui_handlers.ShopMenuHandler,
           {
             scene = wndObj
-            closeShop = Callback(shopWndSwitch, this)
+            closeShop = ::Callback(shopWndSwitch, this)
             forceUnitType =unitType
           })
         if (shopHandler)
@@ -340,7 +331,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
         shopWeak.setUnitType(unitType)
     }
 
-    ::enableHangarControls(!shouldActivate)
+    enableHangarControls(!shouldActivate)
   }
 
   function goBack()
@@ -400,7 +391,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       shopWeak.onSceneActivate(show)
     if (show) {
       setShowUnit(getCurSlotUnit(), getHangarFallbackUnitParams())
-      ::enableHangarControls(!topMenuShopActive.value)
+      enableHangarControls(!topMenuShopActive.value)
     }
   }
 

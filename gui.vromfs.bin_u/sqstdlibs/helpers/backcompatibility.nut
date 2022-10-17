@@ -1,6 +1,3 @@
-#no-root-fallback
-#explicit-this
-
 /**
  * This provides ability to keep scripts back compatible with older version of client.
  *

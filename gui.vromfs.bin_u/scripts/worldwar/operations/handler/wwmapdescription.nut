@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 //show info about WwMap, WwOperation or WwOperationgroup
 ::gui_handlers.WwMapDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -90,14 +81,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateName()
   {
     let nameObj = scene.findObject("item_name")
-    if (checkObj(nameObj))
+    if (::checkObj(nameObj))
       nameObj.setValue(descItem.getNameText())
   }
 
   function updateDescription()
   {
     let desctObj = scene.findObject("item_desc")
-    if (checkObj(desctObj))
+    if (::checkObj(desctObj))
       desctObj.setValue(descItem.getDescription())
   }
 
@@ -115,7 +106,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateCountriesList()
   {
     let obj = scene.findObject("div_before_text")
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let cuntriesByTeams = descItem.getCountriesByTeams()
@@ -124,7 +115,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       sides.append(mapCountriesToView(cuntriesByTeams?[side] ?? []))
     let view = {
       sides = sides
-      vsText = loc("country/VS") + "\n "
+      vsText = ::loc("country/VS") + "\n "
     }
 
     let data = ::handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo", view)
@@ -135,7 +126,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateTotalClansText()
   {
     let obj = scene.findObject("total_members_text")
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     obj.setValue(descItem.getClansNumberInQueueText())
@@ -144,7 +135,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateAvailableText()
   {
     let obj = scene.findObject("available_text")
-    if (!checkObj(obj) || !descItem)
+    if (!::check_obj(obj) || !descItem)
       return
 
     obj.setValue(descItem.getMapChangeStateTimeText())

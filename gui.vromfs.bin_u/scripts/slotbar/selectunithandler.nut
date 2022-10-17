@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 
 global enum SEL_UNIT_BUTTON {
@@ -45,7 +36,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
 
   let slotbarObj = slotbar.scene
   let slotObj = ::get_slot_obj(slotbarObj, crew.idCountry, crew.idInCountry)
-  if (!checkObj(slotObj))
+  if (!::check_obj(slotObj))
     return null
 
   let isSelectByGroups = slotbar?.unitsGroupsByCountry != null
@@ -171,7 +162,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function reinitScreen(params = {})
   {
-    if (checkObj(curClonObj))
+    if (::check_obj(curClonObj))
       curClonObj.getScene().destroyElement(curClonObj)
     setParams(params)
     initScreen()
@@ -183,7 +174,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     legendData.clear()
     foreach (specType in ::g_crew_spec_type.types)
       if (specType != ::g_crew_spec_type.UNKNOWN)
-        addLegendData(specType.specName, specType.trainedIcon, loc("crew/trained") + loc("ui/colon") + specType.getName())
+        addLegendData(specType.specName, specType.trainedIcon, ::loc("crew/trained") + ::loc("ui/colon") + specType.getName())
     addLegendData("warningIcon", "#ui/gameuiskin#new_icon.svg", "#mainmenu/selectCrew/haveMoreQualified/tooltip")
   }
 
@@ -195,7 +186,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     let legendView = {
-      header = loc("mainmenu/legend")
+      header = ::loc("mainmenu/legend")
       haveLegend = legendData.len() > 0,
       legendData = legendData
     }
@@ -223,7 +214,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
   function sortUnitsList(units)
   {
     let ediff = getCurrentEdiff()
-    let trained = getTblValue("trainedSpec", crew, {})
+    let trained = ::getTblValue("trainedSpec", crew, {})
     let getSortSpecialization = @(unit) unit.name in trained ? trained[unit.name]
                                           : unit.trainCost ? -1
                                           : 0
@@ -333,8 +324,8 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
           unit = unit,
           unitObj = scene.findObject(unit.name),
           takeCrewIdInCountry = crew.idInCountry,
-          messageText = loc("mainmenu/selectCrew/haveMoreQualified"),
-          afterSuccessFunc = Callback(goBack, this)
+          messageText = ::loc("mainmenu/selectCrew/haveMoreQualified"),
+          afterSuccessFunc = ::Callback(goBack, this)
           isSelectByGroups = isSelectByGroups
         })
 
@@ -353,7 +344,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function trainSlotAircraft(unit)
   {
-    let onFinishCb = Callback(onTakeProcessFinish, this)
+    let onFinishCb = ::Callback(onTakeProcessFinish, this)
     if (isSelectByGroups)
       setUnit({
         crew = crew
@@ -396,12 +387,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
   function fillChooseUnitsOptions()
   {
     let locParams = {
-      gameModeName = colorize("hotkeyColor", getGameModeNameFromParams(config))
-      customListName = colorize("hotkeyColor", getCustomListNameFromParams(config))
+      gameModeName = ::colorize("hotkeyColor", getGameModeNameFromParams(config))
+      customListName = ::colorize("hotkeyColor", getCustomListNameFromParams(config))
     }
 
     let objOptionsNest = scene.findObject("choose_options_nest")
-    if ( !checkObj(objOptionsNest) )
+    if ( !::checkObj(objOptionsNest) )
       return
 
     isEmptyOptionsList = true
@@ -409,7 +400,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     foreach (idx, userOpt in filterOptionsList)
     {
       let maskOption = ::get_option(userOpt)
-      let singleOption = getTblValue("singleOption", maskOption, false)
+      let singleOption = ::getTblValue("singleOption", maskOption, false)
       if (singleOption)
       {
         // All bits but first are set to 1.
@@ -422,9 +413,9 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
         maskOption.value = maskStorage
         ::set_option(userOpt, maskOption.value)
       }
-      let hideTitle = getTblValue("hideTitle", maskOption, false)
+      let hideTitle = ::getTblValue("hideTitle", maskOption, false)
       let row = {
-        option_title = hideTitle ? "" : loc( maskOption.hint )
+        option_title = hideTitle ? "" : ::loc( maskOption.hint )
         option_id = maskOption.id
         option_idx = idx
         option_uid = userOpt
@@ -442,7 +433,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
         local name = text
         if (::g_string.startsWith(name, "#"))
           name = name.slice(1)
-        name = loc(name, locParams)
+        name = ::loc(name, locParams)
         row.nums.append({
           option_name = name,
           visible = optionVisible && (!singleOption || idxItem == 0)
@@ -461,7 +452,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     this.showSceneBtn("choose_options_header", !isEmptyOptionsList)
     this.showSceneBtn("filtered_units_text", !isEmptyOptionsList)
     let objChoosePopupMenu = scene.findObject("choose_popup_menu")
-    if ( !checkObj(objChoosePopupMenu) )
+    if ( !::checkObj(objChoosePopupMenu) )
       return
 
     guiScene.setUpdatesEnabled(true, true)
@@ -486,7 +477,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::SessionLobby.isInRoom())
       return ::SessionLobby.getMissionNameLoc()
 
-    return getTblValue("text", ::game_mode_manager.getCurrentGameMode(), "")
+    return ::getTblValue("text", ::game_mode_manager.getCurrentGameMode(), "")
   }
 
   function getCustomListNameFromParams(params)
@@ -531,7 +522,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     let customOption = ::get_option(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST)
 
     let customOptionObj = scene.findObject(customOption.id)
-    if (!checkObj(customOptionObj))
+    if (!::check_obj(customOptionObj))
       return
 
     let isModeOptionChecked = modeOption.value & 1
@@ -554,7 +545,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     let isTrained = (unit.name in crew?.trainedSpec) || unit.trainCost == 0
     let isEnabled = ::is_unit_enabled_for_slotbar(unit, config)
-    let canShowCrewSpec = hasFeature("CrewInfo")
+    let canShowCrewSpec = ::has_feature("CrewInfo")
     let isLockedUnit = isSelectByGroups && !canAssignInSlot(unit, config.unitsGroupsByCountry, country)
 
     let unitItemParams = {
@@ -563,7 +554,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
         : isTrained ? "mounted"
         : "canBuy"
       showWarningIcon = !isSelectByGroups && canShowCrewSpec && haveMoreQualifiedCrew(unit)
-      showBR = hasFeature("SlotbarShowBattleRating")
+      showBR = ::has_feature("SlotbarShowBattleRating")
       getEdiffFunc = getCurrentEdiff.bindenv(this)
       fullBlock = false
       isLocalState = !isSelectByGroups
@@ -586,7 +577,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateUnitsList()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     guiScene.setUpdatesEnabled(false, false)
@@ -598,7 +589,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     let total = tblObj.childrenCount()
     let lenghtOptions = optionMasks.len()
     local selected = 0
-    let crewUnitId = getTblValue("aircraft", crew, "")
+    let crewUnitId = ::getTblValue("aircraft", crew, "")
 
     local visibleAmount = 0
     let isFirstPage = curVisibleSlots == firstPageSlots
@@ -654,9 +645,9 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!isEmptyOptionsList)
       scene.findObject("filtered_units_text").setValue(
-        loc("mainmenu/filteredUnits", {
+        ::loc("mainmenu/filteredUnits", {
           total = unitsArray.len()
-          filtered = colorize("activeTextColor", visibleAmount)
+          filtered = ::colorize("activeTextColor", visibleAmount)
         }))
 
     guiScene.setUpdatesEnabled(true, true)
@@ -702,11 +693,11 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isVisibleGroupText)
       return
 
-    let textArray = [loc("mainmenu/onlyShownUnitsByGroup", {
-      groupName = loc(getSelectedGroup()?.name ?? "")
+    let textArray = [::loc("mainmenu/onlyShownUnitsByGroup", {
+      groupName = ::loc(getSelectedGroup()?.name ?? "")
     })]
     if (::u.isUnit(unit) && !canAssignInSlot(unit, config.unitsGroupsByCountry, country))
-      textArray.append(colorize("red", loc("worldwar/help/slotbar/unit_unavailable")))
+      textArray.append(::colorize("red", ::loc("worldwar/help/slotbar/unit_unavailable")))
 
     unitsGroupTextObj.setValue("\n".join(textArray, true))
   }

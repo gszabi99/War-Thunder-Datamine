@@ -6,18 +6,18 @@ require strings
 
 def get_first_template_names(count : int)
   var templateNames : array<string>
-  find_templateDB() <| $ [unused_argument(tmpl)] (name; tmpl)
+  get_templateDB() <| $ [unused_argument(tmpl)] (name; tmpl)
     templateNames |> push(clone_string(name))
-    return length(templateNames) >= count
+    return length(templateNames) < count
   return <- templateNames
 
 
 def find_template_names(str : string)
   var templateNames : array<string>
-  find_templateDB() <| $ [unused_argument(tmpl)] (name; tmpl)
+  get_templateDB() <| $ [unused_argument(tmpl)] (name; tmpl)
     if find(name, str) != -1
       templateNames |> push(clone_string(name))
-    return false
+    return true
   return <- templateNames
 
 

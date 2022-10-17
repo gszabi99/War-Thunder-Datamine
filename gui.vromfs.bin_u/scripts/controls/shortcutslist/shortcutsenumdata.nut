@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 let template = {
@@ -36,7 +31,7 @@ let function definitionFunc(shArray, shEnum)
     }
 
     if (sh.id in shEnum)
-      assert(false, "Shortcuts: Found duplicate " + sh.id)
+      ::dagor.assertf(false, "Shortcuts: Found duplicate " + sh.id)
 
     enums.addTypes(shEnum, {[sh.id] = sh}, function() {
         if (this.reqInMouseAim == null)

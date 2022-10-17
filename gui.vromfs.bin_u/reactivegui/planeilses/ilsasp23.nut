@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {Speed, Altitude, ClimbSpeed, Roll, Accel} = require("%rGui/planeState/planeFlyState.nut");
 let {IlsColor,  BombingMode, TargetPosValid, TargetPos, CannonMode,
         DistToSafety,  DistToTarget, BombCCIPMode, RocketMode,

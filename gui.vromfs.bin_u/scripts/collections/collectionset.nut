@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 
 local CollectionsSet = class {
@@ -38,8 +31,8 @@ local CollectionsSet = class {
 
   getDecoratorObjId = @(collectionIdx, decoratorId) $"{collectionIdx};{decoratorId}"
   isValid           = @() collectionItems.len() > 0 && prize != null
-  isVisible         = @() reqFeature == null || hasFeature(reqFeature)
-  getLocName        = @() loc(locId)
+  isVisible         = @() reqFeature == null || ::has_feature(reqFeature)
+  getLocName        = @() ::loc(locId)
   _tostring         = @() $"CollectionSet {id} (collectionItemsAmount = {collectionItems.len()})"
 
   function getView(countItemsInRow, collectionTopPos, collectionHeight, collectionNum) {
@@ -94,7 +87,7 @@ local CollectionsSet = class {
 
     return {
       items = itemsView
-      title = loc(locId)
+      title = ::loc(locId)
       titlePos = $"1@blockInterval, 1@blockInterval + {collectionTopPos}"
     }
   }

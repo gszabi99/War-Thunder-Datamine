@@ -1,30 +1,28 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let fontsState = require("%rGui/style/fontsState.nut")
 let colors = require("%rGui/style/colors.nut")
 
 let shortcutsParamsByPlace = @() {
-  defaultP = { shortcutAxis = [shHud(6), shHud(6)]
-    gamepadButtonSize = [shHud(4), shHud(4)]
-    keyboardButtonSize = [SIZE_TO_CONTENT, shHud(4)]
-    keyboardButtonMinWidth = shHud(4)
-    keyboardButtonPad = [0, hdpx(13)]
+  defaultP = { shortcutAxis = [::shHud(6), ::shHud(6)]
+    gamepadButtonSize = [::shHud(4), ::shHud(4)]
+    keyboardButtonSize = [SIZE_TO_CONTENT, ::shHud(4)]
+    keyboardButtonMinWidth = ::shHud(4)
+    keyboardButtonPad = [0, ::hdpx(13)]
     keyboardButtonTextFont = Fonts.medium_text_hud
-    combinationGap = shHud(1)
+    combinationGap = ::shHud(1)
   }
-  chatHint = { shortcutAxis = [fpx(30), fpx(30)]
-    gamepadButtonSize = [fpx(30), fpx(30)]
-    keyboardButtonSize = [SIZE_TO_CONTENT, fpx(22)]
-    keyboardButtonMinWidth = fpx(22)
-    keyboardButtonPad = [0, hdpx(6)]
+  chatHint = { shortcutAxis = [::fpx(30), ::fpx(30)]
+    gamepadButtonSize = [::fpx(30), ::fpx(30)]
+    keyboardButtonSize = [SIZE_TO_CONTENT, ::fpx(22)]
+    keyboardButtonMinWidth = ::fpx(22)
+    keyboardButtonPad = [0, ::hdpx(6)]
     keyboardButtonTextFont = fontsState.get("tiny")
-    combinationGap = fpx(6)
+    combinationGap = ::fpx(6)
   }
-  actionItem = { shortcutAxis = [shHud(3), shHud(3)]
-    gamepadButtonSize = [shHud(3), shHud(3)]
-    keyboardButtonSize = [SIZE_TO_CONTENT, shHud(2)]
-    keyboardButtonMinWidth = shHud(2)
-    keyboardButtonPad = [0, hdpx(5)]
+  actionItem = { shortcutAxis = [::shHud(3), ::shHud(3)]
+    gamepadButtonSize = [::shHud(3), ::shHud(3)]
+    keyboardButtonSize = [SIZE_TO_CONTENT, ::shHud(2)]
+    keyboardButtonMinWidth = ::shHud(2)
+    keyboardButtonPad = [0, ::hdpx(5)]
     keyboardButtonTextFont = Fonts.very_tiny_text_hud
     combinationGap = 0
   }
@@ -71,8 +69,8 @@ let function arrowImg(direction, _override) {
   let img = direction == 0 ? "ui/gameuiskin#cursor_size_hor.svg" : "ui/gameuiskin#cursor_size_vert.svg"
   return {
     rendObj = ROBJ_IMAGE
-    size = [fpx(30), fpx(30)]
-    image = Picture($"!{img}")
+    size = [::fpx(30), ::fpx(30)]
+    image = ::Picture($"!{img}")
     color = colors.white
   }
 }

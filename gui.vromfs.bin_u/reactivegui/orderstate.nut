@@ -1,7 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let {interop} = require("%rGui/globals/interop.nut")
-
 let state = persist("orderState", @() {
   statusText = Watched("")
   statusTextBottom = Watched("")
@@ -9,7 +5,7 @@ let state = persist("orderState", @() {
   scoresTable = Watched([])
 })
 
-interop.orderStateUpdate <- function (params) {
+::interop.orderStateUpdate <- function (params) {
     state.statusText(params.statusText)
     state.statusTextBottom(params.statusTextBottom)
     state.showOrder(params.showOrder)

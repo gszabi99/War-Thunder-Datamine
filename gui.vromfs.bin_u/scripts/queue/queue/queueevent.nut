@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base
 {
@@ -18,7 +10,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
 
   function init()
   {
-    name = getTblValue("mode", params, "")
+    name = ::getTblValue("mode", params, "")
     shouldQueueCustomMode = getShouldQueueCustomMode(name)
 
     params.clusters <- clone (params?.clusters ?? [])
@@ -34,7 +26,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
 
     let cluster = qParams.cluster
     local isClusterAdded = false
-    if (!isInArray(cluster, params.clusters))
+    if (!::isInArray(cluster, params.clusters))
     {
       params.clusters.append(cluster)
       isClusterAdded = true
@@ -46,7 +38,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
 
   function removeQueueByParams(leaveData)
   {
-    let queueUid = getTblValue("queueId", leaveData)
+    let queueUid = ::getTblValue("queueId", leaveData)
     if (queueUid == null || (queueUid in queueUidsList && queueUidsList.len() == 1)) //leave all queues
     {
       clearAllQueues()
@@ -95,7 +87,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
 
   static function hasCustomModeByEventName(eventName)
   {
-    return hasFeature("QueueCustomEventRoom") && !!::queue_classes.Event.getCustomMgm(eventName)
+    return ::has_feature("QueueCustomEventRoom") && !!::queue_classes.Event.getCustomMgm(eventName)
   }
 
   static function hasOptions(eventName)
@@ -117,8 +109,8 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
 
   function join(successCallback, errorCallback)
   {
-    log("enqueue into event session")
-    debugTableData(params)
+    ::dagor.debug("enqueue into event session")
+    ::debugTableData(params)
     _joinQueueImpl(getQueryParams(true), successCallback, errorCallback)
   }
 
@@ -197,9 +189,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
         fakeName = !::get_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY).value
       }
     }
-    if (queueProfileJwt.value != null)
-      qp.players[::my_user_id_str].profileJwt <- queueProfileJwt.value
-    let members = getTblValue("members", params)
+    let members = ::getTblValue("members", params)
     if (members)
       foreach(uid, m in members)
       {
@@ -211,8 +201,6 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
         }
         if ("slots" in m)
           qp.players[uid].slots <- m.slots
-        if ((m?.queueProfileJwt ?? "") != "")
-          qp.players[uid].profileJwt <- m.queueProfileJwt
       }
     qp.jip <- ::get_option_in_mode(::USEROPT_QUEUE_JIP, ::OPTIONS_MODE_GAMEPLAY).value
     qp.auto_squad <- ::get_option_in_mode(::USEROPT_AUTO_SQUAD, ::OPTIONS_MODE_GAMEPLAY).value
@@ -229,7 +217,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
   {
     return {
       cluster = qParams.cluster
-      gameModeId = getTblValue("gameModeId", qParams, -1)
+      gameModeId = ::getTblValue("gameModeId", qParams, -1)
     }
   }
 
@@ -295,15 +283,5 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
 
     if (wasShouldQueue != shouldQueueCustomMode)
       switchCustomMode(shouldQueueCustomMode, true)
-  }
-
-  hasActualQueueData = @() isQueueDataActual.value
-  function actualizeData() {
-    let queue = this
-    actualizeQueueData(function(jwtData) {
-      if (queue.state != queueStates.ACTUALIZE)
-        return
-      ::queues.joinQueueImpl(queue)
-    })
   }
 }

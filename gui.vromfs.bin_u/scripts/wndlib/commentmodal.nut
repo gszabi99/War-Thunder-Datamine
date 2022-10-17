@@ -1,13 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_modal_comment <- function gui_modal_comment(owner=null, titleText=null, buttonText=null, callbackFunc=null, isCommentRequired=false) {
+::gui_modal_comment <- function gui_modal_comment(owner=null, titleText=null, buttonText=null, callbackFunc=null, isCommentRequired=false)
+{
   ::gui_start_modal_wnd(::gui_handlers.commentModalHandler, {
     titleText = titleText
     buttonText = buttonText

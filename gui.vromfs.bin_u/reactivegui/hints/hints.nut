@@ -1,12 +1,9 @@
-from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-
 let hintTags = require("hintTags.nut")
 
 let hintsCache = {}
 
 let createHintContent = function(text, override) {
-  let config = cross_call.getHintConfig(text)
+  let config = ::cross_call.getHintConfig(text)
 
   return {
     size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]

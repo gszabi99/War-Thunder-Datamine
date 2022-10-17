@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
   const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
   const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -71,9 +64,9 @@ local ClanSquadsList = class
     lastRequestTimeMsec = ::dagor.getCurTime()
 
     let requestClanId = ::clan_get_my_clan_id()
-    let cb = Callback(@(resp) requestListCb(resp, requestClanId), this)
+    let cb = ::Callback(@(resp) requestListCb(resp, requestClanId), this)
 
-    ::matching_api_func("msquad.get_squads", cb, {players = getClanUidsList()})
+    matching_api_func("msquad.get_squads", cb, {players = getClanUidsList()})
     return true
   }
 

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
@@ -44,7 +37,7 @@ enum ORDER
   getActionName = @() ""
   getKeyboardShortcut = @() ::show_console_buttons
     ? ""
-    : loc("ui/parentheses/space", { text = keyboardShortcut})
+    : ::loc("ui/parentheses/space", { text = keyboardShortcut})
   text = @() $"{getActionName()}{getKeyboardShortcut()}"
   isHidden = @() true
   isEnabled = @() !::g_world_war.isCurrentOperationFinished()
@@ -59,11 +52,11 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.MOVE
     text = function () {
       if (::g_ww_map_controls_buttons.selectedObjectCode == mapObjectSelect.AIRFIELD)
-        return loc("worldWar/armyFlyOut")
+        return ::loc("worldWar/armyFlyOut")
       if (::g_ww_map_controls_buttons.selectedObjectCode == mapObjectSelect.REINFORCEMENT)
-        return loc("worldWar/armyDeploy")
+        return ::loc("worldWar/armyDeploy")
 
-      return loc("worldWar/armyMove")
+      return ::loc("worldWar/armyMove")
     }
     isHidden = @() !::show_console_buttons
   }
@@ -74,7 +67,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.ENTRENCH
     keyboardShortcut = "E"
     style = "accessKey:'J:RB | E';"
-    getActionName = @() loc("worldWar/armyEntrench")
+    getActionName = @() ::loc("worldWar/armyEntrench")
     isHidden = function () {
       let armiesNames = ::ww_get_selected_armies_names()
       if (!armiesNames.len())
@@ -108,7 +101,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.STOP
     keyboardShortcut = "S"
     style = "accessKey:'J:Y | S';"
-    getActionName = @() loc("worldWar/armyStop")
+    getActionName = @() ::loc("worldWar/armyStop")
     isHidden = @() ::ww_get_selected_armies_names().len() == 0
   }
 
@@ -119,9 +112,9 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.PREPARE_FIRE
     keyboardShortcut = "A"
     style = "accessKey:'J:LB | A';"
-    getActionName = @() actionModesManager.getCurActionModeId() == AUT_ArtilleryFire
-      ? loc("worldWar/armyCancel")
-      : loc("worldWar/armyFire")
+    getActionName = @() actionModesManager.getCurActionModeId() == ::AUT_ArtilleryFire
+      ? ::loc("worldWar/armyCancel")
+      : ::loc("worldWar/armyFire")
     isHidden = function () {
       let armiesNames = ::ww_get_selected_armies_names()
       if (!armiesNames.len())
@@ -146,10 +139,10 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     keyboardShortcut = "T"
     style = "accessKey:'J:LT | T';"
     getActionName = function() {
-      if (actionModesManager.getCurActionModeId() == AUT_TransportLoad)
-        return loc("worldWar/armyCancel")
+      if (actionModesManager.getCurActionModeId() == ::AUT_TransportLoad)
+        return ::loc("worldWar/armyCancel")
 
-      return loc("worldwar/loadArmyToTransport")
+      return ::loc("worldwar/loadArmyToTransport")
     }
     isHidden = function () {
       let armiesNames = ::ww_get_selected_armies_names()
@@ -186,10 +179,10 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     keyboardShortcut = "R"
     style = "accessKey:'J:R3 | R';"
     getActionName = function() {
-      if (actionModesManager.getCurActionModeId() == AUT_TransportUnload)
-        return loc("worldWar/armyCancel")
+      if (actionModesManager.getCurActionModeId() == ::AUT_TransportUnload)
+        return ::loc("worldWar/armyCancel")
 
-      return loc("worldwar/unloadArmyFromTransport")
+      return ::loc("worldwar/unloadArmyFromTransport")
     }
     isHidden = function () {
       let armiesNames = ::ww_get_selected_armies_names()

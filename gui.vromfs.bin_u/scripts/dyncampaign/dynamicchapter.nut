@@ -1,17 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 ::dynamic_req_country_rank <- 1
 
-::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts() {
+::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts()
+{
   ::handlersManager.loadHandler(::gui_handlers.DynamicLayouts)
 }
 
@@ -22,7 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
 
   wndOptionsMode = ::OPTIONS_MODE_DYNAMIC
-  wndGameMode = GM_DYNAMIC
+  wndGameMode = ::GM_DYNAMIC
 
   descItems = ["name", "maintext"]
   yearsArray = []
@@ -33,7 +25,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     guiScene.replaceContent("mission_desc", "%gui/missionDescr.blk")
     let headerTitle = scene.findObject("chapter_name")
-    headerTitle.setValue(loc("mainmenu/btnDynamic"))
+    headerTitle.setValue(::loc("mainmenu/btnDynamic"))
     ::showBtn("btn_back", false, scene.findObject("nav-help"))
     yearsArray = ::get_option(::USEROPT_YEAR).values
 
@@ -96,7 +88,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       foreach (idx, country in misDescr.countries)
       {
         let countryId = misDescr.id + "_" + country
-        local isCountryUnlocked = ::is_unlocked_scripted(UNLOCKABLE_DYNCAMPAIGN, countryId)
+        local isCountryUnlocked = ::is_unlocked_scripted(::UNLOCKABLE_DYNCAMPAIGN, countryId)
         if (!isCountryUnlocked)
           lockReason += (lockReason.len() ? "\n" : "") + getFullUnlockDescByName(countryId) + "\n"
         else
@@ -105,7 +97,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
           {
             local is_unlocked = false
             let yearId = "country_" + country + "_" + year
-            if (::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId))
+            if (::is_unlocked_scripted(::UNLOCKABLE_YEAR, yearId))
             {
               isAnyYearUnlocked = true
               is_unlocked = true
@@ -190,7 +182,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local isAnyCountryUnlocked = false
     if (missionBlock)
     {
-      config.name <- loc(missionBlock.locName)
+      config.name <- ::loc(missionBlock.locName)
       local reqText = missionBlock.unlockText
       foreach(idx, country in missionBlock.countries)
       {
@@ -202,9 +194,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       }
 
       if(reqText != "")
-        reqText = "<color=@badTextColor>" + loc("dynamic/requireForUnlock") + loc("ui/colon") + "\n" + reqText + "</color>\n"
+        reqText = "<color=@badTextColor>" + ::loc("dynamic/requireForUnlock") + ::loc("ui/colon") + "\n" + reqText + "</color>\n"
 
-      config.maintext <- reqText + loc("dynamic/"+ missionBlock.id + "/desc", "")
+      config.maintext <- reqText + ::loc("dynamic/"+ missionBlock.id + "/desc", "")
       config.canStart <- isAnyCountryUnlocked
     }
     return config
@@ -216,8 +208,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let countryId = missionBlock.id + "_" + country
     if(!(countryId in missionBlock.unlocks.country))
     {
-      assert(false, "Not found unlock " + countryId)
-      debugTableData(missionBlock.countries)
+      ::dagor.assertf(false, "Not found unlock " + countryId)
+      ::debugTableData(missionBlock.countries)
       return false
     }
     return true
@@ -245,7 +237,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function getSelectedMission()
   {
     let list = scene.findObject("items_list")
-    if(checkObj(list))
+    if(::checkObj(list))
       return list.getValue()
     return -1
   }
@@ -301,7 +293,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
           owner.finalApply.call(owner)
 
           if (::mission_settings.dynlist.len() == 0)
-            this.msgBox("no_missions_error", loc("msgbox/appearError"),
+            this.msgBox("no_missions_error", ::loc("msgbox/appearError"),
                    [["ok", goBack ]], "ok", { cancel_fn = goBack});
         }
       })
@@ -339,7 +331,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     settings.setInt("difficulty", desc.value);
 
     ::dynamic_init(settings, map);
-    let dynListBlk = ::DataBlock();
+    let dynListBlk = DataBlock();
     ::mission_settings.dynlist <- ::dynamic_get_list(dynListBlk, false)
 
     local playerCountry = ""
@@ -356,7 +348,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (playerCountry == "")
         playerCountry = misblk.getStr(team == 1 ? "country_allies" : "country_axis","ussr")
     }
-    ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
+    ::add_mission_list_full(::GM_DYNAMIC, add, ::mission_settings.dynlist)
     ::first_generation <- true
 
     goForwardCheckEntitlement(::gui_start_dynamic_summary, {

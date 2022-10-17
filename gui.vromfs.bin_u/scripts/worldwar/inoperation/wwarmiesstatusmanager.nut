@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 ::g_ww_map_armies_status_manager <- {
   UPDATE_REFRESH_DELAY = 1000
 
@@ -12,12 +7,12 @@ from "%scripts/dagui_library.nut" import *
   requestUpdated = false
 }
 
-::g_ww_map_armies_status_manager.requestUpdate <- function requestUpdate()
+g_ww_map_armies_status_manager.requestUpdate <- function requestUpdate()
 {
   requestUpdated = true
 }
 
-::g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesByStatus()
+g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesByStatus()
 {
   if (!requestUpdated)
     return
@@ -34,7 +29,7 @@ from "%scripts/dagui_library.nut" import *
     if (!army.hasManageAccess())
       continue
 
-    let cacheByStatus = getTblValue(army.getActionStatus(), armiesStateCache, null)
+    let cacheByStatus = ::getTblValue(army.getActionStatus(), armiesStateCache, null)
     if (cacheByStatus == null)
       continue
 
@@ -56,12 +51,12 @@ from "%scripts/dagui_library.nut" import *
   ::ww_event("MapArmiesByStatusUpdated")
 }
 
-::g_ww_map_armies_status_manager.getArmiesByStatus <- function getArmiesByStatus(status)
+g_ww_map_armies_status_manager.getArmiesByStatus <- function getArmiesByStatus(status)
 {
-  return getTblValue(status, armiesStateCache, {})
+  return ::getTblValue(status, armiesStateCache, {})
 }
 
-::g_ww_map_armies_status_manager._resetCache <- function _resetCache()
+g_ww_map_armies_status_manager._resetCache <- function _resetCache()
 {
   armiesStateCache = {}
   let statusesByCaching = [

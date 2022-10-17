@@ -1,16 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { is_stereo_mode } = require_native("vr")
+let { is_stereo_mode } = ::require_native("vr")
 let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let { subscribe, send } = require("eventbus")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
@@ -53,11 +47,11 @@ let function update_font_heights(font)
   let fontsSh = getFontsSh(::screen_width(), ::screen_height())
   if (appliedFontsSh == fontsSh && appliedFontsScale == font.sizeMultiplier)
     return font;
-  log("update_font_heights: screenHt={0} fontSzMul={1}".subst(fontsSh, font.sizeMultiplier))
+  ::dagor.debug("update_font_heights: screenHt={0} fontSzMul={1}".subst(fontsSh, font.sizeMultiplier))
   foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
   {
     setFontDefHt(prefixId, ::round(getFontInitialHt(prefixId) * font.sizeMultiplier).tointeger())
-    log("  font <{0}> sz={1}".subst(prefixId, getFontDefHt(prefixId)))
+    ::dagor.debug("  font <{0}> sz={1}".subst(prefixId, getFontDefHt(prefixId)))
   }
   appliedFontsSh = fontsSh
   appliedFontsScale = font.sizeMultiplier
@@ -101,7 +95,7 @@ let function update_font_heights(font)
       pxFontTgtOutdated = this.getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
     if (config.scrnTgt <= 0) {
-      let configStr = toString(config) // warning disable: -declared-never-used
+      let configStr = ::toString(config) // warning disable: -declared-never-used
       ::script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
     }
     foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
@@ -110,8 +104,8 @@ let function update_font_heights(font)
   }
 
   //text visible in options
-  getOptionText = @() loc("fontSize/" + this.id.tolower())
-    + loc("ui/parentheses/space", { text = "{0}%".subst(::round(100 * this.sizeMultiplier).tointeger()) })
+  getOptionText = @() ::loc("fontSize/" + this.id.tolower())
+    + ::loc("ui/parentheses/space", { text = "{0}%".subst(::round(100 * this.sizeMultiplier).tointeger()) })
   getFontExample = @() "small_text; font-pixht: {0}".subst(::round(getFontInitialHt("small_text") * this.sizeMultiplier).tointeger())
 }
 
@@ -178,7 +172,7 @@ let function getAvailableFontBySaveId(saveId) {
 
   foreach(font in ::g_font.types)
     if (font.saveIdCompatibility
-      && isInArray(saveId, font.saveIdCompatibility)
+      && ::isInArray(saveId, font.saveIdCompatibility)
       && font.isAvailable(::screen_width(), ::screen_height()))
       return font
 
@@ -295,15 +289,15 @@ let function saveFontToConfig(font) {
 
 ::reset_applied_fonts_scale <- function reset_applied_fonts_scale()
 {
-  log("[fonts] Resetting appliedFontsSh, sizes of font will be set again")
+  ::dagor.debug("[fonts] Resetting appliedFontsSh, sizes of font will be set again")
   appliedFontsSh = 0;
   update_font_heights(::g_font.getCurrent());
 }
 
-subscribe("updateFontStates", function(_) {
+::cross_call_api.getCurrentFontParams <- function() {
   let currentFont = ::g_font.getCurrent()
-  send("updateExtWatched", {
+  return {
     fontGenId = currentFont.fontGenId
     fontSizePx = currentFont.getFontSizePx(::screen_width(), ::screen_height())
-  })
-})
+  }
+}

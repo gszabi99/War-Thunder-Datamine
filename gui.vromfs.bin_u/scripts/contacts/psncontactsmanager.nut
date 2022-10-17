@@ -1,16 +1,13 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let logS = log_with_prefix("[PSN: Contacts] ")
+let stdLog = require("%sqstd/log.nut")()
+let log = stdLog.with_prefix("[PSN: Contacts] ")
+let logerr = stdLog.logerr
 
 let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
 let { addContact, addContactGroup } = require("%scripts/contacts/contactsManager.nut")
 
-let isContactsUpdated = persist("isContactsUpdated", @() Watched(false))
+let isContactsUpdated = persist("isContactsUpdated", @() ::Watched(false))
 
 let LIMIT_FOR_ONE_TASK_GET_USERS = 200
 let UPDATE_TIMER_LIMIT = 10000
@@ -35,7 +32,7 @@ let tryUpdateContacts = function(contactsBlk)
 
   if (!haveAnyUpdate)
   {
-    logS("Update: No changes. No need to server call")
+    log("Update: No changes. No need to server call")
     return
   }
 
@@ -74,8 +71,8 @@ let function psnUpdateContactsList(usersTable) {
 
   let contactsBlk = ::DataBlock()
   contactsBlk[::EPLX_PS4_FRIENDS] <- ::DataBlock()
-  contactsBlk[EPL_BLOCKLIST]  <- ::DataBlock()
-  contactsBlk[EPL_FRIENDLIST] <- ::DataBlock()
+  contactsBlk[::EPL_BLOCKLIST]  <- ::DataBlock()
+  contactsBlk[::EPL_FRIENDLIST] <- ::DataBlock()
 
   foreach (groupName, groupData in pendingContactsChanges)
   {
@@ -89,22 +86,22 @@ let function psnUpdateContactsList(usersTable) {
       if (!contact.isInPSNFriends() && groupName == ::EPLX_PS4_FRIENDS) {
         contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = true
         if (contact.isInBlockGroup())
-          contactsBlk[EPL_BLOCKLIST][contact.uid] = false
+          contactsBlk[::EPL_BLOCKLIST][contact.uid] = false
       }
 
-      if (!contact.isInBlockGroup() && groupName == EPL_BLOCKLIST) {
-        contactsBlk[EPL_BLOCKLIST][contact.uid] = true
+      if (!contact.isInBlockGroup() && groupName == ::EPL_BLOCKLIST) {
+        contactsBlk[::EPL_BLOCKLIST][contact.uid] = true
         if (contact.isInPSNFriends())
           contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = false
 
         if (contact.isInFriendGroup())
-          contactsBlk[EPL_FRIENDLIST][contact.uid] = false
+          contactsBlk[::EPL_FRIENDLIST][contact.uid] = false
       }
 
       //Check both lists, as there can be mistakes
       if (contact.isInPSNFriends() && contact.isInBlockGroup()) {
         if (groupName == ::EPLX_PS4_FRIENDS)
-          contactsBlk[EPL_BLOCKLIST][contact.uid] = false
+          contactsBlk[::EPL_BLOCKLIST][contact.uid] = false
         else
           contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = false
       }
@@ -171,9 +168,9 @@ let function onReceviedUsersList(groupName, responseInfoName, response, err) {
         pendingContactsChanges[groupName].users.append(convertPsnContact(playerData))
   }
   else {
-    logS($"Update {groupName}: received error: {toString(err)}")
+    log($"Update {groupName}: received error: {::toString(err)}")
     if (::u.isString(err.code) || err.code < 500 || err.code >= 600)
-      logerr($"[PSN: Contacts] Update {groupName}: received error: {toString(err)}")
+      logerr($"[PSN: Contacts] Update {groupName}: received error: {::toString(err)}")
   }
 
   pendingContactsChanges[groupName].isFinished = err || size >= total
@@ -191,10 +188,10 @@ let function fetchFriendlist() {
 }
 
 let function fetchBlocklist() {
-  checkGroups.append(EPL_BLOCKLIST)
+  checkGroups.append(::EPL_BLOCKLIST)
   psn.fetch(
     psn.profile.listBlockedUsers(),
-    @(response, err) onReceviedUsersList(EPL_BLOCKLIST, PSN_RESPONSE_FIELDS.blocklist, response, err),
+    @(response, err) onReceviedUsersList(::EPL_BLOCKLIST, PSN_RESPONSE_FIELDS.blocklist, response, err),
     LIMIT_FOR_ONE_TASK_GET_USERS
   )
 }

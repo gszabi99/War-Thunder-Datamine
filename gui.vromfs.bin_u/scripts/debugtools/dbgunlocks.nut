@@ -1,17 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 // warning disable: -file:forbidden-function
+let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { getFullUnlockDesc, getUnlockCostText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { register_command } = require("console")
 
-let function debug_show_test_unlocks(chapter = "test", group = null) {
+::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
+{
   if (!::is_dev_version)
     return
 
@@ -25,7 +19,8 @@ let function debug_show_test_unlocks(chapter = "test", group = null) {
   }])
 }
 
-let function debug_show_all_streaks() {
+::debug_show_all_streaks <- function debug_show_all_streaks()
+{
   if (!::is_dev_version)
     return
 
@@ -62,7 +57,8 @@ let function debug_show_all_streaks() {
   }])
 }
 
-let function gen_all_unlocks_desc(showCost = false) {
+::gen_all_unlocks_desc <- function gen_all_unlocks_desc(showCost = false)
+{
   dlog("GP: gen all unlocks description")
   local res = ""
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
@@ -74,11 +70,47 @@ let function gen_all_unlocks_desc(showCost = false) {
     res += "\n" + unlock.id + ":" + (desc != ""? "\n" : "") + desc
   }
   dlog("GP: res:")
-  log(res)
+  ::dagor.debug(res)
   dlog("GP: done")
 }
 
-let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
+::exportUnlockInfo <- function exportUnlockInfo(params)
+{
+  let info = ::g_language.getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
+  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, ::get_current_language())
+  return "ok"
+}
+
+web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
+
+::gen_all_unlocks_desc_to_blk <- function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, showValue = false, all_langs = true)
+{
+  if (!all_langs)
+    return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
+
+  let curLang = ::get_current_language()
+  let info = ::g_language.getGameLocalizationInfo()
+  _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
+}
+
+::_gen_all_unlocks_desc_to_blk <- function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang)
+{
+  let lang = langsInfo.pop()
+  ::g_language.setGameLocalization(lang.id, false, false)
+  gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
+
+  if (!langsInfo.len())
+    return ::g_language.setGameLocalization(curLang, false, false)
+
+  //delayed to easy see progress, and avoid watchdog crash.
+  let guiScene = ::get_main_gui_scene()
+  guiScene.performDelayed(this, (@(path, showCost, showValue, langsInfo, curLang) function () {
+    _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang)
+  })(path, showCost, showValue, langsInfo, curLang))
+}
+
+::gen_all_unlocks_desc_to_blk_cur_lang <- function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false)
+{
   let fullPath = format("%s/unlocks%s.blk", path, ::get_current_language())
   dlog("GP: gen all unlocks description to " + fullPath)
 
@@ -103,39 +135,8 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
   res.saveToTextFile(fullPath)
 }
 
-let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang) {
-  let lang = langsInfo.pop()
-  ::g_language.setGameLocalization(lang.id, false, false)
-  gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
-
-  if (!langsInfo.len())
-    return ::g_language.setGameLocalization(curLang, false, false)
-
-  //delayed to easy see progress, and avoid watchdog crash.
-  let guiScene = ::get_main_gui_scene()
-  guiScene.performDelayed(this, function() {
-    _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang)
-  })
-}
-
-let function exportUnlockInfo(params) {
-  let info = ::g_language.getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
-  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, ::get_current_language())
-  return "ok"
-}
-
-::web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
-
-let function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, showValue = false, all_langs = true) {
-  if (!all_langs)
-    return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
-
-  let curLang = ::get_current_language()
-  let info = ::g_language.getGameLocalizationInfo()
-  _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
-}
-
-let function debug_show_unlock_popup(unlockId) {
+::debug_show_unlock_popup <- function debug_show_unlock_popup(unlockId)
+{
   ::gui_start_unlock_wnd(
     ::build_log_unlock_data(
       ::build_conditions_config(
@@ -145,9 +146,9 @@ let function debug_show_unlock_popup(unlockId) {
   )
 }
 
-let function debug_show_debriefing_trophy(trophyItemId) {
+::debug_show_debriefing_trophy <- function debug_show_debriefing_trophy(trophyItemId) {
   let filteredLogs = ::getUserLogsList({
-    show = [EULT_OPEN_TROPHY]
+    show = [::EULT_OPEN_TROPHY]
     disableVisible = true
     checkFunc = @(userlog) trophyItemId == userlog.body.id
   })
@@ -155,7 +156,8 @@ let function debug_show_debriefing_trophy(trophyItemId) {
   ::gui_start_open_trophy({ [trophyItemId] = filteredLogs })
 }
 
-let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
+::debug_new_unit_unlock <- function debug_new_unit_unlock(needTutorial = false, unitName = null)
+{
   local unit = ::getAircraftByName(unitName)
   if (!unit)
     unit = ::u.search(::all_units, @(u) u.isBought())
@@ -163,7 +165,7 @@ let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
   ::gui_start_modal_wnd(::gui_handlers.ShowUnlockHandler,
     {
       config = {
-         type = UNLOCKABLE_AIRCRAFT
+         type = ::UNLOCKABLE_AIRCRAFT
          id = unit.name
          name = unit.name
       }
@@ -171,11 +173,4 @@ let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
     })
 }
 
-register_command(debug_show_test_unlocks, "debug.unlocks.show_test_unlocks")
-register_command(debug_show_all_streaks, "debug.unlocks.show_all_streaks")
-register_command(@() gen_all_unlocks_desc(), "debug.unlocks.gen_all_unlocks_desc")
-register_command(@() gen_all_unlocks_desc(true), "debug.unlocks.gen_all_unlocks_desc_with_cost")
-register_command(gen_all_unlocks_desc_to_blk, "debug.unlocks.gen_all_unlocks_desc_to_blk")
-register_command(debug_show_unlock_popup, "debug.unlocks.debug_show_unlock_popup")
-register_command(debug_show_debriefing_trophy, "debug.unlocks.debug_show_debriefing_trophy")
-register_command(debug_new_unit_unlock, "debug.unlocks.debug_new_unit_unlock")
+::open_battle_pass_wnd <- @() openBattlePassWnd()

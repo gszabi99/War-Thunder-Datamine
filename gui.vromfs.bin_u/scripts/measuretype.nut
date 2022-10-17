@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -22,7 +15,7 @@ let time = require("%scripts/time.nut")
   types = []
 }
 
-::g_measure_type._getMeasureUnitsText <- function _getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false, isPresize = true)
+g_measure_type._getMeasureUnitsText <- function _getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false, isPresize = true)
 {
   if (userOptCode != -1)
     return optionsMeasureUnits.countMeasure(orderCode, value, " - ", addMeasureUnits, forceMaxPrecise, isPresize)
@@ -32,13 +25,13 @@ let time = require("%scripts/time.nut")
   return result
 }
 
-::g_measure_type._getMeasureUnitsName <- function _getMeasureUnitsName()
+g_measure_type._getMeasureUnitsName <- function _getMeasureUnitsName()
 {
   let unitName = (userOptCode != -1) ? ::get_option_unit_type(orderCode) : name
-  return loc(format("measureUnits/%s", unitName))
+  return ::loc(format("measureUnits/%s", unitName))
 }
 
-::g_measure_type._isMetricSystem <- function _isMetricSystem()
+g_measure_type._isMetricSystem <- function _isMetricSystem()
 {
   if (userOptCode != -1)
     return optionsMeasureUnits.isMetricSystem(orderCode)
@@ -81,7 +74,7 @@ enums.addTypesByGlobalName("g_measure_type", {
     name = "speed_per_sec"
     getMeasureUnitsName = function ()
     {
-      return loc("measureUnits/metersPerSecond_climbSpeed")
+      return ::loc("measureUnits/metersPerSecond_climbSpeed")
     }
   }
 
@@ -135,7 +128,7 @@ enums.addTypesByGlobalName("g_measure_type", {
   GFORCE = {
     name = "gForce"
     presize = 0.1
-    getMeasureUnitsName = @() loc("HUD_CRIT_OVERLOAD_G")
+    getMeasureUnitsName = @() ::loc("HUD_CRIT_OVERLOAD_G")
   }
 
   HOURS = {
@@ -181,7 +174,7 @@ enums.addTypesByGlobalName("g_measure_type", {
 
     getMeasureUnitsName = function()
     {
-      return loc("measureUnits/percent")
+      return ::loc("measureUnits/percent")
     }
   }
 
@@ -204,17 +197,17 @@ enums.addTypesByGlobalName("g_measure_type", {
         usedUnitIdx++
       }
 
-      return sizeInUnits + " " + loc("measureUnits/" + unitNamesList[usedUnitIdx])
+      return sizeInUnits + " " + ::loc("measureUnits/" + unitNamesList[usedUnitIdx])
     }
 
     getMeasureUnitsName = function()
     {
-      return loc("measureUnits/bytes")
+      return ::loc("measureUnits/bytes")
     }
   }
 })
 
-::g_measure_type.getTypeByName <- function getTypeByName(name, createIfNotFound = false)
+g_measure_type.getTypeByName <- function getTypeByName(name, createIfNotFound = false)
 {
   local res = enums.getCachedType("name", name, ::g_measure_type_cache.byName,
                                       ::g_measure_type, ::g_measure_type.UNKNOWN)

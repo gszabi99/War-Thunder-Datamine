@@ -1,14 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let function addClanTagToNameInLeaderbord(lbNest, clansInfoList) {
-  if (!checkObj(lbNest) || clansInfoList.len() == 0)
+  if (!::check_obj(lbNest) || clansInfoList.len() == 0)
     return
 
   let lbTable = lbNest.findObject("lb_table")
-  if (!checkObj(lbTable))
+  if (!::check_obj(lbTable))
     return
 
   for (local i = 0; i < lbTable.childrenCount(); i++) {

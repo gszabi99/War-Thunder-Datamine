@@ -1,10 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addOptionMode, addUserOption, setGuiOptionsMode, getGuiOptionsMode
-} = require_native("guiOptions")
+} = ::require_native("guiOptions")
 
 global enum optionControlType {
   LIST
@@ -477,7 +472,7 @@ foreach(idx, modeName in options_mode_names)
 {
   let res = addOptionMode(modeName)
   let realIdx = (res != null) ? res : idx
-  getroottable()[modeName] <- realIdx
+  ::getroottable()[modeName] <- realIdx
 }
 options_mode_names = null // warning disable: -assigned-never-used
 
@@ -485,7 +480,7 @@ foreach(idx, useropt in user_option_names)
 {
   let res = addUserOption(useropt)
   let realIdx = (res != null) ? res : idx
-  getroottable()[useropt] <- realIdx
+  ::getroottable()[useropt] <- realIdx
   ::user_option_name_by_idx[realIdx] <- useropt
 }
 user_option_names = null // warning disable: -assigned-never-used

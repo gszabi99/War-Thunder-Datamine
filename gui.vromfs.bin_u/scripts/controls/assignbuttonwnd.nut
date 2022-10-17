@@ -1,17 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
+::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc)
+{
   ::gui_start_modal_wnd(::gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc})
 }
 
-::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 
@@ -44,10 +37,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         let btnId = obj["button" + i].tointeger();
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
-        log("onButtonEntered "+i+" "+devId+" "+btnId);
+        ::dagor.debug("onButtonEntered "+i+" "+devId+" "+btnId);
         dev.append(devId);
         btn.append(btnId);
       }
@@ -75,7 +68,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         btnId = btnId.tointeger()
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
         if (numButtons != 0)

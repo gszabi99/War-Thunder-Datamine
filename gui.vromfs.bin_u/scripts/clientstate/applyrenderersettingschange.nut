@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { reloadDargUiScript } = require("reactiveGuiCommand")
-
 local isRequestedReloadScene = false
 local isRequestedOnSceneSwitch = false
 local cbFunc = null
@@ -43,7 +36,6 @@ let function applyRendererSettingsChange(shouldReloadScene = false, shouldDoItOn
     isRequestedReloadScene = isRequestedReloadScene || forceReloadGuiScene
 
     if (isRequestedReloadScene) {
-      reloadDargUiScript(false)
       let handler = isRequestedOnSceneSwitch ? null : ::handlersManager.getActiveBaseHandler()
       if (handler)
         handler.fullReloadScene()

@@ -2064,20 +2064,256 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4b_default.blk"
       },
       {
-        "name": "a_4b_rockets_zuni_mk81",
-        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_zuni_mk81.blk"
+        "name": "a_4b_bomb_mk81",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk81.blk",
+        "reqModification": "us_250lb_mk81",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+            "amountPerTier": 3.0,
+            "iconType": "bombs_small_group",
+            "tier": [
+              {
+                "idx": 3
+              },
+              {
+                "idx": 4
+              },
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              },
+              {
+                "idx": 8
+              },
+              {
+                "idx": 9
+              }
+            ]
+          }
+        }
       },
       {
-        "name": "a_4b_rockets_zuni_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_zuni_mk82.blk"
+        "name": "a_4b_bomb_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk82.blk",
+        "reqModification": "us_500lb_mk82",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+            "iconType": "bombs_middle"
+          }
+        }
       },
       {
-        "name": "a_4b_mk4_mod0",
-        "blk": "gameData/FlightModels/weaponPresets/a_4b_mk4_mod0.blk"
+        "name": "a_4b_bomb_mk83",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk83.blk",
+        "reqModification": "us_1000lb_mk83"
+      },
+      {
+        "name": "a_4b_bomb_mk84",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk84.blk",
+        "reqModification": "us_2000lb_mk84",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+            "iconType": "bombs_special"
+          }
+        }
+      },
+      {
+        "name": "a_4b_rockets_agm_12b",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_agm_12b.blk",
+        "reqModification": "fj_4b_agm_12b"
+      },
+      {
+        "name": "a_4b_rockets_lau18",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_lau18.blk",
+        "reqModification": "us_2_75_in_ffar_lau_3a"
       },
       {
         "name": "a_4b_rockets_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_zuni.blk"
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_zuni.blk",
+        "reqModification": "f4c_zuni"
+      },
+      {
+        "name": "a_4b_rockets_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_aim_9.blk",
+        "reqModification": "us_aim_9b"
+      },
+      {
+        "name": "a_4b_rockets_lau18_mk81",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_lau18_mk81.blk",
+        "reqModification": [
+          "us_250lb_mk81",
+          "us_2_75_in_ffar_lau_3a"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "amountPerTier": 3.0,
+              "iconType": "bombs_small_group",
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "amountPerTier": 38.0,
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 8
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "a_4b_rockets_lau18_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_lau18_mk82.blk",
+        "reqModification": [
+          "us_500lb_mk82",
+          "us_2_75_in_ffar_lau_3a"
+        ],
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+            "iconType": "bombs_middle"
+          }
+        }
+      },
+      {
+        "name": "a_4b_rockets_zuni_mk81",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_zuni_mk81.blk",
+        "reqModification": [
+          "us_250lb_mk81",
+          "f4c_zuni"
+        ],
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+            "iconType": "bombs_small"
+          }
+        }
+      },
+      {
+        "name": "a_4b_rockets_zuni_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_zuni_mk82.blk",
+        "reqModification": [
+          "us_500lb_mk82",
+          "f4c_zuni"
+        ]
+      },
+      {
+        "name": "a_4b_bomb_mk81_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk81_aim_9.blk",
+        "reqModification": [
+          "us_250lb_mk81",
+          "us_aim_9b"
+        ],
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+            "iconType": "bombs_small"
+          }
+        }
+      },
+      {
+        "name": "a_4b_bomb_mk82_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk82_aim_9.blk",
+        "reqModification": [
+          "us_500lb_mk82",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "a_4b_bomb_mk83_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk83_aim_9.blk",
+        "reqModification": [
+          "us_1000lb_mk83",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "a_4b_bomb_mk84_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk84_aim_9.blk",
+        "reqModification": [
+          "us_2000lb_mk84",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "a_4b_rockets_agm_12b_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_agm_12b_aim_9.blk",
+        "reqModification": [
+          "fj_4b_agm_12b",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "a_4b_rockets_lau18_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_lau18_aim_9.blk",
+        "reqModification": [
+          "us_2_75_in_ffar_lau_3a",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "a_4b_rockets_zuni_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_rockets_zuni_aim_9.blk",
+        "reqModification": [
+          "f4c_zuni",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "a_4b_mk4_mod0",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_mk4_mod0.blk",
+        "reqModification": "mk4_mod0_gunpod"
+      },
+      {
+        "name": "a_4b_mk4_mod0_aim9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_mk4_mod0_aim9.blk",
+        "reqModification": [
+          "mk4_mod0_gunpod",
+          "us_aim_9b"
+        ]
+      },
+      {
+        "name": "a_4b_bomb_mk77",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk77.blk",
+        "reqModification": "us_mk_77",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk",
+            "iconType": "napalm_middle"
+          }
+        }
+      },
+      {
+        "name": "a_4b_bomb_mk77_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk77_aim_9.blk",
+        "reqModification": [
+          "us_mk_77",
+          "us_aim_9b"
+        ]
       }
     ]
   },
@@ -2229,6 +2465,60 @@
     "mk_12_mod3_new_gun": {
       "reqModification": "mk_12_mod3_belt_pack",
       "tier": 2
+    },
+    "mk4_mod0_gunpod": {
+      "prevModification": "mk_12_mod3_new_gun",
+      "deactivationIsAllowed": false,
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "Mk11_belt_pack": {
+      "tier": 4,
+      "reqModification": "mk4_mod0_gunpod"
+    },
+    "Mk11_air_targets": {},
+    "Mk11_armor_targets": {},
+    "us_250lb_mk81": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_500lb_mk82": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "us_250lb_mk81"
+    },
+    "us_1000lb_mk83": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "us_500lb_mk82"
+    },
+    "us_2000lb_mk84": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_1000lb_mk83"
+    },
+    "fj_4b_agm_12b": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "us_2_75_in_ffar_lau_3a": {
+      "reqModification": "fj_4b_agm_12b",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "f4c_zuni": {
+      "reqModification": "us_2_75_in_ffar_lau_3a",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9b": {
+      "reqModification": "f4c_zuni",
+      "tier": 4,
+      "modClass": "weapon"
+    },
+    "us_mk_77": {
+      "tier": 1,
+      "modClass": "weapon"
     }
   },
   "user_skin": {

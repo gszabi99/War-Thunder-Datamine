@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { loading_play_voice } = require("loading")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -29,16 +22,7 @@ enum hudStreakState {
   scene = null
 }
 
-let function updateAnimTimer() {
-  let obj = ::g_streaks.getSceneObj()
-  if (!obj)
-    return
-
-  let animTime = 1000 * STREAK_LIFE_TIME / ::g_streaks.getTimeMultiplier()
-  obj.findObject("streak_content")["transp-time"] = animTime.tointeger().tostring()
-}
-
-::g_streaks.addStreak <- function addStreak(id, header, score)
+g_streaks.addStreak <- function addStreak(id, header, score)
 {
   if (!isStreaksAvailable())
     return
@@ -55,12 +39,12 @@ let function updateAnimTimer() {
     updateAnimTimer()
 }
 
-::g_streaks.isStreaksAvailable <- function isStreaksAvailable()
+g_streaks.isStreaksAvailable <- function isStreaksAvailable()
 {
   return !is_replay_playing()
 }
 
-::g_streaks.checkNextState <- function checkNextState()
+g_streaks.checkNextState <- function checkNextState()
 {
   if (stateTimeLeft > 0)
     return
@@ -88,23 +72,23 @@ let function updateAnimTimer() {
   updatePlaceObj()
 }
 
-::g_streaks.getSceneObj <- function getSceneObj()
+g_streaks.getSceneObj <- function getSceneObj()
 {
-  if (checkObj(scene))
+  if (::checkObj(scene))
     return scene
 
   let guiScene = ::get_gui_scene()
   if (!guiScene)
     return null
   let obj = guiScene["hud_streaks"]
-  if (!checkObj(obj))
+  if (!::checkObj(obj))
     return null
 
   scene = obj
   return obj
 }
 
-::g_streaks.showNextStreak <- function showNextStreak()
+g_streaks.showNextStreak <- function showNextStreak()
 {
   if (!streakQueue.len())
     return false
@@ -135,7 +119,17 @@ let function updateAnimTimer() {
   return true
 }
 
-::g_streaks.updateSceneObj <- function updateSceneObj()
+::updateAnimTimer <- function updateAnimTimer()
+{
+  let obj = getSceneObj()
+  if (!obj)
+    return
+
+  let animTime = 1000 * STREAK_LIFE_TIME / getTimeMultiplier()
+  obj.findObject("streak_content")["transp-time"] = animTime.tointeger().tostring()
+}
+
+g_streaks.updateSceneObj <- function updateSceneObj()
 {
   let obj = getSceneObj()
   if (!obj)
@@ -144,7 +138,7 @@ let function updateAnimTimer() {
   ::showBtn("streak_content", state == hudStreakState.ACTIVE, obj)
 }
 
-::g_streaks.updatePlaceObj <- function updatePlaceObj()
+g_streaks.updatePlaceObj <- function updatePlaceObj()
 {
   let obj = getSceneObj()
   if (!obj)
@@ -155,7 +149,7 @@ let function updateAnimTimer() {
   obj.animation = show ? "show" : "hide"
 }
 
-::g_streaks.updatePlaceObjHeight <- function updatePlaceObjHeight(newHeight)
+g_streaks.updatePlaceObjHeight <- function updatePlaceObjHeight(newHeight)
 {
   let obj = getSceneObj()
   if (!obj || !newHeight)
@@ -168,9 +162,9 @@ let function updateAnimTimer() {
   obj["height-end"] = newHeight.tostring()
 }
 
-::g_streaks.streakPlaySound <- function streakPlaySound(streakId)
+g_streaks.streakPlaySound <- function streakPlaySound(streakId)
 {
-  if (!hasFeature("streakVoiceovers"))
+  if (!::has_feature("streakVoiceovers"))
     return
   let unlockBlk = ::g_unlocks.getUnlockById(streakId)
   if (!unlockBlk)
@@ -182,12 +176,12 @@ let function updateAnimTimer() {
     loading_play_voice(unlockBlk.sound, true)
 }
 
-::g_streaks.getTimeMultiplier <- function getTimeMultiplier()
+g_streaks.getTimeMultiplier <- function getTimeMultiplier()
 {
   return streakQueue.len() > 0 ? STREAK_QUEUE_TIME_FACTOR : 1.0
 }
 
-::g_streaks.onUpdate <- function onUpdate(dt)
+g_streaks.onUpdate <- function onUpdate(dt)
 {
   if (stateTimeLeft <= 0)
     return
@@ -198,7 +192,7 @@ let function updateAnimTimer() {
     checkNextState()
 }
 
-::g_streaks.clear <- function clear()
+g_streaks.clear <- function clear()
 {
   stateTimeLeft = 0;
   state = hudStreakState.EMPTY
@@ -214,29 +208,29 @@ let function updateAnimTimer() {
 {
   let messageArr = []
   if (wp)
-    messageArr.append(loc("warpoints/received/by_param", {
+    messageArr.append(::loc("warpoints/received/by_param", {
       sign  = "+"
       value =::g_language.decimalFormat(wp)
     }))
   if (exp)
-    messageArr.append(loc("exp_received/by_param", { value = ::g_language.decimalFormat(exp) }))
+    messageArr.append(::loc("exp_received/by_param", { value = ::g_language.decimalFormat(exp) }))
 
   ::broadcastEvent("StreakArrived", { id = id })
-  ::g_streaks.addStreak(id, header, ::g_string.implode(messageArr, loc("ui/comma")))
+  ::g_streaks.addStreak(id, header, ::g_string.implode(messageArr, ::loc("ui/comma")))
 }
 
 ::get_loc_for_streak <- function get_loc_for_streak(StreakNameType, name, stageparam, playerNick = "", colorId = 0)
 {
   let stageId = ::g_unlocks.getMultiStageId(name, stageparam)
-  let isMyStreak = StreakNameType == SNT_MY_STREAK_HEADER
+  let isMyStreak = StreakNameType == ::SNT_MY_STREAK_HEADER
   local text = ""
   if (isMyStreak)
-    text = loc("streaks/" + stageId)
+    text = ::loc("streaks/" + stageId)
   else //SNT_OTHER_STREAK_TEXT
   {
-    text = loc("streaks/" + stageId + "/other")
+    text = ::loc("streaks/" + stageId + "/other")
     if (text == "")
-      text = format(loc("streaks/default/other"), loc("streaks/" + stageId))
+      text = format(::loc("streaks/default/other"), ::loc("streaks/" + stageId))
   }
 
   if (stageparam)

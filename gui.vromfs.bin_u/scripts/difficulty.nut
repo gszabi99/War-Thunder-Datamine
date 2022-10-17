@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_difficulty <- {
   types = []
@@ -15,8 +8,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   name = ""
   icon = ""
   locId = ""
-  egdCode = EGD_NONE
-  egdLowercaseName = ::get_name_by_gamemode(EGD_NONE, false) // none
+  egdCode = ::EGD_NONE
+  egdLowercaseName = ::get_name_by_gamemode(::EGD_NONE, false) // none
   gameTypeName = ""
   matchingName = ""
   crewSkillName = "" // Used in crewSkillParameters.nut
@@ -26,9 +19,9 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   clanRatingImage = "#ui/gameuiskin#lb_elo_rating.svg"
   contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET
   contentAllowedPresetOptionDefVal = "semihistorical"
-  cdPresetValue = ::get_cd_preset(DIFFICULTY_CUSTOM)
+  cdPresetValue = ::get_cd_preset(::DIFFICULTY_CUSTOM)
   getEgdName = function(capital = true) { return ::get_name_by_gamemode(egdCode, capital) } //"none", "arcade", "historical", "simulation"
-  getLocName = function() { return loc(locId) }
+  getLocName = function() { return ::loc(locId) }
 
   abbreviation = ""
   choiceType = []
@@ -42,7 +35,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
   getEdiffByUnitMask = function(unitTypesMask = 0)
   {
-    let isAvailableTanks = (unitTypesMask & (1 << ES_UNIT_TYPE_TANK)) != 0
+    let isAvailableTanks = (unitTypesMask & (1 << ::ES_UNIT_TYPE_TANK)) != 0
     return diffCode == -1 ? -1 :
       diffCode + (isAvailableTanks ? EDIFF_SHIFT : 0)
   }
@@ -56,12 +49,12 @@ enums.addTypesByGlobalName("g_difficulty", {
   }
 
   ARCADE = {
-    diffCode = DIFFICULTY_ARCADE
-    name = ::get_difficulty_name(DIFFICULTY_ARCADE) // arcade
+    diffCode = ::DIFFICULTY_ARCADE
+    name = ::get_difficulty_name(::DIFFICULTY_ARCADE) // arcade
     icon = "#ui/gameuiskin#mission_complete_arcade.png"
     locId = "mainmenu/arcadeInstantAction"
-    egdCode = EGD_ARCADE
-    egdLowercaseName = ::get_name_by_gamemode(EGD_ARCADE, false) // arcade
+    egdCode = ::EGD_ARCADE
+    egdLowercaseName = ::get_name_by_gamemode(::EGD_ARCADE, false) // arcade
     gameTypeName = "arcade"
     matchingName = "arcade"
     crewSkillName = "arcade"
@@ -70,7 +63,7 @@ enums.addTypesByGlobalName("g_difficulty", {
     clanDataEnding = "_arc"
     clanRatingImage = "#ui/gameuiskin#lb_elo_rating_arcade.svg"
     contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET_ARCADE
-    cdPresetValue = ::get_cd_preset(DIFFICULTY_ARCADE)
+    cdPresetValue = ::get_cd_preset(::DIFFICULTY_ARCADE)
     abbreviation = "clan/shortArcadeBattle"
     choiceType = ["AirAB", "TankAB", "ShipAB"]
     arcadeCountry = true
@@ -78,12 +71,12 @@ enums.addTypesByGlobalName("g_difficulty", {
   }
 
   REALISTIC = {
-    diffCode = DIFFICULTY_REALISTIC
-    name = ::get_difficulty_name(DIFFICULTY_REALISTIC) // realistic
+    diffCode = ::DIFFICULTY_REALISTIC
+    name = ::get_difficulty_name(::DIFFICULTY_REALISTIC) // realistic
     icon = "#ui/gameuiskin#mission_complete_realistic.png"
     locId = "mainmenu/instantAction"
-    egdCode = EGD_HISTORICAL
-    egdLowercaseName = ::get_name_by_gamemode(EGD_HISTORICAL, false) // historical
+    egdCode = ::EGD_HISTORICAL
+    egdLowercaseName = ::get_name_by_gamemode(::EGD_HISTORICAL, false) // historical
     gameTypeName = "historical"
     matchingName = "realistic"
     crewSkillName = "historical"
@@ -91,7 +84,7 @@ enums.addTypesByGlobalName("g_difficulty", {
     clanReqOption = ::USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES
     clanDataEnding = "_hist"
     contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC
-    cdPresetValue = ::get_cd_preset(DIFFICULTY_REALISTIC)
+    cdPresetValue = ::get_cd_preset(::DIFFICULTY_REALISTIC)
     abbreviation = "clan/shortHistoricalBattle"
     choiceType = ["AirRB", "TankRB", "ShipRB"]
     arcadeCountry = true
@@ -100,12 +93,12 @@ enums.addTypesByGlobalName("g_difficulty", {
   }
 
   SIMULATOR = {
-    diffCode = DIFFICULTY_HARDCORE
-    name = ::get_difficulty_name(DIFFICULTY_HARDCORE) // hardcore
+    diffCode = ::DIFFICULTY_HARDCORE
+    name = ::get_difficulty_name(::DIFFICULTY_HARDCORE) // hardcore
     icon = "#ui/gameuiskin#mission_complete_simulator.png"
     locId = "mainmenu/fullRealInstantAction"
-    egdCode = EGD_SIMULATION
-    egdLowercaseName = ::get_name_by_gamemode(EGD_SIMULATION, false) // simulation
+    egdCode = ::EGD_SIMULATION
+    egdLowercaseName = ::get_name_by_gamemode(::EGD_SIMULATION, false) // simulation
     gameTypeName = "realistic"
     matchingName = "simulation"
     crewSkillName = "fullreal"
@@ -114,15 +107,15 @@ enums.addTypesByGlobalName("g_difficulty", {
     clanDataEnding = "_sim"
     contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR
     contentAllowedPresetOptionDefVal = "historical"
-    cdPresetValue = ::get_cd_preset(DIFFICULTY_HARDCORE)
+    cdPresetValue = ::get_cd_preset(::DIFFICULTY_HARDCORE)
     abbreviation = "clan/shortFullRealBattles"
     choiceType = ["AirSB", "TankSB", "ShipSB"]
     arcadeCountry = false
     hasRespawns = false
     needCheckTutorial = true
     isAvailable = function(gm = null) {
-      return !hasFeature("SimulatorDifficulty") ? false :
-        gm == GM_DOMINATION ? hasFeature("SimulatorDifficultyInRandomBattles") :
+      return !::has_feature("SimulatorDifficulty") ? false :
+        gm == ::GM_DOMINATION ? ::has_feature("SimulatorDifficultyInRandomBattles") :
         true
     }
   }
@@ -135,48 +128,48 @@ enums.addTypesByGlobalName("g_difficulty", {
   return 0
 })
 
-::g_difficulty.getDifficultyByDiffCode <- function getDifficultyByDiffCode(diffCode)
+g_difficulty.getDifficultyByDiffCode <- function getDifficultyByDiffCode(diffCode)
 {
   return enums.getCachedType("diffCode", diffCode, ::g_difficulty_cache.byDiffCode, ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByName <- function getDifficultyByName(name)
+g_difficulty.getDifficultyByName <- function getDifficultyByName(name)
 {
   return enums.getCachedType("name", name, ::g_difficulty_cache.byName, ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByEgdCode <- function getDifficultyByEgdCode(egdCode)
+g_difficulty.getDifficultyByEgdCode <- function getDifficultyByEgdCode(egdCode)
 {
   return enums.getCachedType("egdCode", egdCode, ::g_difficulty_cache.byEgdCode, ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByEgdLowercaseName <- function getDifficultyByEgdLowercaseName(name)
+g_difficulty.getDifficultyByEgdLowercaseName <- function getDifficultyByEgdLowercaseName(name)
 {
   return enums.getCachedType("egdLowercaseName", name, ::g_difficulty_cache.byEgdLowercaseName,
                                         ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByMatchingName <- function getDifficultyByMatchingName(name)
+g_difficulty.getDifficultyByMatchingName <- function getDifficultyByMatchingName(name)
 {
   return enums.getCachedType("matchingName", name, ::g_difficulty_cache.byMatchingName,
                                         ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByCrewSkillName <- function getDifficultyByCrewSkillName(name)
+g_difficulty.getDifficultyByCrewSkillName <- function getDifficultyByCrewSkillName(name)
 {
   return enums.getCachedType("crewSkillName", name, ::g_difficulty_cache.byCrewSkillName,
                                       ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.isDiffCodeAvailable <- function isDiffCodeAvailable(diffCode, gm = null)
+g_difficulty.isDiffCodeAvailable <- function isDiffCodeAvailable(diffCode, gm = null)
 {
   return getDifficultyByDiffCode(diffCode).isAvailable(gm)
 }
 
-::g_difficulty.getDifficultyByChoiceType <- function getDifficultyByChoiceType(searchChoiceType = "")
+g_difficulty.getDifficultyByChoiceType <- function getDifficultyByChoiceType(searchChoiceType = "")
 {
   foreach(t in types)
-    if (isInArray(searchChoiceType, t.choiceType))
+    if (::isInArray(searchChoiceType, t.choiceType))
       return t
 
   return ::g_difficulty.UNKNOWN

@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let logDL = log_with_prefix("[LOGERR] ")
@@ -8,7 +6,7 @@ let { CmdEnableDedicatedLogger } = ecs.sqEvents
 let { register_logerr_monitor, clear_logerr_interceptors } = require("dagor.debug")
 
 const INVALID_CONNECTION_ID = -1
-local hasPermission = @(_playerId) true
+local hasPermission = @(playerId) true
 
 let peersThatWantToReceiveQuery = ecs.SqQuery(
   "peersThatWantToReceiveLogerrsQuery",
@@ -22,10 +20,10 @@ let peersThatWantToReceiveQuery = ecs.SqQuery(
   },
   $"and(ne(connId, {INVALID_CONNECTION_ID}), receiveLogerr)")
 
-let getConnidForLogReceiver = @(_eid, comp)
+let getConnidForLogReceiver = @(eid, comp)
   hasPermission(comp.player_id) ? comp.connId : INVALID_CONNECTION_ID
 
-let function sendErrorToClient(_tag, logstring, _timestamp) {
+let function sendErrorToClient(tag, logstring, timestamp) {
   let connids = (ecs.query_map(peersThatWantToReceiveQuery, getConnidForLogReceiver) ?? [])
     .filter(@(connId) connId != INVALID_CONNECTION_ID)
   logDL($"send '{logstring}' to {connids.len()} players")
@@ -38,7 +36,7 @@ logDL("register_logerr_monitor")
 register_logerr_monitor([""], sendErrorToClient)
 
 ecs.register_es("enable_send_logerr_msg_es", {
-    [CmdEnableDedicatedLogger] = function(evt, _eid, comp) {
+    [CmdEnableDedicatedLogger] = function(evt, eid, comp) {
       if (evt.data?.fromconnid != comp.connId)
         return
       let { isEnable = false } = evt.data

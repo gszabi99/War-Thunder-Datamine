@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 let compassState = require("compassState.nut")
 

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
@@ -18,7 +11,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::gui_start_tactical_map_tc <- function gui_start_tactical_map_tc()
 {
-  ::gui_start_tactical_map(true);
+  gui_start_tactical_map(true);
 }
 
 ::gui_handlers.TacticalMap <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -40,7 +33,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   numUnits = 0
   wasPlayer = 0
   focus = -1
-  restoreType = ERT_TACTICAL_CONTROL
+  restoreType = ::ERT_TACTICAL_CONTROL
   isFocusChanged = false
   wasMenuShift = false
   isActiveTactical = false
@@ -50,8 +43,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     scene.findObject("update_timer").setUserData(this)
 
     subHandlers.append(
-      ::gui_load_mission_objectives(scene.findObject("primary_tasks_list"),   false, 1 << OBJECTIVE_TYPE_PRIMARY),
-      ::gui_load_mission_objectives(scene.findObject("secondary_tasks_list"), false, 1 << OBJECTIVE_TYPE_SECONDARY)
+      ::gui_load_mission_objectives(scene.findObject("primary_tasks_list"),   false, 1 << ::OBJECTIVE_TYPE_PRIMARY),
+      ::gui_load_mission_objectives(scene.findObject("secondary_tasks_list"), false, 1 << ::OBJECTIVE_TYPE_SECONDARY)
     )
 
     initWnd()
@@ -61,12 +54,12 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   {
     restoreType = ::get_mission_restore_type();
 
-    if ((restoreType != ERT_TACTICAL_CONTROL))
+    if ((restoreType != ::ERT_TACTICAL_CONTROL))
       isActiveTactical = false
 
     let playerArr = [1]
     numUnits = ::get_player_group(units, playerArr)
-    log("numUnits = "+numUnits)
+    ::dagor.debug("numUnits = "+numUnits)
 
     initData()
 
@@ -74,7 +67,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
     local isRespawn = false
 
-    if (restoreType == ERT_TACTICAL_CONTROL)
+    if (restoreType == ::ERT_TACTICAL_CONTROL)
     {
       for (local i = 0; i < numUnits; i++)
       {
@@ -90,8 +83,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       }
       if (isRespawn || forceTacticalControl)
       {
-        log("[TMAP] isRespawn = "+isRespawn)
-        log("[TMAP] 2 forceTacticalControl = " + forceTacticalControl)
+        ::dagor.debug("[TMAP] isRespawn = "+isRespawn)
+        ::dagor.debug("[TMAP] 2 forceTacticalControl = " + forceTacticalControl)
         isActiveTactical = true
       }
       else
@@ -126,8 +119,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   {
     let gt = ::get_game_type()
     local titleText = ::loc_current_mission_name()
-    if (gt & GT_VERSUS)
-      titleText = loc("multiplayer/" + ::get_cur_game_mode_name() + "Mode")
+    if (gt & ::GT_VERSUS)
+      titleText = ::loc("multiplayer/" + ::get_cur_game_mode_name() + "Mode")
 
     setSceneTitle(titleText, scene, "menu-title")
   }
@@ -147,7 +140,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   function updateTacticalControl(obj, dt)
   {
-    if (restoreType != ERT_TACTICAL_CONTROL)
+    if (restoreType != ::ERT_TACTICAL_CONTROL)
       return;
     if (!isActiveTactical)
       return
@@ -164,7 +157,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       }
       if (!::is_aircraft_active(units[focus]))
       {
-        log("still no active aircraft");
+        ::dagor.debug("still no active aircraft");
         guiScene.performDelayed(this, function()
         {
           doClose()
@@ -186,7 +179,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     {
       if (::is_aircraft_delayed(units[i]))
       {
-        log("unit "+i+" is delayed");
+        ::dagor.debug("unit "+i+" is delayed");
         continue;
       }
 
@@ -203,7 +196,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   function initData()
   {
-    if (restoreType != ERT_TACTICAL_CONTROL)
+    if (restoreType != ::ERT_TACTICAL_CONTROL)
       return;
     fillPilotsTable()
 
@@ -232,19 +225,19 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       let pilotId = ::get_pilot_name(units[i], i)
       if (pilotId != "")
       {
-        if (::get_game_type() & GT_COOPERATIVE)
+        if (::get_game_type() & ::GT_COOPERATIVE)
         {
           pilotFullName = pilotId; //player nick
         }
         else
         {
-          pilotFullName = loc(pilotId)
+          pilotFullName = ::loc(pilotId)
         }
       }
       else
         pilotFullName = "Pilot "+(i+1).tostring()
 
-      log("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
+      ::dagor.debug("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
 
       scene.findObject("pilot_text" + i).setValue(pilotFullName)
       let objTr = scene.findObject("pilot_name" + i)
@@ -274,10 +267,10 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   function updatePlayer()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
-    if (numUnits && (restoreType == ERT_TACTICAL_CONTROL) && isActiveTactical)
+    if (numUnits && (restoreType == ::ERT_TACTICAL_CONTROL) && isActiveTactical)
     {
       if (!(focus in units))
         focus = 0
@@ -308,14 +301,14 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       let unit = ::getAircraftByName(fm)
       local text = ::getUnitName(fm)
       if (unit?.isAir() || unit?.isHelicopter?())
-        text += loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
+        text += ::loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
       obj.setValue(text)
     }
   }
 
   function onFocusDown(obj)
   {
-    if (restoreType != ERT_TACTICAL_CONTROL)
+    if (restoreType != ::ERT_TACTICAL_CONTROL)
       return
     if (!isActiveTactical)
       return
@@ -344,12 +337,12 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       updatePlayer()
     }
     else
-      log("onFocusDown - can't find aircraft that is active and not delayed")
+      ::dagor.debug("onFocusDown - can't find aircraft that is active and not delayed")
   }
 
   function onFocusUp(obj)
   {
-    if (restoreType != ERT_TACTICAL_CONTROL)
+    if (restoreType != ::ERT_TACTICAL_CONTROL)
       return
     if (!isActiveTactical)
       return
@@ -381,7 +374,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   function onPilotsSelect(obj)
   {
-    if (restoreType != ERT_TACTICAL_CONTROL || !isActiveTactical)
+    if (restoreType != ::ERT_TACTICAL_CONTROL || !isActiveTactical)
       return
 
     let newFocus = scene.findObject("pilots_list").getValue()
@@ -410,7 +403,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   function onStart(obj)
   {
-    if ((restoreType != ERT_TACTICAL_CONTROL) || !isActiveTactical)
+    if ((restoreType != ::ERT_TACTICAL_CONTROL) || !isActiveTactical)
       return doClose()
 
     updateTacticalControl(obj, 0.0)

@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
@@ -14,7 +6,7 @@ let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
 let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { EII_BULLET } = require_native("hudActionBarConst")
+let { EII_BULLET } = ::require_native("hudActionBarConst")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -28,9 +20,9 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
 ::gui_start_flight_menu_help <- function gui_start_flight_menu_help()
 {
-  if (!hasFeature("ControlsHelp"))
+  if (!::has_feature("ControlsHelp"))
   {
-    ::get_gui_scene().performDelayed(getroottable(), function() {
+    ::get_gui_scene().performDelayed(::getroottable(), function() {
       ::close_ingame_gui()
       if (::is_game_paused())
         ::pause_game(false)
@@ -178,12 +170,12 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     pageUnitTag = tab?.pageUnitTag
 
     let sheetObj = scene.findObject("help_sheet")
-    let pageBlkName = getTblValue("pageBlkName", tab, "")
+    let pageBlkName = ::getTblValue("pageBlkName", tab, "")
     if (!isEmpty(pageBlkName))
       guiScene.replaceContent(sheetObj, pageBlkName, this)
 
-    let fillFuncName = getTblValue("pageFillfuncName", tab)
-    let fillFunc = fillFuncName ? getTblValue(fillFuncName, this) : fillHelpPage
+    let fillFuncName = ::getTblValue("pageFillfuncName", tab)
+    let fillFunc = fillFuncName ? ::getTblValue(fillFuncName, this) : fillHelpPage
     fillFunc()
 
     showTabSpecificControls(tab)
@@ -198,7 +190,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
   function showTabSpecificControls(tab)
   {
-    let countryRelatedObjs = getTblValue("countryRelatedObjs", tab, null)
+    let countryRelatedObjs = ::getTblValue("countryRelatedObjs", tab, null)
     if (countryRelatedObjs != null)
     {
       local selectedCountry = ::get_profile_country_sq().slice(8)
@@ -208,15 +200,15 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
         foreach (idx, value in countryConfig)
         {
           let obj = scene.findObject(value)
-          if (checkObj(obj))
-            obj.show(isInArray(value, selectedCountryConfig))
+          if (::checkObj(obj))
+            obj.show(::isInArray(value, selectedCountryConfig))
         }
     }
   }
 
   function fillTabLinkLines(tab)
   {
-    let linkLines = getTblValue("linkLines", tab, null)
+    let linkLines = ::getTblValue("linkLines", tab, null)
     scene.findObject("link_lines_block").show(linkLines != null)
     if (linkLines == null)
       return
@@ -228,9 +220,9 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let linkLinesConfig = {
       startObjContainer = linkContainer
       endObjContainer = linkContainer
-      lineInterval = getTblValue("lineInterval", linkLines, defaultLinkLinesInterval)
+      lineInterval = ::getTblValue("lineInterval", linkLines, defaultLinkLinesInterval)
       links = linkLines?.links ?? []
-      obstacles = getTblValue("obstacles", linkLines, null)
+      obstacles = ::getTblValue("obstacles", linkLines, null)
     }
     let linesData = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
     guiScene.replaceContentFromText(scene.findObject("link_lines_block"), linesData, linesData.len(), this)
@@ -252,11 +244,11 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let backImg = scene.findObject("help_background_image")
     local curCountry = ::get_profile_country_sq().slice(8)
     if ("hasImageByCountries" in tab)
-      curCountry = isInArray(curCountry, tab.hasImageByCountries)
+      curCountry = ::isInArray(curCountry, tab.hasImageByCountries)
                      ? curCountry
                      : tab.defaultValues.country
 
-    backImg["background-image"] = format(getTblValue("imagePattern", tab, ""), curCountry)
+    backImg["background-image"] = format(::getTblValue("imagePattern", tab, ""), curCountry)
     fillActionBars(tab)
     updatePlatformControls()
   }
@@ -271,7 +263,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let item = shortcutsAxisListModule[id]
     {
       if ("symbol" in item)
-        modifierSymbols[id] <- colorize("axisSymbolColor", loc(item.symbol) + loc("ui/colon"))
+        modifierSymbols[id] <- ::colorize("axisSymbolColor", ::loc(item.symbol) + ::loc("ui/colon"))
       return modifierSymbols[id]
     }
 
@@ -304,7 +296,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
       if (isHeader)
       {
-        scTextFull.append([colorize("activeTextColor", loc("hotkeys/" + name))])
+        scTextFull.append([::colorize("activeTextColor", ::loc("hotkeys/" + name))])
       }
       else
       {
@@ -338,7 +330,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
             text;
         }
 
-        scText = loc((isAxis? "controls/":"hotkeys/") + name) + loc("ui/colon") + scText
+        scText = ::loc((isAxis? "controls/":"hotkeys/") + name) + ::loc("ui/colon") + scText
 
         foreach(btnName, isMain in btnList)
           if (btnName in tipTexts)
@@ -381,19 +373,19 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       }
       else
       {
-        log("tipObj = " + objId + " not found in the scene!")
-        debugTableData(btn)
+        ::dagor.debug("tipObj = " + objId + " not found in the scene!")
+        ::debugTableData(btn)
       }
     }
   }
 
   function remapKeyboardKeysByLang()
   {
-    let map = getTblValue(::g_language.getLanguageName(), kbdKeysRemapByLang)
+    let map = ::getTblValue(::g_language.getLanguageName(), kbdKeysRemapByLang)
     if (!map)
       return
     let kbdObj = scene.findObject("keyboard_div")
-    if (!checkObj(kbdObj))
+    if (!::checkObj(kbdObj))
       return
 
     let replaceData = {}
@@ -402,7 +394,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       let textObj = kbdObj.findObject(val)
       replaceData[val] <- {
         obj = kbdObj.findObject(key)
-        text = (checkObj(textObj) && textObj.text) || val
+        text = (::checkObj(textObj) && textObj.text) || val
       }
     }
     foreach(id, data in replaceData)
@@ -452,7 +444,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     foreach(name, val in gamepadIcons.fullIconsList)
     {
       let obj = scene.findObject("ctrl_img_" + name)
-      if (checkObj(obj))
+      if (::check_obj(obj))
         obj["background-image"] = gamepadIcons.getTexture(name)
     }
   }
@@ -513,7 +505,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
           continue
 
         foreach(idx, devId in itemButton.dev)
-          if (devId == JOYSTICK_DEVICE_0_ID)
+          if (devId == ::JOYSTICK_DEVICE_0_ID)
           {
             let btnId = itemButton.btn[idx]
             if (!(btnId in joystickButtons))
@@ -533,7 +525,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
         continue
 
       let tObj = scene.findObject("joy_" + idSuffix)
-      if (checkObj(tObj))
+      if (::checkObj(tObj))
       {
         local title = ""
         local tooltip = ""
@@ -552,13 +544,13 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
           {
             let actionId = actions[a]
 
-            local shText = loc("hotkeys/" + actionId)
-            if (getTblValue(actionId, customLocalization, null))
-              shText = loc(customLocalization[actionId])
+            local shText = ::loc("hotkeys/" + actionId)
+            if (::getTblValue(actionId, customLocalization, null))
+              shText = ::loc(customLocalization[actionId])
 
             if (titlesCount < maxActionsInTitle)
             {
-              title += (title.len()? (loc("ui/semicolon") + "\n"): "") + shText
+              title += (title.len()? (::loc("ui/semicolon") + "\n"): "") + shText
               titlesCount++
             }
 
@@ -566,8 +558,8 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
           }
         }
         title = title.len()? title : "---"
-        tooltip = tooltip.len()? tooltip : loc("controls/unmapped")
-        tooltip = loc("controls/help/press") + loc("ui/colon") + "\n" + tooltip
+        tooltip = tooltip.len()? tooltip : ::loc("controls/unmapped")
+        tooltip = ::loc("controls/help/press") + ::loc("ui/colon") + "\n" + tooltip
         tObj.setValue(title)
         tObj.tooltip = tooltip
       }
@@ -576,30 +568,30 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     foreach (axis in axisIds)
     {
       let tObj = scene.findObject(axis.id)
-      if (checkObj(tObj))
+      if (::checkObj(tObj))
       {
         let actionsX = (axis.x < joystickAxis.len() && joystickAxis[axis.x])? joystickAxis[axis.x] : []
         let actionsY = (axis.y < joystickAxis.len() && joystickAxis[axis.y])? joystickAxis[axis.y] : []
 
         let actionIdX = actionsX.len()? actionsX[0] : null
         let isIgnoredX = actionIdX && isInArray(actionIdX, ignoreAxis)
-        let titleX = (actionIdX && !isIgnoredX)? loc("controls/" + actionIdX) : "---"
+        let titleX = (actionIdX && !isIgnoredX)? ::loc("controls/" + actionIdX) : "---"
 
         let actionIdY = actionsY.len()? actionsY[0] : null
         let isIgnoredY = actionIdY && isInArray(actionIdY, ignoreAxis)
-        let titleY = (actionIdY && !isIgnoredY)? loc("controls/" + actionIdY) : "---"
+        let titleY = (actionIdY && !isIgnoredY)? ::loc("controls/" + actionIdY) : "---"
 
         local tooltipX = ""
         for (local a=0; a<actionsX.len(); a++)
-          tooltipX += (tooltipX.len()? "\n" : "") + bullet + loc("controls/" + actionsX[a])
-        tooltipX = tooltipX.len()? tooltipX : loc("controls/unmapped")
-        tooltipX = loc("controls/help/mouse_aim_x") + loc("ui/colon") + "\n" + tooltipX
+          tooltipX += (tooltipX.len()? "\n" : "") + bullet + ::loc("controls/" + actionsX[a])
+        tooltipX = tooltipX.len()? tooltipX : ::loc("controls/unmapped")
+        tooltipX = ::loc("controls/help/mouse_aim_x") + ::loc("ui/colon") + "\n" + tooltipX
 
         local tooltipY = ""
         for (local a=0; a<actionsY.len(); a++)
-          tooltipY += (tooltipY.len()? "\n" : "") + bullet + loc("controls/" + actionsY[a])
-        tooltipY = tooltipY.len()? tooltipY : loc("controls/unmapped")
-        tooltipY = loc("controls/help/mouse_aim_y") + loc("ui/colon") + "\n" + tooltipY
+          tooltipY += (tooltipY.len()? "\n" : "") + bullet + ::loc("controls/" + actionsY[a])
+        tooltipY = tooltipY.len()? tooltipY : ::loc("controls/unmapped")
+        tooltipY = ::loc("controls/help/mouse_aim_y") + ::loc("ui/colon") + "\n" + tooltipY
 
         let title = titleX + " + " + titleY
         let tooltip = tooltipX + "\n\n" + tooltipY
@@ -609,24 +601,24 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }
 
     let tObj = scene.findObject("joy_btn_share")
-    if (checkObj(tObj))
+    if (::checkObj(tObj))
     {
-      let title = loc(helpMarkup.btnBackLocId)
+      let title = ::loc(helpMarkup.btnBackLocId)
       tObj.setValue(title)
-      tObj.tooltip = loc("controls/help/press") + loc("ui/colon") + "\n" + title
+      tObj.tooltip = ::loc("controls/help/press") + ::loc("ui/colon") + "\n" + title
     }
 
     let mouseObj = scene.findObject("joy_mouse")
-    if (checkObj(mouseObj))
+    if (::checkObj(mouseObj))
     {
       let mouse_aim_x = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_x" : "controls/gm_mouse_aim_x"
       let mouse_aim_y = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_y" : "controls/gm_mouse_aim_y"
 
-      let titleX = loc(mouse_aim_x)
-      let titleY = loc(mouse_aim_y)
+      let titleX = ::loc(mouse_aim_x)
+      let titleY = ::loc(mouse_aim_y)
       let title = titleX + " + " + titleY
-      let tooltipX = loc("controls/help/mouse_aim_x") + loc("ui/colon") + "\n" + loc(mouse_aim_x)
-      let tooltipY = loc("controls/help/mouse_aim_y") + loc("ui/colon") + "\n" + loc(mouse_aim_y)
+      let tooltipX = ::loc("controls/help/mouse_aim_x") + ::loc("ui/colon") + "\n" + ::loc(mouse_aim_x)
+      let tooltipY = ::loc("controls/help/mouse_aim_y") + ::loc("ui/colon") + "\n" + ::loc(mouse_aim_y)
       let tooltip = tooltipX + "\n\n" + tooltipY
       mouseObj.setValue(title)
       mouseObj.tooltip = tooltip
@@ -639,7 +631,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     if (!tab)
       return
 
-    let frameForHideIds = getTblValue("defaultControlsIds", tab, [])
+    let frameForHideIds = ::getTblValue("defaultControlsIds", tab, [])
     foreach (item in frameForHideIds)
       if ("frameId" in item)
         scene.findObject(item.frameId).show(isDefaultControls)
@@ -653,12 +645,12 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }
     foreach (item in frameForHideIds)
     {
-      let shortcutId = getTblValue("shortcut", item)
+      let shortcutId = ::getTblValue("shortcut", item)
       if (!shortcutId)
         continue
 
       let rowData = {
-        text = loc("controls/help/"+shortcutId+"_0")
+        text = ::loc("controls/help/"+shortcutId+"_0")
         shortcutMarkup = ::g_shortcut_type.getShortcutMarkup(shortcutId, preset)
       }
       view.rows.append(rowData)
@@ -695,7 +687,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     guiScene.replaceContent(sheetObj, misHelpBlkPath, this)
 
     let airCaptureZoneDescTextObj = scene.findObject("air_capture_zone_desc")
-    if (checkObj(airCaptureZoneDescTextObj))
+    if (::checkObj(airCaptureZoneDescTextObj))
     {
       local altitudeBottom = 0
       local altitudeTop = 0
@@ -719,10 +711,10 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
       if (altitudeBottom && altitudeTop)
       {
-        airCaptureZoneDescTextObj.setValue(loc("hints/tutorial_newbie/air_domination/air_capture_zone") + " " +
-          loc("hints/tutorial_newbie/air_domination/air_capture_zone/altitudes", {
-          altitudeBottom = colorize("userlogColoredText", altitudeBottom),
-          altitudeTop = colorize("userlogColoredText", altitudeTop)
+        airCaptureZoneDescTextObj.setValue(::loc("hints/tutorial_newbie/air_domination/air_capture_zone") + " " +
+          ::loc("hints/tutorial_newbie/air_domination/air_capture_zone/altitudes", {
+          altitudeBottom = ::colorize("userlogColoredText", altitudeBottom),
+          altitudeTop = ::colorize("userlogColoredText", altitudeTop)
           }))
       }
     }
@@ -731,10 +723,10 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
   function fillHotas4Image()
   {
     let imgObj = scene.findObject("image")
-    if (!checkObj(imgObj))
+    if (!::checkObj(imgObj))
       return
 
-    imgObj["background-image"] = loc("thrustmaster_tflight_hotas_4_controls_image", "")
+    imgObj["background-image"] = ::loc("thrustmaster_tflight_hotas_4_controls_image", "")
   }
 
   function afterModalDestroy()
@@ -753,7 +745,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     {
       let obj = scene.findObject(actionBar?.nest)
       let actionBarItems = actionBar?.items ?? []
-      if (!checkObj(obj) || !actionBarItems.len())
+      if (!::check_obj(obj) || !actionBarItems.len())
         continue
 
       let items = []

@@ -1,11 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let promoButtonsConfig = {}
 
-let addPromoButtonConfig = kwarg(function addPromoButtonConfig(promoButtonId, buttonType = null, getText = null,
+let addPromoButtonConfig = ::kwarg(function addPromoButtonConfig(promoButtonId, buttonType = null, getText = null,
   collapsedIcon = null, collapsedText = null, needUpdateByTimer = false, getCustomSeenId = null,
   updateFunctionInHandler = null, updateByEvents = null, image = null, aspect_ratio = null)
 {

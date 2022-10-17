@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let time = require("%scripts/time.nut")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let DataBlock = require("DataBlock")
@@ -106,13 +97,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
   function requestEntries()
   {
     showWaitAnimation(true)
-    let cb = Callback(onReceivedSaveDataListing, this)
+    let cb = ::Callback(onReceivedSaveDataListing, this)
     getSaveDataContents(@(blk) cb(blk))
   }
 
   function updateSortingList() {
     let obj = scene.findObject("sorting_block_bg")
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let curVal = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
@@ -121,7 +112,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
       btnName = "RB"
       funcName = "onChangeSortParam"
       values = sortParams.map(@(p, idx) {
-        text = "{0} ({1})".subst(loc($"items/sort/{p.id}"), loc(p.asc? "items/sort/ascending" : "items/sort/descending"))
+        text = "{0} ({1})".subst(::loc($"items/sort/{p.id}"), ::loc(p.asc? "items/sort/ascending" : "items/sort/descending"))
         isSelected = curVal == idx
       })
     }
@@ -299,13 +290,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!curEntry)
       return
 
-    log("SAVE DIALOG: onBtnDelete for entry")
-    debugTableData(curEntry)
+    ::dagor.debug("SAVE DIALOG: onBtnDelete for entry")
+    ::debugTableData(curEntry)
 
     ::scene_msg_box("savedata_delete_msg_box",
                     null,
-                    loc("save/confirmDelete", {name=curEntry.comment}),
-                    [["yes", Callback(@() doDelete(curEntry), this)], ["no", function(){}]],
+                    ::loc("save/confirmDelete", {name=curEntry.comment}),
+                    [["yes", ::Callback(@() doDelete(curEntry), this)], ["no", function(){}]],
                     "no",
                     { cancel_fn = @() null })
   }
@@ -315,13 +306,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     let entryName = getObj("file_name").getValue()
     if (entryName == "")
     {
-      ::showInfoMsgBox(loc("save/saveNameMissing"))
+      ::showInfoMsgBox(::loc("save/saveNameMissing"))
       return
     }
 
     let entry = getExistEntry(entryName) || createEntry(entryName)
-    log("SAVE DIALOG: onBtnSave for entry:")
-    debugTableData(entry)
+    ::dagor.debug("SAVE DIALOG: onBtnSave for entry:")
+    ::debugTableData(entry)
 
     if (entry.path == "")
       doSave(entry)
@@ -343,8 +334,8 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!selectedEntry)
       return
 
-    log("SAVE DIALOG: onBtnRewrite for entry:")
-    debugTableData(selectedEntry)
+    ::dagor.debug("SAVE DIALOG: onBtnRewrite for entry:")
+    ::debugTableData(selectedEntry)
     doRewrite(selectedEntry)
   }
 
@@ -352,9 +343,9 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
   {
     ::scene_msg_box("savedata_overwrite_msg_box",
       null,
-      loc("save/confirmOverwrite", {name=entry.comment}),
+      ::loc("save/confirmOverwrite", {name=entry.comment}),
       [
-        ["yes", Callback(@() doSave(entry), this)],
+        ["yes", ::Callback(@() doSave(entry), this)],
         ["no", @() null]
       ],
       "no",
@@ -367,13 +358,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!curEntry)
       return
 
-    log("SAVE DIALOG: onBtnLoad for entry:")
-    debugTableData(curEntry)
+    ::dagor.debug("SAVE DIALOG: onBtnLoad for entry:")
+    ::debugTableData(curEntry)
 
     ::scene_msg_box("savedata_confirm_load_msg_box",
                     null,
-                    loc("save/confirmLoad", {name=curEntry.comment}),
-                    [["yes", Callback(@() doLoad(curEntry), this)], ["no", function(){}]],
+                    ::loc("save/confirmLoad", {name=curEntry.comment}),
+                    [["yes", ::Callback(@() doLoad(curEntry), this)], ["no", function(){}]],
                     "no",
                     { cancel_fn = @() null })
   }

@@ -1,17 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
-let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 let function fillItemTable(item, holderObj)
 {
   let containerObj = holderObj.findObject("item_table_container")
-  if (!checkObj(containerObj))
+  if (!::checkObj(containerObj))
     return false
 
   let tableData = item && item?.getTableData ? item.getTableData() : null
@@ -25,20 +19,20 @@ let function fillItemTable(item, holderObj)
 
 let function fillItemTableInfo(item, holderObj)
 {
-  if (!checkObj(holderObj))
+  if (!::check_obj(holderObj))
     return
 
   local hasItemAdditionalDescTable = fillItemTable(item, holderObj)
 
   local obj = holderObj.findObject("item_desc_above_table")
   local text = item?.getDescriptionAboveTable() ?? ""
-  if (checkObj(obj))
+  if (::check_obj(obj))
     obj.setValue(text)
   hasItemAdditionalDescTable = hasItemAdditionalDescTable || text != ""
 
   obj = holderObj.findObject("item_desc_under_table")
   text = item?.getDescriptionUnderTable() ?? ""
-  if (checkObj(obj))
+  if (::check_obj(obj))
     obj.setValue(text)
   hasItemAdditionalDescTable = hasItemAdditionalDescTable || text != ""
 
@@ -82,15 +76,15 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   item = item?.getSubstitutionItem() ?? item
 
   local obj = holderObj.findObject("item_name")
-  if (checkObj(obj))
+  if (::checkObj(obj))
     obj.setValue(item? item.getDescriptionTitle() : "")
 
   let addDescObj = holderObj.findObject("item_desc_under_title")
-  if (checkObj(addDescObj))
+  if (::checkObj(addDescObj))
     addDescObj.setValue(item?.getDescriptionUnderTitle?() ?? "")
 
   let helpObj = holderObj.findObject("item_type_help")
-  if (checkObj(helpObj))
+  if (::checkObj(helpObj))
   {
     let helpText = item && item?.getItemTypeDescription? item.getItemTypeDescription() : ""
     helpObj.tooltip = helpText
@@ -121,7 +115,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   }
 
   obj = holderObj.findObject("item_desc_div")
-  if (checkObj(obj))
+  if (::checkObj(obj))
   {
     let longdescMarkup = (preferMarkup && item?.getLongDescriptionMarkup)
       ? item.getLongDescriptionMarkup((params ?? {}).__merge({ shopDesc = shopDesc })) : ""
@@ -132,7 +126,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   }
 
   obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc_under_div" : "item_desc")
-  if (checkObj(obj))
+  if (::checkObj(obj))
     obj.setValue("")
 
   fillItemTableInfo(item, holderObj)
@@ -156,7 +150,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
 
       let timerObj = holderObj.findObject(timerData.id)
       let tData = timerData
-      if (checkObj(timerObj))
+      if (::check_obj(timerObj))
         SecondsUpdater(timerObj, function(tObj, params)
         {
           tObj.setValue(tData.getText.call(item))
@@ -171,7 +165,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
     return ""
 
   let getColoredNumByType = (@(effectType) function(num) {
-    return "".concat(colorize("activeTextColor", $"+{num.tointeger()}%"), effectType.currencyMark)
+    return "".concat(::colorize("activeTextColor", $"+{num.tointeger()}%"), effectType.currencyMark)
   })(effectType)
 
   let separateBoosters = []
@@ -180,7 +174,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
   foreach(booster in boostersArray)
   {
     if (booster.showBoosterInSeparateList)
-      separateBoosters.append($"{booster.getName()}{loc("ui/colon")}{booster.getEffectDesc(true, effectType)}")
+      separateBoosters.append($"{booster.getName()}{::loc("ui/colon")}{booster.getEffectDesc(true, effectType)}")
     else
       itemsArray.append(booster)
   }
@@ -191,7 +185,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
   let detailedDescription = []
   for (local i = 0; i <= sortedItemsTable.maxSortOrder; i++)
   {
-    let arraysList = getTblValue(i, sortedItemsTable)
+    let arraysList = ::getTblValue(i, sortedItemsTable)
     if (!arraysList || arraysList.len() == 0)
       continue
 
@@ -218,14 +212,14 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
       let personal = arr[0].personal
       let boostNum = personal? personalTotal : publicTotal
 
-      header = arr[0].eventConditions
-        ? getFullUnlockCondsDescInline(arr[0].eventConditions)
-        : loc("mainmenu/boosterType/common")
+      header = ::loc("mainmenu/boosterType/common")
+      if (arr[0].eventConditions)
+        header = ::UnlockConditions.getConditionsText(arr[0].eventConditions, null, null, { inlineText = true })
 
-      local subHeader = "".concat("* ", loc($"mainmenu/booster/{arrayName}"))
+      local subHeader = "".concat("* ", ::loc($"mainmenu/booster/{arrayName}"))
       if (isBothBoosterTypesAvailable)
       {
-        subHeader += loc("ui/colon")
+        subHeader += ::loc("ui/colon")
         subHeader += getColoredNumByType(boostNum)
       }
 
@@ -239,12 +233,12 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
         let effNew = personal? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
 
         local string = arr.len() == 1 ? "" : $"{idx+1}) "
-        string = $"{string}{item.getEffectDesc(false)}{loc("ui/comma")}"
-        string = $"{string}{loc("items/booster/giveRealBonus", {realBonus = getColoredNumByType(format("%.02f", effNew - effOld).tofloat())})}"
-        string = $"{string}{idx == arr.len()-1 ? loc("ui/dot") : loc("ui/semicolon")}"
+        string = $"{string}{item.getEffectDesc(false)}{::loc("ui/comma")}"
+        string = $"{string}{::loc("items/booster/giveRealBonus", {realBonus = getColoredNumByType(format("%.02f", effNew - effOld).tofloat())})}"
+        string = $"{string}{idx == arr.len()-1 ? ::loc("ui/dot") : ::loc("ui/semicolon")}"
 
         if (selectedItem != null && selectedItem.id == item.id)
-          string = colorize("userlogColoredText", string)
+          string = ::colorize("userlogColoredText", string)
 
         detailedArray.append(string)
       }
@@ -252,7 +246,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
       if (!insertedSubHeader)
       {
         let totalBonus = publicTotal + personalTotal
-        header = $"{header}{loc("ui/colon")}{getColoredNumByType(totalBonus)}"
+        header = $"{header}{::loc("ui/colon")}{getColoredNumByType(totalBonus)}"
         detailedArray.insert(0, header)
         insertedSubHeader = true
       }
@@ -260,7 +254,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
     detailedDescription.append(::g_string.implode(detailedArray, "\n"))
   }
 
-  let description = $"{loc("mainmenu/boostersTooltip", effectType)}{loc("ui/colon")}\n"
+  let description = $"{::loc("mainmenu/boostersTooltip", effectType)}{::loc("ui/colon")}\n"
   return $"{description}{::g_string.implode(separateBoosters, "\n")}{::g_string.implode(detailedDescription, "\n\n")}"
 }
 

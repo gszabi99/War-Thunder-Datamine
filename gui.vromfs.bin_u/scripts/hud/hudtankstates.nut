@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let hudTankStates = require("hudTankStates")
 let { hudTankMovementStatesVisible } = require("%scripts/hud/hudConfigByGame.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
@@ -45,7 +38,7 @@ let tankStatesByObjId = {
   gear = {
     objName = "gear"
     orderView = ORDER.GEAR
-    getLocName = @() loc("HUD/GEAR_SHORT")
+    getLocName = @() ::loc("HUD/GEAR_SHORT")
     updateConfigs = [{
       watch = hudTankStates.getGearObservable()
       updateObj = @(obj, value) obj.findObject("state_value").setValue(value)
@@ -54,7 +47,7 @@ let tankStatesByObjId = {
   rpm = {
     objName = "rpm"
     orderView = ORDER.RPM
-    getLocName = @() loc("HUD/RPM_SHORT")
+    getLocName = @() ::loc("HUD/RPM_SHORT")
     updateConfigs = [{
       watch =  hudTankStates.getRpmObservable()
       updateObj = @(obj, value) obj.findObject("state_value").setValue(value.tostring())
@@ -63,7 +56,7 @@ let tankStatesByObjId = {
   speed = {
     objName = "speed"
     orderView = ORDER.SPEED
-    getLocName = @() loc("HUD/REAL_SPEED_SHORT")
+    getLocName = @() ::loc("HUD/REAL_SPEED_SHORT")
     updateConfigs = [{
         watch = hudTankStates.getSpeedObservable()
         updateObj = @(obj, value) obj.findObject("state_value").setValue(
@@ -87,7 +80,7 @@ let tankStatesByObjId = {
   cruise_control = {
     objName = "cruise_control"
     orderView = ORDER.CRUISE_CONTROL
-    getLocName = @() loc("HUD/CRUISE_CONTROL_SHORT")
+    getLocName = @() ::loc("HUD/CRUISE_CONTROL_SHORT")
     updateConfigs = [{
       watch = hudTankStates.getCruiseControl()
       isVisible = @(value) value != ""
@@ -110,7 +103,7 @@ let tankStatesByObjId = {
 
 let function updateState(obj, watchConfig, value) {
   let isVisible = watchConfig?.isVisible(value) ?? true
-  if (!checkObj(obj))
+  if (!::check_obj(obj))
     return
   obj.show(isVisible)
   if (!isVisible)
@@ -162,7 +155,7 @@ let function getMovementViewArray() {
 
 let function showHudTankMovementStates(scene) {
   let movementStatesObj = scene.findObject("hud_movement_info")
-  if (!checkObj(movementStatesObj))
+  if (!::check_obj(movementStatesObj))
     return
 
   let blk = ::handyman.renderCached("%gui/hud/hudTankMovementInfo", {tankStates = getMovementViewArray()})

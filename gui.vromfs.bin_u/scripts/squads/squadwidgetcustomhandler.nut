@@ -1,30 +1,17 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let platformModule = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
-let function getSquadLeaderOperation() {
-  if (!::is_worldwar_enabled() || !::g_squad_manager.isSquadMember())
-    return null
-
-  let operationId = ::g_squad_manager.getWwOperationId()
-  return operationId >= 0 ? ::g_ww_global_status_actions.getOperationById(operationId) : null
-}
+let isWorldWarBtnShow = @() ::is_worldwar_enabled() && ::g_squad_manager.isInSquad()
+  && !::g_squad_manager.isSquadLeader() && ::g_squad_manager.getWwOperationId() > 0
 
 ::init_squad_widget_handler <- function init_squad_widget_handler(nestObj)
 {
-  if (!hasFeature("Squad") || !hasFeature("SquadWidget") || !checkObj(nestObj))
+  if (!::has_feature("Squad") || !::has_feature("SquadWidget") || !::checkObj(nestObj))
     return null
   return ::handlersManager.loadCustomHandler(::gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
 }
@@ -44,15 +31,13 @@ let function getSquadLeaderOperation() {
 
   function getSceneTplView()
   {
-    let readyText = loc("mainmenu/btnReady")
-    let notReadyText = loc("multiplayer/btnNotReady")
+    let readyText = ::loc("mainmenu/btnReady")
+    let notReadyText = ::loc("multiplayer/btnNotReady")
     let readyTextWidth = daguiFonts.getStringWidthPx(readyText, "fontNormal", guiScene)
     let notReadyTextWidth = daguiFonts.getStringWidthPx(notReadyText, "fontNormal", guiScene)
-    let squadLeaderOperationId = getSquadLeaderOperation()?.id
     let view = {
       readyBtnHiddenText = readyTextWidth > notReadyTextWidth ? readyText : notReadyText
-      isWorldWarShow = squadLeaderOperationId != null
-        && squadLeaderOperationId != ::ww_get_operation_id()
+      isWorldWarShow = isWorldWarBtnShow()
       members = []
     }
 
@@ -96,7 +81,7 @@ let function getSquadLeaderOperation() {
     let indexStr = mebmerObjIndex.tostring()
     let isVisible = member != null
     let memberObj = this.showSceneBtn("member_" + indexStr, isVisible)
-    if (!isVisible || !checkObj(memberObj))
+    if (!isVisible || !::checkObj(memberObj))
       return
 
     this.showSceneBtn("member_waiting_" + indexStr, !member.isActualData())
@@ -112,11 +97,11 @@ let function getSquadLeaderOperation() {
     {
       let contact = ::getContact(member.uid)
       local countryIcon = ""
-      if (::checkCountry(member.country, "squad member data ( uid = " + member.uid + ")", true))
+      if (checkCountry(member.country, "squad member data ( uid = " + member.uid + ")", true))
         countryIcon = ::get_country_icon(member.country)
 
       let status = ::g_squad_manager.getPlayerStatusInMySquad(member.uid)
-      memberObj["status"] = getTblValue(status, squadStateToString, "")
+      memberObj["status"] = ::getTblValue(status, squadStateToString, "")
       memberObj.findObject("member_country_" + indexStr)["background-image"] = countryIcon
 
       let memberVoipObj = memberObj.findObject("member_voip_" + indexStr)
@@ -147,23 +132,21 @@ let function getSquadLeaderOperation() {
 
     this.showSceneBtn("txt_squad_title", ::g_squad_manager.canManageSquad()
       && ::g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE)
-    let squadLeaderOperation = getSquadLeaderOperation()
-    let btnSquadReady = this.showSceneBtn("btn_squad_ready",
-      ::g_squad_manager.canSwitchReadyness() && !squadLeaderOperation)
+    let btnSquadReady = this.showSceneBtn("btn_squad_ready", ::g_squad_manager.canSwitchReadyness())
     btnSquadReady.findObject("text").setValue(
-      loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
+      ::loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
 
     this.showSceneBtn("btn_squadInvites", ::gui_handlers.squadInviteListWnd.canOpen())
     updateVisibleNewApplications()
 
     let btnSquadLeave = this.showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
-    btnSquadLeave.tooltip = loc("squadAction/leave")
-
-    let wwBtnObj = this.showSceneBtn("btn_world_war",
-      squadLeaderOperation && squadLeaderOperation.id != ::ww_get_operation_id())
-    if (wwBtnObj?.isValid())
-      wwBtnObj.tooltip = "".concat(loc("worldwar/squadLeaderInOperation"), " ",
-        loc("ui/quotes", { text = squadLeaderOperation?.getNameText() ?? ""}))
+    btnSquadLeave.tooltip = ::loc("squadAction/leave")
+    let wwBtnObj = this.showSceneBtn("btn_world_war", isWorldWarBtnShow())
+    if (wwBtnObj?.isValid()) {
+      let operation = getOperationById(::g_squad_manager.getWwOperationId().tointeger())
+      wwBtnObj.tooltip = "".concat(::loc("worldwar/squadLeaderInOperation"), " ",
+        ::loc("ui/quotes", { text = operation ? operation.getNameText() : ""}))
+    }
 
     scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
   }
@@ -175,7 +158,7 @@ let function getSquadLeaderOperation() {
 
   function onSquadPlus()
   {
-    if (is_platform_xbox && !hasFeature("SquadInviteIngame"))
+    if (::is_platform_xbox && !::has_feature("SquadInviteIngame"))
     {
       ::xbox_show_invite_window()
       return
@@ -184,14 +167,14 @@ let function getSquadLeaderOperation() {
     ::open_search_squad_player()
   }
 
-  function onSquadReady() {
-    if (::ww_get_operation_id() < 0)
-      ::g_squad_manager.setReadyFlag()
+  function onSquadReady()
+  {
+    ::g_squad_manager.setReadyFlag()
   }
 
   function onSquadInvitesClick(obj)
   {
-    if (checkObj(obj))
+    if (::checkObj(obj))
       ::gui_handlers.squadInviteListWnd.open(obj.findObject("invite_widget"))
   }
 
@@ -200,7 +183,7 @@ let function getSquadLeaderOperation() {
     if (!::g_squad_manager.isInSquad())
       return
 
-    this.msgBox("leave_squad", loc("squad/ask/leave"),
+    this.msgBox("leave_squad", ::loc("squad/ask/leave"),
       [
         ["yes", function() {
           ::g_squad_manager.leaveSquad()
@@ -218,7 +201,7 @@ let function getSquadLeaderOperation() {
   function updateVisibleNewApplications()
   {
     let objGlow = scene.findObject("iconGlow")
-    if (checkObj(objGlow))
+    if (::check_obj(objGlow))
       objGlow.wink = (::gui_handlers.squadInviteListWnd.canOpen() &&
         ::g_squad_manager.hasNewApplication) ? "yes" : "no"
   }
@@ -256,7 +239,7 @@ let function getSquadLeaderOperation() {
 
   function onEventVoiceChatStatusUpdated(params)
   {
-    let uid = getTblValue("uid", params, "")
+    let uid = ::getTblValue("uid", params, "")
     if (::g_squad_manager.getMemberData(uid) == null)
       return
 
@@ -274,10 +257,8 @@ let function getSquadLeaderOperation() {
   }
 
   function onWorldWar() {
-    let squadLeaderOperationId = getSquadLeaderOperation()?.id
-    if (squadLeaderOperationId == null || squadLeaderOperationId == ::ww_get_operation_id())
-      return
-
-    this.guiScene.performDelayed(this, @()::g_world_war.joinOperationById(squadLeaderOperationId))
+    let operationId = ::g_squad_manager.getWwOperationId()
+    if (operationId >= 0)
+      ::g_world_war.joinOperationById(operationId.tointeger())
   }
 }

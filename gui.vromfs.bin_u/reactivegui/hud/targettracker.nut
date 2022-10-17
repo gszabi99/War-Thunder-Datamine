@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {
   HasTargetTracker,
   IsSightLocked,
@@ -147,7 +145,7 @@ let targetSize = @(colorWatched, width, height, is_static_pos) function() {
 }
 
 let targetSizeTrigger = {}
-TargetAge.subscribe(@(v) v >= 0.2 ? anim_start(targetSizeTrigger) : anim_request_stop(targetSizeTrigger))
+TargetAge.subscribe(@(v) v >= 0.2 ? ::anim_start(targetSizeTrigger) : ::anim_request_stop(targetSizeTrigger))
 
 let function targetSizeComponent(
   colorWatched,

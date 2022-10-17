@@ -1,13 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 
-let function getEnumValName(strEnumName, value, skipSynonyms=false) {
-  assert(typeof(strEnumName) == "string", "strEnumName must be enum name as a string")
+::getEnumValName <- function getEnumValName(strEnumName, value, skipSynonyms=false)
+{
+  ::dagor.assertf(typeof(strEnumName) == "string", "strEnumName must be enum name as a string")
   let constants = getconsttable()
   let enumTable = (strEnumName in constants) ? constants[strEnumName] : {}
   local name = ""
@@ -20,9 +16,10 @@ let function getEnumValName(strEnumName, value, skipSynonyms=false) {
   return name
 }
 
-let function bitMaskToSstring(strEnumName, mask) {
-  assert(typeof(strEnumName) == "string", "strEnumName must be enum name as a string")
-  let enumTable = getconsttable()?[strEnumName] ?? {}
+::bit_mask_to_string <- function bit_mask_to_string(strEnumName, mask)
+{
+  ::dagor.assertf(typeof(strEnumName) == "string", "strEnumName must be enum name as a string")
+  let enumTable = ::getconsttable()?[strEnumName] ?? {}
   local res = ""
   foreach (constName, constVal in enumTable)
     if (stdMath.number_of_set_bits(constVal) == 1 && (constVal & mask))
@@ -31,9 +28,4 @@ let function bitMaskToSstring(strEnumName, mask) {
       mask = mask & ~constVal //ignore duplicates
     }
   return res
-}
-
-return {
-  getEnumValName
-  bitMaskToSstring
 }

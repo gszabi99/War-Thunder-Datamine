@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let WwGlobalBattle = require("%scripts/worldWar/operations/model/wwGlobalBattle.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 
@@ -71,8 +64,8 @@ local GlobalBattlesList = class
     isInUpdate = true
     lastRequestTimeMsec = ::dagor.getCurTime()
 
-    let cb = Callback(requestListCb, this)
-    let errorCb = Callback(requestError, this)
+    let cb = ::Callback(requestListCb, this)
+    let errorCb = ::Callback(requestError, this)
 
     ::g_tasker.charRequestJson("cln_ww_get_active_battles", ::DataBlock(), null, cb, errorCb)
     return true

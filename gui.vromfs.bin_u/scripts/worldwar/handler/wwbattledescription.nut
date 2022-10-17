@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let wwHelpSlotbarGroupsModal = require("%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut")
@@ -78,13 +69,13 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       if (!battle.isStillInOperation())
       {
         battle = ::WwBattle()
-        ::g_popups.add("", loc("worldwar/battle_finished"),
+        ::g_popups.add("", ::loc("worldwar/battle_finished"),
           null, null, null, "battle_finished")
       }
       else if (battle.isAutoBattle())
       {
         battle = ::WwBattle()
-        ::g_popups.add("", loc("worldwar/battleIsInAutoMode"),
+        ::g_popups.add("", ::loc("worldwar/battleIsInAutoMode"),
           null, null, null, "battle_in_auto_mode")
       }
     }
@@ -125,7 +116,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     initSquadList()
 
     let timerObj = scene.findObject("update_timer")
-    if (checkObj(timerObj))
+    if (::check_obj(timerObj))
       timerObj.setUserData(this)
 
     requestQueuesData()
@@ -134,7 +125,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function initQueueInfo()
   {
     let queueInfoObj = scene.findObject("queue_info")
-    if (!checkObj(queueInfoObj))
+    if (!::check_obj(queueInfoObj))
       return
 
     let handler = ::handlersManager.loadHandler(::gui_handlers.WwQueueInfo,
@@ -166,7 +157,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function initSquadList()
   {
     let squadInfoObj = scene.findObject("squad_info")
-    if (!checkObj(squadInfoObj))
+    if (!::check_obj(squadInfoObj))
       return
 
     let handler = ::handlersManager.loadHandler(::gui_handlers.WwSquadList,
@@ -243,16 +234,16 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function updateTitle()
   {
     let titleTextObj = scene.findObject("battle_description_frame_text")
-    if (!checkObj(titleTextObj))
+    if (!::check_obj(titleTextObj))
       return
 
     titleTextObj.setValue(currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST ?
-      getTitleText() : loc("worldwar/prepare_battle"))
+      getTitleText() : ::loc("worldwar/prepare_battle"))
   }
 
   function getTitleText()
   {
-    return loc("userlog/page/battle")
+    return ::loc("userlog/page/battle")
   }
 
   function updateDurationTimer()
@@ -334,7 +325,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     foreach(item in view.items)
     {
       let sectorNameTxtObj = scene.findObject("mission_item_prefix_text_" + item.id)
-      if (checkObj(sectorNameTxtObj))
+      if (::checkObj(sectorNameTxtObj))
       {
         sectorNameTextObjs.append(sectorNameTxtObj)
         maxSectorNameWidth = max(maxSectorNameWidth, sectorNameTxtObj.getSize()[0])
@@ -386,7 +377,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function getSelectedBattlePrefixText(battleData)
   {
     let battleView = battleData.getView()
-    let battleName = colorize("newTextColor", battleView.getShortBattleName())
+    let battleName = ::colorize("newTextColor", battleView.getShortBattleName())
     let sectorName = battleData.getSectorName()
     return battleName + (!::u.isEmpty(sectorName) ? " " + sectorName : "")
   }
@@ -401,7 +392,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       return
 
     let playerCountry = ::get_profile_country_sq()
-    let assignCountry = isInArray(playerCountry, availableCountries) ? playerCountry : availableCountries[0]
+    let assignCountry = ::isInArray(playerCountry, availableCountries) ? playerCountry : availableCountries[0]
     let playerTeam = operationBattle.getTeamBySide(side)
     ::switch_profile_country(assignCountry)
     let map = getMap()
@@ -472,7 +463,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function updateDescription()
   {
     let descrObj = scene.findObject("item_desc")
-    if (!checkObj(descrObj))
+    if (!::check_obj(descrObj))
       return
 
     let isOperationBattleLoaded = curBattleInList.id == operationBattle.id
@@ -502,14 +493,14 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     foreach(idx, teamData in teamsData)
     {
       let teamObjHeaderInfo = scene.findObject($"team_header_info_{idx}")
-      if (checkObj(teamObjHeaderInfo))
+      if (::check_obj(teamObjHeaderInfo))
       {
         let teamHeaderInfoBlk = ::handyman.renderCached(sceneTplTeamHeaderInfo, teamData)
         guiScene.replaceContentFromText(teamObjHeaderInfo, teamHeaderInfoBlk, teamHeaderInfoBlk.len(), this)
       }
 
       let teamObjPlace = scene.findObject($"team_unit_info_{idx}")
-      if (checkObj(teamObjPlace))
+      if (::check_obj(teamObjPlace))
       {
         let teamBlk = ::handyman.renderCached(sceneTplTeamRight, teamData)
         guiScene.replaceContentFromText(teamObjPlace, teamBlk, teamBlk.len(), this)
@@ -523,7 +514,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function fillOperationBackground()
   {
     let battleBgObj = scene.findObject("battle_background")
-    if (!checkObj(battleBgObj))
+    if (!::check_obj(battleBgObj))
       return
 
     battleBgObj["background-image"] = getOperationBackground()
@@ -549,7 +540,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function loadMap(playerSide)
   {
     let tacticalMapObj = scene.findObject("tactical_map_single")
-    if (!checkObj(tacticalMapObj))
+    if (!::checkObj(tacticalMapObj))
       return
 
     local misFileBlk = null
@@ -563,7 +554,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       misFileBlk.load(missionBlk.getStr("mis_file",""))
     }
     else
-      log("Error: WWar: Battle with id=" + operationBattle.id + ": not found mission info for mission " + operationBattle.missionName)
+      ::dagor.debug("Error: WWar: Battle with id=" + operationBattle.id + ": not found mission info for mission " + operationBattle.missionName)
 
     ::g_map_preview.setMapPreview(tacticalMapObj, misFileBlk)
     let playerTeam = operationBattle.getTeamBySide(playerSide)
@@ -628,8 +619,8 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     local isJoinBattleActive = true
     local isLeaveBattleActive = true
     local battleText = isJoinBattleVisible
-      ? loc("mainmenu/toBattle")
-      : loc("mainmenu/btnCancel")
+      ? ::loc("mainmenu/toBattle")
+      : ::loc("mainmenu/btnCancel")
 
     let cantJoinReasonData = operationBattle.getCantJoinReasonData(getPlayerSide(),
       ::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader())
@@ -656,8 +647,8 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
             isJoinBattleVisible = !::g_squad_manager.isMeReady()
             isLeaveBattleVisible = ::g_squad_manager.isMeReady()
             battleText = ::g_squad_manager.isMeReady()
-              ? loc("multiplayer/state/player_not_ready")
-              : loc("multiplayer/state/player_ready")
+              ? ::loc("multiplayer/state/player_not_ready")
+              : ::loc("multiplayer/state/player_ready")
           }
           else
           {
@@ -674,7 +665,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
             else if (!::g_squad_manager.readyCheck(false))
             {
               isJoinBattleActive = false
-              warningText = loc("squad/not_all_ready")
+              warningText = ::loc("squad/not_all_ready")
             }
           }
           break
@@ -685,8 +676,8 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
             isJoinBattleVisible = !::g_squad_manager.isMyCrewsReady
             isLeaveBattleVisible = ::g_squad_manager.isMyCrewsReady
             battleText = ::g_squad_manager.isMyCrewsReady
-              ? loc("multiplayer/state/player_not_ready")
-              : loc("multiplayer/state/crews_ready")
+              ? ::loc("multiplayer/state/player_not_ready")
+              : ::loc("multiplayer/state/crews_ready")
           }
           isJoinBattleActive = cantJoinReasonData.canJoin
           warningText = getWarningText(cantJoinReasonData, joinWarningData)
@@ -781,7 +772,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function updateBattleStatus(battleView)
   {
     let statusObj = scene.findObject("battle_status_text")
-    if (checkObj(statusObj))
+    if (::check_obj(statusObj))
       statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
     let needShowWinChance = battleView.needShowWinChance()
@@ -790,29 +781,29 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     {
       let winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
       let percent = battleView.getAutoBattleWinChancePercentText()
-      if (checkObj(winCahnceTextObj) && percent != "")
+      if (::check_obj(winCahnceTextObj) && percent != "")
         winCahnceTextObj.setValue(percent)
       else
         winCahnceObj.show(false)
     }
 
     let battleTimeObj = scene.findObject("battle_time_text")
-    if (checkObj(battleTimeObj) && battleView.needShowTimer())
+    if (::check_obj(battleTimeObj) && battleView.needShowTimer())
     {
       local battleTimeText = ""
       let timeStartAutoBattle = battleView.getTimeStartAutoBattle()
       if (battleView.hasBattleDurationTime())
-        battleTimeText = loc("debriefing/BattleTime") + loc("ui/colon") +
+        battleTimeText = ::loc("debriefing/BattleTime") + ::loc("ui/colon") +
           battleView.getBattleDurationTime()
       else if (battleView.hasBattleActivateLeftTime())
       {
         isSelectedBattleActive = false
-        battleTimeText = loc("worldWar/can_join_countdown") + loc("ui/colon") +
+        battleTimeText = ::loc("worldWar/can_join_countdown") + ::loc("ui/colon") +
           battleView.getBattleActivateLeftTime()
       } else if (timeStartAutoBattle != "")
       {
         isSelectedBattleActive = false
-        battleTimeText = loc("worldWar/will_start_auto_battle") + loc("ui/colon")
+        battleTimeText = ::loc("worldWar/will_start_auto_battle") + ::loc("ui/colon")
           + timeStartAutoBattle
       }
       battleTimeObj.setValue(battleTimeText)
@@ -836,7 +827,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     if (hasInfo)
     {
       let playersTextObj = scene.findObject("number_of_players")
-      if (checkObj(playersTextObj))
+      if (::check_obj(playersTextObj))
         playersTextObj.setValue(playersInfoText)
     }
   }
@@ -860,18 +851,18 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       {
         case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
           if (::g_squad_manager.isSquadLeader())
-            this.msgBox("ask_leave_squad", loc("squad/ask/cancel_fight"),
+            this.msgBox("ask_leave_squad", ::loc("squad/ask/cancel_fight"),
               [
-                ["yes", Callback(function() {
+                ["yes", ::Callback(function() {
                     ::g_squad_manager.cancelWwBattlePrepare()
                   }, this)],
                 ["no", @() null]
               ],
               "no", { cancel_fn = function() {} })
           else
-            this.msgBox("ask_leave_squad", loc("squad/ask/leave"),
+            this.msgBox("ask_leave_squad", ::loc("squad/ask/leave"),
               [
-                ["yes", Callback(function() {
+                ["yes", ::Callback(function() {
                     ::g_squad_manager.leaveSquad()
                     goBack()
                   }, this)
@@ -887,7 +878,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
 
   function onShowHelp(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let side = obj?.isPlayerSide == "yes" ?
@@ -912,7 +903,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
         {
           if (::g_squad_manager.readyCheck(false))
           {
-            if (!hasFeature("WorldWarSquadInfo"))
+            if (!::has_feature("WorldWarSquadInfo"))
               tryToJoin(side)
             else
             {
@@ -929,7 +920,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
             if (!canGatherAllSquadMembersForBattle(cantJoinReasonData))
               ::showInfoMsgBox(cantJoinReasonData.fullReasonText)
             else
-              ::showInfoMsgBox(loc("squad/not_all_ready"))
+              ::showInfoMsgBox(::loc("squad/not_all_ready"))
           }
         }
         else
@@ -1043,7 +1034,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       return
 
     let opObj = battlesListObj.getChild(idx)
-    if (!checkObj(opObj))
+    if (!::check_obj(opObj))
       return
 
     curBattleInList = getBattleById(opObj.id)
@@ -1096,7 +1087,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
           reinitBattlesList(true)
     }
 
-    if (getPlayerSide() == SIDE_NONE)
+    if (getPlayerSide() == ::SIDE_NONE)
       return
 
     if (selectedBattleName != curBattleInList.id)
@@ -1109,7 +1100,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
         ::g_squad_manager.isSquadMember())
     {
       ::g_squad_manager.setCrewsReadyFlag(false)
-      ::showInfoMsgBox(loc("squad/message/cancel_fight"))
+      ::showInfoMsgBox(::loc("squad/message/cancel_fight"))
     }
   }
 
@@ -1120,7 +1111,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
 
   function onEventQueueChangeState(params)
   {
-    if (getPlayerSide() == SIDE_NONE)
+    if (getPlayerSide() == ::SIDE_NONE)
       return
 
     updateViewMode()
@@ -1215,9 +1206,9 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     if (slotbarWeak?.slotbarOninit ?? false)
       return
 
-    let cb = Callback(generateAutoPreset, this)
+    let cb = ::Callback(generateAutoPreset, this)
     ::queues.checkAndStart(
-      Callback(function() {
+      ::Callback(function() {
         ::g_squad_utils.checkSquadUnreadyAndDo(cb, @() null, true)
       }, this),
       @() null,
@@ -1238,7 +1229,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
 
     if (!::isCountryAllCrewsUnlockedInHangar(country))
     {
-      ::showInfoMsgBox(loc("charServer/updateError/52"), "slotbar_presets_forbidden")
+      ::showInfoMsgBox(::loc("charServer/updateError/52"), "slotbar_presets_forbidden")
       return
     }
 

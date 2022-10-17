@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { getLocTextForLang } = require("dagor.localize")
 let { format, split_by_chars } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let {
@@ -46,7 +40,7 @@ let activityFeedRequestLocParams = freeze({
 
   function getLocalizedTextWithAbbreviation(locId)
   {
-    if (!locId)
+    if (!locId || (!("getLocTextForLang" in ::dagor)))
       return {}
 
     let locBlk = ::DataBlock()
@@ -65,10 +59,10 @@ let activityFeedRequestLocParams = freeze({
         continue
 
       let abbrevName = abbreviationsList.getParamName(i)
-      let text = locId.len() > 1 ? getLocTextForLang(locId, param) : locId
+      let text = locId.len() > 1 ? ::dagor.getLocTextForLang(locId, param) : locId
       if (text == null)
       {
-        log("Error: not found localized text for locId = '" + locId + "', lang = '" + param + "'")
+        ::dagor.debug("Error: not found localized text for locId = '" + locId + "', lang = '" + param + "'")
         continue
       }
 

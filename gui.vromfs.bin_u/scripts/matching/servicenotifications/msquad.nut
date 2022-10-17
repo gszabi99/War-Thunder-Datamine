@@ -1,18 +1,13 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 
 foreach (notificationName, callback in
           {
             ["msquad.notify_invite"] = function(params)
               {
-                let replaces = getTblValue("replaces", params, "").tostring()
-                let squad = getTblValue("squad", params, null)
-                let invite = getTblValue("invite", params, null)
-                let leader = getTblValue("leader", params, null)
+                let replaces = ::getTblValue("replaces", params, "").tostring()
+                let squad = ::getTblValue("squad", params, null)
+                let invite = ::getTblValue("invite", params, null)
+                let leader = ::getTblValue("leader", params, null)
 
                 if (invite == null || invite.id.tostring() == ::my_user_id_str)
                 {
@@ -26,8 +21,8 @@ foreach (notificationName, callback in
 
             ["msquad.notify_invite_revoked"] = function(params)
               {
-                let invite = getTblValue("invite", params, null)
-                let squad = getTblValue("squad", params, null)
+                let invite = ::getTblValue("invite", params, null)
+                let squad = ::getTblValue("squad", params, null)
                 if (invite == null || invite.id.tostring() == ::my_user_id_str)
                   ::g_invites.removeInviteToSquad(squad.id.tostring())
                 else
@@ -36,7 +31,7 @@ foreach (notificationName, callback in
 
             ["msquad.notify_invite_rejected"] = function(params)
               {
-                let invite = getTblValue("invite", params, null)
+                let invite = ::getTblValue("invite", params, null)
                 ::g_squad_manager.removeInvitedPlayers(invite.id.tostring())
                 if (::g_squad_manager.getSquadSize(true) == 1)
                   ::g_squad_manager.disbandSquad()
@@ -44,8 +39,8 @@ foreach (notificationName, callback in
 
             ["msquad.notify_invite_expired"] = function(params)
               {
-                let invite = getTblValue("invite", params, null)
-                let squad = getTblValue("squad", params, null)
+                let invite = ::getTblValue("invite", params, null)
+                let squad = ::getTblValue("squad", params, null)
                 if (invite == null || invite.id.tostring() == ::my_user_id_str)
                   ::g_invites.removeInviteToSquad(squad.id.tostring())
                 else
@@ -58,7 +53,7 @@ foreach (notificationName, callback in
 
             ["msquad.notify_member_joined"] = function(params)
               {
-                let userId = getTblValue("userId", params, "")
+                let userId = ::getTblValue("userId", params, "")
                 if (userId != ::my_user_id_int64 && ::g_squad_manager.isInSquad())
                 {
                   ::g_squad_manager.addMember(userId.tostring())
@@ -68,7 +63,7 @@ foreach (notificationName, callback in
 
             ["msquad.notify_member_leaved"] = function(params)
               {
-                let userId = getTblValue("userId", params, "")
+                let userId = ::getTblValue("userId", params, "")
                 if (userId.tostring() == ::my_user_id_str)
                   ::g_squad_manager.reset()
                 else
@@ -98,21 +93,21 @@ foreach (notificationName, callback in
 
             ["msquad.notify_member_data_changed"] = function(params)
               {
-                let userId = getTblValue("userId", params, "").tostring()
+                let userId = ::getTblValue("userId", params, "").tostring()
                 if (userId != ::my_user_id_str && ::g_squad_manager.isInSquad())
                   ::g_squad_manager.requestMemberData(userId)
               },
 
             ["msquad.notify_member_login"] = function(params)
               {
-                let userId = getTblValue("userId", params, "").tostring()
+                let userId = ::getTblValue("userId", params, "").tostring()
                 if (userId != ::my_user_id_str && ::g_squad_manager.isInSquad())
                   ::g_squad_manager.setMemberOnlineStatus(userId, true)
               },
 
             ["msquad.notify_member_logout"] = function(params)
               {
-                let userId = getTblValue("userId", params, "").tostring()
+                let userId = ::getTblValue("userId", params, "").tostring()
                 if (userId != ::my_user_id_str && ::g_squad_manager.isInSquad())
                   ::g_squad_manager.setMemberOnlineStatus(userId, false)
               },

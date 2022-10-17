@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 const AUTOLOGIN_SAVE_ID = "autologin"
 
 ::is_autologin_enabled <- function is_autologin_enabled()

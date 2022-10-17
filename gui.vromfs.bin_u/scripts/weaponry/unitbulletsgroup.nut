@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -13,7 +6,7 @@ let { setUnitLastBullets,
 let { AMMO,
         getAmmoAmount,
         isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
-local { clearUnitOption } = require_native("guiOptions")
+local { clearUnitOption } = ::require_native("guiOptions")
 
 ::BulletGroup <- class
 {
@@ -38,14 +31,14 @@ local { clearUnitOption } = require_native("guiOptions")
     unit = v_unit
     groupIndex = v_groupIndex
     gunInfo = v_gunInfo
-    guns = getTblValue("guns", gunInfo) || 1
+    guns = ::getTblValue("guns", gunInfo) || 1
     active = params?.isActive ?? active
     canChangeActivity = params?.canChangeActivity ?? canChangeActivity
     isForcedAvailable = params?.isForcedAvailable ?? isForcedAvailable
     maxToRespawn = params?.maxToRespawn ?? maxToRespawn
 
     bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
-    selectedName = getTblValue(bullets.value, bullets.values, "")
+    selectedName = ::getTblValue(bullets.value, bullets.values, "")
     let saveValue = getBulletNameForCode(selectedName)
 
     if (::get_last_bullets(unit.name, groupIndex) != saveValue)
@@ -93,14 +86,14 @@ local { clearUnitOption } = require_native("guiOptions")
   //return is new bullet not from list
   function setBulletNotFromList(bList)
   {
-    if (!isInArray(selectedName, bList))
+    if (!::isInArray(selectedName, bList))
       return true
 
     foreach(idx, value in bullets.values)
     {
       if (!bullets.items[idx].enabled)
         continue
-      if (isInArray(value, bList))
+      if (::isInArray(value, bList))
         continue
       if (setBullet(value))
         return true
@@ -110,7 +103,7 @@ local { clearUnitOption } = require_native("guiOptions")
 
   function getBulletNameByIdx(idx)
   {
-    return getTblValue(idx, bullets.values)
+    return ::getTblValue(idx, bullets.values)
   }
 
   function setBulletsCount(count)
@@ -147,7 +140,7 @@ local { clearUnitOption } = require_native("guiOptions")
 
   function getGunMaxBullets()
   {
-    return getTblValue("total", gunInfo, 0)
+    return ::getTblValue("total", gunInfo, 0)
   }
 
   function getOption()

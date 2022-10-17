@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, MfdColor} = require("airState.nut")
 let {paramsTable, horSpeed, vertSpeed, rocketAim, taTarget} = require("airHudElems.nut")
 let compass = require("compass.nut")

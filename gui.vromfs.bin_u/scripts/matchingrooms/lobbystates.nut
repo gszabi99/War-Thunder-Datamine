@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 return {
   NOT_IN_ROOM = "NOT_IN_ROOM"
   WAIT_FOR_QUEUE_ROOM = "WAIT_FOR_QUEUE_ROOM"

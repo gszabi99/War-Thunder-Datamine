@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let platformModule = require("%scripts/clientState/platform.nut")
 
 let persistentData = {
@@ -28,9 +23,9 @@ let function getSonyTotalProgress(chunks)
 
 let function getSonyProgressText(chunks) {
   let percent = getSonyTotalProgress(chunks)
-  local text = loc("msgbox/downloadPercent", {percent = percent})
+  local text = ::loc("msgbox/downloadPercent", {percent = percent})
   if (percent >= 100)
-    text += "\n" + loc("msgbox/relogin_required")
+    text += "\n" + ::loc("msgbox/relogin_required")
   return text
 }
 
@@ -67,10 +62,10 @@ else if (platformModule.isPlatformPS5)
 }
 else if (platformModule.isPlatformXboxOne)
 {
-  isConsoleClientFullyDownloaded = @() ::package_get_status("pkg_main") == PACKAGE_STATUS_OK
+  isConsoleClientFullyDownloaded = @() ::package_get_status("pkg_main") == ::PACKAGE_STATUS_OK
   getClientDownloadProgressText = @() isConsoleClientFullyDownloaded()
-      ? (loc("download/finished") + "\n" + loc("msgbox/relogin_required"))
-      : loc("download/inProgress")
+      ? (::loc("download/finished") + "\n" + ::loc("msgbox/relogin_required"))
+      : ::loc("download/inProgress")
 }
 
 let updateConsoleClientDownloadStatus = @() persistentData.isConsoleClientFullOnStart = isConsoleClientFullyDownloaded()

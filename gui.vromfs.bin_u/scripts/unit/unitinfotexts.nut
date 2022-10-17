@@ -1,9 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { fabs } = require("math")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 global enum bit_unit_status
 {
@@ -21,41 +16,41 @@ global enum bit_unit_status
 }
 
 let basicUnitRoles = {
-  [ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
-  [ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
+  [::ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
+  [::ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
     "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv"],
-  [ES_UNIT_TYPE_BOAT] = ["type_boat", "type_heavy_boat", "type_barge", "type_frigate"],
-  [ES_UNIT_TYPE_SHIP] = ["type_ship", "type_destroyer", "type_light_cruiser",
+  [::ES_UNIT_TYPE_BOAT] = ["type_boat", "type_heavy_boat", "type_barge", "type_frigate"],
+  [::ES_UNIT_TYPE_SHIP] = ["type_ship", "type_destroyer", "type_light_cruiser",
     "type_heavy_cruiser", "type_battlecruiser", "type_battleship", "type_submarine"],
-  [ES_UNIT_TYPE_HELICOPTER] = ["type_attack_helicopter", "type_utility_helicopter"],
+  [::ES_UNIT_TYPE_HELICOPTER] = ["type_attack_helicopter", "type_utility_helicopter"],
 }
 
 let unitRoleFontIcons = {
-  fighter                  = loc("icon/unitclass/fighter"),
-  assault                  = loc("icon/unitclass/assault"),
-  bomber                   = loc("icon/unitclass/bomber"),
-  attack_helicopter        = loc("icon/unitclass/attack_helicopter"),
-  utility_helicopter       = loc("icon/unitclass/utility_helicopter"),
-  light_tank               = loc("icon/unitclass/light_tank"),
-  medium_tank              = loc("icon/unitclass/medium_tank"),
-  heavy_tank               = loc("icon/unitclass/heavy_tank"),
-  tank_destroyer           = loc("icon/unitclass/tank_destroyer"),
-  spaa                     = loc("icon/unitclass/spaa"),
-  lbv                      = loc("icon/unitclass/light_tank")
-  mbv                      = loc("icon/unitclass/medium_tank")
-  hbv                      = loc("icon/unitclass/heavy_tank")
-  ship                     = loc("icon/unitclass/ship"),
-  boat                     = loc("icon/unitclass/gun_boat")
-  heavy_boat               = loc("icon/unitclass/heavy_gun_boat")
-  barge                    = loc("icon/unitclass/naval_ferry_barge")
-  destroyer                = loc("icon/unitclass/destroyer")
-  frigate                  = loc("icon/unitclass/destroyer")
-  light_cruiser            = loc("icon/unitclass/light_cruiser")
-  cruiser                  = loc("icon/unitclass/cruiser")
-  heavy_cruiser            = loc("icon/unitclass/cruiser")
-  battlecruiser            = loc("icon/unitclass/battlecruiser")
-  battleship               = loc("icon/unitclass/battleship")
-  submarine                = loc("icon/unitclass/submarine")
+  fighter                  = ::loc("icon/unitclass/fighter"),
+  assault                  = ::loc("icon/unitclass/assault"),
+  bomber                   = ::loc("icon/unitclass/bomber"),
+  attack_helicopter        = ::loc("icon/unitclass/attack_helicopter"),
+  utility_helicopter       = ::loc("icon/unitclass/utility_helicopter"),
+  light_tank               = ::loc("icon/unitclass/light_tank"),
+  medium_tank              = ::loc("icon/unitclass/medium_tank"),
+  heavy_tank               = ::loc("icon/unitclass/heavy_tank"),
+  tank_destroyer           = ::loc("icon/unitclass/tank_destroyer"),
+  spaa                     = ::loc("icon/unitclass/spaa"),
+  lbv                      = ::loc("icon/unitclass/light_tank")
+  mbv                      = ::loc("icon/unitclass/medium_tank")
+  hbv                      = ::loc("icon/unitclass/heavy_tank")
+  ship                     = ::loc("icon/unitclass/ship"),
+  boat                     = ::loc("icon/unitclass/gun_boat")
+  heavy_boat               = ::loc("icon/unitclass/heavy_gun_boat")
+  barge                    = ::loc("icon/unitclass/naval_ferry_barge")
+  destroyer                = ::loc("icon/unitclass/destroyer")
+  frigate                  = ::loc("icon/unitclass/destroyer")
+  light_cruiser            = ::loc("icon/unitclass/light_cruiser")
+  cruiser                  = ::loc("icon/unitclass/cruiser")
+  heavy_cruiser            = ::loc("icon/unitclass/cruiser")
+  battlecruiser            = ::loc("icon/unitclass/battlecruiser")
+  battleship               = ::loc("icon/unitclass/battleship")
+  submarine                = ::loc("icon/unitclass/submarine")
 }
 
 let unitRoleByTag = {
@@ -146,13 +141,13 @@ let function getUnitBasicRole(unit) {
     return ""
 
   foreach(tag in unit.tags)
-    if (isInArray(tag, basicRoles))
+    if (::isInArray(tag, basicRoles))
       return getRoleName(tag)
   return getRoleName(basicRoles[0])
 }
 
-let getRoleText = @(role) loc($"mainmenu/type_{role}")
-let getRoleTextByTag = @(tag) loc($"mainmenu/{tag}")
+let getRoleText = @(role) ::loc($"mainmenu/type_{role}")
+let getRoleTextByTag = @(tag) ::loc($"mainmenu/{tag}")
 
 /*
   typeof @source == Unit     -> @source is unit
@@ -171,11 +166,11 @@ let function getUnitTooltipImage(unit)
 
   switch (::get_es_unit_type(unit))
   {
-    case ES_UNIT_TYPE_AIRCRAFT:       return $"ui/aircrafts/{unit.name}.ddsx"
-    case ES_UNIT_TYPE_HELICOPTER:     return $"ui/aircrafts/{unit.name}.ddsx"
-    case ES_UNIT_TYPE_TANK:           return $"ui/tanks/{unit.name}.ddsx"
-    case ES_UNIT_TYPE_BOAT:           return $"ui/ships/{unit.name}.ddsx"
-    case ES_UNIT_TYPE_SHIP:           return $"ui/ships/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_AIRCRAFT:       return $"ui/aircrafts/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_HELICOPTER:     return $"ui/aircrafts/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_TANK:           return $"ui/tanks/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_BOAT:           return $"ui/ships/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_SHIP:           return $"ui/ships/{unit.name}.ddsx"
   }
   return ""
 }
@@ -196,7 +191,7 @@ let function getFullUnitRoleText(unit)
   foreach(tag in tags)
     if (tag.len()>5 && tag.slice(0, 5)=="type_")
     {
-      if (!isInArray(tag, basicRoles))
+      if (!::isInArray(tag, basicRoles))
         textsList.append(getRoleTextByTag(tag))
       else if (basicRole == "") {
         basicRole = tag
@@ -206,7 +201,7 @@ let function getFullUnitRoleText(unit)
     }
 
   if (textsList.len())
-    return ::g_string.implode(textsList, loc("mainmenu/unit_type_separator"))
+    return ::g_string.implode(textsList, ::loc("mainmenu/unit_type_separator"))
 
   return basicRole != "" ? getRoleTextByTag(basicRole) : ""
 }
@@ -219,7 +214,7 @@ let function getChanceToMeetText(battleRating1, battleRating2)
     if (!brData
         || (data.brDiff <= brDiff && data.brDiff > brData.brDiff))
       brData = data
-  return brData? colorize(brData.color, loc(brData.text)) : ""
+  return brData? ::colorize(brData.color, ::loc(brData.text)) : ""
 }
 
 let function getShipMaterialTexts(unitId)
@@ -233,14 +228,14 @@ let function getShipMaterialTexts(unitId)
     let thickness = blk?[part + "Thickness"] ?? 0.0
     if (thickness && material)
     {
-      res[part + "Label"] <- loc("info/ship/part/" + part)
-      res[part + "Value"] <- loc("armor_class/" + material + "/short", loc("armor_class/" + material)) +
-        loc("ui/comma") + ::round(thickness) + " " + loc("measureUnits/mm")
+      res[part + "Label"] <- ::loc("info/ship/part/" + part)
+      res[part + "Value"] <- ::loc("armor_class/" + material + "/short", ::loc("armor_class/" + material)) +
+        ::loc("ui/comma") + ::round(thickness) + " " + ::loc("measureUnits/mm")
     }
   }
   if (res?.superstructureValue && res?.superstructureValue == res?.hullValue)
   {
-    res.hullLabel += " " + loc("clan/rankReqInfoCondType_and") + " " +
+    res.hullLabel += " " + ::loc("clan/rankReqInfoCondType_and") + " " +
       ::g_string.utf8ToLower(res.superstructureLabel)
     res.rawdelete("superstructureLabel")
     res.rawdelete("superstructureValue")
@@ -291,6 +286,19 @@ let function getUnitRarity(unit)
   return "common"
 }
 
+let function getUnitRequireUnlockText(unit) {
+  let desc = getFullUnlockDescByName(unit.reqUnlock, -1, { showValueForBitList = true })
+  return "\n".concat(::loc("mainmenu/needUnlock"), desc)
+}
+
+let function getUnitRequireUnlockShortText(unit) {
+  let unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
+  let conditions = ::build_conditions_config(unlockBlk)
+  let mainCond = ::UnlockConditions.getMainProgressCondition(conditions.conditions)
+  return ::UnlockConditions._genMainConditionText(
+    mainCond, conditions.curVal, conditions.maxVal, {isProgressTextOnly = true})
+}
+
 return {
   getUnitRole
   getUnitBasicRole
@@ -302,4 +310,6 @@ return {
   getShipMaterialTexts
   getUnitItemStatusText
   getUnitRarity
+  getUnitRequireUnlockText
+  getUnitRequireUnlockShortText
 }

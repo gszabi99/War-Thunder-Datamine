@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let time = require("%scripts/time.nut")
 
 
@@ -66,8 +57,8 @@ let time = require("%scripts/time.nut")
       scene = scene.findObject("players_list")
       room = room
       teams = teams
-      onPlayerDblClickCb = Callback(openUserCard, this)
-      onPlayerRClickCb = Callback(onUserRClick, this)
+      onPlayerDblClickCb = ::Callback(openUserCard, this)
+      onPlayerRClickCb = ::Callback(onUserRClick, this)
     })
     if (playersListWidgetWeak)
       playersListWidgetWeak = playersListWidgetWeak.weakref()
@@ -87,7 +78,7 @@ let time = require("%scripts/time.nut")
     foreach(team in teams)
     {
       let teamObj = headerNest.findObject("num_team" + team.id)
-      if (!checkObj(teamObj))
+      if (!::check_obj(teamObj))
         continue
 
       local locId = "multiplayer/teamPlayers"
@@ -98,7 +89,7 @@ let time = require("%scripts/time.nut")
       }
       if (locParams.unready)
         locId = "multiplayer/teamPlayers/hasUnready"
-      let text = loc(locId, locParams)
+      let text = ::loc(locId, locParams)
       teamObj.setValue(text)
     }
 
@@ -114,7 +105,7 @@ let time = require("%scripts/time.nut")
   function initRoomTimer()
   {
     let timerObj = scene.findObject("event_time")
-    SecondsUpdater(timerObj, Callback(function(obj, params)
+    SecondsUpdater(timerObj, ::Callback(function(obj, params)
     {
       local text = ""
       let startTime = ::SessionLobby.getRoomSessionStartTime(room)
@@ -122,9 +113,9 @@ let time = require("%scripts/time.nut")
       {
         let secToStart = startTime - ::get_matching_server_time()
         if (secToStart <= 0)
-          text = loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
+          text = ::loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
         else
-          text = loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
+          text = ::loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
       }
       obj.setValue(text)
     }, this))

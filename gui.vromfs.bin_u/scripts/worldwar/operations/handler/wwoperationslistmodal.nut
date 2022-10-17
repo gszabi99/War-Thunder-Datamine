@@ -1,14 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 local { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -74,7 +65,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         {
           view.items.append({
             id = "active_group"
-            itemText = colorize(itemColor, loc("worldwar/operation/active"))
+            itemText = ::colorize(itemColor, ::loc("worldwar/operation/active"))
             isCollapsable = true
           })
           isActiveChapterAdded = true
@@ -84,7 +75,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       {
         view.items.append({
           id = "finished_group"
-          itemText = colorize(itemColor, loc("worldwar/operation/finished"))
+          itemText = ::colorize(itemColor, ::loc("worldwar/operation/finished"))
           isCollapsable = true
         })
         isFinishedChapterAdded = true
@@ -104,7 +95,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       view.items.append({
         itemIcon = icon
         id = operation.id.tostring()
-        itemText = colorize(itemColor, operation.getNameText(false))
+        itemText = ::colorize(itemColor, operation.getNameText(false))
         isLastPlayedIcon = isLastPlayed
       })
     }
@@ -145,7 +136,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (idx < 0 || idx >= opListObj.childrenCount())
       return false
     let opObj = opListObj.getChild(idx)
-    if(!checkObj(opObj))
+    if(!::checkObj(opObj))
       return false
 
     let newOperation = opObj?.collapse_header ? null
@@ -159,25 +150,25 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onCollapse(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let headerObj = obj.getParent()
-    if (checkObj(headerObj))
+    if (::check_obj(headerObj))
       doCollapse(headerObj)
   }
 
   function onCollapsedChapter()
   {
     let rowObj = opListObj.getChild(opListObj.getValue())
-    if (checkObj(rowObj))
+    if (::check_obj(rowObj))
       doCollapse(rowObj)
   }
 
   function doCollapse(obj)
   {
     let containerObj = obj.getParent()
-    if (!checkObj(containerObj))
+    if (!::check_obj(containerObj))
       return
 
     obj.collapsing = "yes"
@@ -212,7 +203,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     let selectedObj = containerObj.getChild(containerObj.getValue())
-    if (needReselect || (checkObj(selectedObj) && !selectedObj.isVisible()))
+    if (needReselect || (::check_obj(selectedObj) && !selectedObj.isVisible()))
       selectFirstItem(containerObj)
 
     updateButtons()
@@ -240,7 +231,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateTitle()
   {
     let titleObj = scene.findObject("wnd_title")
-    if (!checkObj(titleObj))
+    if (!::check_obj(titleObj))
       return
 
     titleObj.setValue(selOperation ?
@@ -270,13 +261,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         let rowObj = opListObj.getChild(opListObj.getValue())
         if (rowObj?.isValid())
           collapsedChapterBtnObj.setValue(rowObj?.collapsed == "yes"
-            ? loc("mainmenu/btnExpand")
-            : loc("mainmenu/btnCollapse"))
+            ? ::loc("mainmenu/btnExpand")
+            : ::loc("mainmenu/btnCollapse"))
       }
 
       let operationDescText = scene.findObject("operation_short_info_text")
       operationDescText.setValue(getOpGroup().getOperationsList().len() == 0
-        ? loc("worldwar/msg/noActiveOperations")
+        ? ::loc("worldwar/msg/noActiveOperations")
         : "" )
       return
     }
@@ -291,7 +282,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       joinBtn.findObject("is_clan_participate_img").show(selOperation.isMyClanSide(side))
 
       let joinBtnFlagsObj = joinBtn.findObject("side_countries")
-      if (checkObj(joinBtnFlagsObj))
+      if (::checkObj(joinBtnFlagsObj))
       {
         let wwMap = selOperation.getMap()
         let markUpData = wwMap.getCountriesViewBySide(side, false)
@@ -309,13 +300,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onJoinOperationSide1()
   {
     if (selOperation)
-      joinOperationBySide(SIDE_1)
+      joinOperationBySide(::SIDE_1)
   }
 
   function onJoinOperationSide2()
   {
     if (selOperation)
-      joinOperationBySide(SIDE_2)
+      joinOperationBySide(::SIDE_2)
   }
 
   function joinOperationBySide(side)

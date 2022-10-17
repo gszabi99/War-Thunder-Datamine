@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let string = require("string")
 let {IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
       IlsAtgmTargetPos, IlsAtgmLocked, AtgmTargetDist, TargetPosValid,
       TargetPos, RocketMode, CannonMode, BombCCIPMode, DistToTarget,

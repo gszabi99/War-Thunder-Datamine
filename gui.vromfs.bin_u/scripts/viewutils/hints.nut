@@ -1,18 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { split_by_chars } = require("string")
 enum HINT_PIECE_TYPE
 {
   TEXT,
   TAG
-}
-
-let function getTextSlice(textsArray) {
-  return { text = textsArray.map(
-    @(text, idx) { textValue = textsArray?[idx+1] != null ? $"{text} " : text }) }
 }
 
 
@@ -29,21 +19,21 @@ let function getTextSlice(textsArray) {
   * time        //0 - only to show time in text
   * timeoffset  //0 - only to show time in text
 */
-::g_hints.buildHintMarkup <- function buildHintMarkup(text, params = {}) {
-  return ::handyman.renderCached("%gui/hint", this.getHintSlices(text, params))
+g_hints.buildHintMarkup <- function buildHintMarkup(text, params = {}) {
+  return ::handyman.renderCached("%gui/hint", getHintSlices(text, params))
 }
 
-::g_hints.getHintSlices <- function getHintSlices(text, params = {})
+g_hints.getHintSlices <- function getHintSlices(text, params = {})
 {
   let rows = split_by_chars(text, "\n")
   let isWrapInRowAllowed = params?.isWrapInRowAllowed ?? false
   let view = {
-    id = getTblValue("id", params)
-    style = getTblValue("style", params, "")
-    isOrderPopup = getTblValue("isOrderPopup", params, false)
+    id = ::getTblValue("id", params)
+    style = ::getTblValue("style", params, "")
+    isOrderPopup = ::getTblValue("isOrderPopup", params, false)
     isWrapInRowAllowed = isWrapInRowAllowed
-    flowAlign = getTblValue("flowAlign", params, "center")
-    animation = getTblValue("animation", params)
+    flowAlign = ::getTblValue("flowAlign", params, "center")
+    animation = ::getTblValue("animation", params)
     rows = []
   }
 
@@ -52,7 +42,7 @@ let function getTextSlice(textsArray) {
   foreach (row in rows)
   {
     let slices = []
-    let rawRowPieces = this.splitRowToPieces(row)
+    let rawRowPieces = splitRowToPieces(row)
     let needSplitByWords = isWrapInRowAllowed && rawRowPieces.len() > 1
 
     foreach (rawRowPiece in rawRowPieces)
@@ -67,21 +57,21 @@ let function getTextSlice(textsArray) {
 
         while (true)
         {
-          let openingColorTagStartIndex = piece.indexof(this.colorTags[0], carriage)
-          let closingColorTagStartIndex = piece.indexof(this.colorTags[1], carriage)
+          let openingColorTagStartIndex = piece.indexof(colorTags[0], carriage)
+          let closingColorTagStartIndex = piece.indexof(colorTags[1], carriage)
 
           if (openingColorTagStartIndex == null && closingColorTagStartIndex == null)
             break
 
           //move carriage
           if (openingColorTagStartIndex == null)
-            carriage = closingColorTagStartIndex + this.colorTags[1].len()
+            carriage = closingColorTagStartIndex + colorTags[1].len()
           else if (closingColorTagStartIndex == null)
-            carriage = openingColorTagStartIndex + this.colorTags[0].len()
+            carriage = openingColorTagStartIndex + colorTags[0].len()
           else
             carriage = min(
-              openingColorTagStartIndex + this.colorTags[0].len(),
-              closingColorTagStartIndex + this.colorTags[1].len()
+              openingColorTagStartIndex + colorTags[0].len(),
+              closingColorTagStartIndex + colorTags[1].len()
             )
 
           //closing tag found, pop color from stack and continue
@@ -109,7 +99,7 @@ let function getTextSlice(textsArray) {
             openingColorTagStartIndex < closingColorTagStartIndex)
           {
             let colorEnd = piece.indexof(">", openingColorTagStartIndex)
-            let colorStart = openingColorTagStartIndex + this.colorTags[0].len()
+            let colorStart = openingColorTagStartIndex + colorTags[0].len()
             colors.append(piece.slice(colorStart, colorEnd))
             unclosedTags++
           }
@@ -117,10 +107,10 @@ let function getTextSlice(textsArray) {
 
         //close all unclosed tags
         for (local i = 0; i < unclosedTags; ++i)
-          piece += this.colorTags[1]
+          piece += colorTags[1]
 
         if (colors.len() > 0)
-          piece = colorize(colors.top(), piece)
+          piece = ::colorize(colors.top(), piece)
 
         if (piece.len()) {
           if (colors.len() > 0 || !needSplitByWords)
@@ -145,7 +135,7 @@ let function getTextSlice(textsArray) {
   }
 
   if (colors.len())
-    log("unclosed <color> tag! in text: " + text)
+    ::dagor.debug("unclosed <color> tag! in text: " + text)
 
   return view
 }
@@ -154,12 +144,12 @@ let function getTextSlice(textsArray) {
  * Split row to atomic parts to work with
  * @return array of strings with type specifieres (text or tag)
  */
-::g_hints.splitRowToPieces <- function splitRowToPieces(row)
+g_hints.splitRowToPieces <- function splitRowToPieces(row)
 {
   let slices = []
   while (row.len() > 0)
   {
-    let tagStartIndex = row.indexof(this.hintTags[0])
+    let tagStartIndex = row.indexof(hintTags[0])
 
     //no tags on current row
     //put entire row in one piece and exit
@@ -172,7 +162,7 @@ let function getTextSlice(textsArray) {
       break
     }
 
-    let tagEndIndex = row.indexof(this.hintTags[1], tagStartIndex)
+    let tagEndIndex = row.indexof(hintTags[1], tagStartIndex)
     //there is unclosed tag
     //flush current row content to one piece and exit
     if (tagEndIndex == null)
@@ -193,14 +183,19 @@ let function getTextSlice(textsArray) {
     //slice piece that contains tag
     slices.append({
       type = HINT_PIECE_TYPE.TAG
-      piece = row.slice(tagStartIndex + this.hintTags[0].len(), tagEndIndex)
+      piece = row.slice(tagStartIndex + hintTags[0].len(), tagEndIndex)
     })
 
-    row = row.slice(tagEndIndex + this.hintTags[1].len())
+    row = row.slice(tagEndIndex + hintTags[1].len())
   }
 
   return slices
 }
 
+g_hints.getTextSlice <- function getTextSlice(textsArray)
+{
+  return { text = textsArray.map(
+    @(text, idx) { textValue = textsArray?[idx+1] != null ? $"{text} " : text }) }
+}
 
 ::cross_call_api.getHintConfig <- @(text) ::g_hints.getHintSlices(text, { needConfig = true })

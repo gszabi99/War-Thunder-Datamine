@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let time = require("%scripts/time.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
@@ -20,12 +11,14 @@ let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 
 let payMethodsCfg = [
-  //{ id = YU2_PAY_QIWI,        name = "qiwi" }
-  //{ id = YU2_PAY_YANDEX,      name = "yandex" }
-  { id = YU2_PAY_PAYPAL,      name = "paypal" }
-  { id = YU2_PAY_WEBMONEY,    name = "webmoney" }
-  { id = YU2_PAY_AMAZON,      name = "amazon" }
-  { id = YU2_PAY_GJN,         name = "gjncoins" }
+  /*
+  { id = ::YU2_PAY_QIWI,        name = "qiwi" }
+  { id = ::YU2_PAY_YANDEX,      name = "yandex" }
+  */
+  { id = ::YU2_PAY_PAYPAL,      name = "paypal" }
+  { id = ::YU2_PAY_WEBMONEY,    name = "webmoney" }
+  { id = ::YU2_PAY_AMAZON,      name = "amazon" }
+  { id = ::YU2_PAY_GJN,         name = "gjncoins" }
 ]
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
@@ -56,11 +49,11 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       return goBack()
 
     ENTITLEMENTS_PRICE.checkUpdate(
-      Callback(function()
+      ::Callback(function()
       {
         reinitScreen()
       }, this)
-      Callback(function(result) { reinitScreen() }, this)
+      ::Callback(function(result) { reinitScreen() }, this)
       true
     )
   }
@@ -71,13 +64,13 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
   function reinitScreen(params = {})
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return goBack()
 
     setParams(params)
 
     let blockObj = scene.findObject("chapter_include_block")
-    if (checkObj(blockObj))
+    if (::checkObj(blockObj))
       blockObj.show(true)
 
     goods = {}
@@ -98,7 +91,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     {
       let ib = eblk.getBlock(i)
       let name = ib.getBlockName()
-      if (chapter == null && isInArray(ib?.chapter, skipChapters))
+      if (chapter == null && ::isInArray(ib?.chapter, skipChapters))
         continue
       if (chapter != null && ib?.chapter != chapter)
         continue
@@ -125,7 +118,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
         let arr = []
         let list = ib % param
         foreach(l in list)
-          if (!isInArray(l, arr))
+          if (!::isInArray(l, arr))
             arr.append(l)
         goods[name][param] <- arr
       }
@@ -181,7 +174,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       guiScene.setUpdatesEnabled(false, false)
 
       scene.findObject("wnd_update").setUserData(this)
-      scene.findObject("wnd_title").setValue(loc("charServer/chapter/" + chapter))
+      scene.findObject("wnd_title").setValue(::loc("charServer/chapter/" + chapter))
 
       let rootObj = scene.findObject("wnd_frame")
       rootObj["class"] = "wnd"
@@ -203,7 +196,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     else
     {// Buy Campaigns & Bonuses.
       scene.findObject("chapter_update").setUserData(this)
-      scene.findObject("chapter_name").setValue(loc("mainmenu/btnOnlineShop"))
+      scene.findObject("chapter_name").setValue(::loc("mainmenu/btnOnlineShop"))
 
       let listObj = scene.findObject("items_list")
       guiScene.replaceContentFromText(scene.findObject("items_list"), data, data.len(), this)
@@ -272,7 +265,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
     priceText = getItemPriceText(productId)
     this.showSceneBtn("btn_buy_online", product != null && !isBoughtEntitlement(product))
-    scene.findObject("btn_buy_online").setValue(loc("mainmenu/btnBuy") + ((priceText=="")? "" : format(" (%s)", priceText)))
+    scene.findObject("btn_buy_online").setValue(::loc("mainmenu/btnBuy") + ((priceText=="")? "" : format(" (%s)", priceText)))
 
     local discountText = ""
     let discount = ::g_discount.getEntitlementDiscount(product.name)
@@ -306,10 +299,10 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
         return
 
       ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox(loc("charServer/checking"))
+      showTaskProgressBox(::loc("charServer/checking"))
       afterSlotOp = function()
       {
-        if (!checkObj(scene))
+        if (!::checkObj(scene))
           return
 
         ::broadcastEvent("EntitlementsUpdatedFromOnlineShop")
@@ -325,7 +318,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     let taskOptions = {
       showProgressBox = true
     }
-    let taskSuccessCallback = Callback(function ()
+    let taskSuccessCallback = ::Callback(function ()
       {
         goForward(startFunc)
       }, this)
@@ -343,7 +336,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     let costGold = "goldCost" in product? ::get_entitlement_cost_gold(product.name) : 0
     let price = ::Cost(0, costGold)
     let msgText = ::warningIfGold(
-      loc("onlineShop/needMoneyQuestion",
+      ::loc("onlineShop/needMoneyQuestion",
         {purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance()}),
       price)
     let curIdx = scene.findObject("items_list").getValue()
@@ -361,8 +354,8 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
   function onOnlinePurchase(itemId)
   {
-    let payMethods = ::yuplay2_get_payment_methods()
-    if (!payMethods || ::steam_is_running() || !hasFeature("PaymentMethods"))
+    let payMethods = yuplay2_get_payment_methods()
+    if (!payMethods || ::steam_is_running() || !::has_feature("PaymentMethods"))
       return ::OnlineShopModel.doBrowserPurchase(itemId)
 
     let items = []
@@ -375,7 +368,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
         items.append({
           name = name
           icon = "!#ui/gameuiskin/payment_" + method.name + ".svg"
-          callback = Callback(@() onYuplayPurchase(itemId, payMethodId, name), this)
+          callback = ::Callback(@() onYuplayPurchase(itemId, payMethodId, name), this)
         })
         selItem = selItem || name
       }
@@ -384,7 +377,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     items.append({
       name = name
       icon = ""
-      callback = Callback(@() ::OnlineShopModel.doBrowserPurchase(itemId), this)
+      callback = ::Callback(@() ::OnlineShopModel.doBrowserPurchase(itemId), this)
     })
     selItem = selItem || name
 
@@ -393,9 +386,9 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
   function onYuplayPurchase(itemId, payMethod, nameLocId)
   {
-    let msgText = loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
-      purchase = colorize("activeTextColor", getEntitlementName(goods[itemId])),
-      paymentSystem = colorize("userlogColoredText", loc(nameLocId))
+    let msgText = ::loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
+      purchase = ::colorize("activeTextColor", getEntitlementName(goods[itemId])),
+      paymentSystem = ::colorize("userlogColoredText", ::loc(nameLocId))
     })
     this.msgBox("yuplay_purchase_ask", msgText,
       [ ["yes", @() doYuplayPurchase(itemId, payMethod) ],
@@ -406,21 +399,21 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
   function doYuplayPurchase(itemId, payMethod)
   {
     let guid = bundlesShopInfo.value?[itemId].guid ?? ""
-    assert(guid != "", $"Error: not found guid for {itemId}")
+    ::dagor.assertf(guid != "", $"Error: not found guid for {itemId}")
 
     let response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
-    if (response != YU2_OK)
+    if (response != ::YU2_OK)
     {
       let errorText = ::get_yu2_error_text(response)
       this.msgBox("errorMessageBox", errorText, [["ok", function(){}]], "ok")
-      log($"yuplay2_buy_entitlement have returned {response} with task = {itemId}, guid = {guid}, payMethod = {payMethod}")
+      ::dagor.debug($"yuplay2_buy_entitlement have returned {response} with task = {itemId}, guid = {guid}, payMethod = {payMethod}")
       return
     }
 
     ::update_entitlements()
 
     this.msgBox("purchase_done",
-      format(loc("userlog/buy_entitlement"), getEntitlementName(goods[itemId])),
+      format(::loc("userlog/buy_entitlement"), getEntitlementName(goods[itemId])),
       [["ok", @() null]], "ok", { cancel_fn = @() null})
   }
 
@@ -470,7 +463,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
   function goForward(startFunc)  //no forward from this wnd, only purchase finished.
   {
-    if (checkObj(scene))
+    if (::checkObj(scene))
     {
       onItemSelect()
       updateItemIcon(task)
@@ -497,9 +490,9 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     let productInfo = bundlesShopInfo.value?[item.name]
 
     if (additionalAmount > 0)
-      savingText = loc("ui/parentheses", {text = loc("charServer/entitlement/firstBuy")})
+      savingText = ::loc("ui/parentheses", {text = ::loc("charServer/entitlement/firstBuy")})
     else if (productInfo?.discount_mul)
-      savingText = format(loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul)*100)
+      savingText = format(::loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul)*100)
     else if (item?.group && item.group in groupCost) {
       let itemPrice = getEntitlementPriceFloat(item)
       let defItemPrice = groupCost[item.group]
@@ -508,7 +501,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
         local saving = (1 - ((itemPrice * (1 - discount*0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
         if (saving >= MIN_DISPLAYED_PERCENT_SAVING)
-          savingText = format(loc("charServer/entitlement/discount"), saving)
+          savingText = format(::loc("charServer/entitlement/discount"), saving)
       }
     }
 
@@ -525,7 +518,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       local addString = ""
       if (additionalAmount > 0) {
         let addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
-        addString = loc("ui/parentheses/space", {text = "+" + addAmount.tostring()})
+        addString = ::loc("ui/parentheses/space", {text = "+" + addAmount.tostring()})
       }
 
       amountText = originAmount.tostring() + addString
@@ -555,13 +548,13 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     let renewText = getEntitlementTimeText(product)
     if (renewText != "") {
       let realname = ("alias" in product) ? product.alias : productId
-      let expire = ::entitlement_expires_in(realname == "PremiumAccount"
+      let expire = entitlement_expires_in(realname == "PremiumAccount"
         ? ::shop_get_premium_account_ent_name()
         : realname)
       if (expire>0)
         descText = "".concat(descText,
-          colorize("chapterUnlockedColor",
-            $"{loc("subscription/activeTime")}{loc("ui/colon")}{time.getExpireText(expire)}"))
+          ::colorize("chapterUnlockedColor",
+            $"{::loc("subscription/activeTime")}{::loc("ui/colon")}{time.getExpireText(expire)}"))
     }
     scene.findObject("item_desc_text").setValue(descText)
   }

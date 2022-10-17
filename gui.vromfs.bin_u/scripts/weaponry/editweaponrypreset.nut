@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let regexp2 = require("regexp2")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -20,7 +12,7 @@ let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
 
 let function openEditPresetName(name, okFunc) {
   ::gui_modal_editbox_wnd({
-    title = loc("mainmenu/newPresetName")
+    title = ::loc("mainmenu/newPresetName")
     maxLen = 40
     value = name
     checkButtonFunc = @(value) value != null && clearBorderSymbols(value).len() > 0
@@ -80,8 +72,8 @@ let function openEditPresetName(name, okFunc) {
   }
 
   getPopupItemName = @(ammo, nameText) ammo > 0
-    ? "".concat(nameText, loc("ui/parentheses/space",
-      {text = $"{loc("shop/ammo")}{loc("ui/colon")}{ammo}"}))
+    ? "".concat(nameText, ::loc("ui/parentheses/space",
+      {text = $"{::loc("shop/ammo")}{::loc("ui/colon")}{ammo}"}))
     : nameText
 
   function getWeaponsPopupParams(weapons, tierId) {
@@ -90,10 +82,10 @@ let function openEditPresetName(name, okFunc) {
       let tierWeaponConfig = weapon.__merge({
         iconType = weapon.tiers?[tierId].iconType ?? weapon.iconType
       })
-      let nameText = loc($"weapons/{weapon.id}")
+      let nameText = ::loc($"weapons/{weapon.id}")
       let dubIdx = res.findindex(@(v) v.presetId == weapon.presetId)
       if (dubIdx) {
-        res[dubIdx].name = "".concat(res[dubIdx].name, loc("ui/comma"),
+        res[dubIdx].name = "".concat(res[dubIdx].name, ::loc("ui/comma"),
           getPopupItemName(weapon.ammo, nameText))
         continue
       }
@@ -145,7 +137,7 @@ let function openEditPresetName(name, okFunc) {
     return {
       buttonsList = buttons
       parentObj = parentObj
-      onClickCb  = Callback(@(obj) onWeaponChoose(obj), this)
+      onClickCb  = ::Callback(@(obj) onWeaponChoose(obj), this)
     }
   }
 
@@ -190,7 +182,7 @@ let function openEditPresetName(name, okFunc) {
   function onWeaponChoose(obj) {
     let presetId = obj.id
     let tierId = obj.holderId.tointeger()
-    let cb = Callback(function() {
+    let cb = ::Callback(function() {
       if (!isValid())
         return
       preset = getCustomWeaponryPresetView(unit, preset, favoriteArr, availableWeapons)
@@ -198,7 +190,7 @@ let function openEditPresetName(name, okFunc) {
       checkWeightRestrictions()
       ::move_mouse_on_obj(presetNest.findObject($"tier_{tierId}"))
     }, this)
-    editSlotInPreset(preset, tierId, presetId, availableWeapons, unit, favoriteArr, cb)
+    editSlotInPreset(preset, tierId, presetId, availableWeapons, cb)
   }
 
   function updateButtons() {
@@ -228,7 +220,7 @@ let function openEditPresetName(name, okFunc) {
   function onPresetSave() {
     let restrictionsText = getPresetWeightRestrictionText(preset, unitBlk)
     if (restrictionsText != "") {
-      ::showInfoMsgBox($"{loc("msg/can_not_save_preset")}\n{restrictionsText}", "can_not_save_disbalanced_preset")
+      ::showInfoMsgBox($"{::loc("msg/can_not_save_preset")}\n{restrictionsText}", "can_not_save_disbalanced_preset")
       return
     }
 
@@ -245,7 +237,7 @@ let function openEditPresetName(name, okFunc) {
     if (!isPresetChanged(originalPreset, preset))
       return base.goBack()
 
-    this.msgBox("question_save_preset", loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
+    this.msgBox("question_save_preset", ::loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
       [
         ["yes", base.goBack],
         ["cancel", function () {}]

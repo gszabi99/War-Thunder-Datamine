@@ -1,20 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let callback = require("%sqStdLibs/helpers/callback.nut")
+let Callback = callback.Callback
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getNearestSelectableChildIndex } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getBitStatus, isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
-let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRequireUnlockShortText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnitItemStatusText, getUnitRequireUnlockShortText } = require("%scripts/unit/unitInfoTexts.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
@@ -116,7 +107,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   static function create(params)
   {
     let nest = params?.scene
-    if (!checkObj(nest))
+    if (!::check_obj(nest))
       return null
 
     if (params?.shouldAppendToObject ?? true) //we append to nav-bar by default
@@ -131,7 +122,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function destroy()
   {
-    if (checkObj(scene))
+    if (::check_obj(scene))
       guiScene.replaceContentFromText(scene, "", 0, null)
     scene = null
   }
@@ -148,7 +139,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (hasResearchesBtn)
     {
       let slotbarHeaderNestObj = scene.findObject("slotbar_buttons_place")
-      if (checkObj(slotbarHeaderNestObj))
+      if (::check_obj(slotbarHeaderNestObj))
         slotbarHeaderNestObj["offset"] = "yes"
     }
   }
@@ -319,7 +310,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         continue
 
       let slotCostTbl = ::get_crew_slot_cost(listCountry)
-      if (!slotCostTbl || (slotCostTbl.costGold > 0 && !hasFeature("SpendGold")))
+      if (!slotCostTbl || (slotCostTbl.costGold > 0 && !::has_feature("SpendGold")))
         continue
 
       addCrewData(countryData.crews,
@@ -432,7 +423,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (!::g_crews_list.get().len())
     {
       if (::g_login.isLoggedIn() && (::isProductionCircuit() || ::get_cur_circuit_name() == "nightly"))
-        ::scene_msg_box("no_connection", null, loc("char/no_connection"), [["ok", startLogout ]], "ok")
+        ::scene_msg_box("no_connection", null, ::loc("char/no_connection"), [["ok", startLogout ]], "ok")
       return
     }
 
@@ -468,13 +459,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         selCountryIdx = idx
 
       local bonusData = null
-      if (!::is_first_win_reward_earned(country, ::INVALID_USER_ID))
+      if (!::is_first_win_reward_earned(country, INVALID_USER_ID))
         bonusData = getCountryBonusData(country)
 
       let cEnabled = countryData.isEnabled
       let cUnlocked = ::isCountryAvailable(country)
-      let tooltipText = !cUnlocked ? loc("mainmenu/countryLocked/tooltip")
-        : loc(country)
+      let tooltipText = !cUnlocked ? ::loc("mainmenu/countryLocked/tooltip")
+        : ::loc(country)
       countriesView.countries.append({
         countryIdx = countryData.id
         country = customViewCountryData?[country].locId ?? country
@@ -517,7 +508,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       let selItem = ::get_slot_obj(crewsObj, selectedCrewData.idCountry, selectedCrewData.idInCountry)
       if (selItem)
         guiScene.performDelayed(this, function() {
-          if (checkObj(selItem) && selItem.isVisible())
+          if (::check_obj(selItem) && selItem.isVisible())
             selItem.scrollToView()
         })
     }
@@ -536,7 +527,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (needEvent)
     {
       let cObj = scene.findObject("airs_table_" + selectedCrewData.idCountry)
-      if (checkObj(cObj))
+      if (::check_obj(cObj))
       {
         skipCheckAirSelect = true
         onSlotbarSelect(cObj)
@@ -550,7 +541,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
   }
 
-  getCountryBonusData = @(country) ::getBonus(
+  getCountryBonusData = @(country) getBonus(
     ::shop_get_first_win_xp_rate(country),
     ::shop_get_first_win_wp_rate(country), "item")
 
@@ -558,7 +549,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   {
     updateSlotbarHint()
     if (loadedCountries?[countryData.id] == ::g_crews_list.version
-      || !checkObj(tblObj))
+      || !::check_obj(tblObj))
       return
 
     loadedCountries[countryData.id] <- ::g_crews_list.version
@@ -674,7 +665,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function onSlotbarSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     if (slotbarOninit || skipCheckAirSelect || !shouldCheckQueue)
@@ -685,11 +676,11 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     else
       checkedAirChange(
         (@(obj) function() {
-          if (checkObj(obj))
+          if (::checkObj(obj))
             onSlotbarSelectImpl(obj)
         })(obj),
         (@(obj) function() {
-          if (checkObj(obj))
+          if (::checkObj(obj))
           {
             skipCheckAirSelect = true
             selectTblAircraft(obj, ::selected_crews[curSlotCountryId])
@@ -700,7 +691,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function onSlotbarSelectImpl(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let selSlot = getSelSlotDataByObj(obj)
@@ -717,7 +708,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         Callback(function()
         {
           ignoreCheckSlotbar = false
-          if (checkObj(obj))
+          if (::check_obj(obj))
             applySlotSelection(obj, selSlot)
         }, this),
         Callback(function()
@@ -725,7 +716,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
           ignoreCheckSlotbar = false
           if (curSlotCountryId != selSlot.countryId)
             setCountry(::g_crews_list.get()?[curSlotCountryId]?.country)
-          else if (checkObj(obj))
+          else if (::check_obj(obj))
             selectTblAircraft(obj, curSlotIdInCountry)
         }, this),
         selSlot
@@ -765,7 +756,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
 
     let msgText = ::warningIfGold(
-      format(loc("shop/needMoneyQuestion_purchaseCrew"),
+      format(::loc("shop/needMoneyQuestion_purchaseCrew"),
         cost.getTextAccordingToBalance()),
       cost)
     ignoreCheckSlotbar = true
@@ -805,13 +796,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   {
     let objId = "airs_table_" + curSlotCountryId
     let obj = scene.findObject(objId)
-    if (checkObj(obj))
+    if (::checkObj(obj))
       selectTblAircraft(obj, crewIdInCountry)
   }
 
   function selectTblAircraft(tblObj, slotIdInCountry=0)
   {
-    if (!checkObj(tblObj) || slotIdInCountry < 0)
+    if (!::check_obj(tblObj) || slotIdInCountry < 0)
       return
     let slotIdx = getSlotIdxBySlotIdInCountry(tblObj, slotIdInCountry)
     if (slotIdx < 0)
@@ -866,9 +857,9 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (curSlotCountryId >= 0 && curSlotCountryId != countryIdx && countryIdx in ::g_crews_list.get()
         && !::isCountryAvailable(::g_crews_list.get()[countryIdx].country) && ::unlocked_countries.len())
     {
-      this.msgBox("notAvailableCountry", loc("mainmenu/countryLocked/tooltip"),
+      this.msgBox("notAvailableCountry", ::loc("mainmenu/countryLocked/tooltip"),
              [["ok", (@(obj) function() {
-               if (checkObj(obj))
+               if (::checkObj(obj))
                  obj.setValue(curSlotCountryId)
              })(obj) ]], "ok")
       return false
@@ -890,7 +881,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
 
     let animBlockObj = crewsObj.findObject(animBlockId)
-    if (checkObj(animBlockObj))
+    if (::check_obj(animBlockObj))
       return
 
     let country = countryData.country
@@ -916,7 +907,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
     let lockedCountryData = getLockedCountryData?()
     if (lockedCountryData != null
-      && !isInArray(countryData.country, lockedCountryData.availableCountries))
+      && !::isInArray(countryData.country, lockedCountryData.availableCountries))
     {
       setCountry(::get_profile_country_sq())
       ::showInfoMsgBox(lockedCountryData.reasonText)
@@ -950,14 +941,14 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
       checkedCrewAirChange(
         function() {
-          if (checkObj(obj))
+          if (::checkObj(obj))
           {
             onSlotbarCountryImpl(countryData)
             ::slotbarPresets.setCurrentGameModeByPreset(countryData.country)
           }
         },
         function() {
-          if (checkObj(obj))
+          if (::checkObj(obj))
             setCountry(::get_profile_country_sq())
         }
       )
@@ -970,7 +961,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       if (c.country == country)
       {
         let hObj = scene.findObject("header_countries")
-        if (!checkObj(hObj) || hObj.getValue() == idx)
+        if (!::check_obj(hObj) || hObj.getValue() == idx)
           break
 
         skipCheckCountrySelect = true
@@ -982,7 +973,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function getCountryDataByObject(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return null
 
     let curValue = obj.getValue()
@@ -1074,7 +1065,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
     isShaded = shouldShade
     let shadeObj = scene.findObject("slotbar_shade")
-    if(checkObj(shadeObj))
+    if(::check_obj(shadeObj))
       shadeObj.animation = isShaded ? "show" : "hide"
     if (::show_console_buttons)
       updateConsoleButtonsVisible(!isShaded)
@@ -1163,7 +1154,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   function getBoxOfUnits()
   {
     let obj = scene.findObject("airs_table_" + curSlotCountryId)
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return null
 
     let box = ::GuiBox().setFromDaguiObj(obj)
@@ -1177,7 +1168,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   function getBoxOfCountries()
   {
     let headerCountriesObj = scene.findObject("header_countries")
-    if (!checkObj(headerCountriesObj))
+    if (!::check_obj(headerCountriesObj))
       return null
 
     return ::GuiBox().setFromDaguiObj(headerCountriesObj)
@@ -1217,13 +1208,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   {
     unitSlots = unitSlots || getSlotsData()
 
-    let showBR = hasFeature("SlotbarShowBattleRating")
+    let showBR = ::has_feature("SlotbarShowBattleRating")
     let curEdiff = getCurrentEdiff()
 
     foreach (slot in unitSlots)
     {
       let obj = slot.obj.findObject("rank_text")
-      if (checkObj(obj))
+      if (::checkObj(obj))
       {
         local unitRankText = ::get_unit_rank_text(slot.unit, slot.crew, showBR, curEdiff)
         obj.setValue(unitRankText)
@@ -1243,7 +1234,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       slot.obj["crewStatus"] = ::get_crew_status(slot.crew, slot.unit)
 
       local obj = slot.obj.findObject("crew_level")
-      if (checkObj(obj))
+      if (::checkObj(obj))
       {
         let crewLevelText = slot.unit
           ? ::g_crew.getCrewLevel(slot.crew, slot.unit, slot.unit.getCrewUnitType()).tointeger().tostring()
@@ -1252,7 +1243,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       }
 
       obj = slot.obj.findObject("crew_spec")
-      if (checkObj(obj))
+      if (::check_obj(obj))
       {
         let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(slot.crew, slot.unit).trainedIcon
         obj["background-image"] = crewSpecIcon
@@ -1278,14 +1269,14 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function onEventCrewSkillsChanged(params)
   {
-    let crew = getTblValue("crew", params)
+    let crew = ::getTblValue("crew", params)
     if (crew)
       updateCrews(getSlotsData(null, crew.id))
   }
 
   function onEventQualificationIncreased(params)
   {
-    let unit = getTblValue("unit", params)
+    let unit = ::getTblValue("unit", params)
     if (unit)
       updateCrews(getSlotsData(unit.name))
   }
@@ -1341,7 +1332,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         mainActionIcon = "#ui/gameuiskin#slot_change_aircraft.svg"
         crewId         = crew?.id
         isSlotbarItem  = true
-        showBR         = hasFeature("SlotbarShowBattleRating")
+        showBR         = ::has_feature("SlotbarShowBattleRating")
         getEdiffFunc   = getCurrentEdiff.bindenv(this)
         hasExtraInfoBlock = hasExtraInfoBlock
         haveRespawnCost = haveRespawnCost
@@ -1351,7 +1342,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         curSlotIdInCountry = crew.idInCountry
         curSlotCountryId = crew.idCountry
         unlocked = crewData.isUnlocked
-        tooltipParams = { needCrewInfo = hasFeature("CrewInfo") && !::g_crews_list.isCrewListOverrided
+        tooltipParams = { needCrewInfo = ::has_feature("CrewInfo") && !::g_crews_list.isCrewListOverrided
           showLocalState = isLocalState
           needCrewModificators = true
           needShopInfo = needCheckUnitUnlock
@@ -1385,7 +1376,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function getDefaultDblClickFunc()
   {
-    return Callback(function(crew) {
+    return ::Callback(function(crew) {
       if (::g_crews_list.isCrewListOverrided)
         return
       let unit = getCrewUnit(crew)
@@ -1423,7 +1414,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     {
       let obj = slot.obj.findObject("weapons_icon")
       let unit = slot.unit
-      if (!checkObj(obj) || unit == null)
+      if (!::check_obj(obj) || unit == null)
         continue
 
       let weaponsStatus = getWeaponsStatusName((slot.crew?.isLocalState ?? true) && ::isUnitUsable(unit)

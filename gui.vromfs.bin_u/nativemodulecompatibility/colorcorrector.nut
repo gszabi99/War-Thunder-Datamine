@@ -6,11 +6,11 @@
 return {
   correctHueTarget = @(color, target) color
   correctColorLightness = @(color, lightness) color
-  TARGET_HUE_ALLY = getconsttable()?.TARGET_HUE_ALLY ?? 0
-  TARGET_HUE_SQUAD = getconsttable()?.TARGET_HUE_SQUAD ?? 1
-  TARGET_HUE_ENEMY = getconsttable()?.TARGET_HUE_ENEMY ?? 2
-  TARGET_HUE_SPECTATOR_ALLY = getconsttable()?.TARGET_HUE_SPECTATOR_ALLY ?? 3
-  TARGET_HUE_SPECTATOR_ENEMY = getconsttable()?.TARGET_HUE_SPECTATOR_ENEMY ?? 4
+  TARGET_HUE_ALLY = getroottable()?.TARGET_HUE_ALLY ?? 0
+  TARGET_HUE_SQUAD = getroottable()?.TARGET_HUE_SQUAD ?? 1
+  TARGET_HUE_ENEMY = getroottable()?.TARGET_HUE_ENEMY ?? 2
+  TARGET_HUE_SPECTATOR_ALLY = getroottable()?.TARGET_HUE_SPECTATOR_ALLY ?? 3
+  TARGET_HUE_SPECTATOR_ENEMY = getroottable()?.TARGET_HUE_SPECTATOR_ENEMY ?? 4
   TARGET_HUE_RELOAD = 5
   TARGET_HUE_RELOAD_DONE = 6
 

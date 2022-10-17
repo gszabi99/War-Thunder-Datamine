@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 const DEFAULT_MAX_SKILL_LEVEL = 50
 
 let skillCategories = []

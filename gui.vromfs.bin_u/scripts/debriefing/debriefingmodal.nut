@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format, split_by_chars } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let time = require("%scripts/time.nut")
@@ -49,7 +42,6 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { hasEveryDayLoginAward, canShowEveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
 let { is_replay_turned_on, is_replay_saved, is_replay_present,
   on_save_replay, on_view_replay } = require("replays")
 
@@ -96,9 +88,9 @@ let statTooltipColumnParamByType = {
 
 ::gui_start_debriefing_replay <- function gui_start_debriefing_replay()
 {
-  ::gui_start_debriefing()
+  gui_start_debriefing()
 
-  ::add_msg_box("replay_question", loc("mainmenu/questionSaveReplay"), [
+  ::add_msg_box("replay_question", ::loc("mainmenu/questionSaveReplay"), [
         ["yes", function()
         {
           let guiScene = ::get_gui_scene()
@@ -130,25 +122,25 @@ let statTooltipColumnParamByType = {
   {
     ::destroy_session_scripted()
     //need delay after destroy session before is_multiplayer become false
-    ::get_gui_scene().performDelayed(getroottable(), startLogout)
+    ::get_gui_scene().performDelayed(::getroottable(), startLogout)
     return
   }
 
   let gm = ::get_game_mode()
   if (::back_from_replays != null)
   {
-     log("gui_nav gui_start_debriefing back_from_replays");
+     ::dagor.debug("gui_nav gui_start_debriefing back_from_replays");
      let temp_func = ::back_from_replays
-     log("gui_nav back_from_replays = null");
+     ::dagor.debug("gui_nav back_from_replays = null");
      ::back_from_replays = null
      temp_func()
      ::update_gamercards()
      return
   }
   else
-    log("gui_nav gui_start_debriefing back_from_replays is null");
+    ::dagor.debug("gui_nav gui_start_debriefing back_from_replays is null");
 
-  if (gm == GM_BENCHMARK)
+  if (gm == ::GM_BENCHMARK)
   {
     let title = ::loc_current_mission_name()
     let benchmark_data = ::stat_get_benchmark()
@@ -156,12 +148,12 @@ let statTooltipColumnParamByType = {
     ::gui_start_modal_wnd(::gui_handlers.BenchmarkResultModal, {title = title benchmark_data = benchmark_data})
     return
   }
-  if (gm == GM_CREDITS || gm == GM_TRAINING)
+  if (gm == ::GM_CREDITS || gm == ::GM_TRAINING)
   {
      ::gui_start_mainmenu();
      return
   }
-  if (gm == GM_TEST_FLIGHT)
+  if (gm == ::GM_TEST_FLIGHT)
   {
     if (::last_called_gui_testflight)
       ::last_called_gui_testflight()
@@ -188,8 +180,8 @@ let statTooltipColumnParamByType = {
   static awardsListsConfig = {
     streaks = {
       filter = {
-          show = [EULT_NEW_STREAK]
-          unlocks = [UNLOCKABLE_STREAK]
+          show = [::EULT_NEW_STREAK]
+          unlocks = [::UNLOCKABLE_STREAK]
           filters = { popupInDebriefing = [false, null] }
           currentRoomOnly = true
           disableVisible = true
@@ -200,10 +192,10 @@ let statTooltipColumnParamByType = {
     }
     unlocks = {
       filter = {
-        show = [EULT_NEW_UNLOCK]
-        unlocks = [UNLOCKABLE_AIRCRAFT, UNLOCKABLE_SKIN, UNLOCKABLE_DECAL, UNLOCKABLE_ATTACHABLE,
-                   UNLOCKABLE_WEAPON, UNLOCKABLE_DIFFICULTY, UNLOCKABLE_ENCYCLOPEDIA, UNLOCKABLE_PILOT,
-                   UNLOCKABLE_MEDAL, UNLOCKABLE_CHALLENGE, UNLOCKABLE_ACHIEVEMENT, UNLOCKABLE_TITLE, UNLOCKABLE_AWARD]
+        show = [::EULT_NEW_UNLOCK]
+        unlocks = [::UNLOCKABLE_AIRCRAFT, ::UNLOCKABLE_SKIN, ::UNLOCKABLE_DECAL, ::UNLOCKABLE_ATTACHABLE,
+                   ::UNLOCKABLE_WEAPON, ::UNLOCKABLE_DIFFICULTY, ::UNLOCKABLE_ENCYCLOPEDIA, ::UNLOCKABLE_PILOT,
+                   ::UNLOCKABLE_MEDAL, ::UNLOCKABLE_CHALLENGE, ::UNLOCKABLE_ACHIEVEMENT, ::UNLOCKABLE_TITLE, ::UNLOCKABLE_AWARD]
         filters = { popupInDebriefing = [false, null] }
         currentRoomOnly = true
         disableVisible = true
@@ -257,7 +249,7 @@ let statTooltipColumnParamByType = {
     playersInfo = debriefingResult.playersInfo
     isMp = debriefingResult.isMp
     isReplay = debriefingResult.isReplay
-    isForceShowMyStatsRightBlock = hasFeature("Profile")
+    isForceShowMyStatsRightBlock = ::has_feature("Profile")
 
     if (::disable_network()) //for correct work in disable_menu mode
       ::update_gamercards()
@@ -279,8 +271,8 @@ let statTooltipColumnParamByType = {
       scene.findObject("debriefing_timer").setUserData(this)
 
     playerStatsObj = scene.findObject("stat_table")
-    numberOfWinningPlaces = getTblValue("numberOfWinningPlaces", debriefingResult, -1)
-    pveRewardInfo = getTblValue("pveRewardInfo", debriefingResult)
+    numberOfWinningPlaces = ::getTblValue("numberOfWinningPlaces", debriefingResult, -1)
+    pveRewardInfo = ::getTblValue("pveRewardInfo", debriefingResult)
     giftItems = groupGiftsById(debriefingResult?.giftItemsInfo)
     foreach(idx, row in debriefingRows)
       if (row.show)
@@ -300,64 +292,64 @@ let statTooltipColumnParamByType = {
     if (isMp)
     {
       let mpResult = debriefingResult.exp.result
-      resTitle = loc("MISSION_IN_PROGRESS")
+      resTitle = ::loc("MISSION_IN_PROGRESS")
 
       if (isSpectator
-           && (gameType & GT_VERSUS)
-           && (mpResult == STATS_RESULT_SUCCESS
-                || mpResult == STATS_RESULT_FAIL))
+           && (gameType & ::GT_VERSUS)
+           && (mpResult == ::STATS_RESULT_SUCCESS
+                || mpResult == ::STATS_RESULT_FAIL))
       {
         if (isTeamplay)
         {
           local myTeam = Team.A
           foreach(player in debriefingResult.mplayers_list)
-            if (getTblValue("isLocal", player, false))
+            if (::getTblValue("isLocal", player, false))
             {
               myTeam = player.team
               break
             }
           let winner = ((myTeam == Team.A) == debriefingResult.isSucceed) ? "A" : "B"
-          resTitle = loc("multiplayer/team_won") + loc("ui/colon") + loc("multiplayer/team" + winner)
+          resTitle = ::loc("multiplayer/team_won") + ::loc("ui/colon") + ::loc("multiplayer/team" + winner)
           resTheme = DEBR_THEME.WIN
         }
         else
         {
-          resTitle = loc("MISSION_FINISHED")
+          resTitle = ::loc("MISSION_FINISHED")
           resTheme = DEBR_THEME.WIN
         }
       }
-      else if (mpResult == STATS_RESULT_SUCCESS)
+      else if (mpResult == ::STATS_RESULT_SUCCESS)
       {
-        resTitle = loc("MISSION_SUCCESS")
+        resTitle = ::loc("MISSION_SUCCESS")
         resTheme = DEBR_THEME.WIN
 
         let victoryBonus = (isMp && isDebriefingResultFull()) ? getMissionBonusText() : ""
         if (victoryBonus != "")
-          resReward = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"), victoryBonus)
+          resReward = "".concat(::loc("debriefing/MissionWinReward"), ::loc("ui/colon"), victoryBonus)
 
         let currentMajorVersion = get_game_version() >> 16
         let lastWinVersion = ::load_local_account_settings(LAST_WON_VERSION_SAVE_ID, 0)
         isFirstWinInMajorUpdate = currentMajorVersion > lastWinVersion
-        ::save_local_account_settings(LAST_WON_VERSION_SAVE_ID, currentMajorVersion)
+        save_local_account_settings(LAST_WON_VERSION_SAVE_ID, currentMajorVersion)
       }
-      else if (mpResult == STATS_RESULT_FAIL)
+      else if (mpResult == ::STATS_RESULT_FAIL)
       {
-        resTitle = loc("MISSION_FAIL")
+        resTitle = ::loc("MISSION_FAIL")
         resTheme = DEBR_THEME.LOSE
 
         let loseBonus = (isMp && isDebriefingResultFull()) ? getMissionBonusText() : ""
         if (loseBonus != "")
-          resReward = "".concat(loc("debriefing/MissionLoseReward"), loc("ui/colon"), loseBonus)
+          resReward = "".concat(::loc("debriefing/MissionLoseReward"), ::loc("ui/colon"), loseBonus)
       }
-      else if (mpResult == STATS_RESULT_ABORTED_BY_KICK)
+      else if (mpResult == ::STATS_RESULT_ABORTED_BY_KICK)
       {
-        resReward = colorize("badTextColor", getKickReasonLocText())
+        resReward = ::colorize("badTextColor", getKickReasonLocText())
         resTheme = DEBR_THEME.LOSE
       }
     }
     else
     {
-      resTitle = loc(debriefingResult.isSucceed ? "MISSION_SUCCESS" : "MISSION_FAIL")
+      resTitle = ::loc(debriefingResult.isSucceed ? "MISSION_SUCCESS" : "MISSION_FAIL")
       resTheme = debriefingResult.isSucceed ? DEBR_THEME.WIN : DEBR_THEME.LOSE
     }
 
@@ -367,26 +359,26 @@ let statTooltipColumnParamByType = {
     gatherAwardsLists()
 
     //update mp table
-    needPlayersTbl = isMp && !(gameType & GT_COOPERATIVE) && isDebriefingResultFull()
-    setSceneTitle(::getCurMpTitle(), null, "dbf_title")
+    needPlayersTbl = isMp && !(gameType & ::GT_COOPERATIVE) && isDebriefingResultFull()
+    setSceneTitle(getCurMpTitle(), null, "dbf_title")
 
     if (!isDebriefingResultFull())
     {
       foreach(tName in ["no_air_text", "research_list_text"])
       {
         let obj = scene.findObject(tName)
-        if (checkObj(obj))
-          obj.setValue(loc("MISSION_IN_PROGRESS"))
+        if (::checkObj(obj))
+          obj.setValue(::loc("MISSION_IN_PROGRESS"))
       }
     }
 
     if (!isReplay)
     {
       setGoNext()
-      if (gm == GM_DYNAMIC)
+      if (gm == ::GM_DYNAMIC)
       {
         ::save_profile(true)
-        if (getDynamicResult() > MISSION_STATUS_RUNNING)
+        if (getDynamicResult() > ::MISSION_STATUS_RUNNING)
           ::destroy_session_scripted()
         else
           ::g_squad_manager.setReadyFlag(true)
@@ -415,8 +407,6 @@ let statTooltipColumnParamByType = {
     let sessionIdObj = scene.findObject("txt_session_id")
     if (sessionIdObj?.isValid())
       sessionIdObj.setValue(debriefingResult?.sessionId ?? "")
-
-    ::my_stats.markStatsReset()
   }
 
   function gatherAwardsLists()
@@ -425,7 +415,7 @@ let statTooltipColumnParamByType = {
 
     streakAwardsList = getAwardsList(awardsListsConfig.streaks.filter)
 
-    let wpBattleTrophy = getTblValue("wpBattleTrophy", debriefingResult.exp, 0)
+    let wpBattleTrophy = ::getTblValue("wpBattleTrophy", debriefingResult.exp, 0)
     if (wpBattleTrophy > 0)
       streakAwardsList.append(getFakeUnlockDataByWpBattleTrophy(wpBattleTrophy))
 
@@ -456,15 +446,15 @@ let statTooltipColumnParamByType = {
 
   getFakeUnlockDataByWpBattleTrophy = @(wpBattleTrophy) getFakeUnlockData({
     iconStyle = ::trophyReward.getWPIcon(wpBattleTrophy)
-    title = loc("debriefing/BattleTrophy"),
-    desc = loc("debriefing/BattleTrophy/desc"),
+    title = ::loc("debriefing/BattleTrophy"),
+    desc = ::loc("debriefing/BattleTrophy/desc"),
     rewardText = ::Cost(wpBattleTrophy).toStringWithParams({isWpAlwaysShown = true}),
   })
 
   function getAwardsList(filter)
   {
     let res = []
-    local logsList = ::getUserLogsList(filter)
+    local logsList = getUserLogsList(filter)
     logsList = ::combineSimilarAwards(logsList)
     for (local i = logsList.len()-1; i >= 0; i--)
       res.append(::build_log_unlock_data(logsList[i]))
@@ -475,10 +465,10 @@ let statTooltipColumnParamByType = {
 
     let dbgFilter = clone filter
     dbgFilter.currentRoomOnly = false
-    logsList = ::getUserLogsList(dbgFilter)
+    logsList = getUserLogsList(dbgFilter)
     if (!logsList.len())
     {
-      dlog("Not found any unlocks in userlogs for debug") // warning disable: -forbidden-function
+      ::dlog("Not found any unlocks in userlogs for debug") // warning disable: -forbidden-function
       return res
     }
 
@@ -494,28 +484,28 @@ let statTooltipColumnParamByType = {
     local text = ""
     local color = ""
 
-    if(getTblValue("haveTeamkills", debriefingResult, false))
+    if(::getTblValue("haveTeamkills", debriefingResult, false))
     {
-      text = loc("debriefing/noAwardsCaption")
+      text = ::loc("debriefing/noAwardsCaption")
       color = "bad"
     }
     else if (debriefingResult?.exp.eacKickMessage != null)
     {
       text = "".concat(getKickReasonLocText(), "\n",
-        loc("multiplayer/reason"), loc("ui/colon"),
-        colorize("activeTextColor", debriefingResult.exp.eacKickMessage))
+        ::loc("multiplayer/reason"), ::loc("ui/colon"),
+        ::colorize("activeTextColor", debriefingResult.exp.eacKickMessage))
 
-      if (hasFeature("AllowExternalLink") && !::is_vendor_tencent())
+      if (::has_feature("AllowExternalLink") && !::is_vendor_tencent())
         ::showBtn("btn_no_awards_info", true, scene)
       else
         text = "".concat(text, "\n",
-          loc("msgbox/error_link_format_game"), loc("ui/colon"), loc("url/support/easyanticheat"))
+          ::loc("msgbox/error_link_format_game"), ::loc("ui/colon"), ::loc("url/support/easyanticheat"))
 
       color = "bad"
     }
     else if (pveRewardInfo && pveRewardInfo.warnLowActivity)
     {
-      text = loc("debriefing/noAwardsCaption/noMinActivity")
+      text = ::loc("debriefing/noAwardsCaption/noMinActivity")
       color = "userlog"
     }
 
@@ -524,7 +514,7 @@ let statTooltipColumnParamByType = {
 
     let blockObj = ::showBtn("no_awards_block", true, scene)
     let captionObj = blockObj && blockObj.findObject("no_awards_caption")
-    if (!checkObj(captionObj))
+    if (!::check_obj(captionObj))
       return
     captionObj.setValue(text)
     captionObj.overlayTextColor = color
@@ -533,14 +523,14 @@ let statTooltipColumnParamByType = {
   function getKickReasonLocText()
   {
     if (debriefingResult?.exp.eacKickMessage != null)
-      return loc("MISSION_ABORTED_BY_KICK/EAC")
-    return loc("MISSION_ABORTED_BY_KICK")
+      return ::loc("MISSION_ABORTED_BY_KICK/EAC")
+    return ::loc("MISSION_ABORTED_BY_KICK")
   }
 
   function onNoAwardsInfoBtn()
   {
     if (debriefingResult?.exp.eacKickMessage != null)
-      openUrl(loc("url/support/easyanticheat/kick_reasons"), false, false, "support_eac")
+      openUrl(::loc("url/support/easyanticheat/kick_reasons"), false, false, "support_eac")
   }
 
   function reinitTotal()
@@ -568,9 +558,9 @@ let statTooltipColumnParamByType = {
           totalCurValues[currency + suffix] <- 0
 
       let totalKey = getCountedResultId(totalRow, state, currency)
-      totalCurValues[currency] <- getTblValue(currency, totalCurValues, 0)
-      totalTarValues[currency] <- getTblValue(totalKey, debriefingResult.counted_result_by_debrState, 0)
-      totalCurValues[currency + "Teaser"] <- getTblValue(currency + "Teaser", totalCurValues, 0)
+      totalCurValues[currency] <- ::getTblValue(currency, totalCurValues, 0)
+      totalTarValues[currency] <- ::getTblValue(totalKey, debriefingResult.counted_result_by_debrState, 0)
+      totalCurValues[currency + "Teaser"] <- ::getTblValue(currency + "Teaser", totalCurValues, 0)
       totalTarValues[currency + "Teaser"] <- premTeaser[currency]
     }
 
@@ -584,7 +574,7 @@ let statTooltipColumnParamByType = {
         currencies.append(::Cost().setRp(premTeaser.exp).tostring())
       if (premTeaser.wp  > 0)
         currencies.append(::Cost(premTeaser.wp).tostring())
-      tooltip = loc("debriefing/PremiumNotEarned") + loc("ui/colon") + "\n" + ::g_string.implode(currencies, loc("ui/comma"))
+      tooltip = ::loc("debriefing/PremiumNotEarned") + ::loc("ui/colon") + "\n" + ::g_string.implode(currencies, ::loc("ui/comma"))
     }
 
     totalObj = scene.findObject("wnd_total")
@@ -603,7 +593,7 @@ let statTooltipColumnParamByType = {
 
   function handleActiveWager()
   {
-    let activeWagerData = getTblValue("activeWager", debriefingResult, null)
+    let activeWagerData = ::getTblValue("activeWager", debriefingResult, null)
     if (!activeWagerData)
       return
 
@@ -613,13 +603,13 @@ let statTooltipColumnParamByType = {
       return
 
     let containerObj = scene.findObject("active_wager_container")
-    if (!checkObj(containerObj))
+    if (!::checkObj(containerObj))
       return
 
     containerObj.show(true)
 
     let iconObj = containerObj.findObject("active_wager_icon")
-    if (checkObj(iconObj))
+    if (::checkObj(iconObj))
       wager.setIcon(iconObj, {bigPicture = false})
 
     let wagerResult = activeWagerData.wagerResult
@@ -631,22 +621,22 @@ let statTooltipColumnParamByType = {
       showActiveWagerResultIcon(isResultSuccess)
 
     let tooltipObj = containerObj.findObject("active_wager_tooltip")
-    if (checkObj(tooltipObj))
+    if (::checkObj(tooltipObj))
     {
       tooltipObj.setUserData(activeWagerData)
       tooltipObj.enable(!isWagerEnded && isWagerHasResult)
     }
 
     if (!isWagerHasResult)
-      containerObj.tooltip = loc("debriefing/wager_result_will_be_later")
+      containerObj.tooltip = ::loc("debriefing/wager_result_will_be_later")
     else if (isWagerEnded)
     {
       local endedWagerText = activeWagerData.wagerText
-      endedWagerText += "\n" + loc("items/wager/numWins", {
+      endedWagerText += "\n" + ::loc("items/wager/numWins", {
         numWins = activeWagerData.wagerNumWins,
         maxWins = wager.maxWins
       })
-      endedWagerText += "\n" + loc("items/wager/numFails", {
+      endedWagerText += "\n" + ::loc("items/wager/numFails", {
         numFails = activeWagerData.wagerNumFails,
         maxFails = wager.maxFails
       })
@@ -667,13 +657,13 @@ let statTooltipColumnParamByType = {
     if (wagerResult != "WagerWin" && wagerResult != "WagerFail")
       return
     let textObj = scene.findObject("active_wager_text")
-    if (checkObj(textObj))
+    if (::checkObj(textObj))
       textObj.setValue(activeWagerData.wagerText)
   }
 
   function onWagerTooltipOpen(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
     let activeWagerData = obj.getUserData()
     if (activeWagerData == null)
@@ -689,7 +679,7 @@ let statTooltipColumnParamByType = {
   function showActiveWagerResultIcon(success)
   {
     let iconObj = scene.findObject("active_wager_result_icon")
-    if (!checkObj(iconObj))
+    if (!::checkObj(iconObj))
       return
     iconObj["background-image"] = success ? "#ui/gameuiskin#favorite.png" : "#ui/gameuiskin#icon_primary_fail.svg"
   }
@@ -774,7 +764,7 @@ let statTooltipColumnParamByType = {
 
     let trophyItemId = giftItems[0].item
     let filteredLogs = ::getUserLogsList({
-      show = [EULT_OPEN_TROPHY]
+      show = [::EULT_OPEN_TROPHY]
       currentRoomOnly = true
       disableVisible = true
       checkFunc = function(userlog) { return trophyItemId == userlog.body.id }
@@ -807,7 +797,7 @@ let statTooltipColumnParamByType = {
     {
       let isVictoryStage = val == maxValue
 
-      let text = isVictoryStage ? loc("debriefing/victory")
+      let text = isVictoryStage ? ::loc("debriefing/victory")
        : time.secondsToString(val, true, true)
 
       let trophyName = ::get_pve_trophy_name(val, isVictoryStage)
@@ -858,14 +848,14 @@ let statTooltipColumnParamByType = {
 
     local layersData = ""
     let filteredLogs = ::getUserLogsList({
-      show = [EULT_OPEN_TROPHY]
+      show = [::EULT_OPEN_TROPHY]
       currentRoomOnly = true
       checkFunc = function(userlog) { return trophyItem.id == userlog.body.id }
     })
 
-    foreach(logObj in filteredLogs)
+    foreach(log in filteredLogs)
     {
-      let layer = ::trophyReward.getImageByConfig(logObj, false)
+      let layer = ::trophyReward.getImageByConfig(log, false)
       if (layer != "")
       {
         layersData += layer
@@ -887,11 +877,11 @@ let statTooltipColumnParamByType = {
     if (!pveRewardInfo)
       return
     let pveTrophyPlaceObj = scene.findObject("pve_trophy_progress")
-    if (!checkObj(pveTrophyPlaceObj))
+    if (!::check_obj(pveTrophyPlaceObj))
       return
 
     let newSliderObj = pveTrophyPlaceObj.findObject("new_progress_box")
-    if (!checkObj(newSliderObj))
+    if (!::check_obj(newSliderObj))
       return
 
     let targetValue = pveRewardInfo.sessionTime
@@ -909,7 +899,7 @@ let statTooltipColumnParamByType = {
     if (state != debrState.done)
       return
     let tabsObj = scene.findObject("tabs_list")
-    if (!checkObj(tabsObj))
+    if (!::check_obj(tabsObj))
       return
     for (local i = 0; i < tabsObj.childrenCount(); i++)
       if (tabsObj.getChild(i).id == tabName)
@@ -1059,29 +1049,29 @@ let statTooltipColumnParamByType = {
         return switchState()
 
       let objPlace = scene.findObject("bonus_ico_place")
-      if (!checkObj(objPlace))
+      if (!::checkObj(objPlace))
         return switchState()
 
       //Gather rewards info:
       let textArray = []
 
       if (debriefingResult.mulsList.len())
-        textArray.append(loc("bonus/xpFirstWinInDayMul/tooltip"))
+        textArray.append(::loc("bonus/xpFirstWinInDayMul/tooltip"))
 
       let bonusNames = {
         premAcc = "charServer/chapter/premium"
         premMod = "modification/premExpMul"
         booster = "itemTypes/booster"
       }
-      let tblTotal = getTblValue("tblTotal", debriefingResult.exp, {})
+      let tblTotal = ::getTblValue("tblTotal", debriefingResult.exp, {})
       let bonusesTotal = []
       foreach (bonusType in [ "premAcc", "premMod", "booster" ])
       {
-        let bonusExp = getTblValue(bonusType + "Exp", tblTotal, 0)
-        let bonusWp  = getTblValue(bonusType + "Wp",  tblTotal, 0)
+        let bonusExp = ::getTblValue(bonusType + "Exp", tblTotal, 0)
+        let bonusWp  = ::getTblValue(bonusType + "Wp",  tblTotal, 0)
         if (!bonusExp && !bonusWp)
           continue
-        bonusesTotal.append(loc(getTblValue(bonusType, bonusNames, "")) + loc("ui/colon") +
+        bonusesTotal.append(::loc(::getTblValue(bonusType, bonusNames, "")) + ::loc("ui/colon") +
           ::Cost(bonusWp, 0, bonusExp).tostring())
       }
       if (!::u.isEmpty(bonusesTotal))
@@ -1095,17 +1085,17 @@ let statTooltipColumnParamByType = {
         return switchState()
 
       if (!isDebriefingResultFull() &&
-          !((gameType & GT_RACE) &&
-            debriefingResult.exp.result == STATS_RESULT_IN_PROGRESS))
-        textArray.append(loc("debriefing/most_award_after_battle"))
+          !((gameType & ::GT_RACE) &&
+            debriefingResult.exp.result == ::STATS_RESULT_IN_PROGRESS))
+        textArray.append(::loc("debriefing/most_award_after_battle"))
 
-      textArray.insert(0, loc("charServer/chapter/bonuses"))
+      textArray.insert(0, ::loc("charServer/chapter/bonuses"))
 
       objPlace.show(true)
       updateMyStatsTopBarArrangement()
 
       let objTarget = objPlace.findObject("bonus_ico")
-      if (checkObj(objTarget))
+      if (::checkObj(objTarget))
       {
         objTarget["background-image"] = havePremium.value ?
           "#ui/gameuiskin#medal_premium.png" : "#ui/gameuiskin#medal_bonus.png"
@@ -1153,7 +1143,7 @@ let statTooltipColumnParamByType = {
     if (!isPlatformSony
       || !isMp
       || !debriefingResult
-      || debriefingResult.exp.result != STATS_RESULT_SUCCESS)
+      || debriefingResult.exp.result != ::STATS_RESULT_SUCCESS)
       return
 
     let config = {
@@ -1228,9 +1218,9 @@ let statTooltipColumnParamByType = {
     let rowId = "row_" + row.id
     local rowObj = tblObj.findObject(rowId)
 
-    if (!("curValues" in row) || !checkObj(rowObj))
+    if (!("curValues" in row) || !::checkObj(rowObj))
       row.curValues <- { value = 0, reward = 0 }
-    if (!checkObj(rowObj))
+    if (!::checkObj(rowObj))
     {
       guiScene.setUpdatesEnabled(false, false)
       rowObj = guiScene.createElementByObject(tblObj, "%gui/debriefing/statRow.blk", "tr", this)
@@ -1243,9 +1233,9 @@ let statTooltipColumnParamByType = {
       justCreated = true
 
       if ("tooltip" in row)
-        rowObj.title = loc(row.tooltip)
+        rowObj.title = ::loc(row.tooltip)
 
-      local rowProps = getTblValue("rowProps", row, null)
+      local rowProps = ::getTblValue("rowProps", row, null)
       if(::u.isFunction(rowProps))
         rowProps = rowProps()
 
@@ -1264,10 +1254,10 @@ let statTooltipColumnParamByType = {
         continue
 
       local targetValue = 0
-      if (p != "value" || isInArray(row.rowType, ["wp", "exp", "gold"]))
+      if (p != "value" || ::isInArray(row.rowType, ["wp", "exp", "gold"]))
       {
         let tblKey = getCountedResultId(row, state, p == "value"? row.rowType : row.rewardType)
-        targetValue = getTblValue(tblKey, debriefingResult.counted_result_by_debrState, 0)
+        targetValue = ::getTblValue(tblKey, debriefingResult.counted_result_by_debrState, 0)
       }
 
       if (targetValue == 0)
@@ -1282,7 +1272,7 @@ let statTooltipColumnParamByType = {
         nextValue = ::blendProp(row.curValues[p], targetValue, row.isOverall? totalStatsTime : statsTime, dt)
         if (nextValue != targetValue)
           finished = false
-        if (p != "value" || !isInArray(row.rowType, ["mul", "tim", "pct", "ptm", "tnt"]))
+        if (p != "value" || !::isInArray(row.rowType, ["mul", "tim", "pct", "ptm", "tnt"]))
           nextValue = nextValue.tointeger()
       }
       else
@@ -1306,7 +1296,7 @@ let statTooltipColumnParamByType = {
   {
     if (!tgtName)
       tgtName = "base"
-    return !::u.isTable(row[name]) ? row[name] : getTblValue(tgtName, row[name], null)
+    return !::u.isTable(row[name]) ? row[name] : ::getTblValue(tgtName, row[name], null)
   }
 
   function getTextByType(value, paramType, showEmpty = false)
@@ -1320,7 +1310,7 @@ let statTooltipColumnParamByType = {
       case "exp": return ::Cost().setRp(value).tostring()
       case "frp": return ::Cost().setFrp(value).tostring()
       case "num": return value.tostring()
-      case "sec": return value + loc("debriefing/timeSec")
+      case "sec": return value + ::loc("debriefing/timeSec")
       case "mul": return "x" + value
       case "pct": return (100.0*value + 0.5).tointeger() + "%"
       case "tim": return time.secondsToString(value, false)
@@ -1353,7 +1343,7 @@ let statTooltipColumnParamByType = {
           ::blendProp(totalCurValues[p], totalTarValues[p], totalStatsTime, dt).tointeger()
 
         let obj = totalObj.findObject(p)
-        if (checkObj(obj))
+        if (::checkObj(obj))
         {
           cost.wp = p.indexof("wp") != null ? totalCurValues[p] : 0
           cost.rp = p.indexof("exp") != null ? totalCurValues[p] : 0
@@ -1365,7 +1355,7 @@ let statTooltipColumnParamByType = {
 
   function getModExp(airData)
   {
-    if (getTblValue("expModuleCapped", airData, false))
+    if (::getTblValue("expModuleCapped", airData, false))
       return airData.expInvestModule
     return airData.expModsTotal //expModsTotal recounted by bonus mul.
   }
@@ -1429,10 +1419,10 @@ let statTooltipColumnParamByType = {
       let expInvestUnitTotal = getExpInvestUnitTotal()
       if (expInvestUnitTotal > 0)
       {
-        let msg = format(loc("debriefing/all_units_researched"),
+        let msg = format(::loc("debriefing/all_units_researched"),
           ::Cost().setRp(expInvestUnitTotal).tostring())
         let noUnitObj = scene.findObject("no_air_text")
-        if (checkObj(noUnitObj))
+        if (::checkObj(noUnitObj))
           noUnitObj.setValue(::g_string.stripTags(msg))
       }
     }
@@ -1462,13 +1452,13 @@ let statTooltipColumnParamByType = {
       return false
     foreach (ut in unitTypes.types)
     {
-      let unit = getTblValue("unit", getResearchUnitInfo(ut.name))
+      let unit = ::getTblValue("unit", getResearchUnitInfo(ut.name))
       if (unit && !::isUnitInResearch(unit))
         return true
     }
     foreach (unitId, unitData in debriefingResult.exp.aircrafts)
     {
-      let modName = getTblValue("investModuleName", unitData, "")
+      let modName = ::getTblValue("investModuleName", unitData, "")
       if (modName == "")
         continue
       let unit = ::getAircraftByName(unitId)
@@ -1524,7 +1514,7 @@ let statTooltipColumnParamByType = {
     local multBonus = 0
     if(debriefingResult.mulsList.len() > 0)
       foreach(idx, table in debriefingResult.mulsList)
-        multBonus += getTblValue("exp", table, 0)
+        multBonus += ::getTblValue("exp", table, 0)
 
     itemExp = multBonus == 0? itemExp : itemExp * multBonus
     return itemExp
@@ -1543,7 +1533,7 @@ let statTooltipColumnParamByType = {
     let unitId = unit.name
     let mod = getResearchModFromAirData(unit, airData)
     let diffExp = mod ? getModExp(airData) : 0
-    let isCompleted = mod ? getTblValue("expModuleCapped", airData, false) : false
+    let isCompleted = mod ? ::getTblValue("expModuleCapped", airData, false) : false
 
     let view = {
       id = unitId
@@ -1572,7 +1562,7 @@ let statTooltipColumnParamByType = {
       local msg = "debriefing/but_all_mods_researched"
       if (findAnyNotResearchedMod(unit))
         msg = "debriefing/but_not_any_research_active"
-      msg = format(loc(msg), ::Cost().setRp(getModExp(airData) || airData.expTotal).tostring())
+      msg = format(::loc(msg), ::Cost().setRp(getModExp(airData) || airData.expTotal).tostring())
       obj.findObject("no_mod_text").setValue(msg)
     }
   }
@@ -1584,8 +1574,8 @@ let statTooltipColumnParamByType = {
 
   function onEventModBought(p)
   {
-    let unitId = getTblValue("unitName", p, "")
-    let modId = getTblValue("modName", p, "")
+    let unitId = ::getTblValue("unitName", p, "")
+    let modId = ::getTblValue("modName", p, "")
     updateResearchMod(unitId, modId)
   }
 
@@ -1605,8 +1595,8 @@ let statTooltipColumnParamByType = {
       return
 
     let obj = scene.findObject("research_list")
-    let modObj = checkObj(obj) ? obj.findObject("mod_" + unitId) : null
-    if (!checkObj(modObj))
+    let modObj = ::checkObj(obj) ? obj.findObject("mod_" + unitId) : null
+    if (!::checkObj(modObj))
       return
     let diffExp = getModExp(airData)
     updateModItem(unit, mod, modObj, false, this, getParamsForModItem(diffExp))
@@ -1620,11 +1610,11 @@ let statTooltipColumnParamByType = {
   function fillLeaderboardChanges()
   {
     let lbWindgetsNestObj = scene.findObject("leaderbord_stats")
-    if (!checkObj(lbWindgetsNestObj))
+    if (!::checkObj(lbWindgetsNestObj))
       return
 
     let logs = ::getUserLogsList({
-        show = [EULT_SESSION_RESULT]
+        show = [::EULT_SESSION_RESULT]
         currentRoomOnly = true
       })
 
@@ -1646,8 +1636,8 @@ let statTooltipColumnParamByType = {
       margin = "0"
     }
 
-    let now = getTblValue("newStat", logs[0].tournamentResult)
-    let was = getTblValue("oldStat", logs[0].tournamentResult)
+    let now = ::getTblValue("newStat", logs[0].tournamentResult)
+    let was = ::getTblValue("oldStat", logs[0].tournamentResult)
 
     let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
     let items = []
@@ -1662,7 +1652,7 @@ let statTooltipColumnParamByType = {
 
       items.append(::getLeaderboardItemView(lbFieldsConfig,
         now[lbFieldsConfig.field],
-        getTblValue(lbFieldsConfig.field, lbDiff, null),
+        ::getTblValue(lbFieldsConfig.field, lbDiff, null),
         itemParams))
     }
     lbWindgetsNestObj.show(true)
@@ -1689,7 +1679,7 @@ let statTooltipColumnParamByType = {
     if (!checkShowTooltip(obj) || !debriefingResult)
       return
 
-    let id = ::getTooltipObjId(obj)
+    let id = getTooltipObjId(obj)
     if (!id) return
     if (!("exp" in debriefingResult) || !("aircrafts" in debriefingResult.exp))
     {
@@ -1789,9 +1779,9 @@ let statTooltipColumnParamByType = {
           local extra = ""
           if (source == "booster")
           {
-            let effect = getTblValue((currency == "exp" ? "xp" : currency) + "Rate", boosterEffects, 0)
+            let effect = ::getTblValue((currency == "exp" ? "xp" : currency) + "Rate", boosterEffects, 0)
             if (effect)
-              extra = colorize("fadedTextColor", loc("ui/parentheses", { text = effect.tointeger().tostring() + "%" }))
+              extra = ::colorize("fadedTextColor", ::loc("ui/parentheses", { text = effect.tointeger().tostring() + "%" }))
           }
           currencySourcesView.append((sourcesConfig?[source] ?? {}).__merge({ text = $"{getTextByType(val, currency)}{extra}" }))
         }
@@ -1830,15 +1820,15 @@ let statTooltipColumnParamByType = {
         if (isShow && ::u.isEmpty(rowView[col]))
           rowView[col] = ::nbsp
 
-    let headerRow = { name = colorize("fadedTextColor", loc("options/unit")) }
+    let headerRow = { name = ::colorize("fadedTextColor", ::loc("options/unit")) }
     foreach (col, isShow in showColumns)
     {
       local title = ""
       if (isShow)
         title = col == "value" ? tRow.getIcon()
-          : col == "time" ? loc("icon/timer")
+          : col == "time" ? ::loc("icon/timer")
           : ""
-      headerRow[col] <- colorize("fadedTextColor", title)
+      headerRow[col] <- ::colorize("fadedTextColor", title)
     }
     view.insert(0, headerRow)
 
@@ -1869,15 +1859,15 @@ let statTooltipColumnParamByType = {
 
   function canSuggestBuyPremium()
   {
-    return !havePremium.value && hasFeature("SpendGold") && hasFeature("EnablePremiumPurchase") && isDebriefingResultFull()
+    return !havePremium.value && ::has_feature("SpendGold") && ::has_feature("EnablePremiumPurchase") && isDebriefingResultFull()
   }
 
   function updateBuyPremiumAwardButton()
   {
-    let isShow = canSuggestBuyPremium() && gm == GM_DOMINATION && checkPremRewardAmount()
+    let isShow = canSuggestBuyPremium() && gm == ::GM_DOMINATION && checkPremRewardAmount()
 
     let obj = scene.findObject("buy_premium")
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     obj.show(isShow)
@@ -1887,8 +1877,8 @@ let statTooltipColumnParamByType = {
     let curAwardText = getCurAwardText()
 
     let btnObj = obj.findObject("btn_buy_premium_award")
-    if (checkObj(btnObj))
-      btnObj.findObject("label").setValue(loc("mainmenu/earn") + "\n" + curAwardText)
+    if (::check_obj(btnObj))
+      btnObj.findObject("label").setValue(::loc("mainmenu/earn") + "\n" + curAwardText)
 
     updateMyStatsTopBarArrangement()
   }
@@ -1920,16 +1910,16 @@ let statTooltipColumnParamByType = {
     let entName = getEntitlementWithAward()
     if (!entName)
     {
-      assert(false, "Error: not found entitlement with premium award")
+      ::dagor.assertf(false, "Error: not found entitlement with premium award")
       return
     }
 
     let ent = getEntitlementConfig(entName)
     let entNameText = getEntitlementName(ent)
     let price = ::Cost(0, ent?.goldCost ?? 0)
-    let cb = Callback(onBuyPremiumAward, this)
+    let cb = ::Callback(onBuyPremiumAward, this)
 
-    let msgText = format(loc("msgbox/EarnNow"), entNameText, getCurAwardText(), price.getTextAccordingToBalance())
+    let msgText = format(::loc("msgbox/EarnNow"), entNameText, getCurAwardText(), price.getTextAccordingToBalance())
     this.msgBox("not_all_mapped", msgText,
     [
       ["ok", function() {
@@ -2043,16 +2033,16 @@ let statTooltipColumnParamByType = {
         obj.pos = "-2w -" + awardOffset + " ,0"
 
     let icoObj = obj.findObject("award_img")
-    ::set_unlock_icon_by_config(icoObj, config, false, to_pixels("1@debriefingUnlockIconSize"))
+    set_unlock_icon_by_config(icoObj, config, false, ::to_pixels("1@debriefingUnlockIconSize"))
     let awMultObj = obj.findObject("award_multiplier")
-    if (checkObj(awMultObj))
+    if (::checkObj(awMultObj))
     {
       let show = config.amount > 1
       awMultObj.show(show)
       if (show)
       {
         let amObj = awMultObj.findObject("amount_text")
-        if (checkObj(amObj))
+        if (::checkObj(amObj))
           amObj.setValue("x" + config.amount)
       }
     }
@@ -2112,7 +2102,7 @@ let statTooltipColumnParamByType = {
     foreach(tbl in playersTbl)
       foreach(player in tbl)
       {
-        player.state = PLAYER_IN_FLIGHT //dont need to show laast player state in debriefing.
+        player.state = ::PLAYER_IN_FLIGHT //dont need to show laast player state in debriefing.
         player.isDead = false
       }
   }
@@ -2183,10 +2173,10 @@ let statTooltipColumnParamByType = {
     let place = getMyPlace()
     let hasPlace = place != 0
 
-    let label = hasPlace && isTeamplay ? loc("debriefing/placeInMyTeam")
-      : hasPlace && !isTeamplay ? (loc("mainmenu/btnMyPlace") + loc("ui/colon"))
-      : !isDebriefingResultFull() ? loc("debriefing/preliminaryResults")
-      : loc(debriefingResult.isSucceed ? "debriefing/victory" : "debriefing/defeat")
+    let label = hasPlace && isTeamplay ? ::loc("debriefing/placeInMyTeam")
+      : hasPlace && !isTeamplay ? (::loc("mainmenu/btnMyPlace") + ::loc("ui/colon"))
+      : !isDebriefingResultFull() ? ::loc("debriefing/preliminaryResults")
+      : ::loc(debriefingResult.isSucceed ? "debriefing/victory" : "debriefing/defeat")
 
     let objTarget = scene.findObject("my_place_move_box")
     objTarget.show(true)
@@ -2208,7 +2198,7 @@ let statTooltipColumnParamByType = {
     let containerObj = scene.findObject("my_stats_top_bar")
     let myPlaceObj = scene.findObject("my_place_move_box")
     let topBarNestObj = scene.findObject("top_bar_nest")
-    if (!checkObj(containerObj) || !checkObj(myPlaceObj) || !checkObj(topBarNestObj))
+    if (!::check_obj(containerObj) || !::check_obj(myPlaceObj) || !::check_obj(topBarNestObj))
       return
     let total = containerObj.childrenCount()
     if (total < 2)
@@ -2219,7 +2209,7 @@ let statTooltipColumnParamByType = {
     for (local i = 0; i < total; i++)
     {
       let obj = containerObj.getChild(i)
-      if (checkObj(obj) && obj.isVisible())
+      if (::check_obj(obj) && obj.isVisible())
         visible++
     }
 
@@ -2236,7 +2226,7 @@ let statTooltipColumnParamByType = {
     for (local i = 0; i < containerObj.childrenCount(); i++)
     {
       let obj = containerObj.getChild(i)
-      if (checkObj(obj))
+      if (::check_obj(obj))
         obj["pos"] = pos
     }
 
@@ -2264,7 +2254,7 @@ let statTooltipColumnParamByType = {
       filterIdx = ::loadLocalByAccount("wnd/battleLogFilterDebriefing", 0)
 
       let obj = scene.findObject("battle_log_filter")
-      if (checkObj(obj))
+      if (::checkObj(obj))
       {
         local data = ""
         foreach (f in filters)
@@ -2275,7 +2265,7 @@ let statTooltipColumnParamByType = {
     }
 
     let obj = scene.findObject("battle_log_div")
-    if (checkObj(obj))
+    if (::checkObj(obj))
     {
       let logText = ::HudBattleLog.getText(filters[filterIdx].id, 0)
       obj.findObject("battle_log").setValue(logText)
@@ -2286,11 +2276,11 @@ let statTooltipColumnParamByType = {
   {
     if (!needPlayersTbl)
       return
-    let logText = getTblValue("chatLog", debriefingResult, "")
+    let logText = ::getTblValue("chatLog", debriefingResult, "")
     if (logText == "")
       return
     let obj = scene.findObject("chat_history_div")
-    if (checkObj(obj))
+    if (::checkObj(obj))
       obj.findObject("chat_log").setValue(logText)
   }
 
@@ -2342,11 +2332,11 @@ let statTooltipColumnParamByType = {
 
     shouldBattleTasksListUpdate = false
     let msgObj = scene.findObject("battle_tasks_list_msg")
-    if (checkObj(msgObj))
+    if (::check_obj(msgObj))
       msgObj.show(!is_show_battle_tasks_list())
 
     let listObj = scene.findObject("battle_tasks_list_scroll_block")
-    if (!checkObj(listObj))
+    if (!::check_obj(listObj))
       return
 
     listObj.show(is_show_battle_tasks_list())
@@ -2369,7 +2359,7 @@ let statTooltipColumnParamByType = {
   function updateBattleTasksStatusImg()
   {
     let tabObjStatus = scene.findObject("battle_tasks_list_icon")
-    if (checkObj(tabObjStatus))
+    if (::check_obj(tabObjStatus))
       tabObjStatus.show(::g_battle_tasks.canGetAnyReward())
   }
 
@@ -2393,7 +2383,7 @@ let statTooltipColumnParamByType = {
     ::showBtn("btn_reroll", showRerollButton, taskObj)
     ::showBtn("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
-      placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
+      placePriceTextToButton(taskObj, "btn_reroll", ::loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
   }
 
   function updateBattleTasksRequirementsList()
@@ -2420,7 +2410,7 @@ let statTooltipColumnParamByType = {
 
     if (::check_balance_msgBox(::g_battle_tasks.rerollCost))
       this.msgBox("reroll_perform_action",
-             loc("msgbox/battleTasks/reroll",
+             ::loc("msgbox/battleTasks/reroll",
                   {cost = ::g_battle_tasks.rerollCost.tostring(),
                     taskName = ::g_battle_tasks.getLocalizedTaskNameById(task)
                   }),
@@ -2440,7 +2430,7 @@ let statTooltipColumnParamByType = {
   function getCurrentBattleTaskId()
   {
     let listObj = scene.findObject("battle_tasks_list_scroll_block")
-    if (checkObj(listObj))
+    if (::check_obj(listObj))
       return listObj.getChild(listObj.getValue())?.task_id
 
     return null
@@ -2467,7 +2457,7 @@ let statTooltipColumnParamByType = {
 
     showUnlocksGroupWnd([{
       unlocksList = awards
-      titleText = loc("unlocks/requirements")
+      titleText = ::loc("unlocks/requirements")
     }])
   }
 
@@ -2489,7 +2479,7 @@ let statTooltipColumnParamByType = {
 
     let logs = ::getUserLogsList({
       show = [
-        EULT_SESSION_RESULT
+        ::EULT_SESSION_RESULT
       ]
       currentRoomOnly = true
     })
@@ -2509,11 +2499,11 @@ let statTooltipColumnParamByType = {
     if (!wwBattleResults)
       return
 
-    let taskCallback = Callback(function() {
+    let taskCallback = ::Callback(function() {
       let view = wwBattleResults.getView()
       let markup = ::handyman.renderCached("%gui/worldWar/battleResults", view)
       let contentObj = scene.findObject("ww_casualties_div")
-      if (checkObj(contentObj))
+      if (::checkObj(contentObj))
         guiScene.replaceContentFromText(contentObj, markup, markup.len(), this)
     }, this)
 
@@ -2534,7 +2524,7 @@ let statTooltipColumnParamByType = {
       let checkName = "is_show_" + tabName
       if (!(checkName in this) || this[checkName]())
       {
-        let title = getTblValue(tabName, tabsTitles, "#debriefing/" + tabName)
+        let title = ::getTblValue(tabName, tabsTitles, "#debriefing/" + tabName)
         view.items.append({
           id = tabName
           text = title
@@ -2558,7 +2548,7 @@ let statTooltipColumnParamByType = {
       return
 
     let buttonObj = scene.findObject("current_battle_tasks")
-    if (!checkObj(buttonObj))
+    if (!::checkObj(buttonObj))
       return
 
     let battleTasksArray = []
@@ -2582,7 +2572,7 @@ let statTooltipColumnParamByType = {
 
   function is_show_my_stats()
   {
-    return !isSpectator  && gm != GM_SKIRMISH
+    return !isSpectator  && gm != ::GM_SKIRMISH
   }
   function is_show_players_stats()
   {
@@ -2594,7 +2584,7 @@ let statTooltipColumnParamByType = {
   }
   function is_show_chat_history()
   {
-    return needPlayersTbl && getTblValue("chatLog", debriefingResult, "") != ""
+    return needPlayersTbl && ::getTblValue("chatLog", debriefingResult, "") != ""
   }
   function is_show_left_block()
   {
@@ -2627,7 +2617,7 @@ let statTooltipColumnParamByType = {
 
   function is_show_battle_tasks_list(isNeedBattleTasksList = true)
   {
-    return (hasFeature("DebriefingBattleTasks") && ::g_battle_tasks.isAvailableForUser()) &&
+    return (::has_feature("DebriefingBattleTasks") && ::g_battle_tasks.isAvailableForUser()) &&
       (!isNeedBattleTasksList || battleTasksConfigs.len() > 0)
   }
 
@@ -2649,10 +2639,10 @@ let statTooltipColumnParamByType = {
 
   function updateScrollableObjects(tabObj, tabName, isEnable)
   {
-    foreach (objId, val in getTblValue(tabName, tabsScrollableObjs, {}))
+    foreach (objId, val in ::getTblValue(tabName, tabsScrollableObjs, {}))
     {
       let obj = tabObj.findObject(objId)
-      if (checkObj(obj))
+      if (::check_obj(obj))
         obj["scrollbarShortcuts"] = isEnable ? val : "no"
     }
   }
@@ -2660,7 +2650,7 @@ let statTooltipColumnParamByType = {
   function updateListsButtons()
   {
     let isAnimDone = state==debrState.done
-    let isReplayReady = hasFeature("ClientReplay") && is_replay_present() && is_replay_turned_on()
+    let isReplayReady = ::has_feature("ClientReplay") && is_replay_present() && is_replay_turned_on()
     let player = getSelectedPlayer()
     let buttonsList = {
       btn_show_all = isAnimDone && giftItems != null && giftItems.len() > VISIBLE_GIFT_NUMBER
@@ -2699,7 +2689,7 @@ let statTooltipColumnParamByType = {
 
   function onChangeBattlelogFilter(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
     let filterIdx = obj.getValue()
     ::saveLocalByAccount("wnd/battleLogFilterDebriefing", filterIdx)
@@ -2713,7 +2703,7 @@ let statTooltipColumnParamByType = {
 
     ::set_presence_to_player("replay")
     ::req_unlock_by_client("view_replay", false)
-    ::autosave_replay()
+    autosave_replay();
     on_view_replay("")
     isInProgress = true
   }
@@ -2730,7 +2720,7 @@ let statTooltipColumnParamByType = {
       let result = on_save_replay(newName);
       if (!result)
       {
-        this.msgBox("save_replay_error", loc("replays/save_error"),
+        this.msgBox("save_replay_error", ::loc("replays/save_error"),
           [
             ["ok", function() { } ]
           ], "ok")
@@ -2761,22 +2751,22 @@ let statTooltipColumnParamByType = {
       return
     }
 
-    let isMpMode = (gameType & GT_COOPERATIVE) || (gameType & GT_VERSUS)
+    let isMpMode = (gameType & ::GT_COOPERATIVE) || (gameType & ::GT_VERSUS)
 
     if (::SessionLobby.status == lobbyStates.IN_DEBRIEFING && ::SessionLobby.haveLobby())
       return
     if (isMpMode && !::is_online_available())
       return
 
-    if (isMpMode && needGoLobbyAfterStatistics() && gm != GM_DYNAMIC)
+    if (isMpMode && needGoLobbyAfterStatistics() && gm != ::GM_DYNAMIC)
     {
       ::go_debriefing_next_func = ::gui_start_mp_lobby
       return
     }
 
-    if (gm == GM_CAMPAIGN) {
+    if (gm == ::GM_CAMPAIGN) {
       if (debriefingResult.isSucceed) {
-        log("VIDEO: campaign = "+ ::current_campaign_id + "mission = "+ ::current_campaign_mission)
+        ::dagor.debug("VIDEO: campaign = "+ ::current_campaign_id + "mission = "+ ::current_campaign_mission)
         if ((::current_campaign_mission == "jpn_guadalcanal_m4")
             || (::current_campaign_mission == "us_guadalcanal_m4"))
           needCheckForVictory(true)
@@ -2786,14 +2776,14 @@ let statTooltipColumnParamByType = {
       return
     }
 
-    if (gm==GM_TEST_FLIGHT) {
+    if (gm==::GM_TEST_FLIGHT) {
       ::go_debriefing_next_func = @() ::gui_start_mainmenu_reload(true)
       return
     }
 
-    if (gm==GM_DYNAMIC) {
+    if (gm==::GM_DYNAMIC) {
       if (isMpMode) {
-        if (::SessionLobby.isInRoom() && getDynamicResult() == MISSION_STATUS_RUNNING) {
+        if (::SessionLobby.isInRoom() && getDynamicResult() == ::MISSION_STATUS_RUNNING) {
           ::go_debriefing_next_func = ::gui_start_dynamic_summary
           if (is_mplayer_host())
             recalcDynamicLayout()
@@ -2803,8 +2793,8 @@ let statTooltipColumnParamByType = {
         return
       }
 
-      if (getDynamicResult() == MISSION_STATUS_RUNNING) {
-        let settings = ::DataBlock();
+      if (getDynamicResult() == ::MISSION_STATUS_RUNNING) {
+        let settings = DataBlock();
         ::mission_settings.dynlist <- ::dynamic_get_list(settings, false)
 
         let add = []
@@ -2815,7 +2805,7 @@ let statTooltipColumnParamByType = {
           misblk.setStr("type", ::get_cur_game_mode_name());
           add.append(misblk)
         }
-        ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
+        ::add_mission_list_full(::GM_DYNAMIC, add, ::mission_settings.dynlist)
         ::go_debriefing_next_func = ::gui_start_dynamic_summary
       } else
         ::go_debriefing_next_func = ::gui_start_dynamic_summary_f
@@ -2823,7 +2813,7 @@ let statTooltipColumnParamByType = {
       return
     }
 
-    if (gm == GM_SINGLE_MISSION) {
+    if (gm == ::GM_SINGLE_MISSION) {
       let mission = ::mission_settings?.mission ?? ::get_current_mission_info_cached()
       ::go_debriefing_next_func = ::is_user_mission(mission)
         ? ::gui_start_menuUserMissions
@@ -2841,17 +2831,17 @@ let statTooltipColumnParamByType = {
 
   function needGoLobbyAfterStatistics()
   {
-    return !((gameType & GT_COOPERATIVE) || (gameType & GT_VERSUS))
+    return !((gameType & ::GT_COOPERATIVE) || (gameType & ::GT_VERSUS))
   }
 
   function recalcDynamicLayout()
   {
-    ::mission_settings.layout <- ::dynamic_get_layout();
+    mission_settings.layout <- ::dynamic_get_layout();
     // FIXME : workaroud for host migration assert (instead of back to lobby - disconnect)
     // http://www.gaijin.lan/mantis/view.php?id=36502
-    if (::mission_settings.layout)
+    if (mission_settings.layout)
     {
-      let settings = ::DataBlock();
+      let settings = DataBlock();
       ::mission_settings.dynlist <- ::dynamic_get_list(settings, false)
 
       let add = []
@@ -2864,16 +2854,16 @@ let statTooltipColumnParamByType = {
         misblk.setBool("gt_cooperative", true)
         add.append(misblk)
       }
-      ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
+      ::add_mission_list_full(::GM_DYNAMIC, add, ::mission_settings.dynlist)
       ::mission_settings.currentMissionIdx <- 0
       let misBlk = ::mission_settings.dynlist[::mission_settings.currentMissionIdx].mission_settings.mission
-      misBlk.setInt("_gameMode", GM_DYNAMIC)
+      misBlk.setInt("_gameMode", ::GM_DYNAMIC)
       ::mission_settings.missionFull = ::mission_settings.dynlist[::mission_settings.currentMissionIdx]
       ::select_mission_full(misBlk, ::mission_settings.missionFull);
     }
     else
     {
-      log("no mission_settings.layout, destroy session")
+      ::dagor.debug("no mission_settings.layout, destroy session")
       ::destroy_session_scripted()
     }
   }
@@ -2914,12 +2904,10 @@ let statTooltipColumnParamByType = {
 
     isInProgress = true
 
-    ::autosave_replay()
+    autosave_replay();
 
     if (!::go_debriefing_next_func)
       ::go_debriefing_next_func = ::gui_start_mainmenu
-
-    ::g_crews_list.invalidate()
 
     if (isReplay)
       applyReturn()
@@ -2928,6 +2916,7 @@ let statTooltipColumnParamByType = {
       save()
     }
     playCountSound(false)
+    ::my_stats.markStatsReset()
   }
 
   function onNext()
@@ -2954,7 +2943,7 @@ let statTooltipColumnParamByType = {
   function isToBattleActionEnabled()
   {
     return (skipAnim || state == debrState.done)
-      && (gm == GM_DOMINATION) && !!(gameType & GT_VERSUS)
+      && (gm == ::GM_DOMINATION) && !!(gameType & ::GT_VERSUS)
       && !::checkIsInQueue()
       && !(::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       && !::SessionLobby.hasSessionInLobby()
@@ -2962,7 +2951,6 @@ let statTooltipColumnParamByType = {
       && !isSpectator
       && ::go_debriefing_next_func == ::gui_start_mainmenu
       && !::checkNonApprovedResearches(true, false)
-      && !(canShowEveryDayLoginAward() && hasEveryDayLoginAward())
   }
 
   function needShowWorldWarOperationBtn()
@@ -3012,7 +3000,7 @@ let statTooltipColumnParamByType = {
       : ::g_squad_manager.isSquadMember() ? "mainmenu/btnReady"
       : getToBattleLocId()
 
-    setDoubleTextToButton(scene, "btn_next", loc(btnNextLocId))
+    setDoubleTextToButton(scene, "btn_next", ::loc(btnNextLocId))
 
     local backBtnTextLocId = "mainmenu/btnQuit"
     if (isToBattleBtnVisible)
@@ -3020,7 +3008,7 @@ let statTooltipColumnParamByType = {
     else if (showWorldWarOperationBtn)
       backBtnTextLocId = (!::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader())
         ? "worldWar/btn_all_battles" : "mainmenu/toHangar"
-    scene.findObject("btn_back").setValue(loc(backBtnTextLocId))
+    scene.findObject("btn_back").setValue(::loc(backBtnTextLocId))
   }
 
   function onEventSquadSetReady(p)
@@ -3053,7 +3041,7 @@ let statTooltipColumnParamByType = {
 
   function throwBattleEndEvent()
   {
-    let eventId = getTblValue("eventId", debriefingResult)
+    let eventId = ::getTblValue("eventId", debriefingResult)
     if (eventId)
       ::broadcastEvent("EventBattleEnded", {eventId = eventId})
     ::broadcastEvent("BattleEnded", { battleResult = debriefingResult?.exp.result })
@@ -3064,15 +3052,15 @@ let statTooltipColumnParamByType = {
     let country = getDebriefingCountry()
 
     //check unlocks windows
-    let wnd_unlock_gained = ::getUserLogsList({
-      show = [EULT_NEW_UNLOCK]
-      unlocks = [UNLOCKABLE_AIRCRAFT, UNLOCKABLE_AWARD]
+    let wnd_unlock_gained = getUserLogsList({
+      show = [::EULT_NEW_UNLOCK]
+      unlocks = [::UNLOCKABLE_AIRCRAFT, ::UNLOCKABLE_AWARD]
       filters = { popupInDebriefing = [true] }
       currentRoomOnly = true
       disableVisible = true
     })
-    foreach(logObj in wnd_unlock_gained)
-      ::showUnlockWnd(::build_log_unlock_data(logObj))
+    foreach(log in wnd_unlock_gained)
+      ::showUnlockWnd(::build_log_unlock_data(log))
 
     //check new rank and unlock country by exp gained
     let new_rank = ::get_player_rank_by_country(country)
@@ -3081,7 +3069,7 @@ let statTooltipColumnParamByType = {
     if (country!="" && country!="country_0" &&
         !::isCountryAvailable(country) && ::get_player_exp_by_country(country)>0)
     {
-      ::unlockCountry(country)
+      unlockCountry(country)
       old_rank = -1 //new country unlocked!
     }
 
@@ -3095,30 +3083,30 @@ let statTooltipColumnParamByType = {
     }
 
     //check country unlocks by N battle
-    let country_unlock_gained = ::getUserLogsList({
-      show = [EULT_NEW_UNLOCK]
-      unlocks = [UNLOCKABLE_COUNTRY]
+    let country_unlock_gained = getUserLogsList({
+      show = [::EULT_NEW_UNLOCK]
+      unlocks = [::UNLOCKABLE_COUNTRY]
       currentRoomOnly = true
       disableVisible = true
     })
-    foreach(logObj in country_unlock_gained)
+    foreach(log in country_unlock_gained)
     {
-      ::showUnlockWnd(::build_log_unlock_data(logObj))
-      if (("unlockId" in logObj) && logObj.unlockId!=country && isInArray(logObj.unlockId, shopCountriesList))
-        ::unlockCountry(logObj.unlockId)
+      ::showUnlockWnd(::build_log_unlock_data(log))
+      if (("unlockId" in log) && log.unlockId!=country && ::isInArray(log.unlockId, shopCountriesList))
+        unlockCountry(log.unlockId)
     }
 
     //check userlog entry for tournament special rewards
     let tornament_special_rewards = ::getUserLogsList({
-      show = [EULT_CHARD_AWARD]
+      show = [::EULT_CHARD_AWARD]
       currentRoomOnly = true
       disableVisible = true
       filters = { rewardType = ["TournamentReward"] }
     })
 
     let rewardsArray = []
-    foreach(logObj in tornament_special_rewards)
-      rewardsArray.extend(getTournamentRewardData(logObj))
+    foreach(log in tornament_special_rewards)
+      rewardsArray.extend(getTournamentRewardData(log))
 
     foreach(rewardConfig in rewardsArray)
       ::showUnlockWnd(rewardConfig)
@@ -3135,35 +3123,35 @@ let statTooltipColumnParamByType = {
 
     let wpdata = ::get_session_warpoints()
 
-    if (debriefingResult.exp.result == STATS_RESULT_ABORTED_BY_KICK)
+    if (debriefingResult.exp.result == ::STATS_RESULT_ABORTED_BY_KICK)
     {
       infoText = getKickReasonLocText()
       infoColor = "bad"
     }
-    else if ((gm == GM_DYNAMIC || gm == GM_BUILDER) && wpdata.isRewardReduced)
-      infoText = loc("debriefing/award_reduced")
+    else if ((gm == ::GM_DYNAMIC || gm == ::GM_BUILDER) && wpdata.isRewardReduced)
+      infoText = ::loc("debriefing/award_reduced")
     else
     {
       local hasAnyReward = false
       foreach (source in [ "Total", "Mission" ])
         foreach (currency in [ "exp", "wp", "gold" ])
-          if (getTblValue(currency + source, debriefingResult.exp, 0) > 0)
+          if (::getTblValue(currency + source, debriefingResult.exp, 0) > 0)
             hasAnyReward = true
 
       if (!hasAnyReward)
       {
-        if (gm == GM_SINGLE_MISSION || gm == GM_CAMPAIGN || gm == GM_TRAINING)
+        if (gm == ::GM_SINGLE_MISSION || gm == ::GM_CAMPAIGN || gm == ::GM_TRAINING)
         {
           if (debriefingResult.isSucceed)
-            infoText = loc("debriefing/award_already_received")
+            infoText = ::loc("debriefing/award_already_received")
         }
-        else if (isMp && !isDebriefingResultFull() && gm == GM_DOMINATION)
+        else if (isMp && !isDebriefingResultFull() && gm == ::GM_DOMINATION)
         {
-          infoText = loc("debriefing/most_award_after_battle")
+          infoText = ::loc("debriefing/most_award_after_battle")
           infoColor = "userlog"
         }
-        else if (isMp && debriefingResult.exp.result == STATS_RESULT_IN_PROGRESS && !(gameType & GT_RACE))
-          infoText = loc("debriefing/exp_and_reward_will_be_later")
+        else if (isMp && debriefingResult.exp.result == ::STATS_RESULT_IN_PROGRESS && !(gameType & ::GT_RACE))
+          infoText = ::loc("debriefing/exp_and_reward_will_be_later")
       }
     }
 
@@ -3182,7 +3170,7 @@ let statTooltipColumnParamByType = {
   function getBoostersText()
   {
     let textsList = []
-    let activeBoosters = getTblValue("activeBoosters", debriefingResult, [])
+    let activeBoosters = ::getTblValue("activeBoosters", debriefingResult, [])
     if (activeBoosters.len() > 0)
       foreach(effectType in boosterEffectType)
       {
@@ -3202,7 +3190,7 @@ let statTooltipColumnParamByType = {
 
   function getBoostersTotalEffects()
   {
-    let activeBoosters = getTblValue("activeBoosters", debriefingResult, [])
+    let activeBoosters = ::getTblValue("activeBoosters", debriefingResult, [])
     let boostersArray = []
     foreach(block in activeBoosters)
     {
@@ -3222,7 +3210,7 @@ let statTooltipColumnParamByType = {
     let wSet = workshop.getSetByItemId(itemDefId)
     if (wSet)
       return {
-        btnText = loc("items/workshop")
+        btnText = ::loc("items/workshop")
         action = @() wSet.needShowPreview() ? workshopPreview.open(wSet)
           : ::gui_start_items_list(itemsTab.WORKSHOP, {
               curSheet = { id = wSet.getShopTabId() },
@@ -3273,7 +3261,7 @@ let statTooltipColumnParamByType = {
 
   function getMissionBonusText()
   {
-    if (gm != GM_DOMINATION)
+    if (gm != ::GM_DOMINATION)
       return ""
 
     let isWin = debriefingResult.isSucceed
@@ -3286,7 +3274,7 @@ let statTooltipColumnParamByType = {
     let wp = (bonusWp > 0) ? ::ceil(bonusWp * 100) : 0
     let textRp = rp ? ::getRpPriceText($"+{rp}%", true) : ""
     let textWp = wp ? ::getWpPriceText($"+{wp}%", true) : ""
-    return ::g_string.implode([textRp, textWp], loc("ui/comma"))
+    return ::g_string.implode([textRp, textWp], ::loc("ui/comma"))
   }
 
   function getCurAwardText()
@@ -3295,7 +3283,7 @@ let statTooltipColumnParamByType = {
   }
 
   getLocalTeam = @() ::get_local_team_for_mpstats(debriefingResult.localTeam)
-  getMplayersList = @(team) team == GET_MPLAYERS_LIST
+  getMplayersList = @(team) team == ::GET_MPLAYERS_LIST
     ? debriefingResult.mplayers_list
     : debriefingResult.mplayers_list.filter(@(player) player.team == team)
   getOverrideCountryIconByTeam = @(team) debriefingResult.overrideCountryIconByTeam[team]
@@ -3304,7 +3292,7 @@ let statTooltipColumnParamByType = {
     gameMode = debriefingResult.gm
     isOnline = ::g_login.isLoggedIn()
 
-    isTeamsRandom = !isTeamplay || gameMode == GM_DOMINATION
+    isTeamsRandom = !isTeamplay || gameMode == ::GM_DOMINATION
     if (debriefingResult.isInRoom || isReplay)
       isTeamsWithCountryFlags = isTeamplay &&
         (debriefingResult.missionDifficultyInt > 0 || !debriefingResult.isSymmetric)

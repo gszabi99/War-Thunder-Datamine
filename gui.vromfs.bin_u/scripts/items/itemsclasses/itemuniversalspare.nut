@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.UniversalSpare <- class extends BaseItemModClass
@@ -30,13 +23,13 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   function getDescriptionIntroArray()
   {
-    let res = [loc("items/universalSpare/description/uponActivation")]
+    let res = [::loc("items/universalSpare/description/uponActivation")]
     if (numSpares > 1)
-      res.append(loc("items/universalSpare/numSpares") + loc("ui/colon") + colorize("activeTextColor", numSpares))
+      res.append(::loc("items/universalSpare/numSpares") + ::loc("ui/colon") + ::colorize("activeTextColor", numSpares))
     return res
   }
 
-  getDescriptionOutroArray = @() [ colorize("fadedTextColor", loc("items/universalSpare/description")) ]
+  getDescriptionOutroArray = @() [ ::colorize("fadedTextColor", ::loc("items/universalSpare/description")) ]
 
   function getName(colored = true)
   {
@@ -45,11 +38,11 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   function canActivateOnUnit(unit)
   {
-    if (countries && !isInArray(unit.shopCountry, countries))
+    if (countries && !::isInArray(unit.shopCountry, countries))
       return false
     if (unit.rank < rankRange.x || unit.rank > rankRange.y)
       return false
-    if (unitTypes && !isInArray(unit.unitType.lowerName, unitTypes))
+    if (unitTypes && !::isInArray(unit.unitType.lowerName, unitTypes))
       return false
     return true
   }

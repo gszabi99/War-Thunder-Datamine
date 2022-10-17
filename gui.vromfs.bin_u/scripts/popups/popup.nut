@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::Popup <- class
 {
   static POPUP_BLK = "%gui/popup/popup.blk"
@@ -34,7 +27,7 @@ from "%scripts/dagui_library.nut" import *
 
   function isValidView()
   {
-    return checkObj(selfObj)
+    return ::check_obj(selfObj)
   }
 
   function show(popupNestObj)
@@ -67,7 +60,7 @@ from "%scripts/dagui_library.nut" import *
 
   function destroy(isForced = false)
   {
-    if (checkObj(selfObj))
+    if (::checkObj(selfObj))
       selfObj.fade = isForced ? "forced" : "out"
   }
 

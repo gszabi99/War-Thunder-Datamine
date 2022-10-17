@@ -9,7 +9,6 @@ tdiv {
   <<#isControlledByAI>>
   includeTextColor:t='disabled'
   <</isControlledByAI>>
-  total-input-transparent:t='yes'
 
   <<^reflect>>
     padding-left:t='3@dp'
@@ -54,7 +53,6 @@ tdiv {
   tdiv {
     pos:t='0, 50%ph-50%h'
     position:t='relative'
-    not-input-transparent:t='yes'
     tooltip:t='<<?modification/category/secondaryWeapon>><<?ui/colon>>\n<<weapon>>'
 
     <<#presetCount>>

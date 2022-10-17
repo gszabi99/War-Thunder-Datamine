@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -18,7 +11,7 @@ elemModelType.addTypes({
 
     isVisible = @() promoteUnits.value.findvalue(@(d) d.isActive) != null
 
-    getTooltip = @() loc("mainmenu/promoteUnit")
+    getTooltip = @() ::loc("mainmenu/promoteUnit")
 
     onEventShopWndSwitched = @(p) notify([])
     onEventPromoteUnitsChanged = @(p) notify([])
@@ -38,8 +31,8 @@ elemViewType.addTypes({
 
       let haveDicsount = ::g_discount.haveAnyUnitDiscount()
       let tooltipText = haveDicsount
-        ? $"{loc("mainmenu/promoteUnit")}\n{loc("discount/notification")}"
-        : loc("mainmenu/promoteUnit")
+        ? $"{::loc("mainmenu/promoteUnit")}\n{::loc("discount/notification")}"
+        : ::loc("mainmenu/promoteUnit")
       obj.tooltip = tooltipText
       obj.findObject("remainingTimeTimerIcon").show(haveDicsount)
     }
@@ -63,10 +56,10 @@ elemViewType.addTypes({
       let discountsList = ::g_discount.getUnitDiscountList(countryId)
       let haveDicsountAndRemUnit = havePromoteUnitCountry && discountsList.len() != 0
       let tooltipText = haveDicsountAndRemUnit
-        ? $"{loc("mainmenu/promoteUnit")}\n{::g_discount.generateDiscountInfo(discountsList)?.discountTooltip}"
-        : loc("mainmenu/promoteUnit")
+        ? $"{::loc("mainmenu/promoteUnit")}\n{::g_discount.generateDiscountInfo(discountsList)?.discountTooltip}"
+        : ::loc("mainmenu/promoteUnit")
 
-      obj.tooltip = loc(tooltipText)
+      obj.tooltip = ::loc(tooltipText)
       obj.findObject("remainingTimeTimerIcon").show(haveDicsountAndRemUnit)
     }
   }

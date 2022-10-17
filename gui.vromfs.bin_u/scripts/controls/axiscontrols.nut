@@ -1,15 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { fabs } = require("math")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
-let { MAX_DEADZONE, MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys
 {
@@ -44,14 +34,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     changedAxes = []
 
     let titleObj = scene.findObject("axis_title")
-    if (checkObj(titleObj))
-      titleObj.setValue(loc("controls/" + axisItem.id))
+    if (::check_obj(titleObj))
+      titleObj.setValue(::loc("controls/" + axisItem.id))
 
     reinitScreen()
     dontCheckControlsDupes = ::refillControlsDupes()
 
     let timerObj = scene.findObject("axis_test_box")
-    if (checkObj(timerObj))
+    if (::check_obj(timerObj))
       timerObj.setUserData(this)
 
     ::update_gamercards()
@@ -78,7 +68,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function reinitAutodetectAxis()
   {
     let autodetectChBxObj = scene.findObject("autodetect_checkbox")
-    if (checkObj(autodetectChBxObj))
+    if (::checkObj(autodetectChBxObj))
     {
       autodetectChBxObj.setValue(autodetectAxis)
       onChangeAutodetect(autodetectChBxObj)
@@ -90,7 +80,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getAxisRawValues(device, idx)
   {
-    local res = getTblValue(idx, axisRawValues)
+    local res = ::getTblValue(idx, axisRawValues)
     if (!res)
     {
       if (axisRawValues.len() <= idx)
@@ -111,7 +101,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function fillAxisTable(axis)
   {
     let axisControlsTbl = scene.findObject(optionTableId)
-    if (!checkObj(axisControlsTbl))
+    if (!::checkObj(axisControlsTbl))
       return
 
     let hideAxisOptionsArray = axisItem?.hideAxisOptions ?? []
@@ -120,7 +110,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach (idx, item in shortcutsAxisListModule.types)
     {
       local addTrParams = ""
-      if (isInArray(item.id, hideAxisOptionsArray))
+      if (::isInArray(item.id, hideAxisOptionsArray))
         addTrParams = "hiddenTr:t='yes'; inactive:t='yes';"
 
       let hotkeyData = ::buildHotkeyItem(idx, shortcuts, item, axis, idx%2 == 0, addTrParams)
@@ -130,11 +120,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     guiScene.replaceContentFromText(axisControlsTbl, data, data.len(), this)
 
     let invObj = scene.findObject("invertAxis")
-    if (checkObj(invObj))
+    if (::checkObj(invObj))
       invObj.setValue(axis.inverse ? 1 : 0)
 
     let relObj = scene.findObject("relativeAxis")
-    if (checkObj(relObj))
+    if (::checkObj(relObj))
       relObj.setValue(axis.relative ? 1 : 0)
 
     updateAxisItemsPos([0,0])
@@ -144,14 +134,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (item.type == CONTROL_TYPE.SLIDER)
       {
         let slideObj = scene.findObject(item.id)
-        if (checkObj(slideObj))
+        if (::checkObj(slideObj))
           onSliderChange(slideObj)
       }
   }
 
   function onChangeAxisRelative(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     updateAxisRelativeOptions(obj.getValue())
@@ -161,18 +151,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     local txtObj = null
     txtObj = scene.findObject("txt_rangeMax")
-    if (checkObj(txtObj))
-      txtObj.setValue(loc(isRelative? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
+    if (::check_obj(txtObj))
+      txtObj.setValue(::loc(isRelative? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
 
     txtObj = scene.findObject("txt_rangeMin")
-    if (checkObj(txtObj))
-      txtObj.setValue(loc(isRelative? "hotkeys/rangeDec" : "hotkeys/rangeMin"))
+    if (::check_obj(txtObj))
+      txtObj.setValue(::loc(isRelative? "hotkeys/rangeDec" : "hotkeys/rangeMin"))
 
     foreach (item in [shortcutsAxisListModule.kRelSpd, shortcutsAxisListModule.kRelStep])
     {
       let idx = shortcutsAxisListModule.types.indexof(item)
       let obj = scene.findObject($"table_row_{idx}")
-      if (!checkObj(obj))
+      if (!::check_obj(obj))
         continue
 
       obj.inactive = isRelative? "no" : "yes"
@@ -183,7 +173,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onSliderChange(obj)
   {
     let textObj = obj?.id && obj.getParent().findObject(obj.id + "_value")
-    if (!checkObj(textObj))
+    if (!::checkObj(textObj))
       return
 
     let reqItem = shortcutsAxisListModule?[obj.id]
@@ -203,7 +193,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function fillAxisDropright()
   {
     let listObj = scene.findObject("axis_list")
-    if (!checkObj(listObj))
+    if (!::checkObj(listObj))
       return
 
     curDevice = ::joystick_get_default()
@@ -227,7 +217,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let listObj = scene.findObject("axis_list")
-    if (!checkObj(listObj))
+    if (!::checkObj(listObj))
       return
 
     //"-1", "+1" cos value is what we get from dropright, 0 is not recognized axis there,
@@ -248,14 +238,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateAutodetectButtonStyle()
   {
     let obj = scene.findObject("btn_axis_autodetect")
-    if (checkObj(obj))
+    if (::checkObj(obj))
     {
-      let text = loc("mainmenu/btn" + (autodetectAxis? "StopAutodetect":"AutodetectAxis"))
+      let text = ::loc("mainmenu/btn" + (autodetectAxis? "StopAutodetect":"AutodetectAxis"))
       obj.tooltip = text
       obj.text = text
 
       let imgObj = obj.findObject("autodetect_img")
-      if (checkObj(imgObj))
+      if (::checkObj(imgObj))
         imgObj["background-image"] = "#ui/gameuiskin#btn_autodetect_" + (autodetectAxis? "off" : "on") + ".svg"
     }
   }
@@ -273,7 +263,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (item.type == CONTROL_TYPE.SLIDER || item.type == CONTROL_TYPE.SPINNER || item.type == CONTROL_TYPE.SWITCH_BOX)
       {
         let slideObj = scene.findObject(item.id)
-        if (checkObj(slideObj))
+        if (::checkObj(slideObj))
           slideObj.setValue(item.value.call(this, axis))
       }
       else if (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
@@ -360,7 +350,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let isInv = scene.findObject("invertAxis").getValue()
 
     let objDz = scene.findObject("deadzone")
-    let deadzone = MAX_DEADZONE * objDz.getValue() / objDz.max.tofloat()
+    let deadzone = max_deadzone * objDz.getValue() / objDz.max.tofloat()
     let objNl = scene.findObject("nonlinearity")
     let nonlin = objNl.getValue().tofloat() / 10 - 1
 
@@ -398,7 +388,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach(idx, id in objectsArray)
     {
       let obj = scene.findObject(id)
-      if (!checkObj(obj))
+      if (!::checkObj(obj))
         continue
 
       let leftPos = (valsArray[idx] + 1.0) * 0.5
@@ -421,7 +411,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         let value = wheelObj.getValue()
         if (("values" in item) && (value in item.values) && (item.values[value]=="zoom"))
         {
-          let msg = format(loc("msg/zoomAssignmentsConflict"), loc("controls/mouse_z"))
+          let msg = format(::loc("msg/zoomAssignmentsConflict"), ::loc("controls/mouse_z"))
           this.msgBox("zoom_axis_assigned", msg,
           [
             ["replace", (@(wheelObj) function() {
@@ -453,8 +443,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     local actionText = ""
     foreach(item in alreadyBindedAxes)
-      actionText += ((actionText=="")? "":", ") + loc("controls/" + item.id)
-    let msg = loc("hotkeys/msg/unbind_axis_question", {
+      actionText += ((actionText=="")? "":", ") + ::loc("controls/" + item.id)
+    let msg = ::loc("hotkeys/msg/unbind_axis_question", {
       action=actionText
     })
     this.msgBox("controls_axis_bind_existing_axis", msg, [
@@ -598,9 +588,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     local actions = ""
     foreach(idx, shortcut in curBinding)
-      actions += (actions == ""? "" : ", ") + loc("hotkeys/" + getShortcutLocId(shortcut[0]))
+      actions += (actions == ""? "" : ", ") + ::loc("hotkeys/" + getShortcutLocId(shortcut[0]))
 
-    let msg = loc("hotkeys/msg/unbind_question", {action = actions})
+    let msg = ::loc("hotkeys/msg/unbind_question", {action = actions})
 
     this.msgBox("controls_axis_bind_existing_shortcut", msg, [
       ["add", (@(devs, btns, item) function() {
@@ -627,7 +617,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
                    btn = btns
                 })
 
-    if (event.len() > MAX_SHORTCUTS)
+    if (event.len() > max_shortcuts)
       event.remove(0)
 
     ::set_controls_preset("") //custom mode
@@ -637,13 +627,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateShortcutText(shortcutId)
   {
     if (!(shortcutId in shortcuts) ||
-      !isInArray(shortcutId, ::u.values(axisItem.modifiersId)))
+      !::isInArray(shortcutId, ::u.values(axisItem.modifiersId)))
       return
 
     let itemId = getShortcutLocId(shortcutId, false)
     let obj = scene.findObject("txt_sc_"+ itemId)
 
-    if (checkObj(obj))
+    if (::checkObj(obj))
       obj.setValue(::get_shortcut_text({shortcuts = shortcuts, shortcutId = shortcutId}))
   }
 

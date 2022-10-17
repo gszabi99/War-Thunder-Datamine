@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 /**
  * This is Actionbar's Wheelmenu configs for gamepad controls (also known as "KillStreaks" menu).
  * Each action used here must have isForWheelMenu() func defined in hudActionBarType.nut, which should return true.
@@ -17,9 +12,8 @@ let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNI
   EII_EXTINGUISHER, EII_TOOLKIT, EII_REPAIR_BREACHES, EII_SPEED_BOOSTER,
   EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR,
   EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_SUPPORT_PLANE_CHANGE,
-  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK, EII_SUPPORT_PLANE_NIGHT_VISION,
-  EII_SUPPORT_PLANE_STABILIZATION
-} = require_native("hudActionBarConst")
+  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK
+} = ::require_native("hudActionBarConst")
 
 const ITEMS_PER_PAGE = 8
 
@@ -101,8 +95,8 @@ let cfgMenuAircraft = [
     EII_SUPPORT_PLANE_CHANGE,
     EII_SUPPORT_PLANE_GROUP_ATTACK,
     EII_SMOKE_SCREEN,
-    EII_SUPPORT_PLANE_NIGHT_VISION,
-    EII_SUPPORT_PLANE_STABILIZATION,
+    null,
+    null,
     null,
     null,
     null,

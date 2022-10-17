@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
@@ -15,13 +8,13 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   isNeedToSkipNextProfileUpdate = false
   ignoreTransactions = [
-    EATT_SAVING
-    EATT_CLANSYNCPROFILE
-    EATT_CLAN_TRANSACTION
-    EATT_SET_EXTERNAL_ID
-    EATT_BUYING_UNLOCK
-    EATT_COMPLAINT
-    EATT_ENABLE_MODIFICATIONS
+    ::EATT_SAVING
+    ::EATT_CLANSYNCPROFILE
+    ::EATT_CLAN_TRANSACTION
+    ::EATT_SET_EXTERNAL_ID
+    ::EATT_BUYING_UNLOCK
+    ::EATT_COMPLAINT
+    ::EATT_ENABLE_MODIFICATIONS
   ]
   isSlotbarUpdateSuspended = false
   isSlotbarUpdateRequired = false
@@ -29,14 +22,14 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   onEventPlayerQuitMission = @(p) invalidate()
 }
 
-::g_crews_list.get <- function get()
+g_crews_list.get <- function get()
 {
   if (!crewsList.len() && ::g_login.isProfileReceived())
     refresh()
   return crewsList
 }
 
-::g_crews_list.invalidate <- function invalidate(needForceInvalidate = false)
+g_crews_list.invalidate <- function invalidate(needForceInvalidate = false)
 {
   if (needForceInvalidate || !isSlotbarOverrided())
   {
@@ -47,7 +40,7 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   return false
 }
 
-::g_crews_list.refresh <- function refresh()
+g_crews_list.refresh <- function refresh()
 {
   version++
   if (isSlotbarOverrided() && !::is_in_flight())
@@ -63,13 +56,13 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   isCrewListOverrided = false
 }
 
-::g_crews_list._isReinitSlotbarsInProgress <- false
-::g_crews_list.reinitSlotbars <- function reinitSlotbars()
+g_crews_list._isReinitSlotbarsInProgress <- false
+g_crews_list.reinitSlotbars <- function reinitSlotbars()
 {
   if (isSlotbarUpdateSuspended)
   {
     isSlotbarUpdateRequired = true
-    log("ignore reinitSlotbars: updates suspended")
+    ::dagor.debug("ignore reinitSlotbars: updates suspended")
     return
   }
 
@@ -86,57 +79,57 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   _isReinitSlotbarsInProgress = false
 }
 
-::g_crews_list.suspendSlotbarUpdates <- function suspendSlotbarUpdates()
+g_crews_list.suspendSlotbarUpdates <- function suspendSlotbarUpdates()
 {
   isSlotbarUpdateSuspended = true
 }
 
-::g_crews_list.flushSlotbarUpdate <- function flushSlotbarUpdate()
+g_crews_list.flushSlotbarUpdate <- function flushSlotbarUpdate()
 {
   isSlotbarUpdateSuspended = false
   if (isSlotbarUpdateRequired)
     reinitSlotbars()
 }
 
-::g_crews_list.onEventProfileUpdated <- function onEventProfileUpdated(p)
+g_crews_list.onEventProfileUpdated <- function onEventProfileUpdated(p)
 {
-  if (p.transactionType == EATT_UPDATE_ENTITLEMENTS)
+  if (p.transactionType == ::EATT_UPDATE_ENTITLEMENTS)
     updateShopCountriesList()
 
-  if (::g_login.isProfileReceived() && !isInArray(p.transactionType, ignoreTransactions)
+  if (::g_login.isProfileReceived() && !::isInArray(p.transactionType, ignoreTransactions)
       && invalidate() && !::disable_network())
     reinitSlotbars()
 }
 
-::g_crews_list.onEventUnlockedCountriesUpdate <- function onEventUnlockedCountriesUpdate(p)
+g_crews_list.onEventUnlockedCountriesUpdate <- function onEventUnlockedCountriesUpdate(p)
 {
   updateShopCountriesList()
   if (::g_login.isProfileReceived() && invalidate())
     reinitSlotbars()
 }
 
-::g_crews_list.onEventOverrideSlotbarChanged <- function onEventOverrideSlotbarChanged(p)
+g_crews_list.onEventOverrideSlotbarChanged <- function onEventOverrideSlotbarChanged(p)
 {
   invalidate(true)
 }
 
-::g_crews_list.onEventLobbyIsInRoomChanged <- function onEventLobbyIsInRoomChanged(p)
+g_crews_list.onEventLobbyIsInRoomChanged <- function onEventLobbyIsInRoomChanged(p)
 {
   if (isCrewListOverrided)
     invalidate()
 }
 
-::g_crews_list.onEventSessionDestroyed <- function onEventSessionDestroyed(p)
+g_crews_list.onEventSessionDestroyed <- function onEventSessionDestroyed(p)
 {
   invalidate() //in session can be overrided slotbar. Also slots can be locked after the battle.
 }
 
-::g_crews_list.onEventSignOut <- function onEventSignOut(p)
+g_crews_list.onEventSignOut <- function onEventSignOut(p)
 {
   isSlotbarUpdateSuspended = false
 }
 
-::g_crews_list.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
+g_crews_list.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
 {
   isSlotbarUpdateSuspended = false
 }

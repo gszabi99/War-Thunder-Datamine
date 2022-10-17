@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let itemTransfer = require("%scripts/items/itemsTransfer.nut")
@@ -40,8 +33,8 @@ let OUT_OF_DATE_DAYS_INVENTORY = 0
 //events from native code:
 ::on_items_loaded <- @() ::ItemsManager.onItemsLoaded()
 
-let itemsShopListVersion = Watched(0)
-let inventoryListVersion = Watched(0)
+let itemsShopListVersion = ::Watched(0)
+let inventoryListVersion = ::Watched(0)
 
 foreach (fn in [
                  "discountItemSortMethod.nut"
@@ -128,7 +121,7 @@ foreach (fn in [
 
   refreshBoostersTask = -1
   boostersTaskUpdateFlightTime = -1
-  smokeItems = Computed(@()
+  smokeItems = ::Computed(@()
     buyableSmokesList.value.map(@(blk) ::ItemsManager.createItem(itemType.SMOKE, blk)))
 
 
@@ -269,7 +262,7 @@ foreach (fn in [
       shopItemById[item.id] <- item
 
   if (duplicatesId.len())
-    assert(false, "Items shop: found duplicate items id = \n" + ::g_string.implode(duplicatesId, ", "))
+    ::dagor.assertf(false, "Items shop: found duplicate items id = \n" + ::g_string.implode(duplicatesId, ", "))
 }
 
 ::ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
@@ -304,7 +297,7 @@ foreach (fn in [
     let iType = getInventoryItemType(blk?.type)
     if (iType == itemType.UNKNOWN)
     {
-      log("Error: unknown item type in items blk = " + (blk?.type ?? "NULL"))
+      ::dagor.debug("Error: unknown item type in items blk = " + (blk?.type ?? "NULL"))
       continue
     }
     let item = createItem(iType, blk)
@@ -342,11 +335,11 @@ foreach (fn in [
     {
       let defType = itemDefDesc?.type
 
-      if (isInArray(defType, [ "playtimegenerator", "generator", "bundle", "delayedexchange" ])
+      if (::isInArray(defType, [ "playtimegenerator", "generator", "bundle", "delayedexchange" ])
         || !::u.isEmpty(itemDefDesc?.exchange) || itemDefDesc?.tags?.hasAdditionalRecipes)
           ItemGenerators.add(itemDefDesc)
 
-      if (!isInArray(defType, [ "item", "delayedexchange" ]))
+      if (!::isInArray(defType, [ "item", "delayedexchange" ]))
         continue
       let iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
       if (iType == itemType.UNKNOWN)
@@ -378,9 +371,9 @@ foreach (fn in [
   {
     let iType = itemClass.iType
     if (stdMath.number_of_set_bits(iType) != 1)
-      assert(false, "Incorrect item class iType " + iType + " must be a power of 2")
+      ::dagor.assertf(false, "Incorrect item class iType " + iType + " must be a power of 2")
     if (iType in itemTypeClasses)
-      assert(false, "duplicate iType in item classes " + iType)
+      ::dagor.assertf(false, "duplicate iType in item classes " + iType)
     else
       itemTypeClasses[iType] <- itemClass
   }
@@ -412,7 +405,7 @@ foreach (fn in [
 
 ::ItemsManager.isItemVisible <- function isItemVisible(item, shopTab)
 {
-  return shopTab == itemsTab.SHOP ? item.isCanBuy() && (!item.isDevItem || hasFeature("devItemShop"))
+  return shopTab == itemsTab.SHOP ? item.isCanBuy() && (!item.isDevItem || ::has_feature("devItemShop"))
       && !item.isHiddenItem() && !item.isVisibleInWorkshopOnly() && !item.isHideInShop
     : shopTab == itemsTab.INVENTORY ? !item.isHiddenItem() && !item.isVisibleInWorkshopOnly()
     : false
@@ -521,14 +514,14 @@ local lastItemDefsUpdatedelayedCall = 0
 
   switch (blkType)
   {
-    case EIT_BOOSTER:           return itemType.BOOSTER
-    case EIT_TOURNAMENT_TICKET: return itemType.TICKET
-    case EIT_WAGER:             return itemType.WAGER
-    case EIT_PERSONAL_DISCOUNTS:return itemType.DISCOUNT
-    case EIT_ORDER:             return itemType.ORDER
-    case EIT_UNIVERSAL_SPARE:   return itemType.UNIVERSAL_SPARE
-    case EIT_MOD_OVERDRIVE:     return itemType.MOD_OVERDRIVE
-    case EIT_MOD_UPGRADE:       return itemType.MOD_UPGRADE
+    case ::EIT_BOOSTER:           return itemType.BOOSTER
+    case ::EIT_TOURNAMENT_TICKET: return itemType.TICKET
+    case ::EIT_WAGER:             return itemType.WAGER
+    case ::EIT_PERSONAL_DISCOUNTS:return itemType.DISCOUNT
+    case ::EIT_ORDER:             return itemType.ORDER
+    case ::EIT_UNIVERSAL_SPARE:   return itemType.UNIVERSAL_SPARE
+    case ::EIT_MOD_OVERDRIVE:     return itemType.MOD_OVERDRIVE
+    case ::EIT_MOD_UPGRADE:       return itemType.MOD_UPGRADE
   }
   return itemType.UNKNOWN
 }
@@ -552,14 +545,14 @@ local lastItemDefsUpdatedelayedCall = 0
 
     let invItemBlk = ::DataBlock()
     ::get_item_data_by_uid(invItemBlk, slot.uids[0])
-    if (getTblValue("expiredTime", invItemBlk, 0) < 0)
+    if (::getTblValue("expiredTime", invItemBlk, 0) < 0)
       continue
 
     let iType = getInventoryItemType(invItemBlk?.type)
     if (iType == itemType.UNKNOWN)
     {
       //debugTableData(invItemBlk)
-      //assert(false, "Inventory: unknown item type = " + invItemBlk?.type)
+      //::dagor.assertf(false, "Inventory: unknown item type = " + invItemBlk?.type)
       continue
     }
 
@@ -567,7 +560,7 @@ local lastItemDefsUpdatedelayedCall = 0
     if (!blk)
     {
       if (::is_dev_version)
-        log("Error: found removed item: " + slot.id)
+        ::dagor.debug("Error: found removed item: " + slot.id)
       continue //skip removed items
     }
 
@@ -613,7 +606,7 @@ local lastItemDefsUpdatedelayedCall = 0
     let iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
     if (iType == itemType.UNKNOWN)
     {
-      logerr("Inventory: Unknown itemdef.tags.type in item " + (itemDefDesc?.itemdefid ?? "NULL"))
+      ::dagor.logerr("Inventory: Unknown itemdef.tags.type in item " + (itemDefDesc?.itemdefid ?? "NULL"))
       continue
     }
 
@@ -649,8 +642,8 @@ local lastItemDefsUpdatedelayedCall = 0
     let iType = getInventoryItemType(itemdef?.tags?.type ?? "")
     if (iType == itemType.UNKNOWN)
     {
-      if (isInArray(itemdef?.type, [ "item", "delayedexchange" ]))
-        logerr("Inventory: Transfer: Unknown itemdef.tags.type in item " + itemdefid)
+      if (::isInArray(itemdef?.type, [ "item", "delayedexchange" ]))
+        ::dagor.logerr("Inventory: Transfer: Unknown itemdef.tags.type in item " + itemdefid)
       continue
     }
     let item = createItem(iType, itemdef, {})
@@ -755,7 +748,7 @@ local lastInventoryUpdateDelayedCall = 0
 ::ItemsManager.checkItemsMaskFeatures <- function checkItemsMaskFeatures(itemsMask) //return itemss mask only of available features
 {
   foreach(iType, feature in itemTypeFeatures)
-    if ((itemsMask & iType) && !hasFeature(feature))
+    if ((itemsMask & iType) && !::has_feature(feature))
       itemsMask -= iType
   return itemsMask
 }
@@ -803,8 +796,8 @@ local lastInventoryUpdateDelayedCall = 0
   refreshBoostersTask = ::periodic_task_register_ex(this,
                                                     _onBoosterExpiredInFlight,
                                                     boostersTaskUpdateFlightTime - curFlightTime,
-                                                    EPTF_IN_FLIGHT,
-                                                    EPTT_BEST_EFFORT,
+                                                    ::EPTF_IN_FLIGHT,
+                                                    ::EPTT_BEST_EFFORT,
                                                     false //flight time
                                                    )
 }
@@ -846,7 +839,7 @@ local lastInventoryUpdateDelayedCall = 0
 ::ItemsManager.findItemByUid <- function findItemByUid(uid, filterType = itemType.ALL)
 {
   let itemsArray = ::ItemsManager.getInventoryList(filterType)
-  let res = ::u.search(itemsArray, @(item) isInArray(uid, item.uids) )
+  let res = u.search(itemsArray, @(item) ::isInArray(uid, item.uids) )
   return res
 }
 
@@ -867,7 +860,7 @@ local lastInventoryUpdateDelayedCall = 0
   let checkNewbie = !::my_stats.isMeNewbie()
     || seenInventory.hasSeen()
     || inventory.len() > 0
-  return hasFeature("Items") && checkNewbie
+  return ::has_feature("Items") && checkNewbie
 }
 
 ::ItemsManager.getItemsSortComparator <- function getItemsSortComparator(itemsSeenList = null)

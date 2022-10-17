@@ -1,15 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { requestPackageUpdateStatus } = require("sony")
-local { setGuiOptionsMode } = require_native("guiOptions")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 
 ::gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler
@@ -30,7 +25,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
-    this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false)
+    this.isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
 
     let data = ::handyman.renderCached("%gui/commonParts/button", {
       id = "authorization_button"
@@ -56,8 +51,8 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 
   function updateButtons(isUpdateAvailable = false) {
     this.showSceneBtn("authorization_button", !this.isAutologin)
-    let text = "\n".join([isUpdateAvailable? colorize("warningTextColor", loc("ps4/updateAvailable")) : null,
-      loc("ps4/reqInstantConnection")
+    let text = "\n".join([isUpdateAvailable? ::colorize("warningTextColor", ::loc("ps4/updateAvailable")) : null,
+      ::loc("ps4/reqInstantConnection")
     ], true)
     this.scene.findObject("user_notify_text").setValue(text)
   }
@@ -76,7 +71,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
     if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0))
     {
       statsd.send_counter("sq.game_start.request_login", 1, {login_type = "ps4"})
-      log("PS4 Login: ps4_login")
+      ::dagor.debug("PS4 Login: ps4_login")
       this.isLoggingIn = true
       loginStatus = ::ps4_login();
       if (loginStatus >= 0)
@@ -96,9 +91,9 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
     if (this.isValid())
       this.abortLogin(isUpdateAvailable)
     if (isUpdateAvailable)
-      this.msgBox("new_package_available", loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
+      this.msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
     else if (loginStatus == -1)
-      this.msgBox("no_internet_connection", loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
+      this.msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
   }
 
 

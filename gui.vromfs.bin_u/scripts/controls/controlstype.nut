@@ -1,19 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let globalEnv = require("globalEnv")
 let avatars = require("%scripts/user/avatars.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
 {
-  if (!hasFeature("ControlsDeviceChoice"))
+  if (!::has_feature("ControlsDeviceChoice"))
     return
 
   ::gui_start_modal_wnd(::gui_handlers.ControlType, {onlyDevicesChoice = onlyDevicesChoice})
@@ -35,9 +27,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let txt = scene.findObject("txt_icon")
     txt.show(!onlyDevicesChoice)
-    ::showBtn("btn_pref_img", !onlyDevicesChoice)
-    ::showBtn("btn_back", onlyDevicesChoice)
-    ::showBtn("btn_cancel", onlyDevicesChoice)
+    showBtn("btn_pref_img", !onlyDevicesChoice)
+    showBtn("btn_back", onlyDevicesChoice)
+    showBtn("btn_cancel", onlyDevicesChoice)
 
     if (!onlyDevicesChoice)
       updateProfileIcon(true)
@@ -59,11 +51,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateProfileIcon(isOnInit = false)
   {
-    if (!checkObj(scene))
+    if (!::check_obj(scene))
       return
 
     let obj = scene.findObject("prefIcon")
-    if (checkObj(obj))
+    if (::check_obj(obj))
     {
       obj.setValue(::get_profile_info().icon)
       if (isOnInit)
@@ -84,7 +76,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     local ct_id = "ct_mouse"
     let obj = scene.findObject("controlType")
-    if (checkObj(obj))
+    if (::check_obj(obj))
     {
       let value = obj.getValue()
       if (value>=0 && value<obj.childrenCount())
@@ -97,8 +89,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
     }
 
-    let text = loc("msgbox/controlPresetApply")
-    let onOk = Callback(@() doControlTypeApply(ct_id), this)
+    let text = ::loc("msgbox/controlPresetApply")
+    let onOk = ::Callback(@() doControlTypeApply(ct_id), this)
     this.msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
   }
 
@@ -126,23 +118,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     // This case is only for gui_handlers.ControlType, it starts ControlsWizard scene after that.
     ct_preset = "keyboard"
-    ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
+    set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
     ::save_profile(false)
     return
   }
   else if (ct_id == "ct_xinput")
   {
     ct_preset = "pc_xinput_ma"
-    if (is_platform_android || ::is_platform_shield_tv())
+    if (::is_platform_android || ::is_platform_shield_tv())
       ct_preset = "tegra4_gamepad"
-    ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
+    set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
   }
   else if (ct_id == "ct_mouse")
   {
     ct_preset = ""
-    if (is_platform_android)
+    if (::is_platform_android)
       ct_preset = "tegra4_gamepad";
-    ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
+    set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   }
 
   local preset = null
@@ -153,7 +145,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     if (isPlatformSony)
       preset = ::g_controls_presets.parsePresetName("dualshock4")
-    else if (is_platform_xbox)
+    else if (::is_platform_xbox)
       preset = ::g_controls_presets.parsePresetName("xboxone_ma")
     else if (isPlatformSteamDeck)
       preset = ::g_controls_presets.parsePresetName("steamdeck_ma")
@@ -171,9 +163,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local realisticPresetNames = ["default", "xboxone_simulator", "stimdeck_simulator"]
     local mouseAimPresetNames = ["dualshock4", "xboxone_ma", "stimdeck_ma"]
     if (ct_preset.name in realisticPresetNames)
-      ::set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
+      set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
     else if (ct_preset.name in mouseAimPresetNames)
-      ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
+      set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   }
 
   ::save_profile(false)

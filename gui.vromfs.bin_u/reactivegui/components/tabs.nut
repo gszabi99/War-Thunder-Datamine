@@ -1,13 +1,11 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let tabsBase = require("tabsBase.nut")
 let colors = require("%rGui/style/colors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 
 
 let function tabCtor(tab, is_current, handler) {
-  let grp = ElemGroup()
-  let stateFlags = Watched(0)
+  let grp = ::ElemGroup()
+  let stateFlags = ::Watched(0)
 
   return function() {
     let isHover = (stateFlags.value & S_HOVER)
@@ -30,16 +28,16 @@ let function tabCtor(tab, is_current, handler) {
       rendObj = ROBJ_BOX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      size = [ SIZE_TO_CONTENT, fpx(30) + 2 * (dp() + fpx(3))]
+      size = [ SIZE_TO_CONTENT, ::fpx(30) + 2 * (::dp() + ::fpx(3))]
       watch = stateFlags
       group = grp
-      padding = [fpx(2)+ scrn_tgt(0.005), scrn_tgt(0.01), scrn_tgt(0.005), scrn_tgt(0.01)]
-      margin = [0, dp()]
+      padding = [::fpx(2)+ ::scrn_tgt(0.005), ::scrn_tgt(0.01), ::scrn_tgt(0.005), ::scrn_tgt(0.01)]
+      margin = [0, ::dp()]
       behavior = Behaviors.Button
 
       fillColor = fillColor
       borderColor = borderColor
-      borderWidth = [0, 0, dp(2), 0]
+      borderWidth = [0, 0, ::dp(2), 0]
 
       onClick = handler
       onElemState = @(sf) stateFlags.update(sf)
@@ -60,8 +58,8 @@ let tabsHolder = @(_params){
   rendObj = ROBJ_SOLID
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
-  padding = [dp(2)]
-  gap = dp()
+  padding = [::dp(2)]
+  gap = ::dp()
 
   color = colors.menu.tabBackgroundColor
 }

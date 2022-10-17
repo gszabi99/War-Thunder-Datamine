@@ -1,6 +1,3 @@
-#explicit-this
-#no-root-fallback
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_wrap_dir <- {

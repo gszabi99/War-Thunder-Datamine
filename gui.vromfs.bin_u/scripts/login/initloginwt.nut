@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 global const USE_STEAM_LOGIN_AUTO_SETTING_ID = "useSteamLoginAuto"
 
 foreach (fn in [
@@ -22,7 +17,7 @@ foreach (fn in [
 
 ::use_tencent_login <- function use_tencent_login()
 {
-  return is_platform_windows && ::getFromSettingsBlk("yunetwork/useTencentLogin", false)
+  return ::is_platform_windows && ::getFromSettingsBlk("yunetwork/useTencentLogin", false)
 }
 
 ::use_dmm_login <- function use_dmm_login()

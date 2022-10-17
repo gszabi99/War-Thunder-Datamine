@@ -1,26 +1,21 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 600
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
-let curData = persist("curData", @() Watched(null))
-let validListsMask = persist("validListsMask", @() Watched(0))
-let lastUpdatetTime = persist("lastUpdatetTime", @() Watched(-1))
-let lastRequestTime = persist("lastRequestTime", @() Watched(-1))
-let lastRequestUid = persist("lastRequestUid", @() Watched(-1))
+let curData = persist("curData", @() ::Watched(null))
+let validListsMask = persist("validListsMask", @() ::Watched(0))
+let lastUpdatetTime = persist("lastUpdatetTime", @() ::Watched(-1))
+let lastRequestTime = persist("lastRequestTime", @() ::Watched(-1))
+let lastRequestUid = persist("lastRequestUid", @() ::Watched(-1))
 
 let function pushStatusChangedEvent(changedListsMask) {
   ::ww_event("ShortGlobalStatusChanged", { changedListsMask = changedListsMask })
 }
 
 let function canRefreshData() {
-  if (!hasFeature("WorldWar"))
+  if (!::has_feature("WorldWar"))
     return false
   if (lastRequestUid.value != ::my_user_id_int64) //force request if user changed. Instead force request after relogin
     return true
@@ -56,7 +51,7 @@ let function onGlobalStatusReceived(newData) {
 let function actionWithGlobalStatusRequest(actionName, requestBlk) {
   lastRequestTime(::dagor.getCurTime())
   lastRequestUid(::my_user_id_int64)
-  let cb = Callback(function(data) {
+  let cb = ::Callback(function(data) {
     onGlobalStatusReceived(data)
   }, this)
 

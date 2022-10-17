@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 ::notify_keyboard_layout_changed <- function notify_keyboard_layout_changed(layout)
 {
   ::broadcastEvent("KeyboardLayoutChanged", {layout = layout})

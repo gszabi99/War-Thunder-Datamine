@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 //ms
 
 local WwOperationPreloader = class
@@ -39,7 +32,7 @@ local WwOperationPreloader = class
 
     let operationId = curTask.operationId
     let taskId = ::ww_preview_operation(operationId)
-    let accessCb = Callback(
+    let accessCb = ::Callback(
       function() {
         isRequestInProgress = false
         if (operationId != curTask?.operationId)
@@ -55,7 +48,7 @@ local WwOperationPreloader = class
       },
       this)
 
-    let errorCb = Callback(
+    let errorCb = ::Callback(
       function(res) {
         isRequestInProgress = false
         if (operationId != curTask?.operationId)

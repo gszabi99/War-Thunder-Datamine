@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-
 let { showOrder, scoresTable, statusText, statusTextBottom } = require("orderState.nut")
 let colors = require("style/colors.nut")
 let teamColors = require("style/teamColors.nut")
@@ -15,13 +12,13 @@ let scoresTableComp = @() {
   flow = FLOW_VERTICAL
   watch = scoresTable
   children = scoresTable.value.map(@(item) {
-    size = [flex(), scrn_tgt(0.0224)]
+    size = [flex(), ::scrn_tgt(0.0224)]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_BOTTOM
     children = [
       {
         rendObj = ROBJ_IMAGE
-        size = [scrn_tgt(0.0224), scrn_tgt(0.0224)]
+        size = [::scrn_tgt(0.0224), ::scrn_tgt(0.0224)]
         image = pilotIcon
       }
       @(){
@@ -48,19 +45,19 @@ let scoresTableComp = @() {
 
 
 let updateFunction = function () {
-  cross_call.active_order_request_update()
+  ::cross_call.active_order_request_update()
 }
 
-let isOrderVisible = Computed(@() isOrderStatusVisible.value && showOrder.value)
+let isOrderVisible = ::Computed(@() isOrderStatusVisible.value && showOrder.value)
 
 return @() {
   flow = FLOW_VERTICAL
-  size = [scrn_tgt(0.4), SIZE_TO_CONTENT]
+  size = [::scrn_tgt(0.4), SIZE_TO_CONTENT]
   watch = isOrderVisible
   onAttach = function (_elem) {
-    cross_call.active_order_enable()
-    gui_scene.setInterval(1, updateFunction) }
-  onDetach = function (_elem) { gui_scene.clearTimer(updateFunction) }
+    ::cross_call.active_order_enable()
+    ::gui_scene.setInterval(1, updateFunction) }
+  onDetach = function (_elem) { ::gui_scene.clearTimer(updateFunction) }
   children = isOrderVisible.value
     ? [
         @() {

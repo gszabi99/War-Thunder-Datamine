@@ -1,10 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
 
 return [
 //-------------------------------------------------------
@@ -22,7 +16,7 @@ return [
     id = "ID_CAMERA_NEUTRAL"
     checkGroup = ctrlGroups.NO_GROUP
     checkAssign = false
-    showFunc = @() hasFeature("EnableMouse")
+    showFunc = @() ::has_feature("EnableMouse")
     needShowInHelp = true
   }
   {
@@ -40,13 +34,13 @@ return [
       if (objValue != old)
         ::set_controls_preset("")
     }
-    showFunc = @() hasFeature("EnableMouse") && isPlatformSony
+    showFunc = @() ::has_feature("EnableMouse") && isPlatformSony
   }
   {
     id = "mouse_smooth"
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = ::USEROPT_MOUSE_SMOOTH
-    showFunc = @() hasFeature("EnableMouse")
+    showFunc = @() ::has_feature("EnableMouse")
   }
   {
     id = "mouse_sensitivity"
@@ -61,15 +55,15 @@ return [
   {
     id = "camera_mouse_speed"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0*(::get_option_multiplier(OPTION_CAMERA_MOUSE_SPEED) - MIN_CAMERA_SPEED) / (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED)
-    setValue = @(joyParams, objValue) ::set_option_multiplier(OPTION_CAMERA_MOUSE_SPEED, MIN_CAMERA_SPEED + (objValue / 100.0) * (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED))
-    showFunc = @() hasFeature("EnableMouse")
+    value = @(joyParams) 100.0*(::get_option_multiplier(::OPTION_CAMERA_MOUSE_SPEED) - min_camera_speed) / (max_camera_speed - min_camera_speed)
+    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_CAMERA_MOUSE_SPEED, min_camera_speed + (objValue / 100.0) * (max_camera_speed - min_camera_speed))
+    showFunc = @() ::has_feature("EnableMouse")
   }
   {
     id = "camera_smooth"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0*::get_option_multiplier(OPTION_CAMERA_SMOOTH) / MAX_CAMERA_SMOOTH
-    setValue = @(joyParams, objValue) ::set_option_multiplier(OPTION_CAMERA_SMOOTH, (objValue / 100.0) * MAX_CAMERA_SMOOTH)
+    value = @(joyParams) 100.0*::get_option_multiplier(::OPTION_CAMERA_SMOOTH) / max_camera_smooth
+    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_CAMERA_SMOOTH, (objValue / 100.0) * max_camera_smooth)
   }
   {
     id = "zoom_sens"

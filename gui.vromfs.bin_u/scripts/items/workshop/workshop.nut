@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let Set = require("workshopSet.nut")
@@ -121,7 +114,7 @@ let function invalidateItemsCache()
   seenIdCanBeNew.clear()
   foreach(set in getSetsList())
     set.invalidateItemsCache()
-  if (::ItemsManager.isInventoryFullUpdated)
+  if (ItemsManager.isInventoryFullUpdated)
     seenWorkshop.setDaysToUnseen(OUT_OF_DATE_DAYS_WORKSHOP)
   seenWorkshop.onListChanged()
 }

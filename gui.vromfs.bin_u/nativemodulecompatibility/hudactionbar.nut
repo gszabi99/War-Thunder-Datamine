@@ -1,4 +1,3 @@
-#allow-root-table
 return {
   getActionBarItems = @() ::get_action_bar_items?()
   getWheelBarItems = @() ::getWheelBarItems?()

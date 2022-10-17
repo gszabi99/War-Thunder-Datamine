@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { fabs } = require("math")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { MISSION_CAPTURE_ZONE_START, MISSION_CAPTURING_ZONE } = require("guiMission")
@@ -24,7 +16,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       id = "repair_auto_status"
       color = "#787878"
       icon = function () {
-        if (::g_hud_display_timers.unitType == ES_UNIT_TYPE_SHIP)
+        if (::g_hud_display_timers.unitType == ::ES_UNIT_TYPE_SHIP)
           return "#ui/gameuiskin#ship_crew_driver.svg"
         return "#ui/gameuiskin#track_state_indicator.svg"
       }
@@ -69,7 +61,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       id = "driver_status"
       color = "@crewTransferColor"
       icon = function () {
-        if (::g_hud_display_timers.unitType == ES_UNIT_TYPE_SHIP)
+        if (::g_hud_display_timers.unitType == ::ES_UNIT_TYPE_SHIP)
           return "#ui/gameuiskin#ship_crew_driver.svg"
         return "#ui/gameuiskin#crew_driver_indicator.svg"
       }
@@ -78,7 +70,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       id = "gunner_status"
       color = "@crewTransferColor"
       icon = function () {
-        if (::g_hud_display_timers.unitType == ES_UNIT_TYPE_SHIP)
+        if (::g_hud_display_timers.unitType == ::ES_UNIT_TYPE_SHIP)
           return "#ui/gameuiskin#ship_crew_gunner.svg"
         return "#ui/gameuiskin#crew_gunner_indicator.svg"
       }
@@ -144,13 +136,6 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       icon = "#ui/gameuiskin#fire_indicator.svg"
       needTimeText = true
     },
-    //
-
-
-
-
-
-
   ]
 
   scene = null
@@ -159,7 +144,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   repairUpdater = null
   repairBreachesUpdater = null
   extinguishUpdater = null
-  unitType = ES_UNIT_TYPE_INVALID
+  unitType = ::ES_UNIT_TYPE_INVALID
 
   curZoneCaptureName = null
   lastZoneCaptureUpdate = 0
@@ -168,7 +153,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function init(nest, v_unitType)
   {
     scene = nest.findObject("display_timers")
-    if (!scene && !checkObj(scene))
+    if (!scene && !::checkObj(scene))
       return
 
     unitType = v_unitType
@@ -182,9 +167,6 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_hud_event_manager.subscribe("TankDebuffs:MoveCooldown", onMoveCooldown, this)
     ::g_hud_event_manager.subscribe("TankDebuffs:Battery", onBattery, this)
     ::g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", onExtinguishAssist, this)
-    //
-
-
     ::g_hud_event_manager.subscribe("ShipDebuffs:Rearm", onRearm, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Repair", onRepair, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", onMoveCooldown, this)
@@ -202,14 +184,14 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     ::g_hud_event_manager.subscribe("zoneCapturingEvent", onZoneCapturingEvent, this)
 
-    if (getTblValue("isDead", ::get_local_mplayer(), false))
+    if (::getTblValue("isDead", ::get_local_mplayer(), false))
       clearAllTimers()
   }
 
 
   function reinit()
   {
-    if (getTblValue("isDead", ::get_local_mplayer(), false))
+    if (::getTblValue("isDead", ::get_local_mplayer(), false))
       clearAllTimers()
   }
 
@@ -236,19 +218,19 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function clearAllTimers()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     foreach(timerData in timersList)
     {
       let placeObj = scene.findObject(timerData.id)
-      if (!checkObj(placeObj))
+      if (!::checkObj(placeObj))
         return
 
       placeObj.animation = "hide"
 
       let iconObj = placeObj.findObject("icon")
-      if (checkObj(iconObj))
+      if (::check_obj(iconObj))
         iconObj.wink = "no"
     }
 
@@ -276,7 +258,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       return
 
     let placeObj = scene.findObject(memberId + "_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     let showTimer = newStateData.state == "takingPlace"
@@ -293,7 +275,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onCrewState(newStateData)
   {
     let placeObj = scene.findObject("healing_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     let showTimer = newStateData.healing
@@ -310,7 +292,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onRearm(debuffs_data)
   {
     let placeObj = scene.findObject(debuffs_data.object_name)
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     let showTimer = debuffs_data.state == "rearming"
@@ -329,7 +311,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onReplenish(debuffs_data)
   {
     let placeObj = scene.findObject("replenish_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     let showTimer = debuffs_data?.isReplenishActive ?? false
@@ -364,7 +346,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     let objId = debuffs_data.state == "repairingAuto" ? "repair_auto_status" : "repair_status"
     let placeObj = scene.findObject(objId)
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     placeObj.animation = "show"
@@ -404,7 +386,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onMoveCooldown(debuffs_data)
   {
     let placeObj = scene.findObject("move_cooldown_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     let showTimer = debuffs_data.time >= 0
@@ -427,7 +409,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onBattery(debuffs_data)
   {
     let placeObj = scene.findObject("battery_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     let showTimer = debuffs_data.charge < 100
@@ -444,7 +426,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function hideAnimTimer(objId)
   {
     let placeObj = scene.findObject(objId)
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
     placeObj.animation = "hide"
     placeObj.findObject("icon").wink = "no"
@@ -480,7 +462,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     let objId = debuffs_data.state == "unwatering" ? "unwatering_status" : "repair_breaches_status"
     let placeObj = scene.findObject(objId)
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
 
@@ -517,7 +499,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onCancelRepairBreaches(debuffs_data)
   {
     let placeObj = scene.findObject("cancel_repair_breaches_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     onCancelAction(debuffs_data, placeObj)
@@ -526,39 +508,16 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onExtinguishAssist(debuffs_data)
   {
     let placeObj = scene.findObject("extinguish_assist")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     onCancelAction(debuffs_data, placeObj)
   }
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   function onExtinguish(debuffs_data)
   {
     let placeObj = scene.findObject("extinguish_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     let showTimer = debuffs_data.state != "notInExtinguish"
@@ -602,7 +561,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onCancelExtinguish(debuffs_data)
   {
     let placeObj = scene.findObject("cancel_extinguish_status")
-    if (!checkObj(placeObj))
+    if (!::checkObj(placeObj))
       return
 
     onCancelAction(debuffs_data, placeObj)
@@ -640,7 +599,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     if (!eventData.isHeroAction && eventData.zoneName != curZoneCaptureName)
       return
     let placeObj = scene.findObject("capture_progress")
-    if (!checkObj(placeObj))
+    if (!::check_obj(placeObj))
       return
 
     let isZoneCapturing = eventData.isHeroAction
@@ -667,7 +626,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       if (lastZoneCaptureUpdate + zoneCaptureOutdateTimeMsec > ::dagor.getCurTime())
         return false
 
-      if (checkObj(placeObj))
+      if (::check_obj(placeObj))
         placeObj.animation = "hide"
       return true
     }.bindenv(this))
@@ -677,6 +636,6 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function isValid()
   {
-    return checkObj(scene)
+    return ::checkObj(scene)
   }
 }

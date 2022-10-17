@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { split_by_chars } = require("string")
 /**
  *  dbg_dump is a tool for debugging complex scripts, which have
@@ -85,24 +80,27 @@ let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 let persistent = {
   backup = null
 }
-
 ::g_script_reloader.registerPersistentData("dbgDump", persistent, [ "backup" ])
 
-let function isLoaded() {
+let isLoaded = function()
+{
   return persistent.backup != null
 }
 
-let function getOriginal(id) {
+let getOriginal = function(id)
+{
   if (persistent.backup && (id in persistent.backup))
     return (persistent.backup[id] != "__destroy") ? persistent.backup[id] : null
-  return (id in getroottable()) ? getroottable()[id] : null
+  return (id in ::getroottable()) ? ::getroottable()[id] : null
 }
 
-let function getFuncResult(func, a = []) {
+let getFuncResult = function(func, a = [])
+{
   return func.acall([null].extend(a))
 }
 
-local function pathGet(env, path, defVal) {
+local pathGet = function(env, path, defVal)
+{
   let keys = split_by_chars(path, ".")
   foreach(key in keys)
     if (key in env)
@@ -112,7 +110,8 @@ local function pathGet(env, path, defVal) {
   return env
 }
 
-local function pathSet(env, path, val) {
+local pathSet = function(env, path, val)
+{
   let keys = split_by_chars(path, ".")
   let lastIdx = keys.len() - 1
   foreach(idx, key in keys)
@@ -123,7 +122,8 @@ local function pathSet(env, path, val) {
   }
 }
 
-local function pathDelete(env, path) {
+local pathDelete = function(env, path)
+{
   let keys = split_by_chars(path, ".")
   let lastIdx = keys.len() - 1
   foreach(idx, key in keys)
@@ -131,13 +131,14 @@ local function pathDelete(env, path) {
     if (!(key in env))
       return
     if (idx == lastIdx)
-      return env.rawdelete(key) //warning disable: -unwanted-modification
+      return env.rawdelete(key)
     env = env[key]
   }
 }
 
-let function save(filename, list) {
-  let rootTable = getroottable()
+let save = function(filename, list)
+{
+  let rootTable = ::getroottable()
   let blk = ::DataBlock()
   foreach (itemSrc in list)
   {
@@ -167,28 +168,13 @@ let function save(filename, list) {
   return blk.saveToTextFile(filename)
 }
 
-let function unload() {
-  if (!isLoaded())
-    return false
-  let rootTable = getroottable()
-  foreach (id, v in persistent.backup)
-  {
-    if (v == "__destroy")
-      pathDelete(rootTable, id)
-    else
-      pathSet(rootTable, id, v)
-  }
-  persistent.backup = null
-  return true
-}
-
-
-let function load(filename, needUnloadPrev = true) {
+let load = function(filename, needUnloadPrev = true)
+{
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}
 
-  let rootTable = getroottable()
+  let rootTable = ::getroottable()
   let blk = ::DataBlock()
   if (!blk.tryLoad(filename))
     return false
@@ -232,12 +218,13 @@ let function load(filename, needUnloadPrev = true) {
   return true
 }
 
-let function loadFuncs(functions, needUnloadPrev = true) {
+let loadFuncs = function(functions, needUnloadPrev = true)
+{
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}
 
-  let rootTable = getroottable()
+  let rootTable = ::getroottable()
   foreach (id, func in functions)
   {
     if (!(id in persistent.backup))
@@ -247,11 +234,27 @@ let function loadFuncs(functions, needUnloadPrev = true) {
   return true
 }
 
+let unload = function()
+{
+  if (!isLoaded())
+    return false
+  let rootTable = ::getroottable()
+  foreach (id, v in persistent.backup)
+  {
+    if (v == "__destroy")
+      pathDelete(rootTable, id)
+    else
+      pathSet(rootTable, id, v)
+  }
+  persistent.backup = null
+  return true
+}
+
 return {
-  save
-  load
-  loadFuncs
-  unload
-  isLoaded
-  getOriginal
+  save = save
+  load = load
+  loadFuncs = loadFuncs
+  unload = unload
+  isLoaded = isLoaded
+  getOriginal = getOriginal
 }

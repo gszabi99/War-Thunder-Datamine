@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
   MISSION_TEAM_LEAD_ZONE
 } = require_native("guiMission")
@@ -49,7 +42,7 @@ local heightPID = ::dagui_propid.add_name_id("height")
   }
 
   findMessageById = function(id) {
-    return ::u.search(stack, (@(id) function(m) { return getTblValue("id", m.messageData, -1) == id })(id))
+    return ::u.search(stack, (@(id) function(m) { return ::getTblValue("id", m.messageData, -1) == id })(id))
   }
 
   subscribeHudEvents = function()
@@ -69,7 +62,7 @@ local heightPID = ::dagui_propid.add_name_id("height")
 
     let lastId = getCleanUpId(stack.len())
     let obj = stack[lastId].obj
-    if (checkObj(obj))
+    if (::check_obj(obj))
     {
       if (obj.isVisible())
         stack[lastId].obj.remove = "yes"
@@ -93,7 +86,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function(messageData)
     {
-      if (messageData.type != HUD_MSG_OBJECTIVE)
+      if (messageData.type != ::HUD_MSG_OBJECTIVE)
         return
 
       let curMsg = findMessageById(messageData.id)
@@ -110,7 +103,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     createMessage = function(messageData)
     {
-      if (!getTblValue("show", messageData, true))
+      if (!::getTblValue("show", messageData, true))
         return
 
       cleanUp()
@@ -122,7 +115,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }
       stack.insert(0, mainMessage)
 
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
       {
         stack[0].needShowAfterReinit <- true
         return
@@ -145,20 +138,20 @@ enums.addTypesByGlobalName("g_hud_messages", {
         guiScene.setUpdatesEnabled(true, true)
       }
 
-      if (!getTblValue("alwaysShow", mainMessage.messageData, false))
+      if (!::getTblValue("alwaysShow", mainMessage.messageData, false))
         setDestroyTimer(mainMessage)
     }
 
     updateMessage = function(message, messageData)
     {
-      if (!getTblValue("show", messageData, true))
+      if (!::getTblValue("show", messageData, true))
       {
         animatedRemoveMessage(message)
         return
       }
 
       let msgObj = message.obj
-      if (!checkObj(msgObj))
+      if (!::checkObj(msgObj))
       {
         removeMessage(message)
         createMessage(messageData)
@@ -169,7 +162,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       message.needShowAfterReinit <- false
       msgObj.findObject("text").setValue(messageData.text)
       msgObj.state = "old"
-      if (getTblValue("alwaysShow", message.messageData, false))
+      if (::getTblValue("alwaysShow", message.messageData, false))
       {
         if (message.timer)
           message.timer.destroy()
@@ -180,7 +173,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     showNest = function(show)
     {
-      if (checkObj(nest))
+      if (::checkObj(nest))
         nest.show(show)
     }
 
@@ -194,13 +187,13 @@ enums.addTypesByGlobalName("g_hud_messages", {
     {
       removeMessage(message)
       onNotificationRemoved(message.obj)
-      if (checkObj(message.obj))
+      if (::checkObj(message.obj))
         message.obj.remove = "yes"
     }
 
     onNotificationRemoved = function(obj)
     {
-      if (stack.len() || !checkObj(nest))
+      if (stack.len() || !::checkObj(nest))
         return
 
       timers.addTimer(0.5, function () {
@@ -212,7 +205,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     reinit = function (inScene, inTimers)
     {
       setScene(inScene, inTimers)
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
       foreach (message in stack)
       {
@@ -230,9 +223,9 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (messageData)
     {
-      if (messageData.type != HUD_MSG_DAMAGE && messageData.type != HUD_MSG_EVENT)
+      if (messageData.type != ::HUD_MSG_DAMAGE && messageData.type != ::HUD_MSG_EVENT)
         return
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
 
       let checkField = (messageData.id != -1) ? "id" : "text"
@@ -268,7 +261,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }
 
       message.timer = timers.addTimer(showSec, function () {
-        if (checkObj(message.obj))
+        if (::check_obj(message.obj))
           message.obj.remove = "yes"
         removeMessage(message)
       }.bindenv(this)).weakref()
@@ -280,7 +273,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       message.messageData = messageData
       if (message.timer)
         timers.setTimerTime(message.timer, showSec)
-      if (updateText && checkObj(message.obj))
+      if (updateText && ::checkObj(message.obj))
         message.obj.findObject("text").setValue(messageData.text)
     }
   }
@@ -294,7 +287,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     reinit = function (inScene, inTimers)
     {
       setScene(inScene, inTimers)
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
       nest.deleteChildren()
 
@@ -309,21 +302,21 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     clearStack = function ()
     {
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
       nest.deleteChildren()
     }
 
     onMessage = function (messageData)
     {
-      if (messageData.type != HUD_MSG_MULTIPLAYER_DMG
-        && messageData.type != HUD_MSG_ENEMY_DAMAGE
-        && messageData.type != HUD_MSG_ENEMY_CRITICAL_DAMAGE
-        && messageData.type != HUD_MSG_ENEMY_FATAL_DAMAGE)
+      if (messageData.type != ::HUD_MSG_MULTIPLAYER_DMG
+        && messageData.type != ::HUD_MSG_ENEMY_DAMAGE
+        && messageData.type != ::HUD_MSG_ENEMY_CRITICAL_DAMAGE
+        && messageData.type != ::HUD_MSG_ENEMY_FATAL_DAMAGE)
         return
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
-      if (messageData.type == HUD_MSG_MULTIPLAYER_DMG
+      if (messageData.type == ::HUD_MSG_MULTIPLAYER_DMG
         && !(messageData?.isKill ?? true) && ::mission_settings.maxRespawns != 1)
         return
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.KILLLOG))
@@ -342,14 +335,14 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }
       stack.append(message)
       local text = null
-      if (messageData.type == HUD_MSG_MULTIPLAYER_DMG)
+      if (messageData.type == ::HUD_MSG_MULTIPLAYER_DMG)
         text = ::HudBattleLog.msgMultiplayerDmgToText(messageData, true)
-      else if (messageData.type == HUD_MSG_ENEMY_CRITICAL_DAMAGE)
-        text = colorize("orange", messageData.text)
-      else if (messageData.type == HUD_MSG_ENEMY_FATAL_DAMAGE)
-        text = colorize("red", messageData.text)
+      else if (messageData.type == ::HUD_MSG_ENEMY_CRITICAL_DAMAGE)
+        text = ::colorize("orange", messageData.text)
+      else if (messageData.type == ::HUD_MSG_ENEMY_FATAL_DAMAGE)
+        text = ::colorize("red", messageData.text)
       else
-        text = colorize("silver", messageData.text)
+        text = ::colorize("silver", messageData.text)
       let view = { text = text }
 
       let timeToShow = timestamp
@@ -357,19 +350,19 @@ enums.addTypesByGlobalName("g_hud_messages", {
        : showSec
 
       message.timer = timers.addTimer(timeToShow, function () {
-        if (checkObj(message.obj))
+        if (::checkObj(message.obj))
           message.obj.remove = "yes"
         removeMessage(message)
       }.bindenv(this)).weakref()
 
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
 
       let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
       guiScene.appendWithBlk(nest, blk, blk.len(), this)
       message.obj = nest.getChild(nest.childrenCount() - 1)
 
-      if (nest.isVisible() && !timestamp && checkObj(message.obj))
+      if (nest.isVisible() && !timestamp && ::checkObj(message.obj))
       {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
@@ -400,7 +393,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     addNotification = function (eventData)
     {
-      if (!checkObj(::g_hud_messages.ZONE_CAPTURE.nest))
+      if (!::checkObj(::g_hud_messages.ZONE_CAPTURE.nest))
         return
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.CAPTURE_ZONE_INFO))
         return
@@ -435,7 +428,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       else
         message.timer = timers.addTimer(showSec,
           function () {
-            if (checkObj(message.obj))
+            if (::checkObj(message.obj))
               message.obj.remove = "yes"
             removeMessage(message)
           }.bindenv(this)).weakref()
@@ -450,7 +443,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     function setAnimationStartValues(message)
     {
-      if (!nest.isVisible() || !checkObj(message.obj))
+      if (!nest.isVisible() || !::checkObj(message.obj))
         return
 
       message.obj["height-end"] = message.obj.getSize()[1]
@@ -486,7 +479,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (messageData)
     {
-      if (!checkObj(::g_hud_messages.REWARDS.nest))
+      if (!::checkObj(::g_hud_messages.REWARDS.nest))
         return
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.REWARDS_MSG))
         return
@@ -536,7 +529,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     clearRewardMessage = function ()
     {
-      if (checkObj(nest))
+      if (::check_obj(nest))
       {
         ::showBtn("reward_message", false, nest)
         nest.findObject("reward_message_text").setValue("")
@@ -559,36 +552,36 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (eventData)
     {
-      if (!checkObj(nest) || !(::get_game_type() & GT_RACE))
+      if (!::checkObj(nest) || !(::get_game_type() & ::GT_RACE))
         return
 
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
         return
 
       let statusObj = nest.findObject("race_status")
-      if (checkObj(statusObj))
+      if (::check_obj(statusObj))
       {
-        local text = loc("HUD_RACE_FINISH")
+        local text = ::loc("HUD_RACE_FINISH")
         if (!eventData.isRaceFinishedByPlayer)
         {
-          text = loc("HUD_RACE_CHECKPOINT") + " "
-          text += eventData.passedCheckpointsInLap + loc("ui/slash")
+          text = ::loc("HUD_RACE_CHECKPOINT") + " "
+          text += eventData.passedCheckpointsInLap + ::loc("ui/slash")
           text += eventData.checkpointsPerLap + "  "
-          text += loc("HUD_RACE_LAP") + " "
-          text += eventData.currentLap + loc("ui/slash") + eventData.totalLaps
+          text += ::loc("HUD_RACE_LAP") + " "
+          text += eventData.currentLap + ::loc("ui/slash") + eventData.totalLaps
         }
         statusObj.setValue(text)
       }
 
-      let playerTime = getTblValue("time", getTblValue("player", eventData, {}), 0.0)
+      let playerTime = ::getTblValue("time", ::getTblValue("player", eventData, {}), 0.0)
 
       foreach (blockName in ["beforePlayer", "leader", "afterPlayer", "player"])
       {
         let textBlockObj = nest.findObject(blockName)
-        if (!checkObj(textBlockObj))
+        if (!::check_obj(textBlockObj))
           continue
 
-        let data = getTblValue(blockName, eventData)
+        let data = ::getTblValue(blockName, eventData)
         let showBlock = data != null
         textBlockObj.show(showBlock)
         if (showBlock)
@@ -600,7 +593,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
             else
             {
               let textObj = textBlockObj.findObject(param)
-              if (!checkObj(textObj))
+              if (!::check_obj(textObj))
                 continue
 
               local text = value
@@ -613,7 +606,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
                 {
                   adjustedTime -= playerTime
                   if (adjustedTime > 0)
-                    prefix = loc("keysPlus")
+                    prefix = ::loc("keysPlus")
                 }
                 text = prefix + time.preciseSecondsToString(adjustedTime, isPlayerBlock)
               }
@@ -638,7 +631,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (messageData)
     {
-      if (!checkObj(nest) || !(::get_game_type() & GT_RACE))
+      if (!::checkObj(nest) || !(::get_game_type() & ::GT_RACE))
         return
 
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
@@ -648,7 +641,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     }
 
     updatePlayerPlaceAnimation = function(nestObj, animationValue) {
-      if (!checkObj(nestObj))
+      if (!::check_obj(nestObj))
         return
 
       foreach (objName in ["time"])
@@ -666,7 +659,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       stack.append(message)
       let deltaTime = messageData.deltaTime
       let view = {
-        text = loc(deltaTime > 0 ? "hints/penalty_time" : "hints/bonus_time", { timeSec = deltaTime })
+        text = ::loc(deltaTime > 0 ? "hints/penalty_time" : "hints/bonus_time", { timeSec = deltaTime })
       }
       let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
       guiScene.appendWithBlk(nest, blk, blk.len(), this)
@@ -682,12 +675,12 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
       let racePlaceNest = scene.findObject("hud_messages_race_messages")
       local playerPlaceObj = null
-      if (checkObj(racePlaceNest))
+      if (::check_obj(racePlaceNest))
         playerPlaceObj = racePlaceNest.findObject("player")
       updatePlayerPlaceAnimation(playerPlaceObj, "fast")
 
       message.timer = timers.addTimer(showSec, function () {
-        if (checkObj(message.obj))
+        if (::check_obj(message.obj))
           message.obj.remove = "yes"
         updatePlayerPlaceAnimation(playerPlaceObj, "no")
         removeMessage(message)
@@ -706,13 +699,13 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (eventData)
     {
-      if (!checkObj(nest)
-          || ::get_game_mode() == GM_TEST_FLIGHT)
+      if (!::checkObj(nest)
+          || ::get_game_mode() == ::GM_TEST_FLIGHT)
         return
 
-      let oldResultIdx = getTblValue("resultIdx", stack, GO_NONE)
+      let oldResultIdx = ::getTblValue("resultIdx", stack, GO_NONE)
 
-      let resultIdx = getTblValue("resultNum", eventData, GO_NONE)
+      let resultIdx = ::getTblValue("resultNum", eventData, GO_NONE)
       let checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false //!!! waitingForResult need only for compatibiliti with 1.99.0.X
 
       /*Have to check this, because, on guiStateChange GUI_STATE_FINISH_SESSION
@@ -723,14 +716,14 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (checkResending && (oldResultIdx == GO_WIN || oldResultIdx == GO_FAIL))
         return
 
-      let noLives = getTblValue("noLives", eventData, false)
-      let place = getTblValue("place", eventData, -1)
-      let total = getTblValue("total", eventData, -1)
+      let noLives = ::getTblValue("noLives", eventData, false)
+      let place = ::getTblValue("place", eventData, -1)
+      let total = ::getTblValue("total", eventData, -1)
 
       let resultLocId = getMissionResultLocId(resultIdx, checkResending, noLives)
-      local text = loc(resultLocId)
+      local text = ::loc(resultLocId)
       if (place >= 0 && total >= 0)
-        text += "\n" + loc("HUD_RACE_PLACE", {place = place, total = total})
+        text += "\n" + ::loc("HUD_RACE_PLACE", {place = place, total = total})
 
       stack = {
         text = text
@@ -742,7 +735,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       guiScene.replaceContentFromText(nest, blk, blk.len(), this)
 
       let objTarget = nest.findObject("mission_result_box")
-      if (!checkObj(objTarget))
+      if (!::check_obj(objTarget))
         return
       objTarget.show(true)
 
@@ -771,17 +764,17 @@ enums.addTypesByGlobalName("g_hud_messages", {
         case GO_WAITING_FOR_RESULT:
           return "FINALIZING"
         default:
-          return getTblValue("result", stack, "")
+          return ::getTblValue("result", stack, "")
       }
       return ""
     }
 
     destroy = function()
     {
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
       let msgObj = nest.findObject("mission_result_box")
-      if (!checkObj(msgObj))
+      if (!::checkObj(msgObj))
         return
 
       msgObj["_transp-timer"] = "1"
@@ -802,9 +795,9 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (messageData)
     {
-      if (messageData.type != HUD_MSG_UNDER_RADAR && messageData.type != HUD_MSG_DEATH_REASON)
+      if (messageData.type != ::HUD_MSG_UNDER_RADAR && messageData.type != ::HUD_MSG_DEATH_REASON)
         return
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
 
       let oldMessage = findMessageById(messageData.id)
@@ -844,7 +837,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
        : showSec
 
       message.timer = timers.addTimer(timeToShow, function () {
-        if (checkObj(message.obj))
+        if (::check_obj(message.obj))
           message.obj.remove = "yes"
         removeMessage(message)
       }.bindenv(this)).weakref()
@@ -856,7 +849,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       message.messageData = messageData
       if (message.timer)
         timers.setTimerTime(message.timer, showSec)
-      if (shouldUpdateText && checkObj(message.obj))
+      if (shouldUpdateText && ::checkObj(message.obj))
         message.obj.findObject("text").setValue(messageData.text)
     }
 
@@ -864,7 +857,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     destroy = function () {
       stack.clear()
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
       nest.deleteChildren()
     }
@@ -872,7 +865,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     reinit = function (inScene, inTimers)
     {
       setScene(inScene, inTimers)
-      if (!checkObj(nest))
+      if (!::checkObj(nest))
         return
       nest.deleteChildren()
 

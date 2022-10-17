@@ -379,7 +379,11 @@
       "turret_side_dm": {},
       "turret_back_dm": {},
       "turret_01_back_dm": {},
+      "turret_02_back_dm": {},
       "turret_03_back_dm": {},
+      "turret_04_back_dm": {
+        "armorThickness": 5.0
+      },
       "turret_01_front_dm": {},
       "turret_02_front_dm": {},
       "turret_03_front_dm": {
@@ -414,17 +418,6 @@
         "armorThickness": 10.0
       }
     },
-    "xray_parts": {
-      "armorClass": "RHA_tank_modern",
-      "hidableInXrayViewer": true,
-      "armorThickness": 0.01,
-      "createSecondaryShatters": false,
-      "genericArmorQuality": 0.0,
-      "cumulativeArmorQuality": 0.0,
-      "composite_armor_hull_01_dm": {
-        "armorThickness": 5.0
-      }
-    },
     "sensor": {
       "armorClass": "tank_structural_steel",
       "armorThickness": 15.0,
@@ -442,8 +435,7 @@
       "ex_decor_l_06_dm": {},
       "ex_armor_l_01_dm": {},
       "ex_armor_r_01_dm": {},
-      "ex_decor_01_dm": {},
-      "turret_02_back_dm": {}
+      "ex_decor_01_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -729,9 +721,6 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
-      "ammo_body_58_dm": {},
-      "ammo_body_59_dm": {},
-      "ammo_body_60_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -1584,18 +1573,6 @@
     "commander": {
       "dmPart": "commander_dm",
       "role": "commander"
-    }
-  },
-  "xray_viewer_data": {
-    "armorArrayHullFront": {
-      "xrayDmPart": "composite_armor_hull_01_dm",
-      "titleLoc": "RHA_tank_modern",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "composite_armor_hull_01_dm",
-          "xrayTextThickness": 5.0
-        }
-      }
     }
   },
   "MetaParts": {
@@ -3020,7 +2997,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 360.0,
-              "salvo": 4,
+              "salvo": 2,
               "salvoDelay": 0.5,
               "speedYaw": 24.0,
               "speedPitch": 15.0,

@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { lerp, fabs } = require("%sqstd/math.nut")
+let stdMath = require("%sqstd/math.nut")
 let cubicBezierSolver = require("%globalScripts/cubicBezierSolver.nut")
 
 let CHANCE_TO_STOP_ON_BORDER = 0.5
@@ -43,7 +36,7 @@ rouletteAnim.template <- {
     let targetIdx = params.targetIdx
     if (targetIdx < 0 || targetIdx >= obj.childrenCount())
       return null
-    let itemWidth = to_pixels("@itemWidth")
+    let itemWidth = ::to_pixels("@itemWidth")
     let targetWidth = obj.getChild(targetIdx).getSize()[0]
     let targetPos = (- obj.getChild(targetIdx).getPos()[0] - 0.5 * targetWidth
       + obj.getPos()[0] + 0.5 * obj.getParent().getSize()[0] / 2).tofloat()
@@ -100,7 +93,7 @@ enums.addTypes(rouletteAnim,
 
     function calcAnimConfigImpl(targetPos, targetWidth, itemWidth)
     {
-      let time1 = lerp(0.0, 1.0, MIN_TIME, MAX_TIME, ::math.frnd())
+      let time1 = stdMath.lerp(0.0, 1.0, MIN_TIME, MAX_TIME, ::math.frnd())
       let time2 = time1 + FINAL_ANIM_TIME
       let pos1 = targetPos + getRandomEndDisplacement() * 0.5 * targetWidth
       let pos2 = targetPos

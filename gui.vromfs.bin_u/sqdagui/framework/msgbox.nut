@@ -1,8 +1,4 @@
-#explicit-this
-#no-root-fallback
-
 let { format } = require("string")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
 ::scene_msg_boxes_list <- [] //FIX ME need to make it part of handler manager
 
 //  {id, text, buttons, defBtn}
@@ -23,7 +19,7 @@ let g_string =  require("%sqstd/string.nut")
 
 ::destroyMsgBox <- function destroyMsgBox(boxObj)
 {
-  if(!check_obj(boxObj))
+  if(!::check_obj(boxObj))
     return
   local guiScene = boxObj.getScene()
   guiScene.destroyElement(boxObj)
@@ -33,13 +29,13 @@ let g_string =  require("%sqstd/string.nut")
 let function clear_msg_boxes_list()
 {
   for(local i = ::scene_msg_boxes_list.len()-1; i >= 0; i--)
-    if (!check_obj(::scene_msg_boxes_list[i]))
+    if (!::check_obj(::scene_msg_boxes_list[i]))
       ::scene_msg_boxes_list.remove(i)
 }
 
 let function get_text_urls_data(text)
 {
-  if (!text.len())
+  if (!text.len() || !::has_feature("AllowExternalLink"))
     return null
 
   let urls = []
@@ -74,7 +70,7 @@ let function get_text_urls_data(text)
 ::scene_msg_box <- function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null)
 {
   gui_scene = gui_scene || ::get_cur_gui_scene()
-  if (options?.checkDuplicateId && check_obj(gui_scene[id]))
+  if (options?.checkDuplicateId && ::check_obj(gui_scene[id]))
     return null
 
   local rootNode = options?.root ?? ""
@@ -106,17 +102,17 @@ let function get_text_urls_data(text)
                            idx, g_string.stripTags(urlData.text), g_string.stripTags(urlData.url))
   }
 
-  if (!check_obj(gui_scene[rootNode]))
+  if (!::check_obj(gui_scene[rootNode]))
   {
     rootNode = ""
-    if (!check_obj(gui_scene.getRoot()))
+    if (!::check_obj(gui_scene.getRoot()))
       return null
   }
   let msgbox = gui_scene.loadModal(rootNode, "%gui/msgBox.blk", needAnim ? "massTransp" : "div", null)
   if (!msgbox)
     return null
   msgbox.id = id
-  println("GuiManager: load msgbox = " + id)
+  ::dagor.debug("GuiManager: load msgbox = " + id)
 //  ::enableHangarControls(false, false) //to disable hangar controls need restore them on destroy msgBox
 
   let textObj = msgbox.findObject("msgText")
@@ -141,7 +137,7 @@ let function get_text_urls_data(text)
         let bObj = this.boxObj
 
         let delayedAction = function() {
-          if (check_obj(this.boxObj))
+          if (::check_obj(this.boxObj))
             foreach (b in buttons)
             {
               local isDestroy = true
@@ -182,8 +178,8 @@ let function get_text_urls_data(text)
       {
         if (this.showButtonsTimer > 0)
           return
-        let btnObj = check_obj(this.boxObj) ? this.boxObj.findObject("buttons_holder") : null
-        if (!check_obj(btnObj) || !btnObj.isVisible())
+        let btnObj = ::check_obj(this.boxObj) ? this.boxObj.findObject("buttons_holder") : null
+        if (!::check_obj(btnObj) || !btnObj.isVisible())
           return
         let total = btnObj.childrenCount()
         let value = btnObj.getValue()
@@ -209,10 +205,10 @@ let function get_text_urls_data(text)
           this.showButtonsTimer -= dt
           if (this.showButtonsTimer<=0)
           {
-            if (check_obj(this.boxObj))
+            if (::check_obj(this.boxObj))
             {
               let btnObj = this.boxObj.findObject("buttons_holder")
-              if (check_obj(btnObj))
+              if (::check_obj(btnObj))
               {
                 btnObj.show(true)
                 btnObj.enable(true)
@@ -350,7 +346,7 @@ let function get_text_urls_data(text)
   }
 
   let containerObj = msgbox.findObject("msgTextRoot")
-  if (check_obj(containerObj))
+  if (::check_obj(containerObj))
   {
     gui_scene.applyPendingChanges(false)
     let isNeedVCentering = containerObj.getSize()[1] < containerObj.getParent().getSize()[1]
@@ -393,7 +389,7 @@ local last_scene_msg_box_time = -1
   for(local i = ::scene_msg_boxes_list.len()-1; i >= 0; i--)
   {
     let msgBoxObj = ::scene_msg_boxes_list[i]
-    if (check_obj(msgBoxObj))
+    if (::check_obj(msgBoxObj))
     {
       let objGuiScene = msgBoxObj.getScene()
       if (guiScene && !guiScene.isEqual(objGuiScene))
@@ -408,7 +404,7 @@ local last_scene_msg_box_time = -1
 ::is_active_msg_box_in_scene <- function is_active_msg_box_in_scene(guiScene)
 {
   foreach(msgBoxObj in ::scene_msg_boxes_list)
-   if (check_obj(msgBoxObj) && guiScene.isEqual(msgBoxObj.getScene()))
+   if (::check_obj(msgBoxObj) && guiScene.isEqual(msgBoxObj.getScene()))
      return true
   return false
 }

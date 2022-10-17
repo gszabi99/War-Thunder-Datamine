@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
 let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("%scripts/battlePass/seasonStages.nut")
 let { receiveRewards, unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
@@ -236,24 +228,24 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     ::g_battle_tasks.setUpdateTimer(
       ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"),
       scene.findObject("task_timer_nest"),
-      {addText = $"{loc("mainmenu/btnBattleTasks")}{loc("ui/colon")}"})
+      {addText = $"{::loc("mainmenu/btnBattleTasks")}{::loc("ui/colon")}"})
   }
 
   function initStageUpdater() {
     scene.findObject("wnd_battlePass").setValue(stashBhvValueConfig([{
       watch = seasonStages
-      updateFunc = Callback(@(obj, stagesList) updateStagePage(obj, stagesList), this)
+      updateFunc = ::Callback(@(obj, stagesList) updateStagePage(obj, stagesList), this)
     },
     {
       watch = season
       updateFunc = @(obj, value)
-        obj.findObject("wnd_title").setValue(loc("battlePass/name", {
-          name = loc($"battlePass/seasonName/{value}")
+        obj.findObject("wnd_title").setValue(::loc("battlePass/name", {
+          name = ::loc($"battlePass/seasonName/{value}")
         }))
     },
     {
       watch = seasonMainPrizesData
-      updateFunc = Callback(@(obj, mainPrizesValue) updateMainPrizeData(mainPrizesValue), this)
+      updateFunc = ::Callback(@(obj, mainPrizesValue) updateMainPrizeData(mainPrizesValue), this)
     }]))
   }
 
@@ -376,11 +368,11 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function initChallengesUpdater() {
     scene.findObject("challenges_sheet").setValue(stashBhvValueConfig([{
       watch = curSeasonChallenges
-      updateFunc = Callback(@(obj, challenges) updateChallengesSheet(obj, challenges), this)
+      updateFunc = ::Callback(@(obj, challenges) updateChallengesSheet(obj, challenges), this)
     },
     {
       watch = activeUnlocks
-      updateFunc = Callback(@(obj, unlocks) updateChallengesSheet(obj, curSeasonChallenges.value), this)
+      updateFunc = ::Callback(@(obj, unlocks) updateChallengesSheet(obj, curSeasonChallenges.value), this)
     }]))
   }
 
@@ -424,7 +416,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     mainChallengeProgressObj.findObject("progress_bar").setValue(
       (maxValue > 0 ? (curValue.tofloat() / maxValue) : 0) * 1000.0)
     mainChallengeProgressObj.findObject("progress_text").setValue(
-      $"{curValue}{loc("weapons_types/short/separator")}{maxValue}")
+      $"{curValue}{::loc("weapons_types/short/separator")}{maxValue}")
   }
 
   getSelectedChildId = @(obj) getSelectedChild(obj)?.id ?? ""
@@ -486,7 +478,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function getCurrentConfig() {
     let listBoxObj = scene.findObject("challenges_list")
-    if (!checkObj(listBoxObj))
+    if (!::check_obj(listBoxObj))
       return null
 
     return ::build_conditions_config(
@@ -500,7 +492,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     showUnlocksGroupWnd([{
       unlocksList = awardsList
-      titleText = loc("unlocks/requirements")
+      titleText = ::loc("unlocks/requirements")
     }])
   }
 
@@ -522,13 +514,13 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let isFree = obj?.isFree == "yes"
     if (isFree || hasBattlePass.value) {
       let okBtnId = "#battlePass/msgbox/gotoPrize"
-      this.msgBox("gotoPrize", loc("battlePass/msgbox/gotoPrizeTitle"), [
-        [okBtnId, Callback(@() gotoPrize(isFree.tointeger()), this)],
+      this.msgBox("gotoPrize", ::loc("battlePass/msgbox/gotoPrizeTitle"), [
+        [okBtnId, ::Callback(@() gotoPrize(isFree.tointeger()), this)],
         ["cancel"]], okBtnId)
     }
     else {
       let okBtnId = "#battlePass/btn_buy"
-      this.msgBox("gotoBpShop", loc("battlePass/msgbox/gotoBpShopTitle"), [
+      this.msgBox("gotoBpShop", ::loc("battlePass/msgbox/gotoBpShopTitle"), [
         [okBtnId, openBattlePassShopWnd],
         ["cancel"]], okBtnId)
     }
@@ -540,7 +532,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_wiki_link", hasFeature("AllowExternalLink") && !::is_vendor_tencent())
+    this.showSceneBtn("btn_wiki_link", ::has_feature("AllowExternalLink") && !::is_vendor_tencent())
   }
 }
 
@@ -548,7 +540,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 let function openBattlePassWnd() {
   if (isUserstatMissingData.value) {
-    ::showInfoMsgBox(loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
+    ::showInfoMsgBox(::loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
     return
   }
 

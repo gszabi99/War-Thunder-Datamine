@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
@@ -41,7 +32,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function isValid()
   {
-    return checkObj(scene) && checkObj(logFrameObj)
+    return ::check_obj(scene) && ::check_obj(logFrameObj)
   }
 
   function initScreen()
@@ -58,13 +49,13 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function buildEmptyLogsBlock()
   {
-    let emptyBattleArmies = array(WW_LOG_BATTLE.MAX_ARMIES_PER_SIDE, {})
+    let emptyBattleArmies = ::array(WW_LOG_BATTLE.MAX_ARMIES_PER_SIDE, {})
     let emptyDamagedArmies = []
     for (local i = 0; i < WW_LOG_BATTLE.MAX_DAMAGED_ARMIES; i++)
       emptyDamagedArmies.append({idx = i})
 
     let emptyLog = {battleArmy = emptyBattleArmies, damagedArmy = emptyDamagedArmies}
-    let logsList = array(WW_LOG_MAX_DISPLAY_AMOUNT, emptyLog)
+    let logsList = ::array(WW_LOG_MAX_DISPLAY_AMOUNT, emptyLog)
     let logData = ::handyman.renderCached(logRowTplName, {operationLogRow = logsList})
     guiScene.replaceContentFromText(logContainerObj, logData, logData.len(), this)
     emptyLogChild = ::handyman.renderCached(logRowTplName, {operationLogRow = [emptyLog]})
@@ -72,7 +63,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function onEventWWNewLogsAdded(params = {})
   {
-    let isLogMarkUsed = getTblValue("isLogMarkUsed", params, false)
+    let isLogMarkUsed = ::getTblValue("isLogMarkUsed", params, false)
     if (!isLogMarkUsed && !isLogPageScrolledDown)
     {
       configShowNextLogsBlock({isForcedShow = true})
@@ -94,11 +85,11 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function fillLogBlock(scrollDefined = false, scrollId = null, isNewOperationEventLog = false)
   {
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return
 
     let emptyTextObj = scene.findObject("ww_operation_empty_log")
-    if (checkObj(emptyTextObj))
+    if (::check_obj(emptyTextObj))
       emptyTextObj.show(!::g_ww_logs.filtered.len())
 
     if (isNewOperationEventLog && ::g_ww_logs.viewIndex in ::g_ww_logs.filtered)
@@ -124,10 +115,10 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
       }
 
       let num = ::g_ww_logs.filtered[logIdx]
-      let logO = ::g_ww_logs.loaded[num]
-      logO.isReaded = true
+      let log = ::g_ww_logs.loaded[num]
+      log.isReaded = true
 
-      let logView = ::g_ww_logs.logsViews[logO.id]
+      let logView = ::g_ww_logs.logsViews[log.id]
       logView.setPrevLogDateValue(prevLogDate)
       logView.setIsFirstRowValue(logIdx == ::g_ww_logs.viewIndex)
       fillLogObject(logObj, logView)
@@ -155,7 +146,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   function setObjParamsById(objNest, id, paramsToSet)
   {
     let obj = objNest.findObject(id)
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     foreach (name, value in paramsToSet)
@@ -179,7 +170,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
       setObjParamsById(obj, blockId, blockData)
 
     let bodyObj = obj.findObject("log_body")
-    if (!checkObj(bodyObj))
+    if (!::check_obj(bodyObj))
       return
 
     let armyData = logView.getArmyData()
@@ -194,7 +185,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     for(local i = 0; i < WW_LOG_BATTLE.MAX_DAMAGED_ARMIES; i++)
     {
       let damagedArmyObj = bodyObj.findObject("damaged_army_" + i)
-      if (!checkObj(damagedArmyObj))
+      if (!::check_obj(damagedArmyObj))
         continue
 
       if (!dmgArmiesData || !(i in dmgArmiesData))
@@ -211,9 +202,9 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
         WW_LOG_COLORS.BAD_EVENT : WW_LOG_COLORS.GOOD_EVENT
 
       let armyCasualtiesObj = damagedArmyObj.findObject("army_casualties")
-      if (checkObj(armyCasualtiesObj))
+      if (::check_obj(armyCasualtiesObj))
         armyCasualtiesObj.setValue(
-          loc("worldWar/iconStrike") + colorize(textColor, textValue)
+          ::loc("worldWar/iconStrike") + ::colorize(textColor, textValue)
         )
 
       let armyContainerObj = damagedArmyObj.findObject("army_container")
@@ -238,13 +229,13 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     let tooltipId = WW_LOG_BATTLE_TOOLTIP.getTooltipId("",
       {currentId = wwBattleView.getId()})
     let tooltipObj = bodyObj.findObject("battle_icon_tooltip")
-    if (checkObj(tooltipObj))
+    if (::check_obj(tooltipObj))
       tooltipObj.tooltipId = tooltipId
 
     foreach (side in ::g_world_war.getCommonSidesOrder())
     {
       let armyContainerObj = battleObj.findObject("army_side_" + side + "_container")
-      if (!checkObj(armyContainerObj))
+      if (!::check_obj(armyContainerObj))
         continue
 
       for (local idx = WW_LOG_BATTLE.MIN_ARMIES_PER_SIDE;
@@ -268,7 +259,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
     armyTextObj.width = amount + "@wwArmySmallIconWidth"
     let armyContainerObj = armyTextObj.findObject(armyObjId + "_container")
-    if (!checkObj(armyContainerObj))
+    if (!::check_obj(armyContainerObj))
       return
     if (idx >= armyContainerObj.childrenCount())
       return
@@ -292,7 +283,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function getOutsideBlockLogAmount(firstLogId)
   {
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return -1
 
     for(local i = 1; i < WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE; i++)
@@ -304,7 +295,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function removeOutsideBlockLogs(amount)
   {
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return
 
     for(local i = 0; i < amount; i++)
@@ -313,7 +304,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function addMissingLogs(amount)
   {
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return
 
     if (!amount)
@@ -328,7 +319,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function onEventWWNewLogsLoaded(params = null)
   {
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return
 
     isLogPageScrolledDown = false
@@ -337,7 +328,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
       return
 
     let lastContainerObj = logContainerObj.getChild(viewLogAmount - 1)
-    if (!checkObj(lastContainerObj))
+    if (!::check_obj(lastContainerObj))
       return
 
     let lastFilteredLogId = ::g_ww_logs.loaded[::g_ww_logs.filtered.top()].id
@@ -371,7 +362,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   function getScrollTargetId()
   {
     local scrollTargetId = null
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return scrollTargetId
 
     let visibleBox = ::GuiBox().setFromDaguiObj(logFrameObj)
@@ -394,7 +385,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function configScrollPosition(scrollTargetId, isNewOperationEventLog = false)
   {
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return
 
     if (!logContainerObj.childrenCount())
@@ -416,29 +407,29 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
       scrollTargetObj = logContainerObj.getChild(viewLogAmount - 1)
 
     guiScene.performDelayed(this, (@(scrollTargetObj) function () {
-      if (checkObj(scrollTargetObj))
+      if (::check_obj(scrollTargetObj))
         scrollTargetObj.scrollToView()
     })(scrollTargetObj))
   }
 
   function configManageBlocks()
   {
-    if (!checkObj(logContainerObj))
+    if (!::check_obj(logContainerObj))
       return
 
     let prevLogsObj = scene.findObject("show_prev_logs")
-    if (checkObj(prevLogsObj))
+    if (::check_obj(prevLogsObj))
       prevLogsObj.show(::g_ww_logs.filtered.len())
 
     if (viewLogAmount > 0)
     {
       let firstLogObj = logContainerObj.getChild(0)
       let prevLogsTextObj = scene.findObject("show_prev_logs_text")
-      if (checkObj(prevLogsTextObj))
+      if (::check_obj(prevLogsTextObj))
         prevLogsTextObj.setValue(firstLogObj.findObject("date_text").getValue())
       let nextLogsTextObj = scene.findObject("show_next_logs_text")
       let lastLogObj = logContainerObj.getChild(viewLogAmount-1)
-      if (checkObj(nextLogsTextObj))
+      if (::check_obj(nextLogsTextObj))
         nextLogsTextObj.setValue(lastLogObj.findObject("date_text").getValue())
     }
 
@@ -446,18 +437,18 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     configShowNextLogsBlock()
 
     let hidedObj = scene.findObject("hidden_logs_text")
-    if (!checkObj(hidedObj))
+    if (!::check_obj(hidedObj))
       return
 
     let hiddenQuantity = ::g_ww_logs.loaded.len() - ::g_ww_logs.filtered.len()
     hidedObj.setValue(hiddenQuantity ?
-      loc("worldWar/hided_logs") + loc("ui/colon") + hiddenQuantity : "")
+      ::loc("worldWar/hided_logs") + ::loc("ui/colon") + hiddenQuantity : "")
   }
 
   function configShowPrevLogsBlock()
   {
     let prevLogsNestObj = scene.findObject("show_prev_logs_btn_nest")
-    if (!checkObj(prevLogsNestObj))
+    if (!::check_obj(prevLogsNestObj))
       return
 
     prevLogsNestObj.show(::g_ww_logs.lastMark || ::g_ww_logs.viewIndex > 0)
@@ -467,7 +458,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   function configShowNextLogsBlock(isForcedShow = false)
   {
     let nextLogsObj = scene.findObject("show_next_logs")
-    if (checkObj(nextLogsObj))
+    if (::check_obj(nextLogsObj))
       nextLogsObj.show(isForcedShow || ::g_ww_logs.viewIndex + WW_LOG_MAX_DISPLAY_AMOUNT < ::g_ww_logs.filtered.len())
   }
 
@@ -517,14 +508,14 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   {
     clearSelectFromLogArmy()
 
-    let wwArmy = getTblValue(obj.armyId, ::g_ww_logs.logsArmies)
+    let wwArmy = ::getTblValue(obj.armyId, ::g_ww_logs.logsArmies)
     if (wwArmy)
       ::ww_event("ShowLogArmy", { wwArmy = wwArmy })
   }
 
   function onEventWWSelectLogArmyByName(params = {})
   {
-    if (getTblValue("name", params))
+    if (::getTblValue("name", params))
       setArmyObjsSelected(findArmyObjsInLog(params.name), true)
   }
 
@@ -561,14 +552,14 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     for(local i = 0; i < logContainerObj.childrenCount(); i++)
     {
       let logObj = logContainerObj.getChild(i)
-      if (!checkObj(logObj))
+      if (!::check_obj(logObj))
         continue
 
       if (!logObj.isVisible())
         break
 
       let armyObj = logObj.findObject(armyName)
-      if (checkObj(armyObj))
+      if (::check_obj(armyObj))
         armyObjects.append(armyObj)
     }
 
@@ -629,11 +620,11 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   function updatePrevLogsBtn(isLogsLoading = false)
   {
     let prevLogsBtnObj = scene.findObject("show_prev_logs_btn")
-    if (!checkObj(prevLogsBtnObj))
+    if (!::check_obj(prevLogsBtnObj))
       return
 
     let waitAnimObj = prevLogsBtnObj.findObject("show_prev_logs_btn_wait_anim")
-    if (checkObj(waitAnimObj))
+    if (::check_obj(waitAnimObj))
       waitAnimObj.show(isLogsLoading)
 
     prevLogsBtnObj.hideText = isLogsLoading ? "yes" : "no"
@@ -674,7 +665,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     foreach(renderData in ::g_ww_logs.logCategories)
     {
       let category = renderData.value
-      let enable = isInArray(category, values)
+      let enable = ::isInArray(category, values)
       if (::g_ww_logs.filter[category] == enable)
         continue
 

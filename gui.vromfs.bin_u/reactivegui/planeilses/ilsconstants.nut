@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 const mpsToKnots = 1.94384
 const metrToFeet = 3.28084
 const mpsToFpm = 196.8504

@@ -2,8 +2,6 @@
 #no-root-fallback
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let {handlerType} = require("handlerType.nut")
 
 /*
   FramedMessageBox is a message box, with visible frame.
@@ -62,7 +60,7 @@ let {handlerType} = require("handlerType.nut")
   function initScreen()
   {
     let obj = this.scene.findObject("framed_message_box")
-    if (!obj?.isValid())
+    if (!::checkObj(obj))
       return
 
     this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.pos || this.getDefaultPos(), this.align, obj, {
@@ -71,7 +69,7 @@ let {handlerType} = require("handlerType.nut")
     obj.animation = "show"
 
     let buttonsObj = this.scene.findObject("framed_message_box_buttons_place")
-    if (check_obj(buttonsObj))
+    if (::check_obj(buttonsObj))
       buttonsObj.select()
 
     if (!u.isEmpty(this.onOpenSound))
@@ -81,8 +79,8 @@ let {handlerType} = require("handlerType.nut")
   function getDefaultPos()
   {
     let buttonsObj = this.scene.findObject("framed_message_box_buttons_place")
-    if (!check_obj(buttonsObj))
-      return array(2, 0)
+    if (!::check_obj(buttonsObj))
+      return ::array(2, 0)
 
     return ::get_dagui_mouse_cursor_pos_RC()
   }

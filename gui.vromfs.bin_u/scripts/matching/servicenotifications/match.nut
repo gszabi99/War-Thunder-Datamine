@@ -1,16 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::notify_clusters_changed <- function notify_clusters_changed(params)
 {
-  log("notify_clusters_changed")
+  ::dagor.debug("notify_clusters_changed")
   ::g_clusters.onClustersChanged(params)
 }
 
@@ -31,13 +24,13 @@ let clearChangedGameModesParams = @() changedGameModes.paramsArray.clear()
 
   if (::is_in_flight()) // do not handle while session is active
   {
-    log("is_in_flight need notify_game_modes_changed after battle")
+    ::dagor.debug("is_in_flight need notify_game_modes_changed after battle")
     changedGameModes.paramsArray.append(params)
     return
   }
 
-  log("notify_game_modes_changed")
-  ::g_matching_game_modes.onGameModesChangedNotify(getTblValue("added", params, null),
+  ::dagor.debug("notify_game_modes_changed")
+  g_matching_game_modes.onGameModesChangedNotify(getTblValue("added", params, null),
                                                  getTblValue("removed", params, null),
                                                  getTblValue("changed", params, null))
 }
@@ -58,8 +51,8 @@ subscriptions.addListenersWithoutEnv({
 {
   let maxFetchDelaySec = 60
   let rndDelaySec = ::math.rnd() % maxFetchDelaySec
-  log("notify_game_modes_changed_rnd_delay " + rndDelaySec)
-  ::g_delayed_actions.add((@(params) function() { ::notify_game_modes_changed(params) })(params),
+  ::dagor.debug("notify_game_modes_changed_rnd_delay " + rndDelaySec)
+  g_delayed_actions.add((@(params) function() { notify_game_modes_changed(params) })(params),
                         rndDelaySec * 1000)
 }
 
@@ -81,47 +74,47 @@ subscriptions.addListenersWithoutEnv({
 
 ::fetch_clusters_list <- function fetch_clusters_list(params, cb)
 {
-  ::matching_api_func("wtmm_static.fetch_clusters_list", cb, params)
+  matching_api_func("wtmm_static.fetch_clusters_list", cb, params)
 }
 
 ::fetch_game_modes_info <- function fetch_game_modes_info(params, cb)
 {
-  ::matching_api_func("match.fetch_game_modes_info", cb, params)
+  matching_api_func("match.fetch_game_modes_info", cb, params)
 }
 
 ::fetch_game_modes_digest <- function fetch_game_modes_digest(params, cb)
 {
-  ::matching_api_func("wtmm_static.fetch_game_modes_digest", cb, params)
+  matching_api_func("wtmm_static.fetch_game_modes_digest", cb, params)
 }
 
 ::leave_session_queue <- function leave_session_queue(params, cb)
 {
-  ::matching_api_func("match.leave_queue", cb, params)
+  matching_api_func("match.leave_queue", cb, params)
 }
 
 ::enqueue_in_session <- function enqueue_in_session(params, cb)
 {
-  let missionName = ::get_forced_network_mission()
+  let missionName = get_forced_network_mission()
   if (missionName.len() > 0)
     params["forced_network_mission"] <- missionName
 
   if (!crossplayModule.isCrossPlayEnabled())
     params["crossplay_restricted"] <- true
 
-  ::matching_api_func("match.enqueue", cb, params)
+  matching_api_func("match.enqueue", cb, params)
 }
 
 foreach (notificationName, callback in
           {
-            ["match.notify_clusters_changed"] = ::notify_clusters_changed,
+            ["match.notify_clusters_changed"] = notify_clusters_changed,
 
-            ["match.notify_game_modes_changed"] = ::notify_game_modes_changed_rnd_delay,
+            ["match.notify_game_modes_changed"] = notify_game_modes_changed_rnd_delay,
 
-            ["match.update_queue_info"] = ::on_queue_info_updated,
+            ["match.update_queue_info"] = on_queue_info_updated,
 
-            ["match.notify_queue_join"] = ::notify_queue_join,
+            ["match.notify_queue_join"] = notify_queue_join,
 
-            ["match.notify_queue_leave"] = ::notify_queue_leave
+            ["match.notify_queue_leave"] = notify_queue_leave
           }
         )
   ::matching_rpc_subscribe(notificationName, callback)

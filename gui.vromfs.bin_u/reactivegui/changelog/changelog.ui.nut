@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let {formatText} = require("%rGui/components/formatText.nut")
 let {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
@@ -32,12 +29,12 @@ let tabStyle = {
   }
 }
 
-let blockInterval = fpx(6)
-let borderWidth = dp(1)
+let blockInterval = ::fpx(6)
+let borderWidth = ::dp(1)
 
-let scrollHandler = ScrollHandler()
-let scrollStep = fpx(75)
-let maxPatchnoteWidth = fpx(300)
+let scrollHandler = ::ScrollHandler()
+let scrollStep = ::fpx(75)
+let maxPatchnoteWidth = ::fpx(300)
 
 let function getTabColorCtor(sf, style, isCurrent) {
   if (isCurrent)        return style.current
@@ -48,39 +45,43 @@ let function getTabColorCtor(sf, style, isCurrent) {
 
 let function patchnote(v) {
   let stateFlags = Watched(0)
-  let isCurrent = Computed(@() curPatchnote.value.id == v.id)
-  return @() {
-    watch = [stateFlags, isCurrent]
-    rendObj = ROBJ_BOX
-    fillColor = isCurrent.value ? Color(58, 71, 79)
-      : Color(0, 0, 0)
-    borderColor = Color(178, 57, 29)
-    borderWidth = isCurrent.value ? [0, 0, 2*borderWidth, 0] : 0
-    size = [flex(1), ph(100)]
-    maxWidth = maxPatchnoteWidth
-    behavior = Behaviors.Button
-    halign = ALIGN_CENTER
-    onClick = @() choosePatchnote(v)
-    onElemState = @(sf) stateFlags(sf)
-    children = [
-      {
-        size = [flex(), ph(100)]
-        maxWidth = maxPatchnoteWidth - 2 * scrn_tgt(0.01)
-        behavior = Behaviors.TextArea
-        rendObj = ROBJ_TEXTAREA
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        color = getTabColorCtor(stateFlags.value, tabStyle.textColor, isCurrent.value)
-        font = fontsState.get("small")
-        text = v?.titleshort ?? v?.title ?? v.tVersion
-      },
-      (stateFlags.value & S_HOVER) != 0 ? focusBorder({ maxWidth = maxPatchnoteWidth }) : null
-    ]
+  let isCurrent = @() curPatchnote.value.id == v.id
+  return function() {
+    let children = [{
+      size = [flex(), ::ph(100)]
+      maxWidth = maxPatchnoteWidth - 2 * ::scrn_tgt(0.01)
+      behavior = Behaviors.TextArea
+      rendObj = ROBJ_TEXTAREA
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      color = getTabColorCtor(stateFlags.value, tabStyle.textColor, isCurrent())
+      font = fontsState.get("small")
+      text = v?.titleshort ?? v?.title ?? v.tVersion
+    }]
+    if ((stateFlags.value & S_HOVER) != 0)
+      children.append(focusBorder({ maxWidth = maxPatchnoteWidth }))
+    return {
+      watch = [stateFlags, curPatchnote]
+      rendObj = ROBJ_BOX
+      fillColor = isCurrent() ? Color(58, 71, 79)
+        : Color(0, 0, 0)
+      borderColor = Color(178, 57, 29)
+      borderWidth = isCurrent()
+        ? [0, 0, 2*borderWidth, 0]
+        : 0
+      size = [flex(1), ::ph(100)]
+      maxWidth = maxPatchnoteWidth
+      behavior = Behaviors.Button
+      halign = ALIGN_CENTER
+      onClick = @() choosePatchnote(v)
+        onElemState = @(sf) stateFlags(sf)
+      children
+    }
   }
 }
 
 let topBorder = @(params = {}) {
-  size = [dp(1), flex()]
+  size = [::dp(1), flex()]
   valign = ALIGN_CENTER
 }.__merge(params)
 
@@ -92,10 +93,14 @@ let patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
   skipDirPadNav = true
 })
 
-let isVersionsExists = Computed(@() patchnotesReceived.value && (versions.value?.len() ?? 0) > 0)
-let function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
-  let children = versionsConf.map(patchnote)
-  if (!needAddGamepadButtons)
+let isVersionsExists = ::Computed(@() (versions.value?.len() ?? 0) > 0)
+let function getPatchoteSelectorChildren() {
+  if (!isVersionsExists.value)
+    return null
+
+  let children = patchnotesReceived.value && isVersionsExists.value
+    ? versions.value.map(patchnote) : []
+  if (!showConsoleButtons.value)
     return children
 
   return [patchnoteSelectorGamepadButton("J:LB", nextPatchNote)]
@@ -104,23 +109,21 @@ let function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
 }
 
 let patchnoteSelector = @() {
-  watch = [versions, isVersionsExists, showConsoleButtons]
-  size = [flex(), ph(100)]
+  size = [flex(), ::ph(100)]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
   padding = [blockInterval, 0, 0, 0]
-  children = isVersionsExists.value
-    ? getPatchoteSelectorChildren(versions.value, showConsoleButtons.value)
-    : null
+  children = getPatchoteSelectorChildren()
+  watch = [versions, curPatchnote, patchnotesReceived, isVersionsExists]
 }
 
-let missedPatchnoteText = formatText([loc("NoUpdateInfo", "Oops... No information yet :(")])
+let missedPatchnoteText = formatText([::loc("NoUpdateInfo", "Oops... No information yet :(")])
 
 let seeMoreUrl = {
   t="url"
-  url=loc("url/news")
-  v=loc("visitGameSite", "See game website for more details")
-  margin = [fpx(50), 0, 0, 0]
+  url=::loc("url/news")
+  v=::loc("visitGameSite", "See game website for more details")
+  margin = [::fpx(50), 0, 0, 0]
 }
 
 let scrollPatchnoteWatch = Watched(0)
@@ -132,12 +135,12 @@ let function scrollPatchnote() {  //FIX ME: Remove this code, when native scroll
 }
 
 scrollPatchnoteWatch.subscribe(function(value) {
-  gui_scene.clearTimer(scrollPatchnote)
+  ::gui_scene.clearTimer(scrollPatchnote)
   if (value == 0)
     return
 
   scrollPatchnote()
-  gui_scene.setInterval(0.1, scrollPatchnote)
+  ::gui_scene.setInterval(0.1, scrollPatchnote)
 })
 
 let scrollPatchnoteBtn = @(hotkey, watchValue) {
@@ -150,10 +153,10 @@ let scrollPatchnoteBtn = @(hotkey, watchValue) {
 chosenPatchnoteContent.subscribe(@(_value) scrollHandler.scrollToY(0))
 
 let patchnoteLoading = freeze({
-  children = [formatText([{v = loc("loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
+  children = [formatText([{v = ::loc("loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  gap = hdpx(20)
+  gap = ::hdpx(20)
   valign = ALIGN_CENTER size = [flex(), sh(20)]
   padding = sh(2)
 })
@@ -161,7 +164,7 @@ let patchnoteLoading = freeze({
 let function selPatchnote() {
   local text = (chosenPatchnoteContent.value.text ?? "") != ""
     ? chosenPatchnoteContent.value.text : missedPatchnoteText
-  if (cross_call.hasFeature("AllowExternalLink")) {
+  if (::cross_call.hasFeature("AllowExternalLink")) {
     if (type(text)!="array")
       text = [text, seeMoreUrl]
     else
@@ -186,12 +189,12 @@ let function selPatchnote() {
 }
 
 let function onCloseAction() {
-  cross_call.startMainmenu()
+  ::cross_call.startMainmenu()
 }
 
-let btnNext  = commonTextButton(loc("mainmenu/btnNextItem"), nextPatchNote,
+let btnNext  = commonTextButton(::loc("mainmenu/btnNextItem"), nextPatchNote,
   {hotkeys=[["{0} | Tab".subst(JB.B)]], margin=0})
-let btnClose = commonTextButton(loc("mainmenu/btnClose"), onCloseAction,
+let btnClose = commonTextButton(::loc("mainmenu/btnClose"), onCloseAction,
   {hotkeys=[["{0}".subst(JB.B)]], margin=0})
 
 let nextButton = @() {
@@ -253,7 +256,7 @@ let changelogRoot = {
           font = fontsState.get("medium")
           color = colors.menu.activeTextColor
           text = chosenPatchnoteContent.value.title
-          margin = [0, 0, 0, fpx(15)]
+          margin = [0, 0, 0, ::fpx(15)]
         }
       }
     })

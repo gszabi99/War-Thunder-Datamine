@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 
 let touchButtonSize        = shHud(10)
@@ -11,57 +9,54 @@ let menuTouchButtonHeight  = shHud(5.7)
 let iconColor         = Color(200, 209, 219, 170)
 let iconColorPushed   = Color(239, 231, 164)
 
-const ship_steering_rangeMax = "ship_steering_rangeMax"
-const ship_steering_rangeMin = "ship_steering_rangeMin"
-
 let touchButtonsConfigs = {
   ["ID_FLIGHTMENU_SETUP"] = {
-    image = Picture("!ui/gameuiskin#menu_1.png")
+    image = ::Picture("!ui/gameuiskin#menu_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_SHOW_VOICE_MESSAGE_LIST"] = {
-    image = Picture("!ui/gameuiskin#radio_1.png")
+    image = ::Picture("!ui/gameuiskin#radio_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_MPSTATSCREEN"] = {
-    image = Picture("!ui/gameuiskin#statistics_1.png")
+    image = ::Picture("!ui/gameuiskin#statistics_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_TACTICAL_MAP"] = {
-    image = Picture("!ui/gameuiskin#map_1.png")
+    image = ::Picture("!ui/gameuiskin#map_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_ZOOM_TOGGLE"] = {
-    image = Picture("!ui/gameuiskin#sniper_mode.png")
+    image = ::Picture("!ui/gameuiskin#sniper_mode.png")
   },
   ["ID_SHIP_WEAPON_ALL"] = {
-    image = Picture("!ui/gameuiskin#fire.png")
+    image = ::Picture("!ui/gameuiskin#fire.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
   },
   ["ship_steering_rangeMax"] = {
-    id = ship_steering_rangeMax
-    image = Picture("!ui/gameuiskin#accelerator_left.png")
+    id = "ship_steering_rangeMax"
+    image = ::Picture("!ui/gameuiskin#accelerator_left.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
     behavior = Behaviors.TouchScreenButton
-    onTouchBegin = @() setShortcutOn(ship_steering_rangeMax)
-    onTouchEnd = @() setShortcutOff(ship_steering_rangeMax)
+    onClick = @() setShortcutOn(id)
+    onTouchEnd = @() setShortcutOff(id)
   },
   ["ship_steering_rangeMin"] = {
-    id = ship_steering_rangeMin
-    image = Picture("!ui/gameuiskin#accelerator_right.png")
+    id = "ship_steering_rangeMin"
+    image = ::Picture("!ui/gameuiskin#accelerator_right.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
     behavior = Behaviors.TouchScreenButton
-    onTouchBegin = @() setShortcutOn(ship_steering_rangeMin)
-    onTouchEnd = @() setShortcutOff(ship_steering_rangeMin)
+    onClick = @() setShortcutOn(id)
+    onTouchEnd = @() setShortcutOff(id)
   },
   ["ship_main_engine_rangeMax"] = {
     id = "ship_main_engine_rangeMax"
-    image = Picture("!ui/gameuiskin#accelerator_up_v1.png")
+    image = ::Picture("!ui/gameuiskin#accelerator_up_v1.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
   },
   ["ship_main_engine_rangeMin"] = {
     id = "ship_main_engine_rangeMin"
-    image = Picture("!ui/gameuiskin#accelerator_down_v1.png")
+    image = ::Picture("!ui/gameuiskin#accelerator_down_v1.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
   },
 }

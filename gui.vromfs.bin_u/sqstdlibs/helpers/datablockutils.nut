@@ -1,6 +1,3 @@
-#no-root-fallback
-#explicit-this
-
 let {isTable, isDataBlock, isInstance, isEqual} = require("u.nut")
 local {  getBlkByPathArray,
   getBlkValueByPath,

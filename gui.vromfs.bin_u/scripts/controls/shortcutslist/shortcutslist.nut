@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let shortcutsEnumData = require("%scripts/controls/shortcutsList/shortcutsEnumData.nut")
 
 let shortcutsModulesList = require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -40,7 +35,7 @@ let function getBundlesList(blockName) {
 let function getCachedBundleId(blockName, entName) {
   let list = getBundlesList(blockName)
   let res = list?[entName] ?? ""
-  log($"Bundles: get id from block '{blockName}' by bundle '{entName}' = {res}")
+  ::dagor.debug($"Bundles: get id from block '{blockName}' by bundle '{entName}' = {res}")
   return res
 }
 

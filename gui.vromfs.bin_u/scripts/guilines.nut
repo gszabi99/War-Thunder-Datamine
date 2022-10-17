@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 /* guiBox API
   isIntersect(box)      - (bool) return true if box intersect current
@@ -205,19 +198,20 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
 ::LinesGenerator <- {
 }
 
-::LinesGenerator.getLinkLinesMarkup <- function getLinkLinesMarkup(config) {
+LinesGenerator.getLinkLinesMarkup <- function getLinkLinesMarkup(config)
+{
   if (!config)
     return ""
 
-  let startObjContainer = getTblValue("startObjContainer", config, null)
+  let startObjContainer = ::getTblValue("startObjContainer", config, null)
   if (!checkObj(startObjContainer))
     return ""
 
-  let endObjContainer = getTblValue("endObjContainer", config, null)
+  let endObjContainer = ::getTblValue("endObjContainer", config, null)
   if (!checkObj(endObjContainer))
     return ""
 
-  let linksDescription = getTblValue("links", config)
+  let linksDescription = ::getTblValue("links", config)
   if (!linksDescription)
     return ""
 
@@ -229,23 +223,23 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
     if (!startBlock)
       continue
 
-    startBlock.box.priority = getTblValue("priority", linkDescriprion.start, lines_priorities.TEXT)
+    startBlock.box.priority = ::getTblValue("priority", linkDescriprion.start, lines_priorities.TEXT)
     boxList.append(startBlock.box)
 
     let endBlock = ::guiTutor.getBlockFromObjData(linkDescriprion.end, endObjContainer)
     if (!endBlock)
       continue
 
-    endBlock.box.priority = getTblValue("priority", linkDescriprion.end, lines_priorities.TARGET)
+    endBlock.box.priority = ::getTblValue("priority", linkDescriprion.end, lines_priorities.TARGET)
     boxList.append(endBlock.box)
 
     links.append([endBlock.box, startBlock.box])
   }
 
   let lineInterval = config?.lineInterval ?? "@helpLineInterval"
-  let lineWidth = getTblValue("lineWidth", config, "@helpLineWidth")
+  let lineWidth = ::getTblValue("lineWidth", config, "@helpLineWidth")
 
-  let obstacles = getTblValue("obstacles", config, null)
+  let obstacles = ::getTblValue("obstacles", config, null)
   if (obstacles != null)
     foreach(idx, obstacle in obstacles)
     {
@@ -254,20 +248,20 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
       if (!obstacleBlock)
         continue
 
-      obstacleBlock.box.priority = getTblValue("priority", obstacle, lines_priorities.OBSTACLE)
+      obstacleBlock.box.priority = ::getTblValue("priority", obstacle, lines_priorities.OBSTACLE)
       boxList.append(obstacleBlock.box)
     }
 
   return generateLinkLinesMarkup(links, boxList, lineInterval, lineWidth)
 }
 
-::LinesGenerator.generateLinkLinesMarkup <- function generateLinkLinesMarkup(links, obstacleBoxList, interval = "@helpLineInterval", width = "@helpLineWidth")
+LinesGenerator.generateLinkLinesMarkup <- function generateLinkLinesMarkup(links, obstacleBoxList, interval = "@helpLineInterval", width = "@helpLineWidth")
 {
   let guiScene = ::get_cur_gui_scene()
   let lines = createLinkLines(links, obstacleBoxList, guiScene.calcString(interval, null),
                                                  guiScene.calcString(width, null))
 
-  let shadowOffset = to_pixels("1@helpLineShadowOffset")
+  let shadowOffset = ::to_pixels("1@helpLineShadowOffset")
   let shadowOffsetArr = [ shadowOffset, shadowOffset ]
   let shadowOffsetP2 = ::Point2(shadowOffset, shadowOffset)
 
@@ -284,7 +278,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return ::g_string.implode(data)
 }
 
-::LinesGenerator.createLinkLines <- function createLinkLines(links, obstacles, interval = 0, lineWidth = 1, priority = 0, initial = true)
+LinesGenerator.createLinkLines <- function createLinkLines(links, obstacles, interval = 0, lineWidth = 1, priority = 0, initial = true)
 {
   let res = {
     lines = []
@@ -322,7 +316,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return res
 }
 
-::LinesGenerator.checkLinkIntersect <- function checkLinkIntersect(res, links)
+LinesGenerator.checkLinkIntersect <- function checkLinkIntersect(res, links)
 {
   for(local i = links.len() - 1; i >= 0; i--)
   {
@@ -338,7 +332,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return res
 }
 
-::LinesGenerator.genMonoLines <- function genMonoLines(res, links, obstacles, interval, lineWidth, priority)
+LinesGenerator.genMonoLines <- function genMonoLines(res, links, obstacles, interval, lineWidth, priority)
 {
   for(local i = links.len() - 1; i >= 0; i--)
   {
@@ -388,7 +382,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return res
 }
 
-::LinesGenerator.monoLineCountDiapason <- function monoLineCountDiapason(link, checkBox, axis, obstacles)
+LinesGenerator.monoLineCountDiapason <- function monoLineCountDiapason(link, checkBox, axis, obstacles)
 {
   //check obstacles to get available diapaosn of line variants
   local diapason = [[checkBox.c1[axis], checkBox.c2[axis]]]
@@ -432,7 +426,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return diapason
 }
 
-::LinesGenerator.monoLineGetBestPos <- function monoLineGetBestPos(diapason, checkBox, axis, lineWidth, bestPos = null) //return null -> not found
+LinesGenerator.monoLineGetBestPos <- function monoLineGetBestPos(diapason, checkBox, axis, lineWidth, bestPos = null) //return null -> not found
 {
   if (bestPos == null)
     bestPos = ((checkBox.c1[axis] + checkBox.c2[axis] - lineWidth) / 2).tointeger()
@@ -461,7 +455,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return found ? pos : null
 }
 
-::LinesGenerator.findGoodPos <- function findGoodPos(obj, axis, obstacles, posMin, posMax, bestPos = null)
+LinesGenerator.findGoodPos <- function findGoodPos(obj, axis, obstacles, posMin, posMax, bestPos = null)
 {
   let box = ::GuiBox().setFromDaguiObj(obj)
   let objWidth = box.c2[axis] - box.c1[axis]
@@ -474,7 +468,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return null
 }
 
-::LinesGenerator.genDoubleLines <- function genDoubleLines(res, links, obstacles, interval, lineWidth, priority)
+LinesGenerator.genDoubleLines <- function genDoubleLines(res, links, obstacles, interval, lineWidth, priority)
 {
   for(local i = links.len() - 1; i >= 0; i--)
   {
@@ -532,7 +526,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return res
 }
 
-::LinesGenerator.doubleLineGetZones <- function doubleLineGetZones(link)
+LinesGenerator.doubleLineGetZones <- function doubleLineGetZones(link)
 {
   let zones = []  //list of available zones for double line
                     //{ box, zone, axis, wayAxis, wayAltAxis }
@@ -592,7 +586,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return zones
 }
 
-::LinesGenerator.doubleLineZoneCheckObstacles <- function doubleLineZoneCheckObstacles(zones, link, obstacles)
+LinesGenerator.doubleLineZoneCheckObstacles <- function doubleLineZoneCheckObstacles(zones, link, obstacles)
 {
   for(local o = obstacles.len() - 1; o >= 0; o--)
   {
@@ -616,7 +610,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return zones
 }
 
-::LinesGenerator.doubleLineCutZoneList <- function doubleLineCutZoneList(zoneData, box)
+LinesGenerator.doubleLineCutZoneList <- function doubleLineCutZoneList(zoneData, box)
 {
   let axis = zoneData.axis
   let zoneList = zoneData.zone
@@ -688,7 +682,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return zoneList.len()
 }
 
-::LinesGenerator.doubleLineChooseBestInZone <- function doubleLineChooseBestInZone(zoneData, link, lineWidth)
+LinesGenerator.doubleLineChooseBestInZone <- function doubleLineChooseBestInZone(zoneData, link, lineWidth)
 {
   let axis = zoneData.axis
   let bestPos =    ((link[1].c1[axis] + link[1].c2[axis] - lineWidth) / 2).tointeger()
@@ -746,7 +740,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   return null
 }
 
-::LinesGenerator.cloneDoubleLineZone <- function cloneDoubleLineZone(zone)
+LinesGenerator.cloneDoubleLineZone <- function cloneDoubleLineZone(zone)
 {
   let diapason = []
   foreach(d in zone.diapason)
@@ -758,7 +752,7 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   }
 }
 
-::LinesGenerator.addLinesBoxes <- function addLinesBoxes(obstacles, linesBoxes, priority, interval)
+LinesGenerator.addLinesBoxes <- function addLinesBoxes(obstacles, linesBoxes, priority, interval)
 {
   if (priority > lines_priorities.LINE)
     return
@@ -771,19 +765,19 @@ let function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
   }
 }
 
-::LinesGenerator.getP2byAxisCoords <- function getP2byAxisCoords(axis, axisValue, altAxisValue)
+LinesGenerator.getP2byAxisCoords <- function getP2byAxisCoords(axis, axisValue, altAxisValue)
 {
   return ::Point2(axis? altAxisValue : axisValue, axis? axisValue : altAxisValue)
 }
 
-::LinesGenerator.getBoxByAxis <- function getBoxByAxis(axisIdx, axis0, axis1, altAxis0, altAxis1)
+LinesGenerator.getBoxByAxis <- function getBoxByAxis(axisIdx, axis0, axis1, altAxis0, altAxis1)
 {
   if (axisIdx)
     return ::GuiBox(altAxis0, axis0, altAxis1, axis1)
   return ::GuiBox(axis0, altAxis0, axis1, altAxis1)
 }
 
-::LinesGenerator.getLineBoxByP2 <- function getLineBoxByP2(dot1, dot2, lineWidth)
+LinesGenerator.getLineBoxByP2 <- function getLineBoxByP2(dot1, dot2, lineWidth)
 {
   return ::GuiBox(min(dot1.x, dot2.x), min(dot1.y, dot2.y),
                   max(dot1.x, dot2.x) + ((dot1.x == dot2.x)? lineWidth : 0),

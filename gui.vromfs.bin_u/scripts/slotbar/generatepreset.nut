@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { setUnits, getSlotItem, getCurPreset} = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -15,7 +10,7 @@ let stepsSpecForFindBestCrew = [
 
 let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups) {
   let unitsArray = []
-  let eDiff = DIFFICULTY_REALISTIC
+  let eDiff = ::DIFFICULTY_REALISTIC
   foreach (unitName, unitAmount in availableUnits) {
     if (!unitAmount)
       continue
@@ -108,28 +103,28 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
 let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
   let bestPresetData = getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
   if (bestPresetData == null) {
-    ::showInfoMsgBox(loc("worldwar/noPresetUnits"))
+    ::showInfoMsgBox(::loc("worldwar/noPresetUnits"))
     return
   }
 
   if (!bestPresetData.hasChangeInPreset) {
-    ::showInfoMsgBox(loc("generatePreset/current_preset_is_better"))
+    ::showInfoMsgBox(::loc("generatePreset/current_preset_is_better"))
     return
   }
 
   let unusedUnits = bestPresetData.unusedUnits
   if (bestPresetData.trainCrewsData.len() == 0) {
-    ::showInfoMsgBox("\n".join([loc("worldwar/noPresetUnitsCrews"),
-      colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
+    ::showInfoMsgBox("\n".join([::loc("worldwar/noPresetUnitsCrews"),
+      ::colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
     return
   }
 
-  let msgArray = ["\n".join([loc("worldwar/addInPresetMsgText"),
-    colorize("userlogColoredText", ", ".join(bestPresetData.usedUnits.map(@(u) ::getUnitName(u)), true))])]
+  let msgArray = ["\n".join([::loc("worldwar/addInPresetMsgText"),
+    ::colorize("userlogColoredText", ", ".join(bestPresetData.usedUnits.map(@(u) ::getUnitName(u)), true))])]
   if (unusedUnits.len() > 0 && !hasSlotbarByUnitsGroups)
-    msgArray.append("\n".join([loc("worldwar/notAddInPresetMsgText"),
-      colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
-  msgArray.append(colorize("warningTextColor", loc("worldwar/autoPresetWarningText")))
+    msgArray.append("\n".join([::loc("worldwar/notAddInPresetMsgText"),
+      ::colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
+  msgArray.append(::colorize("warningTextColor", ::loc("worldwar/autoPresetWarningText")))
 
   this.msgBox("ask_apply_preset", "\n\n".join(msgArray),
     [

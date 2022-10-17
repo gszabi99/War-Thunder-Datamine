@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
@@ -58,7 +50,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function initScreen(obj, resetList = true)
   {
-    if (checkObj(scene) && scene.isEqual(obj))
+    if (::checkObj(scene) && scene.isEqual(obj))
       return
 
     foreach(group in ::contacts_groups)
@@ -102,7 +94,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function switchScene(obj, newOwner = null, onlyShow = false)
   {
-    if (!checkObj(obj) || (checkObj(scene) && scene.isEqual(obj)))
+    if (!::checkObj(obj) || (::checkObj(scene) && scene.isEqual(obj)))
     {
       if (!onlyShow || !::last_contacts_scene_show)
         sceneShow()
@@ -121,13 +113,13 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function checkScene()
   {
-    if (checkObj(scene))
+    if (::checkObj(scene))
       return true
 
     for(local i=::contacts_prev_scenes.len()-1; i>=0; i--)
     {
       let prevScene = ::contacts_prev_scenes[i].scene
-      if (checkObj(prevScene)) {
+      if (::checkObj(prevScene)) {
         let handler = ::contacts_prev_scenes[i].owner
         if (!handler.isSceneActiveNoModals() || !prevScene.isVisible())
           continue
@@ -183,7 +175,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       ::contacts_sizes.pos <- obj.getPosRC()
       ::contacts_sizes.size <- obj.getSize()
 
-      ::saveLocalByScreenSize("contacts_sizes", ::save_to_json(::contacts_sizes))
+      saveLocalByScreenSize("contacts_sizes", save_to_json(::contacts_sizes))
     }
   }
 
@@ -191,7 +183,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   {
     if (!::contacts_sizes)
     {
-      let data = ::loadLocalByScreenSize("contacts_sizes")
+      let data = loadLocalByScreenSize("contacts_sizes")
       if (data)
       {
         ::contacts_sizes = ::parse_json(data)
@@ -260,7 +252,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   {
     if (gName == ::EPLX_SEARCH)
       return true //this group often refilled by other objects
-    let count = ::contacts[gName].len() + getTblValue(gName, listNotPlayerChildsByGroup, -100000)
+    let count = ::contacts[gName].len() + ::getTblValue(gName, listNotPlayerChildsByGroup, -100000)
     return listObj.childrenCount() != count
   }
 
@@ -276,9 +268,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     listNotPlayerChildsByGroup[gName] <- 0
     if (gName != searchGroup) {
       playerListView.searchAdviceID <- $"group_{gName}_search_advice"
-      playerListView.totalContacts <- loc("contacts/total", {
+      playerListView.totalContacts <- ::loc("contacts/total", {
         contactsCount = ::contacts[gName].len(),
-        contactsCountMax = EPL_MAX_PLAYERS_IN_LIST
+        contactsCountMax = ::EPL_MAX_PLAYERS_IN_LIST
       })
       listNotPlayerChildsByGroup[gName] = 2
     }
@@ -290,9 +282,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         pilotIcon = contactData.pilotIcon
       })
     }
-    if (gName == EPL_FRIENDLIST && ::isInMenu())
+    if (gName == ::EPL_FRIENDLIST && ::isInMenu())
     {
-      if (hasFeature("Invites"))
+      if (::has_feature("Invites"))
         playerListView.playerButton.append(createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend.png", "onInviteFriend"))
       if (isAvailableFacebook())
         playerListView.playerButton.append(createPlayerButtonView("btnFacebookFriendsAdd", "#ui/gameuiskin#btn_facebook_friends_add.png", "onFacebookFriendsAdd"))
@@ -307,7 +299,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (!gId || gId == "")
       return {}
 
-    let shortName = loc("mainmenu/" + gId + "Short", "")
+    let shortName = ::loc("mainmenu/" + gId + "Short", "")
     return {
       name = shortName == "" ? "#mainmenu/" + gId : shortName
       tooltip = "#mainmenu/" + gId
@@ -325,14 +317,14 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     foreach(fIdx, f in ::contacts[gName])
     {
       let obj = gObj.findObject("player_" + gName + "_" + fIdx)
-      if (!checkObj(obj))
+      if (!::check_obj(obj))
         continue
 
       let fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
       let contactNameObj = obj.findObject("contactName")
       contactNameObj.setValue(fullName)
       let contactPresenceObj = obj.findObject("contactPresence")
-      if (checkObj(contactPresenceObj))
+      if (::checkObj(contactPresenceObj))
       {
         contactPresenceObj.setValue(f.getPresenceText())
         contactPresenceObj["color-factor"] = f.presence.iconTransparency
@@ -374,7 +366,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       contactObject.contact_buttons_contact_uid = contact.uid
 
       let contactButtonsHolder = contactObject.findObject("contact_buttons_holder")
-      if (!checkObj(contactButtonsHolder))
+      if (!::check_obj(contactButtonsHolder))
         continue
 
       updateContactButtonsVisibility(contact, contactButtonsHolder)
@@ -400,16 +392,16 @@ let { checkAndShowMultiplayerPrivilegeWarning,
                                      || platformModule.isPlayerFromPS4(contactName)
                                      || isPlayerFromXboxOne
 
-    ::showBtn("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
-    ::showBtn("btn_friendRemove", isFriend, contact_buttons_holder)
-    ::showBtn("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
-    ::showBtn("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
-    ::showBtn("btn_message", owner
+    showBtn("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
+    showBtn("btn_friendRemove", isFriend, contact_buttons_holder)
+    showBtn("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
+    showBtn("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
+    showBtn("btn_message", owner
                            && !isBlock
                            && isChatEnabled()
                            && canChat, contact_buttons_holder)
 
-    let showSquadInvite = hasFeature("SquadInviteIngame")
+    let showSquadInvite = ::has_feature("SquadInviteIngame")
       && !isMe
       && !isBlock
       && canInteractCrossConsole
@@ -420,13 +412,13 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       && canInvite
       && ::g_squad_utils.canSquad()
 
-    let btnObj = ::showBtn("btn_squadInvite", showSquadInvite, contact_buttons_holder)
+    let btnObj = showBtn("btn_squadInvite", showSquadInvite, contact_buttons_holder)
     if (btnObj && showSquadInvite && contact?.uidInt64)
       updateButtonInviteText(btnObj, contact.uidInt64)
 
-    ::showBtn("btn_usercard", hasFeature("UserCards"), contact_buttons_holder)
-    ::showBtn("btn_facebookFriends", isAvailableFacebook() && !platformModule.isPlatformSony, contact_buttons_holder)
-    ::showBtn("btn_squadInvite_bottom", false, contact_buttons_holder)
+    showBtn("btn_usercard", ::has_feature("UserCards"), contact_buttons_holder)
+    showBtn("btn_facebookFriends", isAvailableFacebook() && !platformModule.isPlatformSony, contact_buttons_holder)
+    showBtn("btn_squadInvite_bottom", false, contact_buttons_holder)
   }
 
   searchGroupActiveTextInclude = @"
@@ -473,7 +465,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function getGroupByName(group_name)
   {
     let contactsGroups = scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups))
+    if (::checkObj(contactsGroups))
     {
       let groupListObject = contactsGroups.findObject("group_" + group_name)
       return groupListObject.getParent()
@@ -498,7 +490,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   {
     if (!editboxObj)
       editboxObj = scene.findObject("search_edit_box")
-    if (!checkObj(editboxObj))
+    if (!::check_obj(editboxObj))
       return
 
     local txt = clearBorderSymbols(editboxObj.getValue())
@@ -507,7 +499,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
 
     let contactsGroups = scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups))
+    if (::checkObj(contactsGroups))
     {
       let searchGroupIndex = getIndexOfGroup(searchGroup)
       if (searchGroupIndex != -1)
@@ -541,7 +533,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function onContactsFocus(obj)
   {
-    let isValidCurScene = checkObj(scene)
+    let isValidCurScene = ::check_obj(scene)
     if (!isValidCurScene) {
       curHoverObjId = null
       return
@@ -561,7 +553,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (set_in_edit_box)
     {
       let searchEditBox = scene.findObject("search_edit_box")
-      if (checkObj(searchEditBox))
+      if (::checkObj(searchEditBox))
       {
         searchEditBox.setValue(search_text)
       }
@@ -579,7 +571,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     {
       let contactObjectName = "player_" + curGroup + "_" + idx
       let contactObject = scene.findObject(contactObjectName)
-      if (!checkObj(contactObject))
+      if (!::checkObj(contactObject))
         continue
 
       local contactName = ::g_string.utf8ToLower(contact_data.name)
@@ -801,7 +793,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     curGroup = groups[value]
 
     let listObj = obj.findObject("group_" + curGroup)
-    if (!checkObj(listObj))
+    if (!::checkObj(listObj))
       return
 
     if (::contacts[curGroup].len() == 0)
@@ -811,7 +803,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       listObj.setValue(0)
 
     onPlayerSelect(listObj)
-    this.showSceneBtn("button_invite_friend", curGroup == EPL_FRIENDLIST)
+    this.showSceneBtn("button_invite_friend", curGroup == ::EPL_FRIENDLIST)
 
     if (switchFocus)
       ::move_mouse_on_child(listObj, listObj.getValue())
@@ -835,7 +827,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
 
     let childObj = obj.getChild(value)
-    if (!checkObj(childObj))
+    if (!::check_obj(childObj))
       return
 
     if (childObj?.contact_buttons_contact_uid) {
@@ -857,7 +849,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function onPlayerRClick(obj)
   {
-    if (!checkScene() || !checkObj(obj))
+    if (!checkScene() || !::check_obj(obj))
       return
 
     let id = obj.id
@@ -889,14 +881,14 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
 
     let contactsGroups = scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups))
+    if (::checkObj(contactsGroups))
     {
       setSearchGroupVisibility(false)
       let searchGroupIndex = getIndexOfGroup(searchGroup)
       if (contactsGroups.getValue() == searchGroupIndex)
       {
         setSearchText("")
-        let friendsGroupIndex = getIndexOfGroup(EPL_FRIENDLIST)
+        let friendsGroupIndex = getIndexOfGroup(::EPL_FRIENDLIST)
         contactsGroups.setValue(friendsGroupIndex)
       }
     }
@@ -909,7 +901,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     {
       let searchAdviceID = "group_" + groupName + "_search_advice"
       let searchAdviceObject = scene.findObject(searchAdviceID)
-      if (checkObj(searchAdviceObject))
+      if (::checkObj(searchAdviceObject))
       {
         searchAdviceObject.show(value)
         searchAdviceObject.enable(value)
@@ -938,8 +930,8 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function updateButtonInviteText(btnObj, uid)
   {
     btnObj.tooltip = ::g_squad_manager.hasApplicationInMySquad(uid)
-        ? loc("squad/accept_membership")
-        : loc("squad/invite_player")
+        ? ::loc("squad/accept_membership")
+        : ::loc("squad/invite_player")
   }
 
   function updateConsoleButtons()
@@ -954,7 +946,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let showSelectButton = curHoverObjId != null
     let btn = this.showSceneBtn("btn_contactsSelect", showSelectButton)
     if (showSelectButton)
-      btn.setValue(loc(curHoverObjId == "contacts_groups" ? "contacts/chooseGroup"
+      btn.setValue(::loc(curHoverObjId == "contacts_groups" ? "contacts/chooseGroup"
         : curHoverObjId == "search_edit_box" ? "contacts/search"
         : "contacts/choosePlayer"))
   }
@@ -972,7 +964,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function updateCurPlayer(button_object)
   {
-    if (!checkObj(button_object))
+    if (!::checkObj(button_object))
       return
 
     let contactButtonsObject = button_object.getParent().getParent()
@@ -997,22 +989,22 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function onFriendAdd(obj)
   {
-    editPlayerInList(obj, EPL_FRIENDLIST, true)
+    editPlayerInList(obj, ::EPL_FRIENDLIST, true)
   }
 
   function onFriendRemove(obj)
   {
-    editPlayerInList(obj, EPL_FRIENDLIST, false)
+    editPlayerInList(obj, ::EPL_FRIENDLIST, false)
   }
 
   function onBlacklistAdd(obj)
   {
-    editPlayerInList(obj, EPL_BLOCKLIST, true)
+    editPlayerInList(obj, ::EPL_BLOCKLIST, true)
   }
 
   function onBlacklistRemove(obj)
   {
-    editPlayerInList(obj, EPL_BLOCKLIST, false)
+    editPlayerInList(obj, ::EPL_BLOCKLIST, false)
   }
 
   function onPlayerMsg(obj)
@@ -1034,7 +1026,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     }
 
     if (curPlayer == null)
-      return ::g_popups.add("", loc("msgbox/noChosenPlayer"))
+      return ::g_popups.add("", ::loc("msgbox/noChosenPlayer"))
 
     let uid = curPlayer.uid
     if (!::g_squad_manager.canInviteMember(uid))
@@ -1102,7 +1094,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     value = clearBorderSymbols(value)
 
     let searchGroupActiveTextObject = scene.findObject("search_group_active_text")
-    let searchGroupText = loc($"contacts/{searchGroup}")
+    let searchGroupText = ::loc($"contacts/{searchGroup}")
     searchGroupActiveTextObject.setValue($"{searchGroupText}: {value}")
 
     let taskId = ::find_nicks_by_prefix(value, maxSearchPlayers, true)
@@ -1112,7 +1104,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       ::contacts[searchGroup] <- []
       updateSearchList()
     }
-    ::g_tasker.addTask(taskId, null, Callback(onSearchCb, this))
+    ::g_tasker.addTask(taskId, null, ::Callback(onSearchCb, this))
   }
 
   function onSearchCb()
@@ -1138,7 +1130,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     if (brokenData)
     {
-      let errText = "broken result on find_nicks_by_prefix cb: \n" + toString(searchRes)
+      let errText = "broken result on find_nicks_by_prefix cb: \n" + ::toString(searchRes)
       ::script_net_assert_once("broken searchCb data", errText)
     }
 
@@ -1224,7 +1216,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function checkActiveScene()
   {
-    if (!checkObj(scene) || owner == null) {
+    if (!::checkObj(scene) || owner == null) {
       checkScene()
       return
     }

@@ -110,6 +110,14 @@
           }
         },
         "actions": {
+          "__systemLog": {
+            "value": "afp_generation_rotator",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "comment": [
             {
               "value": "kolichestvo aktivnyh aerodromov men'she chem kolichestvo maksimal'nyh"
@@ -233,6 +241,14 @@
           "comment": {
             "value": "indeks aerodroma vyshel za predely. perezapuskaem generaciyu"
           },
+          "__systemLog": {
+            "value": "to afp_generation_rotator from afp_generation_index_check",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "triggerEnable": {
             "target": "afp_generation_rotator"
           }
@@ -268,6 +284,14 @@
           ]
         },
         "actions": {
+          "__systemLog": {
+            "value": "afp_generation_exist_check",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "comment": [
             {
               "value": "vse sushchnosti sushchestvuyut, mozhno sozdavat' aerodrom"
@@ -353,6 +377,14 @@
           "comment": {
             "value": "kakoj-libo iz sushchnostej ne sushchestvuet. restartim generaciyu"
           },
+          "__systemLog": {
+            "value": "to afp_generation_rotator from afp_generation_exist_check",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "triggerEnable": {
             "target": "afp_generation_rotator"
           }
@@ -415,6 +447,14 @@
         "else_actions": {
           "comment": {
             "value": "armii ne sovpadayut. restartim generaciyu"
+          },
+          "__systemLog": {
+            "value": "to afp_generation_rotator from else afp_generation_check_army",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           },
           "triggerEnable": {
             "target": "afp_generation_rotator"
@@ -504,6 +544,14 @@
           "comment": {
             "value": "aerodrom uzhe aktiven"
           },
+          "__systemLog": {
+            "value": "to afp_generation_rotator from else afp_generation_active_check",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "triggerEnable": {
             "target": "afp_generation_rotator"
           }
@@ -586,6 +634,14 @@
                 "value": "pokaa perezapuskaem rotaciyu, potmo dobavit' logiku"
               }
             ],
+            "__systemLog": {
+              "value": "to afp_generation_rotator from else afp_generation_t1_zone_army_check",
+              "logtype": "screen"
+            },
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
+            },
             "triggerEnable": {
               "target": "afp_generation_rotator"
             }
@@ -617,6 +673,26 @@
             ]
           },
           "actions": {
+            "__systemLog": [
+              {
+                "value": "afp_generation_t1_pad_spawn_set",
+                "logtype": "screen"
+              },
+              {
+                "value": "to afp_generation_rotator from afp_generation_t1_pad_spawn_set",
+                "logtype": "screen"
+              }
+            ],
+            "__missionSetTimeSpeed": [
+              {
+                "speed": 0.0,
+                "realtimeTriggers": false
+              },
+              {
+                "speed": 0.0,
+                "realtimeTriggers": false
+              }
+            ],
             "comment": [
               {
                 "value": "creating spawn names"
@@ -746,6 +822,14 @@
             }
           },
           "else_actions": {
+            "__systemLog": {
+              "value": "to afp_generation_rotator from else afp_generation_t1_pad_spawn_set",
+              "logtype": "screen"
+            },
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
+            },
             "triggerEnable": {
               "target": "afp_generation_rotator"
             }
@@ -798,6 +882,14 @@
                 "value": "pokaa perezapuskaem rotaciyu, potmo dobavit' logiku"
               }
             ],
+            "__systemLog": {
+              "value": "to afp_generation_rotator from else afp_generation_t2_zone_army_check",
+              "logtype": "screen"
+            },
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
+            },
             "triggerEnable": {
               "target": "afp_generation_rotator"
             }
@@ -829,6 +921,26 @@
             ]
           },
           "actions": {
+            "__systemLog": [
+              {
+                "value": "afp_generation_t2_pad_spawn_set",
+                "logtype": "screen"
+              },
+              {
+                "value": "to afp_generation_rotator from afp_generation_t2_pad_spawn_set",
+                "logtype": "screen"
+              }
+            ],
+            "__missionSetTimeSpeed": [
+              {
+                "speed": 0.0,
+                "realtimeTriggers": false
+              },
+              {
+                "speed": 0.0,
+                "realtimeTriggers": false
+              }
+            ],
             "comment": [
               {
                 "value": "creating spawn names"
@@ -942,6 +1054,14 @@
             }
           },
           "else_actions": {
+            "__systemLog": {
+              "value": "to afp_generation_rotator from else afp_generation_t2_pad_spawn_set",
+              "logtype": "screen"
+            },
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
+            },
             "triggerEnable": {
               "target": "afp_generation_rotator"
             }
@@ -987,6 +1107,14 @@
           "varSetInt": {
             "value": 0,
             "var": "@afp_generation_state_var_name"
+          },
+          "__systemLog": {
+            "value": "to afp_generation_rotator from afp_generation_scout_enabled_check",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           },
           "triggerEnable": {
             "target": "afp_generation_rotator"
@@ -2254,6 +2382,14 @@
           "varSetInt": {
             "value": 0,
             "var": "afp_generation_cur_airfield_num"
+          },
+          "__systemLog": {
+            "value": "to afp_generation_rotator",
+            "logtype": "screen"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
           },
           "triggerEnable": {
             "target": "afp_generation_rotator"

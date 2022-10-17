@@ -28,7 +28,7 @@ let function register_event(name, eventType, structure=null){
   assert (type(name) =="string", "event name should be string")
   assert(!(name in sqEvents), @() $"event: '{name}' already registered!")
   sqEvents[name] <- name
-  let eventRegisteredName = ecs.register_sq_event(name, eventType)
+  let eventRegisteredName = ecs.register_sq_event(name, structure!=null, eventType)
   event[name] <- function(payload=null){
 //  todo - add type checking
     if (structure == null) {

@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let agmAimState = require("agmAimState.nut")
 let opticWeaponAim = require("opticWeaponAim.nut")
 

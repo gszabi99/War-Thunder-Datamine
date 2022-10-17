@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 ::Input.DoubleAxis <- class extends ::Input.InputBase
@@ -46,9 +39,9 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
   function getImage()
   {
-    if (deviceId == JOYSTICK_DEVICE_0_ID)
+    if (deviceId == ::JOYSTICK_DEVICE_0_ID)
       return gamepadIcons.getGamepadAxisTexture(axisIds)
-    else if (deviceId == STD_MOUSE_DEVICE_ID)
+    else if (deviceId == ::STD_MOUSE_DEVICE_ID)
       return gamepadIcons.getMouseAxisTexture(axisIds)
 
     return null

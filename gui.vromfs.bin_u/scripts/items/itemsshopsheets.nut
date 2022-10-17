@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let seenList = require("%scripts/seen/seenList.nut")
@@ -13,7 +6,7 @@ let shopSheets = {
   types = []
 }
 
-let isOnlyExtInventory = @(shopTab) shopTab != itemsTab.WORKSHOP && hasFeature("ExtInventory")
+let isOnlyExtInventory = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ExtInventory")
 
 shopSheets.template <- {
   id = "" //used from type name
@@ -156,7 +149,7 @@ shopSheets.addSheets({
     typeMask = itemType.DISCOUNT
     sortId = sortId++
     isAllowedForTab = @(shopTab) shopTab == itemsTab.INVENTORY
-      || (shopTab == itemsTab.SHOP && hasFeature("CanBuyDiscountItems"))
+      || (shopTab == itemsTab.SHOP && ::has_feature("CanBuyDiscountItems"))
   }
   TICKETS = {
     typeMask = itemType.TICKET
@@ -171,13 +164,13 @@ shopSheets.addSheets({
     emptyTabLocId = "items/shop/emptyTab/universalSpare"
     typeMask = itemType.UNIVERSAL_SPARE
     sortId = sortId++
-    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && !hasFeature("ItemModUpgrade")
+    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && !::has_feature("ItemModUpgrade")
   }
   MODIFICATIONS = {
     locId = "mainmenu/btnWeapons"
     typeMask = itemType.UNIVERSAL_SPARE | itemType.MOD_UPGRADE | itemType.MOD_OVERDRIVE
     sortId = sortId++
-    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && hasFeature("ItemModUpgrade")
+    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ItemModUpgrade")
   }
   VEHICLES = {
     typeMask = itemType.VEHICLE | itemType.RENTED_UNIT | itemType.UNIT_COUPON_MOD
@@ -243,7 +236,7 @@ shopSheets.addSheets({
     typeMask = itemType.ALL
     isDevItemsTab = true
     sortId = sortId++
-    isAllowedForTab = @(shopTab) shopTab == itemsTab.SHOP && hasFeature("devItemShop")
+    isAllowedForTab = @(shopTab) shopTab == itemsTab.SHOP && ::has_feature("devItemShop")
   }
 })
 

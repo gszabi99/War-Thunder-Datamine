@@ -1,13 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/promo/promoBlocks"
@@ -66,7 +58,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     let data = missionRules.getFullUnitLimitsData()
     let textsList = ::u.map(data.unitLimits, getRespTextByUnitLimit)
-    textsList.insert(0, colorize("activeTextColor", loc(missionRules.customUnitRespawnsAllyListHeaderLocId)))
+    textsList.insert(0, ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsAllyListHeaderLocId)))
 
     if (missionRules.isEnemyLimitedUnitsVisible())
     {
@@ -74,7 +66,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (enemyData.len())
       {
         let enemyTextsList = ::u.map(enemyData.unitLimits, getRespTextByUnitLimit)
-        textsList.append("\n" + colorize("activeTextColor", loc(missionRules.customUnitRespawnsEnemyListHeaderLocId)))
+        textsList.append("\n" + ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsEnemyListHeaderLocId)))
         textsList.extend(enemyTextsList)
       }
     }
@@ -104,7 +96,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     let obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(scene, blockId)
-    if (checkObj(obj))
+    if (::checkObj(obj))
       obj.setValue(text)
   }
 

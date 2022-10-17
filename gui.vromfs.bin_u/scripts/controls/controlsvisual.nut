@@ -1,10 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let function getLocalizedShortcutName(shortcutId) {
-  return loc($"hotkeys/{shortcutId}")
+  return ::loc($"hotkeys/{shortcutId}")
 }
 
 let axisModifiers = ["_rangeMin", "_rangeMax"]
@@ -17,7 +12,7 @@ let getFirstShortcutText = @(shortcutId) ::get_shortcut_text({
 })
 
 let function getAxisTextOrAxisName(shortcutId) {
-  let comma = loc("ui/comma")
+  let comma = ::loc("ui/comma")
   let shortcuts = []
   let joyParams = ::JoystickParams()
   joyParams.setFrom(::joystick_get_cur_settings())
@@ -32,7 +27,7 @@ let function getAxisTextOrAxisName(shortcutId) {
     axisModifiers.map(@(mod) getFirstShortcutText($"{shortcutId}{mod}")), true)
   shortcuts.append($"{activateText}{modifyText}")
   let text = comma.join(shortcuts, true)
-  return text != "" ? text : loc($"controls/{shortcutId}")
+  return text != "" ? text : ::loc($"controls/{shortcutId}")
 }
 
 return {

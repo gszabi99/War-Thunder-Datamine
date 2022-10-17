@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let regexp2 = require("regexp2")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
@@ -57,14 +50,14 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     foreach (presetDataItem in newbiePresetsData.presetDataItems)
     {
       // This adds empty array to presets table if not already.
-      presets[presetDataItem.country] <- getTblValue(presetDataItem.country, presets, [])
+      presets[presetDataItem.country] <- ::getTblValue(presetDataItem.country, presets, [])
       if (!presetDataItem.hasUnits)
         continue
       let gameMode = ::game_mode_manager.getGameModeByUnitType(presetDataItem.unitType, -1, true)
       // Creating preset from preset data item.
       let preset = _createPresetTemplate(0)
       preset.title = ::get_unit_type_army_text(presetDataItem.unitType)
-      preset.gameModeId = getTblValue("id", gameMode, "")
+      preset.gameModeId = ::getTblValue("id", gameMode, "")
       foreach (taskData in presetDataItem.tasksData)
       {
         if (taskData.airName == "")
@@ -94,7 +87,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
         continue
 
       let presetDataItem = getPresetDataByCountryAndUnitType(newbiePresetsData, country, newbiePresetsData.selectedUnitType)
-      selected[country] <- getTblValue("presetIndex", presetDataItem, 0)
+      selected[country] <- ::getTblValue("presetIndex", presetDataItem, 0)
     }
 
     saveAllCountries()
@@ -171,8 +164,8 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     if (!country)
       country = ::get_profile_country_sq()
     let index = getCurrent(country, -1)
-    let currentPresets = getTblValue(country, presets)
-    return getTblValue(index, currentPresets)
+    let currentPresets = ::getTblValue(country, presets)
+    return ::getTblValue(index, currentPresets)
   }
 
   function canCreate()
@@ -209,7 +202,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       country = ::get_profile_country_sq()
     validateSlotsCountCache()
     local result = baseCountryPresetsAmount
-    foreach (unitType, typeStatus in getTblValue(country, activeTypeBonusByCountry, {}))
+    foreach (unitType, typeStatus in ::getTblValue(country, activeTypeBonusByCountry, {}))
       if(typeStatus)
         result += eraBonusPresetsAmount
     return result
@@ -226,7 +219,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       country = ::get_profile_country_sq()
     validateSlotsCountCache()
     let result = []
-    foreach (unitType, typeStatus in getTblValue(country, activeTypeBonusByCountry, {}))
+    foreach (unitType, typeStatus in ::getTblValue(country, activeTypeBonusByCountry, {}))
       if( ! typeStatus)
         result.append(unitType)
     return result
@@ -351,7 +344,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
     let oldName = presets[countryId][idx].title
     ::gui_modal_editbox_wnd({
-                      title = loc("mainmenu/newPresetName"),
+                      title = ::loc("mainmenu/newPresetName"),
                       maxLen = 16,
                       value = oldName,
                       owner = this,
@@ -404,7 +397,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     local blk = null
     if (presets[countryId].len() > 0)
     {
-      let curPreset = getTblValue(selected[countryId], presets[countryId])
+      let curPreset = ::getTblValue(selected[countryId], presets[countryId])
       if (curPreset && countryId == ::get_profile_country_sq())
         updatePresetFromSlotbar(curPreset, countryId)
 
@@ -417,7 +410,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
                                ::g_string.join(p.crews, ","),
                                ::g_string.join(p.units, ","),
                                p.title,
-                               getTblValue("gameModeId", p, "")],
+                               ::getTblValue("gameModeId", p, "")],
                               "|"))
       }
       if (presetsList.len() == 0 )
@@ -450,7 +443,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     if (!::isCountryAllCrewsUnlockedInHangar(country))
     {
       if (verbose)
-        ::showInfoMsgBox(loc("charServer/updateError/52"), "slotbar_presets_forbidden")
+        ::showInfoMsgBox(::loc("charServer/updateError/52"), "slotbar_presets_forbidden")
       return false
     }
     return true
@@ -471,8 +464,8 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     }
 
     if (!isSilent)
-      ::showInfoMsgBox(loc("msg/cantUseUnitInCurrentBattle",
-                       { unitName = colorize("userlogColoredText", preset.title) }))
+      ::showInfoMsgBox(::loc("msg/cantUseUnitInCurrentBattle",
+                       { unitName = ::colorize("userlogColoredText", preset.title) }))
     return false
   }
 
@@ -486,7 +479,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
     save(countryId) //save current preset slotbar changes
 
-    let preset = getTblValue(idx, presets[countryId])
+    let preset = ::getTblValue(idx, presets[countryId])
     if (!canLoadPreset(preset))
       return false
 
@@ -510,7 +503,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     local selCrewIdx = 0
     foreach (crewIdx, crew in countryCrews)
     {
-      let crewTrainedUnits = getTblValue("trained", crew, [])
+      let crewTrainedUnits = ::getTblValue("trained", crew, [])
       foreach (i, unitId in preset.units)
       {
         let crewId = preset.crews[i]
@@ -518,7 +511,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
         {
           let unit = ::getAircraftByName(unitId)
           if (unit && unit.isInShop && ::isUnitUsable(unit)
-              && (!unit.trainCost || isInArray(unitId, crewTrainedUnits))
+              && (!unit.trainCost || ::isInArray(unitId, crewTrainedUnits))
               && !(unitId in unitsList))
           {
             unitsList[unitId] <- crewId
@@ -548,7 +541,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     let tasksData = []
     foreach (crew in countryCrews)
     {
-      let curUnitId = getTblValue("aircraft", crew, "")
+      let curUnitId = ::getTblValue("aircraft", crew, "")
       local unitId = ""
       foreach (uId, crewId in unitsList)
         if (crewId == crew.id)
@@ -659,10 +652,10 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
           continue
         let preset = _createPresetTemplate(idx)
         preset.selected = ::to_integer_safe(data[0], -1)
-        let title = validatePresetName(getTblValue(3, data, ""))
+        let title = validatePresetName(::getTblValue(3, data, ""))
         if (title.len())
           preset.title = title
-        preset.gameModeId = getTblValue(4, data, "")
+        preset.gameModeId = ::getTblValue(4, data, "")
 
         let unitNames = ::g_string.split(data[2], ",")
         let crewIds = ::g_string.split(data[1], ",")
@@ -704,7 +697,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       units = []
       crews = []
       selected = -1
-      title = loc("shop/slotbarPresets/item", { number = presetIdx + 1 })
+      title = ::loc("shop/slotbarPresets/item", { number = presetIdx + 1 })
       gameModeId = ""
 
       unitTypesMask = 0
@@ -718,12 +711,12 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     foreach (unitId in preset.units)
     {
       let unit = ::getAircraftByName(unitId)
-      let unitType = unit ? ::get_es_unit_type(unit) : ES_UNIT_TYPE_INVALID
-      if (unitType != ES_UNIT_TYPE_INVALID)
+      let unitType = unit ? ::get_es_unit_type(unit) : ::ES_UNIT_TYPE_INVALID
+      if (unitType != ::ES_UNIT_TYPE_INVALID)
         unitTypesMask = unitTypesMask | (1 << unitType)
     }
 
-    let enabled = hasFeature("Tanks") || (unitTypesMask != (1 << ES_UNIT_TYPE_TANK))
+    let enabled = ::has_feature("Tanks") || (unitTypesMask != (1 << ::ES_UNIT_TYPE_TANK))
 
     preset.unitTypesMask = unitTypesMask
     preset.enabled = enabled

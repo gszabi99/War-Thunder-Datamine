@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -57,7 +50,7 @@ local summaryNameArray = [
 
   function getTitles(showHidden = false)
   {
-    let titles = getTblValue("titles", _my_stats, [])
+    let titles = ::getTblValue("titles", _my_stats, [])
     if (showHidden)
       return titles
 
@@ -257,7 +250,7 @@ local summaryNameArray = [
     if (_maxUnitsUsedRank == null)
       _maxUnitsUsedRank = calculateMaxUnitsUsedRanks()
 
-    if (requiredUnitRank <= getTblValue(unitType.tostring(), _maxUnitsUsedRank, 0))
+    if (requiredUnitRank <= ::getTblValue(unitType.tostring(), _maxUnitsUsedRank, 0))
       return true
 
     return false
@@ -286,7 +279,7 @@ local summaryNameArray = [
   {
     let unitType = ::get_es_unit_type(params.unit)
     let unitRank = params.unit?.rank ?? -1
-    let lastMaxRank = getTblValue(unitType.tostring(), _maxUnitsUsedRank, 0)
+    let lastMaxRank = ::getTblValue(unitType.tostring(), _maxUnitsUsedRank, 0)
     if (lastMaxRank >= unitRank)
       return
 
@@ -342,7 +335,7 @@ local summaryNameArray = [
   function getSummary(summaryName, filter = {})
   {
     local res = 0
-    let pvpSummary = getTblValue(summaryName, getTblValue("summary", _my_stats))
+    let pvpSummary = ::getTblValue(summaryName, ::getTblValue("summary", _my_stats))
     if (!pvpSummary)
       return res
 
@@ -352,13 +345,13 @@ local summaryNameArray = [
     foreach(idx, diffData in pvpSummary)
       foreach(unitRole, data in diffData)
       {
-        if (!isInArray(unitRole, roles))
+        if (!::isInArray(unitRole, roles))
           continue
 
-        foreach(param in getTblValue("addArray", filter, []))
-          res += getTblValue(param, data, 0)
-        foreach(param in getTblValue("subtractArray", filter, []))
-          res -= getTblValue(param, data, 0)
+        foreach(param in ::getTblValue("addArray", filter, []))
+          res += ::getTblValue(param, data, 0)
+        foreach(param in ::getTblValue("subtractArray", filter, []))
+          res -= ::getTblValue(param, data, 0)
       }
     return res
   }
@@ -387,24 +380,24 @@ local summaryNameArray = [
 
   function getClassFlags(unitType)
   {
-    if (unitType == ES_UNIT_TYPE_AIRCRAFT)
-      return CLASS_FLAGS_AIRCRAFT
-    if (unitType == ES_UNIT_TYPE_TANK)
-      return CLASS_FLAGS_TANK
-    if (unitType == ES_UNIT_TYPE_SHIP)
-      return CLASS_FLAGS_SHIP
-    if (unitType == ES_UNIT_TYPE_HELICOPTER)
-      return CLASS_FLAGS_HELICOPTER
-    if (unitType == ES_UNIT_TYPE_BOAT)
-      return CLASS_FLAGS_BOAT
-    return (1 << EUCT_TOTAL) - 1
+    if (unitType == ::ES_UNIT_TYPE_AIRCRAFT)
+      return ::CLASS_FLAGS_AIRCRAFT
+    if (unitType == ::ES_UNIT_TYPE_TANK)
+      return ::CLASS_FLAGS_TANK
+    if (unitType == ::ES_UNIT_TYPE_SHIP)
+      return ::CLASS_FLAGS_SHIP
+    if (unitType == ::ES_UNIT_TYPE_HELICOPTER)
+      return ::CLASS_FLAGS_HELICOPTER
+    if (unitType == ::ES_UNIT_TYPE_BOAT)
+      return ::CLASS_FLAGS_BOAT
+    return (1 << ::EUCT_TOTAL) - 1
   }
 
   function getSummaryFromProfile(func, unitType = null, diff = null, mode = 1 /*domination*/)
   {
     local res = 0.0
     let classFlags = getClassFlags(unitType)
-    for(local i = 0; i < EUCT_TOTAL; i++)
+    for(local i = 0; i < ::EUCT_TOTAL; i++)
       if (classFlags & (1 << i))
       {
         if (diff != null)
@@ -418,7 +411,7 @@ local summaryNameArray = [
 
   function getTimePlayed(unitType = null, diff = null)
   {
-    return getSummaryFromProfile(::stat_get_value_time_played, unitType, diff)
+    return getSummaryFromProfile(stat_get_value_time_played, unitType, diff)
   }
 
   function isMeNewbie() //used in code
@@ -441,15 +434,15 @@ local summaryNameArray = [
 
     if (unitType == null)
     {
-      unitType = getFirstChosenUnitType(ES_UNIT_TYPE_AIRCRAFT)
+      unitType = getFirstChosenUnitType(::ES_UNIT_TYPE_AIRCRAFT)
       if (checkSlotbar)
       {
-        let types = ::getSlotbarUnitTypes(country)
-        if (types.len() && !isInArray(unitType, types))
+        let types = getSlotbarUnitTypes(country)
+        if (types.len() && !::isInArray(unitType, types))
           unitType = types[0]
       }
     }
-    return getTblValue(unitType, newbieNextEvent)
+    return ::getTblValue(unitType, newbieNextEvent)
   }
 
   function isNewbieEventId(eventName)
@@ -463,7 +456,7 @@ local summaryNameArray = [
 
   function getUnitTypeByNewbieEventId(eventId)
   {
-    return getTblValue(eventId, _unitTypeByNewbieEventId, ES_UNIT_TYPE_INVALID)
+    return ::getTblValue(eventId, _unitTypeByNewbieEventId, ::ES_UNIT_TYPE_INVALID)
   }
 
   function calculateMaxUnitsUsedRanks()
@@ -485,14 +478,14 @@ local summaryNameArray = [
     saveBlk.setFrom(loadedBlk)
     let countryCrewsList = ::g_crews_list.get()
     foreach(countryCrews in countryCrewsList)
-      foreach (crew in getTblValue("crews", countryCrews, []))
+      foreach (crew in ::getTblValue("crews", countryCrews, []))
       {
         let unit = ::g_crew.getCrewUnit(crew)
         if (unit == null)
           continue
 
         let curUnitType = ::get_es_unit_type(unit)
-        saveBlk[curUnitType.tostring()] = max(getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
+        saveBlk[curUnitType.tostring()] = max(::getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
       }
 
     if (!::u.isEqual(saveBlk, loadedBlk))

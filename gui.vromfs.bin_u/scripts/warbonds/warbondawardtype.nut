@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
 let { DECORATION, SPECIAL_TASK } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -44,7 +37,7 @@ local getBoughtCountByAmount = @(warbond, blk)
 
 
 ::g_wb_award_type.template <- {
-  id = EWBAT_INVALID //filled by type id.used from code enum EWBAT
+  id = ::EWBAT_INVALID //filled by type id.used from code enum EWBAT
   getLayeredImage = function(blk, warbond) { return "" }
   getContentIconData = function(blk) { return null } //{ contentIcon, [contentType] }
   getIconHeaderText = function(blk) { return null }
@@ -72,12 +65,12 @@ local getBoughtCountByAmount = @(warbond, blk)
   getUserlogBuyText = function(blk, priceText)
   {
     if (priceText != "")
-      priceText = loc("ui/parentheses/space", { text = priceText })
+      priceText = ::loc("ui/parentheses/space", { text = priceText })
     return getUserlogBuyTextBase(blk) + priceText
   }
   getUserlogBuyTextBase = function(blk)
   {
-    return format(loc("userlog/buy_resource/" + userlogResourceTypeText), getNameText(blk))
+    return format(::loc("userlog/buy_resource/" + userlogResourceTypeText), getNameText(blk))
   }
 }
 
@@ -113,9 +106,9 @@ let makeWbAwardItem = function(changesTbl = null)
     getUserlogBuyText = function(blk, priceText)
     {
       let item = getItem(blk)
-      return loc("userlog/buy_item",
+      return ::loc("userlog/buy_item",
         {
-          itemName = colorize("userlogColoredText", item ? item.getName() : "")
+          itemName = ::colorize("userlogColoredText", item ? item.getName() : "")
           price = priceText
         })
     }
@@ -128,11 +121,11 @@ let makeWbAwardItem = function(changesTbl = null)
 }
 
 enums.addTypesByGlobalName("g_wb_award_type", {
-  [EWBAT_INVALID] = {
+  [::EWBAT_INVALID] = {
     requestBuy = function(...) { return -1 }
   },
 
-  [EWBAT_UNIT] = {
+  [::EWBAT_UNIT] = {
     getLayeredImage = function(blk, warbond)
     {
       let unit = ::getAircraftByName(blk.name)
@@ -177,31 +170,31 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
     getUserlogBuyTextBase = function(blk)
     {
-      return format(loc("userlog/buy_aircraft"), getNameText(blk))
+      return format(::loc("userlog/buy_aircraft"), getNameText(blk))
     }
   },
 
-  [EWBAT_ITEM]                 = makeWbAwardItem(),
-  [EWBAT_TROPHY]               = makeWbAwardItem(),
-  [EWBAT_EXT_INVENTORY_ITEM]   = makeWbAwardItem({
+  [::EWBAT_ITEM]                 = makeWbAwardItem(),
+  [::EWBAT_TROPHY]               = makeWbAwardItem(),
+  [::EWBAT_EXT_INVENTORY_ITEM]   = makeWbAwardItem({
     getItem = @(blk) ::ItemsManager.findItemById(::to_integer_safe(blk.name))
   }),
 
-  [EWBAT_SKIN] = {
+  [::EWBAT_SKIN] = {
     userlogResourceTypeText = "skin"
     getLayeredImage = function(blk, warbond)
     {
       return ::LayersIcon.getIconData(::g_decorator_type.SKINS.defaultStyle)
     }
     getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
-                                                                            UNLOCKABLE_SKIN,
+                                                                            ::UNLOCKABLE_SKIN,
                                                                             {
                                                                               wbId = warbond.id,
                                                                               wbListId = warbond.listId
                                                                             })
     getNameText = function(blk)
     {
-      return ::get_unlock_name_text(UNLOCKABLE_SKIN, blk?.name ?? "")
+      return ::get_unlock_name_text(::UNLOCKABLE_SKIN, blk?.name ?? "")
     }
     getDescText = function(blk)
     {
@@ -217,7 +210,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     imgNestDoubleSize = "yes"
   },
 
-  [EWBAT_DECAL] = {
+  [::EWBAT_DECAL] = {
     userlogResourceTypeText = "decal"
     getLayeredImage = function(blk, warbond)
     {
@@ -227,14 +220,14 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return ::LayersIcon.getIconData(::g_decorator_type.DECALS.defaultStyle)
     }
     getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
-                                                                            UNLOCKABLE_DECAL,
+                                                                            ::UNLOCKABLE_DECAL,
                                                                             {
                                                                               wbId = warbond.id,
                                                                               wbListId = warbond.listId
                                                                             })
     getNameText = function(blk)
     {
-      return ::get_unlock_name_text(UNLOCKABLE_DECAL, blk?.name ?? "")
+      return ::get_unlock_name_text(::UNLOCKABLE_DECAL, blk?.name ?? "")
     }
     getDescText = function(blk)
     {
@@ -252,7 +245,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     imgNestDoubleSize = "yes"
   },
 
-  [EWBAT_ATTACHABLE] = {
+  [::EWBAT_ATTACHABLE] = {
     userlogResourceTypeText = "attachable"
     getLayeredImage = function(blk, warbond)
     {
@@ -262,14 +255,14 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return ::LayersIcon.getIconData(::g_decorator_type.ATTACHABLES.defaultStyle)
     }
     getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
-                                                                            UNLOCKABLE_ATTACHABLE,
+                                                                            ::UNLOCKABLE_ATTACHABLE,
                                                                             {
                                                                               wbId = warbond.id,
                                                                               wbListId = warbond.listId
                                                                             })
     getNameText = function(blk)
     {
-      return ::get_unlock_name_text(UNLOCKABLE_ATTACHABLE, blk?.name ?? "")
+      return ::get_unlock_name_text(::UNLOCKABLE_ATTACHABLE, blk?.name ?? "")
     }
     getDescText = function(blk)
     {
@@ -287,7 +280,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     imgNestDoubleSize = "yes"
   },
 
-  [EWBAT_WP] = {
+  [::EWBAT_WP] = {
     getLayeredImage = function(blk, warbond)
     {
       let wp = blk?.amount ?? 0
@@ -301,7 +294,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getBoughtCount = getBoughtCountByAmount
   },
 
-  [EWBAT_GOLD] = {
+  [::EWBAT_GOLD] = {
     getLayeredImage = function(blk, warbond)
     {
       return ::LayersIcon.getIconData("reward_gold")
@@ -314,11 +307,11 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getBoughtCount = getBoughtCountByAmount
   },
 
-  [EWBAT_BATTLE_TASK] = {
+  [::EWBAT_BATTLE_TASK] = {
     getLayeredImage = @(blk, warbond) warbond.getLayeredIconStyle()
-    getNameText = @(blk) loc("item/" + blk.name)
-    getDescText = @(blk) loc("item/" + blk.name + "/desc")
-    hasIncreasingLimit = @() hasFeature("BattlePass")
+    getNameText = @(blk) ::loc("item/" + blk.name)
+    getDescText = @(blk) ::loc("item/" + blk.name + "/desc")
+    hasIncreasingLimit = @() ::has_feature("BattlePass")
     canBuy = @(warbond, blk) ::warbonds_can_buy_battle_task(blk.name)
       && (!hasIncreasingLimit() || getPurchaseLimitWb(warbond) > getBoughtCount(warbond, blk))
     getMaxBoughtCount = @(warbond, blk) hasIncreasingLimit() ? getPurchaseLimitWb(warbond) : blk?.maxBoughtCount ?? 0
@@ -338,8 +331,8 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 },
 null, "id")
 
-::g_wb_award_type.getTypeByBlk <- function getTypeByBlk(blk)
+g_wb_award_type.getTypeByBlk <- function getTypeByBlk(blk)
 {
   let typeInt = ::warbond_get_type_by_name(blk?.type ?? "invalid")
-  return getTblValue(typeInt, this, this[EWBAT_INVALID])
+  return ::getTblValue(typeInt, this, this[::EWBAT_INVALID])
 }

@@ -1,14 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getCollectionsList } = require("%scripts/collections/collections.nut")
 let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 
@@ -46,8 +38,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let wndCollectionsObj = scene.findObject("wnd_collections")
-    countItemsInRow = to_pixels("1@collectionWidth-1@collectionPrizeWidth")
-      / (to_pixels("1@collectionItemSizeWithIndent"))
+    countItemsInRow = ::to_pixels("1@collectionWidth-1@collectionPrizeWidth")
+      / (::to_pixels("1@collectionItemSizeWithIndent"))
     let countRowInCollection = ::ceil(MAX_COLLECTION_ITEMS / (countItemsInRow*1.0))
     collectionHeight = "".concat(countRowInCollection,
       "@collectionItemSizeWithIndent+1@buttonHeight-1@blockInterval")
@@ -94,7 +86,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     view.hasCollections <- view.collections.len() > 0
 
     let data = ::handyman.renderCached("%gui/collections/collection", view)
-    if (checkObj(collectionsListObj))
+    if (::check_obj(collectionsListObj))
       guiScene.replaceContentFromText(collectionsListObj, data, data.len(), this)
 
     let prevValue = collectionsListObj.getValue()
@@ -104,7 +96,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     updateDecoratorInfo()
 
-    ::generatePaginator(scene.findObject("paginator_place"), this,
+    generatePaginator(scene.findObject("paginator_place"), this,
       curPage, ::ceil(collectionsList.len().tofloat() / collectionsPerPage) - 1, null, true /*show last page*/)
   }
 
@@ -191,8 +183,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       && ::ItemsManager.canGetDecoratorFromTrophy(decorator)
 
     let bObj = this.showSceneBtn("btn_buy_decorator", canBuy)
-    if (canBuy && checkObj(bObj))
-      placePriceTextToButton(scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decorator?.getCost())
+    if (canBuy && ::check_obj(bObj))
+      placePriceTextToButton(scene, "btn_buy_decorator", ::loc("mainmenu/btnOrder"), decorator?.getCost())
 
     ::showBtnTable(scene, {
       btn_preview = decorator?.canPreview() ?? false
@@ -295,5 +287,5 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 return {
   openCollectionsWnd = @(params = {}) ::handlersManager.loadHandler(collectionsWnd, params)
-  hasAvailableCollections = @() hasFeature("Collection") && getCollectionsList().len() > 0
+  hasAvailableCollections = @() ::has_feature("Collection") && getCollectionsList().len() > 0
 }

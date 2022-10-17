@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 /**
  * Temporary hack, for NEW Year 2021 Football event.
  * PLEASE KEEP AT LEAST tryControlsRestore() FUNCTION ON PRODUCTION
@@ -21,11 +16,11 @@ let function shouldManageControls() {
 }
 
 let function removeSingleGamepadBtnId(hc, btnId) {
-  return hc.filter(@(sc) sc.len() != 1 || sc[0]?.deviceId != JOYSTICK_DEVICE_0_ID || sc[0]?.buttonId != btnId)
+  return hc.filter(@(sc) sc.len() != 1 || sc[0]?.deviceId != ::JOYSTICK_DEVICE_0_ID || sc[0]?.buttonId != btnId)
 }
 
 let function addSingleGamepadBtnId(hc, btnId) {
-  return removeSingleGamepadBtnId(hc, btnId).append([ { deviceId = JOYSTICK_DEVICE_0_ID, buttonId = btnId } ])
+  return removeSingleGamepadBtnId(hc, btnId).append([ { deviceId = ::JOYSTICK_DEVICE_0_ID, buttonId = btnId } ])
 }
 
 let function isHotkeyEmpty(hc) {
@@ -38,7 +33,7 @@ let function tryControlsOverride()
 {
   if (!shouldManageControls())
     return false
-  if (::get_game_mode() != GM_DOMINATION || !::SessionLobby.getMissionName().contains("football"))
+  if (::get_game_mode() != ::GM_DOMINATION || !::SessionLobby.getMissionName().contains("football"))
     return false
   if (::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID) != null)
     return false
@@ -54,7 +49,7 @@ let function tryControlsOverride()
   {
     foreach (sp in hcPrimaryGun)
       if (sm.len() == 1 && sp.len() == 1
-          && sm[0]?.deviceId == JOYSTICK_DEVICE_0_ID && sp[0]?.deviceId == JOYSTICK_DEVICE_0_ID
+          && sm[0]?.deviceId == ::JOYSTICK_DEVICE_0_ID && sp[0]?.deviceId == ::JOYSTICK_DEVICE_0_ID
           && sm[0]?.buttonId == sp[0]?.buttonId)
       {
         sourceBtnId = sm[0]?.buttonId
@@ -101,7 +96,7 @@ let function tryControlsOverride()
   {
     let hc = preset.getHotkey(hotkeyId)
     foreach (sc in hc)
-      if (sc.len() == 1 && sc[0]?.deviceId == JOYSTICK_DEVICE_0_ID)
+      if (sc.len() == 1 && sc[0]?.deviceId == ::JOYSTICK_DEVICE_0_ID)
       {
         let delIdx = tryBtnIdOrder.indexof(sc[0]?.buttonId)
         if (delIdx != null)
@@ -113,7 +108,7 @@ let function tryControlsOverride()
 
   let destinationBtnId = tryBtnIdOrder[0]
 
-  log($"FoolballNy2021Hack: ID_FIRE_GM_MACHINE_GUN will be moved from buttonId {sourceBtnId} to {destinationBtnId}")
+  ::dagor.debug($"FoolballNy2021Hack: ID_FIRE_GM_MACHINE_GUN will be moved from buttonId {sourceBtnId} to {destinationBtnId}")
 
   // Collecting the conflicting shortcuts to wipe.
 
@@ -124,7 +119,7 @@ let function tryControlsOverride()
   {
     local needWipe = false
     foreach (sc in hc)
-      if (sc.len() == 1 && sc[0]?.deviceId == JOYSTICK_DEVICE_0_ID && sc[0]?.buttonId == destinationBtnId)
+      if (sc.len() == 1 && sc[0]?.deviceId == ::JOYSTICK_DEVICE_0_ID && sc[0]?.buttonId == destinationBtnId)
         needWipe = true
 
     if (needWipe) // For our uncustomized presets wipes 3 shortcuts: ID_ROCKETS, ID_ATGM, submarine_depth.
@@ -152,12 +147,12 @@ let function tryControlsOverride()
 
   // Logging.
 
-  log($"FoolballNy2021Hack: Modifying hotkeys:")
+  ::dagor.debug($"FoolballNy2021Hack: Modifying hotkeys:")
   foreach(hotkeyId, hc in original)
   {
-    log($"  {hotkeyId}")
-    log($"    from: {::save_to_json(hc)}")
-    log($"    to:   {::save_to_json(modified[hotkeyId])}")
+    ::dagor.debug($"  {hotkeyId}")
+    ::dagor.debug($"    from: {::save_to_json(hc)}")
+    ::dagor.debug($"    to:   {::save_to_json(modified[hotkeyId])}")
   }
 
   // Modifying the preset.
@@ -167,7 +162,7 @@ let function tryControlsOverride()
   ::g_controls_manager.commitControls()
   forceSaveProfile()
 
-  log($"FoolballNy2021Hack: Done")
+  ::dagor.debug($"FoolballNy2021Hack: Done")
   return true
 }
 
@@ -185,8 +180,8 @@ let function tryControlsRestore()
   let preset = ::g_controls_manager.getCurPreset()
   let data = ::buildTableFromBlk(blk)
 
-  log($"FoolballNy2021Hack: Restoring hotkeys from backup:")
-  debugTableData(data, 10)
+  ::dagor.debug($"FoolballNy2021Hack: Restoring hotkeys from backup:")
+  ::debugTableData(data, 10)
 
   let original = data?.original.map(@(s) ::parse_json(s)) ?? {}
   let modified = data?.modified.map(@(s) ::parse_json(s)) ?? {}
@@ -200,10 +195,10 @@ let function tryControlsRestore()
       if (::u.isEqual(curHc, expectedHc) || (isHotkeyEmpty(curHc) && isHotkeyEmpty(expectedHc)))
       {
         preset.setHotkey(hotkeyId, hc)
-        log($"  OK   {hotkeyId}")
+        ::dagor.debug($"  OK   {hotkeyId}")
       }
       else
-        log($"  SKIP {hotkeyId}, current state is different: {::save_to_json(curHc)}")
+        ::dagor.debug($"  SKIP {hotkeyId}, current state is different: {::save_to_json(curHc)}")
     }
     ::g_controls_manager.commitControls()
   }
@@ -211,7 +206,7 @@ let function tryControlsRestore()
   ::save_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID, null) // Deleting backup.
   forceSaveProfile()
 
-  log($"FoolballNy2021Hack: Done")
+  ::dagor.debug($"FoolballNy2021Hack: Done")
   return true
 }
 

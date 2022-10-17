@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
 /*
@@ -57,7 +49,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 
   static function openChecked(config)
   {
-    if (!::gui_handlers.InfoWnd.canShowAgain(getTblValue("checkId", config)))
+    if (!::gui_handlers.InfoWnd.canShowAgain(::getTblValue("checkId", config)))
       return false
 
     ::handlersManager.loadHandler(::gui_handlers.InfoWnd, config)
@@ -103,7 +95,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
       {
         local cb = null
         if ("onClick" in btn)
-          cb = Callback(btn.onClick, buttonsContext)
+          cb = ::Callback(btn.onClick, buttonsContext)
 
         let cbName = "onClickBtn" + idx
         buttonsCbs[cbName] <- (@(cb, infoHandler) function() {
@@ -115,7 +107,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
         btn.funcName <- cbName
         markup += ::handyman.renderCached("%gui/commonParts/button", btn)
 
-        hasBigButton = hasBigButton || getTblValue("isToBattle", btn, false)
+        hasBigButton = hasBigButton || ::getTblValue("isToBattle", btn, false)
       }
     guiScene.replaceContentFromText(scene.findObject("buttons_place"), markup, markup.len(), buttonsCbs)
 

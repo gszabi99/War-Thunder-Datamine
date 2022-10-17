@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 

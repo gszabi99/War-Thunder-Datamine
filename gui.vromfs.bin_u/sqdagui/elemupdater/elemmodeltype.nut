@@ -1,6 +1,3 @@
-#explicit-this
-#no-root-fallback
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let elemEvents = require("%sqDagui/elemUpdater/elemUpdaterEvents.nut")
 
@@ -15,15 +12,15 @@ modelType.template <- {
 
   makeFullPath = function(relativePath)
   {
-    relativePath.insert(0, this.id)
+    relativePath.insert(0, id)
     return relativePath
   }
-  notify = @(relativePath) elemEvents.notifyChanged(this.makeFullPath(relativePath))
+  notify = @(relativePath) elemEvents.notifyChanged(makeFullPath(relativePath))
 }
 
 modelType.addTypes <- function(typesTable)
 {
-  enums.addTypes(this, typesTable, @() this.init(), "id")
+  enums.addTypes(this, typesTable, @() init(), "id")
 }
 
 modelType.addTypes({
@@ -31,6 +28,6 @@ modelType.addTypes({
 })
 
 //save get type by id. return EMPTY if not found
-modelType.get <- @(typeId) this?[typeId] ?? this.EMPTY
+modelType.get <- @(typeId) this?[typeId] ?? EMPTY
 
 return modelType

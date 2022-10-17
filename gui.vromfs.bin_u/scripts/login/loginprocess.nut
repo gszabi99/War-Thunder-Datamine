@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 enum LOGIN_PROGRESS
 {
   NOT_STARTED
@@ -61,11 +56,11 @@ let class LoginProcess
     else if (this.curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES)
     {
       //connect to matching
-      let successCb = Callback(function()
+      let successCb = ::Callback(function()
                         {
                           ::g_login.addState(LOGIN_STATE.MATCHING_CONNECTED)
                         }, this)
-      let errorCb   = Callback(function()
+      let errorCb   = ::Callback(function()
                         {
                           this.destroy()
                         }, this)
@@ -75,7 +70,7 @@ let class LoginProcess
     else if (this.curProgress == LOGIN_PROGRESS.INIT_CONFIGS)
     {
       ::g_login.initConfigs(
-        Callback(function()
+        ::Callback(function()
         {
           ::g_login.addState(LOGIN_STATE.CONFIGS_INITED)
         },

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 
@@ -48,9 +41,9 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
     fontIcon = ::g_warbonds.defaultWbFontIcon
 
     let guiWarbondsBlock = GUI.get()?.warbonds
-    medalIcon = getTblValue(listId, getTblValue("medalIcons", guiWarbondsBlock), medalIcon)
-    levelIcon = getTblValue(listId, getTblValue("levelIcons", guiWarbondsBlock), levelIcon)
-    medalForSpecialTasks = getTblValue("specialTasksByMedal", guiWarbondsBlock, 1)
+    medalIcon = ::getTblValue(listId, ::getTblValue("medalIcons", guiWarbondsBlock), medalIcon)
+    levelIcon = ::getTblValue(listId, ::getTblValue("levelIcons", guiWarbondsBlock), levelIcon)
+    medalForSpecialTasks = ::getTblValue("specialTasksByMedal", guiWarbondsBlock, 1)
 
     //No need to show medal progress if a single medal is required.
     needShowSpecialTasksProgress = medalForSpecialTasks > 1
@@ -102,7 +95,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
   function getAwardByIdx(awardIdx)
   {
     let idx = ::to_integer_safe(awardIdx, -1)
-    return getTblValue(idx, getAwardsList())
+    return ::getTblValue(idx, getAwardsList())
   }
 
   function getAwardById(awardId)
@@ -120,8 +113,8 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 
     local res = ::g_language.decimalFormat(amount)
     if (needColorByBalance && amount > getBalance())
-      res = colorize("badTextColor", res)
-    return res + loc(fontIcon)
+      res = ::colorize("badTextColor", res)
+    return res + ::loc(fontIcon)
   }
 
   function getBalance()
@@ -131,8 +124,8 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 
   function getBalanceText()
   {
-    let limitText = loc("ui/slash") + getPriceText(::g_warbonds.getLimit(), true, false)
-    return colorize("activeTextColor", getPriceText(getBalance(), true, false) + limitText)
+    let limitText = ::loc("ui/slash") + getPriceText(::g_warbonds.getLimit(), true, false)
+    return ::colorize("activeTextColor", getPriceText(getBalance(), true, false) + limitText)
   }
 
   function getExpiredTimeLeft()
@@ -206,7 +199,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 
   function getShopLevelTasks(level)
   {
-    return getTblValue(level, levelsArray, levelsArray.len()? levelsArray.top() : 0)
+    return ::getTblValue(level, levelsArray, levelsArray.len()? levelsArray.top() : 0)
   }
 
   function getNextShopLevelTasks()

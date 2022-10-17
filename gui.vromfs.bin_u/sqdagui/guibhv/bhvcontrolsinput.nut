@@ -1,16 +1,13 @@
-#explicit-this
-#no-root-fallback
-
 local gestureInProgress = false
 
 ::gui_bhv.ControlsInput <- class
 {
-  eventMask = EV_MOUSE_L_BTN | EV_PROCESS_SHORTCUTS | EV_MOUSE_EXT_BTN | EV_KBD_UP | EV_KBD_DOWN | EV_JOYSTICK | EV_GESTURE
+  eventMask = ::EV_MOUSE_L_BTN | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_EXT_BTN | ::EV_KBD_UP | ::EV_KBD_DOWN | ::EV_JOYSTICK | ::EV_GESTURE
 
   function onLMouse(obj, mx, my, is_up, bits)
   {
     this.setMouseButton(obj, "0", is_up)
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function onExtMouse(obj, mx, my, btn_id, is_up, bits)
@@ -31,12 +28,12 @@ local gestureInProgress = false
 
     if (btn)
       this.setMouseButton(obj, btn, is_up)
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function getCurrentBtnIndex(obj)
   {
-    for (local i = 0; i < TOTAL_DEVICES; i++)
+    for (local i = 0; i < ::TOTAL_DEVICES; i++)
     {
       let deviceId = $"device{i}"
       if (obj?[deviceId] && !obj[deviceId].len())
@@ -73,9 +70,9 @@ local gestureInProgress = false
       let btnIndex = this.getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
-        if (!this.isExistsShortcut(obj, STD_MOUSE_DEVICE_ID.tostring(), button))
+        if (!this.isExistsShortcut(obj, ::STD_MOUSE_DEVICE_ID.tostring(), button))
         {
-          obj["device" + btnIndex] = STD_MOUSE_DEVICE_ID.tostring()
+          obj["device" + btnIndex] = ::STD_MOUSE_DEVICE_ID.tostring()
           obj["button" + btnIndex] = button
           obj.sendNotify("change_value")
         }
@@ -102,27 +99,27 @@ local gestureInProgress = false
   function onKbd(obj, event, btn_idx)
   {
     if (!this.checkActive(obj))
-      return RETCODE_HALT
-    if (event == EV_KBD_DOWN)
+      return ::RETCODE_HALT
+    if (event == ::EV_KBD_DOWN)
     {
       let btnIndex = this.getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
-        if (!this.isExistsShortcut(obj, STD_KEYBOARD_DEVICE_ID.tostring(), btn_idx.tostring()))
+        if (!this.isExistsShortcut(obj, ::STD_KEYBOARD_DEVICE_ID.tostring(), btn_idx.tostring()))
         {
-          obj["device" + btnIndex] = STD_KEYBOARD_DEVICE_ID.tostring()
+          obj["device" + btnIndex] = ::STD_KEYBOARD_DEVICE_ID.tostring()
           obj["button" + btnIndex] = btn_idx.tostring()
           obj.sendNotify("change_value")
         }
-        return RETCODE_HALT
+        return ::RETCODE_HALT
       }
     }
-    else if (event == EV_KBD_UP)
+    else if (event == ::EV_KBD_UP)
     {
       if (obj["device0"] != "" && obj["button0"] != "")
         obj.sendNotify("end_edit")
     }
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function isAnalog(dev_id, btn_id)
@@ -143,11 +140,11 @@ local gestureInProgress = false
   function onJoystick(obj, joy, btn_idx, is_up, buttons)
   {
     if (!this.checkActive(obj))
-      return RETCODE_HALT
+      return ::RETCODE_HALT
 
     // Gamepad START btn is reserved for toggling the input listening mode off/on.
     if (btn_idx == 4 && ::is_xinput_device())
-      return RETCODE_NOTHING
+      return ::RETCODE_NOTHING
 
     if (!is_up)
     {
@@ -155,7 +152,7 @@ local gestureInProgress = false
       print("btn_idx " + btn_idx)
       if (!ignore)
       {
-        let id = JOYSTICK_DEVICE_0_ID
+        let id = ::JOYSTICK_DEVICE_0_ID
         if (id>=0)
         {
           let btnIndex = this.getCurrentBtnIndex(obj)
@@ -181,44 +178,44 @@ local gestureInProgress = false
       if (obj["device0"] != "" && obj["button0"] != "")
         obj.sendNotify("end_edit")
     }
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function onGesture(obj, event, gesture_idx)
   {
     if (!this.checkActive(obj))
-      return RETCODE_HALT
+      return ::RETCODE_HALT
 
-    if (event == EV_GESTURE_START)
+    if (event == ::EV_GESTURE_START)
     {
       gestureInProgress = true
       let btnIndex = this.getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
-        if (!this.isExistsShortcut(obj, STD_GESTURE_DEVICE_ID.tostring(), gesture_idx.tostring()))
+        if (!this.isExistsShortcut(obj, ::STD_GESTURE_DEVICE_ID.tostring(), gesture_idx.tostring()))
         {
-          obj["device" + btnIndex] = STD_GESTURE_DEVICE_ID.tostring()
+          obj["device" + btnIndex] = ::STD_GESTURE_DEVICE_ID.tostring()
           obj["button" + btnIndex] = gesture_idx.tostring()
           obj.sendNotify("change_value")
         }
-        return RETCODE_HALT
+        return ::RETCODE_HALT
       }
     }
-    else if (event == EV_GESTURE_END)
+    else if (event == ::EV_GESTURE_END)
     {
       if (obj["device0"] != "" && obj["button0"] != "")
         obj.sendNotify("end_edit")
       gestureInProgress = false
     }
 
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function onShortcutCancel(obj, is_down)
   {
     if (!is_down)
       obj.sendNotify("cancel_edit")
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function onShortcutActivate(obj, is_down)
@@ -226,6 +223,6 @@ local gestureInProgress = false
     if (is_down)
       obj.sendNotify("activate")
 
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 }

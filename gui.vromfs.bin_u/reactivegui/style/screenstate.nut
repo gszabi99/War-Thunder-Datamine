@@ -1,23 +1,20 @@
-from "%rGui/globals/ui_library.nut" import *
-let { send } = require("eventbus")
-let { is_stereo_mode } = require("vr")
 let extWatched = require("%rGui/globals/extWatched.nut")
 
 let debugRowHeight = 14 /* Height of on-screen debug text (fps, build, etc) */
 
-let resolution = extWatched("resolution", "1024 x 768")
+let resolution = extWatched("resolution",
+  @() ::cross_call.sysopt.getGuiValue("resolution", "1024 x 768"))
 
-let mode = extWatched("screenMode", "fullscreen")
+let mode = extWatched("screenMode",
+  @() ::cross_call.sysopt.getGuiValue("mode", "fullscreen"))
 
-let safeAreaHud = extWatched("safeAreaHud", [ 1.0, 1.0 ])
+let safeAreaHud = extWatched("safeAreaHud",
+  @() ::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ])
 
-let safeAreaMenu = extWatched("safeAreaMenu", [ 1.0, 1.0 ])
+let safeAreaMenu = extWatched("safeAreaMenu",
+  @() ::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ])
 
-let isInVr = is_stereo_mode()
-
-send("updateScreenStates", {})
-
-send("updateSafeAreaStates", {})
+let isInVr = extWatched("isInVr", @() ::cross_call.isInVr())
 
 let recalculateHudSize = function(safeArea) {
   let borders = [
@@ -31,19 +28,22 @@ let recalculateHudSize = function(safeArea) {
   }
 }
 
-let safeAreaSizeHud = Computed(@() recalculateHudSize(safeAreaHud.value))
-let safeAreaSizeMenu = Computed(@() recalculateHudSize(safeAreaMenu.value))
+let safeAreaSizeHud = ::Computed(@() recalculateHudSize(safeAreaHud.value))
+let safeAreaSizeMenu = ::Computed(@() recalculateHudSize(safeAreaMenu.value))
 
-let rw = Computed(@() safeAreaSizeHud.value.size[0])
-let rh = Computed(@() safeAreaSizeHud.value.size[1])
-let bw = Computed(@() safeAreaSizeHud.value.borders[1])
-let bh = Computed(@() safeAreaSizeHud.value.borders[0])
+let rw = ::Computed(@() safeAreaSizeHud.value.size[0])
+let rh = ::Computed(@() safeAreaSizeHud.value.size[1])
+let bw = ::Computed(@() safeAreaSizeHud.value.borders[1])
+let bh = ::Computed(@() safeAreaSizeHud.value.borders[0])
 
 let function setOnVideoMode(...){
-  gui_scene.setInterval(0.5,
+  ::gui_scene.setInterval(0.5,
     function() {
-      gui_scene.clearTimer(callee())
-      send("updateSafeAreaStates", {})
+      ::gui_scene.clearTimer(callee())
+      ::interop.updateExtWatched({
+        safeAreaHud = ::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ]
+        safeAreaMenu = ::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ]
+      })
   })
 }
 foreach (w in [resolution, mode])

@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {timeToDeath} = require("shipState.nut")
 let {alert} = require("style/colors.nut").hud.damageModule
 let {secondsToTimeFormatString} = require("%sqstd/time.nut")
@@ -18,7 +16,7 @@ return @(){
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))
       fontFx = FFT_GLOW
-      text = str(loc("hints/leaving_the_tank_in_progress"), loc("ui/colon"))
+      text = ::str(::loc("hints/leaving_the_tank_in_progress"), ::loc("ui/colon"))
       color = alert
     }
     @() {

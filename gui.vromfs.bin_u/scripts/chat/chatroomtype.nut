@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//-file:undefined-const
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -47,9 +39,9 @@ enum chatRoomTabOrder {
   getRoomName = function(roomId, isColored = false)
   {
     if (roomNameLocId)
-      return loc(roomNameLocId)
+      return ::loc(roomNameLocId)
     let roomName = roomId.slice(1)
-    return loc("chat/channel/" + roomName, roomName)
+    return ::loc("chat/channel/" + roomName, roomName)
   }
   getTooltip = @(roomId) getRoomName(roomId, true)
   getRoomColorTag = @(roomId) ""
@@ -70,7 +62,7 @@ enum chatRoomTabOrder {
   inviteIcon = "#ui/gameuiskin#chat.svg"
   getInviteClickNameText = function(roomId) {
     let locId = ::show_console_buttons ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
-    return format(loc(locId), getRoomName(roomId))
+    return format(::loc(locId), getRoomName(roomId))
   }
 
   canCreateRoom = function() { return false }
@@ -114,14 +106,14 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         ::clanUserTable?[roomId] ?? ""
       )
       if (isColored)
-        res = colorize(::g_chat.getSenderColor(roomId), res)
+        res = ::colorize(::g_chat.getSenderColor(roomId), res)
       return res
     }
     getRoomColorTag = function(roomId) //roomId == playerName
     {
       if (::g_squad_manager.isInMySquad(roomId, false))
         return "squad"
-      if (::isPlayerNickInContacts(roomId, EPL_FRIENDLIST))
+      if (::isPlayerNickInContacts(roomId, ::EPL_FRIENDLIST))
         return "friend"
       return ""
     }
@@ -141,9 +133,9 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     getRoomName = function(roomId, isColored = false, isFull = false)
     {
       let isMySquadRoom = roomId == ::g_chat.getMySquadRoomId()
-      local res = !isFull || isMySquadRoom ? loc(roomNameLocId) : loc("squad/disbanded/name")
+      local res = !isFull || isMySquadRoom ? ::loc(roomNameLocId) : ::loc("squad/disbanded/name")
       if (isColored && isMySquadRoom)
-        res = colorize(::g_chat.color.senderSquad[true], res)
+        res = ::colorize(::g_chat.color.senderSquad[true], res)
       return res
     }
     getTooltip = @(roomId) getRoomName(roomId, true, true)
@@ -151,7 +143,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
 
     canBeClosed = function(roomId) { return !::g_squad_manager.isInSquad() || roomId != ::g_chat.getMySquadRoomId() }
     getInviteClickNameText = function(roomId) {
-      return loc(::show_console_buttons ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
+      return ::loc(::show_console_buttons ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
   }
 
@@ -197,8 +189,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         if (roomId.indexof(r.name + "_", 1) == 1)
         {
           let lang = ::g_string.slice(roomId, r.name.len() + 2)
-          local langsList = getTblValue("langs", r, ::langs_list)
-          return isInArray(lang, langsList)
+          local langsList = ::getTblValue("langs", r, ::langs_list)
+          return ::isInArray(lang, langsList)
         }
       return false
     }
@@ -211,8 +203,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         if (r.name != roomName)
           continue
 
-        let langsList = getTblValue("langs", r, ::langs_list)
-        if (!isInArray(lang, langsList))
+        let langsList = ::getTblValue("langs", r, ::langs_list)
+        if (!::isInArray(lang, langsList))
           lang = langsList[0]
         return format("#%s_%s", roomName, lang)
       }
@@ -234,7 +226,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     {
       let threadInfo = ::g_chat.getThreadInfo(roomId)
       if (!threadInfo)
-        return loc(roomNameLocId)
+        return ::loc(roomNameLocId)
 
       local title = threadInfo.getTitle()
       //use text only before first linebreak
@@ -300,12 +292,12 @@ enums.addTypesByGlobalName("g_chat_room_type", {
   return 0
 })
 
-::g_chat_room_type.getRoomType <- function getRoomType(roomId)
+g_chat_room_type.getRoomType <- function getRoomType(roomId)
 {
   foreach(roomType in types)
     if (roomType.checkRoomId(roomId))
       return roomType
 
-  assert(false, "Cant get room type by roomId = " + roomId)
-  return this.DEFAULT_ROOM
+  ::dagor.assertf(false, "Cant get room type by roomId = " + roomId)
+  return DEFAULT_ROOM
 }

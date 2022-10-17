@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { loading_is_finished, loading_press_apply } = require("loading")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -23,7 +16,7 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
     setHelpTextOnLoading(scene.findObject("help_text"))
 
     let updObj = scene.findObject("cutscene_update")
-    if (checkObj(updObj))
+    if (::checkObj(updObj))
       updObj.setUserData(this)
   }
 

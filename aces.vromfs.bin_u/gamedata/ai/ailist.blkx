@@ -4954,13 +4954,11 @@
         },
         "selector": {
           "selectStrategy": "ordered",
-          "ifThenElse": {
-            "isPlayerOrbitActive": {},
-            "orbitHere": {
-              "speed": 120.0,
-              "rollFactor": 0.13,
-              "maxPitch": 30.0,
-              "maxRoll": 45.0
+          "sequencer": {
+            "setControls": {
+              "controls": "flaps",
+              "setTo": 0.0,
+              "timeTo": 0.0
             },
             "parallel": {
               "stayAtCurrentAlt": {},

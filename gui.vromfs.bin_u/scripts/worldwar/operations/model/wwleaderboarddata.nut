@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
 
 let modes = [
@@ -52,7 +47,7 @@ let modes = [
 let function getModeByName(mName)
 {
   return ::u.search(modes, @(m) m.mode == mName
-    && (!m?.needFeature || hasFeature(m.needFeature)))
+    && (!m?.needFeature || ::has_feature(m.needFeature)))
 }
 
 /*
@@ -152,7 +147,7 @@ let function convertWwLeaderboardData(result, applyLocalisationToName = false)
       continue
 
     let lbData = {
-      name = applyLocalisationToName ? loc(rowId) : rowId
+      name = applyLocalisationToName ? ::loc(rowId) : rowId
     }
     foreach (columnId, columnData in rowData)
     {
@@ -164,7 +159,7 @@ let function convertWwLeaderboardData(result, applyLocalisationToName = false)
       local value = typeof(columnData) == "table"
         ? columnData?.value_total
         : columnId == "name" && applyLocalisationToName
-            ? loc(columnData)
+            ? ::loc(columnData)
             : columnData
       if (valueFactor)
         value = value * valueFactor

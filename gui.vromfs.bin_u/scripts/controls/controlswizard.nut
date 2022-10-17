@@ -1,17 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
-let { fabs } = require("math")
 let globalEnv = require("globalEnv")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id="helpers_mode"
@@ -21,14 +11,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     skipAllBefore = [null, "msg/use_mouse_for_control", "msg/use_mouse_for_control", "msg/use_mouse_for_control"]
   }
     { id="msg_defaults",
-      text=loc("msg/mouseAimDefaults"),
+      text=::loc("msg/mouseAimDefaults"),
       type= CONTROL_TYPE.MSG_BOX,
       options = ["#options/resetToDefaults", "#options/no"],
       defValue = 1,
       skipAllBefore = [null, "ID_BASIC_CONTROL_HEADER"]
     }
     { id="msg_wasd_type",
-      text=loc("controls/askKeyboardWasdType"),
+      text=::loc("controls/askKeyboardWasdType"),
       type= CONTROL_TYPE.MSG_BOX
       options = ::recomended_control_presets.map(@(name) "#msgbox/btn_" + name)
       defValue = 1,
@@ -314,20 +304,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_modal_controlsWizard <- function gui_modal_controlsWizard()
 {
-  if (!hasFeature("ControlsPresets"))
+  if (!::has_feature("ControlsPresets"))
     return
   ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
-}
-
-let function isInArrayRecursive(v, arr) {
-  foreach(i in arr) {
-    if (v==i)
-      return true
-    else
-      if (typeof(i)=="array" && isInArrayRecursive(v, i))
-        return true
-  }
-  return false
 }
 
 ::gui_handlers.controlsWizardModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -336,7 +315,7 @@ let function isInArrayRecursive(v, arr) {
   sceneBlkName = "%gui/controlsWizard.blk"
   sceneNavBlkName = null
 
-  unitType = ES_UNIT_TYPE_AIRCRAFT
+  unitType = ::ES_UNIT_TYPE_AIRCRAFT
   controls_wizard_config = null
 
   filter = null
@@ -481,7 +460,7 @@ let function isInArrayRecursive(v, arr) {
 
   function nextItem()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     isButtonsListenInCurBox = false
@@ -524,12 +503,12 @@ let function isInArrayRecursive(v, arr) {
           let config = ::get_option(curItem.optionType)
           filter = config.values[config.value]
         } else
-          assert(false, "Error: not found optionType in wizard filterObj.")
+          ::dagor.assertf(false, "Error: not found optionType in wizard filterObj.")
         return nextItem()
       }
       if (filter!=null &&
-           ((("filterShow" in curItem) && !isInArray(filter, curItem.filterShow))
-             || (("filterHide" in curItem) && isInArray(filter, curItem.filterHide))))
+           ((("filterShow" in curItem) && !::isInArray(filter, curItem.filterShow))
+             || (("filterHide" in curItem) && ::isInArray(filter, curItem.filterHide))))
         return nextItem()
 
       if ("needSkip" in curItem && curItem.needSkip && curItem.needSkip())
@@ -538,7 +517,7 @@ let function isInArrayRecursive(v, arr) {
 
     if (curItem.type== CONTROL_TYPE.HEADER)
     {
-      scene.findObject("wizard-title").setValue(loc(getItemText(curItem)))
+      scene.findObject("wizard-title").setValue(::loc(getItemText(curItem)))
       isItemOk = false
       nextItem()
     }
@@ -625,7 +604,7 @@ let function isInArrayRecursive(v, arr) {
       let lastItem = controls_wizard_config[lastIdx]
       if ("skip" in lastItem)
         for(local i=skipList.len()-1; i>=0; i--)
-          if (isInArrayRecursive(skipList[i], lastItem.skip))
+          if (::isInArrayRecursive(skipList[i], lastItem.skip))
             skipList.remove(i)
 
       nextItem()
@@ -636,13 +615,13 @@ let function isInArrayRecursive(v, arr) {
 
   function switchToDiv(divName)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     foreach(name in ["msgBox-wnd", "shortcut-wnd", "listbox-wnd", "options-wnd", "msg-wnd"])
     {
       let divObj = scene.findObject(name)
-      if (!checkObj(divObj))
+      if (!::checkObj(divObj))
         continue
 
       divObj.show(divName == name)
@@ -663,15 +642,15 @@ let function isInArrayRecursive(v, arr) {
 
   function askShortcut()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     axisMaxChoosen = false
-    scene.findObject("shortcut_text").setValue(loc(getItemText(curItem)))
+    scene.findObject("shortcut_text").setValue(::loc(getItemText(curItem)))
     let textObj = scene.findObject("hold_axis")
-    if (checkObj(textObj))
+    if (::checkObj(textObj))
     {
-      textObj.setValue(loc("hotkeys/msg/press_a_key"))
+      textObj.setValue(::loc("hotkeys/msg/press_a_key"))
       textObj.show(true)
     }
     scene.findObject("shortcut_image")["background-image"] = ""
@@ -687,7 +666,7 @@ let function isInArrayRecursive(v, arr) {
   {
     switchToDiv("shortcut-wnd")
     axisApplyParams = null
-    scene.findObject("shortcut_text").setValue(loc(getItemText(curItem)))
+    scene.findObject("shortcut_text").setValue(::loc(getItemText(curItem)))
 
     isButtonsListenInCurBox = !axisMaxChoosen || axisTypeButtons
     scene.findObject("shortcut_current_button").setValue(isButtonsListenInCurBox? "?" : "")
@@ -732,11 +711,11 @@ let function isInArrayRecursive(v, arr) {
         cantBeEmpty = false
       })
 
-    local assignText = axisAssignText + ((buttonAssignText == "" || axisAssignText == "")? "" : loc("ui/semicolon")) + buttonAssignText
+    local assignText = axisAssignText + ((buttonAssignText == "" || axisAssignText == "")? "" : ::loc("ui/semicolon")) + buttonAssignText
     if (assignText == "")
       assignText = "---"
 
-    scene.findObject("curAssign_text").setValue(loc("controls/currentAssign") + loc("ui/colon") + assignText)
+    scene.findObject("curAssign_text").setValue(::loc("controls/currentAssign") + ::loc("ui/colon") + assignText)
   }
 
   function updateAxisPressKey()
@@ -758,9 +737,9 @@ let function isInArrayRecursive(v, arr) {
       msgLocId += curItem.msgType
 
     let textObj = scene.findObject("hold_axis")
-    if (checkObj(textObj))
+    if (::checkObj(textObj))
     {
-      textObj.setValue(loc(msgLocId))
+      textObj.setValue(::loc(msgLocId))
       textObj.show(true)
     }
 
@@ -788,7 +767,7 @@ let function isInArrayRecursive(v, arr) {
   {
     isListenButton = value
     let obj = scene.findObject("shortcut_current_button")
-    if (checkObj(obj))
+    if (::checkObj(obj))
     {
       obj.show(value)
       obj.setValue("?")
@@ -825,7 +804,7 @@ let function isInArrayRecursive(v, arr) {
       return
 
     let isEnabled = isListenAxis || isListenButton
-    let sampleText = loc("mainmenu/shortcuts") + " (%s" + loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
+    let sampleText = ::loc("mainmenu/shortcuts") + " (%s" + ::loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
     let coloredText = format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
     let NotColoredText = format(sampleText, "", "")
 
@@ -869,7 +848,7 @@ let function isInArrayRecursive(v, arr) {
       foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"])
       {
         let btnObj = scene.findObject(name)
-        if (checkObj(btnObj))
+        if (::checkObj(btnObj))
         {
           btnObj.hideConsoleImage = isListening ? "yes" : "no"
           btnObj.inactiveColor = isListening ? "yes" : "no"
@@ -927,9 +906,9 @@ let function isInArrayRecursive(v, arr) {
     foreach(d in devs)
       if (d>0)
         if (isKbd==null)
-          isKbd = d < JOYSTICK_DEVICE_0_ID
+          isKbd = d < ::JOYSTICK_DEVICE_0_ID
         else
-          if (isKbd != (d < JOYSTICK_DEVICE_0_ID))
+          if (isKbd != (d < ::JOYSTICK_DEVICE_0_ID))
             return null
     return isKbd
   }
@@ -952,7 +931,7 @@ let function isInArrayRecursive(v, arr) {
           if (isKbd == isKbdOrMouse(shortcuts[shortcutId][i].dev))
             shortcuts[shortcutId].remove(i)   //remove shortcuts by same device type
         shortcuts[shortcutId].append({dev = devs, btn = btns})
-        if (shortcuts[shortcutId].len() > MAX_SHORTCUTS)
+        if (shortcuts[shortcutId].len() > max_shortcuts)
           shortcuts[shortcutId].remove(0)
       }
     }
@@ -973,8 +952,8 @@ let function isInArrayRecursive(v, arr) {
 
     local actionText = ""
     foreach(binding in curBinding)
-      actionText += ((actionText=="")? "":", ") + loc("hotkeys/"+shortcutNames[binding[0]])
-    let msg = loc("hotkeys/msg/unbind_question", { action=actionText })
+      actionText += ((actionText=="")? "":", ") + ::loc("hotkeys/"+shortcutNames[binding[0]])
+    let msg = ::loc("hotkeys/msg/unbind_question", { action=actionText })
     this.msgBox("controls_wizard_bind_existing_shortcut", msg, [
       ["add", (@(curBinding, devs, btns, shortcutId) function() {
         doBind(devs, btns, shortcutId)
@@ -1142,7 +1121,7 @@ let function isInArrayRecursive(v, arr) {
 
     let curPreset = ::g_controls_manager.getCurPreset()
     curBtnText = ::remapAxisName(curPreset, selectedAxisNum)
-    showMsg(loc("hotkeys/msg/axis_choosen") + "\n" + curBtnText, config)
+    showMsg(::loc("hotkeys/msg/axis_choosen") + "\n" + curBtnText, config)
   }
 
   function bindAxis()
@@ -1191,8 +1170,8 @@ let function isInArrayRecursive(v, arr) {
 
     local actionText = ""
     foreach(binding in curBinding)
-      actionText += ((actionText=="")? "":", ") + loc(getItemName(binding))
-    let msg = loc("hotkeys/msg/unbind_axis_question", {
+      actionText += ((actionText=="")? "":", ") + ::loc(getItemName(binding))
+    let msg = ::loc("hotkeys/msg/unbind_axis_question", {
       button=curBtnText, action=actionText
     })
     this.msgBox("controls_wizard_bind_existing_axis", msg, [
@@ -1225,7 +1204,7 @@ let function isInArrayRecursive(v, arr) {
   function updateAxisName()
   {
     let obj = scene.findObject("bind-axis-name")
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     obj.show(isAxisListenInCurBox)
@@ -1305,7 +1284,7 @@ let function isInArrayRecursive(v, arr) {
 
   function onAxisInputTimer(obj, dt)
   {
-    if (!isListenAxis || !::is_app_active() || ::steam_is_overlay_active())
+    if (!isListenAxis || !is_app_active() || steam_is_overlay_active())
       return
 
     let device = ::joystick_get_default()
@@ -1443,7 +1422,7 @@ let function isInArrayRecursive(v, arr) {
 
     if (!isListbox)
     {
-      scene.findObject("msgBox_text").setValue(loc(msgText))
+      scene.findObject("msgBox_text").setValue(::loc(msgText))
       local data = ""
       foreach(idx, btn in msgButtons)
       {
@@ -1457,12 +1436,12 @@ let function isInArrayRecursive(v, arr) {
     }
     else
     {
-      scene.findObject("listbox_text").setValue(loc(msgText))
+      scene.findObject("listbox_text").setValue(::loc(msgText))
 
       let view = { items = [] }
       foreach(idx, btn in msgButtons)
       {
-        local text = getTblValue("text", btn, "")
+        local text = ::getTblValue("text", btn, "")
         if (::u.isString(btn))
           text = btn
 
@@ -1554,7 +1533,7 @@ let function isInArrayRecursive(v, arr) {
 
     switchToDiv("options-wnd")
     let optObj = scene.findObject("optionlist")
-    if (!checkObj(optObj))
+    if (!::checkObj(optObj))
       return
 
     this.showSceneBtn("btn_prevItem", false)
@@ -1603,18 +1582,18 @@ let function isInArrayRecursive(v, arr) {
 
   function startManualSetup()
   {
-    ::scene_msg_box("ask_unit_type", null, loc("mainmenu/askWizardForUnitType"),
+    ::scene_msg_box("ask_unit_type", null, ::loc("mainmenu/askWizardForUnitType"),
       [
-        [ "aviation", (@() startManualSetupForUnitType(ES_UNIT_TYPE_AIRCRAFT)).bindenv(this) ],
-        [ "army", (@() startManualSetupForUnitType(ES_UNIT_TYPE_TANK)).bindenv(this) ]
+        [ "aviation", (@() startManualSetupForUnitType(::ES_UNIT_TYPE_AIRCRAFT)).bindenv(this) ],
+        [ "army", (@() startManualSetupForUnitType(::ES_UNIT_TYPE_TANK)).bindenv(this) ]
       ], "aviation")
   }
 
   function startManualSetupForUnitType(esUnitType)
   {
-    if (esUnitType == ES_UNIT_TYPE_TANK)
+    if (esUnitType == ::ES_UNIT_TYPE_TANK)
       controls_wizard_config = ::tank_controls_wizard_config
-    else if (esUnitType == ES_UNIT_TYPE_AIRCRAFT)
+    else if (esUnitType == ::ES_UNIT_TYPE_AIRCRAFT)
       controls_wizard_config = ::aircraft_controls_wizard_config
     else
       ::script_net_assert_once("unsupported unit type", "Given unit type has not wizard config")
@@ -1652,7 +1631,7 @@ let function isInArrayRecursive(v, arr) {
   function goBack()
   {
     if (curIdx>0 && !isPresetAlreadyApplied)
-      this.msgBox("ask_save", loc("hotkeys/msg/wizardSaveUnfinished"),
+      this.msgBox("ask_save", ::loc("hotkeys/msg/wizardSaveUnfinished"),
         [
           ["yes", function() { doApply() } ],
           ["no", function() { ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],
@@ -1684,7 +1663,7 @@ let function isInArrayRecursive(v, arr) {
   {
     switchToDiv("msg-wnd")
     if (msg==null)
-      msg = loc("mainmenu/btnOk")
+      msg = ::loc("mainmenu/btnOk")
     scene.findObject("msg_text").setValue(msg)
     msgTimer = time + waitAxisAddTime
 

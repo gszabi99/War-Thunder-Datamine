@@ -2363,6 +2363,10 @@
         "blk": "gameData/FlightModels/weaponPresets/su_17m4_rocket_s25l.blk"
       },
       {
+        "name": "su_17m4_rocket_kh23",
+        "blk": "gameData/FlightModels/weaponPresets/su_17m4_rocket_kh23.blk"
+      },
+      {
         "name": "su_17m4_rocket_kh25",
         "blk": "gameData/FlightModels/weaponPresets/su_17m4_rocket_kh25.blk"
       },
@@ -2381,9 +2385,9 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 4160.0,
-    "maxloadMassLeftConsoles": 2100.0,
-    "maxloadMassRightConsoles": 2100.0,
+    "maxloadMass": 4100.0,
+    "maxloadMassLeftConsoles": 2000.0,
+    "maxloadMassRightConsoles": 2000.0,
     "maxDisbalance": 700.0,
     "HideNodes": {
       "node": [
@@ -2875,6 +2879,30 @@
                 "preset": "fuse_left_rocket_kh29_t"
               }
             ]
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "wing_left_rocket_kh23_m",
+            "reqModification": "yak_38_x23m",
+            "hasTargetingPod": true,
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "apu_68_b001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_23m.blk",
+              "emitter": "apu_68_kh23m_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "delta_ng"
+            }
           },
           {
             "iconType": "rockets_he_large_special_laser",
@@ -3747,6 +3775,7 @@
           {
             "iconType": "rls",
             "name": "delta_ng",
+            "reqModification": "yak_38_x23m",
             "ShowNodes": {
               "node": [
                 "pylon_5",
@@ -4011,6 +4040,30 @@
                 "preset": "fuse_left_rocket_kh29_t"
               }
             ]
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "wing_right_rocket_kh23_m",
+            "reqModification": "yak_38_x23m",
+            "hasTargetingPod": true,
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "apu_68_b006"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_23m.blk",
+              "emitter": "apu_68_kh23m_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "delta_ng"
+            }
           },
           {
             "iconType": "rockets_he_large_special_laser",
@@ -4325,8 +4378,13 @@
       "modClass": "weapon",
       "tier": 4
     },
+    "yak_38_x23m": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "su_17_x25": {
       "modClass": "weapon",
+      "reqModification": "yak_38_x23m",
       "tier": 2
     },
     "su_17_x29l": {

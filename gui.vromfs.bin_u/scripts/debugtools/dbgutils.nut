@@ -1,10 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format, split_by_chars } = require("string")
-let { send } = require("eventbus")
 // warning disable: -file:forbidden-function
 
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -22,18 +16,27 @@ let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSet
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
-let debugWnd = require("%scripts/debugTools/debugWnd.nut")
-let animBg = require("%scripts/loading/animBg.nut")
-let { register_command } = require("console")
 
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
-let function reload_dagui() {
+::callstack <- dagor.debug_dump_stack
+
+::reload <- function reload()
+{
   ::get_cur_gui_scene()?.resetGamepadMouseTarget()
   let res = ::g_script_reloader.reload(::reload_main_script_module)
   ::update_objects_under_windows_state(::get_cur_gui_scene())
-  dlog("Dagui reloaded")
   return res
+}
+
+::get_stack_string <- function get_stack_string(level = 2)
+{
+  return ::toString(getstackinfos(level), 2)
+}
+
+::print_func_and_enum_state_string <- function print_func_and_enum_state_string(enumString, currentState)
+{
+  dlog(::getstackinfos(2).func + " " + ::getEnumValName(enumString, currentState))
 }
 
 let function _charAddAllItemsHelper(params) {
@@ -47,21 +50,19 @@ let function _charAddAllItemsHelper(params) {
   let taskId = ::char_send_blk("dev_hack", blk)
   if (taskId == -1)
     return
-
-  let __charAddAllItemsHelper = _charAddAllItemsHelper // for lambda capture
-
   ::add_bg_task_cb(taskId, (@(params) function () {
     ++params.currentIndex
     if ((params.currentIndex == params.items.len() ||
          params.currentIndex % 10 == 0) &&
          params.currentIndex != 0)
-      dlog(format("Adding items: %d/%d", params.currentIndex, params.items.len()))
-    __charAddAllItemsHelper(params)
+      ::dlog(format("Adding items: %d/%d", params.currentIndex, params.items.len()))
+    _charAddAllItemsHelper(params)
   })(params))
 }
 
 
-let function charAddAllItems(count = 1) {
+::charAddAllItems <- function charAddAllItems(count = 1)
+{
   let params = {
     items = ::ItemsManager.getItemsList()
     currentIndex = 0
@@ -72,8 +73,9 @@ let function charAddAllItems(count = 1) {
 
 //must to be switched on before we get to debrifing.
 //but after it you can restart derifing with full recalc by usual reload()
-let function switch_on_debug_debriefing_recount() {
-  if ("_stat_get_exp" in getroottable())
+::switch_on_debug_debriefing_recount <- function switch_on_debug_debriefing_recount()
+{
+  if ("_stat_get_exp" in ::getroottable())
     return
 
   ::_stat_get_exp <- ::stat_get_exp
@@ -85,22 +87,24 @@ let function switch_on_debug_debriefing_recount() {
   }
 }
 
-let function debug_reload_and_restart_debriefing() {
+::debug_reload_and_restart_debriefing <- function debug_reload_and_restart_debriefing()
+{
   let result = getDebriefingResult()
-  reload_dagui()
+  ::reload()
 
-  let canRecount = "_stat_get_exp" in getroottable()
+  let canRecount = "_stat_get_exp" in ::getroottable()
   if (!canRecount)
     setDebriefingResult(result)
 
-  ::gui_start_debriefingFull()
+  gui_start_debriefingFull()
 }
 
-let function debug_debriefing_unlocks(unlocksAmount = 5) {
+::debug_debriefing_unlocks <- function debug_debriefing_unlocks(unlocksAmount = 5)
+{
   ::gui_start_debriefingFull({ debugUnlocks = unlocksAmount })
 }
 
-let function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
+::debug_trophy_rewards_list <- function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
   let trophy = ::ItemsManager.findItemById(id)
   local content = trophy.getContent()
     .map(@(i) ::buildTableFromBlk(i))
@@ -109,11 +113,47 @@ let function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
   ::gui_start_open_trophy_rewards_list({ rewardsArray = content })
 }
 
-let function show_hotas_window_image() {
-  ::gui_start_image_wnd(loc("thrustmaster_tflight_hotas_4_controls_image", ""), 1.41)
+::debug_get_every_day_login_award_userlog <- function debug_get_every_day_login_award_userlog(skip = 0, launchWindow = true)
+{
+  let total = ::get_user_logs_count()
+  for (local i = total-1; i > 0; i--)
+  {
+    let blk = ::DataBlock()
+    ::get_user_log_blk_body(i, blk)
+
+    if (blk.type == ::EULT_CHARD_AWARD && ::getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward")
+    {
+      if (skip > 0)
+      {
+        skip--
+        continue
+      }
+
+      if (launchWindow)
+      {
+        let shownIdx = ::shown_userlog_notifications.indexof(blk?.id)
+        if (shownIdx != null)
+          ::shown_userlog_notifications.remove(shownIdx)
+        ::gui_start_show_login_award(blk)
+      }
+      else
+      {
+        dlog("PRINT EVERY DAY LOGIN AWARD")
+        ::debugTableData(blk)
+      }
+      return
+    }
+  }
+  dlog("!!!! NOT FOUND ANY EVERY DAY LOGIN AWARD")
 }
 
-let function debug_export_unit_weapons_descriptions() {
+::show_hotas_window_image <- function show_hotas_window_image()
+{
+  ::gui_start_image_wnd(::loc("thrustmaster_tflight_hotas_4_controls_image", ""), 1.41)
+}
+
+::debug_export_unit_weapons_descriptions <- function debug_export_unit_weapons_descriptions()
+{
   dbgExportToFile.export({
     resultFilePath = "export/unitsWeaponry.blk"
     itemsPerFrame = 10
@@ -153,9 +193,10 @@ let function debug_export_unit_weapons_descriptions() {
   })
 }
 
-let function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
+::debug_export_unit_xray_parts_descriptions <- function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null)
+{
   ::dmViewer.isDebugBatchExportProcess = true
-  ::dmViewer.toggle(DM_VIEWER_XRAY)
+  ::dmViewer.toggle(::DM_VIEWER_XRAY)
   dbgExportToFile.export({
     resultFilePath = "export/unitsXray.blk"
     itemsPerFrame = 10
@@ -197,12 +238,13 @@ let function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
     }
     onFinish = function() {
       ::dmViewer.isDebugBatchExportProcess = false
-      ::dmViewer.toggle(DM_VIEWER_NONE)
+      ::dmViewer.toggle(::DM_VIEWER_NONE)
     }
   })
 }
 
-let function gui_do_debug_unlock() {
+::gui_do_debug_unlock <- function gui_do_debug_unlock()
+{
   ::debug_unlock_all();
   ::is_debug_mode_enabled = true
   ::update_all_units();
@@ -210,7 +252,8 @@ let function gui_do_debug_unlock() {
   ::broadcastEvent("DebugUnlockEnabled")
 }
 
-let function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount = 0) {
+::dbg_loading_brief <- function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount = 0)
+{
   let missionBlk = ::get_meta_mission_info_by_name(missionName)
   if (!::u.isDataBlock(missionBlk))
     return dlog("Not found mission " + missionName) //warning disable: -dlog-warn
@@ -264,18 +307,68 @@ let function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount 
   ::handlersManager.loadHandler(::gui_handlers.LoadingBrief, { briefing = briefingClone })
 }
 
+::dbg_content_patch_open <- function dbg_content_patch_open(isProd = false)
+{
+  let restoreData = {
+    start_content_patch_download = start_content_patch_download
+    stop_content_patch_download = stop_content_patch_download
+  }
 
-let function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = false) {
+  ::stop_content_patch_download = function() {
+    foreach(name, func in restoreData)
+      getroottable()[name] = func
+  }
+
+  local updaterData = {
+                        handler = null
+                        callback = null
+                        eta_sec = 100000
+                        percent = 0
+                        onUpdate = function(obj = null, dt = null)
+                        {
+                          eta_sec -= 100
+                          if(handler.stage == -1)
+                            callback.call(handler, ::UPDATER_EVENT_STAGE, ::UPDATER_DOWNLOADING, 0, 0)
+                          if(percent < 100)
+                            percent += 0.1
+                          callback.call(handler, ::UPDATER_EVENT_PROGRESS, percent, ::math.frnd() * 112048 + 1360000, eta_sec)
+                        }
+                      }
+
+  ::start_content_patch_download = function(configPath, handler, updaterCallback) {
+    updaterData.handler = handler
+    updaterData.callback = updaterCallback
+
+    let fooTimerObj = "timer { id:t = 'debug_loading_timer'; timer_handler_func:t = 'onUpdate' }"
+    handler.guiScene.appendWithBlk(handler.scene, fooTimerObj, null)
+    let curTimerObj = handler.scene.findObject("debug_loading_timer")
+    curTimerObj.setUserData(updaterData)
+  }
+
+  ::gui_start_modal_wnd(::gui_handlers.PS4UpdaterModal,
+  {
+    configPath = isProd ? "/app0/ps4/updater.blk" : "/app0/ps4/updater_dev.blk"
+  })
+
+  ::dbg_ps4updater_close <- (@(updaterData) function() {
+    if( ! updaterData || ! updaterData.handler || ! updaterData.callback)
+      return
+    updaterData.callback.call(updaterData.handler, ::UPDATER_EVENT_FINISH, 0, 0, 0)
+  })(updaterData)
+}
+
+::debug_show_units_by_loc_name <- function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = false)
+{
   let units = shopSearchCore.findUnitsByLocName(unitLocName, true, needIncludeNotInShop)
   units.sort(function(a, b) { return a.name == b.name ? 0 : a.name < b.name ? -1 : 1 })
 
   let res = ::u.map(units, function(unit) {
     let locName = ::getUnitName(unit)
     let army = unit.unitType.getArmyLocName()
-    let country = loc(::getUnitCountry(unit))
+    let country = ::loc(::getUnitCountry(unit))
     let rank = ::get_roman_numeral(unit?.rank ?? -1)
-    let prem = (::isUnitSpecial(unit) || ::isUnitGift(unit)) ? loc("shop/premiumVehicle/short") : ""
-    let hidden = !unit.isInShop ? loc("controls/NA") : unit.isVisibleInShop() ? "" : loc("worldWar/hided_logs")
+    let prem = (::isUnitSpecial(unit) || ::isUnitGift(unit)) ? ::loc("shop/premiumVehicle/short") : ""
+    let hidden = !unit.isInShop ? ::loc("controls/NA") : unit.isVisibleInShop() ? "" : ::loc("worldWar/hided_logs")
     return unit.name + "; \"" + locName + "\" (" + ::g_string.implode([ army, country, rank, prem, hidden ], ", ") + ")"
   })
 
@@ -284,7 +377,8 @@ let function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = fa
   return res.len()
 }
 
-let function debug_show_unit(unitId) {
+::debug_show_unit <- function debug_show_unit(unitId)
+{
   let unit = ::getAircraftByName(unitId)
   if (!unit)
     return "Not found"
@@ -293,7 +387,8 @@ let function debug_show_unit(unitId) {
   return "Done"
 }
 
-let function debug_show_weapon(weaponName) {
+::debug_show_weapon <- function debug_show_weapon(weaponName)
+{
   weaponName = getWeaponNameByBlkPath(weaponName)
   foreach (u in ::all_units)
   {
@@ -311,7 +406,8 @@ let function debug_show_weapon(weaponName) {
   return null
 }
 
-let function debug_change_language(isNext = true) {
+::debug_change_language <- function debug_change_language(isNext = true)
+{
   let list = ::g_language.getGameLocalizationInfo()
   let curLang = ::get_current_language()
   let curIdx = list.findindex( @(l) l.id == curLang ) ?? 0
@@ -321,51 +417,72 @@ let function debug_change_language(isNext = true) {
   dlog("Set language: " + newLang.id)
 }
 
-let function debug_change_resolution(shouldIncrease = true) {
+::debug_change_resolution <- function debug_change_resolution(shouldIncrease = true)
+{
   let curResolution = ::getSystemConfigOption("video/resolution")
   let list = getVideoModes(curResolution, false)
   let curIdx = list.indexof(curResolution) || 0
   let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   let newResolution = list[newIdx]
   let done = @() dlog("Set resolution: " + newResolution +
-    " (" + ::screen_width() + "x" + ::screen_height() + ")")
+    " (" + screen_width() + "x" + screen_height() + ")")
   if (newResolution == curResolution)
     return done()
   ::setSystemConfigOption("video/resolution", newResolution)
   applyRendererSettingsChange(true, false, function() {
-    send("updateExtWatched", { resolution = newResolution })
+    ::call_darg("updateExtWatched", { resolution = newResolution })
     done()
   })
 }
 
-let function debug_multiply_color(colorStr, multiplier) {
+::debug_multiply_color <- function debug_multiply_color(colorStr, multiplier)
+{
   let res = ::g_dagui_utils.multiplyDaguiColorStr(colorStr, multiplier)
   ::copy_to_clipboard(res)
   return res
 }
 
-let function debug_get_last_userlogs(num = 1) {
+::debug_get_last_userlogs <- function debug_get_last_userlogs(num = 1)
+{
   let total = ::get_user_logs_count()
   let res = []
   for (local i = total - 1; i > (total - num - 1); i--)
   {
     local blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
-    dlog("print userlog " + ::getLogNameByType(blk.type) + " " + blk.id)
-    debugTableData(blk)
+    ::dlog("print userlog " + ::getLogNameByType(blk.type) + " " + blk.id)
+    ::debugTableData(blk)
     res.append(blk)
   }
   return res
 }
 
-let function to_pixels_float(value) {
-  return to_pixels("(" + value + ") * 1000000") / 1000000.0
+::to_pixels <- function to_pixels(value)
+{
+  return ::g_dagui_utils.toPixels(::get_cur_gui_scene(), value)
 }
 
-let function debug_check_dirty_words(path = null) {
+::to_pixels_float <- function to_pixels_float(value)
+{
+  return ::to_pixels("(" + value + ") * 1000000") / 1000000.0
+}
+
+::perform_delayed <- function perform_delayed(func, handler = null)
+{
+  handler = handler ?? ::get_cur_base_gui_handler()
+  ::get_gui_scene().performDelayed(handler, func)
+}
+
+::debug_reset_unseen <- function debug_reset_unseen()
+{
+  require("%scripts/seen/seenList.nut").clearAllSeenData()
+}
+
+::debug_check_dirty_words <- function debug_check_dirty_words(path = null)
+{
   let blk = ::DataBlock()
   blk.load(path || "debugDirtyWords.blk")
-  dirtyWordsFilter.setDebugLogFunc(log)
+  dirtyWordsFilter.setDebugLogFunc(::dagor.debug)
   local failed = 0
   for (local i = 0; i < blk.paramCount(); i++)
   {
@@ -373,7 +490,7 @@ let function debug_check_dirty_words(path = null) {
     let filteredText = dirtyWordsFilter.checkPhrase(text)
     if (text == filteredText)
     {
-      log("DIRTYWORDS: PASSED " + text)
+      ::dagor.debug("DIRTYWORDS: PASSED " + text)
       failed++
     }
   }
@@ -381,8 +498,9 @@ let function debug_check_dirty_words(path = null) {
   dlog("DIRTYWORDS: FINISHED, checked " + blk.paramCount() + ", failed check " + failed)
 }
 
-let function debug_unit_rent(unitId = null, seconds = 60) {
-  if (!("_debug_unit_rent" in getroottable()))
+::debug_unit_rent <- function debug_unit_rent(unitId = null, seconds = 60)
+{
+  if (!("_debug_unit_rent" in ::getroottable()))
   {
     ::_debug_unit_rent <- {}
     ::_shop_is_unit_rented <- ::shop_is_unit_rented
@@ -410,16 +528,17 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
     ::_debug_unit_rent.clear()
 }
 
-let function debug_tips_list() {
-  debugWnd("%gui/debugTools/dbgTipsList.tpl",
+::debug_tips_list <- function debug_tips_list() {
+  debug_wnd("%gui/debugTools/dbgTipsList.tpl",
     {tipsList = ::g_tips.getAllTips().map(@(value) { value = value })})
 }
 
-let function debug_get_skyquake_path() {
+::debug_get_skyquake_path <- function debug_get_skyquake_path() {
   let dir = ::get_exe_dir()
   let idx = dir.indexof("/skyquake/")
   return idx != null ? dir.slice(0, idx + 9) : ""
 }
+
 
 //
 
@@ -446,12 +565,17 @@ let function debug_get_skyquake_path() {
 
 let function consoleAndDebugTableData(text, data) {
   console_print(text)
-  debugTableData(data)
+  ::debugTableData(data)
   return "Look in debug"
 }
+::userstat_debug_desc_list <- @() consoleAndDebugTableData("userstatDescList: ", userstatDescList.value)
+::userstat_debug_unlocks <- @() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value)
+::userstat_debug_stats <- @() consoleAndDebugTableData("userstatStats: ", userstatStats.value)
+
+::debug_load_anim_bg <- require("%scripts/loading/animBg.nut").debugLoad
 
 let dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj = null })
-let function debug_focus(needShow = true) {
+::debug_focus <- function debug_focus(needShow = true) {
   if (!needShow) {
     if (dbgFocusData.debugFocusTask != -1)
       ::periodic_task_unregister(dbgFocusData.debugFocusTask)
@@ -488,46 +612,10 @@ if (dbgFocusData.debugFocusTask != -1) {
   debug_focus()
 }
 
-let debug_open_url = @() ::gui_modal_editbox_wnd({
+::debug_open_url <- @() ::gui_modal_editbox_wnd({
   title = "Enter url"
   allowEmpty = false
   okFunc = openUrl
 })
 
-register_command(reload_dagui, "debug.reload_dagui")
-register_command(charAddAllItems, "debug.char_add_all_items")
-register_command(switch_on_debug_debriefing_recount, "debug.switch_on_debug_debriefing_recount")
-register_command(debug_reload_and_restart_debriefing, "debug.reload_and_restart_debriefing")
-register_command(debug_debriefing_unlocks, "debug.debriefing_unlocks")
-register_command(debug_trophy_rewards_list, "debug.trophy_rewards_list")
-register_command(show_hotas_window_image, "debug.show_hotas_window_image")
-register_command(debug_export_unit_weapons_descriptions, "debug.export_unit_weapons_descriptions")
-register_command(debug_export_unit_xray_parts_descriptions, "debug.export_unit_xray_parts_descriptions")
-register_command(gui_do_debug_unlock, "debug.gui_do_debug_unlock")
-register_command(dbg_loading_brief, "debug.loading_brief")
-register_command(debug_show_unit, "debug.show_unit")
-register_command(debug_show_units_by_loc_name, "debug.show_units_by_loc_name")
-register_command(debug_show_weapon, "debug.show_weapon")
-register_command(@() debug_change_language(), "debug.change_language_to_next")
-register_command(@() debug_change_language(false), "debug.change_language_to_prev")
-register_command(@() debug_change_resolution(), "debug.change_resolution_to_next")
-register_command(@() debug_change_resolution(false), "debug.change_resolution_to_prev")
-register_command(debug_multiply_color, "debug.multiply_color")
-register_command(debug_get_last_userlogs, "debug.get_last_userlogs")
-register_command(@(value) dlog(to_pixels(value)), "debug.to_pixels")
-register_command(@(value) dlog(to_pixels_float(value)), "debug.to_pixels_float")
-register_command(debug_check_dirty_words, "debug.check_dirty_words")
-register_command(debug_unit_rent, "debug.unit_rent")
-register_command(debug_tips_list, "debug.tips_list")
-register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDescList.value), "debug.userstat.desc_list")
-register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value), "debug.userstat.unlocks")
-register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.value), "debug.userstat.stats")
-register_command(animBg.debugLoad, "debug.load_anim_bg")
-register_command(debug_focus, "debug.focus")
-register_command(debug_open_url, "debug.open_url")
-
-return {
-  debug_get_skyquake_path
-  gui_do_debug_unlock
-  debug_open_url
-}
+::debug_show_steam_rate_wnd <- @() require("%scripts/user/suggestionRateGame.nut").tryOpenSteamRateReview(true)

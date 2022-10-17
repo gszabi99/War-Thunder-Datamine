@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let string = require("string")
 let { turretAngles } = require("airHudElems.nut")
 let lineWidth = hdpx(LINE_WIDTH)
 let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = require("planeState/planeWeaponState.nut")
@@ -38,7 +35,7 @@ let status = @() {
       fontFxFactor = fontOutlineFxFactor
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
-      text = loc("HUD/TXT_AGM_SHORT")
+      text = ::loc("HUD/TXT_AGM_SHORT")
     },
     @() {
       size = [100, SIZE_TO_CONTENT]
@@ -52,11 +49,11 @@ let status = @() {
       hplace = ALIGN_LEFT
       padding = [0, 20]
       text = GuidanceLockState.value == -1 ? ""
-        : (GuidanceLockState.value == 0 ? loc("HUD/TXT_STANDBY")
-        : (GuidanceLockState.value == 1 ? loc("HUD/TXT_WARM_UP")
-        : (GuidanceLockState.value == 2 ? loc("HUD/TXT_LOCK")
-        : (GuidanceLockState.value == 3 ? loc("HUD/TXT_TRACK")
-        : loc("HUD/TXT_LOCK_AFTER_LAUNCH")))))
+        : (GuidanceLockState.value == 0 ? ::loc("HUD/TXT_STANDBY")
+        : (GuidanceLockState.value == 1 ? ::loc("HUD/TXT_WARM_UP")
+        : (GuidanceLockState.value == 2 ? ::loc("HUD/TXT_LOCK")
+        : (GuidanceLockState.value == 3 ? ::loc("HUD/TXT_TRACK")
+        : ::loc("HUD/TXT_LOCK_AFTER_LAUNCH")))))
     },
     @() {
       size = SIZE_TO_CONTENT
@@ -81,7 +78,7 @@ let status = @() {
       fontFxFactor = fontOutlineFxFactor
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
-      text = string.format("   %s", loc(LaserAgmName.value))
+      text = string.format("   %s", ::loc(LaserAgmName.value))
     },
   ]
 }
@@ -97,9 +94,9 @@ let hints = @() {
       font = Fonts.hud
       fontSize = hudFontHgt
       color = LaserAtgmSightColor.value
-      text = IsOnGround.value ? loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
-        : GuidanceLockState.value == 2 ? loc("hints/need_lock_laser_spot")
-        : (GuidanceLockState.value == 3 ? loc("hints/click_for_launch_laser_shell") : "")
+      text = IsOnGround.value ? ::loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
+        : GuidanceLockState.value == 2 ? ::loc("hints/need_lock_laser_spot")
+        : (GuidanceLockState.value == 3 ? ::loc("hints/click_for_launch_laser_shell") : "")
     }
   ]
 }

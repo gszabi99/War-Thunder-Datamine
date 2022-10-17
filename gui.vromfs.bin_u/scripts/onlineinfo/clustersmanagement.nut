@@ -1,14 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-
-const MAX_FETCH_RETRIES = 5
 
 local unstableClusters = null
 
@@ -49,10 +40,10 @@ let mkCluster = @(name) {
 
   function onClustersLoaded(params)
   {
-    log("[MM] clusters loaded")
-    debugTableData(params)
+    ::dagor.debug("[MM] clusters loaded")
+    ::debugTableData(params)
 
-    let clusters = getTblValue("clusters", params)
+    let clusters = ::getTblValue("clusters", params)
     if (!::u.isArray(clusters))
       return false
 
@@ -82,7 +73,7 @@ let mkCluster = @(name) {
         if (!found)
         {
           clusters_info.append(mkCluster(cluster))
-          log("[MM] cluster added " + cluster)
+          ::dagor.debug("[MM] cluster added " + cluster)
         }
       }
     }
@@ -99,11 +90,11 @@ let mkCluster = @(name) {
             break
           }
         }
-        log("[MM] cluster removed " + cluster)
+        ::dagor.debug("[MM] cluster removed " + cluster)
       }
     }
-    log("clusters list updated")
-    debugTableData(clusters_info)
+    ::dagor.debug("clusters list updated")
+    ::debugTableData(clusters_info)
     //TODO: need to update clusters in GUI
   }
 
@@ -136,7 +127,7 @@ let mkCluster = @(name) {
         //clusters not loaded or broken data
         if (__fetch_counter < MAX_FETCH_RETRIES)
         {
-          log("fetch cluster error, retry - " + __fetch_counter)
+          ::dagor.debug("fetch cluster error, retry - " + __fetch_counter)
           __update_clusters_list()
         } else
         {
@@ -166,7 +157,7 @@ let mkCluster = @(name) {
   {
     if (clusterName.indexof("wthost") != null)
       return clusterName
-    return loc("cluster/" + clusterName)
+    return ::loc("cluster/" + clusterName)
   }
 
   isClusterUnstable

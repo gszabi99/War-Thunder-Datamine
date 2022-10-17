@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText,
         getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -46,9 +37,9 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
     guiScene.setUpdatesEnabled(false, false)
 
-    setSceneTitle(loc("mainmenu/btnDynamicPreview"), scene, "menu-title")
+    setSceneTitle(::loc("mainmenu/btnDynamicPreview"), scene, "menu-title")
 
-    unitsBlk = ::DataBlock()
+    unitsBlk = DataBlock()
     ::dynamic_get_units(::mission_settings.missionFull, unitsBlk)
 
     let list = createOptions()
@@ -59,7 +50,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
     ::g_map_preview.setMapPreview(scene.findObject("tactical-map"), ::mission_settings.missionFull)
 
     local misObj = ""
-    misObj = loc(format("mb/%s/objective", ::mission_settings.mission.getStr("name", "")), "")
+    misObj = ::loc(format("mb/%s/objective", ::mission_settings.mission.getStr("name", "")), "")
     scene.findObject("mission-objectives").setValue(misObj)
 
     guiScene.setUpdatesEnabled(true, true)
@@ -85,7 +76,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
     local weapons = getWeaponsList(unitId, weapTags)
     if (weapons.values.len() == 0)
     {
-      log($"Bomber without bombs: {unitId}")
+      ::dagor.debug($"Bomber without bombs: {unitId}")
       weapons = getWeaponsList(unitId)
     }
 
@@ -298,7 +289,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
-        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
+        maxSquadSize = ::get_max_players_for_gamemode(::GM_BUILDER)
       }))
       return
 
@@ -312,7 +303,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
       armada.setInt("count",      listC[i][isPlayer ? 0 : scene.findObject($"{i}_c").getValue()])
     }
 
-    ::mission_settings.mission.setInt("_gameMode", GM_BUILDER)
+    ::mission_settings.mission.setInt("_gameMode", ::GM_BUILDER)
     ::mission_settings.mission.player_class = playerUnitId
     ::dynamic_set_units(::mission_settings.missionFull, unitsBlk)
     ::select_mission_full(::mission_settings.mission,

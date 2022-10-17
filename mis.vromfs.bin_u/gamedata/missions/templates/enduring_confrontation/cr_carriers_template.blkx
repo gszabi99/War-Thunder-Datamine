@@ -55,9 +55,6 @@
           },
           {
             "value": ""
-          },
-          {
-            "value": ""
           }
         ],
         "varSetString": [
@@ -70,13 +67,6 @@
             "var": "cr_t2_carrier_name"
           }
         ],
-        "unitLoadBehTree": {
-          "name": "shipBot",
-          "objects": [
-            "@cr_t1_carrier_name",
-            "@cr_t2_carrier_name"
-          ]
-        },
         "triggerEnable": {
           "target": [
             "cr_t1_carriers_start",
@@ -403,17 +393,44 @@
               "value": "vklyuchaem otslezhivanie obnaruzheniya"
             }
           ],
-          "unitRespawn": {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "@cr_t1_carrier_name",
-            "target": "@cr_t1_carrier_spawn_name",
-            "resetFormation": true
-          },
+          "unitRespawn": [
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "@cr_t1_carrier_name",
+              "target": "@cr_t1_carrier_spawn_name",
+              "resetFormation": true
+            },
+            {
+              "delay": 0.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "dst_t1_destroyers_squad",
+              "object_type": "isInactive",
+              "target": "@cr_t1_fleet_spawn_name",
+              "randomObjectsCount": 3,
+              "resetFormation": true,
+              "formation": {
+                "formation_type": "rows",
+                "formation_div": 1,
+                "formation_step": [
+                  20.0,
+                  4.0
+                ],
+                "formation_noise": [
+                  0.3,
+                  0.2
+                ]
+              }
+            }
+          ],
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -523,17 +540,44 @@
               "value": "vklyuchaem otslezhivanie obnaruzheniya"
             }
           ],
-          "unitRespawn": {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "@cr_t2_carrier_name",
-            "target": "@cr_t2_carrier_spawn_name",
-            "resetFormation": true
-          },
+          "unitRespawn": [
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "@cr_t2_carrier_name",
+              "target": "@cr_t2_carrier_spawn_name",
+              "resetFormation": true
+            },
+            {
+              "delay": 0.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "dst_t2_destroyers_squad",
+              "object_type": "isInactive",
+              "target": "@cr_t2_fleet_spawn_name",
+              "randomObjectsCount": 3,
+              "resetFormation": true,
+              "formation": {
+                "formation_type": "rows",
+                "formation_div": 1,
+                "formation_step": [
+                  20.0,
+                  4.0
+                ],
+                "formation_noise": [
+                  0.3,
+                  0.2
+                ]
+              }
+            }
+          ],
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -604,17 +648,99 @@
             "time": 1.0
           }
         },
-        "conditions": {},
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 2500.0,
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "@cr_t1_carrier_spawn_name",
+            "target": [
+              "@cr_t1_carrier_name",
+              "dst_t1_destroyers_squad"
+            ],
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
         "actions": {
-          "comment": {
-            "value": ""
+          "makeSquadFromUnits": {
+            "name": "@cr_t1_carrier_squad_name",
+            "object_marking": 0,
+            "object": [
+              "@cr_t1_carrier_name",
+              "dst_t1_destroyers_squad"
+            ],
+            "useForTriggerFiltered": true
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": "properties must be set after allother things"
+            }
+          ],
+          "setHeadSquad": {
+            "name": "@cr_t1_carrier_squad_name",
+            "removeOnKill": true,
+            "followLowestSpeed": true,
+            "useCurrentFormation": true,
+            "object": [
+              "@cr_t1_carrier_name",
+              "dst_t1_destroyers_squad"
+            ],
+            "useForTriggerFiltered": true
           },
           "unitSetRoute": {
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "route": "@cr_t1_carrier_route_name",
             "teleportToStart": false,
-            "object": "@cr_t1_carrier_name"
+            "object": "@cr_t1_carrier_squad_name"
+          },
+          "unitLoadBehTree": {
+            "name": "shipBot",
+            "objects": "@cr_t1_carrier_squad_name"
+          },
+          "unitSetFormation": {
+            "formation_type": "rows",
+            "formation_div": 1,
+            "formation_step": [
+              6.0,
+              3.0
+            ],
+            "formation_noise": [
+              0.3,
+              0.4
+            ],
+            "object": "@cr_t1_carrier_squad_name",
+            "allUnitsInOneFormation": true
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@cr_t1_carrier_squad_name",
+            "shipTurnRadius": 500.0,
+            "enableShipCollisionAvoidance": true,
+            "advancedCollisionAvoidance": true
           }
         },
         "else_actions": {}
@@ -632,17 +758,99 @@
             "time": 1.0
           }
         },
-        "conditions": {},
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 2500.0,
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "@cr_t2_carrier_spawn_name",
+            "target": [
+              "@cr_t2_carrier_name",
+              "dst_t2_destroyers_squad"
+            ],
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
         "actions": {
-          "comment": {
-            "value": ""
+          "makeSquadFromUnits": {
+            "name": "@cr_t2_carrier_squad_name",
+            "object_marking": 0,
+            "object": [
+              "@cr_t2_carrier_name",
+              "dst_t2_destroyers_squad"
+            ],
+            "useForTriggerFiltered": true
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": "properties must be set after allother things"
+            }
+          ],
+          "setHeadSquad": {
+            "name": "@cr_t2_carrier_squad_name",
+            "removeOnKill": true,
+            "followLowestSpeed": true,
+            "useCurrentFormation": true,
+            "object": [
+              "@cr_t2_carrier_name",
+              "dst_t2_destroyers_squad"
+            ],
+            "useForTriggerFiltered": true
           },
           "unitSetRoute": {
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "route": "@cr_t2_carrier_route_name",
             "teleportToStart": false,
-            "object": "@cr_t2_carrier_name"
+            "object": "@cr_t2_carrier_squad_name"
+          },
+          "unitLoadBehTree": {
+            "name": "shipBot",
+            "objects": "@cr_t2_carrier_squad_name"
+          },
+          "unitSetFormation": {
+            "formation_type": "rows",
+            "formation_div": 1,
+            "formation_step": [
+              6.0,
+              3.0
+            ],
+            "formation_noise": [
+              0.3,
+              0.4
+            ],
+            "object": "@cr_t2_carrier_squad_name",
+            "allUnitsInOneFormation": true
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@cr_t2_carrier_squad_name",
+            "shipTurnRadius": 500.0,
+            "enableShipCollisionAvoidance": true,
+            "advancedCollisionAvoidance": true
           }
         },
         "else_actions": {}
@@ -1350,8 +1558,7 @@
           "moAddMissionObjective": {
             "target": "cr_t2_detect_carrier_quest",
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -1392,8 +1599,7 @@
           "moAddMissionObjective": {
             "target": "cr_t1_detect_carrier_quest",
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -1439,8 +1645,6 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
-              "extendedEnding": true,
               "team": "A"
             },
             {
@@ -1448,12 +1652,11 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
               "team": "A"
             }
           ],
           "wait": {
-            "time": 2.0
+            "time": 20.0
           }
         },
         "else_actions": {
@@ -1499,8 +1702,6 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
-              "extendedEnding": true,
               "team": "B"
             },
             {
@@ -1508,12 +1709,11 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
               "team": "B"
             }
           ],
           "wait": {
-            "time": 2.0
+            "time": 20.0
           }
         },
         "else_actions": {
@@ -1641,8 +1841,7 @@
           "moAddMissionObjective": {
             "target": "cr_t1_destroy_carrier_quest",
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -1678,8 +1877,7 @@
           "moAddMissionObjective": {
             "target": "cr_t2_destroy_carrier_quest",
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -1720,7 +1918,6 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@cr_t2_carrier_name",
@@ -1731,12 +1928,11 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
               "team": "A"
             }
           ],
           "wait": {
-            "time": 2.0
+            "time": 20.0
           }
         },
         "else_actions": {
@@ -1777,7 +1973,6 @@
               "status": 2,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
               "extendedEnding": true,
               "team": "B",
               "unit_or_area": "@cr_t1_carrier_name",
@@ -1788,12 +1983,11 @@
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
-              "object_marking": 0,
               "team": "B"
             }
           ],
           "wait": {
-            "time": 2.0
+            "time": 20.0
           }
         },
         "else_actions": {

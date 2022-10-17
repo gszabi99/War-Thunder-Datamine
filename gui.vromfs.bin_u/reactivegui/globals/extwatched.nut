@@ -1,6 +1,3 @@
-let { Watched } = require("frp")
-let { subscribe } = require("eventbus")
-
 let extData = {}
 
 let function update(config) {
@@ -13,18 +10,18 @@ let function update(config) {
   }
 }
 
-let function make(name, defValue) {
+let function make(name, ctor) {
   if (name in extData) {
-    assert(false, $"extWatched: duplicate name: {name}")
+    ::assert(false, $"extWatched: duplicate name: {name}")
     return extData[name]
   }
 
-  let res = Watched(defValue)
+  let res = Watched(ctor())
   extData[name] <- res
   res.whiteListMutatorClosure(update)
   return res
 }
 
-subscribe("updateExtWatched", update)
+::interop.updateExtWatched <- update
 
 return make

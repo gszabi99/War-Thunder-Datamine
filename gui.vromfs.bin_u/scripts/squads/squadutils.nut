@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
@@ -67,17 +60,17 @@ systemMsg.registerLocTags(locTags)
     if (!canShowMembersBRDiffMsg())
       return okFunc()
 
-    let message = loc("multiplayer/squad/members_br_diff_warning", {
+    let message = ::loc("multiplayer/squad/members_br_diff_warning", {
       squadBR = format("%.1f", recentBR.value)
       players = "\n".join(brData.reduce(@(acc, v, k) acc.append(
-        "".concat(colorize("userlogColoredText", getPlayerName(k)), loc("ui/colon"), format("%.1f", v))), []))
+        "".concat(::colorize("userlogColoredText", getPlayerName(k)), ::loc("ui/colon"), format("%.1f", v))), []))
     })
 
     ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox, {
       parentHandler = handler
       message = message
       ableToStartAndSkip = true
-      startBtnText = loc("msgbox/btn_yes")
+      startBtnText = ::loc("msgbox/btn_yes")
       onStartPressed = okFunc
       skipFunc = function(value) {
         ::save_local_account_settings("skipped_msg/membersBRDiff", value)
@@ -86,35 +79,35 @@ systemMsg.registerLocTags(locTags)
   }
 }
 
-::g_squad_utils.canJoinFlightMsgBox <- function canJoinFlightMsgBox(options = null,
+g_squad_utils.canJoinFlightMsgBox <- function canJoinFlightMsgBox(options = null,
                                             okFunc = null, cancelFunc = null)
 {
   if (!::isInMenu())
   {
-    ::g_popups.add("", loc("squad/cant_join_in_flight"))
+    ::g_popups.add("", ::loc("squad/cant_join_in_flight"))
     return false
   }
 
   if (!::g_squad_manager.isInSquad())
     return true
 
-  local msgId = getTblValue("msgId", options, "squad/cant_start_new_flight")
-  if (getTblValue("allowWhenAlone", options, true) && !::g_squad_manager.isNotAloneOnline())
+  local msgId = ::getTblValue("msgId", options, "squad/cant_start_new_flight")
+  if (::getTblValue("allowWhenAlone", options, true) && !::g_squad_manager.isNotAloneOnline())
     return true
 
-  if (!getTblValue("isLeaderCanJoin", options, false) || !::g_squad_manager.isSquadLeader())
+  if (!::getTblValue("isLeaderCanJoin", options, false) || !::g_squad_manager.isSquadLeader())
   {
     showLeaveSquadMsgBox(msgId, okFunc, cancelFunc)
     return false
   }
 
-  let maxSize = getTblValue("maxSquadSize", options, 0)
+  let maxSize = ::getTblValue("maxSquadSize", options, 0)
   if (maxSize > 0 && ::g_squad_manager.getOnlineMembersCount() > maxSize)
   {
-    ::showInfoMsgBox(loc("gamemode/squad_is_too_big",
+    ::showInfoMsgBox(::loc("gamemode/squad_is_too_big",
       {
-        squadSize = colorize("userlogColoredText", ::g_squad_manager.getOnlineMembersCount())
-        maxTeamSize = colorize("userlogColoredText", maxSize)
+        squadSize = ::colorize("userlogColoredText", ::g_squad_manager.getOnlineMembersCount())
+        maxTeamSize = ::colorize("userlogColoredText", maxSize)
       }))
     return false
   }
@@ -124,7 +117,7 @@ systemMsg.registerLocTags(locTags)
     if (!::g_squad_utils.checkCrossPlayCondition())
       return false
 
-    if (getTblValue("showOfflineSquadMembersPopup", options, false))
+    if (::getTblValue("showOfflineSquadMembersPopup", options, false))
       checkAndShowHasOfflinePlayersPopup()
     return true
   }
@@ -140,26 +133,26 @@ systemMsg.registerLocTags(locTags)
   return false
 }
 
-::g_squad_utils.checkCrossPlayCondition <- function checkCrossPlayCondition()
+g_squad_utils.checkCrossPlayCondition <- function checkCrossPlayCondition()
 {
   let members = ::g_squad_manager.getDiffCrossPlayConditionMembers()
   if (!members.len())
     return true
 
   let locId = "squad/sameCrossPlayConditionAsLeader/" + (members[0].crossplay? "disabled" : "enabled")
-  let membersNamesArray = members.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
+  let membersNamesArray = members.map(@(member) ::colorize("warningTextColor", getPlayerName(member.name)))
   ::showInfoMsgBox(
-    loc(locId,
+    ::loc(locId,
       { names = ::g_string.implode(membersNamesArray, ",")}
     ), "members_not_all_crossplay_condition")
   return false
 }
 
-::g_squad_utils.showRevokeNonAcceptInvitesMsgBox <- function showRevokeNonAcceptInvitesMsgBox(okFunc = null, cancelFunc = null)
+g_squad_utils.showRevokeNonAcceptInvitesMsgBox <- function showRevokeNonAcceptInvitesMsgBox(okFunc = null, cancelFunc = null)
 {
-  ::showCantJoinSquadMsgBox(
+  showCantJoinSquadMsgBox(
     "revoke_non_accept_invitees",
-    loc("squad/revoke_non_accept_invites"),
+    ::loc("squad/revoke_non_accept_invites"),
     [["revoke_invites", function() { ::g_squad_manager.revokeAllInvites(okFunc) } ],
      ["cancel", cancelFunc]
     ],
@@ -168,11 +161,11 @@ systemMsg.registerLocTags(locTags)
   )
 }
 
-::g_squad_utils.showLeaveSquadMsgBox <- function showLeaveSquadMsgBox(msgId, okFunc = null, cancelFunc = null)
+g_squad_utils.showLeaveSquadMsgBox <- function showLeaveSquadMsgBox(msgId, okFunc = null, cancelFunc = null)
 {
-  ::showCantJoinSquadMsgBox(
+  showCantJoinSquadMsgBox(
     "cant_join",
-    loc(msgId),
+    ::loc(msgId),
     [
       [ "leaveSquad",
         function() { ::g_squad_manager.leaveSquad(okFunc) }
@@ -189,7 +182,7 @@ systemMsg.registerLocTags(locTags)
   ::scene_msg_box(id, null, msg, buttons, defBtn, options)
 }
 
-::g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, cancelFunc = null,
+g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, cancelFunc = null,
                                                shouldCheckCrewsReady = false)
 {
   if (!::g_squad_manager.isSquadMember() ||
@@ -198,8 +191,8 @@ systemMsg.registerLocTags(locTags)
     return func()
 
   let messageText = (::g_squad_manager.isMyCrewsReady && shouldCheckCrewsReady)
-    ? loc("msg/switch_off_crews_ready_flag")
-    : loc("msg/switch_off_ready_flag")
+    ? ::loc("msg/switch_off_crews_ready_flag")
+    : ::loc("msg/switch_off_ready_flag")
 
   let onOkFunc = function() {
     if (::g_squad_manager.isMyCrewsReady && shouldCheckCrewsReady)
@@ -222,7 +215,7 @@ systemMsg.registerLocTags(locTags)
     "ok", { cancel_fn = function() {}})
 }
 
-::g_squad_utils.updateMyCountryData <- function updateMyCountryData(needUpdateSessionLobbyData = true)
+g_squad_utils.updateMyCountryData <- function updateMyCountryData(needUpdateSessionLobbyData = true)
 {
   let memberData = getMyStateData()
   ::g_squad_manager.updateMyMemberData(memberData)
@@ -237,7 +230,7 @@ systemMsg.registerLocTags(locTags)
     })
 }
 
-::g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, event, canChangeMemberCountry = true)
+g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, event, canChangeMemberCountry = true)
 {
   let res = {
     canFlyout = true,
@@ -272,14 +265,13 @@ systemMsg.registerLocTags(locTags)
             dislikedMissions = memberData?.dislikedMissions ?? []
             bannedMissions = memberData?.bannedMissions ?? []
             fakeName = memberData?.fakeName ?? false
-            queueProfileJwt = memberData?.queueProfileJwt ?? ""
           }
 
     local haveAvailCountries = false
     local isAnyRequiredAndAvailableFound = false
 
     let checkOnlyMemberCountry = !canChangeMemberCountry
-                                   || isInArray(memberData.country, teamData.countries)
+                                   || ::isInArray(memberData.country, teamData.countries)
     if (checkOnlyMemberCountry)
       mData.isSelfCountry = true
     else
@@ -303,7 +295,7 @@ systemMsg.registerLocTags(locTags)
           continue
 
         haveAvailable = ::events.isUnitAllowedByTeamData(teamData, unitName, ediff)
-        let isBroken = isInArray(unitName, memberData.brokenAirs)
+        let isBroken = ::isInArray(unitName, memberData.brokenAirs)
         if (isBroken)
           brokenUnits.append(unitName)
         haveNotBroken = haveAvailable && !isBroken
@@ -317,7 +309,7 @@ systemMsg.registerLocTags(locTags)
         foreach(unitName in memberData.crewAirs[country])
         {
           haveAvailable = haveAvailable || ::events.isUnitAllowedByTeamData(teamData, unitName, ediff)
-          let isBroken = isInArray(unitName, memberData.brokenAirs)
+          let isBroken = ::isInArray(unitName, memberData.brokenAirs)
           if (isBroken)
             brokenUnits.append(unitName)
           haveNotBroken = haveNotBroken || (haveAvailable && !isBroken)
@@ -350,7 +342,7 @@ systemMsg.registerLocTags(locTags)
   return res
 }
 
-::g_squad_utils.getMembersAvailableUnitsCheckingData <- function getMembersAvailableUnitsCheckingData(remainUnits, country)
+g_squad_utils.getMembersAvailableUnitsCheckingData <- function getMembersAvailableUnitsCheckingData(remainUnits, country)
 {
   let res = []
   foreach (uid, memberData in ::g_squad_manager.getMembers())
@@ -359,7 +351,7 @@ systemMsg.registerLocTags(locTags)
   return res
 }
 
-::g_squad_utils.getMemberAvailableUnitsCheckingData <- function getMemberAvailableUnitsCheckingData(memberData, remainUnits, country)
+g_squad_utils.getMemberAvailableUnitsCheckingData <- function getMemberAvailableUnitsCheckingData(memberData, remainUnits, country)
 {
   let memberCantJoinData = {
                                canFlyout = true
@@ -379,7 +371,7 @@ systemMsg.registerLocTags(locTags)
   let brokenUnits = []
   foreach (idx, name in memberData.crewAirs[country])
     if (name in remainUnits)
-      if (isInArray(name, memberData.brokenAirs))
+      if (::isInArray(name, memberData.brokenAirs))
         brokenUnits.append(name)
       else
         memberAvailableUnits.append(name)
@@ -394,7 +386,7 @@ systemMsg.registerLocTags(locTags)
   return memberCantJoinData
 }
 
-::g_squad_utils.checkAndShowHasOfflinePlayersPopup <- function checkAndShowHasOfflinePlayersPopup()
+g_squad_utils.checkAndShowHasOfflinePlayersPopup <- function checkAndShowHasOfflinePlayersPopup()
 {
   if (!::g_squad_manager.isSquadLeader())
     return
@@ -403,22 +395,22 @@ systemMsg.registerLocTags(locTags)
   if (offlineMembers.len() == 0)
     return
 
-  local text = loc("squad/has_offline_members") + loc("ui/colon")
+  local text = ::loc("squad/has_offline_members") + ::loc("ui/colon")
   text += ::g_string.implode(::u.map(offlineMembers,
-                            @(memberData) colorize("warningTextColor", getPlayerName(memberData.name))
+                            @(memberData) ::colorize("warningTextColor", getPlayerName(memberData.name))
                            ),
-                    loc("ui/comma")
+                    ::loc("ui/comma")
                    )
 
   ::g_popups.add("", text)
 }
 
-::g_squad_utils.checkSquadsVersion <- function checkSquadsVersion(memberSquadsVersion)
+g_squad_utils.checkSquadsVersion <- function checkSquadsVersion(memberSquadsVersion)
 {
   if (memberSquadsVersion <= SQUADS_VERSION)
     return
 
-  local message = loc("squad/need_reload")
+  local message = ::loc("squad/need_reload")
   ::scene_msg_box("need_update_squad_version", null, message,
                   [["relogin", function() {
                      ::save_short_token()
@@ -442,7 +434,7 @@ systemMsg.registerLocTags(locTags)
 
     availableUnitsArrayIndex - recursion param
 **/
-::g_squad_utils.checkAvailableUnits <- function checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex = 0)
+g_squad_utils.checkAvailableUnits <- function checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex = 0)
 {
   if (availableUnitsArrays.len() >= availableUnitsArrayIndex)
     return true
@@ -463,7 +455,7 @@ systemMsg.registerLocTags(locTags)
   return false
 }
 
-::g_squad_utils.canJoinByMySquad <- function canJoinByMySquad(operationId = null, controlCountry = "")
+g_squad_utils.canJoinByMySquad <- function canJoinByMySquad(operationId = null, controlCountry = "")
 {
   if (operationId == null)
     operationId = ::g_squad_manager.getWwOperationId()
@@ -485,7 +477,7 @@ systemMsg.registerLocTags(locTags)
   return true
 }
 
-::g_squad_utils.isEventAllowedForAllMembers <- function isEventAllowedForAllMembers(eventEconomicName, isSilent = false)
+g_squad_utils.isEventAllowedForAllMembers <- function isEventAllowedForAllMembers(eventEconomicName, isSilent = false)
 {
   if (!::g_squad_manager.isInSquad())
     return true
@@ -500,17 +492,17 @@ systemMsg.registerLocTags(locTags)
     return res
 
   let mText = ::g_string.implode(
-    ::u.map(notAvailableMemberNames, @(name) colorize("userlogColoredText", getPlayerName(name)))
+    ::u.map(notAvailableMemberNames, @(name) ::colorize("userlogColoredText", getPlayerName(name)))
     ", "
   )
-  let msg = loc("msg/members_no_access_to_mode", {  members = mText  })
+  let msg = ::loc("msg/members_no_access_to_mode", {  members = mText  })
   ::showInfoMsgBox(msg, "members_req_new_content")
   return res
 }
 
-::g_squad_utils.showMemberMenu <- function showMemberMenu(obj)
+g_squad_utils.showMemberMenu <- function showMemberMenu(obj)
 {
-  if (!checkObj(obj))
+  if (!::checkObj(obj))
     return
 
   let member = obj.getUserData()

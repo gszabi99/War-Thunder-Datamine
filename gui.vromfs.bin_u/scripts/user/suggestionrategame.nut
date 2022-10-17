@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { TIME_HOUR_IN_SECONDS } = require("%sqstd/time.nut")
@@ -10,16 +5,15 @@ let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
 let steamRateGameWnd = require("steamRateGameWnd.nut")
 let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { register_command } = require("console")
 
-let logP = log_with_prefix("[UserUtils] ")
+let log = require("%sqstd/log.nut")().with_prefix("[UserUtils] ")
 
-let needShowRateWnd = persist("needShowRateWnd", @() Watched(false)) //need this, because debriefing data destroys after debriefing modal is closed
+let needShowRateWnd = persist("needShowRateWnd", @() ::Watched(false)) //need this, because debriefing data destroys after debriefing modal is closed
 
-let winsInARow = persist("winsInARow", @() Watched(0))
-let haveMadeKills = persist("haveMadeKills", @() Watched(false))
-let havePurchasedSpecUnit = persist("havePurchasedSpecUnit", @() Watched(false))
-let havePurchasedPremium = persist("havePurchasedPremium", @() Watched(false))
+let winsInARow = persist("winsInARow", @() ::Watched(0))
+let haveMadeKills = persist("haveMadeKills", @() ::Watched(false))
+let havePurchasedSpecUnit = persist("havePurchasedSpecUnit", @() ::Watched(false))
+let havePurchasedPremium = persist("havePurchasedPremium", @() ::Watched(false))
 
 const RATE_WND_SAVE_ID = "seen/rateWnd"
 
@@ -53,7 +47,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
     return
 
   if (::load_local_account_settings(RATE_WND_SAVE_ID, false)) {
-    logP("[ShowRate] Already seen")
+    log("[ShowRate] Already seen")
     return
   }
 
@@ -64,9 +58,9 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   if (!::my_stats.isStatsLoaded() || (::my_stats.getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > cfg.totalPlayedHoursMax) // Old players
     return
 
-  let isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == GM_DOMINATION)
+  let isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == ::GM_DOMINATION)
   if (isWin && (havePurchasedPremium.value || havePurchasedSpecUnit.value || myPlace <= cfg.minPlaceOnWin)) {
-    logP($"[ShowRate] Passed by win and prem {havePurchasedPremium.value || havePurchasedSpecUnit.value} or win and place {myPlace} condition")
+    log($"[ShowRate] Passed by win and prem {havePurchasedPremium.value || havePurchasedSpecUnit.value} or win and place {myPlace} condition")
     needShowRateWnd(true)
     return
   }
@@ -81,7 +75,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
     })
 
     haveMadeKills(haveMadeKills.value || totalKills >= cfg.minKillsNum)
-    logP($"[ShowRate] Update kills count {totalKills}; haveMadeKills {haveMadeKills.value}")
+    log($"[ShowRate] Update kills count {totalKills}; haveMadeKills {haveMadeKills.value}")
   }
   else {
     winsInARow(0)
@@ -89,7 +83,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 
   if (winsInARow.value >= cfg.totalWinsInARow && haveMadeKills.value) {
-    logP("[ShowRate] Passed by wins in a row and kills")
+    log("[ShowRate] Passed by wins in a row and kills")
     needShowRateWnd(true)
   }
 }
@@ -103,7 +97,7 @@ let function tryOpenXboxRateReviewWnd() {
 }
 
 let function tryOpenSteamRateReview(forceShow = false) {
-  if (!forceShow && (!::steam_is_running() || !hasFeature("SteamRateGame")))
+  if (!forceShow && (!::steam_is_running() || !::has_feature("SteamRateGame")))
     return
 
   if (!forceShow && cfg.hideSteamRateLanguagesArray.contains(::g_language.getLanguageName()))
@@ -140,8 +134,6 @@ addListenersWithoutEnv({
       havePurchasedPremium(true)
   }
 })
-
-register_command(@() tryOpenSteamRateReview(true), "debug.show_steam_rate_wnd")
 
 return {
   setNeedShowRate

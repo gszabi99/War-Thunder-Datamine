@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getTooltipType, UNLOCK, ITEM, INVENTORY, SUBTROPHY, UNIT,
   CREW_SPECIALIZATION, BUY_CREW_SPEC, DECORATION
 } = require("genericTooltipTypes.nut")
@@ -53,10 +46,10 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   return isSucceed
 }
 
-::g_tooltip.open <- function open(obj, handler)
+g_tooltip.open <- function open(obj, handler)
 {
   removeInvalidTooltipObjs()
-  if (!checkObj(obj))
+  if (!::check_obj(obj))
     return
   obj["class"] = "empty"
 
@@ -74,14 +67,14 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
 
   let isSucceed = fillTooltip(obj, handler, tooltipType, id, params)
 
-  if (!isSucceed || !checkObj(obj))
+  if (!isSucceed || !::check_obj(obj))
     return
 
   obj["class"] = ""
   register(obj, handler, tooltipType, id, params)
 }
 
-::g_tooltip.register <- function register(obj, handler, tooltipType, id, params)
+g_tooltip.register <- function register(obj, handler, tooltipType, id, params)
 {
   let data = {
     obj         = obj
@@ -89,7 +82,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
     tooltipType = tooltipType
     id          = id
     params      = params
-    isValid     = function() { return checkObj(obj) && obj.isVisible() }
+    isValid     = function() { return ::checkObj(obj) && obj.isVisible() }
   }
 
   foreach (key, value in tooltipType)
@@ -104,7 +97,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   openedTooltipObjs.append(data)
 }
 
-::g_tooltip.close <- function close(obj) //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler
+g_tooltip.close <- function close(obj) //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler
 {
   let tIdx = !obj.isValid() ? null
     : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))
@@ -113,13 +106,13 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
     openedTooltipObjs.remove(tIdx)
   }
 
-  if (!checkObj(obj) || !obj.childrenCount())
+  if (!::checkObj(obj) || !obj.childrenCount())
     return
   let guiScene = obj.getScene()
   obj.show(false)
 
   guiScene.performDelayed(this, function() {
-    if (!checkObj(obj) || !obj.childrenCount())
+    if (!::checkObj(obj) || !obj.childrenCount())
       return
 
     //for debug and catch rare bug
@@ -137,7 +130,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   })
 }
 
-::g_tooltip.init <- function init()
+g_tooltip.init <- function init()
 {
   if (inited)
     return
@@ -145,7 +138,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   ::add_event_listener("ChangedCursorVisibility", onEventChangedCursorVisibility, this)
 }
 
-::g_tooltip.onEventChangedCursorVisibility <- function onEventChangedCursorVisibility(params)
+g_tooltip.onEventChangedCursorVisibility <- function onEventChangedCursorVisibility(params)
 {
   // Proceed if cursor is hidden now.
   if (params.isVisible)
@@ -154,7 +147,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   removeAll()
 }
 
-::g_tooltip.removeAll <- function removeAll()
+g_tooltip.removeAll <- function removeAll()
 {
   removeInvalidTooltipObjs()
 

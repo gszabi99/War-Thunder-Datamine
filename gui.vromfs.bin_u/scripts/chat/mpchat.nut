@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
@@ -84,7 +77,7 @@ local MP_CHAT_PARAMS = {
 
   function loadScene(obj, chatBlk, handler, params = MP_CHAT_PARAMS)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return null
 
     cleanScenesList()
@@ -147,14 +140,14 @@ local MP_CHAT_PARAMS = {
   function cleanScenesList()
   {
     for(local i = scenes.len() - 1; i >= 0; i--)
-      if (!checkObj(scenes[i].scene))
+      if (!::checkObj(scenes[i].scene))
         scenes.remove(i)
   }
 
   function findSceneDataByScene(scene)
   {
     foreach(sceneData in scenes)
-      if (checkObj(sceneData.scene) && sceneData.scene.isEqual(scene))
+      if (::checkObj(sceneData.scene) && sceneData.scene.isEqual(scene))
         return sceneData
     return null
   }
@@ -164,7 +157,7 @@ local MP_CHAT_PARAMS = {
     let idx = obj.getIntProp(sceneIdxPID, -1)
     foreach(i, sceneData in scenes)
       if (sceneData.idx == idx)
-        if (checkObj(sceneData.scene))
+        if (::checkObj(sceneData.scene))
           return sceneData
         else
         {
@@ -177,7 +170,7 @@ local MP_CHAT_PARAMS = {
   function doForAllScenes(func)
   {
     for(local i = scenes.len() - 1; i >= 0; i--)
-      if (checkObj(scenes[i].scene))
+      if (::checkObj(scenes[i].scene))
         func(scenes[i])
       else
         scenes.remove(i)
@@ -214,7 +207,7 @@ local MP_CHAT_PARAMS = {
       (100.0 * (3.0 - 2.0 * transparency) * transparency * transparency).tointeger()
 
     let obj = sceneData.scene.findObject("chat_log_tdiv")
-    if (checkObj(obj))
+    if (::checkObj(obj))
     {
       obj.transparent = transValue
       sceneData.scene.findObject("chat_log").transparent = transValue
@@ -240,7 +233,7 @@ local MP_CHAT_PARAMS = {
     if (!isChatEnabled() || !hasEnableChatMode)
       return false
     foreach(sceneData in scenes)
-      if (!sceneData.hiddenInput && checkObj(sceneData.scene) && sceneData.scene.isVisible())
+      if (!sceneData.hiddenInput && ::checkObj(sceneData.scene) && sceneData.scene.isVisible())
         return true
     return false
   }
@@ -341,8 +334,8 @@ local MP_CHAT_PARAMS = {
 
   function onChatIngameRequestEnter(obj)
   {
-    let editboxObj = checkObj(obj) ? obj.getParent().findObject("chat_input") : null
-    if (checkObj(editboxObj) && editboxObj?["on_activate"] == "onChatEntered")
+    let editboxObj = ::check_obj(obj) ? obj.getParent().findObject("chat_input") : null
+    if (::check_obj(editboxObj) && editboxObj?["on_activate"] == "onChatEntered")
       onChatEntered(editboxObj)
   }
 
@@ -439,14 +432,14 @@ local MP_CHAT_PARAMS = {
 
   function onEventMpChatInputRequested(params)
   {
-    let activate = getTblValue("activate", params, false)
+    let activate = ::getTblValue("activate", params, false)
     if (activate && canEnableChatInput())
       foreach(sceneData in scenes)
         if (getCurView(sceneData) != mpChatView.CHAT)
-          if (!sceneData.hiddenInput && checkObj(sceneData.scene) && sceneData.scene.isVisible())
+          if (!sceneData.hiddenInput && ::checkObj(sceneData.scene) && sceneData.scene.isVisible())
           {
             let obj = sceneData.scene.findObject("chat_tabs")
-            if (checkObj(obj))
+            if (::checkObj(obj))
             {
               obj.setValue(mpChatView.CHAT)
               break
@@ -471,7 +464,7 @@ local MP_CHAT_PARAMS = {
       return
     let limit = (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? 0 : maxLogSize
     let chat_log = sceneData.scene.findObject("chat_log")
-    if (checkObj(chat_log))
+    if (::checkObj(chat_log))
       chat_log.setValue(::HudBattleLog.getText(0, limit))
   }
 
@@ -482,10 +475,10 @@ local MP_CHAT_PARAMS = {
     if (prompt)
     {
       prompt.chatMode = curMode.name
-      if (getTblValue("no_text", prompt, "no") != "yes")
+      if (::getTblValue("no_text", prompt, "no") != "yes")
         prompt.setValue(curMode.getNameText())
       if ("tooltip" in prompt)
-        prompt.tooltip = loc("chat/to") + loc("ui/colon") + curMode.getDescText()
+        prompt.tooltip = ::loc("chat/to") + ::loc("ui/colon") + curMode.getDescText()
     }
 
     let input = scene.findObject("chat_input")
@@ -567,7 +560,7 @@ local MP_CHAT_PARAMS = {
 
   getChatLogForBanhammer = @() ingame_chat.getLogForBanhammer()
 
-  function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, is_platform_pc) }
+  function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, ::is_platform_pc) }
   function onChatLinkRClick(obj, itype, link) { onChatLink(obj, link, false) }
 
   function onChatLink(obj, link, lclick)
@@ -611,10 +604,10 @@ local MP_CHAT_PARAMS = {
 
   function makeChatTextFromLog()
   {
-    let logObj = ingame_chat.getLog()
+    let log = ingame_chat.getLog()
     log_text = ""
-    for (local i = 0; i < logObj.len(); ++i)
-      log_text = ::g_string.implode([log_text , makeTextFromMessage(logObj[i])], "\n")
+    for (local i = 0; i < log.len(); ++i)
+      log_text = ::g_string.implode([log_text , makeTextFromMessage(log[i])], "\n")
     updateAllLogs()
 
     let autoShowOpt = ::get_option(::USEROPT_AUTO_SHOW_CHAT)
@@ -638,7 +631,7 @@ local MP_CHAT_PARAMS = {
       return format(
         "%s <color=@chatActiveInfoColor>%s</color>",
         timeString,
-        loc(message.text))
+        ::loc(message.text))
 
     local text = message.isAutomatic
       ? message.text
@@ -646,7 +639,7 @@ local MP_CHAT_PARAMS = {
 
     if (!message.isMyself && !message.isAutomatic)
     {
-      if (::isPlayerNickInContacts(message.sender, EPL_BLOCKLIST))
+      if (::isPlayerNickInContacts(message.sender, ::EPL_BLOCKLIST))
         text = ::g_chat.makeBlockedMsg(message.text)
       else if (!isChatEnableWithPlayer(message.sender))
         text = ::g_chat.makeXBoxRestrictedMsg(message.text)
@@ -715,7 +708,7 @@ local MP_CHAT_PARAMS = {
   {
     if (is_replay_playing())
     {
-      let player = ::u.search(::get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == message.sender)
+      let player = ::u.search(::get_mplayers_list(::GET_MPLAYERS_LIST, true), @(p) p.name == message.sender)
       return ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
     return ::g_squad_manager.isInMySquad(message.sender)
@@ -768,14 +761,14 @@ local MP_CHAT_PARAMS = {
     let visible = !sceneData.selfHideLog || isVisibleWithCursor(sceneData)
 
     local obj = sceneData.scene.findObject("chat_tabs")
-    if (checkObj(obj))
+    if (::checkObj(obj))
     {
       if (obj.getValue() == -1)
         obj.setValue(sceneData.curTab)
       obj.show(visible)
     }
     obj = sceneData.scene.findObject("chat_log_tdiv")
-    if (checkObj(obj))
+    if (::checkObj(obj))
     {
       obj.height = visible ? obj?["max-height"] : null
       obj.scrollType = visible ? "" : "hidden"
@@ -831,7 +824,7 @@ local MP_CHAT_PARAMS = {
 
   let handler = ::get_game_chat_handler()
   if (value && !handler.hasEnableChatMode) {
-    ::chat_system_message(loc("chat/no_chat"))
+    chat_system_message(loc("chat/no_chat"))
     return
   }
   if (!value || handler.canEnableChatInput())
@@ -845,7 +838,7 @@ local MP_CHAT_PARAMS = {
 
 ::clear_game_chat <- function clear_game_chat()
 {
-  debugTableData(ingame_chat)
+  ::debugTableData(ingame_chat)
   ingame_chat.clearLog()
 }
 
@@ -872,12 +865,12 @@ local MP_CHAT_PARAMS = {
 
 ::add_tags_for_mp_players <- function add_tags_for_mp_players()
 {
-  let tbl = ::get_mplayers_list(GET_MPLAYERS_LIST, true)
+  let tbl = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
   if (tbl)
   {
     foreach(block in tbl)
       if(!block.isBot)
-        ::clanUserTable[block.name] <- getTblValue("clanTag", block, "")
+        ::clanUserTable[block.name] <- ::getTblValue("clanTag", block, "")
   }
 }
 
@@ -886,5 +879,5 @@ local MP_CHAT_PARAMS = {
 {
   if(!(playerNick in ::clanUserTable))
     ::add_tags_for_mp_players()
-  return getTblValue(playerNick, ::clanUserTable, "")
+  return ::getTblValue(playerNick, ::clanUserTable, "")
 }

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let function canChange(clanData)
 {
   if (!clanData)
@@ -38,7 +33,7 @@ let function setValue(clanData, value, handler)
   handler.afterSlotOp = function() {
     ::broadcastEvent("ClanMembershipAcceptanceChanged")
     handler.msgBox("clan_membership_acceptance",
-      loc("clan/" + (isLocking ? "was_closed" : "was_opened")), [["ok"]], "ok")
+      ::loc("clan/" + (isLocking ? "was_closed" : "was_opened")), [["ok"]], "ok")
   }
 }
 

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
@@ -16,11 +9,11 @@ unitClassType.template <- {
   code = -1
   name = ""
   expClassName = "" //filled automatically
-  unitTypeCode = ES_UNIT_TYPE_INVALID
+  unitTypeCode = ::ES_UNIT_TYPE_INVALID
   checkOrder = -1
 
   /** Returns localized name of unit class type. */
-  getShortName = @() loc($"mainmenu/type_{name}")
+  getShortName = @() ::loc($"mainmenu/type_{name}")
   getName = @() getShortName()
 
   /** Check code against specified code mask. */
@@ -48,54 +41,54 @@ enums.addTypes(unitClassType, {
   }
 
   FIGHTER = {
-    code = EUCT_FIGHTER
+    code = ::EUCT_FIGHTER
     name = "fighter"
-    unitTypeCode = ES_UNIT_TYPE_AIRCRAFT
+    unitTypeCode = ::ES_UNIT_TYPE_AIRCRAFT
     checkOrder = checkOrder++
   }
 
   BOMBER = {
-    code = EUCT_BOMBER
+    code = ::EUCT_BOMBER
     name = "bomber"
-    unitTypeCode = ES_UNIT_TYPE_AIRCRAFT
+    unitTypeCode = ::ES_UNIT_TYPE_AIRCRAFT
     checkOrder = checkOrder++
   }
 
   ASSAULT = {
-    code = EUCT_ASSAULT
+    code = ::EUCT_ASSAULT
     name = "assault"
-    unitTypeCode = ES_UNIT_TYPE_AIRCRAFT
+    unitTypeCode = ::ES_UNIT_TYPE_AIRCRAFT
     checkOrder = checkOrder++
   }
 
   TANK = {
-    code = EUCT_TANK
+    code = ::EUCT_TANK
     name = "tank"
-    unitTypeCode = ES_UNIT_TYPE_TANK
+    unitTypeCode = ::ES_UNIT_TYPE_TANK
     checkOrder = checkOrder++
 
-    getName = @() loc("mainmenu/type_medium_tank") + loc("ui/slash") + loc("mainmenu/type_light_tank")
+    getName = @() ::loc("mainmenu/type_medium_tank") + ::loc("ui/slash") + ::loc("mainmenu/type_light_tank")
     getFontIcon = @() getUnitRoleIcon("medium_tank")
   }
 
   HEAVY_TANK = {
-    code = EUCT_HEAVY_TANK
+    code = ::EUCT_HEAVY_TANK
     name = "heavy_tank"
-    unitTypeCode = ES_UNIT_TYPE_TANK
+    unitTypeCode = ::ES_UNIT_TYPE_TANK
     checkOrder = checkOrder++
   }
 
   TANK_DESTROYER = {
-    code = EUCT_TANK_DESTROYER
+    code = ::EUCT_TANK_DESTROYER
     name = "tank_destroyer"
-    unitTypeCode = ES_UNIT_TYPE_TANK
+    unitTypeCode = ::ES_UNIT_TYPE_TANK
     checkOrder = checkOrder++
   }
 
   SPAA = {
-    code = EUCT_SPAA
+    code = ::EUCT_SPAA
     name = "spaa"
-    unitTypeCode = ES_UNIT_TYPE_TANK
+    unitTypeCode = ::ES_UNIT_TYPE_TANK
     checkOrder = checkOrder++
 
     getExpClass = function ()
@@ -106,71 +99,71 @@ enums.addTypes(unitClassType, {
   }
 
   SHIP = {
-    code = EUCT_SHIP
+    code = ::EUCT_SHIP
     name = "ship"
-    unitTypeCode = ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_SHIP
     checkOrder = checkOrder++
   }
 
   TORPEDO_BOAT = {
-    code = EUCT_TORPEDO_BOAT
+    code = ::EUCT_TORPEDO_BOAT
     name = "torpedo_boat"
-    unitTypeCode = ES_UNIT_TYPE_BOAT
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   GUN_BOAT = {
-    code = EUCT_GUN_BOAT
+    code = ::EUCT_GUN_BOAT
     name = "gun_boat"
-    unitTypeCode = ES_UNIT_TYPE_BOAT
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   TORPEDO_GUN_BOAT = {
-    code = EUCT_TORPEDO_GUN_BOAT
+    code = ::EUCT_TORPEDO_GUN_BOAT
     name = "torpedo_gun_boat"
-    unitTypeCode = ES_UNIT_TYPE_BOAT
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   SUBMARINE_CHASER = {
-    code = EUCT_SUBMARINE_CHASER
+    code = ::EUCT_SUBMARINE_CHASER
     name = "submarine_chaser"
-    unitTypeCode = ES_UNIT_TYPE_BOAT
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   DESTROYER = {
-    code = EUCT_DESTROYER
+    code = ::EUCT_DESTROYER
     name = "destroyer"
-    unitTypeCode = ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_SHIP
     checkOrder = checkOrder++
   }
 
   NAVAL_FERRY_BARGE = {
-    code = EUCT_NAVAL_FERRY_BARGE
+    code = ::EUCT_NAVAL_FERRY_BARGE
     name = "naval_ferry_barge"
-    unitTypeCode = ES_UNIT_TYPE_BOAT
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   HELICOPTER = {
-    code = EUCT_HELICOPTER
+    code = ::EUCT_HELICOPTER
     name = "helicopter"
-    unitTypeCode = ES_UNIT_TYPE_HELICOPTER
+    unitTypeCode = ::ES_UNIT_TYPE_HELICOPTER
     checkOrder = checkOrder++
   }
 
   CRUISER = {
-    code = EUCT_CRUISER
+    code = ::EUCT_CRUISER
     name = "cruiser"
-    unitTypeCode = ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_SHIP
     checkOrder = checkOrder++
   }
 },
 function()
 {
-  expClassName = code == EUCT_SPAA ? name.toupper() : name
+  expClassName = code == ::EUCT_SPAA ? name.toupper() : name
 })
 
 unitClassType.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
@@ -193,7 +186,7 @@ let function getTypeByExpClass(expClass) {
 }
 
 let function getTypesByEsUnitType(esUnitType = null) { //null if all unit types
-  return unitClassType.types.filter(@(t) (esUnitType == null && t.unitTypeCode != ES_UNIT_TYPE_INVALID)
+  return unitClassType.types.filter(@(t) (esUnitType == null && t.unitTypeCode != ::ES_UNIT_TYPE_INVALID)
     || t.unitTypeCode == esUnitType)
 }
 

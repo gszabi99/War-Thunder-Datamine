@@ -1,29 +1,28 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let chat = require("hudChat.nut")
 let battleLog = require("hudBattleLog.nut")
 let tabs = require("components/tabs.nut")
+let frp = require("frp")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
-let { canWriteToChat, hudLog, lastInputTime } = require("hudChatState.nut")
+let { canWriteToChat, log, lastInputTime } = require("hudChatState.nut")
 let { isMultiplayer } = require("networkState.nut")
 let { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
 
 let tabsList = [
-  { id = "Chat", text = loc("mainmenu/chat"), content = chat }
-  { id = "BattleLog", text = loc("options/_Bttl"), content = battleLog }
+  { id = "Chat", text = ::loc("mainmenu/chat"), content = chat }
+  { id = "BattleLog", text = ::loc("options/_Bttl"), content = battleLog }
 ]
 
-let isEnabled = Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
-let isInteractive = Computed(@() canWriteToChat.value || cursorVisible.value)
-let isNewMessage = Watched(false)
-let isFadingOut = Watched(false)
-let isInited = Watched(false)
-let isVisible = Computed(@() isEnabled.value && isInited.value
+let isEnabled = ::Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
+let isInteractive = ::Computed(@() canWriteToChat.value || cursorVisible.value)
+let isNewMessage = ::Watched(false)
+let isFadingOut = ::Watched(false)
+let isInited = ::Watched(false)
+let isVisible = ::Computed(@() isEnabled.value && isInited.value
   && (isInteractive.value || isFadingOut.value || isNewMessage.value))
 
-let currentTab = Watched(tabsList[0])
-let currentLog = Computed(function(prev) {
-  if (cursorVisible.value || prev == FRP_INITIAL)
+let currentTab = ::Watched(tabsList[0])
+let currentLog = ::Computed(function(prev) {
+  if (cursorVisible.value || prev == frp.FRP_INITIAL)
     return currentTab.value
 
   if (canWriteToChat.value || isNewMessage.value)
@@ -50,8 +49,8 @@ let logsContainerAnims = [
 ]
 
 let function startAnim(animId) {
-  [slowFadeOutId, fastFadeOutId, showOutId].each(@(id) anim_skip(id))
-  anim_start(animId)
+  [slowFadeOutId, fastFadeOutId, showOutId].each(@(id) ::anim_skip(id))
+  ::anim_start(animId)
 }
 
 let hideNewMessageDelay = 5
@@ -64,14 +63,14 @@ let function hideNewMessage() {
 // force isNewMessage state to prevent log blinking right after sending a message
 lastInputTime.subscribe(function(_) {
   isNewMessage(true)
-  gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
+  ::gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
 })
 
-hudLog.subscribe(function(_) {
-  if (cursorVisible.value || hudLog.value.len() == 0)
+log.subscribe(function(_) {
+  if (cursorVisible.value || log.value.len() == 0)
     return
 
-  gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
+  ::gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
   if (isNewMessage.value)
     return
 
@@ -85,7 +84,7 @@ hudLog.subscribe(function(_) {
 isInteractive.subscribe(function(value) {
   if (value) {
     if (isNewMessage.value) {
-      gui_scene.clearTimer(hideNewMessage)
+      ::gui_scene.clearTimer(hideNewMessage)
       isNewMessage(false)
       return
     }
@@ -130,10 +129,10 @@ return @() {
   onAttach = function() {
     // delayed init to prevent getting a wrong state just after transition from other screen
     // as cursorVisible.value remains true for some frames
-    gui_scene.resetTimeout(0.1, init)
+    ::gui_scene.resetTimeout(0.1, init)
   }
   onDetach = function() {
-    gui_scene.clearTimer(init)
+    ::gui_scene.clearTimer(init)
     isInited(false)
   }
 }

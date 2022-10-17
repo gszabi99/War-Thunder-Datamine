@@ -192,8 +192,6 @@
   "chaffDispersionSpeedFromAirViscosity": 0.02,
   "chaffCloudMaxRadius": 80.0,
   "chaffDopplerSpeedWidthMult": 0.1,
-  "defaultAirCannonsSpeedDispersion": 0.025,
-  "defaultTankCannonsSpeedDispersion": 0.0,
   "maxAirfieldLiftStepCount": 40,
   "maxTimeToReturnToMapForTanks": 25.0,
   "killDistFromBattleAreaForTanks": 20.0,
@@ -346,14 +344,6 @@
   ],
   "ticksBetweenBulletsTraceShoots": 3,
   "secondaryWeaponSwitchOnOutOfAmmoTimeOut": 1.0,
-  "enableBotTorpedoShooting": true,
-  "torpedoShootByBotMaxDistance": 7500.0,
-  "preventBotsLeavingBattleArea": true,
-  "wheelFireFxName": "tank_fire_track",
-  "wheelFireTimers": [
-    7.0,
-    3.0
-  ],
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -7090,8 +7080,8 @@
     }
   },
   "floodFilter": {
-    "duplicatedTime": 10.0,
-    "chatMessagesTime": 10.0,
+    "duplicatedTime": 30.0,
+    "chatMessagesTime": 30.0,
     "voiceMessagesTime": 1.0,
     "messagesPerTime1": 5,
     "messagesTime1": 5.0,
@@ -14044,54 +14034,6 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "vrcc_centauro"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "as_42_47mm"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "as_42_47mm"
-        },
-        {
-          "name": "wheel_r_02_",
-          "modelNames": "as_42_47mm"
-        },
-        {
-          "name": "wheel_l_02_",
-          "modelNames": "as_42_47mm"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "tcm_20"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "tcm_20"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "sdkfz_251_9"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "sdkfz_251_9"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "vab_santal"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "vab_santal"
-        },
-        {
-          "name": "wheel_r_02_",
-          "modelNames": "vab_santal"
-        },
-        {
-          "name": "wheel_l_02_",
-          "modelNames": "vab_santal"
         }
       ]
     },
@@ -15337,21 +15279,6 @@
     },
     "leaveLod0": {
       "ri": [
-        "test_number_one",
-        "canyon_cliff_big_a",
-        "canyon_cliff_big_b",
-        "canyon_cliff_big_c",
-        "canyon_cliff_hole",
-        "canyon_cliff_huge_a",
-        "canyon_cliff_huge_b",
-        "canyon_cliff_huge_c",
-        "canyon_cliff_platform_a",
-        "canyon_cliff_platform_b",
-        "canyon_cliff_ridge_a",
-        "canyon_cliff_ridge_b",
-        "canyon_cliff_ridge_c",
-        "canyon_rock_a",
-        "canyon_rock_b",
         "phi_cliff_a",
         "phi_cliff_b",
         "phi_cliff_c",
@@ -16560,8 +16487,7 @@
   },
   "holeRenderingRadiusConstants": {
     "maxRadius": 0.5,
-    "minRadius": 0.02,
-    "explosionRadiusMult": 0.3,
+    "minRadius": 0.04,
     "radiusReplacementTreshold": 0.2,
     "radiusMultiplierForCheck": 0.5,
     "sideMultiplierForCheck": 2.0,
@@ -16570,31 +16496,16 @@
     "checkSurroundingNodes": false,
     "useCaliberOnRadius": true,
     "holeOneEntryPointForHe": true,
-    "mininmumRadiusForShrapnel": 0.01,
-    "minRadiusForBulletHoles": [
-      0.02,
-      0.0
-    ],
-    "minCaliberForBulletHoles": 0.014,
-    "multForBurnRadius": 1.0,
-    "minBurnRadius": 0.01,
-    "maxBurnRadius": 0.5,
-    "multForBulletHolesRadius": 0.7,
-    "maxRadiusForBulletHoles": 1.0,
-    "multForRadiusDiffMark": 1.3,
-    "minRadiusDiffMark": 0.0,
-    "maxRadiusDiffMark": 10.0,
-    "multForRadiusShrapnelDecal": 3.5,
-    "minRadiusShrapnelDecal": 0.25,
-    "maxRadiusShrapnelDecal": 10.0,
-    "multForRadiusBulletDiffMark": 0.3,
-    "minRadiusBulletDiffMark": 0.0,
-    "maxRadiusBulletDiffMark": 10.0,
+    "mininmumRadiusForShrapnel": 0.15,
+    "splashRadiusMult": 0.5,
+    "minRadiusForBulletHoles": 0.01,
+    "multForBulletHolesRadius": 3.0,
+    "minCaliberForBulletHoles": 0.012,
     "diffMarksTextureForAtlasSize": [
       0.25,
       0.25
     ],
-    "shrapnelDecalsSize": 1.0,
+    "shrapnelDecalsSize": 1.2,
     "splashMarksTextureForAtlasSize": [
       0.15,
       0.15
@@ -16747,7 +16658,6 @@
     "terraformEnableCheckIntegrity": true,
     "terraformCheckIntegrityCountPoints": 128,
     "terraformCheckIntegrityPointsInterval": 1,
-    "terraformMinPenetration": 20.0,
     "fx_materials": {
       "sand": {
         "digDustFx": "dust_tank_digging_shovel_sand",
@@ -17093,8 +17003,5 @@
         ]
       }
     }
-  },
-  "prefetchEffects": {
-    "name": "explosion_ship_big"
   }
 }

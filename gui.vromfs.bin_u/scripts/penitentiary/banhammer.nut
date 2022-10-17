@@ -1,16 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
+::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null)
+{
   ::handlersManager.loadHandler(::gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
 }
 
@@ -58,10 +50,10 @@ let chatLogToString = function(chatLog)
     if (!scene || !player || !canBan())
       return goBack()
 
-    playerName = getTblValue("name", player, "")
-    if (!getTblValue("uid", player))
+    playerName = ::getTblValue("name", player, "")
+    if (!::getTblValue("uid", player))
     {
-      taskId = ::find_contact_by_name_and_do(playerName, Callback(onPlayerFound, this))
+      taskId = ::find_contact_by_name_and_do(playerName, ::Callback(onPlayerFound, this))
       if (taskId!=null && taskId<0)
       {
         notFoundPlayerMsg()
@@ -70,16 +62,16 @@ let chatLogToString = function(chatLog)
     }
 
     let titleObj = scene.findObject("complaint_title")
-    if (checkObj(titleObj))
-      titleObj.setValue(loc("contacts/moderator_ban/title"))
+    if (::checkObj(titleObj))
+      titleObj.setValue(::loc("contacts/moderator_ban/title"))
 
     let nameObj = scene.findObject("complain_text")
-    if (checkObj(nameObj))
-      nameObj.setValue(loc("clan/nick") + loc("ui/colon"))
+    if (::checkObj(nameObj))
+      nameObj.setValue(::loc("clan/nick") + ::loc("ui/colon"))
 
-    let clanTag = getTblValue("clanTag", player, "")
+    let clanTag = ::getTblValue("clanTag", player, "")
     let targetObj = scene.findObject("complain_target")
-    if (checkObj(targetObj))
+    if (::checkObj(targetObj))
       targetObj.setValue((clanTag.len() > 0? (clanTag + " ") : "") + platformModule.getPlayerName(playerName))
 
     let options = [
@@ -103,9 +95,9 @@ let chatLogToString = function(chatLog)
       else
         optRow = objForClones.getClone(optionsBox, this)
 
-      optRow.findObject("option_name").setValue(loc("options/" + opt.id))
+      optRow.findObject("option_name").setValue(::loc("options/" + opt.id))
       let typeObj = optRow.findObject("option_list")
-      let data = ::create_option_list(opt.id, opt.items, opt.value, null, false)
+      let data = create_option_list(opt.id, opt.items, opt.value, null, false)
       guiScene.replaceContentFromText(typeObj, data, data.len(), this)
       typeObj.id = opt.id
     }
@@ -121,7 +113,7 @@ let chatLogToString = function(chatLog)
 
   function notFoundPlayerMsg()
   {
-    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(playerName) }),
+    this.msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(playerName) }),
         [
           ["ok", function() { goBack() } ]
         ], "ok")
@@ -129,7 +121,7 @@ let chatLogToString = function(chatLog)
 
   function updateButtons()
   {
-    let haveUid = getTblValue("uid", player) != null
+    let haveUid = ::getTblValue("uid", player) != null
     this.showSceneBtn("info_loading", !haveUid)
     this.showSceneBtn("btn_send", haveUid)
   }
@@ -140,7 +132,7 @@ let chatLogToString = function(chatLog)
       return notFoundPlayerMsg()
 
     player = contact
-    if (checkObj(scene))
+    if (::checkObj(scene))
       updateButtons()
   }
 
@@ -154,12 +146,12 @@ let chatLogToString = function(chatLog)
     let comment = clearBorderSymbolsMultiline(  scene.findObject("complaint_text").getValue()  )
     if (comment.len() < 10)
     {
-      this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
+      this.msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
     }
 
-    let uid = getTblValue("uid", player)
+    let uid = ::getTblValue("uid", player)
     if (!uid)
       return
 
@@ -173,17 +165,17 @@ let chatLogToString = function(chatLog)
     let category = ::get_gui_option(::USEROPT_COMPLAINT_CATEGORY)
     let penalty =  ::get_gui_option(::USEROPT_BAN_PENALTY)
 
-    log(format("%s user: %s, for %s, for %d sec.\n comment: %s",
+    ::dagor.debug(format("%s user: %s, for %s, for %d sec.\n comment: %s",
                        penalty, playerName, category, duration, comment))
-    taskId = ::char_ban_user(uid, duration, "", category, penalty,
+    taskId = char_ban_user(uid, duration, "", category, penalty,
                            comment, ""/*hidden_note*/, chatLogToString(chatLog ?? {}))
     if (taskId >= 0)
     {
       ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox(loc("charServer/send"))
+      showTaskProgressBox(::loc("charServer/send"))
       afterSlotOp = function()
         {
-          log("[IRC] sending /reauth " + playerName)
+          ::dagor.debug("[IRC] sending /reauth " + playerName)
           ::gchat_raw_command("reauth " + ::gchat_escape_target(playerName))
           goBack()
         }
@@ -208,7 +200,7 @@ let chatLogToString = function(chatLog)
     if (!scene || !pInfo || typeof(pInfo) != "table")
       return goBack()
 
-    let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))
+    let gameMode = "GameMode = " + ::loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))
     location = gameMode
     if (chatLog != null)
     {
@@ -237,14 +229,14 @@ let chatLogToString = function(chatLog)
     pName = clanTag ? (clanTag + " " + pName) : pName
 
     let titleObj = scene.findObject("complaint_title")
-    if (checkObj(titleObj))
-      titleObj.setValue(loc("mainmenu/btnComplain"))
+    if (::checkObj(titleObj))
+      titleObj.setValue(::loc("mainmenu/btnComplain"))
 
     let nameObj = scene.findObject("complain_text")
-    if (checkObj(nameObj))
-      nameObj.setValue(loc("clan/nick") + loc("ui/colon"))
+    if (::checkObj(nameObj))
+      nameObj.setValue(::loc("clan/nick") + ::loc("ui/colon"))
     let targetObj = scene.findObject("complain_target")
-    if (checkObj(targetObj))
+    if (::checkObj(targetObj))
       targetObj.setValue(pName)
 
     let typeObj = scene.findObject("option_list")
@@ -252,7 +244,7 @@ let chatLogToString = function(chatLog)
     optionsList = []
     let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
     optionsList.append(option)
-    let data = ::create_option_list(option.id, option.items, option.value, null, false)
+    let data = create_option_list(option.id, option.items, option.value, null, false)
     guiScene.replaceContentFromText(typeObj, data, data.len(), this)
     typeObj.id = option.id
 
@@ -298,7 +290,7 @@ let chatLogToString = function(chatLog)
     let user_comment = clearBorderSymbolsMultiline( scene.findObject("complaint_text").getValue() )
     if (user_comment.len() < 10)
     {
-      this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
+      this.msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
     }
@@ -316,21 +308,21 @@ let chatLogToString = function(chatLog)
     chatLog.clanInfo <- clanInfo
     let strChatLog = chatLogToString(chatLog)
 
-    log("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
-    log("pInfo:")
-    debugTableData(pInfo)
+    ::dagor.debug("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
+    ::dagor.debug("pInfo:")
+    ::debugTableData(pInfo)
 
     taskId = -1
     if (("userId" in pInfo) && pInfo.userId)
-      taskId = ::send_complaint_by_uid(pInfo.userId, category, user_comment, strChatLog, details)
+      taskId = send_complaint_by_uid(pInfo.userId, category, user_comment, strChatLog, details)
     else if ("name" in pInfo)
-      taskId = ::send_complaint_by_nick(pInfo.name, category, user_comment, strChatLog, details)
+      taskId = send_complaint_by_nick(pInfo.name, category, user_comment, strChatLog, details)
     else
-      taskId = ::send_complaint(pInfo.id, category, user_comment, strChatLog, details)
+      taskId = send_complaint(pInfo.id, category, user_comment, strChatLog, details)
     if (taskId >= 0)
     {
       ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox(loc("charServer/send"))
+      showTaskProgressBox(::loc("charServer/send"))
       afterSlotOp = goBack
     }
   }

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 2 //sec
@@ -67,8 +60,8 @@ local WwQueuesData = class
     isInUpdate = true
     lastRequestTimeMsec = ::dagor.getCurTime()
 
-    let cb = Callback(requestDataCb, this)
-    let errorCb = Callback(requestError, this)
+    let cb = ::Callback(requestDataCb, this)
+    let errorCb = ::Callback(requestError, this)
 
     ::queues.updateQueueInfoByType(::g_queue_type.WW_BATTLE, cb, errorCb, true)
     return true

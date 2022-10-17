@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { getRewardConditionId, getRewardConditionById, getConditionValue, getConditionField,
   getBaseVictoryReward, getSortedRewardsByConditions, getRewardRowIcon, getRewardDescText,
@@ -76,7 +68,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
       total      = rewards.len()
       baseReward = (@(event) function () {
         let reward = getBaseVictoryReward(event)
-        return reward ? loc("tournaments/reward/everyVictory",  {reward = reward}) : reward
+        return reward ? ::loc("tournaments/reward/everyVictory",  {reward = reward}) : reward
       })(event)
       items = (@(rewards, event) function () {
         local even = true
@@ -134,8 +126,8 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
   function updateTabInfo() {
     let finalAwardDate = tabsList[currTabIdx].finalAwardDate
     let infoTxt = finalAwardDate
-      ? "".concat(loc("tournaments/rewardBeCredited"), " ",
-        colorize("activeTextColor", buildDateTimeStr(getTimestampFromStringUtc(finalAwardDate))))
+      ? "".concat(::loc("tournaments/rewardBeCredited"), " ",
+        ::colorize("activeTextColor", buildDateTimeStr(getTimestampFromStringUtc(finalAwardDate))))
       : ""
     scene.findObject("info_txt")?.setValue(infoTxt)
   }

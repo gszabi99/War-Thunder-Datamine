@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let { AMMO, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
@@ -14,7 +7,7 @@ let { getBulletsSetData,
         getBulletsGroupCount,
         getActiveBulletsGroupInt,
         getBulletsInfoForPrimaryGuns } = require("%scripts/weaponry/bulletsInfo.nut")
-local { getGuiOptionsMode } = require_native("guiOptions")
+local { getGuiOptionsMode } = ::require_native("guiOptions")
 
 global enum bulletsAmountState {
   READY
@@ -67,7 +60,7 @@ global enum bulletsAmountState {
 
   function getBulletGroupByIndex(groupIdx)
   {
-    return getTblValue(groupIdx, getBulletsGroups())
+    return ::getTblValue(groupIdx, getBulletsGroups())
   }
 
   function getBulletGroupBySelectedMod(mod)
@@ -88,7 +81,7 @@ global enum bulletsAmountState {
 
   function getUnallocatedBulletCount(bulGroup)
   {
-    return getTblValue("unallocated", bulGroup.gunInfo, 0)
+    return ::getTblValue("unallocated", bulGroup.gunInfo, 0)
   }
 
   //return isChanged
@@ -128,7 +121,7 @@ global enum bulletsAmountState {
     {
       ::script_net_assert_once("bullets set value recursion",
                                 format("Bullets Manager: set bullet recursion detected!! (unit = %s)\nbullet groups =\n%s",
-                                  unit.name, toString(bulGroups)
+                                  unit.name, ::toString(bulGroups)
                                 )
                               )
       return
@@ -207,9 +200,9 @@ global enum bulletsAmountState {
 
     local msg = ""
     if (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED)
-      msg = format(loc("multiplayer/someBulletsLeft"), colorize("activeTextColor", readyCounts.unallocated.tostring()))
+      msg = format(::loc("multiplayer/someBulletsLeft"), ::colorize("activeTextColor", readyCounts.unallocated.tostring()))
     else
-      msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
+      msg = format(::loc("multiplayer/notEnoughBullets"), ::colorize("activeTextColor", readyCounts.required.tostring()))
 
     ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
       {
@@ -243,7 +236,7 @@ global enum bulletsAmountState {
 
   function openChooseBulletsWnd(groupIdx, itemParams = null, alignObj = null, align = "bottom")
   {
-    let bulGroup = getTblValue(groupIdx, getBulletsGroups())
+    let bulGroup = ::getTblValue(groupIdx, getBulletsGroups())
     if (!unit || !bulGroup)
       return
 
@@ -266,7 +259,7 @@ global enum bulletsAmountState {
       list.append({
         weaponryItem = mod
         selected = curName == mod.name
-        visualDisabled = isInArray(mod.name, otherSelList)
+        visualDisabled = ::isInArray(mod.name, otherSelList)
       })
     }
 
@@ -276,7 +269,7 @@ global enum bulletsAmountState {
       weaponItemParams = itemParams
       alignObj = alignObj
       align = align
-      onChangeValueCb = Callback((@(bulGroup) function(mod) {
+      onChangeValueCb = ::Callback((@(bulGroup) function(mod) {
         changeBulletsValue(bulGroup, mod.name)
       })(bulGroup), this)
     })
@@ -425,7 +418,7 @@ global enum bulletsAmountState {
     {
       if (!bulGroup.active)
         continue
-      let list = getTblValue(bulGroup.getGunIdx(), selectedList)
+      let list = ::getTblValue(bulGroup.getGunIdx(), selectedList)
       if (!list)
         continue
 
@@ -487,7 +480,7 @@ global enum bulletsAmountState {
       let gInfo = bulGroup.gunInfo
       if (!gInfo || !gInfo.notInitedCount)
       {
-        assert(false, "UnitBulletsManager Error: Incorrect not inited bullets count or gun not exist for unit " + unit.name)
+        ::dagor.assertf(false, "UnitBulletsManager Error: Incorrect not inited bullets count or gun not exist for unit " + unit.name)
         continue
       }
 
@@ -511,7 +504,7 @@ global enum bulletsAmountState {
 
   function onEventUnitWeaponChanged(p)
   {
-    if (unit && unit.name == getTblValue("unitName", p))
+    if (unit && unit.name == ::getTblValue("unitName", p))
       updateGroupsActiveMask()
   }
 

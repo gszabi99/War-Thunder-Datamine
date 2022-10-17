@@ -951,17 +951,6 @@
                     "margin-bottom": "3@dp",
                     "display": "hide",
                     "CheckBoxImg": {}
-                  },
-                  {
-                    "id": "dmviewer_show_extended_hints",
-                    "text": "#mainmenu/btnShowExtendedHints",
-                    "tooltip": "#mainmenu/btnShowExtendedHints",
-                    "on_change_value": "onShowExtendedHintsChange",
-                    "value": "yes",
-                    "width": "pw",
-                    "margin-bottom": "3@dp",
-                    "display": "hide",
-                    "CheckBoxImg": {}
                   }
                 ],
                 "tdiv": {
@@ -997,56 +986,11 @@
       {
         "id": "dmviewer_desc",
         "position": "relative",
-        "margin-top": "8@sf/@pf",
+        "top": "8@sf/@pf",
         "hideEmptyText": "yes",
         "text": "",
         "input-transparent": "yes"
       }
-    ],
-    "tdiv": {
-      "id": "dmviewer_ext_hint",
-      "flow": "vertical",
-      "position": "relative",
-      "width": "0.5@sf",
-      "total-input-transparent": "yes",
-      "display": "hide",
-      "rowSeparator": {
-        "margin": "0, @blockInterval"
-      },
-      "textareaNoTab": [
-        {
-          "position": "relative",
-          "margin-top": "@blockInterval",
-          "overlayTextColor": "active",
-          "text": "#xray_ext_hint/title"
-        },
-        {
-          "id": "dmviewer_ext_hint_desc",
-          "position": "relative",
-          "margin-top": "@blockInterval",
-          "hideEmptyText": "yes",
-          "text": "",
-          "smallFont": "yes",
-          "width": "pw"
-        }
-      ],
-      "img": {
-        "id": "dmviewer_ext_hint_icon",
-        "position": "relative",
-        "margin-top": "2@blockInterval",
-        "size": "@dIco, @dIco",
-        "background-image": ""
-      },
-      "loadingHint": {
-        "id": "dmviewer_ext_hint_shortcut",
-        "behaviour": "bhvHint",
-        "position": "relative",
-        "width": "pw",
-        "isXrayHint": "yes",
-        "smallFont": "yes",
-        "isWrapInRowAllowed": "yes",
-        "flow-align": "left"
-      }
-    }
+    ]
   }
 }

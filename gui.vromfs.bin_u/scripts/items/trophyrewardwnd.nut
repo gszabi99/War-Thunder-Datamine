@@ -1,13 +1,4 @@
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-from "%scripts/dagui_library.nut" import *
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
@@ -23,7 +14,7 @@ register_command(
     if (item == null)
       return console_print("Not found any shop item to show window")
 
-    return ::gui_start_open_trophy({
+    return gui_start_open_trophy({
       rewardImageRatio = 1.778
       isDisassemble = false
       rewardTitle = "workshop/craft_2022_spring/craft_tree/btn_victory"
@@ -38,6 +29,7 @@ register_command(
         }
       ]
       reUseRecipeUid = null
+      rewardImageShowTimeSec = 6
       isHidePrizeActionBtn = false
     })
   },
@@ -48,29 +40,26 @@ register_command(
   if (configsTable.len() == 0)
     return
 
-  local localConfigsTable = clone configsTable;
-
   let params = {}
   foreach (paramName in [ "rewardTitle", "rewardListLocId", "isDisassemble",
     "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
-    "reUseRecipeUid" ])
+    "rewardImageShowTimeSec", "reUseRecipeUid" ])
   {
-    if (!(paramName in localConfigsTable))
+    if (!(paramName in configsTable))
       continue
 
-    params[paramName] <- localConfigsTable[paramName]
-    localConfigsTable.rawdelete(paramName)
+    params[paramName] <- configsTable[paramName]
+    configsTable.rawdelete(paramName)
   }
 
   local tKey = ""
-  foreach(idx, configsArray in localConfigsTable)
+  foreach(idx, configsArray in configsTable)
   {
     tKey = idx
     break
   }
 
-  let configsArray = localConfigsTable[tKey]
-  delete localConfigsTable[tKey]
+  let configsArray = configsTable.rawdelete(tKey)
   configsArray.sort(::trophyReward.rewardsSortComparator)
 
   let itemId = configsArray?[0]?.itemDefId
@@ -81,7 +70,7 @@ register_command(
   let trophyItem = ::ItemsManager.findItemById(itemId)
   if (!trophyItem)
   {
-    let configsArrayString = toString(configsArray, 2) // warning disable: -declared-never-used
+    let configsArrayString = ::toString(configsArray, 2) // warning disable: -declared-never-used
     let isLoggedIn = ::g_login.isLoggedIn()              // warning disable: -declared-never-used
     let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
       dbgLoadedItemsInternalCount, dbgUpdateInternalItemsCount // warning disable: -declared-never-used
@@ -89,9 +78,9 @@ register_command(
     let trophiesBlk = ::get_price_blk()?.trophy
     let currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
     let currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
-    let trophiesListInternalString = toString(dbgTrophiesListInternal)  // warning disable: -declared-never-used
-    let trophiesBlkString = toString(trophiesBlk)  // warning disable: -declared-never-used
-    local trophyBlkString = toString(trophiesBlk?[itemId]) // warning disable: -declared-never-used
+    let trophiesListInternalString = ::toString(dbgTrophiesListInternal)  // warning disable: -declared-never-used
+    let trophiesBlkString = ::toString(trophiesBlk)  // warning disable: -declared-never-used
+    local trophyBlkString = ::toString(trophiesBlk?[itemId]) // warning disable: -declared-never-used
 
     ::script_net_assert_once("not found trophyItem", "Trophy Reward: Not found item. Don't show reward.")
     return
@@ -99,7 +88,7 @@ register_command(
 
   params.trophyItem <- trophyItem
   params.configsArray <- configsArray
-  params.afterFunc <- @() ::gui_start_open_trophy(localConfigsTable)
+  params.afterFunc <- @() ::gui_start_open_trophy(configsTable)
 
   ::gui_start_modal_wnd(::gui_handlers.trophyRewardWnd, params)
 }
@@ -140,6 +129,7 @@ register_command(
   singleAnimationGuiSound = null
   rewardImage = null
   rewardImageRatio = 1
+  rewardImageShowTimeSec = -1
   reUseRecipeUid = null
   reUseRecipe = null
 
@@ -184,7 +174,7 @@ register_command(
     let titleObj = scene.findObject("reward_title")
     titleObj.setValue(title)
     if (daguiFonts.getStringWidthPx(title, "fontMedium", guiScene) >
-      to_pixels("1@trophyWndWidth - 1@buttonCloseHeight"))
+      ::to_pixels("1@trophyWndWidth - 1@buttonCloseHeight"))
       titleObj.caption = "no"
   }
 
@@ -212,9 +202,9 @@ register_command(
     ::showBtn(useSingleAnimation? "reward_roullete" : "open_chest_animation", false, scene) //hide not used animation
     let animId = useSingleAnimation? "open_chest_animation" : "reward_roullete"
     let animObj = scene.findObject(animId)
-    if (checkObj(animObj))
+    if (::checkObj(animObj))
     {
-      animObj.animation = rewardImage == null ? "show" : "hide"
+      animObj.animation = "show"
       if (useSingleAnimation)
       {
         guiScene.playSound(singleAnimationGuiSound ?? "chest_open")
@@ -232,7 +222,7 @@ register_command(
     if (opened)
       return false
     let obj = scene.findObject("rewards_list")
-    ::ItemsRoulette.skipAnimation(obj)
+    ItemsRoulette.skipAnimation(obj)
     opened = true
     updateWnd()
     notifyTrophyVisible()
@@ -267,7 +257,7 @@ register_command(
 
   function updateTrophyImage() {
     let imageObjPlace = scene.findObject("reward_image_place")
-    if (!checkObj(imageObjPlace))
+    if (!::check_obj(imageObjPlace))
       return
 
     imageObjPlace.show(true)
@@ -299,10 +289,10 @@ register_command(
       return
 
     let obj = scene.findObject("reward_postscript")
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
-    obj.setValue(loc("trophy/moreRewards", {num = countNotVisibleItems}))
+    obj.setValue(::loc("trophy/moreRewards", {num = countNotVisibleItems}))
   }
 
   function updateRewardText()
@@ -311,13 +301,13 @@ register_command(
       return
 
     let obj = scene.findObject("prize_desc_div")
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let data = ::trophyReward.getRewardsListViewData(shrinkedConfigsArray,
                    { multiAwardHeader = true
                      widthByParentParent = true
-                     header = loc("mainmenu/you_received")
+                     header = ::loc("mainmenu/you_received")
                    })
 
     if (unit && unit.isRented())
@@ -328,9 +318,9 @@ register_command(
       if (totalRentTime > time.hoursToSeconds(rentTimeHours))
         rentText = "mainmenu/rent/rent_unit_extended"
 
-      descTextArray.append(colorize("activeTextColor",loc(rentText)))
-      let timeText = colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
-      descTextArray.append(colorize("activeTextColor",loc("mainmenu/rent/rentTimeSec", {time = timeText})))
+      descTextArray.append(::colorize("activeTextColor",::loc(rentText)))
+      let timeText = ::colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
+      descTextArray.append(::colorize("activeTextColor",::loc("mainmenu/rent/rentTimeSec", {time = timeText})))
       let descText = "\n".join(descTextArray, true)
       if (descText != "")
         scene.findObject("prize_desc_text").setValue(descText)
@@ -377,7 +367,7 @@ register_command(
     decoratorSlot = decorData.decoratorSlot
     let obj = scene.findObject("btn_use_decorator")
     if (obj?.isValid())
-      obj.setValue(loc($"decorator/use/{decorator.decoratorType.resourceType}"))
+      obj.setValue(::loc($"decorator/use/{decorator.decoratorType.resourceType}"))
   }
 
   function getRewardImage(trophyStyle = "")
@@ -406,20 +396,20 @@ register_command(
     base.onTake(unitToTake, {
       cellClass = "slotbarClone"
       isNewUnit = true
-      afterSuccessFunc = Callback(@() goBack(), this)
+      afterSuccessFunc = ::Callback(@() goBack(), this)
     })
   }
 
   function updateButtons()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     ::show_facebook_screenshot_button(scene, opened)
     let isShowRewardListBtn = opened && (configsArray.len() > 1 || haveItems)
     local btnObj = this.showSceneBtn("btn_rewards_list", isShowRewardListBtn)
     if (isShowRewardListBtn)
-      btnObj.setValue(loc(getRewardsListLocId()))
+      btnObj.setValue(::loc(getRewardsListLocId()))
     this.showSceneBtn("open_chest_animation", !animFinished) //hack tooltip bug
     this.showSceneBtn("btn_ok", animFinished)
     this.showSceneBtn("btn_back", animFinished || (trophyItem?.isAllowSkipOpeningAnim() ?? false))
@@ -450,7 +440,7 @@ register_command(
     btnObj = this.showSceneBtn("btn_re_use_item", canReUseItem)
     if (canReUseItem) {
       btnObj.inactiveColor = reUseRecipe.isUsable ? "no" : "yes"
-      btnObj.setValue(loc(trophyItem.getLocIdsList().reUseItemLocId))
+      btnObj.setValue(::loc(trophyItem.getLocIdsList().reUseItemLocId))
     }
   }
 
@@ -486,7 +476,7 @@ register_command(
       return false
 
     let animObj = scene.findObject("open_chest_animation")
-    if (checkObj(animObj))
+    if (::checkObj(animObj))
       animObj.animation = "hide"
     animFinished = true
 
@@ -509,7 +499,7 @@ register_command(
     foreach(reward in configsArray)
       if (reward?.item)
       {
-        rewardItem = ::ItemsManager.getInventoryItemById(reward.item)
+        rewardItem = ItemsManager.getInventoryItemById(reward.item)
         if (!rewardItem)
           continue
 

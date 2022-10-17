@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 const FREQUENCY_APP_STATE_UPDATE_SEC = 1
 local refreshActiveAppTask = -1
 let callbacksArray = []

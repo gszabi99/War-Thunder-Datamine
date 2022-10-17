@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let string = require("string")
 let {compassWrap, generateCompassMarkVE130} = require("ilsCompasses.nut")
 let {flyDirection} = require("commonElements.nut")
 let {IlsColor, IlsLineScale, CannonMode, TargetPosValid, TargetPos, BombingMode,
@@ -258,7 +255,7 @@ let shellName = @() {
   color = IlsColor.value
   fontSize = 45
   font = Fonts.mirage_ils
-  text = RocketMode.value ? "RK" : (CannonMode.value ? "CAS" : (isAAMMode.value ? loc(CurWeaponName.value) :  "CAN"))
+  text = RocketMode.value ? "RK" : (CannonMode.value ? "CAS" : (isAAMMode.value ? ::loc(CurWeaponName.value) :  "CAN"))
 }
 
 let function bombImpactLine(width, height) {

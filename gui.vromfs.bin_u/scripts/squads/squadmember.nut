@@ -1,11 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let class SquadMember {
+::SquadMember <- class
+{
   uid = ""
   name = ""
   rank = -1
@@ -33,7 +27,6 @@ let class SquadMember {
   craftsInfoByUnitsGroups = null
   isEacInited = false
   fakeName = false
-  queueProfileJwt = ""
 
   isWaiting = true
   isInvite = false
@@ -45,7 +38,7 @@ let class SquadMember {
                        "selSlots", "crewAirs", "brokenAirs", "missedPkg", "wwOperations",
                        "isReady", "isCrewsReady", "canPlayWorldWar", "isWorldWarAvailable", "cyberCafeId",
                        "unallowedEventsENames", "sessionRoomId", "crossplay", "bannedMissions", "dislikedMissions",
-                       "craftsInfoByUnitsGroups", "isEacInited", "fakeName", "queueProfileJwt"]
+                       "craftsInfoByUnitsGroups", "isEacInited", "fakeName"]
 
   constructor(v_uid, v_isInvite = false, v_isApplication = false)
   {
@@ -81,11 +74,11 @@ let class SquadMember {
     local isChanged = false
     foreach(idx, property in updatedProperties)
     {
-      newValue = getTblValue(property, data, null)
+      newValue = ::getTblValue(property, data, null)
       if (newValue == null)
         continue
 
-      if (isInArray(property, ["brokenAirs", "missedPkg","unallowedEventsENames",     //!!!FIX ME If this parametrs is empty then msquad returns table instead array
+      if (::isInArray(property, ["brokenAirs", "missedPkg","unallowedEventsENames",     //!!!FIX ME If this parametrs is empty then msquad returns table instead array
              "bannedMissions", "dislikedMissions", "craftsInfoByUnitsGroups"])        // Need remove this block after msquad fixed
           && !::u.isArray(newValue))
         newValue = []
@@ -131,7 +124,7 @@ let class SquadMember {
 
   function isEventAllowed(eventEconomicName)
   {
-    return !isInArray(eventEconomicName, unallowedEventsENames)
+    return !::isInArray(eventEconomicName, unallowedEventsENames)
   }
 
   function isMe()
@@ -139,5 +132,3 @@ let class SquadMember {
     return uid == ::my_user_id_str
   }
 }
-
-return SquadMember

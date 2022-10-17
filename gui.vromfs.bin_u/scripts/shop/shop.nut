@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format, split_by_chars } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -276,10 +267,10 @@ shopData = [
 
   function fillAircraftsList(curName = "")
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
     let tableObj = scene.findObject("shop_items_list")
-    if (!checkObj(tableObj))
+    if (!::checkObj(tableObj))
       return
 
     updateBoughtVehiclesCount()
@@ -305,7 +296,7 @@ shopData = [
         }
 
     tableObj.size = $"{maxCols+1}@shop_width, {treeData.tree.len()}@shop_height"
-    tableObj.isShopItemsWide = to_pixels("@is_shop_items_wide")
+    tableObj.isShopItemsWide = ::to_pixels("@is_shop_items_wide")
     initUnitCells(tableObj, cellsList)
     curUnitsList = cellsList.map(@(c) c.unitOrGroup)
     updateCurUnitsList()
@@ -337,11 +328,6 @@ shopData = [
     updateCurUnitsList()
   }
 
-  function onEventPromoteUnitsChanged(params = {}) {
-    doWhenActiveOnce("loadFullAircraftsTable")
-    doWhenActiveOnce("fillPagesListBoxNoOpenGroup")
-  }
-
   function updateButtons()
   {
     updateRepairAllButton()
@@ -350,7 +336,7 @@ shopData = [
   function showNavButton(id, show)
   {
     ::showBtn(id, show, navBarObj)
-    if (checkObj(navBarGroupObj))
+    if (::checkObj(navBarGroupObj))
       ::showBtn(id, show, navBarGroupObj)
   }
 
@@ -364,7 +350,7 @@ shopData = [
     if (!show)
       return
 
-    let locText = loc("mainmenu/btnRepairAll")
+    let locText = ::loc("mainmenu/btnRepairAll")
     placePriceTextToButton(navBarObj, "btn_repairall", locText, repairAllCost)
     placePriceTextToButton(navBarGroupObj, "btn_repairall", locText, repairAllCost)
   }
@@ -381,7 +367,7 @@ shopData = [
 
   function onEventProfileUpdated(p)
   {
-    if (p.transactionType == EATT_UPDATE_ENTITLEMENTS || p.transactionType == EATT_BUY_ENTITLEMENT)
+    if (p.transactionType == ::EATT_UPDATE_ENTITLEMENTS || p.transactionType == ::EATT_BUY_ENTITLEMENT)
       doWhenActiveOnce("fillAircraftsList")
   }
 
@@ -460,10 +446,10 @@ shopData = [
       if (endReleaseDate > 0) {
         let hasReqAir = (air?.reqAir ?? "") != ""
         let locId = hasReqAir ? "shop/futureReqAir/desc" : "shop/futureReqAir/desc/withoutReqAir"
-        alarmTooltip = ::g_string.stripTags(loc(locId, {
-          futureReqAir = ::getUnitName(air.futureReqAir)
-          curAir = ::getUnitName(air)
-          reqAir = hasReqAir ? ::getUnitName(air.reqAir) : ""
+        alarmTooltip = ::g_string.stripTags(::loc(locId, {
+          futureReqAir = getUnitName(air.futureReqAir)
+          curAir = getUnitName(air)
+          reqAir = hasReqAir ? getUnitName(air.reqAir) : ""
           date = buildDateStr(endReleaseDate)
         }))
       }
@@ -634,7 +620,7 @@ shopData = [
       let x = treeData.sectionsPos[s] + "@shop_width" + (isLeft ? "" : extraLeft)
       let w = (treeData.sectionsPos[s + 1] - treeData.sectionsPos[s]) + "@shop_width" + (isLeft ? extraLeft : "") + (isRight ? extraRight : "")
 
-      let isResearchable = getTblValue(s, treeData.sectionsResearchable)
+      let isResearchable = ::getTblValue(s, treeData.sectionsResearchable)
       let title = isResearchable ? "#shop/section/researchable" : "#shop/section/premium"
 
       view.plates.append({ title = title, x = x, w = w })
@@ -692,7 +678,7 @@ shopData = [
       {
         let isLeft = s == 0
         let isRight = s == sectionsTotal - 1
-        let isResearchable = getTblValue(s, treeData.sectionsResearchable)
+        let isResearchable = ::getTblValue(s, treeData.sectionsResearchable)
         let tierType = tierUnlocked || !isResearchable ? "unlocked" : "locked"
 
         let pX = treeData.sectionsPos[s]
@@ -745,8 +731,8 @@ shopData = [
     {
       let unitsCount = boughtVehiclesCount[rank]
       let unitsTotal = totalVehiclesCount[rank]
-      tooltipRank = loc("shop/age/tooltip") + loc("ui/colon") + colorize("userlogColoredText", ::get_roman_numeral(rank))
-        + "\n" + loc("shop/tier/unitsBought") + loc("ui/colon") + colorize("userlogColoredText", format("%d/%d", unitsCount, unitsTotal))
+      tooltipRank = ::loc("shop/age/tooltip") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::get_roman_numeral(rank))
+        + "\n" + ::loc("shop/tier/unitsBought") + ::loc("ui/colon") + ::colorize("userlogColoredText", format("%d/%d", unitsCount, unitsTotal))
     }
     else
     {
@@ -759,17 +745,17 @@ shopData = [
 
         if (unitsLeft > 0)
         {
-          let txtThisRank = colorize("userlogColoredText", ::get_roman_numeral(rank))
-          let txtPrevRank = colorize("userlogColoredText", ::get_roman_numeral(prevRank))
-          let txtUnitsNeed = colorize("badTextColor", unitsNeed)
-          let txtUnitsLeft = colorize("badTextColor", unitsLeft)
+          let txtThisRank = ::colorize("userlogColoredText", ::get_roman_numeral(rank))
+          let txtPrevRank = ::colorize("userlogColoredText", ::get_roman_numeral(prevRank))
+          let txtUnitsNeed = ::colorize("badTextColor", unitsNeed)
+          let txtUnitsLeft = ::colorize("badTextColor", unitsLeft)
           let txtCounter = format("%d/%d", unitsCount, unitsNeed)
-          let txtCounterColored = colorize("badTextColor", txtCounter)
+          let txtCounterColored = ::colorize("badTextColor", txtCounter)
 
-          let txtRankIsLocked = loc("shop/unlockTier/locked", { rank = txtThisRank })
-          let txtNeedUnits = loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = txtPrevRank, amount = txtUnitsLeft })
-          let txtRankLockedDesc = loc("shop/unlockTier/desc", { rank = txtThisRank, prevRank = txtPrevRank, amount = txtUnitsNeed })
-          let txtRankProgress = loc("shop/unlockTier/progress", { rank = txtThisRank }) + loc("ui/colon") + txtCounterColored
+          let txtRankIsLocked = ::loc("shop/unlockTier/locked", { rank = txtThisRank })
+          let txtNeedUnits = ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = txtPrevRank, amount = txtUnitsLeft })
+          let txtRankLockedDesc = ::loc("shop/unlockTier/desc", { rank = txtThisRank, prevRank = txtPrevRank, amount = txtUnitsNeed })
+          let txtRankProgress = ::loc("shop/unlockTier/progress", { rank = txtThisRank }) + ::loc("ui/colon") + txtCounterColored
 
           if (prevRank == rank - 1)
           {
@@ -837,13 +823,13 @@ shopData = [
       data += format(modBlockFormat,
                   status,
                   (prevEraPos + curFakeRowRankCount).tostring(),
-                  loc("shop/age/num", { num = ::get_roman_numeral(i) }),
+                  ::loc("shop/age/num", { num = ::get_roman_numeral(i) }),
                   ::g_string.stripTags(texts.tooltipRank))
 
       data += arrowData
 
       let tierObj = scene.findObject("shop_tier_" + i.tostring())
-      if (checkObj(tierObj))
+      if (::checkObj(tierObj))
         tierObj.tooltip = texts.tooltipPlate
     }
 
@@ -896,7 +882,7 @@ shopData = [
 
   function isUnlockedFakeUnit(unit)
   {
-    return ::get_units_count_at_rank(unit?.rank,
+    return get_units_count_at_rank(unit?.rank,
       unitTypes.getByName(unit?.isReqForFakeUnit ? split_by_chars(unit.name, "_")?[0] : unit.name,
         false).esUnitType,
       unit.country, true)
@@ -915,7 +901,7 @@ shopData = [
 
   function findUnitInGroupTableById(id)
   {
-    if (checkObj(groupChooseObj))
+    if (::checkObj(groupChooseObj))
       return groupChooseObj.findObject("airs_table").findObject(id)
 
     return null
@@ -923,7 +909,7 @@ shopData = [
 
   function findCloneGroupObjById(id)
   {
-    if (checkObj(groupChooseObj))
+    if (::checkObj(groupChooseObj))
       return groupChooseObj.findObject("clone_td_" + id)
 
     return null
@@ -931,7 +917,7 @@ shopData = [
 
   function findAirTableObjById(id)
   {
-    if (checkObj(scene))
+    if (::checkObj(scene))
       return scene.findObject("shop_items_list").findObject(id)
 
     return null
@@ -940,7 +926,7 @@ shopData = [
   function getAirObj(unitName)
   {
     let airObj = findUnitInGroupTableById(unitName)
-    if (checkObj(airObj))
+    if (::checkObj(airObj))
       return airObj
 
     return findAirTableObjById(unitName)
@@ -949,7 +935,7 @@ shopData = [
   function getUnitCellObj(unitName)
   {
     let cellObj = findUnitInGroupTableById($"unitCell_{unitName}")
-    if (checkObj(cellObj))
+    if (::checkObj(cellObj))
       return cellObj
 
     return findAirTableObjById($"unitCell_{unitName}")
@@ -1018,11 +1004,11 @@ shopData = [
     }
     let mainActionLocId = is_unit ? slotActions.getSlotActionFunctionName(unit, params) : ""
     return {
-      mainActionText = mainActionLocId != "" ? loc(mainActionLocId) : ""
+      mainActionText = mainActionLocId != "" ? ::loc(mainActionLocId) : ""
       shopResearchMode = shopResearchMode
       forceNotInResearch = !setResearchManually
       flushExp = availableFlushExp
-      showBR = hasFeature("GlobalShowBattleRating")
+      showBR = ::has_feature("GlobalShowBattleRating")
       getEdiffFunc = getCurrentEdiff.bindenv(this)
       tooltipParams = { needShopInfo = true }
     }
@@ -1053,7 +1039,7 @@ shopData = [
     if (!::isUnitGroup(mainTblUnit))
       return mainTblUnit
 
-    if (checkGroups && checkObj(groupChooseObj))
+    if (checkGroups && ::checkObj(groupChooseObj))
     {
       tableObj = groupChooseObj.findObject("airs_table")
       let idx = tableObj.getValue()
@@ -1069,8 +1055,8 @@ shopData = [
 
   function getDefaultUnitInGroup(unitGroup)
   {
-    let airsList = getTblValue("airsGroup", unitGroup)
-    return getTblValue(0, airsList)
+    let airsList = ::getTblValue("airsGroup", unitGroup)
+    return ::getTblValue(0, airsList)
   }
 
   function getItemBlockFromShopTree(itemName)
@@ -1079,7 +1065,7 @@ shopData = [
     for(local i = 0; i < tree.len(); ++i)
       for(local j = 0; j < tree[i].len(); ++j)
       {
-        let name = getTblValue("name", tree[i][j])
+        let name = ::getTblValue("name", tree[i][j])
         if (!name)
           continue
 
@@ -1125,7 +1111,7 @@ shopData = [
     }
 
     let pagesObj = scene.findObject("shop_pages_list")
-    if (!checkObj(pagesObj))
+    if (!::checkObj(pagesObj))
       return
 
     let unitType = forceUnitType
@@ -1185,7 +1171,7 @@ shopData = [
   function updateDiscountIconsOnTabs()
   {
     let pagesObj = scene.findObject("shop_pages_list")
-    if (!checkObj(pagesObj))
+    if (!::checkObj(pagesObj))
       return
 
     foreach(country in shopData)
@@ -1196,17 +1182,17 @@ shopData = [
       foreach(idx, page in country.pages)
       {
         let tabObj = pagesObj.findObject(page.name)
-        if (!checkObj(tabObj))
+        if (!::checkObj(tabObj))
           continue
 
         let discountObj = tabObj.findObject(getDiscountIconTabId(curCountry, page.name))
-        if (!checkObj(discountObj))
+        if (!::checkObj(discountObj))
           continue
 
         let discountData = getDiscountByCountryAndArmyId(curCountry, page.name)
 
         let maxDiscount = discountData?.maxDiscount ?? 0
-        let discountTooltip = getTblValue("discountTooltip", discountData, "")
+        let discountTooltip = ::getTblValue("discountTooltip", discountData, "")
         tabObj.tooltip = discountTooltip
         discountObj.setValue(maxDiscount > 0? ("-" + maxDiscount + "%") : "")
         discountObj.tooltip = discountTooltip
@@ -1236,17 +1222,17 @@ shopData = [
 
   function initSearchBox()
   {
-    if (shopResearchMode || !hasFeature("UnitsSearchBoxInShop"))
+    if (shopResearchMode || !::has_feature("UnitsSearchBoxInShop"))
       return
     let handler = shopSearchBox.init({
       scene = scene.findObject("shop_search_box")
       curCountry = curCountry
       curEsUnitType = getCurPageEsUnitType()
-      cbOwnerSearchHighlight = Callback(searchHighlight, this)
-      cbOwnerSearchCancel    = Callback(searchCancel,    this)
-      cbOwnerShowUnit        = Callback(showUnitInShop,  this)
-      cbOwnerClose           = Callback(onCloseShop, this)
-      getEdiffFunc           = Callback(getCurrentEdiff, this)
+      cbOwnerSearchHighlight = ::Callback(searchHighlight, this)
+      cbOwnerSearchCancel    = ::Callback(searchCancel,    this)
+      cbOwnerShowUnit        = ::Callback(showUnitInShop,  this)
+      cbOwnerClose           = ::Callback(onCloseShop, this)
+      getEdiffFunc           = ::Callback(getCurrentEdiff, this)
     })
     registerSubHandler(handler)
     searchBoxWeak = handler.weakref()
@@ -1258,12 +1244,12 @@ shopData = [
       return highlightUnitsClear()
     let slots = highlightUnitsInTree(units.map(@(unit) unit.name))
     let tableObj = scene.findObject("shop_items_list")
-    if (!checkObj(tableObj))
+    if (!::check_obj(tableObj))
       return
     foreach (value in [ slots.valueLast, slots.valueFirst ])
     {
       let cellObj = value != null ? getCellObjByValue(value) : null
-      if (checkObj(cellObj))
+      if (::check_obj(cellObj))
         cellObj.scrollToView()
     }
     selCellOnSearchQuit = slots.valueFirst
@@ -1287,10 +1273,10 @@ shopData = [
           continue
         slotIdx++
         let isGroup = ::isUnitGroup(cell)
-        local isHighlight = !cell?.isFakeUnit && !isGroup && isInArray(cell?.name, units)
+        local isHighlight = !cell?.isFakeUnit && !isGroup && ::isInArray(cell?.name, units)
         if (isGroup)
           foreach (unit in cell.airsGroup)
-            isHighlight = isHighlight || isInArray(unit?.name, units)
+            isHighlight = isHighlight || ::isInArray(unit?.name, units)
         if (!isHighlight)
           continue
         res.valueFirst = res.valueFirst ?? slotIdx
@@ -1321,7 +1307,7 @@ shopData = [
     if (selCellOnSearchQuit != null)
     {
       let tableObj = scene.findObject("shop_items_list")
-      if (checkObj(tableObj))
+      if (::check_obj(tableObj))
       {
         skipOpenGroup = true
         tableObj.setValue(selCellOnSearchQuit)
@@ -1335,7 +1321,7 @@ shopData = [
   function highlightUnitsClear()
   {
     let shadingObj = scene.findObject("shop_dark_screen")
-    if (checkObj(shadingObj))
+    if (::check_obj(shadingObj))
       shadingObj.show(false)
   }
 
@@ -1428,10 +1414,10 @@ shopData = [
     if (skipOpenGroup || groupChooseObj || !item || !::isUnitGroup(item))
       return
     let silObj = scene.findObject("shop_items_list")
-    if (!checkObj(silObj))
+    if (!::checkObj(silObj))
       return
     let grObj = silObj.findObject(item.name)
-    if (!checkObj(grObj))
+    if (!::checkObj(grObj))
       return
 
     skipOpenGroup = true
@@ -1526,7 +1512,7 @@ shopData = [
 
   function fillGroupObj(selectUnitName = "")
   {
-    if (!checkObj(scene) || !checkObj(groupChooseObj))
+    if (!::checkObj(scene) || !::checkObj(groupChooseObj))
       return
 
     let item = getCurAircraft(false)
@@ -1534,7 +1520,7 @@ shopData = [
       return
 
     let gTblObj = groupChooseObj.findObject("airs_table")
-    if (!checkObj(gTblObj))
+    if (!::checkObj(gTblObj))
       return
 
     if (selectUnitName == "")
@@ -1579,7 +1565,7 @@ shopData = [
 
   function destroyGroupChoose(destroySpecGroupName = "")
   {
-    if (!checkObj(groupChooseObj)
+    if (!::checkObj(groupChooseObj)
         || (destroySpecGroupName != "" &&
             destroySpecGroupName == groupChooseObj.group))
       return
@@ -1598,7 +1584,7 @@ shopData = [
 
   function onCancelSlotChoose(obj)
   {
-    if (checkObj(groupChooseObj))
+    if (::checkObj(groupChooseObj))
       destroyGroupChooseDelayed()
   }
 
@@ -1631,7 +1617,7 @@ shopData = [
 
   function onEventUnitRepaired(params)
   {
-    let unit = getTblValue("unit", params)
+    let unit = ::getTblValue("unit", params)
 
     if (checkBrokenListStatus(unit))
       checkUnitItemAndUpdate(unit)
@@ -1643,32 +1629,32 @@ shopData = [
   {
     if (!scene.isEnabled() || !scene.isVisible())
       return
-    checkUnitItemAndUpdate(getTblValue("unit", params))
+    checkUnitItemAndUpdate(::getTblValue("unit", params))
   }
 
   function onEventModificationPurchased(params)
   {
     if (!scene.isEnabled() || !scene.isVisible())
       return
-    checkUnitItemAndUpdate(getTblValue("unit", params))
+    checkUnitItemAndUpdate(::getTblValue("unit", params))
   }
 
   function onEventAllModificationsPurchased(params)
   {
     if (!scene.isEnabled() || !scene.isVisible())
       return
-    checkUnitItemAndUpdate(getTblValue("unit", params))
+    checkUnitItemAndUpdate(::getTblValue("unit", params))
   }
 
   function onEventUpdateResearchingUnit(params)
   {
-    let unitName = getTblValue("unitName", params, ::shop_get_researchable_unit_name(curCountry, getCurPageEsUnitType()))
+    let unitName = ::getTblValue("unitName", params, ::shop_get_researchable_unit_name(curCountry, getCurPageEsUnitType()))
     checkUnitItemAndUpdate(::getAircraftByName(unitName))
   }
 
   function onOpenOnlineShop(obj)
   {
-    ::OnlineShopModel.showUnitGoods(getCurAircraft().name, "shop")
+    OnlineShopModel.showUnitGoods(getCurAircraft().name, "shop")
   }
 
   function onBuy()
@@ -1705,11 +1691,11 @@ shopData = [
 
   function onEventUnitResearch(params)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
-    let prevUnitName = getTblValue("prevUnitName", params)
-    let unitName = getTblValue("unitName", params)
+    let prevUnitName = ::getTblValue("prevUnitName", params)
+    let unitName = ::getTblValue("unitName", params)
 
     if (prevUnitName && prevUnitName != unitName)
       checkUnitItemAndUpdate(::getAircraftByName(prevUnitName))
@@ -1729,12 +1715,12 @@ shopData = [
 
   function onEventUnitBought(params)
   {
-    let unitName = getTblValue("unitName", params)
+    let unitName = ::getTblValue("unitName", params)
     let unit = unitName ? ::getAircraftByName(unitName) : null
     if (!unit)
       return
 
-    if (getTblValue("receivedFromTrophy", params, false) && unit.isVisibleInShop())
+    if (::getTblValue("receivedFromTrophy", params, false) && unit.isVisibleInShop())
     {
       doWhenActiveOnce("loadFullAircraftsTable")
       doWhenActiveOnce("fillAircraftsList")
@@ -1793,11 +1779,11 @@ shopData = [
     if (!unitName || unitName == "")
       return false
 
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return false
 
     let tableObj = scene.findObject("shop_items_list")
-    if (!checkObj(tableObj))
+    if (!::checkObj(tableObj))
       return false
 
     let tree = getCurTreeData().tree
@@ -1819,7 +1805,7 @@ shopData = [
               obj.scrollToView()
               tableObj.setValue(idx)
               obj.setMouseCursorOnObject()
-              if (checkObj(groupChooseObj))
+              if (::checkObj(groupChooseObj))
                 groupChooseObj.findObject("airs_table").setValue(groupItemIdx)
               return true
             }
@@ -1858,7 +1844,7 @@ shopData = [
   {
     foreach(param in ["unit", "prevUnit"])
     {
-      let unit = getTblValue(param, params)
+      let unit = ::getTblValue(param, params)
       if (!unit)
         continue
 
@@ -1890,7 +1876,7 @@ shopData = [
       return
 
     slotActions.slotMainAction(unit, {
-      onSpendExcessExp = Callback(onSpendExcessExp, this)
+      onSpendExcessExp = ::Callback(onSpendExcessExp, this)
       onTakeParams = {
         unitObj = getAirObj(unit.name)
         cellClass = "shopClone"
@@ -1918,7 +1904,7 @@ shopData = [
 
   function onModifications(obj)
   {
-    this.msgBox("not_available", loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+    this.msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
   function checkTag(aircraft, tag)
@@ -1951,7 +1937,7 @@ shopData = [
   function initShowMode(tgtNavBar)
   {
     let obj = tgtNavBar.findObject("show_mode")
-    if (!::g_login.isProfileReceived() || !checkObj(obj))
+    if (!::g_login.isProfileReceived() || !::checkObj(obj))
       return
 
     let storedMode = getShopDiffMode()
@@ -1961,7 +1947,7 @@ shopData = [
       if (diff.diffCode == -1 || (!shopResearchMode && diff.isAvailable()))
       {
         showModeList.append({
-          text = diff.diffCode == -1 ? loc("options/auto") : colorize("warningTextColor", diff.getLocName())
+          text = diff.diffCode == -1 ? ::loc("options/auto") : ::colorize("warningTextColor", diff.getLocName())
           diffCode = diff.diffCode
           enabled = true
           textStyle = "textStyle:t='textarea';"
@@ -1994,11 +1980,11 @@ shopData = [
 
   function updateShowModeTooltip(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
-    local adviceText = loc(isAutoDiff() ? "mainmenu/showModesInfo/advice" : "mainmenu/showModesInfo/warning", { automatic = loc("options/auto") })
-    adviceText = colorize(isAutoDiff() ? "goodTextColor" : "warningTextColor", adviceText)
-    obj["tooltip"] = loc("mainmenu/showModesInfo/tooltip") + "\n" + adviceText
+    local adviceText = ::loc(isAutoDiff() ? "mainmenu/showModesInfo/advice" : "mainmenu/showModesInfo/warning", { automatic = ::loc("options/auto") })
+    adviceText = ::colorize(isAutoDiff() ? "goodTextColor" : "warningTextColor", adviceText)
+    obj["tooltip"] = ::loc("mainmenu/showModesInfo/tooltip") + "\n" + adviceText
   }
 
   _isShowModeInChange = false
@@ -2006,11 +1992,11 @@ shopData = [
   {
     if (_isShowModeInChange)
       return
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let value = obj.getValue()
-    let item = getTblValue(value, showModeList)
+    let item = ::getTblValue(value, showModeList)
     if (!item)
       return
 
@@ -2020,11 +2006,11 @@ shopData = [
 
     foreach(tgtNavBar in [navBarObj, navBarGroupObj])
     {
-      if (!checkObj(tgtNavBar))
+      if (!::check_obj(tgtNavBar))
         continue
 
       let listObj = tgtNavBar.findObject("show_mode")
-      if (!checkObj(listObj))
+      if (!::check_obj(listObj))
         continue
 
       if (listObj.getValue() != value)
@@ -2056,7 +2042,7 @@ shopData = [
 
   function updateTreeDifficulty()
   {
-    if (!hasFeature("GlobalShowBattleRating"))
+    if (!::has_feature("GlobalShowBattleRating"))
       return
     let curEdiff = getCurrentEdiff()
     let tree = getCurTreeData().tree
@@ -2064,17 +2050,17 @@ shopData = [
       foreach(unit in row)
       {
         let unitObj = unit ? getUnitCellObj(unit.name) : null
-        if (checkObj(unitObj))
+        if (::checkObj(unitObj))
         {
           let obj = unitObj.findObject("rankText")
-          if (checkObj(obj))
+          if (::checkObj(obj))
             obj.setValue(::get_unit_rank_text(unit, null, true, curEdiff))
 
           if (!shopResearchMode) {
             let hasObjective = ::isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(u) hasMarkerByUnitName(u.name, curEdiff))) != null
               : ::u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
-            ::show_obj(unitObj.findObject("unlockMarker"), hasObjective)
+            show_obj(unitObj.findObject("unlockMarker"), hasObjective)
           }
         }
       }
@@ -2083,7 +2069,7 @@ shopData = [
   function onShopShow(show)
   {
     onSceneActivate(show)
-    if (!show && checkObj(groupChooseObj))
+    if (!show && ::checkObj(groupChooseObj))
       destroyGroupChoose()
     if (show)
       popDelayedActions()
@@ -2143,8 +2129,8 @@ shopData = [
   getParamsForActionsList = @() {
     setResearchManually = setResearchManually
     shopResearchMode = shopResearchMode
-    onSpendExcessExp = Callback(onSpendExcessExp, this)
-    onCloseShop = Callback(onCloseShop, this)
+    onSpendExcessExp = ::Callback(onSpendExcessExp, this)
+    onCloseShop = ::Callback(onCloseShop, this)
   }
 
   checkAirShopReq = @(air) air?.shopReq ?? true

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::gui_start_dynamic_results <- function gui_start_dynamic_results()
 {
   ::handlersManager.loadHandler(::gui_handlers.CampaignResults)
@@ -21,10 +14,10 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
   function initScreen()
   {
     guiScene["campaign-status"].setValue(
-        (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("DYNAMIC_CAMPAIGN_SUCCESS") : loc("DYNAMIC_CAMPAIGN_FAIL")
+        (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("DYNAMIC_CAMPAIGN_SUCCESS") : ::loc("DYNAMIC_CAMPAIGN_FAIL")
       )
     guiScene["campaign-result"].setValue(
-        (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("missions/dynamic_success") : loc("missions/dynamic_fail")
+        (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("missions/dynamic_success") : ::loc("missions/dynamic_fail")
       );
 
     let wpdata = ::get_session_warpoints()
@@ -34,12 +27,12 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
     if (wpdata.nDCWp>0)
     {
-      guiScene["info-dc-text"].setValue(loc("debriefing/dc"))
+      guiScene["info-dc-text"].setValue(::loc("debriefing/dc"))
       guiScene["info-dc-wp"].setValue(::Cost(wpdata.nDCWp).toStringWithParams(
         {isWpAlwaysShown = true, isColored = false}))
     }
 
-    let info = ::DataBlock()
+    let info = DataBlock()
     ::dynamic_get_visual(info)
     let stats = ["bombers", "fighters", "infantry", "tanks", "artillery","ships"]
     let sides = ["ally","enemy"]
@@ -57,17 +50,17 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
   }
   function onSelect()
   {
-    log("::gui_handlers.CampaignResults onSelect")
+    ::dagor.debug("::gui_handlers.CampaignResults onSelect")
     save()
   }
   function afterSave()
   {
-    log("::gui_handlers.CampaignResults afterSave")
+    ::dagor.debug("::gui_handlers.CampaignResults afterSave")
     goForward(::gui_start_mainmenu)
   }
   function onBack()
   {
-    log("::gui_handlers.CampaignResults goBack")
+    ::dagor.debug("::gui_handlers.CampaignResults goBack")
     goBack()
   }
 }

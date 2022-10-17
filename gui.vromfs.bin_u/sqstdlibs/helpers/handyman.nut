@@ -1,6 +1,3 @@
-#no-root-fallback
-#explicit-this
-
 /**
  * Documenation: http://mustache.github.io/mustache.5.html
  *
@@ -33,7 +30,6 @@
 #no-plus-concat
 
 let g_string =  require("%sqstd/string.nut")
-let { loc } = require("dagor.localize")
 local {regexp} = require("string")
 
 /**
@@ -45,9 +41,9 @@ local Scanner = class {
   tail   = ""
   pos    = 0
 
-  constructor (string_) {
-    this.string = string_
-    this.tail = string_
+  constructor (_string) {
+    this.string = _string
+    this.tail = _string
     this.pos = 0
   }
 
@@ -105,11 +101,11 @@ Context = class {
   cache         = {}
   parentContext = null
 
-  constructor(view_, parentContext_ = null) {
-    this.view          = view_ == null ? {} : view_
+  constructor(_view, _parentContext = null) {
+    this.view          = _view == null ? {} : _view
     this.cache         = {}
     this.cache["."]    <- this.view
-    this.parentContext = parentContext_
+    this.parentContext = _parentContext
   }
 
   /**
@@ -259,7 +255,7 @@ local Writer = class {
         }
         else if (typeof value == "function") {
           if (typeof originalTemplate != "string") {
-            assert(false, "Cannot use higher-order sections without the original template")
+            ::dagor.assertf(false, "Cannot use higher-order sections without the original template")
             return "".join(buffer)
           }
 
@@ -324,7 +320,7 @@ local Writer = class {
           buffer.append(value.tostring())
       }
       else if (token[0] == "?")
-        buffer.append(g_string.stripTags(loc(token[1])))
+        buffer.append(g_string.stripTags(::loc(token[1])))
       else if (token[0] == "text")
         buffer.append(token[1])
     }
@@ -355,7 +351,7 @@ local Writer = class {
 
   function escapeTags(tags) { //warning disable: -ident-hides-ident
     if (!(typeof tags == "array") || tags.len() != 2) {
-      assert(false, $"Invalid tags: {tags}")
+      ::dagor.assertf(false, $"Invalid tags: {tags}")
     }
 
     return [
@@ -364,8 +360,8 @@ local Writer = class {
     ]
   }
 
-  function parseTemplate(template, tags_ = null) {
-    local tags = tags_ || this.tags //warning disable: -ident-hides-ident
+  function parseTemplate(template, _tags = null) {
+    local tags = _tags || this.tags //warning disable: -ident-hides-ident
     template = template || ""
 
     if (typeof tags == "string")
@@ -447,7 +443,7 @@ local Writer = class {
 
       // Match the closing tag.
       if (!scanner.scan(tagRes[1])) {
-        assert(false, $"Unclosed tag at {scanner.pos}")
+        ::dagor.assertf(false, $"Unclosed tag at {scanner.pos}")
         scanError = true
         break
       }
@@ -462,13 +458,13 @@ local Writer = class {
         openSection = sections.len()? sections.pop() : null
 
         if (!openSection) {
-          assert(false, $"Unopened section \"{value}\" at {start}")
+          ::dagor.assertf(false, $"Unopened section \"{value}\" at {start}")
           scanError = true
           break
         }
 
         if (openSection[1] != value) {
-          assert(false, $"Unclosed section \"{openSection[1]}\" at {start}")
+          ::dagor.assertf(false, $"Unclosed section \"{openSection[1]}\" at {start}")
           scanError = true
           break
         }
@@ -485,7 +481,7 @@ local Writer = class {
 
     // Make sure there are no open sections when we're done.
     if (sections.len() > 0)
-      assert(false, $"Unclosed section \"{sections[sections.len() - 1][1]}\" at {scanner.pos}")
+      ::dagor.assertf(false, $"Unclosed section \"{sections[sections.len() - 1][1]}\" at {scanner.pos}")
 
     if (scanError)
       tokens = []
@@ -603,7 +599,7 @@ local Writer = class {
   function renderCached(templatePath, view, partials = null, cachePartials = false) {
     this.updateCache(templatePath)
     if (partials != null && cachePartials)
-      foreach (partialPath in partials)
+      foreach (partialName, partialPath in partials)
         this.updateCache(partialPath)
     local tokens = this.tokensByTemplatePath[templatePath]
     local template = this.tokensByTemplatePath[templatePath]
@@ -675,7 +671,7 @@ local Writer = class {
  ******************************************************************************/
 
 
-local function testhandyman(_temaple = null, _view = null, _partails = null) { // warning disable: -declared-never-used
+local function testhandyman(_temaple = null, _view = null, partails = null) { // warning disable: -declared-never-used
   local testTemplate = @"text{
   text:t='<<header>>';
 }
@@ -724,6 +720,6 @@ local partials = {
     }
     layout_insertion = "wink:t='yes';"
   }
-  println("before render")
-  println(::handyman.render(testTemplate, testView, partials))
+  ::dlog("before render")
+  ::dlog(::handyman.render(testTemplate, testView, partials))
 }

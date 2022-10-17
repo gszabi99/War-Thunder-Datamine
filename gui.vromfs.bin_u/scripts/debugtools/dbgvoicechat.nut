@@ -1,21 +1,47 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-let { setTimeout } = require("dagor.workcycle")
-let { register_command } = require("console")
-
-local isChatOn = false
-local avgEventPerSec = 10
-local lastStepTime = 0
-
-let function imitateUserSpeaking(uid, isSpeaking) {
-  ::menuChatCb(GCHAT_EVENT_VOICE, null, { uid = uid, type = "update", is_speaking = isSpeaking })
+::g_voice_chat <- {
+  isChatOn = false
+  avgEventPerSec = 10
+  lastStepTime = 0
 }
 
-let function immitateVoiceChat() {
+g_voice_chat.start <- function start(newAvgEventPerSec = 10)
+{
+  isChatOn = !isChatOn
+  avgEventPerSec = newAvgEventPerSec
+
+  runVoiceChatStep()
+}
+
+g_voice_chat.stop <- function stop()
+{
+  foreach (uid, member in ::g_squad_manager.getMembers())
+    imitateUserSpeaking(uid, false)
+
+  foreach (member in ::my_clan_info?.members ?? [])
+    imitateUserSpeaking(member.uid, false)
+
+  isChatOn = false
+}
+
+g_voice_chat.runVoiceChatStep <- function runVoiceChatStep()
+{
+  if (!::g_squad_manager.isInSquad() && !::my_clan_info)
+    return stop()
+
+  if (!isChatOn)
+    return stop()
+
+  ::handlersManager.doDelayed(function() {
+    if (!isChatOn)
+      return
+
+    immitateVoiceChat()
+    runVoiceChatStep()
+  }.bindenv(this))
+}
+
+g_voice_chat.immitateVoiceChat <- function immitateVoiceChat()
+{
   let curStepTime = ::dagor.getCurTime()
   let dt = curStepTime - lastStepTime
   lastStepTime = curStepTime
@@ -32,38 +58,7 @@ let function immitateVoiceChat() {
   imitateUserSpeaking(::u.chooseRandom(members).uid, ::u.chooseRandom([true, false]))
 }
 
-let function stop() {
-  foreach (uid, member in ::g_squad_manager.getMembers())
-    imitateUserSpeaking(uid, false)
-
-  foreach (member in ::my_clan_info?.members ?? [])
-    imitateUserSpeaking(member.uid, false)
-
-  isChatOn = false
+g_voice_chat.imitateUserSpeaking <- function imitateUserSpeaking(uid, isSpeaking)
+{
+  menuChatCb(::GCHAT_EVENT_VOICE, null, { uid = uid, type = "update", is_speaking = isSpeaking })
 }
-
-let function runVoiceChatStep() {
-  if (!::g_squad_manager.isInSquad() && !::my_clan_info)
-    return stop()
-
-  if (!isChatOn)
-    return stop()
-
-  let self = callee()
-  setTimeout(0.1, function() {
-    if (!isChatOn)
-      return
-
-    immitateVoiceChat()
-    self()
-  })
-}
-
-let function start(newAvgEventPerSec = 10) {
-  isChatOn = !isChatOn
-  avgEventPerSec = newAvgEventPerSec
-  runVoiceChatStep()
-}
-
-register_command(start, "debug.voice_chat.start")
-register_command(stop, "debug.voice_chat.stop")

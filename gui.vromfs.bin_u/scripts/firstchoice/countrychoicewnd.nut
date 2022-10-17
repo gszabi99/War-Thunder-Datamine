@@ -1,17 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { fillUserNick, getFirstChosenUnitType,
   isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -108,7 +100,7 @@ enum CChoiceState {
 
   function checkSelection(country, unitType)
   {
-    let availData = ::get_unit_types_in_countries()
+    let availData = get_unit_types_in_countries()
     return availData?[country][unitType.esUnitType] ?? false
   }
 
@@ -146,21 +138,21 @@ enum CChoiceState {
           let uType = unitType
           let countriesList = countries.filter(function(c) {
             return isCountryAvailable(c, uType)}.bindenv(this)
-          ).map(@(c) loc("unlockTag/" + c))
+          ).map(@(c) ::loc("unlockTag/" + c))
           let armyName = unitType.armyId
 
           items.append({
             backgroundImage = $"#ui/images/first_{armyName}.jpg?P1"
             tooltip = "".concat(
-              loc("unit_type"),
-              loc("ui/colon"),
-              loc($"mainmenu/{armyName}"),
+              ::loc("unit_type"),
+              ::loc("ui/colon"),
+              ::loc($"mainmenu/{armyName}"),
               "\n",
               ", ".join(countriesList)
             )
-            text = loc($"mainmenu/{armyName}")
-            videoPreview = hasFeature("VideoPreview") ? $"video/unitTypePreview/{armyName}.ivf" : null
-            desription = loc("{armyName}/choiseDescription", "")
+            text = ::loc($"mainmenu/{armyName}")
+            videoPreview = ::has_feature("VideoPreview") ? $"video/unitTypePreview/{armyName}.ivf" : null
+            desription = ::loc("{armyName}/choiseDescription", "")
           })
         }
         return items
@@ -182,8 +174,8 @@ enum CChoiceState {
       return
 
     let headerObj = scene.findObject("choice_header")
-    if (checkObj(headerObj))
-      headerObj.setValue(loc("mainmenu/" + headerLocId))
+    if (::checkObj(headerObj))
+      headerObj.setValue(::loc("mainmenu/" + headerLocId))
     fillUserNick(scene.findObject("usernick_place"))
 
     let listObj = scene.findObject("first_choices_block")
@@ -201,12 +193,12 @@ enum CChoiceState {
     let availUnitTypes = []
     foreach(unitType in unitTypes.types)
       if (unitType.isAvailableForFirstChoice(country)
-        && isInArray(country, getCountriesByUnitType(unitType.esUnitType)))
+        && ::isInArray(country, getCountriesByUnitType(unitType.esUnitType)))
         availUnitTypes.append(unitType)
 
     if (availUnitTypes.len())
-      return loc("mainmenu/onlyArmyAvailableForCountry",  { army = ", ".join(availUnitTypes.map(@(t) colorize("activeTextColor", t.getArmyLocName()))) })
-    return loc("msg/countryNotAvailableForUnitType")
+      return ::loc("mainmenu/onlyArmyAvailableForCountry",  { army = ", ".join(availUnitTypes.map(@(t) ::colorize("activeTextColor", t.getArmyLocName()))) })
+    return ::loc("msg/countryNotAvailableForUnitType")
   }
 
   countSize = @(ratio) {
@@ -271,13 +263,13 @@ enum CChoiceState {
             image = ::get_country_flag_img($"first_choice_{country}_{unitTypes.AIRCRAFT.armyId}")
 
           let cData = {
-            countryName = loc(country)
+            countryName = ::loc(country)
             backgroundImage = image
-            desription = loc($"{country}/choiseDescription", "")
+            desription = ::loc($"{country}/choiseDescription", "")
             lockText = null
           }
 
-          if (!isInArray(country, availCountries))
+          if (!::isInArray(country, availCountries))
             cData.lockText = getNotAvailableCountryMsg(country)
 
           res.append(cData)
@@ -293,12 +285,12 @@ enum CChoiceState {
       let message = format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
                                ::my_user_id_str,
                                selectedUnitType.name,
-                               toString(countries),
-                               toString(::get_unit_types_in_countries(), 2)
+                               ::toString(countries),
+                               ::toString(::get_unit_types_in_countries(), 2)
                               )
       ::script_net_assert_once("empty countries list", message)
     }
-    else if (!isInArray(selectedCountry, availCountries))
+    else if (!::isInArray(selectedCountry, availCountries))
     {
       local rndC = ::math.rnd() % availCountries.len()
       if (::is_vietnamese_version())
@@ -385,7 +377,7 @@ enum CChoiceState {
   function createNewbiePresetsData()
   {
     let presetDataItems = []
-    local selEsUnitType = ES_UNIT_TYPE_INVALID
+    local selEsUnitType = ::ES_UNIT_TYPE_INVALID
     foreach (crewData in ::g_crews_list.get())
     {
       let country = crewData.country
@@ -415,7 +407,7 @@ enum CChoiceState {
         if (hasUnits) {
           selectedCountry = selectedCountry ?? country
           selectedUnitType = selectedUnitType ?? unitType
-          if (unitType == selectedUnitType || selEsUnitType == ES_UNIT_TYPE_INVALID)
+          if (unitType == selectedUnitType || selEsUnitType == ::ES_UNIT_TYPE_INVALID)
             selEsUnitType = unitType.esUnitType
         }
       }
@@ -451,11 +443,11 @@ enum CChoiceState {
 
     blk.unlock <- "chosen_" + presetsData.selectedCountry
 
-    if (getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID)
+    if (getFirstChosenUnitType() == ::ES_UNIT_TYPE_INVALID)
       if (selectedUnitType.firstChosenTypeUnlockName)
         blk.unlock <- selectedUnitType.firstChosenTypeUnlockName
 
-    let taskCallback = Callback(onComplete, this)
+    let taskCallback = ::Callback(onComplete, this)
     let taskId = ::char_send_blk("cln_set_starting_info", blk)
     let taskOptions = {
       showProgressBox = true
@@ -488,7 +480,7 @@ enum CChoiceState {
   function setFrameWidth(width)
   {
     let frameObj = scene.findObject("country_choice_block")
-    if (checkObj(frameObj))
+    if (::checkObj(frameObj))
       frameObj.width = width
   }
 

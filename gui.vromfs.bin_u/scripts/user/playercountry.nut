@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let sonyUser = require("sony.user")
 

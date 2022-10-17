@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 ::g_item_limits <- {
 
@@ -27,7 +20,7 @@ let { format } = require("string")
 // Public
 //
 
-::g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
+g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
 {
   if (requestLockTime < max(::dagor.getCurTime() - REQUEST_UNLOCK_TIMEOUT * 1000, 0))
     isRequestLocked = false
@@ -61,10 +54,10 @@ let { format } = require("string")
   let taskOptions = {
     showProgressBox = isBlocking
   }
-  let taskCallback = function (result = YU2_OK)
+  let taskCallback = function (result = ::YU2_OK)
     {
       ::g_item_limits.isRequestLocked = false
-      if (result == YU2_OK)
+      if (result == ::YU2_OK)
       {
         let resultBlk = ::get_items_count_for_limits_result()
         ::g_item_limits.onRequestComplete(resultBlk)
@@ -74,12 +67,12 @@ let { format } = require("string")
   return ::g_tasker.addTask(taskId, taskOptions, taskCallback, taskCallback)
 }
 
-::g_item_limits.enqueueItem <- function enqueueItem(itemName)
+g_item_limits.enqueueItem <- function enqueueItem(itemName)
 {
   ::u.appendOnce(itemName, itemNamesQueue)
 }
 
-::g_item_limits.requestLimitsForItem <- function requestLimitsForItem(itemId, forceRefresh = false)
+g_item_limits.requestLimitsForItem <- function requestLimitsForItem(itemId, forceRefresh = false)
 {
   if (forceRefresh)
     getLimitDataByItemName(itemId).lastUpdateTime = -1
@@ -87,16 +80,16 @@ let { format } = require("string")
   requestLimits()
 }
 
-::g_item_limits.getLimitDataByItemName <- function getLimitDataByItemName(itemName)
+g_item_limits.getLimitDataByItemName <- function getLimitDataByItemName(itemName)
 {
-  return getTblValue(itemName, limitDataByItemName) || createLimitData(itemName)
+  return ::getTblValue(itemName, limitDataByItemName) || createLimitData(itemName)
 }
 
 //
 // Private
 //
 
-::g_item_limits.onRequestComplete <- function onRequestComplete(resultBlk)
+g_item_limits.onRequestComplete <- function onRequestComplete(resultBlk)
 {
   for (local i = resultBlk.blockCount() - 1; i >= 0; --i)
   {
@@ -111,9 +104,9 @@ let { format } = require("string")
   requestLimits()
 }
 
-::g_item_limits.createLimitData <- function createLimitData(itemName)
+g_item_limits.createLimitData <- function createLimitData(itemName)
 {
-  assert(
+  ::dagor.assertf(
     !(itemName in limitDataByItemName),
     format("Limit data with name %s already exists.", itemName)
   )
@@ -129,7 +122,7 @@ let { format } = require("string")
   return limitData
 }
 
-::g_item_limits.checkRequestSize <- function checkRequestSize(requestSize)
+g_item_limits.checkRequestSize <- function checkRequestSize(requestSize)
 {
   return MAX_REQUEST_SIZE == 0 || requestSize < MAX_REQUEST_SIZE
 }
