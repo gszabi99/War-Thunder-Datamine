@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_ww_army_move_state <- {
@@ -40,7 +33,7 @@ enums.addTypesByGlobalName("g_ww_army_move_state", {
   }
 }, null, "name")
 
-::g_ww_army_move_state.getMoveParamsByName <- function getMoveParamsByName(name)
+g_ww_army_move_state.getMoveParamsByName <- function getMoveParamsByName(name)
 {
   return enums.getCachedType("name", name, ::g_ww_army_move_state.cache.byName, this, ES_UNKNOWN)
 }

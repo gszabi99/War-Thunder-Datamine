@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 
@@ -61,7 +56,7 @@ let wwTooltipTypes = {
       let clanId = group.clanId
       let clanTag = group.name
       let afterUpdate = function(updatedClanInfo){
-        if (!checkObj(obj))
+        if (!::check_obj(obj))
           return
         let content = ::handyman.renderCached("%gui/worldWar/worldWarClanTooltip", updatedClanInfo)
         obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
@@ -82,7 +77,7 @@ let wwTooltipTypes = {
 
       let taskId = ::clan_request_info(clanId, "", "")
       let onTaskSuccess = function() {
-        if (!checkObj(obj))
+        if (!::check_obj(obj))
           return
 
         let clanInfo = ::get_clan_info_table()
@@ -93,7 +88,7 @@ let wwTooltipTypes = {
       }
 
       let onTaskError = function(errorCode) {
-        if (!checkObj(obj))
+        if (!::check_obj(obj))
           return
 
         let content = ::handyman.renderCached("%gui/commonParts/errorFrame", {errorNum = errorCode})

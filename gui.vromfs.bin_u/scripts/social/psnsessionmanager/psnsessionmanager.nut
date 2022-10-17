@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
 // local base64 = require("base64")
@@ -21,7 +16,7 @@ let PSN_SESSION_TYPE = {
   data = [getSessionData()]
 }
 */
-let createdSessionData = persist("createdSessionData", @() Watched({}))
+let createdSessionData = persist("createdSessionData", @() ::Watched({}))
 let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
    createdSessionData.mutate(@(v) v[sessionId] <- {
       sType = sType
@@ -31,10 +26,10 @@ let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
 }
 
 // { [PSN_SESSION_TYPE] = data }
-let pendingSessions = persist("pendingSessions", @() Watched({}))
+let pendingSessions = persist("pendingSessions", @() ::Watched({}))
 
 //[sessionId] = {activityId, isSpectator}
-let postponedInvitations = persist("postponedInvitations", @() Watched([]))
+let postponedInvitations = persist("postponedInvitations", @() ::Watched([]))
 
 let getLocalizedTextInfo = function(locIdsArray) {
   let textsData = ::g_localization.getFilledFeedTextByLang(locIdsArray)
@@ -183,7 +178,7 @@ let create = function(sType, saveSessionIdCb) {
 
   psnsm.create(
     pendingSessions.value[sType],
-    Callback(function(r, err) {
+    ::Callback(function(r, err) {
       let sessionId = r?.playerSessions[0].sessionId
       saveSessionIdCb(sessionId, err)
 
@@ -203,7 +198,7 @@ let destroy = function(sType) {
       let sId = sessionId
       psnsm.destroy(
         sId,
-        Callback(function(r, err) {
+        ::Callback(function(r, err) {
           if (sId in createdSessionData.value)
             createdSessionData.mutate(@(v) delete v[sId])
         }, this)
@@ -218,7 +213,7 @@ let update = function(sessionId, sType) {
     sessionId,
     existSessionInfo?.data.playerSessions[0],
     sessionData.playerSessions[0],
-    Callback(function(r, err) {
+    ::Callback(function(r, err) {
       createdSessionData.mutate(@(v) v[sessionId].data = copy(sessionData))
     }, this)
   )
@@ -237,11 +232,11 @@ let postponeInvite = @(params) postponedInvitations.mutate(@(v) v.append(params)
 
 let afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
   if (err) {
-    log($"[PSGI] accepted PSN invite, error {err}")
+    ::dagor.debug($"[PSGI] accepted PSN invite, error {err}")
     return
   }
 
-  psnsm.list([sessionId], Callback(function(r, err) {
+  psnsm.list([sessionId], ::Callback(function(r, err) {
     foreach (sessionData in (r?.playerSessions ?? [])) {
       if (sessionData.sessionId != sessionId)
         continue
@@ -270,26 +265,26 @@ let proceedInvite = function(p) {
 
   let isInPsnSession = sessionId in createdSessionData.value
 
-  if (isEmpty(sessionId) || isInPsnSession)
+  if (u.isEmpty(sessionId) || isInPsnSession)
     return // Most-likely we are joining from PSN Overlay
 
   if (!::g_login.isLoggedIn() || ::is_in_loading_screen()) {
-    log("[PSGI:PI] delaying PSN invite until logged in and loaded")
+    ::dagor.debug("[PSGI:PI] delaying PSN invite until logged in and loaded")
     postponeInvite(p)
     return
   }
 
   if (isInPsnSession) {
     //There is no deactivation, so just do nothing
-    log("[PSGI:PI] stale PSN invite: already joined")
+    ::dagor.debug("[PSGI:PI] stale PSN invite: already joined")
     return
   }
 
   if (!::isInMenu()) {
-    log("[PSGI:PI] delaying PSN invite until in menu")
+    ::dagor.debug("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
     ::get_cur_gui_scene().performDelayed(this, function() {
-      ::showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
+      ::showInfoMsgBox(::loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
     })
     return
   }
@@ -311,9 +306,9 @@ addListenersWithoutEnv({
         let sessionId = ::g_squad_manager.getPsnSessionId()
         let isLeader = ::g_squad_manager.isSquadLeader()
         let isInPsnSession = sessionId in createdSessionData.value
-        log($"[PSSM] onEventSquadStatusChanged {::g_squad_manager.state} for {sessionId}")
-        log($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
-        log($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
+        ::dagor.debug($"[PSSM] onEventSquadStatusChanged {::g_squad_manager.state} for {sessionId}")
+        ::dagor.debug($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
+        ::dagor.debug($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
 
         if (!isLeader && !isInPsnSession) // Invite accepted on normal relogin
           join(
@@ -355,7 +350,7 @@ addListenersWithoutEnv({
 
     let newLeaderData = ::g_squad_manager.getMemberData(p?.uid)
     if (!newLeaderData) {
-      log($"PSN: Session Manager: Didn't found any info for new leader {p?.uid}")
+      ::dagor.debug($"PSN: Session Manager: Didn't found any info for new leader {p?.uid}")
       return
     }
 
@@ -366,7 +361,7 @@ addListenersWithoutEnv({
       sessionId,
       contact.psnId,
       newLeaderData.platform.toupper(),
-      Callback(function(r, err) {
+      ::Callback(function(r, err) {
         let existSessionInfo = createdSessionData.value?[sessionId]
         let pushContextId = existSessionInfo?.pushContextId
         let sessionData = getSessionData(PSN_SESSION_TYPE.SQUAD, pushContextId)

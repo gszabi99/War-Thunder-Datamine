@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -54,7 +45,7 @@ let function getObjPosInSafeArea(obj) {
 
   function initScreen()
   {
-    if (!unit || !unit.isUsable() || isUnitInSlotbar() || !checkObj(unitObj))
+    if (!unit || !unit.isUsable() || isUnitInSlotbar() || !::checkObj(unitObj))
     {
       goBack()
       return
@@ -76,10 +67,10 @@ let function getObjPosInSafeArea(obj) {
     tdClone.position = "root"
     ::fill_unit_item_timers(tdClone.findObject(unit.name), unit)
 
-    if (!hasFeature("GlobalShowBattleRating") && hasFeature("SlotbarShowBattleRating"))
+    if (!::has_feature("GlobalShowBattleRating") && ::has_feature("SlotbarShowBattleRating"))
     {
       let rankObj = tdClone.findObject("rank_text")
-      if (checkObj(rankObj))
+      if (::checkObj(rankObj))
       {
         let unitRankText = ::get_unit_rank_text(unit, null, true, getCurrentEdiff())
         rankObj.setValue(unitRankText)
@@ -87,7 +78,7 @@ let function getObjPosInSafeArea(obj) {
     }
 
     let bDiv = tdClone.findObject("air_item_bottom_buttons")
-    if (checkObj(bDiv))
+    if (::checkObj(bDiv))
       guiScene.destroyElement(bDiv)
 
     let markerObj = tdClone.findObject("unlockMarker")
@@ -111,8 +102,8 @@ let function getObjPosInSafeArea(obj) {
         needFullSlotBlock = true
 
         applySlotSelectionOverride = @(_, __) onChangeUnit()
-        onSlotDblClick = Callback(onApplyCrew, this)
-        onSlotActivate = Callback(onApplyCrew, this)
+        onSlotDblClick = ::Callback(onApplyCrew, this)
+        onSlotActivate = ::Callback(onApplyCrew, this)
       },
       "take-aircraft-slotbar")
 
@@ -168,7 +159,7 @@ let function getObjPosInSafeArea(obj) {
     sbObj.top = sbPosY
 
     //place legend
-    if (checkObj(legendObj))
+    if (::checkObj(legendObj))
     {
       let legendSize = legendObj.getSize()
 
@@ -258,7 +249,7 @@ let function getObjPosInSafeArea(obj) {
 
   function updateButtons()
   {
-    placePriceTextToButton(scene, "btn_set_air", loc("mainmenu/btnTakeAircraft"), getTakeAirCost())
+    placePriceTextToButton(scene, "btn_set_air", ::loc("mainmenu/btnTakeAircraft"), getTakeAirCost())
   }
 
   function onEventOnlineShopPurchaseSuccessful(p)
@@ -286,7 +277,7 @@ let function getObjPosInSafeArea(obj) {
     let steps = [
       {
         obj = getSlotbar() && getSlotbar().getBoxOfUnits()
-        text = loc("help/takeAircraft", {unitName = ::getUnitName(unit)})
+        text = ::loc("help/takeAircraft", {unitName = ::getUnitName(unit)})
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -294,7 +285,7 @@ let function getObjPosInSafeArea(obj) {
       },
       {
         obj = "btn_set_air"
-        text = loc("help/pressOnReady")
+        text = ::loc("help/pressOnReady")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
@@ -311,7 +302,7 @@ let function getObjPosInSafeArea(obj) {
 
   function onApplyCrew(crew)
   {
-    let onFinishCb = Callback(onTakeProcessFinish, this)
+    let onFinishCb = ::Callback(onTakeProcessFinish, this)
     if (isSelectByGroups)
       slotbarPresets.setUnit({
         crew = crew
@@ -341,11 +332,11 @@ let function getObjPosInSafeArea(obj) {
   function onEventSetInQueue(params)
   {
     let reqMoneyMsg = scene.findObject("need_money")
-    if (checkObj(reqMoneyMsg))
+    if (::checkObj(reqMoneyMsg))
       guiScene.destroyObject(reqMoneyMsg)
 
     let noMoneyMsg = scene.findObject("no_money")
-    if (checkObj(noMoneyMsg))
+    if (::checkObj(noMoneyMsg))
       guiScene.destroyObject(noMoneyMsg)
 
     goBack()
@@ -369,13 +360,13 @@ let function getObjPosInSafeArea(obj) {
       id = specType.specName,
       specType = specType,
       imagePath = specType.trainedIcon,
-      locId = loc("crew/trained") + loc("ui/colon") + specType.getName()
+      locId = ::loc("crew/trained") + ::loc("ui/colon") + specType.getName()
     })
   }
 
   function fillLegendData()
   {
-    if (!hasFeature("CrewInfo"))
+    if (!::has_feature("CrewInfo"))
       return null
 
     let legendData = []
@@ -395,13 +386,13 @@ let function getObjPosInSafeArea(obj) {
     })
 
     let view = {
-      header = loc("mainmenu/legend") + loc("ui/colon") + colorize("userlogColoredText", ::getUnitName(unit, false))
+      header = ::loc("mainmenu/legend") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::getUnitName(unit, false))
       haveLegend = legendData.len() > 0
       legendData = legendData
     }
 
     let obj = scene.findObject("qualification_legend")
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return null
 
     let blk = ::handyman.renderCached("%gui/slotbar/legend_block", view)

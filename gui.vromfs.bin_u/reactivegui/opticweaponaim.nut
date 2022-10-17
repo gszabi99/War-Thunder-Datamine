@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {backgroundColor} = require("style/airHudStyle.nut")
 
 enum GuidanceLockResult {

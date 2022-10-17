@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getAvailableRespawnBases } = require("guiRespawn")
 
 enum MIS_LOAD { //bit enum
@@ -19,7 +12,7 @@ enum MIS_LOAD { //bit enum
   //calls from c++ code.
 ::on_update_es_from_host <- function on_update_es_from_host()
 {
-  log("on_update_es_from_host called")
+  ::dagor.debug("on_update_es_from_host called")
   ::g_crews_list.invalidate()
   ::reinitAllSlotbars()
   ::broadcastEvent("UpdateEsFromHost")
@@ -38,37 +31,37 @@ enum MIS_LOAD { //bit enum
   curState = 0
 }
 
-::g_mis_loading_state.isReadyToShowRespawn <- function isReadyToShowRespawn()
+g_mis_loading_state.isReadyToShowRespawn <- function isReadyToShowRespawn()
 {
   return (curState & MIS_LOAD.RESPAWN_DATA_LOADED) == MIS_LOAD.RESPAWN_DATA_LOADED
 }
 
-::g_mis_loading_state.isCrewsListReceived <- function isCrewsListReceived()
+g_mis_loading_state.isCrewsListReceived <- function isCrewsListReceived()
 {
   return (curState & MIS_LOAD.ECONOMIC_STATE) != 0
 }
 
-::g_mis_loading_state.onEventUpdateEsFromHost <- function onEventUpdateEsFromHost(p)
+g_mis_loading_state.onEventUpdateEsFromHost <- function onEventUpdateEsFromHost(p)
 {
   if (curState & MIS_LOAD.ECONOMIC_STATE)
     return
 
-  log("misLoadState: received initial  economicState")
+  ::dagor.debug("misLoadState: received initial  economicState")
   curState = curState | MIS_LOAD.ECONOMIC_STATE
   checkRespawnBases()
 }
 
-::g_mis_loading_state.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
+g_mis_loading_state.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
 {
   if (!::is_in_flight())
   {
     if (curState != 0)
-      log("misLoadState: reset mision loading state")
+      ::dagor.debug("misLoadState: reset mision loading state")
     curState = 0
   }
 }
 
-::g_mis_loading_state.checkRespawnBases <- function checkRespawnBases()
+g_mis_loading_state.checkRespawnBases <- function checkRespawnBases()
 {
   if ((curState & MIS_LOAD.RESPAWN_BASES)
       || !(curState & MIS_LOAD.ECONOMIC_STATE))
@@ -88,13 +81,13 @@ enum MIS_LOAD { //bit enum
     break
   }
 
-  log("misLoadState: check respawn bases. has available? " + hasRespBases)
+  ::dagor.debug("misLoadState: check respawn bases. has available? " + hasRespBases)
 
   if (hasRespBases)
     curState = curState | MIS_LOAD.RESPAWN_BASES
 }
 
-::g_mis_loading_state.onEventChangedMissionRespawnBasesStatus <- function onEventChangedMissionRespawnBasesStatus(p)
+g_mis_loading_state.onEventChangedMissionRespawnBasesStatus <- function onEventChangedMissionRespawnBasesStatus(p)
 {
   checkRespawnBases()
 }

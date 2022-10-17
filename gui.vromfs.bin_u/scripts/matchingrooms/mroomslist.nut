@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -121,7 +114,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   {
     isInUpdate = false
 
-    let digest = ::checkMatchingError(p, false) ? getTblValue("digest", p) : null
+    let digest = ::checkMatchingError(p, false) ? ::getTblValue("digest", p) : null
     if (!digest)
       return
 
@@ -243,7 +236,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   function isRoomVisible(room, hideFullRooms)
   {
     let userUid = ::SessionLobby.getRoomCreatorUid(room)
-    if (userUid && ::isPlayerInContacts(userUid, EPL_BLOCKLIST))
+    if (userUid && ::isPlayerInContacts(userUid, ::EPL_BLOCKLIST))
       return false
 
     if (hideFullRooms) {
@@ -251,6 +244,6 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       if (::SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
         return false
     }
-    return ::SessionLobby.getMisListType(room.public).canJoin(GM_SKIRMISH)
+    return ::SessionLobby.getMisListType(room.public).canJoin(::GM_SKIRMISH)
   }
 }

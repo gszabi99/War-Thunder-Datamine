@@ -1,16 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let stdMath = require("%sqstd/math.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::EventJoinProcess <- class
 {
@@ -31,7 +23,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
     if (activeEventJoinProcess.len())
       if (::dagor.getCurTime() - activeEventJoinProcess[0].processStartTime < PROCESS_TIME_OUT)
-        return assert(false, "Error: trying to use 2 join event processes at once")
+        return ::dagor.assertf(false, "Error: trying to use 2 join event processes at once")
       else
         activeEventJoinProcess[0].remove()
 
@@ -68,7 +60,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     {
       //Don't allow to change ready status, leader don't know about members balance
       if (!::events.haveEventAccessByCost(event))
-        ::showInfoMsgBox(loc("events/notEnoughMoney"))
+        ::showInfoMsgBox(::loc("events/notEnoughMoney"))
       else if (::events.eventRequiresTicket(event) && ::events.getEventActiveTicket(event) == null)
         ::events.checkAndBuyTicket(event)
       else
@@ -80,8 +72,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       return remove()
     // Same as checkedNewFlight in gui_handlers.BaseGuiHandlerWT.
     ::queues.checkAndStart(
-                    Callback(joinStep2_external, this),
-                    Callback(remove, this),
+                    ::Callback(joinStep2_external, this),
+                    ::Callback(remove, this),
                     "isCanNewflight",
                     { isSilentLeaveQueue = !!room }
                    )
@@ -89,7 +81,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
   function joinStep2_external()
   {
-    if (::events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
+    if (::events.getEventDiffCode(event) == ::DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return remove()
 
@@ -98,7 +90,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
     if (!::events.isEventAllowedByComaptibilityMode(event))
     {
-      ::showInfoMsgBox(loc("events/noCompatibilityMode/msg"))
+      ::showInfoMsgBox(::loc("events/noCompatibilityMode/msg"))
       remove()
       return
     }
@@ -154,15 +146,15 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
   function joinStep5_repairInfo()
   {
-    let repairInfo = ::events.getCountryRepairInfo(event, room, profileCountrySq.value)
+    let repairInfo = ::events.getCountryRepairInfo(event, room, ::get_profile_country_sq())
     ::checkBrokenAirsAndDo(repairInfo, this, joinStep6_membersForQueue, false, remove)
   }
 
   function joinStep6_membersForQueue()
   {
     ::events.checkMembersForQueue(event, room,
-      Callback(@(membersData) joinStep7_joinQueue(membersData), this),
-      Callback(remove, this)
+      ::Callback(@(membersData) joinStep7_joinQueue(membersData), this),
+      ::Callback(remove, this)
     )
   }
 
@@ -176,7 +168,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       let joinEventParams = {
         mode    = event.name
         //team    = team //!!can choose team correct only with multiEvents support
-        country = profileCountrySq.value
+        country = ::get_profile_country_sq()
       }
       if (membersData)
         joinEventParams.members <- membersData
@@ -200,7 +192,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
         squadSize = squadSize.tostring()
         maxTeamSize = maxTeamSize.tostring()
       }
-      this.msgBox("squad_is_too_big", loc("events/squad_is_too_big", locParams),
+      this.msgBox("squad_is_too_big", ::loc("events/squad_is_too_big", locParams),
         [["ok", function() {}]], "ok")
       return false
     }

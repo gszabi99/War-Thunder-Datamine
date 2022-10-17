@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 /**
  * Sets an initial mouse pointer pos for a scenes just opened from HUD, because
  * otherwise on PC (where GamepadCursorControls are off) mouse pointer can be

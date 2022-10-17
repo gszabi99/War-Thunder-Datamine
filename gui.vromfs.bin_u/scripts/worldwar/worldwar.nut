@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 global const WW_SKIP_BATTLE_WARNINGS_SAVE_ID = "worldWar/skipBattleWarnings"
 
 global enum WW_ARMY_ACTION_STATUS
@@ -200,6 +195,7 @@ foreach (fn in [
                  "handler/wwQueueInfo.nut"
                  "handler/wwSquadList.nut"
                  "handler/wwBattleDescription.nut"
+                 "handler/wwGlobalBattlesModal.nut"
                  "handler/wwAirfieldFlyOut.nut"
                  "handler/wwObjectivesInfo.nut"
                  "handler/wwMyClanSquadInviteModal.nut"

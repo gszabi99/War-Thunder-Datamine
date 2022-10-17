@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
@@ -23,8 +16,8 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   function initScreen() {
     base.initScreen()
     this.showSceneBtn("tabs_list", false)
-    scene.findObject("back_scene_name").setValue(loc("mainmenu/btnBack"))
-    scene.findObject("bc_shop_header").setValue(loc("flightmenu/btnActivateOrder"))
+    scene.findObject("back_scene_name").setValue(::loc("mainmenu/btnBack"))
+    scene.findObject("bc_shop_header").setValue(::loc("flightmenu/btnActivateOrder"))
   }
 
   /*override*/ function updateButtons()

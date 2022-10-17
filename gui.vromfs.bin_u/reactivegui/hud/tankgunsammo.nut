@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let {get_mission_time} = require("%rGui/globals/mission.nut")
 let { ceil } = require("%sqstd/math.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let { CoaxialBullets, CoaxialCartridges, CoaxialCartridgeSize,
@@ -21,12 +18,12 @@ let activeColor = Color(255,255,255)
 
 let barsCount = 20
 
-let coaxialGunIcon = Picture($"!ui/gameuiskin#coaxial_ammo_indicator.svg:{iconWidth}:{iconHeight}")
-let machineGunIcon = Picture($"!ui/gameuiskin#aa_ammo_indicator.svg:{iconWidth}:{iconHeight}")
+let coaxialGunIcon = ::Picture($"!ui/gameuiskin#coaxial_ammo_indicator.svg:{iconWidth}:{iconHeight}")
+let machineGunIcon = ::Picture($"!ui/gameuiskin#aa_ammo_indicator.svg:{iconWidth}:{iconHeight}")
 
 let function mkProgressBar(bulletsCurrent, bulletsTotal, reloadStartTime, reloadEndTime) {
   let estimatedBarsCount = barsCount * bulletsCurrent / bulletsTotal
-  let misTime = get_mission_time()
+  let misTime = ::get_mission_time()
   let hasAnimation = misTime >= reloadStartTime && misTime < reloadEndTime
   local startAnimBulletIdx = 0
   local bulletAnimTime = 0

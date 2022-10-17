@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
        BombingMode, RadarTargetDist} = require("%rGui/planeState/planeToolsState.nut")
 let {baseLineWidth} = require("ilsConstants.nut")

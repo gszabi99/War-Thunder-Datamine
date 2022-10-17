@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
 let time = require("%scripts/time.nut")
@@ -86,14 +77,14 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     let requestBlk = ::DataBlock()
     requestBlk.configname = "ww_rewards"
     ::g_tasker.charRequestBlk("cmn_get_config_bin", requestBlk, null,
-      Callback(function(res) {
+      ::Callback(function(res) {
         rewardsBlk = ::DataBlock()
         let curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]
         if (curCircuitRewardsBlk)
           rewardsBlk.setFrom(curCircuitRewardsBlk)
         updateButtons()
       }, this),
-      Callback(function(res) {
+      ::Callback(function(res) {
         rewardsBlk = null
         updateButtons()
       }, this))
@@ -107,7 +98,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       action = "GetTablesInfo"
     }
 
-    let callback = Callback(function(userstatTbl) {
+    let callback = ::Callback(function(userstatTbl) {
       rewardsTimeData = {}
       foreach (key, val in (userstatTbl?.response ?? userstatTbl))
       {
@@ -135,13 +126,13 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     lbModesList = []
 
     let isAvailableWWSeparateLb = !getSeparateLeaderboardPlatformValue()
-     || hasFeature("ConsoleSeparateWWLeaderboards")
+     || ::has_feature("ConsoleSeparateWWLeaderboards")
 
     local data = ""
     foreach(idx, modeData in wwLeaderboardData.modes)
     {
       if (!modeData?.isInLeaderboardModes ||
-        (modeData?.needFeature && !hasFeature(modeData.needFeature)))
+        (modeData?.needFeature && !::has_feature(modeData.needFeature)))
         continue
 
       if (!isAvailableWWSeparateLb && modeData?.needShowConsoleFilter == true)
@@ -149,7 +140,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
       lbModesList.append(modeData)
       let optionText = ::g_string.stripTags(
-        loc($"worldwar/leaderboard/{modeData.mode}"))
+        ::loc($"worldwar/leaderboard/{modeData.mode}"))
       data += "option {text:t='{0}'}".subst(optionText)
     }
 
@@ -168,7 +159,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     for (local i = 0; i < seasonDay; i++)
     {
       let dayNumber = seasonDay - i
-      if (isInArray(wwLeaderboardData.getDayIdByNumber(dayNumber), seasonDays))
+      if (::isInArray(wwLeaderboardData.getDayIdByNumber(dayNumber), seasonDays))
         lbDaysList.append(dayNumber)
     }
 
@@ -176,7 +167,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     foreach(day in lbDaysList)
     {
       let optionText = ::g_string.stripTags(
-        day ? loc("enumerated_day", {number = day}) : loc("worldwar/allSeason"))
+        day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason"))
       data += format("option {text:t='%s'}", optionText)
     }
 
@@ -194,7 +185,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     foreach(wwMap in lbMapsList)
     {
       let optionText = ::g_string.stripTags(
-        wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : loc("worldwar/allMaps"))
+        wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : ::loc("worldwar/allMaps"))
       data += format("option {text:t='%s'}", optionText)
     }
 
@@ -219,7 +210,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     foreach(country in lbCountriesList)
     {
       let optionText = ::g_string.stripTags(
-        country ? loc(country) : loc("worldwar/allCountries"))
+        country ? ::loc(country) : ::loc("worldwar/allCountries"))
       data += format("option {text:t='%s'}", optionText)
     }
 
@@ -261,7 +252,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     let cb = function(hasSelfRow = false)
     {
-      let callback = Callback(
+      let callback = ::Callback(
         function(lbPageData) {
           if (!hasSelfRow)
             selfRowData = []
@@ -279,7 +270,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     if (isUsersLeaderboard() || (forClans && ::is_in_clan()))
     {
-      let callback = Callback(
+      let callback = ::Callback(
         function(lbSelfData) {
           selfRowData = wwLeaderboardData.addClanInfoIfNeedAndConvert(requestData.modeName, lbSelfData, isCountriesLeaderboard()).rows
           if(isRequestDifferent)
@@ -313,7 +304,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     checkLbCategory()
 
-    let callback = Callback(
+    let callback = ::Callback(
       function(modesData) {
         updateModeDataByAvailableTables(modesData?.modes ?? [])
         updateModeComboBoxes(modesData?.tables)
@@ -394,8 +385,8 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     if (!lbModeData)
       return null
 
-    let mapId = lbMap && isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
-    let countryId = lbCountry && isInArray(lbCountry, availableCountriesList)
+    let mapId = lbMap && ::isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
+    let countryId = lbCountry && ::isInArray(lbCountry, availableCountriesList)
       ? "__" + lbCountry : ""
 
     return {
@@ -421,7 +412,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     if (filterMap)
     {
       foreach (country in filterMap.getCountries())
-        if(isInArray(country, availableCountriesList))
+        if(::isInArray(country, availableCountriesList))
           countrries.append(country)
 
       return countrries
@@ -430,7 +421,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     let countrriesData = {}
     foreach (map in availableMapsList)
       foreach (country in map.getCountries())
-        if (!(country in countrriesData) && isInArray(country, availableCountriesList))
+        if (!(country in countrriesData) && ::isInArray(country, availableCountriesList))
           countrriesData[country] <- country
 
     foreach (country in countrriesData)
@@ -453,7 +444,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
   {
     let curRewardsBlk = getCurModeAwards()
     if (!curRewardsBlk)
-      return ::showInfoMsgBox(loc("leaderboards/has_no_rewards"))
+      return ::showInfoMsgBox(::loc("leaderboards/has_no_rewards"))
 
     wwRewards.open({
       isClanRewards = forClans
@@ -521,7 +512,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       {
         let cName = mode.split("__country")?[1]
         let country = cName == null ? cName : $"{"country"}{cName}"
-        if(country != null && !isInArray(country, countries))
+        if(country != null && !::isInArray(country, countries))
           countries.append(country)
       }
 

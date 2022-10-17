@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 global enum msquadErrorId
 {
   ALREADY_IN_SQUAD = "ALREADY_IN_SQUAD"
@@ -33,11 +26,6 @@ global enum msquadErrorId
   function leave(successCallback = null, errorCallback = null, requestOptions = null)
   {
     ::request_matching("msquad.leave_squad", successCallback, errorCallback, null, requestOptions)
-  }
-
-  function joinPlayerSquad(uid, successCallback = null, errorCallback = null, requestOptions = null)
-  {
-    ::request_matching("msquad.join_player", successCallback, errorCallback, {userId = _convertIdToInt(uid)}, requestOptions)
   }
 
   function invitePlayer(uid, successCallback = null, errorCallback = null, requestOptions = null)

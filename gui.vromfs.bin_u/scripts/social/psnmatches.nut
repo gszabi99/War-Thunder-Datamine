@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let psn = require("%sonyLib/webApi.nut")
 let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let { getActivityByGameMode } = require("%scripts/gameModes/psnActivities.nut")
@@ -52,7 +47,7 @@ let function processMemberList(members) {
 
 let function addPlayerToMatch(uid) {
   let player = match.players[uid]
-  log($"[PSMT] adding {uid}/{player.playerId} to {player.teamId} for {match.id}")
+  ::dagor.debug($"[PSMT] adding {uid}/{player.playerId} to {player.teamId} for {match.id}")
   psn.send(psn.matches.join(match.id, player))
 }
 
@@ -84,7 +79,7 @@ let function updateMatchData() {
   }
 
   foreach (p in lostPlayers) {
-    log($"[PSMT] member {p.playerId} left {match.id}/{p.teamId}")
+    ::dagor.debug($"[PSMT] member {p.playerId} left {match.id}/{p.teamId}")
     psn.send(psn.matches.leave(match.id, { playerId = p.playerId, reason = psn.matches.LeaveReason.QUIT}))
   }
 }
@@ -96,7 +91,7 @@ let function tryCreateMatch(info) {
     return
 
   let updated = processMemberList(info.members)
-  log($"[PSMT] try create match for {match.props.activityId}/{info?.public?.game_mode_name} as {updated.isOwner}")
+  ::dagor.debug($"[PSMT] try create match for {match.props.activityId}/{info?.public?.game_mode_name} as {updated.isOwner}")
   if (updated.isOwner && match.id == null) {
     psn.send(psn.matches.create(match.props), function(r, e) {
         match.isOwner = true
@@ -121,7 +116,7 @@ let function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
     playerId = match.playerId,
     reason = reason // TODO: set proper reason. How to determine?
   }
-  log($"[PSMT] leaving match {match.id}, reason {reason}")
+  ::dagor.debug($"[PSMT] leaving match {match.id}, reason {reason}")
   psn.send(psn.matches.leave(match.id, player))
   markMatchCompleted()
 }
@@ -130,8 +125,8 @@ let function updateMatchStatus(eventData) {
   if (match.id == null)
     return
 
-  if (::SessionLobby.myState == PLAYER_IN_FLIGHT) {
-    log($"starting match {match.id}")
+  if (::SessionLobby.myState == ::PLAYER_IN_FLIGHT) {
+    ::dagor.debug($"starting match {match.id}")
     psn.send(psn.matches.updateStatus(match.id, "PLAYING"))
   }
 }
@@ -140,7 +135,7 @@ let function onBattleEnded(p) {
   if (match.id == null || p?.battleResult == null)
     return
 
-  let isVictoryOurs = (p.battleResult == STATS_RESULT_SUCCESS)
+  let isVictoryOurs = (p.battleResult == ::STATS_RESULT_SUCCESS)
   let winnerTeamId = isVictoryOurs ? match.teamId : (3 - match.teamId) // only two teams
   let teamResults = []
   foreach (team in match.props.inGameRoster.teams) {
@@ -155,7 +150,7 @@ let function onBattleEnded(p) {
 }
 
 let function enableMatchesReporting() {
-  log("[PSMT] enabling matches reporting")
+  ::dagor.debug("[PSMT] enabling matches reporting")
   ::add_event_listener("RoomJoined", tryCreateMatch)
   ::add_event_listener("LobbyMembersChanged", @(p) updateMatchData())
   ::add_event_listener("LobbyMemberInfoChanged", @(p) updateMatchData())

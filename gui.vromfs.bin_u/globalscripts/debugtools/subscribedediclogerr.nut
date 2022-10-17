@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let { register_command } = require("console")
@@ -20,7 +18,7 @@ let enableDedicLogerr = @(isEnable = true)
 
 ecs.register_es("dedic_logerr_listener_es",
   {
-    [ecs.sqEvents.EventDedicLogerr] = @(evt, _eid, _comp) onLogerr(evt?.data.logstring ?? "")
+    [ecs.sqEvents.EventDedicLogerr] = @(evt, eid, comp) onLogerr(evt?.data.logstring ?? "")
   },
   {})
 

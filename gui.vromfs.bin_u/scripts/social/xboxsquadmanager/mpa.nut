@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
 let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%xboxLib/mpa.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -10,7 +5,7 @@ let { register_activation_callback, get_sender_xuid } = require("%xboxLib/activa
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
-let postponedInvitation = persist("postponedInvitation", @() Watched("0"))
+let postponedInvitation = persist("postponedInvitation", @() ::Watched("0"))
 
 let function getCurSquadId() {
   let squadLeaderUid = ::g_squad_manager.getLeaderUid().tostring()
@@ -82,12 +77,9 @@ let function acceptExistingIngameInvite(uid)
 {
   let inviteUid = ::g_invites_classes.Squad.getUidByParams({squadId = uid})
   let invite = ::g_invites.findInviteByUid(inviteUid)
-  logX($"Accept ingame invite: uid {uid}, invite {invite}")
-  if (!invite) {
-    logX($"invite not found. Try join squad.")
-    ::g_squad_manager.joinToSquad(uid)
+  logX($"Accept ingame invite: uid {uid}, inviteUid {inviteUid}, {invite}")
+  if (!invite)
     return
-  }
 
   needCheckSquadInvites = true
   invite.checkAutoAcceptXboxInvite()
@@ -99,7 +91,7 @@ let function requestPlayerAndDo(uid, name, cb) {
   let newContact = ::getContact(uid, name)
 
   if (newContact.needCheckXboxId())
-    newContact.getXboxId(Callback(@() cb(newContact.xboxId), this))
+    newContact.getXboxId(::Callback(@() cb(newContact.xboxId), this))
   else if (newContact.xboxId != "")
     cb(newContact.xboxId)
 }
@@ -111,7 +103,7 @@ let function requestXboxPlayerAndDo(xuid, cb) {
     return
   }
 
-  requestUnknownXboxIds([xuid], {}, Callback(function(res) {
+  requestUnknownXboxIds([xuid], {}, ::Callback(function(res) {
     foreach(uid, data in res) {
       ::getContact(uid, data.nick).update({xboxId = data.id})
       cb(uid)
@@ -123,13 +115,11 @@ register_activation_callback(function() {
   let xuid = get_sender_xuid().tostring()
   logX($"onSquadInviteAccept: sender {xuid}")
 
-  if (!::g_login.isLoggedIn() || !::isInMenu()) {
+  if (!::isInMenu()) {
     postponedInvitation(xuid)
     logX($"postpone invite accept, while not in menu")
     if (::is_in_flight())
-      ::g_popups.add(loc("squad/name"), loc("squad/wait_until_battle_end"))
-
-    ::broadcastEvent("XboxInviteAccepted")
+      ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
     return
   }
 

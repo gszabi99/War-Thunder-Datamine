@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
-
 global enum Team //better to replace it everywhere by g_teams
 {
   Any   = 0,
@@ -31,15 +23,15 @@ global enum Team //better to replace it everywhere by g_teams
   name = ""
   shortNameLocId = ""
   cssLabel = ""
-  teamCountriesOption = -1 //::USEROPT_*
+  teamCountriesOption = -1 //USEROPT_*
 
   getName = function() {
-    return loc("events/" + name)
+    return ::loc("events/" + name)
   }
   getNameInPVE = function() {
-    return loc("multiplayer/" + name)
+    return ::loc("multiplayer/" + name)
   }
-  getShortName = function() { return loc(shortNameLocId) }
+  getShortName = function() { return ::loc(shortNameLocId) }
 }
 
 enums.addTypesByGlobalName("g_team", {
@@ -72,17 +64,17 @@ enums.addTypesByGlobalName("g_team", {
 }, null, "id")
 
 ::g_team.teams = [::g_team.A, ::g_team.B]
-::g_team.getTeams <- function getTeams()
+g_team.getTeams <- function getTeams()
 {
   return teams
 }
 
-::g_team.getTeamByCode <- function getTeamByCode(code)
+g_team.getTeamByCode <- function getTeamByCode(code)
 {
   return enums.getCachedType("code", code, cache.byCode, this, NONE)
 }
 
-::g_team.getTeamByCountriesOption <- function getTeamByCountriesOption(optionId)
+g_team.getTeamByCountriesOption <- function getTeamByCountriesOption(optionId)
 {
   return enums.getCachedType("teamCountriesOption", optionId, cache.byCountriesOption, this, NONE)
 }

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { getSlotbarOverrideData } = require("%scripts/slotbar/slotbarOverride.nut")
 let { isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
@@ -27,11 +22,11 @@ let function getEventSlotbarHint(event, country) {
     @(c) isRequireUnlockForUnit(::getAircraftByName(c.aircraft))
   ) != null
 
-  return hasNotUnlockedUnit ? loc("event/unlockAircrafts") : ""
+  return hasNotUnlockedUnit ? ::loc("event/unlockAircrafts") : ""
 }
 
 let isLeaderboardsAvailable = @() !getSeparateLeaderboardPlatformValue()
-  || hasFeature("ConsoleSeparateEventsLeaderboards")
+  || ::has_feature("ConsoleSeparateEventsLeaderboards")
 
 return {
   needShowOverrideSlotbar

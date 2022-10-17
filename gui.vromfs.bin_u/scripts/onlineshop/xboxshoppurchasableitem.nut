@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { calcPercent } = require("%sqstd/math.nut")
 let statsd = require("statsd")
 let { cutPrefix } = require("%sqstd/string.nut")
@@ -44,108 +39,108 @@ local XboxShopPurchasableItem = class
 
   constructor(blk)
   {
-    this.id = blk.getBlockName()
-    this.entitlementId = getEntitlementId(this.id)
+    id = blk.getBlockName()
+    entitlementId = getEntitlementId(id)
 
     let xbItemType = blk?.MediaItemType
-    this.isMultiConsumable = xbItemType == xboxMediaItemType.GameConsumable
-    if (this.isMultiConsumable)
-      this.defaultIconStyle = "reward_gold"
+    isMultiConsumable = xbItemType == xboxMediaItemType.GameConsumable
+    if (isMultiConsumable)
+      defaultIconStyle = "reward_gold"
 
-    this.categoryId = [xbItemType]
-    let entConfig = getEntitlementConfig(this.entitlementId)
+    categoryId = [xbItemType]
+    let entConfig = getEntitlementConfig(entitlementId)
     if ("aircraftGift" in entConfig)
-      this.categoryId = entConfig.aircraftGift.map(@(unitId) ::getAircraftByName(unitId)?.unitType.typeName)
-    else if (!this.isMultiConsumable)
-      log($"[XBOX SHOP ITEM] not found aircraftGift in entitlementConfig, {this.entitlementId}, {this.id}")
+      categoryId = entConfig.aircraftGift.map(@(unitId) ::getAircraftByName(unitId)?.unitType.typeName)
+    else if (!isMultiConsumable)
+      ::dagor.debug($"[XBOX SHOP ITEM] not found aircraftGift in entitlementConfig, {entitlementId}, {id}")
 
-    this.name = blk?.Name ?? ""
+    name = blk?.Name ?? ""
     //HACK: On GDK no param ReducedName, c++ code copy to this key original name
     //Because of difficulties in searching packs by game title on xbox store
     //We don't want to change packs names
     //So have to try cut prefix if ReducedName is equal as Name
     //On XDK they are different and correct
-    this.shortName = blk?.ReducedName == this.name ? cutPrefix(this.name, XBOX_SHORT_NAME_PREFIX_CUT, "") : (blk?.ReducedName ?? "")
-    this.description = blk?.Description ?? ""
+    shortName = blk?.ReducedName == name ? cutPrefix(name, XBOX_SHORT_NAME_PREFIX_CUT, "") : (blk?.ReducedName ?? "")
+    description = blk?.Description ?? ""
 
-    this.releaseDate = blk?.ReleaseDate ?? 0
+    releaseDate = blk?.ReleaseDate ?? 0
 
-    this.price = blk?.Price ?? 0.0
-    this.priceText = this.price == 0.0 ? loc("shop/free") : (blk?.DisplayPrice ?? "")
-    this.listPrice = blk?.ListPrice ?? 0.0
-    this.listPriceText = blk?.DisplayListPrice ?? ""
-    this.currencyCode = blk?.CurrencyCode ?? ""
+    price = blk?.Price ?? 0.0
+    priceText = price == 0.0 ? ::loc("shop/free") : (blk?.DisplayPrice ?? "")
+    listPrice = blk?.ListPrice ?? 0.0
+    listPriceText = blk?.DisplayListPrice ?? ""
+    currencyCode = blk?.CurrencyCode ?? ""
 
-    this.isPurchasable = blk?.IsPurchasable ?? false
-    this.isBundle = blk?.IsBundle ?? false
-    this.isPartOfAnyBundle = blk?.IsPartOfAnyBundle ?? false
-    this.isBought = !!blk?.isBought
+    isPurchasable = blk?.IsPurchasable ?? false
+    isBundle = blk?.IsBundle ?? false
+    isPartOfAnyBundle = blk?.IsPartOfAnyBundle ?? false
+    isBought = !!blk?.isBought
 
-    this.consumableQuantity = blk?.ConsumableQuantity ?? 0
-    this.signedOffer = blk?.SignedOffer ?? ""
+    consumableQuantity = blk?.ConsumableQuantity ?? 0
+    signedOffer = blk?.SignedOffer ?? ""
 
-    this.needHeader = this.isPurchasable
+    needHeader = isPurchasable
 
-    if (this.isPurchasable)
-      this.amount = this.getPriceText()
+    if (isPurchasable)
+      amount = getPriceText()
 
     let xboxShopBlk = GUI.get()?.xbox_ingame_shop
     let ingameShopImages = xboxShopBlk?.items
-    if (ingameShopImages?[this.id] && xboxShopBlk?.mainPart && xboxShopBlk?.fileExtension)
-      this.imagePath = "!" + xboxShopBlk.mainPart + this.id + xboxShopBlk.fileExtension
+    if (ingameShopImages?[id] && xboxShopBlk?.mainPart && xboxShopBlk?.fileExtension)
+      imagePath = "!" + xboxShopBlk.mainPart + id + xboxShopBlk.fileExtension
   }
 
   getPriceText = function() {
-    if (this.price == null)
+    if (price == null)
       return ""
 
-    return colorize(
-      this.haveDiscount()? "goodTextColor" : "",
-      this.price == 0.0? loc("shop/free") : $"{this.price} {this.currencyCode}"
+    return ::colorize(
+      haveDiscount()? "goodTextColor" : "",
+      price == 0.0? ::loc("shop/free") : $"{price} {currencyCode}"
     )
   }
 
-  updateIsBoughtStatus = @() this.isBought = this.isMultiConsumable? false : ::xbox_is_item_bought(this.id)
-  haveDiscount = @() this.price != null && this.listPrice != null && !this.isBought && this.listPrice > 0.0 && this.price != this.listPrice
+  updateIsBoughtStatus = @() isBought = isMultiConsumable? false : ::xbox_is_item_bought(id)
+  haveDiscount = @() price != null && listPrice != null && !isBought && listPrice > 0.0 && price != listPrice
   getDiscountPercent = function() {
-    if (this.price == null || this.listPrice == null)
+    if (price == null || listPrice == null)
       return 0
 
-    return calcPercent(1 - (this.price.tofloat() / this.listPrice))
+    return calcPercent(1 - (price.tofloat() / listPrice))
   }
 
-  getDescription = @() this.description
+  getDescription = @() description
 
   getViewData = @(params = {}) {
-    isAllBought = this.isBought
-    price = this.getPriceText()
-    layered_image = this.getIcon()
+    isAllBought = isBought
+    price = getPriceText()
+    layered_image = getIcon()
     enableBackground = true
-    isInactive = this.isInactive()
-    isItemLocked = !this.isPurchasable
-    itemHighlight = this.isBought
+    isInactive = isInactive()
+    isItemLocked = !isPurchasable
+    itemHighlight = isBought
     needAllBoughtIcon = true
-    headerText = this.shortName
+    headerText = shortName
   }.__merge(params)
 
-  getItemsView = @() getEntitlementView(this.entitlementId)
+  getItemsView = @() getEntitlementView(entitlementId)
 
-  isCanBuy = @() this.isPurchasable && !this.isBought
-  isInactive = @() !this.isPurchasable || this.isBought
+  isCanBuy = @() isPurchasable && !isBought
+  isInactive = @() !isPurchasable || isBought
 
-  getIcon = @(...) this.imagePath ? ::LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
-                             : ::LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
+  getIcon = @(...) imagePath ? ::LayersIcon.getCustomSizeIconData(imagePath, "pw, ph")
+                             : ::LayersIcon.getIconData(null, null, 1.0, defaultIconStyle)
 
-  getSeenId = @() this.id.tostring()
-  canBeUnseen = @() this.isBought
+  getSeenId = @() id.tostring()
+  canBeUnseen = @() isBought
   showDetails = function(metricPlaceCall = "ingame_store") {
     statsd.send_counter($"sq.{metricPlaceCall}.open_product", 1)
     ::add_big_query_record("open_product",
       ::save_to_json({
-        itemId = this.id
+        itemId = id
       })
     )
-    ::xbox_show_details(this.id)
+    ::xbox_show_details(id)
   }
   showDescription = @() null
 }

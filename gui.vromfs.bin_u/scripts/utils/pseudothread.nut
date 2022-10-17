@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 //!!FIX ME: replace by real threads after fix crash of datablock in sq thread
 let PT_STEP_STATUS = {
   NEXT_STEP = 0  //default status
@@ -23,7 +18,7 @@ let function startPseudoThread(actionsList, onCrash = null, step = 0)
       }
       catch(e)
       {
-        log("Crash in pseudo thread step = " + curStep + ", status = " + stepStatus)
+        ::dagor.debug("Crash in pseudo thread step = " + curStep + ", status = " + stepStatus)
         if (onCrash)
         {
           onCrash()

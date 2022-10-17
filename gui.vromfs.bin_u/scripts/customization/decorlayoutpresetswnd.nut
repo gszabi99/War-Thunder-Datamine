@@ -1,13 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const PRESET_MIN_USAGE = 2
 
@@ -101,7 +93,7 @@ const PRESET_MIN_USAGE = 2
 
   function onMasterSkinSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
     masterSkinId = skinList.values?[obj.getValue()] ?? ""
 
@@ -115,7 +107,7 @@ const PRESET_MIN_USAGE = 2
 
   function onDestinationSkinSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
     linkedSkinsCurrent = obj.getValue()
     updateButtons()
@@ -128,7 +120,7 @@ const PRESET_MIN_USAGE = 2
     let validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
     let oldName = masterPresetId
     ::gui_modal_editbox_wnd({
-      title = loc("customization/decorLayout/layoutName")
+      title = ::loc("customization/decorLayout/layoutName")
       maxLen = 16
       value = oldName
       owner = this
@@ -142,8 +134,8 @@ const PRESET_MIN_USAGE = 2
   {
     if (newName == oldName)
       return
-    if (isInArray(newName, presetBySkinIdx))
-      return ::showInfoMsgBox(loc("rename/cant/nameAlreadyTaken"))
+    if (::isInArray(newName, presetBySkinIdx))
+      return ::showInfoMsgBox(::loc("rename/cant/nameAlreadyTaken"))
 
     ::hangar_customization_preset_set_name(oldName, newName)
     ::save_profile(false)
@@ -172,7 +164,7 @@ const PRESET_MIN_USAGE = 2
     if (!isPreset && listAttach.len())
       for (local i = 0; i < skinList.values.len(); i++)
       {
-        presetId = loc("customization/decorLayout/defaultName", { number = i + 1 })
+        presetId = ::loc("customization/decorLayout/defaultName", { number = i + 1 })
         if (::hangar_customization_preset_calc_usage(presetId) == 0)
         {
           ::hangar_customization_preset_create(presetId)
@@ -202,10 +194,10 @@ const PRESET_MIN_USAGE = 2
 return {
   open = function (unit, skinId)
   {
-    if (!hasFeature("CustomizationLayoutPresets"))
+    if (!::has_feature("CustomizationLayoutPresets"))
       return
     let skinList = ::g_decorator.getSkinsOption(unit?.name, false, false)
-    if (!isInArray(skinId, skinList.values))
+    if (!::isInArray(skinId, skinList.values))
       return
     ::handlersManager.loadHandler(::gui_handlers.DecorLayoutPresets, {
       unit = unit

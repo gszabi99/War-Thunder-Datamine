@@ -1,15 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 /**
  * Some utility functions for work with timBar gui object
  */
-
-let { fabs } = require("math")
 
 ::g_time_bar <- {
   _direction = {

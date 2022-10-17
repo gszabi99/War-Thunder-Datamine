@@ -1,6 +1,7 @@
 #explicit-this
 #no-root-fallback
 
+// warning disable: -egyptian-braces
 let callback = require("callback.nut")
 
 const SUBSCRIPTIONS_AMOUNT_TO_CLEAR = 50
@@ -90,7 +91,7 @@ local function removeEventListenersByEnv(event_name, listener_env) {
  * Removes all listeners with specified environment regardless to event name.
  */
 local function removeAllListenersByEnv(listener_env) {
-  foreach (event_name, _subscriptions in subscriptionsData)
+  foreach (event_name, subscriptions in subscriptionsData)
     removeEventListenersByEnv(event_name, listener_env)
 }
 

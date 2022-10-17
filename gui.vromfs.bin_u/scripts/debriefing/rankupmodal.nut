@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
 
 let delayedRankUpWnd = []
@@ -24,7 +15,7 @@ let delayedRankUpWnd = []
   function initScreen()
   {
     let aircraftTableObj = scene.findObject("rankup_aircraft_table");
-    let showAsUnlock = isInArray(0, ranks)
+    let showAsUnlock = ::isInArray(0, ranks)
     local topRank = 0;
     local airRow = "";
     let unitItems = []
@@ -56,12 +47,12 @@ let delayedRankUpWnd = []
           for(local aircraft=0; aircraft<rblk.blockCount(); aircraft++) //aircrafts
           {
             let airBlk = rblk.getBlock(aircraft);
-            local air = ::getAircraftByName(airBlk.getBlockName());
+            local air = getAircraftByName(airBlk.getBlockName());
             if (air)
             {
               if (isShowUnit(air, showAsUnlock))
               {
-                airRow += ::build_aircraft_item(air.name, air);
+                airRow += build_aircraft_item(air.name, air);
                 unitItems.append({ id = air.name, unit = air })
               }
             }
@@ -69,10 +60,10 @@ let delayedRankUpWnd = []
               for(local group=0; group<airBlk.blockCount(); group++) //airgroup
               {
                 let gAirBlk = airBlk.getBlock(group);
-                air = ::getAircraftByName(gAirBlk.getBlockName());
+                air = getAircraftByName(gAirBlk.getBlockName());
                 if (isShowUnit(air, showAsUnlock))
                 {
-                  airRow += ::build_aircraft_item(air.name, air);
+                  airRow += build_aircraft_item(air.name, air);
                   unitItems.append({ id = air.name, unit = air })
                 }
               }
@@ -86,19 +77,19 @@ let delayedRankUpWnd = []
         topRank = r;
 
     let topRankStr = ::get_roman_numeral(topRank)
-    local headerText = format(loc("userlog/new_rank/country"), topRankStr)
-    local rankText = loc("shop/age") + colorize("userlogColoredText", topRankStr)
+    local headerText = format(::loc("userlog/new_rank/country"), topRankStr)
+    local rankText = ::loc("shop/age") + ::colorize("userlogColoredText", topRankStr)
     if (showAsUnlock)
     {
-      let cText = loc(country)
-      headerText = loc("unlocks/country") + loc("ui/colon") + "<color=@userlogColoredText>" + cText + "</color>"
+      let cText = ::loc(country)
+      headerText = ::loc("unlocks/country") + ::loc("ui/colon") + "<color=@userlogColoredText>" + cText + "</color>"
       rankText = cText + ((topRank>0)? ", " + rankText : "")
     }
     scene.findObject("player_rank").setValue(rankText)
     scene.findObject("rankup_country_title").setValue(headerText)
 
     if(airRow.len() != 0) {
-      scene.findObject("availableNewAirText").setValue(loc("debriefing/new_aircrafts_available"))
+      scene.findObject("availableNewAirText").setValue(::loc("debriefing/new_aircrafts_available"))
       guiScene.replaceContentFromText(aircraftTableObj, airRow, airRow.len(), this);
       foreach (unitItem in unitItems)
         ::fill_unit_item_timers(aircraftTableObj.findObject(unitItem.id), unitItem.unit, unitItem.params)
@@ -122,7 +113,7 @@ let delayedRankUpWnd = []
 
   function updateNextAwardInfo()
   {
-    let checkUnlockId = getTblValue("miscParam", unlockData)
+    let checkUnlockId = ::getTblValue("miscParam", unlockData)
     if (!checkUnlockId)
       return
 

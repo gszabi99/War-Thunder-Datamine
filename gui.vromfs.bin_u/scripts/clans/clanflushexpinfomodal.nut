@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
-let { format } = require("string")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
@@ -22,11 +14,11 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal
 
   function getSceneTplView() {
     canQuitByGoBack = !needChoseResearch
-    let flushExpText = "".concat(loc("userlog/clanUnits/flush/desc", {
+    let flushExpText = "".concat(::loc("userlog/clanUnits/flush/desc", {
         unit = ::getUnitName(userlog.body.unit)
         rp = ::Cost().setSap(userlog.body.rp).tostring()
       }),
-      needChoseResearch ? $"\n{loc("mainmenu/nextResearchSquadronVehicle")}" : ""
+      needChoseResearch ? $"\n{::loc("mainmenu/nextResearchSquadronVehicle")}" : ""
     )
     return base.getSceneTplView().__update({
       flushExpText
@@ -47,7 +39,7 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal
     guiScene.replaceContentFromText(scene.findObject("flush_exp_unit_nest"), data, data.len(), this)
   }
 
-  getWndTitle = @() loc("clan/research_vehicles")
+  getWndTitle = @() ::loc("clan/research_vehicles")
 
   initPopupFilter = @() null
 

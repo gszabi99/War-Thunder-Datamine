@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 
 ::items_classes.ItemUnitCouponMod <- class extends ItemExternal {
@@ -21,5 +14,5 @@ let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
     return { contentIcon = getSmallIconName() }
   }
 
-  getTypeNameForMarketableDesc = @() ::g_string.utf8ToLower(loc("item"))
+  getTypeNameForMarketableDesc = @() ::g_string.utf8ToLower(::loc("item"))
 }

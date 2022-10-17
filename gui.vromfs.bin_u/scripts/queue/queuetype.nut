@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
@@ -55,7 +48,7 @@ enums.addTypesByGlobalName("g_queue_type",
     EVENT = {
       bit = QUEUE_TYPE_BIT.EVENT
       checkOrder = qTypeCheckOrder.ANY_EVENT
-      isParamsCorresponds = @(params) !::u.isEmpty(getTblValue("mode", params))
+      isParamsCorresponds = @(params) !::u.isEmpty(::getTblValue("mode", params))
     }
 
     NEWBIE = {
@@ -77,15 +70,15 @@ enums.addTypesByGlobalName("g_queue_type",
       prepareQueueParams = function(params)
       {
         let wwBattle = params?.wwBattle
-        let side = params?.side ?? SIDE_1
+        let side = params?.side ?? ::SIDE_1
         return {
           clusters    = clustersModule.getCurrentClusters()
           operationId = params.operationId
           battleId    = params.battleId
           country     = wwBattle ? wwBattle.getCountryNameBySide(side)
-                          : getTblValue("country", params, "")
+                          : ::getTblValue("country", params, "")
           team        = wwBattle ? wwBattle.getTeamNameBySide(side)
-                          : getTblValue("team", params, SIDE_1)
+                          : ::getTblValue("team", params, ::SIDE_1)
           isBattleByUnitsGroup = wwBattle?.isBattleByUnitsGroup() ?? false
         }
       }
@@ -96,7 +89,7 @@ enums.addTypesByGlobalName("g_queue_type",
           "worldwar.get_queue_info",
           function(response) {
             let queuesInfo = {}
-            let responseQueues = getTblValue("queues", response, [])
+            let responseQueues = ::getTblValue("queues", response, [])
             foreach(battleQueueInfo in responseQueues)
               if (battleQueueInfo?.battleId)
                 queuesInfo[battleQueueInfo.battleId] <- battleQueueInfo
@@ -117,7 +110,7 @@ enums.addTypesByGlobalName("g_queue_type",
 
 ::g_queue_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
-::g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params)
+g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params)
 {
   if (!params)
     return UNKNOWN

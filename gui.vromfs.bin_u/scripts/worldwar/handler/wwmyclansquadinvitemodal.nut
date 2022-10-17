@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 enum wwClanSquadInviteColors {
   BUSY = "fadedTextColor"
   ENABLED = "activeTextColor"
@@ -24,7 +17,7 @@ enum wwClanSquadInviteColors {
       showOnSelect = "hover"
       btnName = "X"
       btnKey = "X"
-      tooltip = @() loc("squad/info")
+      tooltip = @() ::loc("squad/info")
       img = "#ui/gameuiskin#btn_help.svg"
       funcName = "onSquadInfo"
       isHidden = false
@@ -37,7 +30,7 @@ enum wwClanSquadInviteColors {
       showOnSelect = "hover"
       btnName = "A"
       btnKey = "A"
-      text = @() loc("worldwar/inviteSquad")
+      text = @() ::loc("worldwar/inviteSquad")
       isHidden = true
       isDisabled = true
     }
@@ -103,11 +96,11 @@ enum wwClanSquadInviteColors {
   function colorizePresence(text, presenceParams, presenceType)
   {
     if (isGameParamsMatch(presenceParams))
-      return colorize(wwClanSquadInviteColors.MATCH_GAME, text)
+      return ::colorize(wwClanSquadInviteColors.MATCH_GAME, text)
 
     let color = presenceType.canInviteToWWBattle
       ? wwClanSquadInviteColors.ENABLED : wwClanSquadInviteColors.BUSY
-    return colorize(color, text)
+    return ::colorize(color, text)
   }
 
   function isGameParamsMatch(presenceParams)

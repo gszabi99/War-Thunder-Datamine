@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
  /*
  module with low-level matching server interface
 
@@ -38,8 +33,8 @@ let _matching = {
 */
 ::matching_api_func <- function matching_api_func(name, cb, params = null)
 {
-  log("send matching request: " + name)
-  ::matching.rpc_call(name, _matching.translate_matching_params(params),
+  ::dagor.debug("send matching request: " + name)
+  matching.rpc_call(name, _matching.translate_matching_params(params),
     function (resp)
     {
       if (cb)
@@ -49,8 +44,8 @@ let _matching = {
 
 ::matching_api_notify <- function matching_api_notify(name, params = null)
 {
-  log("send matching notify: " + name)
-  ::matching.notify(name, _matching.translate_matching_params(params))
+  ::dagor.debug("send matching notify: " + name)
+  matching.notify(name, _matching.translate_matching_params(params))
 }
 
 ::is_matching_error <- function is_matching_error(code)

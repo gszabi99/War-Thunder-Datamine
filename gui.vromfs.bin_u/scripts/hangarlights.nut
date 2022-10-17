@@ -1,30 +1,27 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { Point3 } = require("%sqstd/math_ex.nut")
-let { gfrnd } = require("dagor.random")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-local lights = []
+::lights <- []
 
-let function light_lerp(t1, t2, v) {
+::light_lerp <- function light_lerp(t1, t2, v)
+{
   return t1 + (t2 - t1) * v
 }
 
-local lights_inited = false
+::lights_inited <- false
 
-::on_enter_hangar <- function on_enter_hangar() {
-  if (lights_inited)
+::on_enter_hangar <- function on_enter_hangar()
+{
+  if (::lights_inited)
     return
 
-  lights_inited = true
+  ::lights_inited = true
   let blk = blkFromPath( "levels/hangar_winter_airfield_lights.blk" )
   let list = blk?.lights ?? ::DataBlock()
-  for ( local i = 0 ; i < list.blockCount() ; ++i ) {
+  for ( local i = 0 ; i < list.blockCount() ; ++i )
+  {
     let src = list.getBlock( i )
 
-    let light = {
+    let light =
+    {
       id = 0
       pos = src.pos
       pos_range = src.posdelta ? src.posdelta : 0
@@ -41,38 +38,42 @@ local lights_inited = false
   }
 }
 
-::on_leave_hangar <- function on_leave_hangar() {
-  if (!lights_inited)
+::on_leave_hangar <- function on_leave_hangar()
+{
+  if (! ::lights_inited)
     return
 
-  lights_inited = false
-  let cnt = lights.len()
-  for ( local i = 0 ; i < cnt ; ++i ) {
-    let l = lights[i]
+  ::lights_inited = false
+  let cnt = ::lights.len()
+  for ( local i = 0 ; i < cnt ; ++i )
+  {
+    let l = ::lights[i]
     ::destroy_light( l.id )
   }
-  lights.clear()
+  ::lights.clear()
 }
 
-local update_hangar_timer = 0.0
-::on_update_hangar <- function on_update_hangar( dt ) {
-  if (!lights_inited)
-    ::on_enter_hangar()
+::update_hangar_timer <- 0.0
+::on_update_hangar <- function on_update_hangar( dt )
+{
+  if (! ::lights_inited)
+    on_enter_hangar()
 
-  update_hangar_timer -= dt
-  if (update_hangar_timer > 0)
+  ::update_hangar_timer -= dt
+  if (::update_hangar_timer > 0)
     return
-  update_hangar_timer = update_hangar_timer % 0.1 + 0.1
+  ::update_hangar_timer = ::update_hangar_timer % 0.1 + 0.1
 
-  foreach(l in lights) {
-    local col = light_lerp( l.col0, l.col1, gfrnd() )
-    col *= light_lerp( l.pow0, l.pow1, gfrnd() )
+  foreach(l in ::lights)
+  {
+    local col = light_lerp( l.col0, l.col1, ::math.frnd() )
+    col *= light_lerp( l.pow0, l.pow1, ::math.frnd() )
 
-    let rad = l.rad + l.rad_range * gfrnd()
+    let rad = l.rad + l.rad_range * ::math.frnd()
 
-    let dir = Point3(gfrnd(), gfrnd(), gfrnd())
+    let dir = ::Point3(::math.frnd(), ::math.frnd(), ::math.frnd())
     dir.normalize()
-    let pos = l.pos + dir * l.pos_range * gfrnd()
+    let pos = l.pos + dir * l.pos_range * ::math.frnd()
 
     ::set_light_col( l.id, col )
     ::set_light_pos( l.id, pos )

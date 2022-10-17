@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -16,10 +9,10 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
   currentProcess = null
 }
 
-::g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
+g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
 {
-  assert(currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
-  currentProcess = ::EventTicketBuyOfferProcess(event)
+  ::dagor.assertf(currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
+  currentProcess = EventTicketBuyOfferProcess(event)
 }
 
 ::EventTicketBuyOfferProcess <- class
@@ -58,11 +51,11 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
     let activeTicket = ::events.getEventActiveTicket(_event)
     if (availableTickets.len() == 0)
     {
-      let msgArr = [loc("events/wait_for_sessions_to_finish/main")]
+      let msgArr = [::loc("events/wait_for_sessions_to_finish/main")]
       if (activeTicket != null)
       {
         let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(_event))
-        msgArr.append(loc("events/wait_for_sessions_to_finish/optional", {
+        msgArr.append(::loc("events/wait_for_sessions_to_finish/optional", {
           timeleft = time.secondsToString(tournamentData.timeToWait)
         }))
       }

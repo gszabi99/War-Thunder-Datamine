@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_top_menu_sections <- {
   template = {
@@ -27,12 +20,12 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
 }
 
-::g_top_menu_sections.isSeparateTab <- function isSeparateTab(section, totalSections)
+g_top_menu_sections.isSeparateTab <- function isSeparateTab(section, totalSections)
 {
   return section? section.mergeIndex < totalSections : true
 }
 
-::g_top_menu_sections.getSectionsOrder <- function getSectionsOrder(sectionsStructure, maxSectionsCount)
+g_top_menu_sections.getSectionsOrder <- function getSectionsOrder(sectionsStructure, maxSectionsCount)
 {
   let sections = []
   foreach (idx, section in sectionsStructure.types)
@@ -51,7 +44,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   return sections
 }
 
-::g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsArray, maxSectionsCount, sectionsStructure)
+g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsArray, maxSectionsCount, sectionsStructure)
 {
   let result = []
   foreach (idx, column in itemsArray)
@@ -78,7 +71,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   return result
 }
 
-::g_top_menu_sections.clearEmptyColumns <- function clearEmptyColumns(itemsArray)
+g_top_menu_sections.clearEmptyColumns <- function clearEmptyColumns(itemsArray)
 {
   for (local i = itemsArray.len()-1; i >= 0; i--)
   {
@@ -89,7 +82,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
 }
 
-::g_top_menu_sections.getSectionByName <- function getSectionByName(name)
+g_top_menu_sections.getSectionByName <- function getSectionByName(name)
 {
   return enums.getCachedType("name", name, cache.byName, this, template)
 }

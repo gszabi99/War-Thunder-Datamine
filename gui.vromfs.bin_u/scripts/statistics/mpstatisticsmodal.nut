@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { is_replay_playing } = require("replays")
 
@@ -36,14 +29,14 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     if (tblObj1.childrenCount() == 0)
       initStats()
 
-    if (gameType & GT_COOPERATIVE)
+    if (gameType & ::GT_COOPERATIVE)
     {
       scene.findObject("team1-root").show(false)
       isTeam = false
     }
 
     includeMissionInfoBlocksToGamercard()
-    setSceneTitle(::getCurMpTitle())
+    setSceneTitle(getCurMpTitle())
     refreshPlayerInfo()
 
     this.showSceneBtn("btn_back", true)
@@ -58,7 +51,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
     this.showSceneBtn("btn_activateorder", !isResultMPStatScreen && ::g_orders.showActivateOrderButton())
     let ordersButton = scene.findObject("btn_activateorder")
-    if (checkObj(ordersButton))
+    if (::checkObj(ordersButton))
     {
       ordersButton.setUserData(this)
       ordersButton.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
@@ -121,12 +114,12 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
   function onHideHUD(obj) {}
 
   function quitToDebriefing() {
-    if (::get_mission_status() == MISSION_STATUS_SUCCESS) {
+    if (::get_mission_status() == ::MISSION_STATUS_SUCCESS) {
       ::quit_mission_after_complete()
       return
     }
 
-    let text = loc("flightmenu/questionQuitMission")
+    let text = ::loc("flightmenu/questionQuitMission")
     this.msgBox("question_quit_mission", text,
       [
         ["yes", function()
@@ -146,18 +139,18 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     scene.findObject("root-box").bgrStyle = "transparent"
     scene.findObject("nav-help").hasMaxWindowSize = "yes"
     scene.findObject("flight_menu_bgd").hasMissionResultPadding = "yes"
-    scene.findObject("btn_back").setValue(loc("flightmenu/btnQuitMission"))
+    scene.findObject("btn_back").setValue(::loc("flightmenu/btnQuitMission"))
     updateMissionResultText()
     ::g_hud_event_manager.subscribe("MissionResult", updateMissionResultText, this)
   }
 
   function updateMissionResultText(eventData = null) {
     let resultIdx = ::get_mission_status()
-    if (resultIdx != MISSION_STATUS_SUCCESS && resultIdx != MISSION_STATUS_FAIL)
+    if (resultIdx != ::MISSION_STATUS_SUCCESS && resultIdx != ::MISSION_STATUS_FAIL)
       return
 
     let view = {
-      text = loc(resultIdx == MISSION_STATUS_SUCCESS ? "MISSION_SUCCESS" : "MISSION_FAIL")
+      text = ::loc(resultIdx == ::MISSION_STATUS_SUCCESS ? "MISSION_SUCCESS" : "MISSION_FAIL")
       resultIdx = resultIdx
       useMoveOut = true
     }

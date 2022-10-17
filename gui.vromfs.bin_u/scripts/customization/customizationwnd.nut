@@ -1,13 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { acos, PI } = require("math")
+let { acos } = require("math")
 let penalty = require("penalty")
 let decorLayoutPresets = require("%scripts/customization/decorLayoutPresetsWnd.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
@@ -53,7 +46,7 @@ enum decalTwoSidedMode
 
 ::on_decal_job_complete <- function on_decal_job_complete(taskId)
 {
-  let callback = getTblValue(taskId, ::g_decorator_type.DECALS.jobCallbacksStack, null)
+  let callback = ::getTblValue(taskId, ::g_decorator_type.DECALS.jobCallbacksStack, null)
   if (callback)
   {
     callback()
@@ -85,7 +78,7 @@ enum decalTwoSidedMode
 
 ::hangar_add_popup <- function hangar_add_popup(text) // called from client
 {
-  ::g_popups.add("", loc(text))
+  ::g_popups.add("", ::loc(text))
 }
 
 ::delayed_download_enabled_msg <- function delayed_download_enabled_msg()
@@ -98,9 +91,9 @@ enum decalTwoSidedMode
     ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
     {
       parentHandler = ::handlersManager.getActiveBaseHandler()
-      message = loc("msgbox/delayedDownloadContent")
+      message = ::loc("msgbox/delayedDownloadContent")
       ableToStartAndSkip = true
-      startBtnText = loc("msgbox/confirmDelayedDownload")
+      startBtnText = ::loc("msgbox/confirmDelayedDownload")
       onStartPressed = function() {
         ::set_option_delayed_download_content(true)
         ::save_local_account_settings("delayDownloadContent", true)
@@ -177,9 +170,9 @@ enum decalTwoSidedMode
       return goBack()
     ::cur_aircraft_name = unit.name
 
-    access_WikiOnline = hasFeature("WikiUnitInfo")
-    access_UserSkins = isPlatformPC && hasFeature("UserSkins")
-    access_SkinsUnrestrictedPreview = hasFeature("SkinsPreviewOnUnboughtUnits")
+    access_WikiOnline = ::has_feature("WikiUnitInfo")
+    access_UserSkins = isPlatformPC && ::has_feature("UserSkins")
+    access_SkinsUnrestrictedPreview = ::has_feature("SkinsPreviewOnUnboughtUnits")
     access_SkinsUnrestrictedExport  = access_UserSkins && access_SkinsUnrestrictedExport
 
     initialAppliedSkinId   = ::hangar_get_last_skin(unit.name)
@@ -223,7 +216,7 @@ enum decalTwoSidedMode
 
   function canRestartSceneNow()
   {
-    return isInArray(currentState, [ decoratorEditState.NONE, decoratorEditState.SELECT ])
+    return ::isInArray(currentState, [ decoratorEditState.NONE, decoratorEditState.SELECT ])
   }
 
   function getHandlerRestoreData()
@@ -261,7 +254,7 @@ enum decalTwoSidedMode
     setDmgSkinMode(::hangar_get_loaded_model_damage_state(unit.name) == MDS_DAMAGED)
 
     let bObj = scene.findObject("btn_testflight")
-    if (checkObj(bObj))
+    if (::checkObj(bObj))
     {
       bObj.setValue(unit.unitType.getTestFlightText())
       bObj.findObject("btn_testflight_image")["background-image"] = unit.unitType.testFlightIcon
@@ -285,7 +278,7 @@ enum decalTwoSidedMode
 
   function updateTitle()
   {
-    local title = loc(isUnitOwn && !previewMode? "mainmenu/showroom" : "mainmenu/btnPreview") + " " + loc("ui/mdash") + " "
+    local title = ::loc(isUnitOwn && !previewMode? "mainmenu/showroom" : "mainmenu/btnPreview") + " " + ::loc("ui/mdash") + " "
     if (!previewMode || (previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)))
       title += ::getUnitName(unit.name)
 
@@ -294,12 +287,12 @@ enum decalTwoSidedMode
       let skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
       let skin = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
       if (skin)
-        title += loc("ui/comma") + loc("options/skin") + " " + colorize(skin.getRarityColor(), skin.getName())
+        title += ::loc("ui/comma") + ::loc("options/skin") + " " + ::colorize(skin.getRarityColor(), skin.getName())
     }
     else if (previewMode & PREVIEW_MODE.DECORATOR)
     {
-      let typeText = loc("trophy/unlockables_names/" + decoratorPreview.decoratorType.resourceType)
-      let nameText = colorize(decoratorPreview.getRarityColor(), decoratorPreview.getName())
+      let typeText = ::loc("trophy/unlockables_names/" + decoratorPreview.decoratorType.resourceType)
+      let nameText = ::colorize(decoratorPreview.getRarityColor(), decoratorPreview.getName())
       title += typeText + " " + nameText
     }
 
@@ -312,15 +305,15 @@ enum decalTwoSidedMode
     let hasKeyboard = isPlatformPC
 
     //Flip
-    let btn_toggle_mirror_text = loc("decals/flip") + (hasKeyboard ? " (F)" : "")
+    let btn_toggle_mirror_text = ::loc("decals/flip") + (hasKeyboard ? " (F)" : "")
     bObj = scene.findObject("btn_toggle_mirror")
-    if(checkObj(bObj))
+    if(::checkObj(bObj))
       bObj.setValue(btn_toggle_mirror_text)
 
     //TwoSided
-    let text = loc("decals/twosided") + (hasKeyboard ? " (T)" : "") + loc("ui/colon")
+    let text = ::loc("decals/twosided") + (hasKeyboard ? " (T)" : "") + ::loc("ui/colon")
     bObj = scene.findObject("two_sided_label")
-    if(checkObj(bObj))
+    if(::checkObj(bObj))
       bObj.setValue(text)
 
     //Size
@@ -347,7 +340,7 @@ enum decalTwoSidedMode
 
     if (!::can_save_current_skin_template())
     {
-      let message = format(loc("decals/noUserSkinForCurUnit"), ::getUnitName(unit.name))
+      let message = format(::loc("decals/noUserSkinForCurUnit"), ::getUnitName(unit.name))
       this.msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
       return
     }
@@ -356,7 +349,7 @@ enum decalTwoSidedMode
     let success = ::save_current_skin_template(allowCurrentSkin)
 
     let templateName = "template_" + unit.name
-    let message = success ? format(loc("decals/successfulLoadedSkinSample"), templateName) : loc("decals/failedLoadedSkinSample")
+    let message = success ? format(::loc("decals/successfulLoadedSkinSample"), templateName) : ::loc("decals/failedLoadedSkinSample")
     this.msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
 
     updateMainGuiElements()
@@ -416,7 +409,7 @@ enum decalTwoSidedMode
 
     let autoSkinId = "auto_skin_control"
     let controlObj = scene.findObject(autoSkinId)
-    if (checkObj(controlObj))
+    if (::check_obj(controlObj))
     {
       controlObj.setValue(::g_decorator.isAutoSkinOn(unit.name))
       return
@@ -463,17 +456,17 @@ enum decalTwoSidedMode
         images.append({ image = "#ui/gameuiskin#locked.svg", imageNoMargin = true })
 
       if (canBuy)
-        text = loc("ui/parentheses", {text = priceText}) + " " + text
+        text = ::loc("ui/parentheses", {text = priceText}) + " " + text
       else if (canFindOnMarketplace)
-        text = "".concat(loc("currency/gc/sign"), " ", text)
+        text = "".concat(::loc("currency/gc/sign"), " ", text)
 
       if (!access.isVisible)
-        text = colorize("comboExpandedLockedTextColor", "(" + loc("worldWar/hided_logs") + ") ") + text
+        text = ::colorize("comboExpandedLockedTextColor", "(" + ::loc("worldWar/hided_logs") + ") ") + text
 
       skinItems.append({
         text = text
         textStyle = skinList.items[i].textStyle
-        addDiv = DECORATION.getMarkup(decorator.id, UNLOCKABLE_SKIN, tooltipParams)
+        addDiv = DECORATION.getMarkup(decorator.id, ::UNLOCKABLE_SKIN, tooltipParams)
         images
       })
     }
@@ -485,18 +478,18 @@ enum decalTwoSidedMode
   function updateSkinTooltip(skinId)
   {
     let tooltipObj = scene.findObject("skinTooltip")
-    tooltipObj.tooltipId = DECORATION.getTooltipId($"{unit.name}/{skinId}", UNLOCKABLE_SKIN)
+    tooltipObj.tooltipId = DECORATION.getTooltipId($"{unit.name}/{skinId}", ::UNLOCKABLE_SKIN)
   }
 
   function renewDropright(nestObjId, listObjId, items, index, cb)
   {
     local nestObj = scene.findObject(listObjId)
     local needCreateList = false
-    if (!checkObj(nestObj))
+    if (!::checkObj(nestObj))
     {
       needCreateList = true
       nestObj = scene.findObject(nestObjId)
-      if (!checkObj(nestObj))
+      if (!::checkObj(nestObj))
         return
     }
     let skinsDropright = ::create_option_combobox(listObjId, items, index, cb, needCreateList)
@@ -520,7 +513,7 @@ enum decalTwoSidedMode
 
     let options = [::USEROPT_TANK_CAMO_SCALE,
                      ::USEROPT_TANK_CAMO_ROTATION]
-    if (hasFeature("SpendGold"))
+    if (::has_feature("SpendGold"))
       options.insert(0, ::USEROPT_TANK_SKIN_CONDITION)
 
     let view = { isTooltipByHold = ::show_console_buttons, rows = [] }
@@ -535,7 +528,7 @@ enum decalTwoSidedMode
     }
     let data = ::handyman.renderCached(("%gui/options/verticalOptions"), view)
     let slObj = scene.findObject("tank_skin_settings")
-    if (checkObj(slObj))
+    if (::checkObj(slObj))
       guiScene.replaceContentFromText(slObj, data, data.len(), this)
 
     updateSkinSliders()
@@ -556,10 +549,10 @@ enum decalTwoSidedMode
     option = ::get_option(::USEROPT_TANK_SKIN_CONDITION)
     let tscId = option.id
     let tscTrObj = scene.findObject("tr_" + tscId)
-    if (checkObj(tscTrObj))
+    if (::checkObj(tscTrObj))
     {
       tscTrObj.inactiveColor = have_premium? "no" : "yes"
-      tscTrObj.tooltip = have_premium ? "" : loc("mainmenu/onlyWithPremium")
+      tscTrObj.tooltip = have_premium ? "" : ::loc("mainmenu/onlyWithPremium")
       let sliderObj = scene.findObject(tscId)
       let value = have_premium ? option.value : option.defVal
       sliderObj.setValue(value)
@@ -569,9 +562,9 @@ enum decalTwoSidedMode
     option = ::get_option(::USEROPT_TANK_CAMO_SCALE)
     let tcsId = option.id
     let tcsTrObj = scene.findObject("tr_" + tcsId)
-    if (checkObj(tcsTrObj))
+    if (::checkObj(tcsTrObj))
     {
-      tcsTrObj.tooltip = canScaleAndRotate ? "" : loc("guiHints/not_available_on_this_camo")
+      tcsTrObj.tooltip = canScaleAndRotate ? "" : ::loc("guiHints/not_available_on_this_camo")
       let sliderObj = scene.findObject(tcsId)
       let value = canScaleAndRotate ? option.value : option.defVal
       sliderObj.setValue(value)
@@ -582,9 +575,9 @@ enum decalTwoSidedMode
     option = ::get_option(::USEROPT_TANK_CAMO_ROTATION)
     let tcrId = option.id
     let tcrTrObj = scene.findObject("tr_" + tcrId)
-    if (checkObj(tcrTrObj))
+    if (::checkObj(tcrTrObj))
     {
-      tcrTrObj.tooltip = canScaleAndRotate ? "" : loc("guiHints/not_available_on_this_camo")
+      tcrTrObj.tooltip = canScaleAndRotate ? "" : ::loc("guiHints/not_available_on_this_camo")
       let sliderObj = scene.findObject(tcrId)
       let value = canScaleAndRotate ? option.value : option.defVal
       sliderObj.setValue(value)
@@ -595,7 +588,7 @@ enum decalTwoSidedMode
 
   function onChangeTankSkinCondition(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let oldValue = ::get_option(::USEROPT_TANK_SKIN_CONDITION).value
@@ -607,7 +600,7 @@ enum decalTwoSidedMode
     {
       obj.setValue(oldValue)
       guiScene.performDelayed(this, @()
-        isValid() && askBuyPremium(Callback(updateSkinSliders, this)))
+        isValid() && askBuyPremium(::Callback(updateSkinSliders, this)))
       return
     }
 
@@ -616,7 +609,7 @@ enum decalTwoSidedMode
 
   function askBuyPremium(afterCloseFunc)
   {
-    let msgText = loc("msgbox/noEntitlement/PremiumAccount")
+    let msgText = ::loc("msgbox/noEntitlement/PremiumAccount")
     this.msgBox("no_premium", msgText,
          [["ok", @() startOnlineShop("premium", afterCloseFunc) ],
          ["cancel", @() null ]], "ok", { checkDuplicateId = true })
@@ -625,7 +618,7 @@ enum decalTwoSidedMode
   function updateSkinConditionValue(value, obj)
   {
     let textObj = scene.findObject("value_" + (obj?.id ?? ""))
-    if (!checkObj(textObj))
+    if (!::checkObj(textObj))
       return
 
     textObj.setValue(((value + 100) / 2).tostring() + "%")
@@ -634,25 +627,25 @@ enum decalTwoSidedMode
 
   function onChangeTankCamoScale(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let textObj = scene.findObject("value_" + (obj?.id ?? ""))
-    if (checkObj(textObj))
+    if (::checkObj(textObj))
     {
       let value = obj.getValue()
       ::hangar_set_tank_camo_scale(value / TANK_CAMO_SCALE_SLIDER_FACTOR)
-      textObj.setValue((::hangar_get_tank_camo_scale_result_value() * 100 + 0.5).tointeger().tostring() + "%")
+      textObj.setValue((hangar_get_tank_camo_scale_result_value() * 100 + 0.5).tointeger().tostring() + "%")
     }
   }
 
   function onChangeTankCamoRotation(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let textObj = scene.findObject("value_" + (obj?.id ?? ""))
-    if (checkObj(textObj))
+    if (::checkObj(textObj))
     {
       let value = obj.getValue()
       let visualValue = value * 180 / 100
@@ -678,11 +671,11 @@ enum decalTwoSidedMode
     }
 
     let dObj = scene.findObject("attachable_div")
-    if (!checkObj(dObj))
+    if (!::checkObj(dObj))
       return
 
     let attachListObj = dObj.findObject("slots_attachable_list")
-    if (!checkObj(attachListObj))
+    if (!::checkObj(attachListObj))
       return
 
     dObj.show(true)
@@ -706,7 +699,7 @@ enum decalTwoSidedMode
     }
 
     let dObj = scene.findObject("slots_list")
-    if (checkObj(dObj))
+    if (::checkObj(dObj))
     {
       let data = ::handyman.renderCached("%gui/commonParts/imageButton", view)
       guiScene.replaceContentFromText(dObj, data, data.len(), this)
@@ -722,14 +715,14 @@ enum decalTwoSidedMode
     let decalId = slot.decalId
     let decorator = ::g_decorator.getDecorator(decalId, decoratorType)
     let slotRatio = clamp(decoratorType.getRatio(decorator), 1, 2)
-    local buttonTooltip = slot.isEmpty ? loc(decoratorType.emptySlotLocId) : ""
+    local buttonTooltip = slot.isEmpty ? ::loc(decoratorType.emptySlotLocId) : ""
     if (!isUnitOwn)
       buttonTooltip = "#mainmenu/decalUnitLocked"
     else if (!canEditDecals)
       buttonTooltip = "#mainmenu/decalSkinLocked"
     else if (!slot.unlocked)
     {
-      if (hasFeature("EnablePremiumPurchase"))
+      if (::has_feature("EnablePremiumPurchase"))
         buttonTooltip = "#mainmenu/onlyWithPremium"
       else
         buttonTooltip = "#charServer/notAvailableYet"
@@ -742,7 +735,7 @@ enum decalTwoSidedMode
       onDeleteClick = null
       ratio = slotRatio
       statusLock = slot.unlocked ? getDecorLockStatusText(decorator, unit)
-        : hasFeature("EnablePremiumPurchase") ? "noPremium_" + slotRatio
+        : ::has_feature("EnablePremiumPurchase") ? "noPremium_" + slotRatio
         : "achievement"
       unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
       emptySlot = slot.isEmpty || !decorator
@@ -773,16 +766,16 @@ enum decalTwoSidedMode
     }
 
     local bObj = this.showSceneBtn("btn_buy", canBuyIngame)
-    if (canBuyIngame && checkObj(bObj))
+    if (canBuyIngame && ::check_obj(bObj))
     {
       let price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
-      placePriceTextToButton(scene, "btn_buy", loc("mainmenu/btnOrder"), price)
+      placePriceTextToButton(scene, "btn_buy", ::loc("mainmenu/btnOrder"), price)
 
       ::showUnitDiscount(bObj.findObject("buy_discount"), unit)
     }
 
     let bOnlineObj = this.showSceneBtn("btn_buy_online", canBuyOnline)
-    if (canBuyOnline && checkObj(bOnlineObj))
+    if (canBuyOnline && ::check_obj(bOnlineObj))
       ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), unit)
 
     this.showSceneBtn("btn_marketplace_find_unit", canFindUnitOnMarketplace)
@@ -803,17 +796,17 @@ enum decalTwoSidedMode
     let canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
     bObj = this.showSceneBtn("btn_buy_skin", canBuySkin)
-    if (canBuySkin && checkObj(bObj))
+    if (canBuySkin && ::check_obj(bObj))
     {
       let price = skinDecorator.getCost()
-      placePriceTextToButton(scene, "btn_buy_skin", loc("mainmenu/btnOrder"), price)
+      placePriceTextToButton(scene, "btn_buy_skin", ::loc("mainmenu/btnOrder"), price)
     }
 
     let can_testflight = ::isTestFlightAvailable(unit) && !decoratorPreview
     let can_createUserSkin = ::can_save_current_skin_template()
 
     bObj = scene.findObject("btn_load_userskin_sample")
-    if (checkObj(bObj))
+    if (::checkObj(bObj))
       bObj.inactiveColor = can_createUserSkin ? "no" : "yes"
 
     let isInEditMode = currentState & decoratorEditState.EDITING
@@ -826,7 +819,7 @@ enum decalTwoSidedMode
     let focusedSlot = getSlotInfo(getCurrentDecoratorSlot(focusedType), true, focusedType)
 
     bObj = scene.findObject("btn_toggle_damaged")
-    let isDmgSkinPreviewMode = checkObj(bObj) && bObj.getValue()
+    let isDmgSkinPreviewMode = ::checkObj(bObj) && bObj.getValue()
 
     let usableSkinsCount = ::u.filter(skinList?.access ?? [], @(a) a.isOwn).len()
 
@@ -856,10 +849,10 @@ enum decalTwoSidedMode
           previewed_decorator_unit = !isInEditMode && decoratorPreview && initialUnitId && initialUnitId != unit?.name
 
           decor_layout_presets = !isInEditMode && !decorMenu?.isOpened && isUnitOwn &&
-            hasFeature("CustomizationLayoutPresets") && usableSkinsCount > 1 &&
+            ::has_feature("CustomizationLayoutPresets") && usableSkinsCount > 1 &&
             !previewMode && !previewSkinId
 
-          dmg_skin_div = hasFeature("DamagedSkinPreview") && !isInEditMode && !decorMenu?.isOpened
+          dmg_skin_div = ::has_feature("DamagedSkinPreview") && !isInEditMode && !decorMenu?.isOpened
           dmg_skin_buttons_div = isDmgSkinPreviewMode && (unit.isAir() || unit.isHelicopter())
     })
 
@@ -869,9 +862,9 @@ enum decalTwoSidedMode
     if (isVisibleSuggestedSkin) {
       ::showBtn("btn_suggested_skin_find", canFindSkinOnMarketplace, suggestedSkinObj)
       ::showBtn("btn_suggested_skin_exchange", canConsumeSkinCoupon, suggestedSkinObj)
-      let textArr = [loc("suggested_skin/info")]
+      let textArr = [::loc("suggested_skin/info")]
       if (canFindSkinOnMarketplace)
-        textArr.append(loc("suggested_skin/find"))
+        textArr.append(::loc("suggested_skin/find"))
       suggestedSkinObj.findObject("suggested_skin_info_text").setValue("\n".join(textArr))
     }
 
@@ -891,7 +884,7 @@ enum decalTwoSidedMode
 
     updateDecoratorActions(isInEditMode, decoratorType)
     scene.findObject("gamercard_div")["gamercardSkipNavigation"] = isInEditMode ? "yes" : "no"
-    ::update_gamercards()
+    update_gamercards()
   }
 
   function updateBackButton()
@@ -902,7 +895,7 @@ enum decalTwoSidedMode
 
     if (currentState & decoratorEditState.EDITING)
     {
-      bObj.text = loc("mainmenu/btnCancel")
+      bObj.text = ::loc("mainmenu/btnCancel")
       bObj["skip-navigation"] = "yes"
       return
     }
@@ -911,13 +904,13 @@ enum decalTwoSidedMode
     {
       if (decorMenu?.isCurCategoryListObjHovered())
       {
-        bObj.text = loc("mainmenu/btnCollapse")
+        bObj.text = ::loc("mainmenu/btnCollapse")
         bObj["skip-navigation"] = "no"
         return
       }
     }
 
-    bObj.text = loc("mainmenu/btnBack")
+    bObj.text = ::loc("mainmenu/btnBack")
     bObj["skip-navigation"] = "no"
   }
 
@@ -929,7 +922,7 @@ enum decalTwoSidedMode
   function updateDecoratorActions(show, decoratorType)
   {
     let hintsObj = this.showSceneBtn("decals_hint", show)
-    if (show && checkObj(hintsObj))
+    if (show && ::checkObj(hintsObj))
     {
       ::showBtnTable(hintsObj, {
         decals_hint_rotate = decoratorType.canRotate()
@@ -952,12 +945,12 @@ enum decalTwoSidedMode
   {
     // TwoSided
     local obj = scene.findObject("two_sided_select")
-    if (checkObj(obj))
+    if (::check_obj(obj))
       obj.setValue(getTwoSidedState())
 
     // Flip
     obj = scene.findObject("btn_toggle_mirror")
-    if (checkObj(obj))
+    if (::check_obj(obj))
     {
       let enabled = ::get_hangar_mirror_current_decal()
       let icon = "#ui/gameuiskin#btn_flip_decal" + (enabled ? "_active" : "") + ".svg"
@@ -985,7 +978,7 @@ enum decalTwoSidedMode
   function updateUnitStatus()
   {
     let obj = scene.findObject("unit_status")
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
     let isShow = previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)
     obj.show(isShow)
@@ -993,7 +986,7 @@ enum decalTwoSidedMode
       return
     obj.findObject("icon")["background-image"] = isUnitOwn ? "ui/gameuiskin#favorite.png" : "ui/gameuiskin#locked.svg"
     let textObj = obj.findObject("text")
-    textObj.setValue(loc(isUnitOwn ? "conditions/unitExists" : "weaponry/unit_not_bought"))
+    textObj.setValue(::loc(isUnitOwn ? "conditions/unitExists" : "weaponry/unit_not_bought"))
     textObj.overlayTextColor = isUnitOwn ? "good" : "bad"
   }
 
@@ -1005,20 +998,20 @@ enum decalTwoSidedMode
     let isUnitAutoselected = initialUnitId && initialUnitId != unit?.name
     local obj = this.showSceneBtn("previewed_decorator_unit", isUnitAutoselected)
     if (obj && isUnitAutoselected)
-      obj.findObject("label").setValue(loc("decoratorPreview/autoselectedUnit", {
-          previewUnit = colorize("activeTextColor", ::getUnitName(unit))
-          hangarUnit  = colorize("activeTextColor", ::getUnitName(initialUnitId))
-        }) + " " + loc("decoratorPreview/autoselectedUnit/desc", {
-          preview       = loc("mainmenu/btnPreview")
-          customization = loc("mainmenu/btnShowroom")
+      obj.findObject("label").setValue(::loc("decoratorPreview/autoselectedUnit", {
+          previewUnit = ::colorize("activeTextColor", ::getUnitName(unit))
+          hangarUnit  = ::colorize("activeTextColor", ::getUnitName(initialUnitId))
+        }) + " " + ::loc("decoratorPreview/autoselectedUnit/desc", {
+          preview       = ::loc("mainmenu/btnPreview")
+          customization = ::loc("mainmenu/btnShowroom")
         }))
 
     obj = this.showSceneBtn("previewed_decorator", true)
     if (obj)
     {
-      let txtApplyDecorator = loc("decoratorPreview/applyManually/" + currentType.resourceType)
+      let txtApplyDecorator = ::loc("decoratorPreview/applyManually/" + currentType.resourceType)
       let labelObj = obj.findObject("label")
-      labelObj.setValue(txtApplyDecorator + loc("ui/colon"))
+      labelObj.setValue(txtApplyDecorator + ::loc("ui/colon"))
 
       let params = {
         showAsTrophyContent = true
@@ -1064,7 +1057,7 @@ enum decalTwoSidedMode
 
   function onSkinOptionSelect(obj)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     updateButtons()
@@ -1072,7 +1065,7 @@ enum decalTwoSidedMode
 
   function onDecalSlotSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let slotId = obj.getValue()
@@ -1085,13 +1078,13 @@ enum decalTwoSidedMode
   {
     let value = obj.getValue()
     let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    if (checkObj(childObj))
+    if (::check_obj(childObj))
       onDecalSlotClick(childObj)
   }
 
   function onAttachSlotSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let slotId = obj.getValue()
@@ -1104,7 +1097,7 @@ enum decalTwoSidedMode
   {
     let value = obj.getValue()
     let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    if (!checkObj(childObj))
+    if (!::checkObj(childObj))
       return
 
     onAttachableSlotClick(childObj)
@@ -1153,7 +1146,7 @@ enum decalTwoSidedMode
     if (::canBuyUnit(unit))
       onOkFunc = (@(unit) function() { ::buyUnit(unit) })(unit)
 
-    this.msgBox("unit_locked", loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
+    this.msgBox("unit_locked", ::loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
     return false
   }
 
@@ -1170,7 +1163,7 @@ enum decalTwoSidedMode
       let cost = skinDecorator.getCost()
       let priceText = cost.getTextAccordingToBalance()
       let msgText = ::warningIfGold(
-        loc("decals/needToBuySkin",
+        ::loc("decals/needToBuySkin",
           {purchase = skinDecorator.getName(), cost = priceText}),
         skinDecorator.getCost())
       this.msgBox("skin_locked", msgText,
@@ -1178,7 +1171,7 @@ enum decalTwoSidedMode
         ["cancel", function() {} ]], "ok")
     }
     else
-      this.msgBox("skin_locked", loc("decals/skinLocked"), [["ok", function() {} ]], "ok")
+      this.msgBox("skin_locked", ::loc("decals/skinLocked"), [["ok", function() {} ]], "ok")
     return false
   }
 
@@ -1190,9 +1183,9 @@ enum decalTwoSidedMode
     if (slotIdx < decoratorType.getAvailableSlots(unit))
       return true
 
-    if (hasFeature("EnablePremiumPurchase"))
+    if (::has_feature("EnablePremiumPurchase"))
     {
-      this.msgBox("no_premium", loc("decals/noPremiumAccount"),
+      this.msgBox("no_premium", ::loc("decals/noPremiumAccount"),
            [["ok", function()
             {
                onOnlineShopPremium()
@@ -1202,7 +1195,7 @@ enum decalTwoSidedMode
     }
     else
     {
-      this.msgBox("premium_not_available", loc("charServer/notAvailableYet"),
+      this.msgBox("premium_not_available", ::loc("charServer/notAvailableYet"),
            [["cancel"]], "cancel")
     }
     return false
@@ -1210,7 +1203,7 @@ enum decalTwoSidedMode
 
   function onAttachableSlotClick(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let slotName = ::getObjIdByPrefix(obj, "slot_attach_")
@@ -1318,7 +1311,7 @@ enum decalTwoSidedMode
   function onEventDecorMenuItemClick(p) {
     let { decorator } = p
     if (!decoratorPreview && decorator.isOutOfLimit(unit))
-      return ::g_popups.add("", loc("mainmenu/decoratorExceededLimit", {limit = decorator.limit}))
+      return ::g_popups.add("", ::loc("mainmenu/decoratorExceededLimit", {limit = decorator.limit}))
 
     let curSlotIdx = getCurrentDecoratorSlot(currentType)
     let isDecal = currentType == ::g_decorator_type.DECALS
@@ -1413,7 +1406,7 @@ enum decalTwoSidedMode
 
     decorator.decoratorType.save(unit.name, false)
 
-    let afterSuccessFunc = Callback((@(decorator, afterPurchDo) function() {
+    let afterSuccessFunc = ::Callback((@(decorator, afterPurchDo) function() {
       ::update_gamercards()
       decorMenu?.updateSelectedCategory(decorator)
       if (afterPurchDo)
@@ -1466,11 +1459,11 @@ enum decalTwoSidedMode
     if (!(currentState & decoratorEditState.EDITING))
       return
 
-    let decorator = ::g_decorator.getDecorator(editableDecoratorId, currentType)
+    let decorator = g_decorator.getDecorator(editableDecoratorId, currentType)
 
     if (!save || !decorator)
     {
-      currentType.exitEditMode(false, false, Callback(afterStopDecalEdition, this))
+      currentType.exitEditMode(false, false, ::Callback(afterStopDecalEdition, this))
       return
     }
 
@@ -1493,7 +1486,7 @@ enum decalTwoSidedMode
   function askBuyDecoratorOnExitEditMode(decorator)
   {
     if (!currentType.exitEditMode(true, false,
-              Callback((@(decorator) function() {
+              ::Callback((@(decorator) function() {
                           askBuyDecorator(decorator, function()
                             {
                               ::hangar_save_current_attachables()
@@ -1505,7 +1498,7 @@ enum decalTwoSidedMode
   function askMarketplaceCouponActionOnExitEditMode(decorator)
   {
     if (!currentType.exitEditMode(true, false,
-              Callback(@() askMarketplaceCouponAction(decorator), this)))
+              ::Callback(@() askMarketplaceCouponAction(decorator), this)))
       showFailedInstallPopup(decorator)
   }
 
@@ -1513,8 +1506,8 @@ enum decalTwoSidedMode
   {
     let cost = decorator.getCost()
     let msgText = ::warningIfGold(
-      loc("shop/needMoneyQuestion_purchaseDecal",
-        {purchase = colorize("userlogColoredText", decorator.getName()),
+      ::loc("shop/needMoneyQuestion_purchaseDecal",
+        {purchase = ::colorize("userlogColoredText", decorator.getName()),
           cost = cost.getTextAccordingToBalance()}),
       decorator.getCost())
     this.msgBox("buy_decorator_on_preview", msgText,
@@ -1540,7 +1533,7 @@ enum decalTwoSidedMode
     let inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
     if (inventoryItem?.canConsume() ?? false)
     {
-      inventoryItem.consume(Callback(function(result) {
+      inventoryItem.consume(::Callback(function(result) {
         if ((result?.success ?? false) == true)
           decorMenu?.updateSelectedCategory(decorator)
       }, this), null)
@@ -1550,8 +1543,8 @@ enum decalTwoSidedMode
     let couponItem = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
     if (!(couponItem?.hasLink() ?? false))
       return
-    let couponName = colorize("activeTextColor", couponItem.getName())
-    this.msgBox("go_to_marketplace", loc("msgbox/find_on_marketplace", { itemName = couponName }), [
+    let couponName = ::colorize("activeTextColor", couponItem.getName())
+    this.msgBox("go_to_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = couponName }), [
         [ "find_on_marketplace", function() { couponItem.openLink(); onBtnBack() } ],
         [ "cancel", onMsgBoxCancel ]
       ], "find_on_marketplace", { cancel_fn = onMsgBoxCancel })
@@ -1580,10 +1573,10 @@ enum decalTwoSidedMode
   {
     let attachAngle = acos(::hangar_get_attachable_tm()[1].y) * 180.0 / PI
     if (attachAngle >= decorator.maxSurfaceAngle)
-      ::g_popups.add("", loc("mainmenu/failedInstallAttachableAngle",
+      ::g_popups.add("", ::loc("mainmenu/failedInstallAttachableAngle",
         { angle = attachAngle.tointeger(), allowedAngle = decorator.maxSurfaceAngle }))
     else
-      ::g_popups.add("", loc("mainmenu/failedInstallAttachable"))
+      ::g_popups.add("", ::loc("mainmenu/failedInstallAttachable"))
   }
 
   function afterStopDecalEdition()
@@ -1596,7 +1589,7 @@ enum decalTwoSidedMode
   {
     let save = !!decorator && decorator.isUnlocked() && previewMode != PREVIEW_MODE.DECORATOR
     return currentType.exitEditMode(true, save,
-      Callback( function () { onFinishInstallDecoratorOnUnit(true) }, this))
+      ::Callback( function () { onFinishInstallDecoratorOnUnit(true) }, this))
   }
 
   function onFinishInstallDecoratorOnUnit(isInstalled = false)
@@ -1610,10 +1603,10 @@ enum decalTwoSidedMode
 
   function onOnlineShopEagles()
   {
-    if (hasFeature("EnableGoldPurchase"))
+    if (::has_feature("EnableGoldPurchase"))
       startOnlineShop("eagles", afterReplenishCurrency, "customization")
     else
-      ::showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
+      ::showInfoMsgBox(::loc("msgbox/notAvailbleGoldPurchase"))
   }
 
   function onOnlineShopLions()
@@ -1637,7 +1630,7 @@ enum decalTwoSidedMode
 
   function afterReplenishCurrency()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     updateMainGuiElements()
@@ -1648,8 +1641,8 @@ enum decalTwoSidedMode
     let skinNum = obj.getValue()
     if (!skinList || !(skinNum in skinList.values))
     {
-      ::dagor.debug_dump_stack()
-      assert(false, "Error: try to set incorrect skin " + skinList + ", value = " + skinNum)
+      ::callstack()
+      ::dagor.assertf(false, "Error: try to set incorrect skin " + skinList + ", value = " + skinNum)
       return
     }
 
@@ -1669,7 +1662,7 @@ enum decalTwoSidedMode
     else if (access.isDownloadable)
     {
       // Starting skin download...
-      showResource(skinId, "skin", Callback(onSkinReadyToShow, this))
+      showResource(skinId, "skin", ::Callback(onSkinReadyToShow, this))
     }
     else if (skinId != previewSkinId)
     {
@@ -1686,7 +1679,7 @@ enum decalTwoSidedMode
         return
 
     ::g_decorator.previewedLiveSkinIds.append($"{unitId}/{skinId}")
-    ::g_delayed_actions.add(Callback(function() {
+    ::g_delayed_actions.add(::Callback(function() {
       resetUserSkin(false)
       applySkin(skinId, true)
     }, this), 100)
@@ -1739,7 +1732,7 @@ enum decalTwoSidedMode
   function setDmgSkinMode(enable)
   {
     let cObj = scene.findObject("btn_toggle_damaged")
-    if (checkObj(cObj))
+    if (::checkObj(cObj))
       cObj.setValue(enable)
   }
 
@@ -1752,11 +1745,11 @@ enum decalTwoSidedMode
   {
     if (unit.isAir() || unit.isHelicopter())
     {
-      ::hangar_set_dm_viewer_mode(obj.getValue() ? DM_VIEWER_EXTERIOR : DM_VIEWER_NONE)
+      ::hangar_set_dm_viewer_mode(obj.getValue() ? ::DM_VIEWER_EXTERIOR : ::DM_VIEWER_NONE)
       if (obj.getValue())
       {
         let bObj = scene.findObject("dmg_skin_state")
-        if (checkObj(bObj))
+        if (::checkObj(bObj))
           bObj.setValue(::hangar_get_loaded_model_damage_state(unit.name))
       }
       else
@@ -1776,7 +1769,7 @@ enum decalTwoSidedMode
       return
 
     let cost = previewSkinDecorator.getCost()
-    let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_purchaseSkin",
+    let msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_purchaseSkin",
                           { purchase = previewSkinDecorator.getName(),
                             cost = cost.getTextAccordingToBalance()
                           }), cost)
@@ -1791,7 +1784,7 @@ enum decalTwoSidedMode
 
   function buySkin(skinName, cost)
   {
-    let afterSuccessFunc = Callback((@(skinName) function() {
+    let afterSuccessFunc = ::Callback((@(skinName) function() {
         ::update_gamercards()
         applySkin(skinName)
         updateMainGuiElements()
@@ -1820,7 +1813,7 @@ enum decalTwoSidedMode
       return
 
     let skinName = previewSkinId
-    inventoryItem.consume(Callback(function(result) {
+    inventoryItem.consume(::Callback(function(result) {
       if (this == null || !result?.success)
         return
       applySkin(skinName)
@@ -1932,7 +1925,7 @@ enum decalTwoSidedMode
 
   function onDeleteDecal(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_")
@@ -1943,7 +1936,7 @@ enum decalTwoSidedMode
 
   function onDeleteAttachable(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_attach_")
@@ -1955,7 +1948,7 @@ enum decalTwoSidedMode
   function deleteDecorator(decoratorType, slotId)
   {
     let slotInfo = getSlotInfo(slotId, false, decoratorType)
-    this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, {name = decoratorType.getLocName(slotInfo.decalId)}),
+    this.msgBox("delete_decal", ::loc(decoratorType.removeDecoratorLocId, {name = decoratorType.getLocName(slotInfo.decalId)}),
     [
       ["ok", (@(decoratorType, slotInfo) function() {
           decoratorType.removeDecorator(slotInfo.id, true)
@@ -2022,7 +2015,7 @@ enum decalTwoSidedMode
   function onTwoSided() // TwoSided
   {
     let obj = scene.findObject("two_sided_select")
-    if (checkObj(obj))
+    if (check_obj(obj))
       obj.setValue((obj.getValue() + 1) % obj.childrenCount())
   }
 
@@ -2033,15 +2026,15 @@ enum decalTwoSidedMode
 
   function onInfo()
   {
-    if (hasFeature("WikiUnitInfo"))
-      openUrl(format(loc("url/wiki_objects"), unit.name), false, false, "customization_wnd")
+    if (::has_feature("WikiUnitInfo"))
+      openUrl(format(::loc("url/wiki_objects"), unit.name), false, false, "customization_wnd")
     else
-      ::showInfoMsgBox(colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + loc("profile/wiki_link"))
+      ::showInfoMsgBox(::colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + ::loc("profile/wiki_link"))
   }
 
   function clearCurrentDecalSlotAndShow()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     updateSlotsBlockByType()
@@ -2060,7 +2053,7 @@ enum decalTwoSidedMode
     let show = !!(currentState & decoratorEditState.SELECT)
 
     let slotsObj = scene.findObject(currentType.listId)
-    if (checkObj(slotsObj))
+    if (::check_obj(slotsObj))
     {
       let sel = slotsObj.getValue()
       for (local i = 0; i < slotsObj.childrenCount(); i++)
@@ -2164,7 +2157,7 @@ enum decalTwoSidedMode
   function updatePenaltyText()
   {
     let obj = scene.findObject("decal_text_area")
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     local txt = ""
@@ -2179,9 +2172,9 @@ enum decalTwoSidedMode
       }
 
       if (timeSec == 0)
-        txt = format(loc("charServer/decal/permanent"))
+        txt = format(::loc("charServer/decal/permanent"))
       else
-        txt = format(loc("charServer/decal/timed"), time.hoursToString(time.secondsToHours(timeSec), false))
+        txt = format(::loc("charServer/decal/timed"), time.hoursToString(time.secondsToHours(timeSec), false))
     }
 
     obj.setValue(txt)
@@ -2216,7 +2209,7 @@ enum decalTwoSidedMode
           ::get_user_skins_profile_blk()[unit.name] = ""
         let isForApprove = previewParams?.isForApprove ?? false
         ::g_decorator.approversUnitToPreviewLiveResource = isForApprove ? showedUnit.value : null
-        ::g_delayed_actions.add(Callback(function() {
+        ::g_delayed_actions.add(::Callback(function() {
           applySkin(previewParams.skinName, true)
         }, this), 100)
         break
@@ -2257,10 +2250,10 @@ enum decalTwoSidedMode
       if (slotIdx != -1)
       {
         let listObj = scene.findObject(decoratorType.listId)
-        if (checkObj(listObj))
+        if (::check_obj(listObj))
         {
           let slotObj = listObj.getChild(slotIdx)
-          if (checkObj(slotObj))
+          if (::check_obj(slotObj))
             openDecorationsListForSlot(slotIdx, slotObj, decoratorType)
         }
       }

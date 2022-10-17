@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 /* Data in config (gui.blk/loading_bg)
 
 loading_bg
@@ -114,22 +109,22 @@ let function applyBlkByLang(langBlk, curLang) {
   let langsInclude = langBlk?.langsInclude
   let langsExclude = langBlk?.langsExclude
   if (::u.isDataBlock(langsInclude)
-      && !isInArray(curLang, langsInclude % "lang"))
+      && !::isInArray(curLang, langsInclude % "lang"))
     return
   if (::u.isDataBlock(langsExclude)
-      && isInArray(curLang, langsExclude % "lang"))
+      && ::isInArray(curLang, langsExclude % "lang"))
     return
 
   let platformInclude = langBlk?.platformInclude
   let platformExclude = langBlk?.platformExclude
   if (::u.isDataBlock(platformInclude)
-      && !isInArray(target_platform, platformInclude % "platform"))
+      && !::isInArray(::target_platform, platformInclude % "platform"))
     return
   if (::u.isDataBlock(platformExclude)
-      && isInArray(target_platform, platformExclude % "platform"))
+      && ::isInArray(::target_platform, platformExclude % "platform"))
     return
 
-  assert(!!(langsExclude || langsInclude || platformInclude || platformExclude),
+  ::dagor.assertf(!!(langsExclude || langsInclude || platformInclude || platformExclude),
     "AnimBG: Found block without language or platform permissions. it always override defaults.")
 
   applyBlkToAllBgData(langBlk)
@@ -224,8 +219,8 @@ let function getUnlockIdByLoadingBg(bgId) {
 }
 
 let isLoadingBgUnlock = @(unlockId) getLoadingBgIdByUnlockId(unlockId) != null
-let getLoadingBgName = @(id) loc($"loading_bg/{id}")
-let getLoadingBgTooltip = @(id) loc($"loading_bg/{id}/desc", "")
+let getLoadingBgName = @(id) ::loc($"loading_bg/{id}")
+let getLoadingBgTooltip = @(id) ::loc($"loading_bg/{id}/desc", "")
 
 let reset = @() inited = false
 let setLoadingBgPath = @(path) LOADING_BG_PATH = path

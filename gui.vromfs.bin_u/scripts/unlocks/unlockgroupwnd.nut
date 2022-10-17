@@ -1,12 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
@@ -48,7 +39,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
       let view = { tabs = [] }
       foreach(i, list in unlocksLists)
         view.tabs.append({
-          tabName = getTblValue("titleText", list, "")
+          tabName = ::getTblValue("titleText", list, "")
           navImagesText = ::get_navigation_images_text(i, unlocksLists.len())
         })
 
@@ -60,7 +51,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
       tabsObj.setValue(0)
     }
     else {
-      let titleText = getTblValue("titleText", unlocksLists[0], "")
+      let titleText = ::getTblValue("titleText", unlocksLists[0], "")
       let titleObj = scene.findObject("wnd_title")
       titleObj.show(true)
       titleObj.setValue(titleText)
@@ -88,7 +79,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   function getMaximumListlength(lists) {
     local result = 0
     foreach (list in lists) {
-      let len = getTblValue("unlocksList", list, []).len()
+      let len = ::getTblValue("unlocksList", list, []).len()
       result = (result < len) ? len : result
     }
     return result
@@ -106,7 +97,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onAwardTooltipOpen(obj) {
-    let id = ::getTooltipObjId(obj)
+    let id = getTooltipObjId(obj)
     if (!id)
       return
 
@@ -132,7 +123,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getUnlock(id) {
-    return getTblValue(idx, unlocksLists[currentTab])
+    return ::getTblValue(idx, unlocksLists[currentTab])
   }
 }
 

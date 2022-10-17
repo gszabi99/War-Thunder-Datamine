@@ -1,16 +1,14 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let colors = require("%rGui/style/colors.nut")
 let { safeAreaSizeMenu } = require("%rGui/style/screenState.nut")
 let closeBtn = require("%rGui/components/closeBtn.nut")
 
-let frameHeaderPad = dp(2)
-let frameHeaderHeight = scrn_tgt(0.045)
-let borderWidth = dp(1)
+let frameHeaderPad = ::dp(2)
+let frameHeaderHeight = ::scrn_tgt(0.045)
+let borderWidth = ::dp(1)
 
-let srw = Computed(@() min(scrn_tgt(1.4), safeAreaSizeMenu.value.size[0]))
-let maxWindowHeight = Computed(@() safeAreaSizeMenu.value.size[1] - frameHeaderHeight
-  - scrn_tgt(0.01) - fpx(59))
+let srw = ::Computed(@() min(::scrn_tgt(1.4), safeAreaSizeMenu.value.size[0]))
+let maxWindowHeight = ::Computed(@() safeAreaSizeMenu.value.size[1] - frameHeaderHeight
+  - ::scrn_tgt(0.01) - ::fpx(59))
 
 let frameHeader = @(headerParams) {
   size = [flex(), frameHeaderHeight]
@@ -24,7 +22,7 @@ let frameHeader = @(headerParams) {
   ]
 }.__update(headerParams)
 
-let frameHandler = kwarg(function(content, frameParams = {}, headerParams = {}) {
+let frameHandler = ::kwarg(function(content, frameParams = {}, headerParams = {}) {
   return @(){
     size = flex()
     halign = ALIGN_CENTER

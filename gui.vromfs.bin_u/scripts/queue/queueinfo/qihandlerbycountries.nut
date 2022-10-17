@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::gui_handlers.QiHandlerByCountries <- class extends ::gui_handlers.QiHandlerBase
 {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"

@@ -1,4 +1,5 @@
-from "%rGui/globals/ui_library.nut" import *
+from "daRg" import *
+from "frp" import *
 
 let defStyling = {
   Bar = function(has_scroll) {

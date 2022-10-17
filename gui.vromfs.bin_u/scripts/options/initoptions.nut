@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let Unit = require("%scripts/unit/unit.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let { initBulletIcons } = require("%scripts/weaponry/bulletsVisual.nut")
@@ -18,7 +11,7 @@ let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
 
 ::all_units <- {}
 
-::g_script_reloader.registerPersistentData("initOptionsGlobals", getroottable(),
+::g_script_reloader.registerPersistentData("initOptionsGlobals", ::getroottable(),
   [ "all_units"])
 
 //remap all units to new class on scripts reload
@@ -56,10 +49,10 @@ if (showedUnit.value != null)
   ::countUsageAmountOnce()
   generateUnitShopInfo()
 
-  log("update_all_units called, got "+::all_units.len()+" items");
+  ::dagor.debug("update_all_units called, got "+::all_units.len()+" items");
 }
 
-local usageAmountCounted = false
+::usageAmountCounted <- false
 ::countUsageAmountOnce <- function countUsageAmountOnce()
 {
   if (usageAmountCounted)

@@ -1,9 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let AT_RUNWAY_TYPE = {
+let  AT_RUNWAY = {
   name = "AT_RUNWAY"
   objName = "airfield"
   locId = "air"
@@ -15,7 +10,7 @@ let AT_RUNWAY_TYPE = {
   flyoutSound = "ww_unit_move_airplanes"
 }
 
-let AT_HELIPAD_TYPE = {
+let  AT_HELIPAD = {
   name = "AT_HELIPAD"
   objName = "helipad"
   locId = "helicopter"
@@ -27,8 +22,7 @@ let AT_HELIPAD_TYPE = {
   flyoutSound = "ww_unit_move_helicopters"
 }
 
-//The type names that this module returns are used for to compare values with type from blk of airfields
 return {
-  AT_RUNWAY = AT_RUNWAY_TYPE
-  AT_HELIPAD = AT_HELIPAD_TYPE
+  AT_RUNWAY
+  AT_HELIPAD
 }

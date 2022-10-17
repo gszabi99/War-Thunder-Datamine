@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getMyClanOperation, isMyClanInQueue
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
@@ -32,13 +25,13 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getArmyGroupsByCountry(country, defValue = null)
   {
-    return getTblValue(country, data, defValue)
+    return ::getTblValue(country, data, defValue)
   }
 
   function isMyClanJoined(country = null)
   {
     let countries = getMyClanCountries()
-    return country ? isInArray(country, countries) : countries.len() != 0
+    return country ? ::isInArray(country, countries) : countries.len() != 0
   }
 
   function getMyClanCountries()
@@ -74,11 +67,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     foreach(country in shopCountriesList)
     {
       let groups = getArmyGroupsByCountry(country)
-      let myGroup = groups && ::u.search(groups, (@(myClanId) function(ag) { return getTblValue("clanId", ag) == myClanId })(myClanId) )
+      let myGroup = groups && ::u.search(groups, (@(myClanId) function(ag) { return ::getTblValue("clanId", ag) == myClanId })(myClanId) )
       if (myGroup)
       {
         myClanCountries.append(country)
-        myClanQueueTime = max(myClanQueueTime, getTblValue("at", myGroup, -1))
+        myClanQueueTime = max(myClanQueueTime, ::getTblValue("at", myGroup, -1))
       }
     }
 
@@ -112,7 +105,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
     let clansInQueueNumber = clansInQueue.len()
     return !clansInQueueNumber ? "" :
-      loc("worldwar/clansInQueueTotal", {number = clansInQueueNumber})
+      ::loc("worldwar/clansInQueueTotal", {number = clansInQueueNumber})
   }
 
   function getArmyGroupsAmountTotal()
@@ -151,7 +144,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     res.canJoin = false
 
     if (country && !map.canJoinByCountry(country))
-      res.reasonText = loc("worldWar/chooseAvailableCountry")
+      res.reasonText = ::loc("worldWar/chooseAvailableCountry")
     else
       res.canJoin = true
 
@@ -167,17 +160,17 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
 
     if (getMyClanOperation())
-      res.reasonText = loc("worldwar/squadronAlreadyInOperation")
+      res.reasonText = ::loc("worldwar/squadronAlreadyInOperation")
     else if (isMyClanInQueue())
-      res.reasonText = loc("worldwar/mapStatus/yourClanInQueue")
+      res.reasonText = ::loc("worldwar/mapStatus/yourClanInQueue")
     else if (!::g_clans.hasRightsToQueueWWar())
-      res.reasonText = loc("worldWar/onlyLeaderCanQueue")
+      res.reasonText = ::loc("worldWar/onlyLeaderCanQueue")
     else
     {
       let myClanType = ::g_clans.getMyClanType()
       if (!::clan_can_register_to_ww())
       {
-        res.reasonText = loc("clan/wwar/lacksMembers", {
+        res.reasonText = ::loc("clan/wwar/lacksMembers", {
           clanType = myClanType.getTypeNameLoc()
           count = myClanType.getMinMemberCountToWWar()
           minRankRequired = ::get_roman_numeral(::g_world_war.getSetting("minCraftRank", 0))
@@ -209,9 +202,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     let requestBlk = ::DataBlock()
     requestBlk.mapName = map.name
     requestBlk.country = country
-    requestBlk.clusters = clusters
     actionWithGlobalStatusRequest("cln_clan_register_ww_army_group", requestBlk,
-      { showProgressBox = true })
+      { showProgressBox = true, clusters = clusters })
   }
 
   function getCantLeaveQueueReasonData()
@@ -222,9 +214,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
 
     if (!::g_clans.hasRightsToQueueWWar())
-      res.reasonText = loc("worldWar/onlyLeaderCanQueue")
+      res.reasonText = ::loc("worldWar/onlyLeaderCanQueue")
     else if (!isMyClanJoined())
-      res.reasonText = loc("matching/SERVER_ERROR_NOT_IN_QUEUE")
+      res.reasonText = ::loc("matching/SERVER_ERROR_NOT_IN_QUEUE")
     else
       res.canLeave = true
 

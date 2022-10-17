@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 //functions to specific update promoBlock parameters generated via promoBlock.tpl
 
 ::g_promo_view_utils <- {
@@ -33,12 +26,12 @@ from "%scripts/dagui_library.nut" import *
   text - text to set
   prevShowIdx - previous text index returned by this function. if never called before, than -1
 */
-::g_promo_view_utils.animSwitchCollapsedText <- function animSwitchCollapsedText(scene, blockId, text)
+g_promo_view_utils.animSwitchCollapsedText <- function animSwitchCollapsedText(scene, blockId, text)
 {
   let animSizeObj = getCollapsedAnimSizeObj(scene, blockId)
-  if (!checkObj(animSizeObj))
+  if (!::checkObj(animSizeObj))
   {
-    assert(false, "g_promo_view_utils: try to anim update text for not existing block: " + blockId)
+    ::dagor.assertf(false, "g_promo_view_utils: try to anim update text for not existing block: " + blockId)
     return
   }
 
@@ -50,7 +43,7 @@ from "%scripts/dagui_library.nut" import *
   foreach(idx, animData in collapsedTextBlocksAnim)
   {
     let textObj = scene.findObject(blockId + animData.blockEnding)
-    if (!checkObj(textObj))
+    if (!::checkObj(textObj))
       continue
 
     let isCurrent = idx == setIdx
@@ -71,16 +64,16 @@ from "%scripts/dagui_library.nut" import *
   }
 }
 
-::g_promo_view_utils.getVisibleCollapsedTextObj <- function getVisibleCollapsedTextObj(scene, blockId)
+g_promo_view_utils.getVisibleCollapsedTextObj <- function getVisibleCollapsedTextObj(scene, blockId)
 {
   local idx = 0
   let sizeObj = getCollapsedAnimSizeObj(scene, blockId)
-  if (checkObj(sizeObj))
+  if (::checkObj(sizeObj))
      idx = sizeObj.getIntProp(collapsedTextIdxPID, 0) % collapsedTextBlocksAnim.len()
   return scene.findObject(blockId + collapsedTextBlocksAnim[idx].blockEnding)
 }
 
-::g_promo_view_utils.getCollapsedAnimSizeObj <- function getCollapsedAnimSizeObj(scene, blockId)
+g_promo_view_utils.getCollapsedAnimSizeObj <- function getCollapsedAnimSizeObj(scene, blockId)
 {
   return scene.findObject(blockId + "_collapsed_size_obj")
 }

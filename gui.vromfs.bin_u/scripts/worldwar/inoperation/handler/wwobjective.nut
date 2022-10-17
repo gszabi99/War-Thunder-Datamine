@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 
@@ -24,7 +15,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   timersArray = null
 
-  side = SIDE_NONE
+  side = ::SIDE_NONE
   needShowOperationDesc = true
   reqFullMissionObjectsButton = true
   restrictShownObjectives = false
@@ -44,7 +35,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function isValid()
   {
-    return checkObj(scene) && checkObj(scene.findObject("ww_mission_objectives"))
+    return ::checkObj(scene) && ::checkObj(scene.findObject("ww_mission_objectives"))
   }
 
   function initScreen()
@@ -56,7 +47,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   function update()
   {
     let placeObj = scene.findObject("ww_mission_objectives")
-    if (!checkObj(placeObj))
+    if (!::check_obj(placeObj))
       return
 
     updateObjectivesData()
@@ -128,7 +119,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   function getShowMaxObjectivesCount()
   {
     let winner = ::ww_get_operation_winner()
-    if (restrictShownObjectives && winner != SIDE_NONE)
+    if (restrictShownObjectives && winner != ::SIDE_NONE)
       return ::Point2(1, 0)
 
     let objectivesCount = getObjectivesCount()
@@ -302,7 +293,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getObjectiveViewsArray(objectives)
   {
-    return ::u.mapAdvanced(objectives, Callback(
+    return ::u.mapAdvanced(objectives, ::Callback(
       @(dataBlk, idx, arr)
         ::WwObjectiveView(
           dataBlk,
@@ -374,18 +365,18 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     let zones = oType.getUpdatableZonesParams(objectiveBlk, statusBlock, sideEnumVal)
 
     let objectiveObj = scene.findObject(objectiveBlockId)
-    if (!checkObj(objectiveObj))
+    if (!::checkObj(objectiveObj))
       return
 
     let statusType = oType.getObjectiveStatus(statusBlock?.winner, sideEnumVal)
     objectiveObj.status = statusType.name
 
     let imageObj = objectiveObj.findObject("statusImg")
-    if (checkObj(imageObj))
+    if (::checkObj(imageObj))
       imageObj["background-image"] = statusType.wwMissionObjImg
 
     let titleObj = objectiveObj.findObject(oType.getNameId(objectiveBlk, side))
-    if (checkObj(titleObj))
+    if (::checkObj(titleObj))
       titleObj.setValue(oType.getName(objectiveBlk, statusBlock, sideEnumVal))
 
     foreach (block in result)
@@ -394,14 +385,14 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
         continue
 
       let updatableParamObj = objectiveObj.findObject(block.id)
-      if (!checkObj(updatableParamObj))
+      if (!::checkObj(updatableParamObj))
         continue
 
       foreach (textId in ["pName", "pValue"])
         if (textId in block)
         {
           let nameObj = updatableParamObj.findObject(textId)
-          if (checkObj(nameObj))
+          if (::checkObj(nameObj))
             nameObj.setValue(block[textId])
         }
 
@@ -413,12 +404,12 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       foreach(zone in zones)
       {
         let zoneObj = objectiveObj.findObject(zone.id)
-        if (checkObj(zoneObj))
+        if (::checkObj(zoneObj))
           zoneObj.team = zone.team
       }
 
     let descObj = objectiveObj.findObject("updatable_data_text")
-    if (checkObj(descObj))
+    if (::check_obj(descObj))
     {
       let text = oType.getUpdatableParamsDescriptionText(objectiveBlk, statusBlock, sideEnumVal)
       descObj.setValue(text)
@@ -441,7 +432,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     for (local i = 0; i < obj.childrenCount(); i++)
     {
       let zoneObj = obj.getChild(i)
-      if (!checkObj(zoneObj))
+      if (!::checkObj(zoneObj))
         continue
 
       zonesList.append(zoneObj.id)

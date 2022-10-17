@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 ::gui_handlers.LoadingUrlMissionModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -58,11 +49,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function loadUrlMission()
   {
-    let requestCallback = Callback(function(success, blk) {
+    let requestCallback = ::Callback(function(success, blk) {
                                           onLoadingEnded(success, blk)
                                         }, this)
 
-    let progressCallback = Callback(function(dltotal, dlnow) {
+    let progressCallback = ::Callback(function(dltotal, dlnow) {
                                           onProgress(dltotal, dlnow)
                                         }, this)
 
@@ -87,7 +78,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       progressChanged = false
       if (loadingProgress >= 0)
       {
-        updateText(loc("wait/missionDownload", {name = urlMission.name, progress = loadingProgress.tostring()}))
+        updateText(::loc("wait/missionDownload", {name = urlMission.name, progress = loadingProgress.tostring()}))
       }
     }
 
@@ -107,7 +98,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (isCancel)
       return goBack()
 
-    local errorText = loc("wait/ugm_download_failed")
+    local errorText = ::loc("wait/ugm_download_failed")
     if (success)
     {
       ::upgrade_url_mission(blk)
@@ -115,7 +106,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       requestSuccess = ::u.isEmpty(errorText)
       success = requestSuccess
       if (!success)
-        errorText = loc("wait/ugm_not_valid", {errorText = errorText})
+        errorText = ::loc("wait/ugm_not_valid", {errorText = errorText})
     }
 
     ::g_url_missions.setLoadingCompeteState(urlMission, !success, blk)

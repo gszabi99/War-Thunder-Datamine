@@ -68,11 +68,6 @@
             "value": false,
             "var": "disableAirfields",
             "fromDescriptor": "disableAirfields"
-          },
-          {
-            "value": false,
-            "var": "disableHelipads",
-            "fromDescriptor": "disableHelipads"
           }
         ],
         "missionGetBalanceLevel": {
@@ -1554,7 +1549,7 @@
         },
         "conditions": {
           "varCompareBool": {
-            "var_value": "disableHelipads",
+            "var_value": "disableAirfields",
             "value": true,
             "comparasion_func": "equal"
           }
@@ -1819,7 +1814,7 @@
             "is": "notEqual"
           },
           "varCompareBool": {
-            "var_value": "disableHelipads",
+            "var_value": "disableAirfields",
             "value": false,
             "comparasion_func": "equal"
           }
@@ -2034,25 +2029,25 @@
             {
               "area": "spawn_ucav",
               "target": "@t1_helipad_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 750.0,
                 4500.0,
                 0.0
               ],
+              "spawnOffsetSpace": "object",
               "turnOffset": 180.0
             },
             {
               "area": "spawn_ucav",
               "target": "@t2_helipad_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 750.0,
                 4500.0,
                 0.0
               ],
+              "spawnOffsetSpace": "object",
               "turnOffset": 180.0
             }
           ],
@@ -2145,24 +2140,24 @@
             {
               "area": "spawn_ucav",
               "target": "@t1_air_spawn_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 -7.5,
                 7.5,
                 0.0
-              ]
+              ],
+              "spawnOffsetSpace": "object"
             },
             {
               "area": "spawn_ucav",
               "target": "@t2_air_spawn_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 -7.5,
                 7.5,
                 0.0
-              ]
+              ],
+              "spawnOffsetSpace": "object"
             }
           ],
           "missionMarkAsRespawnPoint": [
@@ -2247,7 +2242,6 @@
     "t2_helipad_farspawn": "",
     "defence_team_variable": "defenseMissionTeam",
     "disableAirfields": false,
-    "disableHelipads": false,
     "force_plane_airfield_spawn": false,
     "force_helicopter_pad_spawn": true,
     "battlearea_name": "",

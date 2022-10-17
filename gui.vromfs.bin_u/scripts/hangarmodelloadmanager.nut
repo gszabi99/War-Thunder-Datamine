@@ -1,17 +1,12 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 enum HangarModelLoadState
 {
   LOADING
   LOADED
 }
 
-let isLoading = persist("isLoading", @() Watched(false))
+let isLoading = persist("isLoading", @() ::Watched(false))
 
-let hangarUnitName = Watched(::hangar_get_current_unit_name())
+let hangarUnitName = ::Watched(::hangar_get_current_unit_name())
 
 let function getLoadState() {
   // First check covers case when model was loaded from within C++.

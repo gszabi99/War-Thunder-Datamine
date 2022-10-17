@@ -1,11 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { getRollIndicator = @() null, getIsVisibleRollIndicator = @() Watched(false) } = require("hudTankStates")
+let { getRollIndicator = @() null, getIsVisibleRollIndicator = @() ::Watched(false) } = require("hudTankStates")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let iconedHintsConfig = [{
@@ -19,7 +12,7 @@ let iconedHintsConfig = [{
     icon = "#ui/gameuiskin#circle_indicator.svg"
     iconWidth = "pw"
   }]
-  esUnitType = ES_UNIT_TYPE_TANK
+  esUnitType = ::ES_UNIT_TYPE_TANK
   updateConfigs = [{
     watch = getIsVisibleRollIndicator()
     updateFunc = @(obj, value) obj.show(value)

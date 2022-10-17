@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapArmiesList"
   sceneBlkName = null
@@ -34,14 +27,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let tabListObj = scene.findObject("armies_by_status_list")
     fillContent()
-    if (checkObj(tabListObj))
+    if (::check_obj(tabListObj))
       tabListObj.setValue(0)
   }
 
   function fillContent()
   {
     let contentObj = scene.findObject("armies_tab_content")
-    if (!checkObj(contentObj))
+    if (!::check_obj(contentObj))
       return
 
     let emptyViewData = ::g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
@@ -55,7 +48,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function getArmiesPerPage(withoutPaginator = false)
   {
     let contentObj = scene.findObject("armies_tab_content")
-    if (!checkObj(contentObj))
+    if (!::check_obj(contentObj))
       return 0
 
     let armiesContentSize = contentObj.getSize()
@@ -82,7 +75,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function isValid()
   {
-    return checkObj(scene) && checkObj(scene.findObject("armies_object"))
+    return ::check_obj(scene) && ::check_obj(scene.findObject("armies_object"))
   }
 
   function getArmiesStateTabs()
@@ -113,7 +106,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach(tab in tabOrder)
     {
       let tabCountObj = scene.findObject("army_by_state_title_count_" + tab.status)
-      if (checkObj(tabCountObj))
+      if (::check_obj(tabCountObj))
         tabCountObj.setValue(tab.getArmiesCountText())
     }
   }
@@ -124,7 +117,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     updatePaginator()
 
     let contentObj = scene.findObject("armies_tab_content")
-    if (!checkObj(contentObj))
+    if (!::check_obj(contentObj))
       return
 
     let contentViewData = lastTabSelected.getContentViewData(curItemsPerPage, currentPage)
@@ -161,7 +154,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateScene(contentObj, viewData, index)
   {
     let viewObj = contentObj.getChild(index)
-    if (!checkObj(viewObj))
+    if (!::check_obj(viewObj))
       return
 
     let isShow = viewData != null
@@ -177,14 +170,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     viewObj["selected"] = viewData.name == selectedArmyName ? "yes" : "no"
 
     let armyIconObj = viewObj.findObject("armyIcon")
-    if (checkObj(armyIconObj))
+    if (::check_obj(armyIconObj))
     {
       armyIconObj["team"] = viewData.getTeamColor()
       armyIconObj["isBelongsToMyClan"] = viewData.isBelongsToMyClan() ? "yes" : "no"
       armyIconObj.findObject("entrenchIcon").show(viewData.isEntrenched())
 
       let armyUnitTypeObj = armyIconObj.findObject("armyUnitType")
-      if (checkObj(armyUnitTypeObj))
+      if (::check_obj(armyUnitTypeObj))
         armyUnitTypeObj.setValue(viewData.getUnitTypeCustomText())
     }
   }
@@ -244,11 +237,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let contentObj = scene.findObject("armies_tab_content")
-    if (checkObj(contentObj))
+    if (::check_obj(contentObj))
       for(local i = 0; i < itemsPerPageWithoutPaginator; i++)
       {
         let viewObj = contentObj.getChild(i)
-        if (!checkObj(viewObj))
+        if (!::check_obj(viewObj))
           break
 
         if (viewObj.armyName == selectedArmyName)
@@ -265,7 +258,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!isSceneActiveNoModals())
       return doWhenActiveOnce("fullViewUpdate")
 
-    let armies = getTblValue("armies", params)
+    let armies = ::getTblValue("armies", params)
     if (::u.isEmpty(armies))
       return
 

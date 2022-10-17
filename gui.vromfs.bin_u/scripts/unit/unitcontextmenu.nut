@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { getShopItem,
         canUseIngameShop,
@@ -26,7 +19,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 
-let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
+let getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
   isSquadronResearchMode = false, hasSlotbarByUnitsGroups = false, shopResearchMode = false,
   shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null
@@ -54,7 +47,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
     if (action == "showroom")
     {
-      actionText = loc(isUsable ? "mainmenu/btnShowroom" : "mainmenu/btnPreview")
+      actionText = ::loc(isUsable ? "mainmenu/btnShowroom" : "mainmenu/btnPreview")
       icon       = "#ui/gameuiskin#slot_showroom.svg"
       showAction = inMenu
       actionFunc = function () {
@@ -67,7 +60,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "preview")
     {
-      actionText = loc("mainmenu/btnPreview")
+      actionText = ::loc("mainmenu/btnPreview")
       icon       = "#ui/gameuiskin#btn_preview.svg"
       showAction = inMenu
       actionFunc = @() unit.doPreview()
@@ -77,7 +70,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (crew == null || slotbar == null)
         continue
 
-      actionText = loc("multiplayer/changeAircraft")
+      actionText = ::loc("multiplayer/changeAircraft")
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
       showAction = inMenu && ::SessionLobby.canChangeCrewUnits()
       actionFunc = function () {
@@ -96,11 +89,11 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
       let discountInfo = ::g_crew.getDiscountInfo(crew.idCountry, crew.idInCountry)
 
-      actionText = loc("mainmenu/btnCrew")
+      actionText = ::loc("mainmenu/btnCrew")
       icon       = "#ui/gameuiskin#slot_crew.svg"
-      haveWarning = isInArray(::get_crew_status(crew, unit), [ "ready", "full" ])
+      haveWarning = ::isInArray(::get_crew_status(crew, unit), [ "ready", "full" ])
       haveDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo) > 0
-      showAction = inMenu && hasFeature("CrewInfo")
+      showAction = inMenu && ::has_feature("CrewInfo")
       let params = {
         countryId = crew.idCountry,
         idInCountry = crew.idInCountry,
@@ -120,7 +113,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (hasSlotbarByUnitsGroups)
         continue
 
-      actionText = loc("options/secondary_weapons")
+      actionText = ::loc("options/secondary_weapons")
       icon       = "#ui/gameuiskin#slot_preset.svg"
       haveWarning = checkUnitSecondaryWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name, ["weapons"]) > 0
@@ -135,7 +128,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (hasSlotbarByUnitsGroups || !hasMarkerByUnitName(unit.name, curEdiff))
         continue
 
-      actionText = loc("sm_objective")
+      actionText = ::loc("sm_objective")
       icon = "#ui/gameuiskin#sh_unlockachievement.svg"
       showAction = inMenu
       isObjective = true
@@ -149,7 +142,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (hasSlotbarByUnitsGroups)
         continue
 
-      actionText = loc("mainmenu/btnWeapons")
+      actionText = ::loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
@@ -161,7 +154,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "take")
     {
-      actionText = loc("mainmenu/btnTakeAircraft")
+      actionText = ::loc("mainmenu/btnTakeAircraft")
       icon       = "#ui/gameuiskin#slot_crew.svg"
       showAction = inMenu && isUsable && !::isUnitInSlotbar(unit)
       actionFunc = @() unitActions.take(unit, {
@@ -172,7 +165,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "repair")
     {
       let repairCost = ::wp_get_repair_cost(unit.name)
-      actionText = loc("mainmenu/btnRepair")+": "+::Cost(repairCost).getTextAccordingToBalance()
+      actionText = ::loc("mainmenu/btnRepair")+": "+::Cost(repairCost).getTextAccordingToBalance()
       icon       = "#ui/gameuiskin#slot_repair.svg"
       haveWarning = true
       showAction = inMenu && isUsable && repairCost > 0 && ::SessionLobby.canChangeCrewUnits()
@@ -195,10 +188,10 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         let price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
         priceText = price.getTextAccordingToBalance()
         if (priceText.len())
-          priceText = loc("ui/colon") + priceText
+          priceText = ::loc("ui/colon") + priceText
       }
 
-      actionText = loc("mainmenu/btnOrder") + priceText
+      actionText = ::loc("mainmenu/btnOrder") + priceText
 
       if (isGift && canUseIngameShop())
       {
@@ -215,7 +208,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
             @(bundleId) bundleId != "" && getShopItem(bundleId) != null
           ).len() == 0)
         {
-          actionText = loc("mainemnu/comingsoon")
+          actionText = ::loc("mainemnu/comingsoon")
           disabled = true
           forceShowBuyButton = true
         }
@@ -229,7 +222,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       showAction = inMenu && (canBuyIngame || canBuyOnline || forceShowBuyButton)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
-        actionFunc = @() ::OnlineShopModel.showUnitGoods(unit.name, "unit_context_menu")
+        actionFunc = @() OnlineShopModel.showUnitGoods(unit.name, "unit_context_menu")
       else
         actionFunc = @() ::buyUnit(unit)
     }
@@ -243,7 +236,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       let isInClan = ::is_in_clan()
       let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
       let squadronExp = min(::clan_get_exp(), reqExp)
-      let canFlushSquadronExp = hasFeature("ClanVehicles") && isSquadronVehicle
+      let canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
         && squadronExp > 0
       if (isSquadronVehicle && isInClan && isInResearch && !canFlushSquadronExp && !needChosenResearchOfSquadron)
         continue
@@ -254,17 +247,17 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       let squadronExpText = ::Cost().setSap(squadronExp).tostring()
 
       actionText = needToFlushExp || (isSquadronResearchMode && needChosenResearchOfSquadron)
-        ? format(loc("mainmenu/btnResearch")
+        ? format(::loc("mainmenu/btnResearch")
           + (needToFlushExp || canFlushSquadronExp ? " (%s)" : ""),
           isSquadronVehicle
             ? squadronExpText
             : ::Cost().setRp(getReqExp).tostring())
         : canFlushSquadronExp && (isInResearch || isSquadronResearchMode)
-          ? format(loc("mainmenu/btnInvestSquadronExp") + " (%s)", squadronExpText)
+          ? format(::loc("mainmenu/btnInvestSquadronExp") + " (%s)", squadronExpText)
             : isInResearch && setResearchManually && !isSquadronVehicle
-              ? loc("mainmenu/btnConvert")
-              : loc("mainmenu/btnResearch")
-      showAction = inMenu && (!isInResearch || (hasFeature("SpendGold") && hasFeature("SpendFreeRP")))
+              ? ::loc("mainmenu/btnConvert")
+              : ::loc("mainmenu/btnResearch")
+      showAction = inMenu && (!isInResearch || (::has_feature("SpendGold") && ::has_feature("SpendFreeRP")))
         && (::isUnitFeatureLocked(unit) || ::canResearchUnit(unit)
           || canFlushSquadronExp || (isSquadronVehicle && !::is_in_clan()))
       disabled = !showAction
@@ -298,22 +291,22 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "info")
     {
-      actionText = loc("mainmenu/btnAircraftInfo")
+      actionText = ::loc("mainmenu/btnAircraftInfo")
       icon       = "#ui/gameuiskin#btn_info.svg"
       showAction = ::isUnitDescriptionValid(unit)
-      isLink     = hasFeature("WikiUnitInfo")
+      isLink     = ::has_feature("WikiUnitInfo")
       actionFunc = function () {
-        if (hasFeature("WikiUnitInfo"))
-          openUrl(format(loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
+        if (::has_feature("WikiUnitInfo"))
+          openUrl(format(::loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
         else
-          ::showInfoMsgBox(colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + loc("profile/wiki_link"))
+          ::showInfoMsgBox(::colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + ::loc("profile/wiki_link"))
       }
     }
     else if (action == "find_in_market")
     {
-      actionText = loc("msgbox/btn_find_on_marketplace")
+      actionText = ::loc("msgbox/btn_find_on_marketplace")
       icon       = "#ui/gameuiskin#gc.svg"
-      showAction = ::canBuyUnitOnMarketplace(unit)
+      showAction = canBuyUnitOnMarketplace(unit)
       isLink     = true
       actionFunc = function(){
         let item = ::ItemsManager.findItemById(unit.marketplaceItemdefId)
@@ -323,7 +316,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "changeUnitsGroup")
     {
-      actionText = loc("mainmenu/changeUnitsGroup")
+      actionText = ::loc("mainmenu/changeUnitsGroup")
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
       iconRotation = 90
       showAction = inMenu && hasSlotbarByUnitsGroups && crew != null && slotbar!= null

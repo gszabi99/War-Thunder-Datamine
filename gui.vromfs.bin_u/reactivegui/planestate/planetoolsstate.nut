@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let {interop} = require("%rGui/globals/interop.nut")
 let interopGen = require("%rGui/interopGen.nut")
 
 let IlsVisible = Watched(false)
@@ -81,50 +78,50 @@ let planeState = {
   IsOnGround
 }
 
-interop.updatePlaneIlsPosSize <- function(x, y, w, h) {
+::interop.updatePlaneIlsPosSize <- function(x, y, w, h) {
   IlsPosSize[0] = x
   IlsPosSize[1] = y
   IlsPosSize[2] = w
   IlsPosSize[3] = h
 }
 
-interop.updatePlaneMfdSightPosSize <- function(x, y, w, h) {
+::interop.updatePlaneMfdSightPosSize <- function(x, y, w, h) {
   MfdSightPosSize[0] = x
   MfdSightPosSize[1] = y
   MfdSightPosSize[2] = w
   MfdSightPosSize[3] = h
 }
 
-interop.updatePlaneMfdRadarNavPosSize <- function(x, y, w, h) {
+::interop.updatePlaneMfdRadarNavPosSize <- function(x, y, w, h) {
   MfdRadarNavPosSize[0] = x
   MfdRadarNavPosSize[1] = y
   MfdRadarNavPosSize[2] = w
   MfdRadarNavPosSize[3] = h
 }
 
-interop.updatePlaneVdiPosSize <- function(x, y, w, h) {
+::interop.updatePlaneVdiPosSize <- function(x, y, w, h) {
   MfdVdiPosSize[0] = x
   MfdVdiPosSize[1] = y
   MfdVdiPosSize[2] = w
   MfdVdiPosSize[3] = h
 }
 
-interop.updateAimLockPos <- function(x, y) {
+::interop.updateAimLockPos <- function(x, y) {
   AimLockPos[0] = x
   AimLockPos[1] = y
 }
 
-interop.updateRadarTargetPos <- function(x, y) {
+::interop.updateRadarTargetPos <- function(x, y) {
   RadarTargetPos[0] = x
   RadarTargetPos[1] = y
 }
 
-interop.updateIlsAtgmTargetPos <- function(x, y) {
+::interop.updateIlsAtgmTargetPos <- function(x, y) {
   IlsAtgmTargetPos[0] = x
   IlsAtgmTargetPos[1] = y
 }
 
-interop.updateTvvTarget <- function(x, y) {
+::interop.updateTvvTarget <- function(x, y) {
   TvvMark[0] = x
   TvvMark[1] = y
 }

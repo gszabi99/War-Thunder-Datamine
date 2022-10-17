@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler
 {
@@ -18,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   airfieldIdPrefix = "airfield_"
 
-  side = SIDE_NONE
+  side = ::SIDE_NONE
 
   ownedAirfieldsNumber = -1
   updateTimer = null
@@ -29,8 +20,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return {
       isControlHelpCentered = true
       consoleButtonsIconName = ::show_console_buttons ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
-      controlHelpText = ::show_console_buttons ? null : loc("key/RMB")
-      controlHelpDesc = loc("worldwar/state/air_fly_out_control")
+      controlHelpText = ::show_console_buttons ? null : ::loc("key/RMB")
+      controlHelpDesc = ::loc("worldwar/state/air_fly_out_control")
     }
   }
 
@@ -51,7 +42,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function isValid()
   {
-    return checkObj(scene) && checkObj(scene.findObject("airfields_list"))
+    return ::checkObj(scene) && ::checkObj(scene.findObject("airfields_list"))
   }
 
   function getAirfields()
@@ -85,7 +76,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function fillTimer(airfieldIdx, cooldownView)
   {
     let placeObj = scene.findObject("airfield_object")
-    if (!checkObj(placeObj))
+    if (!::check_obj(placeObj))
       return
 
     if (updateTimer)
@@ -101,7 +92,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onUpdateTimer(placeObj, airfieldIdx, cooldownView)
   {
-    if (!getTblValue("army", cooldownView))
+    if (!::getTblValue("army", cooldownView))
       return
 
     let airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
@@ -117,10 +108,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach (idx, item in cooldownView.army)
     {
       let blockObj = placeObj.findObject(item.getId())
-      if (!checkObj(blockObj))
+      if (!::check_obj(blockObj))
         return
       let timerObj = blockObj.findObject("arrival_time_text")
-      if (!checkObj(timerObj))
+      if (!::check_obj(timerObj))
         return
 
       let timerText = airfield.cooldownFormations[item.getFormationID()].getCooldownText()
@@ -131,10 +122,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateAirfieldFormation(index = -1)
   {
     let blockObj = scene.findObject("airfield_block")
-    if (!checkObj(blockObj))
+    if (!::check_obj(blockObj))
       return
     let placeObj = blockObj.findObject("free_formations")
-    if (!checkObj(placeObj))
+    if (!::check_obj(placeObj))
       return
 
     if (index < 0)
@@ -222,7 +213,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateAirfieldDescription(index = -1)
   {
     let airfieldBlockObj = scene.findObject("airfield_block")
-    if (!checkObj(airfieldBlockObj))
+    if (!::check_obj(airfieldBlockObj))
       return
 
     let airfield = ::g_world_war.getAirfieldByIndex(index)
@@ -233,16 +224,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let airfieldInfoObj = airfieldBlockObj.findObject("airfield_info_text")
-    if (!checkObj(airfieldInfoObj))
+    if (!::check_obj(airfieldInfoObj))
       return
 
     let airfieldUnitsText = "".concat(
-      loc("".concat("worldwar/", airfield.airfieldType.objName, "_units")),
-        loc("ui/colon"))
-    let airfieldInFlyText = loc("worldwar/airfield_in_fly") + loc("ui/colon")
+      ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_units")),
+        ::loc("ui/colon"))
+    let airfieldInFlyText = ::loc("worldwar/airfield_in_fly") + ::loc("ui/colon")
     let airfieldCapacityText = "".concat(
-      loc("".concat("worldwar/", airfield.airfieldType.objName, "_capacity")),
-        loc("ui/colon"))
+      ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_capacity")),
+        ::loc("ui/colon"))
     let iconText = airfield.airfieldType.unitType.fontIcon
 
     let airfieldUnitsNumber = airfield.getUnitsNumber()
@@ -252,32 +243,32 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     local airfieldInfoValue = airfieldUnitsNumber
     local airfieldTooltip = airfieldUnitsText +
-      colorize("@white", airfieldUnitsNumber + " " + iconText)
+      ::colorize("@white", airfieldUnitsNumber + " " + iconText)
     if (inFlyUnitsNumber > 0)
     {
       airfieldInfoValue += "+" + inFlyUnitsNumber
       airfieldTooltip += "\n" + airfieldInFlyText +
-        colorize("@white", inFlyUnitsNumber + " " + iconText)
+        ::colorize("@white", inFlyUnitsNumber + " " + iconText)
     }
     airfieldInfoValue += "/" + airfieldCapacityNumber + " " + iconText
     airfieldTooltip += "\n" + airfieldCapacityText +
-      colorize("@white", airfieldCapacityNumber + " " + iconText)
+      ::colorize("@white", airfieldCapacityNumber + " " + iconText)
     if (isFull)
-      airfieldTooltip += "\n" + colorize("@badTextColor", loc("worldwar/airfield_is_full"))
+      airfieldTooltip += "\n" + ::colorize("@badTextColor", ::loc("worldwar/airfield_is_full"))
 
     airfieldInfoObj.setValue(airfieldCapacityText +
-      colorize(isFull ? "@badTextColor" : "@white", airfieldInfoValue))
+      ::colorize(isFull ? "@badTextColor" : "@white", airfieldInfoValue))
     airfieldInfoObj.tooltip = airfieldTooltip
 
     let hasFormationUnits = hasFormationsForFly(airfield)
     let hasCooldownUnits = hasArmyOnCooldown(airfield)
     let formationTextObj = airfieldBlockObj.findObject("free_formations_text")
-    if (!checkObj(formationTextObj))
+    if (!::check_obj(formationTextObj))
       return
 
-    let text = hasFormationUnits ? loc("worldwar/state/ready_to_fly") + loc("ui/colon")
-      : hasCooldownUnits ? loc("worldwar/state/no_units_to_fly")
-      : loc($"worldwar/state/{airfield.airfieldType.objName}_empty")
+    let text = hasFormationUnits ? ::loc("worldwar/state/ready_to_fly") + ::loc("ui/colon")
+      : hasCooldownUnits ? ::loc("worldwar/state/no_units_to_fly")
+      : ::loc($"worldwar/state/{airfield.airfieldType.objName}_empty")
     formationTextObj.setValue(text)
 
     let hasEnoughToFly = airfield.hasEnoughUnitsToFly()
@@ -295,7 +286,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function selectRadioButtonBlock(rbObj, idx)
   {
-    if (checkObj(rbObj))
+    if (::check_obj(rbObj))
       if (rbObj.childrenCount() > idx && idx >= 0)
         if (rbObj.getChild(idx))
           rbObj.getChild(idx).setValue(true)
@@ -303,7 +294,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function deselectRadioButtonBlocks(rbObj)
   {
-    if (checkObj(rbObj))
+    if (::check_obj(rbObj))
       for (local i = 0; i < rbObj.childrenCount(); i++)
         rbObj.getChild(i).setValue(false)
   }
@@ -348,7 +339,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     for (local index = 0; index < ::ww_get_airfields_count(); index++)
     {
       let airfieldObj = scene.findObject(getAirfieldId(index))
-      if (checkObj(airfieldObj))
+      if (::checkObj(airfieldObj))
         airfieldObj.selected = selectedAirfield == index? "yes" : "no"
     }
     updateAirfieldFormation(selectedAirfield)
@@ -359,7 +350,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onEventWWMapAirfieldSelected(params)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     updateSelectedAirfield(::ww_get_selected_airfield())

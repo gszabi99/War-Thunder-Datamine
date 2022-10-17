@@ -1,7 +1,4 @@
-#explicit-this
-#no-root-fallback
-let {require_native} = require("%globalScripts/sqModuleHelpers.nut")
-local { activateShortcut, setAxisValue, setVirtualAxisValue, changeCruiseControl } = require_native("controls")
+local { activateShortcut, setAxisValue, setVirtualAxisValue, changeCruiseControl } = ::require_native("controls")
 
 local toggleShortcut = @(shortcutName) activateShortcut(shortcutName, true, true)
 

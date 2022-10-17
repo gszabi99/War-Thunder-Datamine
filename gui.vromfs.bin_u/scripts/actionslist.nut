@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
 /*
   API
     ActionsList.create(parent, params)
@@ -33,9 +27,6 @@ from "%scripts/dagui_library.nut" import *
 
 */
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-const __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
 
 ::gui_handlers.ActionsList <- class extends ::BaseGuiHandler
 {
@@ -48,9 +39,11 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
 
   closeOnUnhover = true
 
+  __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
+
   static function open(v_parentObj, v_params)
   {
-    if (!checkObj(v_parentObj)
+    if (!::checkObj(v_parentObj)
       || v_parentObj.getFinalProp("refuseOpenHoverMenu") == "yes"
       || ::gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj))
       return
@@ -64,41 +57,41 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
 
   function initCustomHandlerScene()
   {
-    this.parentObj = this.scene
-    this.scene = this.guiScene.createElementByObject(this.parentObj, this.sceneBlkName, this.sceneBlkTag, this)
+    parentObj = scene
+    scene = guiScene.createElementByObject(parentObj, sceneBlkName, sceneBlkTag, this)
     return true
   }
 
   function initScreen()
   {
-    this.closeOnUnhover = this.params?.closeOnUnhover ?? this.closeOnUnhover
-    this.scene.closeOnUnhover = this.closeOnUnhover ? "yes" : "no"
-    this.fillList()
-    this.updatePosition()
+    closeOnUnhover = params?.closeOnUnhover ?? closeOnUnhover
+    scene.closeOnUnhover = closeOnUnhover ? "yes" : "no"
+    fillList()
+    updatePosition()
   }
 
   function fillList()
   {
-    if (!("actions" in this.params) || this.params.actions.len() <= 0)
-      return this.goBack()
+    if (!("actions" in params) || params.actions.len() <= 0)
+      return goBack()
 
-    let nest = this.scene.findObject("list_nest")
+    let nest = scene.findObject("list_nest")
 
     local isIconed = false
-    foreach (idx, action in this.params.actions)
+    foreach (idx, action in params.actions)
     {
-      let show = getTblValue("show", action, true)
+      let show = ::getTblValue("show", action, true)
       if (!("show" in action))
         action.show <- show
 
-      action.text <- ::stringReplace(getTblValue("text", action, ""), " ", ::nbsp)
+      action.text <- ::stringReplace(::getTblValue("text", action, ""), " ", ::nbsp)
 
-      isIconed = isIconed || (show && getTblValue("icon", action) != null)
+      isIconed = isIconed || (show && ::getTblValue("icon", action) != null)
     }
-    this.scene.iconed = isIconed ? "yes" : "no"
+    scene.iconed = isIconed ? "yes" : "no"
 
-    let data = ::handyman.renderCached(__al_item_obj_tpl, this.params)
-    this.guiScene.replaceContentFromText(nest, data, data.len(), this)
+    let data = ::handyman.renderCached(__al_item_obj_tpl, params)
+    guiScene.replaceContentFromText(nest, data, data.len(), this)
 
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
     local maxWidth = 0
@@ -107,43 +100,43 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
     nest.width = maxWidth
 
     if (::show_console_buttons)
-      this.guiScene.performDelayed(this, function () {
-        if (!checkObj(nest))
+      guiScene.performDelayed(this, function () {
+        if (!::checkObj(nest))
           return
 
-        let selIdx = this.params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
-        this.guiScene.applyPendingChanges(false)
+        let selIdx = params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
+        guiScene.applyPendingChanges(false)
         ::move_mouse_on_child(nest, max(selIdx, 0))
       })
   }
 
   function updatePosition()
   {
-    this.guiScene.applyPendingChanges(false)
-    let defaultAlign = this.params?.orientation ?? ALIGN.TOP
-    ::g_dagui_utils.setPopupMenuPosAndAlign(this.parentObj, defaultAlign, this.scene)
+    guiScene.applyPendingChanges(false)
+    let defaultAlign = params?.orientation ?? ALIGN.TOP
+    ::g_dagui_utils.setPopupMenuPosAndAlign(parentObj, defaultAlign, scene)
   }
 
   function goBack()
   {
-    if (checkObj(this.scene))
-      this.scene.close = "yes"
+    if (::checkObj(scene))
+      scene.close = "yes"
   }
 
   function onAction(obj)
   {
-    this.close()
+    close()
     let actionName = obj?.id ?? ""
     if (actionName == "")
       return
 
-    this.guiScene.performDelayed(this, (@(actionName) function () {
-      if (!checkObj(this.scene))
+    guiScene.performDelayed(this, (@(actionName) function () {
+      if (!::checkObj(scene))
         return
 
-      this.guiScene.destroyElement(this.scene)
+      guiScene.destroyElement(scene)
       local func = null
-      foreach(action in this.params.actions)
+      foreach(action in params.actions)
         if (action.actionName == actionName)
         {
           func = action.action
@@ -154,50 +147,50 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
         return
 
       if (typeof func == "string")
-        this.params.handler[func].call(this.params.handler)
+        params.handler[func].call(params.handler)
       else
-        func.call(this.params.handler)
+        func.call(params.handler)
     })(actionName))
   }
 
   function close()
   {
-    this.goBack()
+    goBack()
     ::broadcastEvent("ClosedUnitItemMenu")
   }
 
   function onFocus(obj)
   {
-    this.guiScene.performDelayed(this, function () {
-      if (!checkObj(this.scene) || this.scene?.close == "yes" || !checkObj(obj))
+    guiScene.performDelayed(this, function () {
+      if (!::checkObj(scene) || scene?.close == "yes" || !::checkObj(obj))
         return
 
       let currentObj = getSelectedChild(obj)
       if (!currentObj)
-        return this.close()
+        return close()
 
       if (( !currentObj.isValid() || !currentObj.isFocused()) &&
-        !obj.isFocused() && !this.closeOnUnhover)
-        this.close()
+        !obj.isFocused() && !closeOnUnhover)
+        close()
     })
   }
 
   function onBtnClose()
   {
-    if (this.scene.isValid())
-      ::move_mouse_on_obj(this.scene.getParent())
-    this.close()
+    if (scene.isValid())
+      ::move_mouse_on_obj(scene.getParent())
+    close()
   }
 
   function onActionsListDeactivate(obj)
   {
-    this.params?.onDeactivateCb()
+    params?.onDeactivateCb()
   }
 
   static function removeActionsListFromObject(obj, fadeout = false)
   {
     let alObj = obj.findObject("actions_list")
-    if (!checkObj(alObj))
+    if (!::checkObj(alObj))
       return
     if (fadeout)
       alObj.close = "yes"
@@ -207,12 +200,12 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
 
   static function hasActionsListOnObject(obj)
   {
-    return checkObj(obj.findObject("actions_list"))
+    return ::checkObj(obj.findObject("actions_list"))
   }
 
   static function switchActionsListVisibility(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return false
 
     if (obj?.refuseOpenHoverMenu)

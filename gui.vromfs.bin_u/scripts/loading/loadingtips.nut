@@ -1,92 +1,17 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { doesLocTextExist } = require("dagor.localize")
+let { doesLocTextExist = @(k) true } = require("dagor.localize")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
 const TIP_LOC_KEY_PREFIX = "loading/"
-const TIP_LIFE_TIME_MSEC = 10000
 
 ::g_script_reloader.loadOnce("%scripts/loading/bhvLoadingTip.nut")
 
-//for global tips typeName = null
-let function getKeyFormat(typeName, isNewbie) {
-  let path = typeName ? [ typeName.tolower() ] : []
-  if (isNewbie)
-    path.append("newbie")
-  path.append("tip%d")
-  return ::g_string.implode(path, "/")
-}
-
-//for global tips unitType = null
-let function loadTipsKeysByUnitType(unitType, isNeedOnlyNewbieTips) {
-  let res = []
-
-  let configs = []
-  foreach (isNewbieTip in [ true, false ])
-    configs.append({
-      isNewbieTip = isNewbieTip
-      keyFormat   = getKeyFormat(unitType?.name, isNewbieTip)
-      isShow      = !isNeedOnlyNewbieTips || isNewbieTip
-    })
-
-  local notExistInARow = 0
-  for(local idx = 0; notExistInARow <= MISSING_TIPS_IN_A_ROW_ALLOWED; idx++) // warning disable: -mismatch-loop-variable
-  {
-    local isShow = false
-    local key = ""
-    local tip = ""
-    foreach (cfg in configs)
-    {
-      isShow = cfg.isShow
-      key = format(cfg.keyFormat, idx)
-      let locId = $"{TIP_LOC_KEY_PREFIX}{key}"
-      tip = doesLocTextExist(locId) ? loc(locId, "") : "" // Using doesLocTextExist() to avoid warnings spam in log.
-      if (tip != "")
-        break
-    }
-
-    if (tip == "")
-    {
-      notExistInARow++
-      continue
-    }
-    notExistInARow = 0
-
-    if (isShow && (::g_login.isLoggedIn() || tip.indexof("{{") == null)) // Not show tip with shortcuts while not profile recived
-      res.append(key)
-  }
-  return res
-}
-
-
-let function isMeNewbieOnUnitType(esUnitType) {
-  return ("my_stats" in getroottable()) && ::my_stats.isMeNewbieOnUnitType(esUnitType)
-}
-
-
-let function getNewbieUnitTypeMask() {
-  local mask = 0
-  foreach(unitType in unitTypes.types)
-  {
-    if (unitType == unitTypes.INVALID)
-      continue
-    if (isMeNewbieOnUnitType(unitType.esUnitType))
-      mask = mask | unitType.bit
-  }
-  return mask
-}
-
-
-
 ::g_tips <- {
+  TIP_LIFE_TIME_MSEC = 10000
 
   tipsKeys = { [GLOBAL_LOADING_TIP_BIT] = [] }
   existTipsMask = GLOBAL_LOADING_TIP_BIT
@@ -116,10 +41,10 @@ let function getNewbieUnitTypeMask() {
     let tipsArray = []
     foreach(unitTypeBit, keys in tipsKeysByUnitType) {
       tipsArray.extend(keys.map(function(tipKey) {
-        local tip = loc($"{TIP_LOC_KEY_PREFIX}{tipKey}")
+        local tip = ::loc($"{TIP_LOC_KEY_PREFIX}{tipKey}")
         if (unitTypeBit != GLOBAL_LOADING_TIP_BIT) {
           let icon = unitTypes.getByBit(unitTypeBit).fontIcon
-          tip = $"{colorize("fadedTextColor", icon)} {tip}"
+          tip = $"{::colorize("fadedTextColor", icon)} {tip}"
         }
         return tip
       }))
@@ -128,31 +53,31 @@ let function getNewbieUnitTypeMask() {
     return tipsArray
   }
 
-  function onEventProfileReceived(p) { this.isTipsValid = false }
+  function onEventProfileReceived(p) { isTipsValid = false }
 }
 
-::g_tips.getTip <- function getTip(unitTypeMask = 0)
+g_tips.getTip <- function getTip(unitTypeMask = 0)
 {
-  if (unitTypeMask != this.curTipUnitTypeMask || this.nextTipTime <= ::dagor.getCurTime())
-    this.genNewTip(unitTypeMask)
-  return this.curTip
+  if (unitTypeMask != curTipUnitTypeMask || nextTipTime <= ::dagor.getCurTime())
+    genNewTip(unitTypeMask)
+  return curTip
 }
 
-::g_tips.resetTipTimer <- function resetTipTimer()
+g_tips.resetTipTimer <- function resetTipTimer()
 {
-  this.nextTipTime = -1
+  nextTipTime = -1
 }
 
-::g_tips.validate <- function validate()
+g_tips.validate <- function validate()
 {
-  if (this.isTipsValid)
+  if (isTipsValid)
     return
-  this.isTipsValid = true
+  isTipsValid = true
 
-  this.tipsKeys.clear()
-  this.tipsKeys[GLOBAL_LOADING_TIP_BIT] <- loadTipsKeysByUnitType(null, false)
-  this.existTipsMask = GLOBAL_LOADING_TIP_BIT
-  this.curNewbieUnitTypeMask = getNewbieUnitTypeMask()
+  tipsKeys.clear()
+  tipsKeys[GLOBAL_LOADING_TIP_BIT] <- loadTipsKeysByUnitType(null, false)
+  existTipsMask = GLOBAL_LOADING_TIP_BIT
+  curNewbieUnitTypeMask = getNewbieUnitTypeMask()
 
   foreach(unitType in unitTypes.types)
   {
@@ -164,60 +89,129 @@ let function getNewbieUnitTypeMask() {
       keys = loadTipsKeysByUnitType(unitType, false)
     if (!keys.len())
       continue
-    this.tipsKeys[unitType.bit] <- keys
-    this.existTipsMask = this.existTipsMask | unitType.bit
+    tipsKeys[unitType.bit] <- keys
+    existTipsMask = existTipsMask | unitType.bit
   }
 }
 
+//for global tips typeName = null
+g_tips.getKeyFormat <- function getKeyFormat(typeName, isNewbie)
+{
+  let path = typeName ? [ typeName.tolower() ] : []
+  if (isNewbie)
+    path.append("newbie")
+  path.append("tip%d")
+  return ::g_string.implode(path, "/")
+}
 
-::g_tips.getDefaultUnitTypeMask <- function getDefaultUnitTypeMask()
+//for global tips unitType = null
+g_tips.loadTipsKeysByUnitType <- function loadTipsKeysByUnitType(unitType, isNeedOnlyNewbieTips)
+{
+  let res = []
+
+  let configs = []
+  foreach (isNewbieTip in [ true, false ])
+    configs.append({
+      isNewbieTip = isNewbieTip
+      keyFormat   = getKeyFormat(unitType?.name, isNewbieTip)
+      isShow      = !isNeedOnlyNewbieTips || isNewbieTip
+    })
+
+  local notExistInARow = 0
+  for(local idx = 0; notExistInARow <= MISSING_TIPS_IN_A_ROW_ALLOWED; idx++) // warning disable: -mismatch-loop-variable
+  {
+    local isShow = false
+    local key = ""
+    local tip = ""
+    foreach (cfg in configs)
+    {
+      isShow = cfg.isShow
+      key = format(cfg.keyFormat, idx)
+      let locId = $"{TIP_LOC_KEY_PREFIX}{key}"
+      tip = doesLocTextExist(locId) ? ::loc(locId, "") : "" // Using doesLocTextExist() to avoid warnings spam in log.
+      if (tip != "")
+        break
+    }
+
+    if (tip == "")
+    {
+      notExistInARow++
+      continue
+    }
+    notExistInARow = 0
+
+    if (isShow && (::g_login.isLoggedIn() || tip.indexof("{{") == null)) // Not show tip with shortcuts while not profile recived
+      res.append(key)
+  }
+  return res
+}
+
+g_tips.isMeNewbieOnUnitType <- function isMeNewbieOnUnitType(esUnitType)
+{
+  return ("my_stats" in ::getroottable()) && ::my_stats.isMeNewbieOnUnitType(esUnitType)
+}
+
+g_tips.getNewbieUnitTypeMask <- function getNewbieUnitTypeMask()
+{
+  local mask = 0
+  foreach(unitType in unitTypes.types)
+  {
+    if (unitType == unitTypes.INVALID)
+      continue
+    if (isMeNewbieOnUnitType(unitType.esUnitType))
+      mask = mask | unitType.bit
+  }
+  return mask
+}
+
+g_tips.getDefaultUnitTypeMask <- function getDefaultUnitTypeMask()
 {
   if (!::g_login.isLoggedIn() || ::isInMenu())
-    return this.existTipsMask
+    return existTipsMask
 
   local res = 0
   let gm = ::get_game_mode()
-  if (gm == GM_DOMINATION || gm == GM_SKIRMISH)
+  if (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH)
     res = ::SessionLobby.getRequiredUnitTypesMask() || ::SessionLobby.getUnitTypesMask()
-  else if (gm == GM_TEST_FLIGHT)
+  else if (gm == ::GM_TEST_FLIGHT)
   {
     if (showedUnit.value)
       res = showedUnit.value.unitType.bit
   }
-  else if (isInArray(gm, [GM_SINGLE_MISSION, GM_CAMPAIGN, GM_DYNAMIC, GM_BUILDER, GM_DOMINATION]))
+  else if (::isInArray(gm, [::GM_SINGLE_MISSION, ::GM_CAMPAIGN, ::GM_DYNAMIC, ::GM_BUILDER, ::GM_DOMINATION]))
     res = unitTypes.AIRCRAFT.bit
   else // keep this check last
     res = ::get_mission_allowed_unittypes_mask(::get_mission_meta_info(::current_campaign_mission || ""))
 
-  return (res & this.existTipsMask) || this.existTipsMask
+  return (res & existTipsMask) || existTipsMask
 }
 
-::g_tips.genNewTip <- function genNewTip(unitTypeMask = 0)
+g_tips.genNewTip <- function genNewTip(unitTypeMask = 0)
 {
-  this.nextTipTime = ::dagor.getCurTime() + TIP_LIFE_TIME_MSEC
+  nextTipTime = ::dagor.getCurTime() + TIP_LIFE_TIME_MSEC
 
-  if (this.curNewbieUnitTypeMask && this.curNewbieUnitTypeMask != getNewbieUnitTypeMask())
-    this.isTipsValid = false
+  if (curNewbieUnitTypeMask && curNewbieUnitTypeMask != getNewbieUnitTypeMask())
+    isTipsValid = false
 
-  if (!this.isTipsValid || this.curTipUnitTypeMask != unitTypeMask)
+  if (!isTipsValid || curTipUnitTypeMask != unitTypeMask)
   {
-    this.curTipIdx = -1
-    this.curTipUnitTypeMask = unitTypeMask
+    curTipIdx = -1
+    curTipUnitTypeMask = unitTypeMask
   }
 
-  this.validate()
+  validate()
 
-  if (!(unitTypeMask & this.existTipsMask))
-    unitTypeMask = this.getDefaultUnitTypeMask()
+  if (!(unitTypeMask & existTipsMask))
+    unitTypeMask = getDefaultUnitTypeMask()
 
   local totalTips = 0
-  foreach(unitTypeBit, keys in this.tipsKeys)
+  foreach(unitTypeBit, keys in tipsKeys)
     if (unitTypeBit & unitTypeMask)
       totalTips += keys.len()
   if (totalTips == 0)
   {
-    this.curTip = ""
-    this.curTipIdx = -1
+    curTip = ""
+    curTipIdx = -1
     return
   }
 
@@ -226,17 +220,17 @@ let function getNewbieUnitTypeMask() {
   if (totalTips > 1)
   {
     local tipsToChoose = totalTips
-    if (this.curTipIdx >= 0)
+    if (curTipIdx >= 0)
       tipsToChoose--
     newTipIdx = ::math.rnd() % tipsToChoose
-    if (this.curTipIdx >= 0 && this.curTipIdx <= newTipIdx)
+    if (curTipIdx >= 0 && curTipIdx <= newTipIdx)
       newTipIdx++
   }
-  this.curTipIdx = newTipIdx
+  curTipIdx = newTipIdx
 
   //get lang for chosen tip
-  local tipIdx = this.curTipIdx
-  foreach (unitTypeBit, keys in this.tipsKeys)
+  local tipIdx = curTipIdx
+  foreach(unitTypeBit, keys in tipsKeys)
   {
     if (!(unitTypeBit & unitTypeMask))
       continue
@@ -247,21 +241,21 @@ let function getNewbieUnitTypeMask() {
     }
 
     //found tip
-    this.curTip = loc(TIP_LOC_KEY_PREFIX + keys[tipIdx])
+    curTip = ::loc(TIP_LOC_KEY_PREFIX + keys[tipIdx])
 
     //add unit type icon if needed
     if (unitTypeBit != GLOBAL_LOADING_TIP_BIT && stdMath.number_of_set_bits(unitTypeMask) > 1)
     {
       let icon = unitTypes.getByBit(unitTypeBit).fontIcon
-      this.curTip = colorize("fadedTextColor", icon) + " " + this.curTip
+      curTip = ::colorize("fadedTextColor", icon) + " " + curTip
     }
 
     break
   }
 }
 
-::g_tips.onEventLoginComplete <- function onEventLoginComplete(p) { this.isTipsValid = false }
-::g_tips.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p) { this.isTipsValid = false }
-::g_tips.onEventSignOut <- function onEventSignOut(p) { this.isTipsValid = false }
+g_tips.onEventLoginComplete <- function onEventLoginComplete(p) { isTipsValid = false }
+g_tips.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p) { isTipsValid = false }
+g_tips.onEventSignOut <- function onEventSignOut(p) { isTipsValid = false }
 
 ::subscribe_handler(::g_tips, ::g_listener_priority.DEFAULT_HANDLER)

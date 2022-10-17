@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::dagui_propid.add_name_id("_set_aabb_by_object")
 
 ::HudTutorialObject <- class
@@ -30,12 +23,12 @@ from "%scripts/dagui_library.nut" import *
 
   function isValid()
   {
-    return checkObj(obj)
+    return ::checkObj(obj)
   }
 
   function show(value)
   {
-    if (checkObj(obj))
+    if (::checkObj(obj))
       obj.show(value)
     isVisible = value
   }

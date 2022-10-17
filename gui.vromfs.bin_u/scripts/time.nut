@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format, split_by_chars } = require("string")
 let regexp2 = require("regexp2")
 let math = require("math")
@@ -37,7 +32,7 @@ let charToLocalUtcDiff = function() {
 local getFullTimeTable = function(time, fillMissedByTimeTable = null) {
   foreach(p in timeOrder) {
     if (!(p in time)) {
-      time[p] <- getTblValue(p, fillMissedByTimeTable)
+      time[p] <- ::getTblValue(p, fillMissedByTimeTable)
     } else {
       fillMissedByTimeTable = null  //only higher part from utc
     }
@@ -58,15 +53,15 @@ let buildTabularDateTimeStr = function(t, showSeconds = false)
 
 let function getLocTimeTable(t) {
   let timeTable = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
-  timeTable.month = loc($"sm_month_{timeTable.month + 1}")
+  timeTable.month = ::loc($"sm_month_{timeTable.month + 1}")
   return timeTable
 }
 
-let buildDateStrShort = @(t) loc("date_format_short", getLocTimeTable(t))
+let buildDateStrShort = @(t) ::loc("date_format_short", getLocTimeTable(t))
 
 let buildDateStr = function(t) {
   let timeTable = getLocTimeTable(t)
-  return loc(timeTable.year > 0 ? "date_format" : "date_format_short", timeTable)
+  return ::loc(timeTable.year > 0 ? "date_format" : "date_format_short", timeTable)
 }
 
 let buildTimeStr = function(t, showZeroSeconds = false, showSeconds = true) {
@@ -226,7 +221,7 @@ local function processTimeStamps(text) {
 
 local function preciseSecondsToString(value, canShowZeroMinutes = true) {
   value = value != null ? value.tofloat() : 0.0
-  let sign = value >= 0 ? "" : loc("ui/minus")
+  let sign = value >= 0 ? "" : ::loc("ui/minus")
   local ms = (math.fabs(value) * 1000.0 + 0.5).tointeger()
   let mm = ms / 60000
   let ss = ms % 60000 / 1000
@@ -243,25 +238,25 @@ let function getRaceTimeFromSeconds(value, zeroIsValid = false) {
   if (typeof value != "float" && typeof value != "integer")
     return ""
   if (value < 0 || (!zeroIsValid && value == 0))
-    return loc("leaderboards/notAvailable")
+    return ::loc("leaderboards/notAvailable")
   return preciseSecondsToString(value)
 }
 
 
 let function getExpireText(expireMin) {
   if (expireMin < timeBase.TIME_MINUTE_IN_SECONDS)
-    return expireMin + loc("measureUnits/minutes")
+    return expireMin + ::loc("measureUnits/minutes")
 
   let showMin = expireMin < 3 * timeBase.TIME_MINUTE_IN_SECONDS
   let expireHours = math.floor(expireMin / timeBase.TIME_MINUTE_IN_SECONDS_F + (showMin? 0.0 : 0.5))
   if (expireHours < 24)
-    return expireHours + loc("measureUnits/hours") +
-           (showMin? " " + (expireMin - timeBase.TIME_MINUTE_IN_SECONDS * expireHours) + loc("measureUnits/minutes") : "")
+    return expireHours + ::loc("measureUnits/hours") +
+           (showMin? " " + (expireMin - timeBase.TIME_MINUTE_IN_SECONDS * expireHours) + ::loc("measureUnits/minutes") : "")
 
   let showHours = expireHours < 3*24
   let expireDays = math.floor(expireHours / 24.0 + (showHours? 0.0 : 0.5))
-  return expireDays + loc("measureUnits/days") +
-         (showHours? " " + (expireHours - 24*expireDays) + loc("measureUnits/hours") : "")
+  return expireDays + ::loc("measureUnits/days") +
+         (showHours? " " + (expireHours - 24*expireDays) + ::loc("measureUnits/hours") : "")
 }
 
 

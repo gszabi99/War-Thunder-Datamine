@@ -1,20 +1,15 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let boosterEffectType = {
   RP = {
     name = "xpRate"
-    currencyMark = loc("currency/researchPoints/sign/colored")
+    currencyMark = ::loc("currency/researchPoints/sign/colored")
     abbreviation = "xp"
     checkBooster = function(booster)
     {
-      return getTblValue("xpRate", booster, 0) != 0
+      return ::getTblValue("xpRate", booster, 0) != 0
     }
     getValue = function(booster)
     {
-      return getTblValue("xpRate", booster, 0)
+      return ::getTblValue("xpRate", booster, 0)
     }
     getText = function(value, colored = false, showEmpty = true)
     {
@@ -25,15 +20,15 @@ let boosterEffectType = {
   }
   WP = {
     name = "wpRate"
-    currencyMark = loc("warpoints/short/colored")
+    currencyMark = ::loc("warpoints/short/colored")
     abbreviation = "wp"
     checkBooster = function(booster)
     {
-      return getTblValue("wpRate", booster, 0) != 0
+      return ::getTblValue("wpRate", booster, 0) != 0
     }
     getValue = function(booster)
     {
-      return getTblValue("wpRate", booster, 0)
+      return ::getTblValue("wpRate", booster, 0)
     }
     getText = function(value, colored = false, showEmpty = true)
     {
@@ -96,8 +91,8 @@ let function sortBoosters(boosters, effectType)
   }
   foreach(booster in boosters)
   {
-    res.maxSortOrder = max(getTblValue("maxSortOrder", res, 0), booster.sortOrder)
-    if (!getTblValue(booster.sortOrder, res))
+    res.maxSortOrder = max(::getTblValue("maxSortOrder", res, 0), booster.sortOrder)
+    if (!::getTblValue(booster.sortOrder, res))
       res[booster.sortOrder] <- {
         personal = [],
         public = [],

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_event_display_type <- {
   types = []
@@ -59,7 +52,7 @@ enums.addTypesByGlobalName("g_event_display_type", {
   }
 })
 
-::g_event_display_type.getTypeByName <- function getTypeByName(name)
+g_event_display_type.getTypeByName <- function getTypeByName(name)
 {
   return enums.getCachedType("name", name, ::g_event_display_type.cache.byName,
     ::g_event_display_type, ::g_event_display_type.REGULAR)

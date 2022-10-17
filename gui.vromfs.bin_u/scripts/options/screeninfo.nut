@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 local function isTripleHead(sw = null, sh = null)
 {
   sw = sw ?? ::screen_width()

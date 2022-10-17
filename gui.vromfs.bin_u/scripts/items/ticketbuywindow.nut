@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_handlers.TicketBuyWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -20,7 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     let view = {
-      headerText = loc("ticketBuyWindow/header")
+      headerText = ::loc("ticketBuyWindow/header")
       tickets = ::handyman.renderCached("%gui/items/item", createTicketsView(tickets))
       windowMainText = createMainText()
       ticketCaptions = createTicketCaptionsView()
@@ -84,7 +75,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     for (local i = 0; i < tickets.len(); ++i)
     {
       let captionObj = scene.findObject(getTicketCaptionId(i))
-      if (checkObj(captionObj))
+      if (::checkObj(captionObj))
         captionObj.setValue(getTicketCaptionText(tickets[i]))
     }
   }
@@ -121,7 +112,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function getCurItem()
   {
     local value = getItemsListObj().getValue()
-    return getTblValue(value, tickets)
+    return ::getTblValue(value, tickets)
   }
 
   function getItemsListObj()
@@ -138,7 +129,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     item = item ?? getCurItem()
     if (item != null)
-      item.doMainAction(Callback(@(result) result.success && goBack(), this), this)
+      item.doMainAction(::Callback(@(result) result.success && goBack(), this), this)
   }
 
   function updateTicketCaptionsPosition()
@@ -154,9 +145,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateTicketCaptionPosition(captionObj, itemObj)
   {
-    if (!checkObj(captionObj))
+    if (!::checkObj(captionObj))
       return
-    if (!checkObj(itemObj))
+    if (!::checkObj(itemObj))
       return
     let objCenterX = itemObj.getPosRC()[0] + 0.5 * itemObj.getSize()[0]
     let position = objCenterX - 0.5 * captionObj.getSize()[0] - captionObj.getParent().getPosRC()[0]
@@ -176,9 +167,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function createMainText()
   {
-    local text = loc("ticketBuyWindow/mainText")
+    local text = ::loc("ticketBuyWindow/mainText")
     if (tickets.len() > 1)
-      text += "\n" + loc("ticketBuyWindow/optionalText")
+      text += "\n" + ::loc("ticketBuyWindow/optionalText")
     return text
   }
 
@@ -186,10 +177,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     if (activeTicket == null)
       return ""
-    local text = loc("ticketBuyWindow/activeTicketText") + "\n"
+    local text = ::loc("ticketBuyWindow/activeTicketText") + "\n"
     let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(event))
     let textParts = []
-    textParts.append(loc("ticketBuyWindow/unfinishedSessions", tournamentData))
+    textParts.append(::loc("ticketBuyWindow/unfinishedSessions", tournamentData))
     textParts.append(activeTicket.getDefeatCountText(tournamentData))
     textParts.append(activeTicket.getSequenceDefeatCountText(tournamentData))
     text += ::g_string.implode(textParts, "\n")

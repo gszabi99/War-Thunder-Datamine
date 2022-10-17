@@ -1,17 +1,12 @@
-#explicit-this
-#no-root-fallback
-
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
-
 ::create_ObjMoveToOBj <- function create_ObjMoveToOBj(scene, objStart, objTarget, config = null)
   //createBlk == null -> create objTarget clone
 {
-  if (!check_obj(scene) || !check_obj(objStart) || !check_obj(objTarget))
+  if (!::check_obj(scene) || !::check_obj(objStart) || !::check_obj(objTarget))
     return
 
   let handlerClass = class {
     onFinishMove = (@(objTarget) function (obj) {
-      if (check_obj(objTarget))
+      if (::check_obj(objTarget))
         objTarget.show(true)
     })(objTarget)
   }

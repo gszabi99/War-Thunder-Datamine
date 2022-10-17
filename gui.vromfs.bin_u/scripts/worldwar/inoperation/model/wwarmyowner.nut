@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::WwArmyOwner <- class
 {
   side         = null
@@ -22,21 +15,21 @@ from "%scripts/dagui_library.nut" import *
     if (!blk)
       return
 
-    side         = ::ww_side_name_to_val(getTblValue("side", blk, ""))
-    country      = getTblValue("country",      blk, "")
-    armyGroupIdx = getTblValue("armyGroupIdx", blk, -1)
+    side         = ::ww_side_name_to_val(::getTblValue("side", blk, ""))
+    country      = ::getTblValue("country",      blk, "")
+    armyGroupIdx = ::getTblValue("armyGroupIdx", blk, -1)
   }
 
   function clear()
   {
-    side         = SIDE_NONE
+    side         = ::SIDE_NONE
     country      = ""
     armyGroupIdx = -1
   }
 
   function isValid()
   {
-    return side != SIDE_NONE && country != "" && armyGroupIdx >= 0
+    return side != ::SIDE_NONE && country != "" && armyGroupIdx >= 0
   }
 
   function getCountry() { return country }

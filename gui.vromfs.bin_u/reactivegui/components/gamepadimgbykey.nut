@@ -1,5 +1,4 @@
-from "%rGui/globals/ui_library.nut" import *
-let { is_sony } = require("%sqstd/platform.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 let dargJKeysToImage = {
   "J:D.Up"          : "dpad_up",
@@ -75,9 +74,8 @@ let dargJKeysToImage = {
 }
 
 const PRESSED_POSTFIX = "_pressed"
-let CUR_IMAGES_PRESET = is_sony ? "ui/gameuiskin#ps_" : "ui/gameuiskin#xone_"
 
-let defHeight = dp(2) + fpx(36)
+let defHeight = ::dp(2) + ::fpx(36)
 
 let function mkImageComp(text, params = {}) {
   if (text==null || text=="")
@@ -87,14 +85,13 @@ let function mkImageComp(text, params = {}) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
-    image = Picture($"!{text}:{height}:{height}:K")
+    image = ::Picture($"!{text}:{height}:{height}:K")
     keepAspect = true
     size = [height, height]
   }.__merge(params)
 }
 
-
-let getTexture = @(id) $"{CUR_IMAGES_PRESET}{id}.svg"
+let getTexture = @(textureId) cutPrefix(::cross_call.getTextureName(textureId), "#")
 
 local function mkImageCompByDargKey(key, sf = null, params={}) {
   if (sf != null && (sf & S_HOVER) != 0)

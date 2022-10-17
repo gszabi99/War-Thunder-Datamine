@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let string = require("string")
 let {IlsColor, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")
 let {CompassValue} = require("%rGui/planeState/planeFlyState.nut")
 let {baseLineWidth} = require("ilsConstants.nut")

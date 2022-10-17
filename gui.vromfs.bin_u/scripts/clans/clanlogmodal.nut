@@ -1,13 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId)
@@ -34,7 +26,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     logListObj = scene.findObject("log_list")
-    if (!checkObj(logListObj))
+    if (!::checkObj(logListObj))
       return goBack()
 
     fetchLogPage()
@@ -105,7 +97,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function removeNextButton()
   {
     let obj = logListObj.findObject(loadButtonId)
-    if (checkObj(obj))
+    if (::checkObj(obj))
       guiScene.destroyElement(obj)
   }
 
@@ -121,7 +113,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let viewBlk = ::handyman.renderCached("%gui/userLog/userLogRow",
       {
-        middle = loc("userlog/showMore")
+        middle = ::loc("userlog/showMore")
         hasExpandImg = true
       })
     guiScene.replaceContentFromText(obj, viewBlk, viewBlk.len(), this)
@@ -139,7 +131,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     selectedIndex = index
     let selectedObj = obj.getChild(index)
-    if (checkObj(selectedObj) && selectedObj?.id == loadButtonId)
+    if (::check_obj(selectedObj) && selectedObj?.id == loadButtonId)
       fetchLogPage()
   }
 }

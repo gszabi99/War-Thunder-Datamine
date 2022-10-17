@@ -1,15 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
@@ -49,9 +43,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   ]
 
   static basePanelConfig = [
-    ES_UNIT_TYPE_AIRCRAFT,
-    ES_UNIT_TYPE_TANK,
-    ES_UNIT_TYPE_SHIP
+    ::ES_UNIT_TYPE_AIRCRAFT,
+    ::ES_UNIT_TYPE_TANK,
+    ::ES_UNIT_TYPE_SHIP
   ]
 
   static function open()
@@ -93,7 +87,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     }
 
     let placeObj = scene.findObject("general_game_modes")
-    if (!checkObj(placeObj))
+    if (!::check_obj(placeObj))
       return
 
     let data = ::handyman.renderCached("%gui/gameModeSelect/gameModeBlock", { block = filledGameModes })
@@ -124,7 +118,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
 
     let curGameModeObj = scene.findObject("general_game_modes")
-    if (!checkObj(curGameModeObj))
+    if (!::check_obj(curGameModeObj))
       return
 
     let index = filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
@@ -140,10 +134,10 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         continue
 
       let widgetObj = scene.findObject(getWidgetId(gameMode.id))
-      if (!checkObj(widgetObj))
+      if (!::check_obj(widgetObj))
         continue
 
-      let widget = ::NewIconWidget(guiScene, widgetObj)
+      let widget = NewIconWidget(guiScene, widgetObj)
       newIconWidgetsByGameModeID[gameMode.id] <- widget
       widget.setWidgetVisible(!::game_mode_manager.isSeen(gameMode.id))
     }
@@ -223,7 +217,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
       let id = ::game_mode_manager.getGameModeItemId(mode.modeId)
       let hasNewIconWidget = mode.hasNewIconWidget && !::game_mode_manager.isSeen(id)
-      let newIconWidgetContent = hasNewIconWidget? ::NewIconWidget.createLayout() : null
+      let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
       res.append({
         id = id
@@ -284,7 +278,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     let id = ::game_mode_manager.getGameModeItemId(gameMode.id)
     let hasNewIconWidget = !::game_mode_manager.isSeen(id)
-    let newIconWidgetContent = hasNewIconWidget? ::NewIconWidget.createLayout() : null
+    let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
     let crossPlayRestricted = isMultiplayerPrivilegeAvailable.value && !isCrossPlayEventAvailable(event)
     let inactiveColor = !isMultiplayerPrivilegeAvailable.value || crossPlayRestricted
@@ -300,7 +294,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       isConsoleBtn = ::show_console_buttons
       text = gameMode.text
       getEvent = gameMode?.getEvent
-      textDescription = getTblValue("textDescription", gameMode, null)
+      textDescription = ::getTblValue("textDescription", gameMode, null)
       tooltip = gameMode.getTooltipText()
       hasCountries = countries.len() != 0
       countries = countries
@@ -333,7 +327,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function getRestrictionTooltipText(event)
   {
     if (!isMultiplayerPrivilegeAvailable.value)
-      return loc("xbox/noMultiplayer")
+      return ::loc("xbox/noMultiplayer")
 
     if (!crossplayModule.needShowCrossPlayInfo()) //No need tooltip on other platforms
       return null
@@ -341,14 +335,14 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     //Always send to other platform if enabled
     //Need to notify about it
     if (crossplayModule.isCrossPlayEnabled())
-      return loc("xbox/crossPlayEnabled")
+      return ::loc("xbox/crossPlayEnabled")
 
     //If only platform - no need to notify
     if (::events.isEventPlatformOnlyAllowed(event))
       return null
 
     //Notify that crossplay is strongly required
-    return loc("xbox/crossPlayRequired")
+    return ::loc("xbox/crossPlayRequired")
   }
 
   function isCrossPlayEventAvailable(event)
@@ -388,7 +382,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       foreach(countryData in ::g_crews_list.get())
       {
         let country = countryData.country
-        if (!isInArray(country, countries))
+        if (!::isInArray(country, countries))
           lockedCountries.append(country)
       }
 
@@ -429,7 +423,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   {
     return getGameModeByCondition(gameModes,
       @(gameMode) u.max(::game_mode_manager.getRequiredUnitTypes(gameMode).filter(
-        @(esUType) isInArray(esUType, esUnitTypesFilter))) == esUnitType)
+        @(esUType) ::isInArray(esUType, esUnitTypesFilter))) == esUnitType)
   }
 
   function getGameModeByCondition(gameModes, conditionFunc)
@@ -451,7 +445,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
     }
 
-    if (gameMode?.diffCode == DIFFICULTY_HARDCORE &&
+    if (gameMode?.diffCode == ::DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return
 
@@ -459,7 +453,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (event && !isCrossPlayEventAvailable(event))
     {
       if (!::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+        ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
       return
     }
 
@@ -482,7 +476,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (!obj?.id || ::game_mode_manager.isSeen(obj.id))
       return
 
-    let widget = getTblValue(obj.id, newIconWidgetsByGameModeID)
+    let widget = ::getTblValue(obj.id, newIconWidgetsByGameModeID)
     if (!widget)
       return
 
@@ -522,7 +516,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   {
     let value = obj.getValue()
     let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    if (checkObj(childObj))
+    if (::checkObj(childObj))
       onOpenClusterSelect(childObj)
   }
 
@@ -543,7 +537,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function onGamepadEventDescription(obj)
   {
     let gameModesObject = getObj("general_game_modes")
-    if (!checkObj(gameModesObject))
+    if (!::checkObj(gameModesObject))
       return
 
     let value = gameModesObject.getValue()
@@ -574,7 +568,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let prefObj = this.showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
       && ::show_console_buttons)
 
-    if (!checkObj(prefObj))
+    if (!::check_obj(prefObj))
       return
 
     prefObj.setValue(mapPreferencesParams.getPrefTitle(gameMode?.getEvent()))
@@ -587,17 +581,16 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function onEventWWStopWorldWar(p) { updateContent() }
   function onEventWWShortGlobalStatusChanged(p) { updateContent() }
   function onEventCrossPlayOptionChanged(p) { updateContent() }
-  function onEventXboxMultiplayerPrivilegeUpdated(p) { updateContent() }
 
   function updateButtons()
   {
-    ::showBtn("wiki_link", hasFeature("AllowExternalLink") && !::is_vendor_tencent(), scene)
+    ::showBtn("wiki_link", ::has_feature("AllowExternalLink") && !::is_vendor_tencent(), scene)
   }
 
   function setGameModesTimer()
   {
     let timerObj = scene.findObject("game_modes_timer")
-    if (checkObj(timerObj))
+    if (::check_obj(timerObj))
       timerObj.setUserData(gameModesWithTimer.len()? this : null)
   }
 
@@ -611,7 +604,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function isShowMapPreferences(curEvent)
   {
-    return hasFeature("MapPreferences") && !::is_me_newbie()
+    return ::has_feature("MapPreferences") && !::is_me_newbie()
       && isMultiplayerPrivilegeAvailable.value
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)

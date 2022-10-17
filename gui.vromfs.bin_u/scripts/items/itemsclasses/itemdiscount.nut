@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { parseDiscountDescription, createDiscountDescriptionSortData,
   sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
@@ -35,7 +28,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
 
   constructor(blk, invBlk = null, slotData = null)
   {
-    canBuy = hasFeature("CanBuyDiscountItems")
+    canBuy = ::has_feature("CanBuyDiscountItems")
     base.constructor(blk, invBlk, slotData)
     purchasesCount = invBlk?.purchasesCount ?? 0
 
@@ -81,7 +74,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     blk.setStr("name", uids[0])
 
     let taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
-    let taskCallback = Callback((@(cb) function() {
+    let taskCallback = ::Callback((@(cb) function() {
       ::g_discount.updateDiscountData()
       cb({ success = true })
     })(cb), handler)
@@ -125,7 +118,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
       return res
     if (isInventoryItem && amount && !isActive())
       return {
-        btnName = loc("item/activate")
+        btnName = ::loc("item/activate")
       }
 
     return res
@@ -138,7 +131,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     for (local i = ::get_current_personal_discount_count() - 1; i >= 0; --i)
     {
       let currentDiscountUid = ::get_current_personal_discount_uid(i)
-      if (isInArray(currentDiscountUid, uids))
+      if (::isInArray(currentDiscountUid, uids))
         return true
     }
     return false
@@ -153,7 +146,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
         purchasesCount = purchasesCount
         purchasesMaxCount = purchasesMaxCount
       }
-      result += loc("items/discount/purchasesCounter", locParams) + "\n"
+      result += ::loc("items/discount/purchasesCounter", locParams) + "\n"
     }
 
     let expireText = getCurExpireTimeText()
@@ -171,12 +164,12 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
 
   function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return val + "%" })
   {
-    let value = getTblValue("discountValue", dataItem, 0)
+    let value = ::getTblValue("discountValue", dataItem, 0)
     if (value)
       return toTextFunc(value)
 
-    let minValue = getTblValue("discountMin", dataItem, 0)
-    let maxValue = getTblValue("discountMax", dataItem, 0)
+    let minValue = ::getTblValue("discountMin", dataItem, 0)
+    let maxValue = ::getTblValue("discountMax", dataItem, 0)
     local res = toTextFunc(minValue)
     if (minValue != maxValue)
       res += " - " + toTextFunc(maxValue)
@@ -190,7 +183,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     if ("type" in dataItem)
       locId += "/" + dataItem.type
     let locParams = getLocParamsDescription(dataItem)
-    return loc(locId, locParams)
+    return ::loc(locId, locParams)
   }
 
   function getLocParamsDescription(dataItem) {
@@ -203,7 +196,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
 
     let countryName = dataItem?.countryName
     if (countryName != null)
-      locParams.countryNameOptional <- $" ({loc(countryName)})"
+      locParams.countryNameOptional <- $" ({::loc(countryName)})"
     else
       locParams.countryNameOptional <- ""
 
@@ -228,7 +221,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
       let entitlementConfig = getEntitlementConfig(entitlementName)
       locParams.entitlementName <- getEntitlementName(entitlementConfig)
     }
-    locParams.discount = colorize("activeTextColor", locParams.discount)
+    locParams.discount = ::colorize("activeTextColor", locParams.discount)
     return locParams
   }
 
@@ -260,7 +253,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     let data1 = discountDescriptionData[0]
     let data2 = item.getDiscountDescriptionDataItems()[0]
     foreach(p in stackBases)
-      if (getTblValue(p, data1) != getTblValue(p, data2))
+      if (::getTblValue(p, data1) != ::getTblValue(p, data2))
         return false
     return true
   }
@@ -273,19 +266,19 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     let data = getDiscountDescriptionDataItems()[0]
     if (!stackParams.len()) //stack not inited
       foreach(p in stackBases)
-        stackParams[p] <- getTblValue(p, data)
+        stackParams[p] <- ::getTblValue(p, data)
 
     foreach(p in stackVariables)
     {
-      let pValue = getTblValue(p, data)
-      let stackValue = getTblValue(p, stackParams, pValue)
+      let pValue = ::getTblValue(p, data)
+      let stackValue = ::getTblValue(p, stackParams, pValue)
       stackParams[p] <- (pValue == stackValue) ? pValue : null
     }
 
     let value = data.discountValue
-    let minValue = getTblValue("discountMin", stackParams)
+    let minValue = ::getTblValue("discountMin", stackParams)
     stackParams.discountMin <- minValue ? min(minValue, value) : value
-    let maxValue = getTblValue("discountMax", stackParams)
+    let maxValue = ::getTblValue("discountMax", stackParams)
     stackParams.discountMax <- maxValue ? max(maxValue, value) : value
   }
 
@@ -304,7 +297,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
 
     let discountValue = _getDataItemDiscountText(itemData)
 
-    return $"{loc(discountType, "")}{loc("ui/colon")}{discountValue}"
+    return $"{::loc(discountType, "")}{::loc("ui/colon")}{discountValue}"
   }
 
   function getStackName(stackParams)

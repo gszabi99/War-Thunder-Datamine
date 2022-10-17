@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { isPlatformSony, isPs4XboxOneInteractionAvailable } = require("%scripts/clientState/platform.nut")
 
 let editContactsList = require("%scripts/contacts/editContacts.nut")
@@ -97,7 +92,7 @@ let function updateContactsGroups(params) {
         continue
       }
 
-      if (listName == EPL_FRIENDLIST && !isPs4XboxOneInteractionAvailable(playerName))
+      if (listName == ::EPL_FRIENDLIST && !isPs4XboxOneInteractionAvailable(playerName))
       {
         friendsToRemove.append(player)
         continue
@@ -106,7 +101,7 @@ let function updateContactsGroups(params) {
   }
 
   if (friendsToRemove.len())
-    editContactsList({[false] = friendsToRemove}, EPL_FRIENDLIST)
+    editContactsList({[false] = friendsToRemove}, ::EPL_FRIENDLIST)
 
   isDisableContactsBroadcastEvents = false
 }

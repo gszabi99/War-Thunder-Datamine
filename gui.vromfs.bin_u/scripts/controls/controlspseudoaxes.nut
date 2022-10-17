@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
@@ -23,9 +16,9 @@ enums.addTypes(pseudoAxesList, {
     translate = function ()
     {
       let curUnitType = ::get_es_unit_type(getPlayerCurUnit())
-      if (curUnitType == ES_UNIT_TYPE_TANK)
+      if (curUnitType == ::ES_UNIT_TYPE_TANK)
         return ["ID_TOGGLE_VIEW_GM"]
-      else if (curUnitType == ES_UNIT_TYPE_SHIP || curUnitType == ES_UNIT_TYPE_BOAT)
+      else if (curUnitType == ::ES_UNIT_TYPE_SHIP || curUnitType == ::ES_UNIT_TYPE_BOAT)
         return ["ID_TOGGLE_VIEW_SHIP"]
       else
         return ["ID_TOGGLE_VIEW"]
@@ -42,8 +35,8 @@ enums.addTypes(pseudoAxesList, {
       let requiredControls = ::getRequiredControlsForUnit(
         getPlayerCurUnit(), ::getCurrentHelpersMode())
 
-      let isMGunsAvailable = isInArray("ID_FIRE_MGUNS", requiredControls)
-      let isCannonsAvailable = isInArray("ID_FIRE_CANNONS", requiredControls)
+      let isMGunsAvailable = ::isInArray("ID_FIRE_MGUNS", requiredControls)
+      let isCannonsAvailable = ::isInArray("ID_FIRE_CANNONS", requiredControls)
 
       if (isMGunsAvailable && !isCannonsAvailable)
         return ["ID_FIRE_MGUNS"]

@@ -1,19 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-// TEST: ::gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? ::close_cur_wheelmenu() })
+// TEST: gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? close_cur_wheelmenu() })
 
 let { getGamepadAxisTexture } = require("%scripts/controls/gamepadIcons.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getComplexAxesId } = require("%scripts/controls/shortcutsUtils.nut")
-let { PI } = require("math")
 
 const ITEMS_PER_PAGE = 8
 
@@ -111,7 +100,7 @@ const ITEMS_PER_PAGE = 8
 
   function initScreen()
   {
-    if (!menu || !checkObj(scene))
+    if (!menu || !::checkObj(scene))
       return close()
 
     ::close_cur_wheelmenu()
@@ -149,7 +138,7 @@ const ITEMS_PER_PAGE = 8
   function updateContent(params = {})
   {
     setParams(params)
-    if ((menu?.len() ?? 0) == 0 || !checkObj(scene))
+    if ((menu?.len() ?? 0) == 0 || !::check_obj(scene))
       return close()
 
     fill()
@@ -195,7 +184,7 @@ const ITEMS_PER_PAGE = 8
       let enabled = isShow && (item?.wheelmenuEnabled ?? true)
       let bObj = this.showSceneBtn($"wheelmenuItem{suffix}", isShow)
 
-      if (checkObj(bObj))
+      if (::checkObj(bObj))
       {
         let buttonType = item?.buttonType ?? ""
         if (buttonType != "")
@@ -220,7 +209,7 @@ const ITEMS_PER_PAGE = 8
     let shouldShowPages = pagesTotal > 1
     let objPageInfo = scene.findObject("wheel_menu_page")
     objPageInfo.setValue(shouldShowPages
-      ? loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
+      ? ::loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
       : "")
     this.showSceneBtn("btnSwitchPage", shouldShowPages)
   }
@@ -242,7 +231,7 @@ const ITEMS_PER_PAGE = 8
       let shortcuts = getPlayerCurUnit()?.unitType.wheelmenuAxis ?? []
       let shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
       isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
-      let axesId = getComplexAxesId(shortcuts)
+      let axesId = shortcutType.getComplexAxesId(shortcuts)
       obj["background-image"] = getGamepadAxisTexture(axesId)
     }
     obj.show(isShow)

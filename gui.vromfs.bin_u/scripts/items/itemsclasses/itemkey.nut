@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 

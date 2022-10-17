@@ -1,13 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
 {
@@ -77,11 +69,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let obj = scene.findObject("prize_desc_div")
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
-      header = loc("mainmenu/you_received")
+      header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
     }))
@@ -100,7 +92,7 @@ return {
     let config = getEntitlementConfig(entitlementId)
     if (!config)
     {
-      logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
+      ::dagor.logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
       return
     }
 

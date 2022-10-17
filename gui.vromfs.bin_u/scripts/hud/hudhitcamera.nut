@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 from "hitCamera" import *
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -32,14 +27,14 @@ let styles = {
 }
 
 let debuffTemplates = {
-  [ES_UNIT_TYPE_TANK] = "%gui/hud/hudEnemyDebuffsTank.blk",
-  [ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDebuffsShip.blk",
-  [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDebuffsShip.blk",
+  [::ES_UNIT_TYPE_TANK] = "%gui/hud/hudEnemyDebuffsTank.blk",
+  [::ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDebuffsShip.blk",
+  [::ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDebuffsShip.blk",
 }
 
 let damageStatusTemplates = {
-  [ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShip.blk",
-  [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShip.blk",
+  [::ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShip.blk",
+  [::ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShip.blk",
 }
 
 let importantEventKeys = ["partEvent", "ammoEvent"]
@@ -57,7 +52,7 @@ local stopFadeTimeS = -1
 local hitResult = DM_HIT_RESULT_NONE
 local curUnitId = -1
 local curUnitVersion = -1
-local curUnitType = ES_UNIT_TYPE_INVALID
+local curUnitType = ::ES_UNIT_TYPE_INVALID
 local camInfo   = {}
 local unitsInfo = {}
 local minAliveCrewCount = 2
@@ -128,7 +123,7 @@ let function reset() {
   hitResult = DM_HIT_RESULT_NONE
   curUnitId = -1
   curUnitVersion = -1
-  curUnitType = ES_UNIT_TYPE_INVALID
+  curUnitType = ::ES_UNIT_TYPE_INVALID
   canShowCritAnimation = false
 
   camInfo.clear()
@@ -178,13 +173,13 @@ let function getNextImportantTitle() {
   let ammoEvent = curInfo.importantEvents?.ammoEvent[0]
   if (ammoEvent != null) {
     curInfo.importantEvents.ammoEvent.remove(0)
-    return loc($"part_destroyed/{ammoEvent.munition}")
+    return ::loc($"part_destroyed/{ammoEvent.munition}")
   }
 
   let partEvent = curInfo.importantEvents?.partEvent[0]
   if (partEvent != null) {
     curInfo.importantEvents.partEvent.remove(0)
-    return loc($"part_destroyed/{partEvent.partName}")
+    return ::loc($"part_destroyed/{partEvent.partName}")
   }
 
   return ""
@@ -223,7 +218,7 @@ let function updateTitle() {
   let isVisibleTitle = hitResult != DM_HIT_RESULT_NONE
   titleObj.show(isVisibleTitle)
   if (isVisibleTitle)
-    titleObj.setValue(utf8ToUpper(loc($"hitcamera/result/{style}")))
+    titleObj.setValue(utf8ToUpper(::loc($"hitcamera/result/{style}")))
 }
 
 let function showCrewCount() {
@@ -238,13 +233,13 @@ let function showCrewCount() {
   crewNestObj._blink = "yes"
 
   let data = "".concat("hitCameraLostCrewText { text:t='",
-    colorize("warningTextColor", crewLostCount),"' }")
+    ::colorize("warningTextColor", crewLostCount),"' }")
   ::get_cur_gui_scene().prependWithBlk(
     crewNestObj.findObject("lost_crew_count"), data, this)
 
   let crewColor = crewCount <= minAliveCrewCount ? "warningTextColor" : "activeTextColor"
-  crewNestObj.findObject("crew_count").setValue(colorize(crewColor, crewCount))
-  let totalText = crewTotalCount > 0 ? $"{loc("ui/slash")}{crewTotalCount}" : ""
+  crewNestObj.findObject("crew_count").setValue(::colorize(crewColor, crewCount))
+  let totalText = crewTotalCount > 0 ? $"{::loc("ui/slash")}{crewTotalCount}" : ""
   crewNestObj.findObject("max_crew_count").setValue(totalText)
 }
 
@@ -253,7 +248,7 @@ let function updateCrewCount(unitInfo, data = null) {
   if (!(scene?.isValid() ?? false))
     return
   let isShowCrew = !unitInfo.isKilled
-    && (curUnitType == ES_UNIT_TYPE_SHIP || curUnitType == ES_UNIT_TYPE_BOAT)
+    && (curUnitType == ::ES_UNIT_TYPE_SHIP || curUnitType == ::ES_UNIT_TYPE_BOAT)
   if (!isShowCrew) {
     scene.findObject("crew_nest")._blink = "no"
     return
@@ -383,7 +378,7 @@ let function onEnemyPartDamage(data) {
     return
 
   let unitInfo = getTargetInfo(data?.unitId ?? -1, data?.unitVersion ?? -1,
-    data?.unitType ?? ES_UNIT_TYPE_INVALID, data?.unitKilled ?? false)
+    data?.unitType ?? ::ES_UNIT_TYPE_INVALID, data?.unitKilled ?? false)
 
   local partName = null
   local partDmName = null
@@ -392,7 +387,7 @@ let function onEnemyPartDamage(data) {
   if (!unitInfo.isKilled)
   {
     partName = data?.partName
-    if (!partName || !isInArray(partName, unitInfo.trackedPartNames))
+    if (!partName || !::isInArray(partName, unitInfo.trackedPartNames))
       return
 
     let parts = unitInfo.parts
@@ -484,8 +479,8 @@ let function hitCameraInit(nest) {
   infoObj  = scene.findObject("info")
   damageStatusObj = scene.findObject("damageStatus")
 
-  if (!hasFeature("HitCameraTargetStateIconsTank") && (ES_UNIT_TYPE_TANK in debuffTemplates))
-    delete debuffTemplates[ES_UNIT_TYPE_TANK]
+  if (!::has_feature("HitCameraTargetStateIconsTank") && (::ES_UNIT_TYPE_TANK in debuffTemplates))
+    delete debuffTemplates[::ES_UNIT_TYPE_TANK]
 
   foreach (unitType, fn in debuffTemplates) {
     debuffsListsByUnitType[unitType] <- ::g_hud_enemy_debuffs.getTypesArrayByUnitType(unitType)

@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let globalState = require("globalState.nut")
 let widgetsState = require("widgetsState.nut")
 let hudState = require("hudState.nut")
@@ -52,7 +50,7 @@ let widgetsMap = {
   [DargWidgets.SHIP_OBSTACLE_RF] = function () {
     return {
       size = flex()
-      pos = [0, shHud(2)]
+      pos = [0, ::shHud(2)]
       halign = ALIGN_CENTER
       children = [shipObstacleRf, shipDeathTimer]
     }

@@ -1,16 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
-let colorCorrector = require_native("colorCorrector")
+let colorCorrector = ::require_native("colorCorrector")
 let fonts = require("fonts")
-let { subscribe, send } = require("eventbus")
-let { is_stereo_mode } = require_native("vr")
+let { is_stereo_mode } = ::require_native("vr")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
@@ -176,7 +167,7 @@ let function getHandlerControlsAllowMask(handler) {
     res = handler.getControlsAllowMask()
   if (res != null)
     return res
-  return getTblValue(handler.wndType, controlsAllowMaskDefaults, CtrlsInGui.CTRL_ALLOW_FULL)
+  return ::getTblValue(handler.wndType, controlsAllowMaskDefaults, CtrlsInGui.CTRL_ALLOW_FULL)
 }
 
 
@@ -268,7 +259,7 @@ let function getHandlerControlsAllowMask(handler) {
   {
     this.shouldResetFontsCache = true
     haveChanges = true
-    send("updateExtWatched", {
+    ::call_darg("updateExtWatched", {
       fontGenId = font.fontGenId
       fontSizePx = font.getFontSizePx(::screen_width(), ::screen_height())
     })
@@ -281,9 +272,10 @@ let function getHandlerControlsAllowMask(handler) {
     let safearea = safeAreaHud.getSafearea()
     ::set_dagui_pre_include_css_str(cssStringPre)
     ::set_hud_width_limit(safearea[0])
-    send("updateExtWatched", {
+    ::call_darg("updateExtWatched", {
       safeAreaHud = safearea
       safeAreaMenu = safeAreaMenu.getSafearea()
+      isInVr = is_stereo_mode()
     })
     haveChanges = true
   }
@@ -311,7 +303,7 @@ let function getHandlerControlsAllowMask(handler) {
   let rootObj = guiScene.getRoot()
 
   //Check for special hints, because IME is called with special action, and need to show text about it
-  let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || ::is_steam_big_picture()
+  let hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
   rootObj["has_ime"] = hasIME? "yes" : "no"
   rootObj["target_platform"] = targetPlatform
 }
@@ -319,7 +311,7 @@ let function getHandlerControlsAllowMask(handler) {
 
 ::handlersManager.calcCurrentControlsAllowMask <- function calcCurrentControlsAllowMask()
 {
-  if (checkObj(::current_wait_screen))
+  if (::check_obj(::current_wait_screen))
     return CtrlsInGui.CTRL_ALLOW_NONE
   if (::is_active_msg_box_in_scene(::get_cur_gui_scene()))
     return CtrlsInGui.CTRL_ALLOW_NONE
@@ -334,9 +326,9 @@ let function getHandlerControlsAllowMask(handler) {
       }
 
   foreach (name in ["menu_chat_handler", "contacts_handler", "game_chat_handler"])
-    if (name in getroottable() && getroottable()[name])
+    if (name in ::getroottable() && ::getroottable()[name])
     {
-      let mask = getroottable()[name].getControlsAllowMask()
+      let mask = ::getroottable()[name].getControlsAllowMask()
       res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
     }
 
@@ -548,14 +540,3 @@ let needDebug = ::getFromSettingsBlk("debug/debugGamepadCursor", false)
 ::get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
 
 ::handlersManager.init()
-
-subscribe("updateGamepadStates", @(_) send("updateExtWatched", {
-  gamepadCursorControl = ::g_gamepad_cursor_controls.getValue()
-  haveXinputDevice = ::have_xinput_device()
-  showConsoleButtons = ::get_is_console_mode_enabled()
-}))
-
-subscribe("updateSafeAreaStates", @(_) send("updateExtWatched", {
-  safeAreaHud = safeAreaHud.getSafearea()
-  safeAreaMenu = safeAreaMenu.getSafearea()
-}))

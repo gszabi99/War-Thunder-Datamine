@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 
 ::gui_handlers.modifyThreadWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -31,11 +22,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!threadInfo)
       return
 
-    let ownerText = colorize("userlogColoredText", threadInfo.getOwnerText(false))
-    let createdByText = loc("chat/threadCreatedBy", { player = ownerText })
+    let ownerText = ::colorize("userlogColoredText", threadInfo.getOwnerText(false))
+    let createdByText = ::loc("chat/threadCreatedBy", { player = ownerText })
     scene.findObject("created_by_text").setValue(createdByText)
 
-    scene.findObject("thread_title_header").setValue(loc("chat/threadTitle/limits",
+    scene.findObject("thread_title_header").setValue(::loc("chat/threadTitle/limits",
                                               {
                                                 min = ::g_chat.threadTitleLenMin
                                                 max = ::g_chat.threadTitleLenMax
@@ -52,11 +43,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     pinnedCheckObj.setValue(threadInfo.isPinned)
     onChangePinned(pinnedCheckObj)
 
-    local timeHeader = loc("chat/threadTime")
+    local timeHeader = ::loc("chat/threadTime")
     if (threadInfo.timeStamp > 0)
     {
       threadTime = threadInfo.timeStamp
-      timeHeader += loc("ui/colon") + time.buildDateTimeStr(threadInfo.timeStamp)
+      timeHeader += ::loc("ui/colon") + time.buildDateTimeStr(threadInfo.timeStamp)
     }
     scene.findObject("thread_time_header").setValue(timeHeader)
 
@@ -119,7 +110,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onApply()
   {
-    if (!isValuesValid || !checkObj(scene))
+    if (!isValuesValid || !::checkObj(scene))
       return
 
     let modifyTable = {
@@ -191,7 +182,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let menu = []
     foreach(hours in hoursList)
       menu.append({
-        text = loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
+        text = ::loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
         action = (@(hours) function() {
           let timeInt = ::get_charserver_time_sec() + time.hoursToSeconds(hours)
           setChatTime(timeInt)
@@ -210,7 +201,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let menu = []
     for(local i = 0; i < maxPos; i++)
       menu.append({
-        text = loc("chat/moveThreadToPosition", { place = i + 1 })
+        text = ::loc("chat/moveThreadToPosition", { place = i + 1 })
         action = (@(i) function() { moveChatToPlace(i) })(i)
       })
     ::gui_right_click_menu(menu, this)
@@ -254,14 +245,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
           text = lang.title
           icon = lang.icon
           value = lang.chatId
-          selected = isInArray(lang.chatId, curLangs)
+          selected = ::isInArray(lang.chatId, curLangs)
         })
 
     ::gui_start_multi_select_menu({
       list = optionsList
       align = "right"
       alignObj = obj
-      onFinalApplyCb = Callback(function(langs)
+      onFinalApplyCb = ::Callback(function(langs)
                        {
                          if (langs.len())
                            curLangs = langs

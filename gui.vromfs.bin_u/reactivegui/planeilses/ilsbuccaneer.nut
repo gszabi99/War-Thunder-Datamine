@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
        BombingMode} = require("%rGui/planeState/planeToolsState.nut")
 let {Tas, Roll} = require("%rGui/planeState/planeFlyState.nut");

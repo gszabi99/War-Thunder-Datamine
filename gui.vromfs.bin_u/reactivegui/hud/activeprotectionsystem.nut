@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let { ActiveProtectionSystemModulesCount, activeProtectionSystemModules } = require("tankState.nut")
 let colors = require("%rGui/style/colors.nut")
 let { PI, cos, sin } = require("%sqstd/math.nut")
@@ -25,7 +23,7 @@ let function createModule(module) {
       commands = [
         [ VECTOR_SECTOR, 50, 50, 50, 50, horAnglesX.value - 90, horAnglesY.value - 90]
       ]
-      padding = [shHud(1), shHud(1)]
+      padding = [::shHud(1), ::shHud(1)]
       children = {
         rendObj = ROBJ_TEXT
         pos = [pw(47 + 50*cos(angel)), ph(45 + 50*sin(angel))]

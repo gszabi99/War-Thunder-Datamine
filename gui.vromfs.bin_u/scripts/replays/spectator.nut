@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -16,7 +7,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getActionBarUnitName } = require_native("hudActionBar")
+let { getActionBarUnitName } = ::require_native("hudActionBar")
 let { guiStartMPStatScreen, getWeaponTypeIcoByWeapon
 } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { onSpectatorMode, switchSpectatorTargetById,
@@ -25,7 +16,6 @@ let { onSpectatorMode, switchSpectatorTargetById,
 } = require("guiSpectator")
 let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchors,
   get_replay_info, get_replay_props, move_to_anchor } = require("replays")
-let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -41,9 +31,9 @@ enum SPECTATOR_CHAT_TAB {
 }
 
 let weaponIconsReloadBits = {
-  bomb = BMS_OUT_OF_BOMBS
-  rocket = BMS_OUT_OF_ROCKETS
-  torpedo = BMS_OUT_OF_TORPEDOES
+  bomb = ::BMS_OUT_OF_BOMBS
+  rocket = ::BMS_OUT_OF_ROCKETS
+  torpedo = ::BMS_OUT_OF_TORPEDOES
 }
 
 ::Spectator <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -87,7 +77,7 @@ let weaponIconsReloadBits = {
     team = -1
   }
   lastSelectedTableId = ""
-  lastHudUnitType = ES_UNIT_TYPE_INVALID
+  lastHudUnitType = ::ES_UNIT_TYPE_INVALID
   lastFriendlyTeam = 0
   statSelPlayerId = [ null, null ]
 
@@ -118,17 +108,17 @@ let weaponIconsReloadBits = {
   actionBar = null
 
   supportedMsgTypes = [
-    HUD_MSG_MULTIPLAYER_DMG,
-    HUD_MSG_STREAK_EX,
-    HUD_MSG_STREAK,
-    HUD_MSG_OBJECTIVE,
-    HUD_MSG_DIALOG,
-    HUD_MSG_DAMAGE,
-    HUD_MSG_ENEMY_DAMAGE,
-    HUD_MSG_ENEMY_CRITICAL_DAMAGE,
-    HUD_MSG_ENEMY_FATAL_DAMAGE,
-    HUD_MSG_DEATH_REASON,
-    HUD_MSG_EVENT,
+    ::HUD_MSG_MULTIPLAYER_DMG,
+    ::HUD_MSG_STREAK_EX,
+    ::HUD_MSG_STREAK,
+    ::HUD_MSG_OBJECTIVE,
+    ::HUD_MSG_DIALOG,
+    ::HUD_MSG_DAMAGE,
+    ::HUD_MSG_ENEMY_DAMAGE,
+    ::HUD_MSG_ENEMY_CRITICAL_DAMAGE,
+    ::HUD_MSG_ENEMY_FATAL_DAMAGE,
+    ::HUD_MSG_DEATH_REASON,
+    ::HUD_MSG_EVENT,
     -200 // historyLogCustomMsgType
   ]
 
@@ -170,15 +160,15 @@ let weaponIconsReloadBits = {
       replayMetadata.restoreReplayScriptCommentsBlk(::current_replay)
     }
 
-    gotRefereeRights = getTblValue("spectator", mplayerTable, 0) == 1
+    gotRefereeRights = ::getTblValue("spectator", mplayerTable, 0) == 1
     mode = isReplay ? SPECTATOR_MODE.REPLAY : SPECTATOR_MODE.SKIRMISH
-    isMultiplayer = !!(gameType & GT_VERSUS) || !!(gameType & GT_COOPERATIVE)
-    canControlTimeline  = mode == SPECTATOR_MODE.REPLAY && getTblValue("timeSpeedAllowed", replayProps, false)
+    isMultiplayer = !!(gameType & ::GT_VERSUS) || !!(gameType & ::GT_COOPERATIVE)
+    canControlTimeline  = mode == SPECTATOR_MODE.REPLAY && ::getTblValue("timeSpeedAllowed", replayProps, false)
     canControlCameras   = mode == SPECTATOR_MODE.REPLAY || gotRefereeRights
     canSeeMissionTimer  = !canControlTimeline && mode == SPECTATOR_MODE.SKIRMISH
     canSeeOppositeTeam  = mode != SPECTATOR_MODE.RESPAWN
     canSendChatMessages = mode != SPECTATOR_MODE.REPLAY
-    let canRewind = canControlTimeline && hasFeature("replayRewind")
+    let canRewind = canControlTimeline && ::has_feature("replayRewind")
     let anchors = get_replay_anchors()
     let curAnchorIdx = getCurAnchorIdx(anchors)
 
@@ -244,8 +234,8 @@ let weaponIconsReloadBits = {
           strip_tags = true
         })
         if (hotkeys.len())
-          hotkeys = "<color=@hotkeyColor>" + loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
-        obj.tooltip = loc("hotkeys/" + obj.id) + hotkeys
+          hotkeys = "<color=@hotkeyColor>" + ::loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
+        obj.tooltip = ::loc("hotkeys/" + obj.id) + hotkeys
       }
     }
 
@@ -272,15 +262,15 @@ let weaponIconsReloadBits = {
       replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
 
       let info = ::current_replay.len() && get_replay_info(::current_replay)
-      let comments = info && getTblValue("comments", info)
+      let comments = info && ::getTblValue("comments", info)
       if (comments)
       {
-        replayAuthorUserId = getTblValue("authorUserId", comments, replayAuthorUserId)
-        replayTimeTotal = getTblValue("timePlayed", comments, replayTimeTotal)
+        replayAuthorUserId = ::getTblValue("authorUserId", comments, replayAuthorUserId)
+        replayTimeTotal = ::getTblValue("timePlayed", comments, replayTimeTotal)
         scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(replayTimeTotal))
       }
 
-      let replaySessionId = getTblValue("sessionId", replayProps, "")
+      let replaySessionId = ::getTblValue("sessionId", replayProps, "")
       scene.findObject("txt_replay_session_id").setValue(replaySessionId)
     }
 
@@ -288,9 +278,9 @@ let weaponIconsReloadBits = {
     funcSortPlayersDefault   = ::mpstat_get_sort_func(gameType)
 
     ::g_hud_live_stats.init(scene, "spectator_live_stats_nest", false)
-    actionBar = ::ActionBar(scene.findObject("spectator_hud_action_bar"))
+    actionBar = ActionBar(scene.findObject("spectator_hud_action_bar"))
     actionBar.reinit()
-    if (!hasFeature("SpectatorUnitDmgIndicator"))
+    if (!::has_feature("SpectatorUnitDmgIndicator"))
       scene.findObject("xray_render_dmg_indicator_spectator").show(false)
     reinitDmgIndicator()
 
@@ -324,7 +314,7 @@ let weaponIconsReloadBits = {
     }
     foreach(tab in tabsList)
       view.tabs.append({
-        tabName = loc(tab.locId)
+        tabName = ::loc(tab.locId)
         id = tab.id
         alert = "no"
         cornerImg = "#ui/gameuiskin#new_icon.svg"
@@ -364,26 +354,26 @@ let weaponIconsReloadBits = {
 
   function onUpdate(obj=null, dt=0.0)
   {
-    if (!spectatorModeInited && ::is_in_flight())
+    if (!spectatorModeInited && is_in_flight())
     {
       if (!getTargetPlayer())
       {
         spectatorModeInited = true
         onSpectatorMode(true)
         catchingFirstTarget = isMultiplayer && gotRefereeRights
-        log($"Spectator: init {getEnumValName("SPECTATOR_MODE", mode)}")
+        ::dagor.debug("Spectator: init " + ::getEnumValName("SPECTATOR_MODE", mode))
       }
       updateCooldown = 0.0
     }
 
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     updateCooldown -= dt
     let isUpdateByCooldown = updateCooldown <= 0.0
 
     let targetNick  = getSpectatorTargetName()
-    let hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ES_UNIT_TYPE_INVALID
+    let hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
     let isTargetSwitched = targetNick != lastTargetNick || hudUnitType != lastHudUnitType
     lastTargetNick  = targetNick
     lastHudUnitType = hudUnitType
@@ -420,7 +410,7 @@ let weaponIconsReloadBits = {
         {
           foreach (info in teams)
             foreach (p in info.players)
-              if (p.state == PLAYER_IN_FLIGHT && !p.isDead)
+              if (p.state == ::PLAYER_IN_FLIGHT && !p.isDead)
               {
                 switchTargetPlayer(p.id)
                 break
@@ -444,7 +434,7 @@ let weaponIconsReloadBits = {
       needClanTag && !player.isBot ? player.clanTag : "")
     if (mode == SPECTATOR_MODE.REPLAY && player?.realName != "")
       name = $"{name} ({player.realName})"
-    return needColored ? colorize(getPlayerColor(player), name) : name
+    return needColored ? ::colorize(getPlayerColor(player), name) : name
   }
 
   function getPlayerColor(player)
@@ -458,38 +448,38 @@ let weaponIconsReloadBits = {
   function getPlayerStateDesc(player)
   {
     return !player ? "" :
-      !player.ingame ? loc(player.deaths ? "spectator/player_quit" : "multiplayer/state/player_not_in_game") :
-      player.isDead ? loc(player.deaths ? "spectator/player_vehicle_lost" : "spectator/player_connecting") :
-      !player.canBeSwitchedTo ? loc("multiplayer/state/player_in_game/location_unknown") : ""
+      !player.ingame ? ::loc(player.deaths ? "spectator/player_quit" : "multiplayer/state/player_not_in_game") :
+      player.isDead ? ::loc(player.deaths ? "spectator/player_vehicle_lost" : "spectator/player_connecting") :
+      !player.canBeSwitchedTo ? ::loc("multiplayer/state/player_in_game/location_unknown") : ""
   }
 
   function getUnitMalfunctionDesc(player)
   {
     if (!player || !player.ingame || player.isDead)
       return ""
-    let briefMalfunctionState = getTblValue("briefMalfunctionState", player, 0)
+    let briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
     let list = []
-    if (getTblValue("isExtinguisherActive", player, false))
-      list.append(loc("fire_extinguished"))
-    else if (getTblValue("isBurning", player, false))
-      list.append(loc("fire_in_unit"))
-    if (briefMalfunctionState & BMS_ENGINE_BROKEN)
-      list.append(loc("my_dmg_msg/tank_engine"))
-    if (briefMalfunctionState & BMS_MAIN_GUN_BROKEN)
-      list.append(loc("my_dmg_msg/tank_gun_barrel"))
-    if (briefMalfunctionState & BMS_TRACK_BROKEN)
-      list.append(loc("my_dmg_msg/tank_track"))
-    if (briefMalfunctionState & BMS_OUT_OF_AMMO)
-      list.append(loc("controls/no_bullets_left"))
-    if (briefMalfunctionState & BMS_OUT_OF_BOMBS)
-      list.append(loc("controls/no_bombs_left"))
-    if (briefMalfunctionState & BMS_OUT_OF_ROCKETS)
-      list.append(loc("controls/no_rockets_left"))
-    if (briefMalfunctionState & BMS_OUT_OF_TORPEDOES)
-      list.append(loc("controls/no_torpedoes_left"))
-    local desc = ::g_string.implode(list, loc("ui/semicolon"))
+    if (::getTblValue("isExtinguisherActive", player, false))
+      list.append(::loc("fire_extinguished"))
+    else if (::getTblValue("isBurning", player, false))
+      list.append(::loc("fire_in_unit"))
+    if (briefMalfunctionState & ::BMS_ENGINE_BROKEN)
+      list.append(::loc("my_dmg_msg/tank_engine"))
+    if (briefMalfunctionState & ::BMS_MAIN_GUN_BROKEN)
+      list.append(::loc("my_dmg_msg/tank_gun_barrel"))
+    if (briefMalfunctionState & ::BMS_TRACK_BROKEN)
+      list.append(::loc("my_dmg_msg/tank_track"))
+    if (briefMalfunctionState & ::BMS_OUT_OF_AMMO)
+      list.append(::loc("controls/no_bullets_left"))
+    if (briefMalfunctionState & ::BMS_OUT_OF_BOMBS)
+      list.append(::loc("controls/no_bombs_left"))
+    if (briefMalfunctionState & ::BMS_OUT_OF_ROCKETS)
+      list.append(::loc("controls/no_rockets_left"))
+    if (briefMalfunctionState & ::BMS_OUT_OF_TORPEDOES)
+      list.append(::loc("controls/no_torpedoes_left"))
+    local desc = ::g_string.implode(list, ::loc("ui/semicolon"))
     if (desc.len())
-      desc = colorize("warningTextColor", desc)
+      desc = ::colorize("warningTextColor", desc)
     return desc
   }
 
@@ -531,7 +521,7 @@ let weaponIconsReloadBits = {
   {
     let infoObj = scene.findObject("target_info")
     let waitingObj = scene.findObject("waiting_for_target_spawn")
-    if (!checkObj(infoObj) || !checkObj(waitingObj))
+    if (!::checkObj(infoObj) || !::checkObj(waitingObj))
       return
 
     infoObj.show(player != null && isMultiplayer)
@@ -604,7 +594,7 @@ let weaponIconsReloadBits = {
         scene.findObject("timeline_progress").setValue(replayTimeProgress)
       }
 
-      if (hasFeature("replayRewind")) {
+      if (::has_feature("replayRewind")) {
         let anchors = get_replay_anchors()
         let curAnchorIdx = getCurAnchorIdx(anchors)
         ::enableBtnTable(scene, {
@@ -630,10 +620,10 @@ let weaponIconsReloadBits = {
       let player = getTargetPlayer()
       let isValid = player != null
       let isPlayer = player ? !player.isBot : false
-      let userId   = player ? getTblValue("userId", player, 0) : 0
+      let userId   = player ? ::getTblValue("userId", player, 0) : 0
       let isAuthor = userId == replayAuthorUserId
       let isAuthorUnknown = replayAuthorUserId == -1
-      let isAircraft = isInArray(lastHudUnitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])
+      let isAircraft = ::isInArray(lastHudUnitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])
 
       ::enableBtnTable(scene, {
           ID_CAMERA_DEFAULT           = isValid
@@ -654,7 +644,7 @@ let weaponIconsReloadBits = {
   function reinitDmgIndicator()
   {
     let obj = scene.findObject("spectator_hud_damage")
-    if (checkObj(obj))
+    if (::check_obj(obj))
       obj.show(getTargetPlayer() != null)
   }
 
@@ -783,7 +773,7 @@ let weaponIconsReloadBits = {
 
   function onBtnShortcut(obj)
   {
-    let id = checkObj(obj) ? (obj?.id ?? "") : ""
+    let id = ::check_obj(obj) ? (obj?.id ?? "") : ""
     if (id.len() > 3 && id.slice(0, 3) == "ID_")
       toggleShortcut(id)
   }
@@ -791,10 +781,10 @@ let weaponIconsReloadBits = {
   function onMapClick(obj = null)
   {
     let mapLargePanelObj = scene.findObject("map_large_div")
-    if (!checkObj(mapLargePanelObj))
+    if (!::checkObj(mapLargePanelObj))
       return
     let mapLargeObj = mapLargePanelObj.findObject("tactical_map")
-    if (!checkObj(mapLargeObj))
+    if (!::checkObj(mapLargeObj))
       return
 
     let toggle = !mapLargePanelObj.isVisible()
@@ -805,10 +795,10 @@ let weaponIconsReloadBits = {
 
   function onToggleButtonClick(obj)
   {
-    if (!checkObj(obj) || !("toggleObj" in obj))
+    if (!::checkObj(obj) || !("toggleObj" in obj))
       return
     let toggleObj = scene.findObject(obj?.toggleObj)
-    if (!checkObj(toggleObj))
+    if (!::checkObj(toggleObj))
       return
 
     let toggle = !toggleObj.isVisible()
@@ -830,7 +820,7 @@ let weaponIconsReloadBits = {
   function getTableObj(index)
   {
     let obj = scene.findObject($"table_team{index + 1}")
-    return checkObj(obj) ? obj : null
+    return ::check_obj(obj) ? obj : null
   }
 
   function getTeamTableObj(teamId)
@@ -846,20 +836,20 @@ let weaponIconsReloadBits = {
       let player = tbl[i]
       if (player.spectator
         || (mode == SPECTATOR_MODE.SKIRMISH
-          && (player.state != PLAYER_IN_FLIGHT || player.isDead) && !player.deaths))
+          && (player.state != ::PLAYER_IN_FLIGHT || player.isDead) && !player.deaths))
       {
         tbl.remove(i)
         continue
       }
 
       player.team = teamId
-      player.ingame <- player.state == PLAYER_IN_FLIGHT || player.state == PLAYER_IN_RESPAWN
+      player.ingame <- player.state == ::PLAYER_IN_FLIGHT || player.state == ::PLAYER_IN_RESPAWN
       player.isActing <- player.ingame
-        && (!(gameType & GT_RACE) || player.raceFinishTime < 0)
-        && (!(gameType & GT_LAST_MAN_STANDING) || player.deaths == 0)
+        && (!(gameType & ::GT_RACE) || player.raceFinishTime < 0)
+        && (!(gameType & ::GT_LAST_MAN_STANDING) || player.deaths == 0)
       if (mode == SPECTATOR_MODE.REPLAY && !player.isBot)
-        player.isBot = player.userId == "0" || getTblValue("invitedName", player) != null
-      local unitId = (!player.isDead && player.state == PLAYER_IN_FLIGHT) ? player.aircraftName : null
+        player.isBot = player.userId == "0" || ::getTblValue("invitedName", player) != null
+      local unitId = (!player.isDead && player.state == ::PLAYER_IN_FLIGHT) ? player.aircraftName : null
       unitId = (unitId != "dummy_plane" && unitId != "") ? unitId : null
       player.aircraftName = unitId || ""
       player.canBeSwitchedTo = unitId ? player.canBeSwitchedTo : false
@@ -892,8 +882,8 @@ let weaponIconsReloadBits = {
   function getPlayersData()
   {
     let _teams = array(2, null)
-    let isMpMode = !!(gameType & GT_VERSUS) || !!(gameType & GT_COOPERATIVE)
-    let isPvP = !!(gameType & GT_VERSUS)
+    let isMpMode = !!(gameType & ::GT_VERSUS) || !!(gameType & ::GT_COOPERATIVE)
+    let isPvP = !!(gameType & ::GT_VERSUS)
     let isTeamplay = isPvP && ::is_mode_with_teams(gameType)
 
     if (isTeamplay || !canSeeOppositeTeam)
@@ -919,7 +909,7 @@ let weaponIconsReloadBits = {
     }
     else if (isMpMode)
     {
-      let teamId = isTeamplay ? ::get_mp_local_team() : GET_MPLAYERS_LIST
+      let teamId = isTeamplay ? ::get_mp_local_team() : ::GET_MPLAYERS_LIST
       let color  = isTeamplay ? "blue" : "red"
       let players = getTeamPlayers(teamId)
 
@@ -980,10 +970,10 @@ let weaponIconsReloadBits = {
       let tblObj = getTableObj(info.index)
       if (tblObj)
       {
-        let infoPrev = getTblValue(idx, teams)
+        let infoPrev = ::getTblValue(idx, teams)
         if (info.active)
           statTblUpdateInfo(tblObj, info, infoPrev)
-        if (info.active != getTblValue("active", infoPrev, true))
+        if (info.active != ::getTblValue("active", infoPrev, true))
         {
           tblObj.getParent().getParent().show(info.active)
           scene.findObject("btnToggleStats" + (idx + 1)).show(info.active)
@@ -1017,20 +1007,20 @@ let weaponIconsReloadBits = {
     if (!p1)
       return false
     foreach(param in scanPlayerParams)
-      if (getTblValue(param, p1) != getTblValue(param, p2))
+      if (::getTblValue(param, p1) != ::getTblValue(param, p2))
         return true
     return false
   }
 
   function statTblUpdateInfo(objTbl, teamInfo, infoPrev = null)
   {
-    let players = getTblValue("players", teamInfo)
-    if (!checkObj(objTbl) || !players)
+    let players = ::getTblValue("players", teamInfo)
+    if (!::checkObj(objTbl) || !players)
       return
 
     guiScene.setUpdatesEnabled(false, false)
 
-    let prevPlayers = getTblValue("players", infoPrev)
+    let prevPlayers = ::getTblValue("players", infoPrev)
     let wasRows = addPlayerRows(objTbl, teamInfo)
     let totalRows = objTbl.childrenCount()
 
@@ -1041,8 +1031,8 @@ let weaponIconsReloadBits = {
 
     for(local i = 0; i < totalRows; i++)
     {
-      let player = getTblValue(i, players)
-      if (i < wasRows && !isPlayerChanged(player, getTblValue(i, prevPlayers)))
+      let player = ::getTblValue(i, players)
+      if (i < wasRows && !isPlayerChanged(player, ::getTblValue(i, prevPlayers)))
         continue
 
       let obj = objTbl.getChild(i)
@@ -1051,7 +1041,7 @@ let weaponIconsReloadBits = {
         continue
 
       let nameObj = obj.findObject("name")
-      if (!checkObj(nameObj)) //some validation
+      if (!::checkObj(nameObj)) //some validation
         continue
 
       let playerName = getPlayerNick(player)
@@ -1070,8 +1060,8 @@ let weaponIconsReloadBits = {
       obj.squad = player.isInHeroSquad ? "yes" : "no"
       obj.dead = player.canBeSwitchedTo ? "no" : "yes"
       obj.isBot = player.isBot ? "yes" : "no"
-      obj.findObject("unit").setValue(::getUnitName(unitId || "dummy_plane"))
-      obj.tooltip = playerName + (unitId ? loc("ui/parentheses/space", {text = ::getUnitName(unitId, false)}) : "")
+      obj.findObject("unit").setValue(getUnitName(unitId || "dummy_plane"))
+      obj.tooltip = playerName + (unitId ? ::loc("ui/parentheses/space", {text = ::getUnitName(unitId, false)}) : "")
         + (stateDesc != "" ? ("\n" + stateDesc) : "")
         + (malfunctionDesc != "" ? ("\n" + malfunctionDesc) : "")
 
@@ -1082,7 +1072,7 @@ let weaponIconsReloadBits = {
       unitIcoObj["background-image"] = iconImg
       unitIcoObj.shopItemType = iconType
 
-      let briefMalfunctionState = getTblValue("briefMalfunctionState", player, 0)
+      let briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
       let weaponIcons = (unitId && ("weapon" in player)) ? getWeaponTypeIcoByWeapon(unitId, player.weapon)
         : getWeaponTypeIcoByWeapon("", "")
 
@@ -1107,12 +1097,12 @@ let weaponIconsReloadBits = {
 
       let battleStateIconClass =
         (!player.ingame || player.isDead)                     ? "" :
-        getTblValue("isExtinguisherActive", player, false)  ? "ExtinguisherActive" :
-        getTblValue("isBurning", player, false)             ? "IsBurning" :
-        (briefMalfunctionState & BMS_ENGINE_BROKEN)         ? "BrokenEngine" :
-        (briefMalfunctionState & BMS_MAIN_GUN_BROKEN)       ? "BrokenGun" :
-        (briefMalfunctionState & BMS_TRACK_BROKEN)          ? "BrokenTrack" :
-        (briefMalfunctionState & BMS_OUT_OF_AMMO)           ? "OutOfAmmo" :
+        ::getTblValue("isExtinguisherActive", player, false)  ? "ExtinguisherActive" :
+        ::getTblValue("isBurning", player, false)             ? "IsBurning" :
+        (briefMalfunctionState & ::BMS_ENGINE_BROKEN)         ? "BrokenEngine" :
+        (briefMalfunctionState & ::BMS_MAIN_GUN_BROKEN)       ? "BrokenGun" :
+        (briefMalfunctionState & ::BMS_TRACK_BROKEN)          ? "BrokenTrack" :
+        (briefMalfunctionState & ::BMS_OUT_OF_AMMO)           ? "OutOfAmmo" :
                                                                 ""
       obj.findObject("battle-state-ico")["class"] = battleStateIconClass
 
@@ -1131,7 +1121,7 @@ let weaponIconsReloadBits = {
       objTbl.team = teamInfo.color
 
     let headerObj = objTbl.getParent().getParent().findObject("header")
-    if (checkObj(headerObj))
+    if (::check_obj(headerObj))
       headerObj.setValue(teamInfo.clanTag)
 
     guiScene.setUpdatesEnabled(true, true)
@@ -1157,15 +1147,15 @@ let weaponIconsReloadBits = {
   {
     switch (state)
     {
-      case PLAYER_NOT_EXISTS:                 return "PLAYER_NOT_EXISTS"
-      case PLAYER_HAS_LEAVED_GAME:            return "PLAYER_HAS_LEAVED_GAME"
-      case PLAYER_IN_LOBBY_NOT_READY:         return "PLAYER_IN_LOBBY_NOT_READY"
-      case PLAYER_IN_LOADING:                 return "PLAYER_IN_LOADING"
-      case PLAYER_IN_STATISTICS_BEFORE_LOBBY: return "PLAYER_IN_STATISTICS_BEFORE_LOBBY"
-      case PLAYER_IN_LOBBY_READY:             return "PLAYER_IN_LOBBY_READY"
-      case PLAYER_READY_TO_START:             return "PLAYER_READY_TO_START"
-      case PLAYER_IN_FLIGHT:                  return "PLAYER_IN_FLIGHT"
-      case PLAYER_IN_RESPAWN:                 return "PLAYER_IN_RESPAWN"
+      case ::PLAYER_NOT_EXISTS:                 return "PLAYER_NOT_EXISTS"
+      case ::PLAYER_HAS_LEAVED_GAME:            return "PLAYER_HAS_LEAVED_GAME"
+      case ::PLAYER_IN_LOBBY_NOT_READY:         return "PLAYER_IN_LOBBY_NOT_READY"
+      case ::PLAYER_IN_LOADING:                 return "PLAYER_IN_LOADING"
+      case ::PLAYER_IN_STATISTICS_BEFORE_LOBBY: return "PLAYER_IN_STATISTICS_BEFORE_LOBBY"
+      case ::PLAYER_IN_LOBBY_READY:             return "PLAYER_IN_LOBBY_READY"
+      case ::PLAYER_READY_TO_START:             return "PLAYER_READY_TO_START"
+      case ::PLAYER_IN_FLIGHT:                  return "PLAYER_IN_FLIGHT"
+      case ::PLAYER_IN_RESPAWN:                 return "PLAYER_IN_RESPAWN"
       default:                                  return "" + state
     }
   }
@@ -1174,12 +1164,12 @@ let weaponIconsReloadBits = {
   {
     guiScene.setUpdatesEnabled(true, true)
     let obj = scene.findObject("stats_left")
-    ::spectator_air_hud_offset_x = (checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
+    ::spectator_air_hud_offset_x = (::checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
   }
 
   function onBtnLogTabSwitch(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let tabIdx = obj.getValue()
@@ -1194,7 +1184,7 @@ let weaponIconsReloadBits = {
     foreach(tab in tabsList)
     {
       let objContainer = scene.findObject(tab.containerId)
-      if (!checkObj(objContainer))
+      if (!::checkObj(objContainer))
         continue
 
       objContainer.show(tab.id == newTabId)
@@ -1214,7 +1204,7 @@ let weaponIconsReloadBits = {
     if (!scene.isValid() || tabId == curTabId)
       return
     let obj = scene.findObject(tabId)
-    if (checkObj(obj))
+    if (::checkObj(obj))
       obj.findObject("new_msgs").show(true)
   }
 
@@ -1230,21 +1220,21 @@ let weaponIconsReloadBits = {
 
   function onEventMpChatInputRequested(params)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
     if (!canSendChatMessages)
       return
 
     local obj = scene.findObject("btnToggleLog")
-    if (checkObj(obj) && obj?.toggled != "yes")
+    if (::checkObj(obj) && obj?.toggled != "yes")
       onToggleButtonClick(obj)
 
     obj = scene.findObject("tabs")
     let chatTabId = SPECTATOR_CHAT_TAB.CHAT
-    if (checkObj(obj) && curTabId != chatTabId)
+    if (::checkObj(obj) && curTabId != chatTabId)
       obj.setValue(tabsList.findindex(@(t) t.id == chatTabId) ?? -1)
 
-    if (getTblValue("activate", params, false))
+    if (::getTblValue("activate", params, false))
       ::game_chat_input_toggle_request(true)
   }
 
@@ -1252,12 +1242,12 @@ let weaponIconsReloadBits = {
   {
     let player = getPlayerByUserId(userId)
     let color = isPlayerFriendly(player) ? "hudColorDarkBlue" : "hudColorDarkRed"
-    addHistroyLogMessage(colorize(color, loc("artillery_strike/called_by_player", { player =  getPlayerNick(player, true) })))
+    addHistroyLogMessage(::colorize(color, ::loc("artillery_strike/called_by_player", { player =  getPlayerNick(player, true) })))
   }
 
   function onHudMessage(msg)
   {
-    if (!isInArray(msg.type, supportedMsgTypes))
+    if (!::isInArray(msg.type, supportedMsgTypes))
       return
 
     if (!("id" in msg))
@@ -1277,7 +1267,7 @@ let weaponIconsReloadBits = {
       let skipDupTime = msg.time - historySkipDuplicatesSec
       for (local i = historyLog.len() - 1; i >= 0; i--)
       {
-        if (historyLog[i].time < skipDupTime && msg.type != HUD_MSG_DEATH_REASON)
+        if (historyLog[i].time < skipDupTime && msg.type != ::HUD_MSG_DEATH_REASON)
           break
         if (historyLog[i].text == msg.text)
           return
@@ -1314,11 +1304,11 @@ let weaponIconsReloadBits = {
 
   function updateHistoryLog(updateVisibility = false)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     let obj = scene.findObject("history_log")
-    if (checkObj(obj))
+    if (::checkObj(obj))
     {
       if (updateVisibility)
         guiScene.setUpdatesEnabled(true, true)
@@ -1338,39 +1328,39 @@ let weaponIconsReloadBits = {
     switch (msg.type)
     {
       // All players messages
-      case HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
+      case ::HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
         let text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
         let icon = ::HudBattleLog.getActionTextIconic(msg)
-        return timestamp + colorize("userlogColoredText", $"{icon} {text}")
+        return timestamp + ::colorize("userlogColoredText", $"{icon} {text}")
         break
 
-      case HUD_MSG_STREAK_EX: // Any player got streak
+      case ::HUD_MSG_STREAK_EX: // Any player got streak
         let text = ::HudBattleLog.msgStreakToText(msg, true)
-        return timestamp + colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text)
+        return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
 
       // Mission objectives
-      case HUD_MSG_OBJECTIVE: // Hero team mission objective
+      case ::HUD_MSG_OBJECTIVE: // Hero team mission objective
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + colorize("white", loc("sm_objective") + loc("ui/colon") + text)
+        return timestamp + ::colorize("white", ::loc("sm_objective") + ::loc("ui/colon") + text)
         break
 
       // Team progress
-      case HUD_MSG_DIALOG: // Hero team base capture events
+      case ::HUD_MSG_DIALOG: // Hero team base capture events
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + colorize("commonTextColor", text)
+        return timestamp + ::colorize("commonTextColor", text)
         break
 
       // Hero (spectated target) messages
-      case HUD_MSG_DAMAGE: // Hero air unit damaged
-      case HUD_MSG_ENEMY_DAMAGE: // Hero target air unit damaged
-      case HUD_MSG_ENEMY_CRITICAL_DAMAGE: // Hero target air unit damaged
-      case HUD_MSG_ENEMY_FATAL_DAMAGE: // Hero target air unit damaged
-      case HUD_MSG_DEATH_REASON: // Hero unit destroyed, killer name
-      case HUD_MSG_EVENT: // Hero tank unit damaged, and some system messages
+      case ::HUD_MSG_DAMAGE: // Hero air unit damaged
+      case ::HUD_MSG_ENEMY_DAMAGE: // Hero target air unit damaged
+      case ::HUD_MSG_ENEMY_CRITICAL_DAMAGE: // Hero target air unit damaged
+      case ::HUD_MSG_ENEMY_FATAL_DAMAGE: // Hero target air unit damaged
+      case ::HUD_MSG_DEATH_REASON: // Hero unit destroyed, killer name
+      case ::HUD_MSG_EVENT: // Hero tank unit damaged, and some system messages
       case historyLogCustomMsgType: // Custom messages sent by script
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + colorize("commonTextColor", text)
+        return timestamp + ::colorize("commonTextColor", text)
         break
       default:
         return ""
@@ -1379,11 +1369,11 @@ let weaponIconsReloadBits = {
 
   function setHotkeysToObjTooltips(scanObj, objects)
   {
-    if (checkObj(scanObj))
+    if (::checkObj(scanObj))
       foreach (objId, keys in objects)
       {
         let obj = scanObj.findObject(objId)
-        if (checkObj(obj))
+        if (::checkObj(obj))
         {
           local hotkeys = ""
           if ("shortcuts" in keys)
@@ -1400,18 +1390,18 @@ let weaponIconsReloadBits = {
               if (shortcutsText != "")
                 locNames.append(shortcutsText)
             }
-            hotkeys = ::g_string.implode(locNames, loc("ui/comma"))
+            hotkeys = ::g_string.implode(locNames, ::loc("ui/comma"))
           }
           else if ("keys" in keys)
           {
-            let keysLocalized = u.map(keys.keys, loc)
-            hotkeys = ::g_string.implode(keysLocalized, loc("ui/comma"))
+            let keysLocalized = u.map(keys.keys, ::loc)
+            hotkeys = ::g_string.implode(keysLocalized, ::loc("ui/comma"))
           }
 
           if (hotkeys != "")
           {
             let tooltip = obj?.tooltip ?? ""
-            let add = "<color=@hotkeyColor>" + loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
+            let add = "<color=@hotkeyColor>" + ::loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
             obj.tooltip = tooltip + add
           }
         }
@@ -1440,7 +1430,7 @@ let weaponIconsReloadBits = {
   onAnchorMarkerClick = @(obj) move_to_anchor(obj.id.tointeger())
 
   function fillAnchorsMarkers() {
-    if (!canControlTimeline || !hasFeature("replayRewind"))
+    if (!canControlTimeline || !::has_feature("replayRewind"))
       return
     let anchors = get_replay_anchors()
     if (anchors.len() == 0 || replayTimeTotal <= 0)
@@ -1453,7 +1443,7 @@ let weaponIconsReloadBits = {
         return {
           idx
           posX = $"{anchorTimeS/timeTotal}pw - 2@dp"
-          tooltip = loc("replay/move_to_time", {
+          tooltip = ::loc("replay/move_to_time", {
             time = time.preciseSecondsToString(anchorTimeS) })
         }
       })
@@ -1479,7 +1469,7 @@ let weaponIconsReloadBits = {
     let member = ::SessionLobby.isInRoom() ? ::SessionLobby.getMemberByName(name) : null
     return member ? !!::SessionLobby.getMemberPublicParam(member, "spectator") : false
   }
-  return !!getTblValue("spectator", ::get_local_mplayer() || {}, 0)
+  return !!::getTblValue("spectator", ::get_local_mplayer() || {}, 0)
 }
 ::cross_call_api.isPlayerDedicatedSpectator <- ::isPlayerDedicatedSpectator
 

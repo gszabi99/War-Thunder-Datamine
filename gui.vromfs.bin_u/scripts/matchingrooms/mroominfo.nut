@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
 const MROOM_INFO_OUTDATE_TIME    = 600000
@@ -52,7 +45,7 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
       return
 
     lastRequestTime = ::dagor.getCurTime()
-    let cb = Callback(onRefreshCb, this)
+    let cb = ::Callback(onRefreshCb, this)
     ::matching_api_func("mrooms.get_room",
       function(p) { cb(p) },
       { roomId = roomId }

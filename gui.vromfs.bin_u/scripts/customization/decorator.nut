@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format, split_by_chars } = require("string")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
@@ -60,11 +53,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
       id = blk.getBlockName()
     }
 
-    unlockId = getTblValue("unlock", blk, "")
+    unlockId = ::getTblValue("unlock", blk, "")
     unlockBlk = ::g_unlocks.getUnlockById(unlockId)
-    limit = getTblValue("limit", blk, decoratorType.defaultLimitUsage)
-    category = getTblValue("category", blk, "")
-    group = getTblValue("group", blk, "")
+    limit = ::getTblValue("limit", blk, decoratorType.defaultLimitUsage)
+    category = ::getTblValue("category", blk, "")
+    group = ::getTblValue("group", blk, "")
 
     // Only decorators from live.warthunder.com has GUID in id.
     let slashPos = id.indexof("/")
@@ -112,7 +105,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function getName()
   {
     let name = decoratorType.getLocName(id)
-    return isRare() ? colorize(getRarityColor(), name) : name
+    return isRare() ? ::colorize(getRarityColor(), name) : name
   }
 
   function getDesc()
@@ -151,7 +144,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (countries == null)
       return false
 
-    return !isInArray(::getUnitCountry(unit), countries)
+    return !::isInArray(::getUnitCountry(unit), countries)
   }
 
   function isLockedByUnit(unit)
@@ -162,7 +155,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (::u.isEmpty(units))
       return false
 
-    return !isInArray(unit?.name, units)
+    return !::isInArray(unit?.name, units)
   }
 
   function getUnitTypeLockIcon()
@@ -189,21 +182,21 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!::u.isEmpty(units))
     {
       let visUnits = ::u.filter(units, @(u) ::getAircraftByName(u)?.isInShop)
-      important.append(loc("options/unit") + loc("ui/colon") +
-        ::g_string.implode(::u.map(visUnits, @(u) ::getUnitName(u)), loc("ui/comma")))
+      important.append(::loc("options/unit") + ::loc("ui/colon") +
+        ::g_string.implode(::u.map(visUnits, @(u) ::getUnitName(u)), ::loc("ui/comma")))
     }
 
     if (countries)
     {
-      let visCountries = ::u.filter(countries, @(c) isInArray(c, shopCountriesList))
-      important.append(loc("events/countres") + " " +
-        ::g_string.implode(::u.map(visCountries, @(c) loc(c)), loc("ui/comma")))
+      let visCountries = ::u.filter(countries, @(c) ::isInArray(c, shopCountriesList))
+      important.append(::loc("events/countres") + " " +
+        ::g_string.implode(::u.map(visCountries, @(c) ::loc(c)), ::loc("ui/comma")))
     }
 
     if (limit != -1)
-      common.append(loc("mainmenu/decoratorLimit", { limit = limit }))
+      common.append(::loc("mainmenu/decoratorLimit", { limit = limit }))
 
-    return colorize("warningTextColor", ::g_string.implode(important, "\n")) +
+    return ::colorize("warningTextColor", ::g_string.implode(important, "\n")) +
       (important.len() ? "\n" : "") + ::g_string.implode(common, "\n")
   }
 
@@ -217,8 +210,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!locations.len())
       return ""
 
-    return loc("camouflage/for_environment_conditions") +
-      loc("ui/colon") + ::g_string.implode(locations.map(@(l) colorize("activeTextColor", l)), ", ")
+    return ::loc("camouflage/for_environment_conditions") +
+      ::loc("ui/colon") + ::g_string.implode(locations.map(@(l) ::colorize("activeTextColor", l)), ", ")
   }
 
   function getTagsDesc()
@@ -227,8 +220,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!tagsLoc.len())
       return ""
 
-    tagsLoc = ::u.map(tagsLoc, @(txt) colorize("activeTextColor", txt))
-    return loc("ugm/tags") + loc("ui/colon") + ::g_string.implode(tagsLoc, loc("ui/comma"))
+    tagsLoc = ::u.map(tagsLoc, @(txt) ::colorize("activeTextColor", txt))
+    return ::loc("ugm/tags") + ::loc("ui/colon") + ::g_string.implode(tagsLoc, ::loc("ui/comma"))
   }
 
   function getCostText()
@@ -239,11 +232,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (cost.isZero())
       return ""
 
-    return loc("ugm/price")
-           + loc("ui/colon")
+    return ::loc("ugm/price")
+           + ::loc("ui/colon")
            + cost.getTextAccordingToBalance()
            + "\n"
-           + loc("shop/object/can_be_purchased")
+           + ::loc("shop/object/can_be_purchased")
   }
 
   function getSmallIcon()
@@ -253,7 +246,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function canBuyUnlock(unit)
   {
-    return isSuitableForUnit(unit) && !isUnlocked() && !getCost().isZero() && hasFeature("SpendGold")
+    return isSuitableForUnit(unit) && !isUnlocked() && !getCost().isZero() && ::has_feature("SpendGold")
   }
 
   function canGetFromCoupon(unit)
@@ -324,7 +317,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (tagsVisibleBlk && tags)
       foreach (tagBlk in tagsVisibleBlk % "i")
         if (tags?[tagBlk.tag])
-          res.append(loc("content/tag/" + tagBlk.tag))
+          res.append(::loc("content/tag/" + tagBlk.tag))
     return res
   }
 
@@ -346,7 +339,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function _tostring()
   {
-    return format("Decorator(%s, %s%s)", toString(id), decoratorType.name,
+    return format("Decorator(%s, %s%s)", ::toString(id), decoratorType.name,
       unlockId == "" ? "" : (", unlock=" + unlockId))
   }
 
@@ -379,8 +372,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (processedUnitTypes.len() == 0)
       return ""
 
-    return colorize("activeTextColor", loc("ui/comma").join(
-      processedUnitTypes.map(@(unitType) loc($"mainmenu/type_{unitType}"))))
+    return ::colorize("activeTextColor", ::loc("ui/comma").join(
+      processedUnitTypes.map(@(unitType) ::loc($"mainmenu/type_{unitType}"))))
   }
 
   function getVehicleDesc()
@@ -388,6 +381,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
     let locUnitTypes = getLocAllowedUnitTypes()
     if (locUnitTypes == "")
       return ""
-    return $"{loc("mainmenu/btnUnits")}{loc("ui/colon")}{locUnitTypes}"
+    return $"{::loc("mainmenu/btnUnits")}{::loc("ui/colon")}{locUnitTypes}"
   }
 }

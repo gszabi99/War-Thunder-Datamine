@@ -1,6 +1,3 @@
-#explicit-this
-#no-root-fallback
-
 ::g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")
 ::g_script_reloader.loadOnce("%sqstd/math.nut")
 

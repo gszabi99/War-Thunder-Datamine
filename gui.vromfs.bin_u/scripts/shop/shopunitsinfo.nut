@@ -1,21 +1,16 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 
-let shopPromoteUnits = persist("shopPromoteUnits", @() Watched({}))
+local shopPromoteUnits = {}
 local countDefaultUnitsByCountry = null
 
 let function fillPromoteUnitsList(blk, unit) {
   if(blk?.beginPurchaseDate != null && blk?.endPurchaseDate != null){
-    shopPromoteUnits.mutate(@(v) v[unit.name] <- {
+    shopPromoteUnits[unit.name] <- {
       unit = unit
       timeStart = getTimestampFromStringUtc(blk.beginPurchaseDate)
       timeEnd = getTimestampFromStringUtc(blk.endPurchaseDate)
-    })
+    }
   }
 }
 

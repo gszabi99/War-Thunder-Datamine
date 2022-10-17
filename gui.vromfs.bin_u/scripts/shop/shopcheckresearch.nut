@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -41,7 +32,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function initScreen()
   {
-    let unitName = getTblValue(::researchedUnitForCheck, researchBlock)
+    let unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
     curAirName = unitName
     researchedUnit = ::getAircraftByName(unitName)
     unitCountry = researchBlock.country
@@ -109,8 +100,8 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     let reqUnits = max(0, unitsNeed - unitsCount)
     if (reqUnits > 0)
     {
-      let text = loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
-                    + loc("shop/unlockTier/reqBoughtUnitsPrevRank", {amount = reqUnits, prevRank = ::get_roman_numeral(rank)})
+      let text = ::loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
+                    + ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", {amount = reqUnits, prevRank = ::get_roman_numeral(rank)})
       this.msgBox("locked_rank", text, [["ok", function(){}]], "ok", { cancel_fn = function(){}})
     }
   }
@@ -118,13 +109,13 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function updateHeaderText()
   {
     let headerObj = scene.findObject("shop_header")
-    if (!checkObj(headerObj))
+    if (!::checkObj(headerObj))
       return
 
     let expText = ::get_flush_exp_text(availableFlushExp)
-    local headerText = loc("mainmenu/nextResearch/title")
+    local headerText = ::loc("mainmenu/nextResearch/title")
     if (expText != "")
-      headerText += loc("ui/parentheses/space", {text = expText})
+      headerText += ::loc("ui/parentheses/space", {text = expText})
     headerObj.setValue(headerText)
   }
 
@@ -137,7 +128,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function updateCurResearchingUnit()
   {
     let curUnitName = ::shop_get_researchable_unit_name(unitCountry, unitType)
-    if (curUnitName == getTblValue("name", curResearchingUnit, ""))
+    if (curUnitName == ::getTblValue("name", curResearchingUnit, ""))
       return
 
     curResearchingUnit = ::getAircraftByName(curUnitName)
@@ -160,7 +151,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     local unit = null
     foreach (newUnit in ::all_units)
       if (!unitCountry || unitCountry == ::getUnitCountry(newUnit))
-        if (getTblValue("rank", newUnit, 0) > getTblValue("rank", unit, 0))
+        if (::getTblValue("rank", newUnit, 0) > ::getTblValue("rank", unit, 0))
           if (unitType == ::get_es_unit_type(newUnit)
               && !::isUnitSpecial(newUnit)
               && ::canBuyUnit(newUnit)
@@ -261,7 +252,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     let steps = [
       {
         obj = unitsObj
-        text = loc("tutorials/research_next_aircraft")
+        text = ::loc("tutorials/research_next_aircraft")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -277,7 +268,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function getDefaultUnitInGroup(unitGroup)
   {
-    let unitsList = getTblValue("airsGroup", unitGroup)
+    let unitsList = ::getTblValue("airsGroup", unitGroup)
     if (!unitsList)
       return null
 
@@ -291,12 +282,12 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       else if (!res && (::canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
         res = unit
 
-    return res || getTblValue(0, unitsList)
+    return res || ::getTblValue(0, unitsList)
   }
 
   function updateButtons()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     updateRepairAllButton()
@@ -315,7 +306,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     showNavButton("btn_buy_unit", showBuyUnit)
     if (showBuyUnit)
     {
-      let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
+      let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
       let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
       placePriceTextToButton(navBarObj,      "btn_buy_unit", locText, unitCost)
       placePriceTextToButton(navBarGroupObj, "btn_buy_unit", locText, unitCost)
@@ -331,18 +322,18 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     {
       let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
       let flushExp = reqExp < availableFlushExp ? reqExp : availableFlushExp
-      let textSample = loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
-      let textValue = flushExp ? loc("ui/parentheses/space",
+      let textSample = ::loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
+      let textValue = flushExp ? ::loc("ui/parentheses/space",
         {text = ::Cost().setRp(flushExp).tostring()}) : ""
       coloredText = format(textSample, textValue)
     }
 
     foreach(navBar in [navBarObj, navBarGroupObj])
     {
-      if (!checkObj(navBar))
+      if (!::checkObj(navBar))
         continue
       let spendExpBtn = navBar.findObject("btn_spend_exp")
-      if (!checkObj(spendExpBtn))
+      if (!::checkObj(spendExpBtn))
         continue
 
       spendExpBtn.inactive = showSpendBtn? "no" : "yes"
@@ -457,7 +448,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   {
     destroyGroupChoose()
     let curResName = ::shop_get_researchable_unit_name(unitCountry, unitType)
-    if (getTblValue("name", lastResearchUnit, "") != curResName)
+    if (::getTblValue("name", lastResearchUnit, "") != curResName)
       setUnitOnResearch(::getAircraftByName(curResName))
 
     ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
@@ -465,7 +456,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function onEventModalWndDestroy(params)
   {
-    let closedHandler = getTblValue("handler", params, null)
+    let closedHandler = ::getTblValue("handler", params, null)
     if (!closedHandler)
       return
 
@@ -524,7 +515,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
         {
           let airBlk = rblk.getBlock(a)
           let airName = airBlk.getBlockName()
-          local air = ::getAircraftByName(airName)
+          local air = getAircraftByName(airName)
           if (!air)
           {
             let groupTotal = airBlk.blockCount()
@@ -537,14 +528,14 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
             for(local ga=0; ga<groupTotal; ga++)
             {
               let gAirBlk = airBlk.getBlock(ga)
-              air = ::getAircraftByName(gAirBlk.getBlockName())
+              air = getAircraftByName(gAirBlk.getBlockName())
               if (!air)
                 resText += ((resText!="")? "\n":"") + "Not found aircraft " + gAirBlk.getBlockName() + " in " + country
             }
           } else
             if ((airBlk?.reqAir ?? "") != "")
             {
-              let reqAir = ::getAircraftByName(airBlk.reqAir)
+              let reqAir = getAircraftByName(airBlk.reqAir)
               if (!reqAir && !isInArray(airBlk.reqAir, groups))
                 resText += ((resText!="")? "\n":"") + "Not found reqAir " + airBlk.reqAir + " for " + airName + " in " + country
             }
@@ -553,7 +544,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     }
   }
   if (resText=="")
-    log("Shop.blk checked.")
+    ::dagor.debug("Shop.blk checked.")
   else
-    ::dagor.fatal("Incorrect shop.blk!\n" + resText)
+    dagor.fatal("Incorrect shop.blk!\n" + resText)
 }

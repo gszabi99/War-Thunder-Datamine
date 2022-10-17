@@ -1,14 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
-  let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -41,11 +32,11 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
     let nextReward = getNextReward(rewardBlk, event)
 
     let rewardDescriptionData = {
-      tournamentName = colorize("userlogColoredText", ::events.getNameByEconomicName(eventEconomicName))
+      tournamentName = ::colorize("userlogColoredText", ::events.getNameByEconomicName(eventEconomicName))
     }
 
     let view = {
-      rewardDescription = loc("tournaments/reward/description", rewardDescriptionData)
+      rewardDescription = ::loc("tournaments/reward/description", rewardDescriptionData)
       conditionText     = getConditionText(rewardBlk)
       conditionIcon     = getConditionIcon(getRewardCondition(rewardBlk))
       rewardIcon        = getRewardIcon(rewardBlk)

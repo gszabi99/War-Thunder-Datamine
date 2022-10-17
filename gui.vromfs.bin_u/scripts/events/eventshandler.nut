@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -22,7 +14,7 @@ let { needShowOverrideSlotbar, getCustomViewCountryData } = require("%scripts/ev
 let { eachParam } = require("%sqstd/datablock.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -50,7 +42,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   local eventId = null
-  local chapterId = getTblValue ("chapter", options, null)
+  local chapterId = ::getTblValue ("chapter", options, null)
 
   if (chapterId)
   {
@@ -62,12 +54,12 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     }
   }
 
-  eventId = eventId || getTblValue("event", options, null)
+  eventId = eventId || ::getTblValue("event", options, null)
 
   if (eventId == null)
   {
     local lastPlayedEvent = ::events.getLastPlayedEvent()
-    eventId = getTblValue("name", lastPlayedEvent, ::events.getFeaturedEvent())
+    eventId = ::getTblValue("name", lastPlayedEvent, ::events.getFeaturedEvent())
     chapterId = ::events.getEventsChapter(::events.getEvent(eventId))
   }
 
@@ -107,7 +99,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
     eventsListObj = scene.findObject("items_list")
-    if (!checkObj(eventsListObj))
+    if (!::checkObj(eventsListObj))
       return goBack()
 
     updateMouseMode()
@@ -179,7 +171,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function selectEvent(eventId)
   {
-    if (eventId == "" || !checkObj(eventsListObj))
+    if (eventId == "" || !::checkObj(eventsListObj))
       return false
     for(local i = 0; i < eventsListObj.childrenCount(); i++)
       if (eventsListObj.getChild(i).id == eventId)
@@ -264,8 +256,8 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     canAskAboutRoomsList = false
     ::gui_handlers.InfoWnd.openChecked({
       checkId = "askOpenRoomsList"
-      header = loc("multiplayer/hint")
-      message = loc("multiplayer/rooms_list/askToOpen")
+      header = ::loc("multiplayer/hint")
+      message = ::loc("multiplayer/rooms_list/askToOpen")
       buttons = [
         {
           text = "#multiplayer/rooms_list"
@@ -281,7 +273,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   function onLeaveEvent()
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
-                                             Callback(onLeaveEventActions, this)))
+                                             ::Callback(onLeaveEventActions, this)))
       return
     else
       onLeaveEventActions()
@@ -330,7 +322,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   function onOpenClusterSelect(obj)
   {
     ::queues.checkAndStart(
-      Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
+      ::Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
   }
@@ -373,7 +365,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function restoreQueueParams()
   {
-    if (!queueToShow || !checkObj(scene))
+    if (!queueToShow || !::checkObj(scene))
       return
 
     skipCheckQueue = true
@@ -407,7 +399,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function onHoveredItemSelect(obj)
   {
-    if (hoveredIdx != -1 && checkObj(eventsListObj))
+    if (hoveredIdx != -1 && ::check_obj(eventsListObj))
       eventsListObj.setValue(hoveredIdx)
   }
 
@@ -467,7 +459,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       options = optionsData.options
       optionsConfig = optionsData.context
       wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
-      wndGameMode = GM_DOMINATION
+      wndGameMode = ::GM_DOMINATION
       align = ALIGN.TOP
       alignObj = obj
       columnsRatio = 0.6
@@ -491,7 +483,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function onEventItemBought(params)
   {
-    let item = getTblValue("item", params)
+    let item = ::getTblValue("item", params)
     if (item && item.isForEvent(curEventId))
       updateButtons()
   }
@@ -506,7 +498,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     let queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
     let queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
       scene = queueObj,
-      leaveQueueCb = Callback(onLeaveEvent, this)
+      leaveQueueCb = ::Callback(onLeaveEvent, this)
     })
     registerSubHandler(queueHandler)
     queueInfoHandlerWeak = queueHandler
@@ -550,7 +542,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     local startText = "events/join_event"
     if (isSquadMember)
       startText = isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady"
-    startText = loc(startText)
+    startText = ::loc(startText)
 
     // Used for proper button width calculation.
     local uncoloredStartText = startText
@@ -573,7 +565,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (isShowCollapseBtn)
     {
       let isCollapsedChapter = getCollapsedChapters()?[curChapterId]
-      startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+      startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
 
@@ -590,7 +582,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (needDownloadPack && packBtn)
     {
       packBtn.tooltip = ::get_pkg_loc_name(pack)
-      packBtn.setValue(loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
+      packBtn.setValue(::loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
     }
 
     this.showSceneBtn("btn_queue_options", isCurItemInFocus && isEvent
@@ -663,11 +655,11 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       let isPlatformOnlyAllowed = ::events.isEventPlatformOnlyAllowed(event)
       text = getTextWithCrossplayIcon(!isPlatformOnlyAllowed, text)
       if (!isPlatformOnlyAllowed && !isCrossPlayEnabled())
-        text = colorize("warningTextColor", text)
+        text = ::colorize("warningTextColor", text)
     }
 
     if (::events.isEventEnded(event))
-      text = colorize("oldTextColor", text)
+      text = ::colorize("oldTextColor", text)
 
     return text
   }
@@ -710,7 +702,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     foreach (eventName in curChapter.getEvents())
     {
       let eventObj = eventsListObj.findObject(eventName)
-      if( ! checkObj(eventObj))
+      if( ! ::checkObj(eventObj))
         continue
       eventObj.show(collapsed)
       eventObj.enable(collapsed)
@@ -766,8 +758,8 @@ let function openEventsWndFromPromo(owner, params = []) {
 }
 
 let getEventsPromoText = @() ::events.getEventsVisibleInEventsWindowCount() == 0
-  ? loc("mainmenu/events/eventlist_btn_no_active_events")
-  : loc("mainmenu/btnTournamentsAndEvents")
+  ? ::loc("mainmenu/events/eventlist_btn_no_active_events")
+  : ::loc("mainmenu/btnTournamentsAndEvents")
 
 addPromoAction("events", @(handler, params, obj) openEventsWndFromPromo(handler, params))
 
@@ -776,7 +768,7 @@ let promoButtonId = "events_mainmenu_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   getText = getEventsPromoText
-  collapsedIcon = loc("icon/events")
+  collapsedIcon = ::loc("icon/events")
   getCustomSeenId = @() bhvUnseen.makeConfigStr(SEEN.EVENTS, SEEN.S_EVENTS_WINDOW)
   updateFunctionInHandler = function() {
     let id = promoButtonId
@@ -786,14 +778,14 @@ addPromoButtonConfig({
       buttonObj = ::showBtn(id, show, scene)
     else
     {
-      show = hasFeature("Events")
+      show = ::has_feature("Events")
         && ::events.getEventsVisibleInEventsWindowCount()
         && isMultiplayerPrivilegeAvailable.value
         && ::g_promo.getVisibilityById(id)
       buttonObj = ::showBtn(id, show, scene)
     }
 
-    if (!show || !checkObj(buttonObj))
+    if (!show || !::checkObj(buttonObj))
       return
 
     ::g_promo.setButtonText(buttonObj, id, getEventsPromoText())

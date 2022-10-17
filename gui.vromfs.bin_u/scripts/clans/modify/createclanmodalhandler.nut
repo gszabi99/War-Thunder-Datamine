@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 ::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
@@ -27,7 +20,7 @@ let { format } = require("string")
     }
 
     return {
-      windowHeader = loc("clan/new_clan_wnd_title")
+      windowHeader = ::loc("clan/new_clan_wnd_title")
       hasClanTypeSelect = ::g_clans.clanTypesEnabled()
       clanTypeItems = clanTypeItems
       hasClanNameSelect = true
@@ -50,7 +43,7 @@ let { format } = require("string")
         continue
       let typeTextId = getTypeTextId(clanType)
       let typeTextObj = scene.findObject(typeTextId)
-      if (checkObj(typeTextObj))
+      if (::checkObj(typeTextObj))
         typeTextObj.setValue(clanType.getCreateCost().getTextAccordingToBalance())
     }
   }
@@ -74,7 +67,7 @@ let { format } = require("string")
 
   function onClanTypeSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
     prepareClanData(false, true)
     updateTagMaxLength()
@@ -92,7 +85,7 @@ let { format } = require("string")
   function updateSubmitButtonText()
   {
     let createCost = newClanType.getCreateCost()
-    setSubmitButtonText(loc("clan/create_clan_submit_button"), createCost)
+    setSubmitButtonText(::loc("clan/create_clan_submit_button"), createCost)
   }
 
   function createClan(createCost)
@@ -123,7 +116,7 @@ let { format } = require("string")
       createClan(createCost)
     else if (::check_balance_msgBox(createCost))
     {
-      let msgText = ::warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
+      let msgText = warningIfGold(format(::loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
       this.msgBox("need_money", msgText, [["ok", function() { createClan(createCost) } ],

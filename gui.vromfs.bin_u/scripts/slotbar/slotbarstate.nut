@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let function isCountrySlotbarHasUnits(countryId) {

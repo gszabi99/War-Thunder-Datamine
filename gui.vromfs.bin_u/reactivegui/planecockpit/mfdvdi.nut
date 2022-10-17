@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {VdiColor} = require("%rGui/planeState/planeToolsState.nut")
 let baseLineWidth = hdpx(2 * LINE_WIDTH)
 let {compassWrap} = require("%rGui/planeIlses/ilsCompasses.nut")

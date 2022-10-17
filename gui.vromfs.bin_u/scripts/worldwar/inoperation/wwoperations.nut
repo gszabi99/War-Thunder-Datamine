@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::g_operations <- {
   operationStatusById = {}
 
@@ -16,13 +9,13 @@ from "%scripts/dagui_library.nut" import *
 
 /******************* Public ********************/
 
-::g_operations.forcedFullUpdate <- function forcedFullUpdate()
+g_operations.forcedFullUpdate <- function forcedFullUpdate()
 {
   isUpdateRequired = true
   fullUpdate()
 }
 
-::g_operations.fullUpdate <- function fullUpdate()
+g_operations.fullUpdate <- function fullUpdate()
 {
   if (!isUpdateRequired)
     return
@@ -37,17 +30,17 @@ from "%scripts/dagui_library.nut" import *
   isUpdateRequired = false
 }
 
-::g_operations.getArmiesByStatus <- function getArmiesByStatus(status)
+g_operations.getArmiesByStatus <- function getArmiesByStatus(status)
 {
   return getCurrentOperation().armies.getArmiesByStatus(status)
 }
 
-::g_operations.getArmiesCache <- function getArmiesCache()
+g_operations.getArmiesCache <- function getArmiesCache()
 {
   return getCurrentOperation().armies.armiesByStatusCache
 }
 
-::g_operations.getAirArmiesNumberByGroupIdx <- function getAirArmiesNumberByGroupIdx(groupIdx,
+g_operations.getAirArmiesNumberByGroupIdx <- function getAirArmiesNumberByGroupIdx(groupIdx,
   overrideUnitType)
 {
   local armyCount = 0
@@ -63,7 +56,7 @@ from "%scripts/dagui_library.nut" import *
   return armyCount
 }
 
-::g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side)
+g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side)
 {
   let operationUnits = {}
   let blk = ::DataBlock()
@@ -86,7 +79,7 @@ from "%scripts/dagui_library.nut" import *
 
 /***************** Private ********************/
 
-::g_operations.getCurrentOperation <- function getCurrentOperation()
+g_operations.getCurrentOperation <- function getCurrentOperation()
 {
   let operationId = ::ww_get_operation_id()
   if (!(operationId in operationStatusById))
@@ -97,19 +90,19 @@ from "%scripts/dagui_library.nut" import *
 
 /************* onEvent Handlers ***************/
 
-::g_operations.onEventWWFirstLoadOperation <- function onEventWWFirstLoadOperation(params)
+g_operations.onEventWWFirstLoadOperation <- function onEventWWFirstLoadOperation(params)
 {
   isUpdateRequired = true
 }
 
-::g_operations.onEventWWLoadOperation <- function onEventWWLoadOperation(params)
+g_operations.onEventWWLoadOperation <- function onEventWWLoadOperation(params)
 {
   forcedFullUpdate()
 }
 
-::g_operations.onEventWWArmyPathTrackerStatus <- function onEventWWArmyPathTrackerStatus(params)
+g_operations.onEventWWArmyPathTrackerStatus <- function onEventWWArmyPathTrackerStatus(params)
 {
-  let armyName = getTblValue("army", params)
+  let armyName = ::getTblValue("army", params)
   getCurrentOperation().armies.updateArmyStatus(armyName)
 }
 

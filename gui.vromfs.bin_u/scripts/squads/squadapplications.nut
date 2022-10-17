@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
 let SquadApplicationsList = class
@@ -52,7 +45,7 @@ let SquadApplicationsList = class
     foreach (squad in applicationsList)
     {
       sid = squad.squadId
-      if (isInArray(sid, applicationsArr))
+      if (::isInArray(sid, applicationsArr))
         continue
 
       leadersArr.append(sid)
@@ -82,7 +75,7 @@ let SquadApplicationsList = class
 
     if (needPopup)
     {
-      let msg = colorize(popupTextColor,getDeniedPopupText(applicationsList[squadId]))
+      let msg = ::colorize(popupTextColor,getDeniedPopupText(applicationsList[squadId]))
       ::g_popups.add(null, msg)
     }
     deleteApplication(squadId)
@@ -126,7 +119,7 @@ let SquadApplicationsList = class
     {
       let leaderId = application.leaderId
 
-      let cb = Callback(function(r)
+      let cb = ::Callback(function(r)
                             {
                               application.leaderName <- getLeaderName(leaderId)
                             }, this)
@@ -145,7 +138,7 @@ let SquadApplicationsList = class
 
   function getDeniedPopupText(squad)
   {
-    return loc("multiplayer/squad/application/denied",
+    return ::loc("multiplayer/squad/application/denied",
              {
                name = squad?.leaderName || squad?.leaderId
              })

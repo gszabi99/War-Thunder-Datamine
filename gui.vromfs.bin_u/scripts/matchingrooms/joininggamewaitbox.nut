@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
@@ -42,12 +34,12 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     checkGameMode()
 
     let misData = ::SessionLobby.getMissionParams()
-    local msg = loc("wait/sessionJoin")
+    local msg = ::loc("wait/sessionJoin")
     if (::SessionLobby.status == lobbyStates.UPLOAD_CONTENT)
-      msg = loc("wait/sessionUpload")
+      msg = ::loc("wait/sessionUpload")
     if (misData)
-      msg = "".concat(msg, "\n\n", colorize("activeTextColor", getCurrentMissionGameMode()),
-        "\n", colorize("userlogColoredText", getCurrentMissionName()))
+      msg = "".concat(msg, "\n\n", ::colorize("activeTextColor", getCurrentMissionGameMode()),
+        "\n", ::colorize("userlogColoredText", getCurrentMissionName()))
 
     scene.findObject("msgText").setValue(msg)
   }
@@ -64,12 +56,12 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       if (::events.getEventDisplayType(event) != ::g_event_display_type.RANDOM_BATTLE)
         gameModeName = "event"
     }
-    return loc("multiplayer/" + gameModeName + "Mode")
+    return ::loc("multiplayer/" + gameModeName + "Mode")
   }
 
   function getCurrentMissionName()
   {
-    if (::get_game_mode() == GM_DOMINATION)
+    if (::get_game_mode() == ::GM_DOMINATION)
     {
       let event = ::SessionLobby.getRoomEvent()
       if (event)

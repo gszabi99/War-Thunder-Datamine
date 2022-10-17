@@ -1,16 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+global const max_deadzone = 0.5
+global const max_nonlinearity = 4
+global const max_camera_smooth = 0.9
 
-const MAX_DEADZONE = 0.5
-const MAX_NONLINEARITY = 4
-const MAX_CAMERA_SMOOTH = 0.9
+global const min_camera_speed = 0.5
+global const max_camera_speed = 8
 
-const MIN_CAMERA_SPEED = 0.5
-const MAX_CAMERA_SPEED = 8
-
-const MAX_SHORTCUTS = 3
+global const max_shortcuts = 3
 
 global enum CONTROL_TYPE {
   HEADER
@@ -30,7 +25,7 @@ global enum CONTROL_TYPE {
   BUTTON
 }
 
-global enum AXIS_DEVICES {
+enum AXIS_DEVICES {
   STICK,
   THROTTLE,
   GAMEPAD,
@@ -118,15 +113,4 @@ global enum ConflictGroups {
   PLANE_FIRE,
   HELICOPTER_FIRE,
   TANK_FIRE
-}
-
-return {
-  MAX_DEADZONE
-  MAX_NONLINEARITY
-  MAX_CAMERA_SMOOTH
-
-  MIN_CAMERA_SPEED
-  MAX_CAMERA_SPEED
-
-  MAX_SHORTCUTS
 }

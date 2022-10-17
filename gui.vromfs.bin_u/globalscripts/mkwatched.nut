@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 let {Watched} = require("frp")
 
 let function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null){

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
 const TIERS_NUMBER = 13
@@ -178,7 +173,7 @@ let function getDefaultPresetId(unitBlk) {
   return null
 }
 
-let createNameCustomPreset = @(idx) loc("shop/slotbarPresets/item", { number = idx + 1 })
+let createNameCustomPreset = @(idx) ::loc("shop/slotbarPresets/item", { number = idx + 1 })
 
 let getDefaultCustomPresetParams = @(idx) {
   name              = $"{CUSTOM_PRESET_PREFIX}{idx}"

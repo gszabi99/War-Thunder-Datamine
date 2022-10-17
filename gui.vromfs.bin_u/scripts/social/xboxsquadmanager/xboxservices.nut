@@ -1,11 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { isMultiplayerPrivilegeAvailable,
       checkAndShowMultiplayerPrivilegeWarning } = require("%scripts/user/xboxFeatures.nut")
+let mkWatched = require("%globalScripts/mkWatched.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { send_invitation } = require("%scripts/social/xboxSquadManager/impl.nut")
@@ -40,18 +36,18 @@ let function checkAndDisplayInviteRestiction() {
   if (!ignoreSystemInvite.value)
     return false
 
-  log($"XBOX SQUAD MANAGER: show invite warning restriction, {isMultiplayerPrivilegeAvailable.value}")
+  ::dagor.debug($"XBOX SQUAD MANAGER: show invite warning restriction, {isMultiplayerPrivilegeAvailable.value}")
   ignoreSystemInvite.update(false)
 
   if (!isMultiplayerPrivilegeAvailable.value)
     checkAndShowMultiplayerPrivilegeWarning()
   else
-    ::g_popups.add(loc("squad/name"), loc("squad/wait_until_battle_end"))
+    ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
 
   return true
 }
 
-let isMeLeaderByList = @(xboxIdsList) xboxIdsList?[0] == ::get_my_external_id(EPL_XBOXONE)
+let isMeLeaderByList = @(xboxIdsList) xboxIdsList?[0] == ::get_my_external_id(::EPL_XBOXONE)
 
 let function isMeLeader(xboxIdsList)
 {
@@ -68,7 +64,7 @@ let function isMeLeader(xboxIdsList)
     if (member.isMe())
       continue
     let contact = ::getContact(member.uid)
-    if (isInArray(contact?.xboxId, xboxIdsList)) //other xbox squad member in my squad already
+    if (::isInArray(contact?.xboxId, xboxIdsList)) //other xbox squad member in my squad already
       return true
   }
   return false
@@ -100,7 +96,7 @@ let function proceedExistedSquadsInfo(params)
     let maxMembers = squad?.data?.properties?.maxMembers ?? 0
     if (membersCount != 0 && membersCount >= maxMembers)
     {
-      ::g_popups.add(null, loc("matching/SQUAD_FULL"))
+      ::g_popups.add(null, ::loc("matching/SQUAD_FULL"))
       return
     }
   }
@@ -114,8 +110,8 @@ let function checkExistedSquads()
     return
   }
 
-  let cb = Callback(proceedExistedSquadsInfo, this)
-  ::matching_api_func("msquad.get_squads", cb, {players = squadExistCheckArray.value})
+  let cb = ::Callback(proceedExistedSquadsInfo, this)
+  matching_api_func("msquad.get_squads", cb, {players = squadExistCheckArray.value})
 }
 
 let function proceedContact(contact, needInviteUser = true)
@@ -136,13 +132,13 @@ let function proceedContact(contact, needInviteUser = true)
 let function validateList(xboxIdsList)
 {
   foreach (id in xboxIdsList)
-    if (!isInArray(id, lastReceivedUsersCache.value))
-      if (!proceedContact(::findContactByXboxId(id), true) && !isInArray(id, notFoundIds))
+    if (!::isInArray(id, lastReceivedUsersCache.value))
+      if (!proceedContact(::findContactByXboxId(id), true) && !::isInArray(id, notFoundIds))
         notFoundIds.append(id)
 
   foreach (id in lastReceivedUsersCache.value)
-    if (!isInArray(id, xboxIdsList))
-      if (!proceedContact(::findContactByXboxId(id), false) && !isInArray(id, notFoundIds))
+    if (!::isInArray(id, xboxIdsList))
+      if (!proceedContact(::findContactByXboxId(id), false) && !::isInArray(id, notFoundIds))
         notFoundIds.append(id)
 
   lastReceivedUsersCache.update(clone xboxIdsList)
@@ -158,7 +154,7 @@ let function checkFoundIds(p)
   {
     let contact = ::getContact(uid, data.nick)
     if (isLeader && !proceedContact(contact))
-      log($"XBOX_SQUAD_MANAGER: Not found xboxId {data.id} after charServer call")
+      ::dagor.debug($"XBOX_SQUAD_MANAGER: Not found xboxId {data.id} after charServer call")
 
     if (contact)
     {
@@ -181,7 +177,7 @@ let function requestUnknownIds(idsList)
   if (!idsList.len())
     return
 
-  requestUnknownXboxIds(idsList, {}, Callback(checkFoundIds, this))
+  requestUnknownXboxIds(idsList, {}, ::Callback(checkFoundIds, this))
 }
 
 let function checkSquadInvites(xboxIdsList)
@@ -235,14 +231,14 @@ let function updateSquadList(xboxIdsList = [], isScriptCall = false)
   if (!::isInMenu() || !::g_login.isLoggedIn())
   {
     needCheckSquadInvites = true
-    log($"XBOX SQUAD MANAGER: set needCheckSquadInvites <{needCheckSquadInvites}>; {toString(xboxIdsList)}")
+    ::dagor.debug($"XBOX SQUAD MANAGER: set needCheckSquadInvites <{needCheckSquadInvites}>; {::toString(xboxIdsList)}")
     suspendedData.update(clone xboxIdsList)
     return
   }
 
   if (!xboxIdsList || !xboxIdsList.len()) //C++ code return empty array when leader is in battle or offline
   {
-    log($"XBOX SQUAD MANAGER: show popup in updateSquadList, needCheckSquadInvites {needCheckSquadInvites}")
+    ::dagor.debug($"XBOX SQUAD MANAGER: show popup in updateSquadList, needCheckSquadInvites {needCheckSquadInvites}")
     invalidateCache()
     return
   }
@@ -252,11 +248,11 @@ let function updateSquadList(xboxIdsList = [], isScriptCall = false)
   {
     if (needCheckSquadInvites)
     {
-      log("XBOX SQUAD MANAGER: player is not a leader. Requested to check invites on squad update.")
+      ::dagor.debug("XBOX SQUAD MANAGER: player is not a leader. Requested to check invites on squad update.")
       checkSquadInvites(currentUsersListCache.value)
     }
     else {
-      log("XBOX SQUAD MANAGER: player is not a leader. Don't proceed invites.")
+      ::dagor.debug("XBOX SQUAD MANAGER: player is not a leader. Don't proceed invites.")
       invalidateCache()
     }
     return
@@ -264,7 +260,7 @@ let function updateSquadList(xboxIdsList = [], isScriptCall = false)
 
   notFoundIds.clear()
   validateList(xboxIdsList)
-  log($"XBOX SQUAD MANAGER: notFoundIds {notFoundIds.len()}")
+  ::dagor.debug($"XBOX SQUAD MANAGER: notFoundIds {notFoundIds.len()}")
 
   requestUnknownIds(notFoundIds)
 }
@@ -277,10 +273,10 @@ let function checkAfterFlight()
   if (isSquadStatusCheckedOnce.value)
     return
 
-  log($"XBOX SQUAD MANAGER: launch checkAfterFlight, suspendedData <{suspendedData.value}>; {::isInMenu()}")
+  ::dagor.debug($"XBOX SQUAD MANAGER: launch checkAfterFlight, suspendedData <{suspendedData.value}>; {::isInMenu()}")
   if (!::isInMenu())
   {
-    log("XBOX SQUAD MANAGER: launch checkAfterFlight, terminate process, not in menu.")
+    ::dagor.debug("XBOX SQUAD MANAGER: launch checkAfterFlight, terminate process, not in menu.")
     return
   }
 
@@ -292,8 +288,8 @@ let function checkAfterFlight()
 
   if (xboxIsGameStartedByInvite.value && !suspendedData.value && !isSquadStatusCheckedOnce.value && !::g_squad_manager.isInSquad())
   {
-    log($"XBOX SQUAD MANAGER: show popup in checkAfterFlight, needCheckSquadInvites {needCheckSquadInvites}")
-    ::g_popups.add(loc("squad/name"), loc("squad/wait_until_battle_end"))
+    ::dagor.debug($"XBOX SQUAD MANAGER: show popup in checkAfterFlight, needCheckSquadInvites {needCheckSquadInvites}")
+    ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
   }
 
   suspendedData.update(null)
@@ -303,7 +299,7 @@ let function isPlayerFromXboxSquadList(userXboxId = "")
 {
   checkAfterFlight()
 
-  return isInArray(userXboxId, currentUsersListCache.value)
+  return ::isInArray(userXboxId, currentUsersListCache.value)
 }
 
 let function sendSystemInvite(uid, name)
@@ -313,20 +309,20 @@ let function sendSystemInvite(uid, name)
 
   let contact = ::getContact(uid, name)
   if (contact.needCheckXboxId())
-    contact.getXboxId(Callback(function() {
-      if (!isInArray(contact.xboxId, currentUsersListCache.value))
+    contact.getXboxId(::Callback(function() {
+      if (!::isInArray(contact.xboxId, currentUsersListCache.value))
         @() send_invitation(contact.xboxId)
     }, this))
   else if (contact.xboxId != "")
   {
-    if (!isInArray(contact.xboxId, currentUsersListCache.value))
+    if (!::isInArray(contact.xboxId, currentUsersListCache.value))
       send_invitation(contact.xboxId)
   }
 }
 
 let function checkInviteRestrictions()
 {
-  log("XBOX SQUAD MANAGER: onEventXboxInviteAccepted")
+  ::dagor.debug("XBOX SQUAD MANAGER: onEventXboxInviteAccepted")
 
   if (checkAndDisplayInviteRestiction())
     return
@@ -334,7 +330,7 @@ let function checkInviteRestrictions()
   needCheckSquadInvites = true
   if (::is_in_flight())
   {
-    log("XBOX SQUAD MANAGER: Event: XboxInviteAccepted: quit mission")
+    ::dagor.debug("XBOX SQUAD MANAGER: Event: XboxInviteAccepted: quit mission")
     ::quit_mission()
   }
 }

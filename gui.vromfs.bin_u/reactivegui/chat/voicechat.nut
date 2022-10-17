@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let colors = require("%rGui/style/colors.nut")
 let voiceChatState = require("voiceChatState.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
@@ -18,15 +16,15 @@ let voiceChatElements = function() {
 
     children.insert(0, @() {
       watch = voiceChatMember.needShow
-      size = [fpx(400), SIZE_TO_CONTENT]
+      size = [::fpx(400), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
-      gap = fpx(6)
+      gap = ::fpx(6)
 
       children = [
         {
           rendObj = ROBJ_IMAGE
-          size = [fpx(18), fpx(26)]
-          image = Picture($"!ui/gameuiskin#voip_status.svg:{fpx(18)}:{fpx(26)}:K")
+          size = [::fpx(18), ::fpx(26)]
+          image = ::Picture($"!ui/gameuiskin#voip_status.svg:{::fpx(18)}:{::fpx(26)}:K")
           color = colors.menu.voiceChatIconActiveColor
         }
         @(){
@@ -58,7 +56,7 @@ let voiceChatWidget = @() {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_BOTTOM
-    gap = fpx(2)
+    gap = ::fpx(2)
     children = voiceChatElements()
     watch = voiceChatState.voiceChatMembers
   }

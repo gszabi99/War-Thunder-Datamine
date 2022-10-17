@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let chard = require("chard")
 
@@ -32,7 +27,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
     return
   }
 
-  let msgText = ::warningIfGold(format(loc("shop/needMoneyQuestion_retraining"),
+  let msgText = ::warningIfGold(format(::loc("shop/needMoneyQuestion_retraining"),
     cost.getTextAccordingToBalance()), cost)
   ::scene_msg_box("train_crew_unit", null, msgText,
     [ ["ok", function() {
@@ -61,8 +56,8 @@ let function createBatchTrainCrewRequestBlk(requestData) {
  * @param onError   - Callback func, MUST take 1 param: integer taskResult.
  */
 let function batchTrainCrew(requestData, taskOptions = null, onSuccess = null, onError = null, handler = null) {
-  let onTaskSuccess = onSuccess ? Callback(onSuccess, handler) : null
-  let onTaskError   = onError   ? Callback(onError,   handler) : null
+  let onTaskSuccess = onSuccess ? ::Callback(onSuccess, handler) : null
+  let onTaskError   = onError   ? ::Callback(onError,   handler) : null
 
   if (!requestData.len()) {
     if (onTaskSuccess)

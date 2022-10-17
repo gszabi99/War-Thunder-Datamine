@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 /*
   config = {
     onChangeValueCb = function(selValuesArray)   //callback on each value change
@@ -28,8 +21,6 @@ from "%scripts/dagui_library.nut" import *
   }
 */
 let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config)
 {
@@ -86,8 +77,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local mask = 0
     foreach(idx, option in list)
     {
-      option.show <- getTblValue("show", option, true)
-      mask = stdMath.change_bit(mask, idx, getTblValue("selected", option))
+      option.show <- ::getTblValue("show", option, true)
+      mask = stdMath.change_bit(mask, idx, ::getTblValue("selected", option))
     }
 
     initialBitMask = mask
@@ -97,7 +88,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function getCurValuesArray()
   {
     let selOptions = ::get_array_by_bit_value(currentBitMask, list)
-    return ::u.map(selOptions, function(o) { return getTblValue("value", o) })
+    return ::u.map(selOptions, function(o) { return ::getTblValue("value", o) })
   }
 
   function onChangeValue(obj)

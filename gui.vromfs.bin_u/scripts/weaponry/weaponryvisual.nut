@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
 let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
@@ -20,12 +15,12 @@ let function getBulletsCountText(curVal, maxVal, unallocated, guns)
 {
   local restText = ""
   if (unallocated && curVal < maxVal)
-    restText = colorize("userlogColoredText", format(" %s", loc("ui/parentheses",
+    restText = ::colorize("userlogColoredText", format(" %s", ::loc("ui/parentheses",
       { text = format("+%d", guns * min(unallocated, maxVal - curVal)) })))
   let valColor = (!curVal || maxVal == 0) ? "badTextColor"
     : (curVal == maxVal) ? "goodTextColor"
     : "activeTextColor"
-  let valText = colorize(valColor, guns * curVal)
+  let valText = ::colorize(valColor, guns * curVal)
   return format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
 }
 
@@ -74,7 +69,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
     hideStatus                = item?.hideStatus ?? params?.hideStatus ?? false
     needSliderButtons         = params?.needSliderButtons ?? false
     wideItemWithSlider        = params?.wideItemWithSlider ?? false
-    modUpgradeIcon            = hasFeature("ItemModUpgrade") ?
+    modUpgradeIcon            = ::has_feature("ItemModUpgrade") ?
       modUpgradeElem.createMarkup("mod_upgrade_icon") : null
     collapsable               = params?.collapsable ? "yes" : "no"
     modUpgradeIconValue       = null
@@ -146,7 +141,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
   if (bIcoItem)
   {
     let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
-    assert(unit?.isTank() || bulletsSet!=null,
+    ::dagor.assertf(unit?.isTank() || bulletsSet!=null,
           $"No bullets in bullets set {visualItem.name} for {unit.name}")
 
     res.iconBulletName = bIcoItem.name
@@ -197,7 +192,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
     {
       res.discountText = "".concat("-", discount, "%")
       res.discountTooltip = format(
-        loc("".concat("discount/", statusTbl.discountType, "/tooltip")), discount.tostring())
+        ::loc("".concat("discount/", statusTbl.discountType, "/tooltip")), discount.tostring())
     }
     if (priceText != "")
       priceText = "<color=@goodTextColor>" + priceText +"</color>"
@@ -205,7 +200,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
   res.nameTextWithPrice = res.nameText
   let spawnScoreCost = getFullItemCostText(unit, item, true)
   if (statusTbl.showPrice && (params?.canShowPrice ?? true) && spawnScoreCost != "")
-    res.nameTextWithPrice = "".concat(res.nameTextWithPrice, loc("ui/parentheses/space", {text = spawnScoreCost}))
+    res.nameTextWithPrice = "".concat(res.nameTextWithPrice, ::loc("ui/parentheses/space", {text = spawnScoreCost}))
   let showProgress = isResearchInProgress || isResearchPaused
   res.isShowPrice = !showProgress && (statusTbl.showPrice || canResearch)
   res.hideProgressBlock = !showProgress
@@ -229,7 +224,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
       let showExp = itemReqExp - statusTbl.modExp
       local rpText = ::Cost().setRp(showExp).tostring()
       if (flushExp > 0 && flushExp >= showExp)
-        rpText = colorize("goodTextColor", rpText)
+        rpText = ::colorize("goodTextColor", rpText)
       res.priceText = rpText
     }
   }
@@ -287,21 +282,21 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
   {
     local btnText = ""
     if (res.isBundle)
-      btnText = loc("mainmenu/btnAirGroupOpen")
+      btnText = ::loc("mainmenu/btnAirGroupOpen")
     else if (isOwn && statusTbl.unlocked)
     {
       if (!statusTbl.amount || (visualItem.type == weaponsItem.spare && statusTbl.canBuyMore))
-        btnText = loc("mainmenu/btnBuy")
+        btnText = ::loc("mainmenu/btnBuy")
       else if (isSwitcher && !statusTbl.equipped)
-        btnText = loc("mainmenu/btnSelect")
+        btnText = ::loc("mainmenu/btnSelect")
       else if (visualItem.type == weaponsItem.modification)
         btnText = statusTbl.equipped ?
-          (canBeDisabled ? loc("mod/disable") : "") : loc("mod/enable")
+          (canBeDisabled ? ::loc("mod/disable") : "") : ::loc("mod/enable")
     }
     else if (canResearchItem(unit, visualItem) ||
       (canResearchItem(unit, visualItem, false) &&
       (flushExp > 0 || !canShowResearch)))
-      btnText = loc("mainmenu/btnResearch")
+      btnText = ::loc("mainmenu/btnResearch")
     btnText = params?.actionBtnText ?? btnText
     res.actionBtnCanShow = btnText == "" ? "no" : "yes"
     res.actionBtnText = btnText
@@ -311,23 +306,23 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
     if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
       altBtnText = getItemUnlockCost(unit, item).tostring()
     if (altBtnText != "")
-      altBtnText = loc("mainmenu/btnBuy") + loc("ui/parentheses/space", {text = altBtnText})
+      altBtnText = ::loc("mainmenu/btnBuy") + ::loc("ui/parentheses/space", {text = altBtnText})
     else if (visualItem.type == weaponsItem.spare && isOwn)
     {
       if (::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE).len() && statusTbl.canBuyMore)
       {
-        altBtnText = loc("items/universalSpare/activate", { icon = loc("icon/universalSpare") })
-        altBtnTooltip = loc("items/universalSpare/activate/tooltip")
+        altBtnText = ::loc("items/universalSpare/activate", { icon = ::loc("icon/universalSpare") })
+        altBtnTooltip = ::loc("items/universalSpare/activate/tooltip")
       }
     }
     else if (statusTbl.amount && statusTbl.maxAmount > 1 && statusTbl.amount < statusTbl.maxAmount
       && !res.isBundle)
-        altBtnText = loc("mainmenu/btnBuy")
+        altBtnText = ::loc("mainmenu/btnBuy")
     else if (visualItem.type == weaponsItem.modification
       && isOwn
       && statusTbl.curUpgrade < statusTbl.maxUpgrade
       && ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len())
-        altBtnText = loc("mainmenu/btnUpgrade")
+        altBtnText = ::loc("mainmenu/btnUpgrade")
     res.altBtnCanShow = (altBtnText == "") ? "no" : "yes"
     res.altBtnTooltip = altBtnTooltip
     res.altBtnBuyText = altBtnText
@@ -348,13 +343,13 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId
   let tooltipObj = itemObj.findObject(isTooltipByHold ? "centralBlock" : $"tooltip_{id}")
-  if (checkObj(tooltipObj))
+  if (::check_obj(tooltipObj))
     tooltipObj.tooltipId = tooltipId
 
   if (viewParams.iconBulletName != "")
   {
     let divObj = itemObj.findObject("bullets")
-    if (checkObj(divObj))
+    if (::check_obj(divObj))
     {
       divObj._iconBulletName = viewParams.iconBulletName
       let data = ::handyman.renderCached(("%gui/weaponry/bullets"), viewParams.bulletImg)
@@ -373,7 +368,7 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   if (viewParams.isShowDiscount)
   {
     let dObj = itemObj.findObject("discount")
-    if(checkObj(dObj))
+    if(::check_obj(dObj))
     {
       dObj.setValue(viewParams.discountText)
       dObj.tooltip = viewParams.discountTooltip
@@ -381,14 +376,14 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   }
 
   let priceObj = itemObj.findObject("price")
-  if (checkObj(priceObj))
+  if (::check_obj(priceObj))
   {
     priceObj.setValue(viewParams.priceText)
     priceObj.show(viewParams.isShowPrice)
   }
 
   let progressBlock = itemObj.findObject("mod_research_block")
-  if (checkObj(progressBlock))
+  if (::check_obj(progressBlock))
   {
     progressBlock.show(!viewParams.hideProgressBlock)
     if (!viewParams.hideProgressBlock)
@@ -408,14 +403,14 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   itemObj.equipped = viewParams.optEquipped
   itemObj.status = viewParams.optStatus
   let iconObj = itemObj.findObject("icon")
-  if (checkObj(iconObj))
+  if (::check_obj(iconObj))
   {
     iconObj.equipped = viewParams.optEquipped
     iconObj.status = viewParams.optStatus
   }
 
   let amountObject = itemObj.findObject("amount")
-  if (checkObj(amountObject))
+  if (::check_obj(amountObject))
   {
     amountObject.setValue(viewParams.amountText)
     amountObject.overlayTextColor = viewParams.amountTextColor
@@ -427,27 +422,27 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   {
     let holderObj = ::showBtn("bullets_amount_choice_block", true, itemObj)
     let textObj = holderObj.findObject("bulletsCountText")
-    if (checkObj(textObj))
+    if (::check_obj(textObj))
       textObj.setValue(viewParams.bulletsCountText)
     if(viewParams.needSliderButtons)
     {
       let btnDec = holderObj.findObject("buttonDec")
-      if (checkObj(btnDec))
+      if (::check_obj(btnDec))
         btnDec.bulletsLimit = viewParams.decBulletsLimit
 
       let btnIncr = holderObj.findObject("buttonInc")
-      if (checkObj(btnIncr))
+      if (::check_obj(btnIncr))
         btnIncr.bulletsLimit = viewParams.incBulletsLimit
     }
 
     let slidObj = holderObj.findObject("bulletsSlider")
-    if (checkObj(slidObj))
+    if (::check_obj(slidObj))
     {
       slidObj.max = viewParams.sliderMax
       slidObj.setValue(viewParams.sliderValue)
     }
     let invSlidObj = holderObj.findObject("invisBulletsSlider")
-    if (checkObj(invSlidObj))
+    if (::check_obj(invSlidObj))
     {
       invSlidObj.groupIdx = viewParams.sliderGroupIdx
       invSlidObj.max = viewParams.invSliderMax
@@ -459,11 +454,11 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   ::showBtn("modItem_visualHasMenu", !viewParams.hideVisualHasMenu, itemObj)
 
   let upgradesObj = itemObj.findObject("upgrade_img")
-  if (checkObj(upgradesObj))
+  if (::check_obj(upgradesObj))
     upgradesObj.upgradeStatus = viewParams.modUpgradeStatus
 
   let statusIcon = itemObj.findObject("status_icon")
-  if (checkObj(statusIcon))
+  if (::check_obj(statusIcon))
     statusIcon["background-image"] = viewParams.statusIconImg
 
   modUpgradeElem.setValueToObj(itemObj.findObject("mod_upgrade_icon"), unit.name, item.name)
@@ -486,7 +481,7 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   if (viewParams.altBtnTooltip != "")
     altBtn.tooltip = viewParams.altBtnTooltip
   let textObj = altBtn.findObject("altBtnBuyText")
-  if (checkObj(textObj))
+  if (::check_obj(textObj))
     textObj.setValue(viewParams.altBtnBuyText)
 }
 
@@ -554,7 +549,7 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
 
   let cellObj = params?.cellSizeObj || bundleObj
   let cellSize = cellObj.getSize()
-  let extraHeight = to_pixels("2@modBundlePopupBgPadH + 1@modBundlePopupAdditionalBtnsHeight")
+  let extraHeight = ::to_pixels("2@modBundlePopupBgPadH + 1@modBundlePopupAdditionalBtnsHeight")
   hoverObj["height-end"] = (cellSize[1] * rows + extraHeight).tointeger().tostring()
   return bundleItem
 }
@@ -572,25 +567,25 @@ let function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
   let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
 
   let textObj = holderObj.findObject("bulletsCountText")
-  if (checkObj(textObj))
+  if (::check_obj(textObj))
     textObj.setValue(getBulletsCountText(curVal, maxVal, unallocated, guns))
 
   let btnDec = holderObj.findObject("buttonDec")
-  if (checkObj(btnDec))
+  if (::checkObj(btnDec))
     btnDec.bulletsLimit = curVal != 0? "no" : "yes"
 
   let btnIncr = holderObj.findObject("buttonInc")
-  if (checkObj(btnIncr))
+  if (::checkObj(btnIncr))
     btnIncr.bulletsLimit = (curVal != maxVal && unallocated != 0)? "no" : "yes"
 
   let slidObj = holderObj.findObject("bulletsSlider")
-  if (checkObj(slidObj))
+  if (::checkObj(slidObj))
   {
     slidObj.max = maxVal.tostring()
     slidObj.setValue(curVal)
   }
   let invSlidObj = holderObj.findObject("invisBulletsSlider")
-  if (checkObj(invSlidObj))
+  if (::checkObj(invSlidObj))
   {
     invSlidObj.groupIdx = bulGroup.groupIndex
     invSlidObj.max = maxVal.tostring()

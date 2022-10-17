@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let Root = function() {
   return {
     halign = ALIGN_LEFT

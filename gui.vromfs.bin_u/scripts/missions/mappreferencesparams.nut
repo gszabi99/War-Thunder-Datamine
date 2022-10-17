@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { split_by_chars } = require("string")
 let regexp2 = require("regexp2")
 let mapPreferences = require("mapPreferences")
@@ -75,15 +70,15 @@ let function getProfileBanData(curEvent)
 
 let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locName")
 {
-  local missionLocName = loc("missions/" + missionId)
+  local missionLocName = ::loc("missions/" + missionId)
   let locNameValue = config?[locNameKey]
   if (locNameValue && locNameValue.len())
-    missionLocName = isLevelBanMode ? loc(split_by_chars(locNameValue, "; ")?[1] ?? "") :
+    missionLocName = isLevelBanMode ? ::loc(split_by_chars(locNameValue, "; ")?[1] ?? "") :
       getMissionLocName(config, locNameKey)
 
   return isLevelBanMode
     ? ::g_string.implode([missionLocName,
-      loc("ui/parentheses/space", { text = loc("maps/preferences/all_missions") })], " ")
+      ::loc("ui/parentheses/space", { text = ::loc("maps/preferences/all_missions") })], " ")
     : missionLocName
 }
 
@@ -278,8 +273,8 @@ let function resetProfilePreferences(curEvent, pref)
 let function getPrefTitle(curEvent)
 {
   return ! hasPreferences(curEvent) ? ""
-    : curEvent.missionsBanMode == "level" ? loc("mainmenu/mapPreferences")
-    : loc("mainmenu/missionPreferences")
+    : curEvent.missionsBanMode == "level" ? ::loc("mainmenu/mapPreferences")
+    : ::loc("mainmenu/missionPreferences")
 }
 
 addListenersWithoutEnv({

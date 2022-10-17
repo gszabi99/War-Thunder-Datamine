@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 
@@ -69,14 +60,14 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     scene.type = "recentItems"
     numOtherItems = ::g_recent_items.getNumOtherItems()
 
-    let promoView = getTblValue(scene.id, ::g_promo.getConfig(), {})
+    let promoView = ::getTblValue(scene.id, ::g_promo.getConfig(), {})
     let otherItemsText = createOtherItemsText(numOtherItems)
     let view = {
       id = ::g_promo.getActionParamsKey(scene.id)
       items = ::handyman.renderCached("%gui/items/item", createItemsView(recentItems))
       otherItemsText = otherItemsText
       needAutoScroll = getStringWidthPx(otherItemsText, "fontNormal", guiScene)
-        > to_pixels("1@arrowButtonWidth") ? "yes" : "no"
+        > ::to_pixels("1@arrowButtonWidth") ? "yes" : "no"
       action = ::g_promo.PERFORM_ACTON_NAME
       collapsedAction = ::g_promo.PERFORM_ACTON_NAME
       collapsedText = ::g_promo.getCollapsedText(promoView, scene.id)
@@ -89,7 +80,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 
   function onItemAction(obj)
   {
-    let itemIndex = ::to_integer_safe(getTblValue("holderId", obj), -1)
+    let itemIndex = ::to_integer_safe(::getTblValue("holderId", obj), -1)
     if (itemIndex == -1 || !(itemIndex in recentItems))
       return
 
@@ -107,7 +98,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     if (!item.hasRecentItemConfirmMessageBox)
       return _doActivateItem(item, params)
 
-    let msgBoxText = loc("recentItems/useItem", {
+    let msgBoxText = ::loc("recentItems/useItem", {
       itemName = item.getName()
     })
 
@@ -115,7 +106,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     {
       if (isValid())
         this.msgBox("recent_item_confirmation", msgBoxText, [
-          ["ok", Callback(@() _doActivateItem(item, params), this)
+          ["ok", ::Callback(@() _doActivateItem(item, params), this)
           ], ["cancel", function () {}]], "ok")
     })
   }
@@ -137,9 +128,9 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 
   function createOtherItemsText(numItems)
   {
-    local text = loc("recentItems/otherItems")
+    local text = ::loc("recentItems/otherItems")
     if (numItems > 0)
-      text += loc("ui/parentheses/space", {text = numItems})
+      text += ::loc("ui/parentheses/space", {text = numItems})
     return text
   }
 

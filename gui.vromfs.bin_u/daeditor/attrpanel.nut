@@ -127,7 +127,7 @@ let function panelRowColorC(comp_fullname, stateFlags, selectedCompNameVal, isOd
   if (comp_fullname == selectedCompNameVal) {
     color = colors.Active
   } else {
-    color = (stateFlags & S_TOP_HOVER) ? colors.GridRowHover : isOdd ? colors.GridBg[0] : colors.GridBg[1]
+    color = (stateFlags & S_HOVER) ? colors.GridRowHover : isOdd ? colors.GridBg[0] : colors.GridBg[1]
   }
   return color
 }
@@ -215,7 +215,7 @@ let function panelCompRow(params={}) {
       }
       onHover = @(on) cursors.setTooltip(on ? mkCompTooltip(metaInfo) : null)
       eventPassThrough = true
-      onElemState = @(sf) stateFlags.update(sf & S_TOP_HOVER)
+      onElemState = @(sf) stateFlags.update(sf & S_HOVER)
       group = group
 
       children = [
@@ -402,7 +402,6 @@ let function panelButtons() {
     borderWidth = hdpx(1)
     padding = [0,hdpx(5)]
     eventPassThrough = true
-    watch = [selectedCompComp, selectedCompPath]
     children = {
       flow = FLOW_HORIZONTAL
       hplace = ALIGN_RIGHT
@@ -1083,7 +1082,7 @@ let function mkEntityRow(eid,_v,is_odd) {
     }
     onHover = @(_on) null
     eventPassThrough = true
-    onElemState = @(sf) stateFlags.update(sf & S_TOP_HOVER)
+    onElemState = @(sf) stateFlags.update(sf & S_HOVER)
     group = group
 
     children = [

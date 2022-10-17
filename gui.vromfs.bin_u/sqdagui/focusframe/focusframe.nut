@@ -1,8 +1,4 @@
-#explicit-this
-#no-root-fallback
-
 let focusTarget = require("%sqDagui/focusFrame/bhvFocusFrameTarget.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let focusAnim = require("%sqDagui/focusFrame/bhvFocusFrameAnim.nut")
 
 let animObjList = []
@@ -40,7 +36,7 @@ local focusFrame = {
     local curModalCounter = 0
     foreach(obj in animObjList)
     {
-      if (!check_obj(obj) || !obj.isVisible() || !obj.isEnabled())
+      if (!::check_obj(obj) || !obj.isVisible() || !obj.isEnabled())
         continue
 
       let modalCounter = obj.getModalCounter()
@@ -60,7 +56,7 @@ local focusFrame = {
   {
     curObj.getScene().performDelayed(this, function()
     {
-      if (!check_obj(curObj) || !check_obj(tgtObj))
+      if (!::check_obj(curObj) || !::check_obj(tgtObj))
         return
 
       if (shouldCheckDelayedBug && tgtObj.getSize()[0] == -1)
@@ -73,7 +69,7 @@ local focusFrame = {
   validateObjList = function()
   {
     for(local i = animObjList.len() - 1; i >= 0; i--)
-      if (!check_obj(animObjList[i]))
+      if (!::check_obj(animObjList[i]))
          animObjList.remove(i)
   }
 }

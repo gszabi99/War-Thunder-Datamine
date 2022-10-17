@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let seenInventory = require("%scripts/seen/seenList.nut").get(SEEN.INVENTORY)
 
 ::g_recent_items <- {
@@ -12,7 +5,7 @@ let seenInventory = require("%scripts/seen/seenList.nut").get(SEEN.INVENTORY)
   wasCreated = false
 }
 
-::g_recent_items.getRecentItems <- function getRecentItems()
+g_recent_items.getRecentItems <- function getRecentItems()
 {
   let items = ::ItemsManager.getInventoryList(itemType.INVENTORY_ALL, function (item) {
     return item.includeInRecentItems
@@ -31,23 +24,23 @@ let seenInventory = require("%scripts/seen/seenList.nut").get(SEEN.INVENTORY)
   return resultItems
 }
 
-::g_recent_items.createHandler <- function createHandler(owner, containerObj, defShow)
+g_recent_items.createHandler <- function createHandler(owner, containerObj, defShow)
 {
-  if (!checkObj(containerObj))
+  if (!::checkObj(containerObj))
     return null
 
   wasCreated = true
   return ::handlersManager.loadHandler(::gui_handlers.RecentItemsHandler, { scene = containerObj, defShow = defShow })
 }
 
-::g_recent_items.getNumOtherItems <- function getNumOtherItems()
+g_recent_items.getNumOtherItems <- function getNumOtherItems()
 {
   let inactiveItems = ::ItemsManager.getInventoryList(itemType.INVENTORY_ALL,
     @(item) !!item.getMainActionData())
   return inactiveItems.len()
 }
 
-::g_recent_items.reset <- function reset()
+g_recent_items.reset <- function reset()
 {
   wasCreated = false
 }

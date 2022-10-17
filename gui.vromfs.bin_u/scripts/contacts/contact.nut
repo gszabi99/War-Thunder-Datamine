@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { isPlayerFromXboxOne,
         isPlayerFromPS4,
         getPlayerName,
@@ -38,7 +31,7 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   presence = ::g_contact_presence.UNKNOWN
   forceOffline = false
-  isForceOfflineChecked = !is_platform_xbox
+  isForceOfflineChecked = !::is_platform_xbox
 
   voiceStatus = null
 
@@ -119,7 +112,7 @@ subscribe("playerProfileDialogClosed", function(r) {
     //clanTagsTable used in lists where not know userId, so not exist contact.
     //but require to correct work with contacts too
     if (name.len())
-      ::clanUserTable[name] <- clanTag
+      clanUserTable[name] <- clanTag
   }
 
   function getPresenceText()
@@ -128,10 +121,10 @@ subscribe("playerProfileDialogClosed", function(r) {
     if (presence == ::g_contact_presence.IN_QUEUE
         || presence == ::g_contact_presence.IN_GAME)
     {
-      let event = ::events.getEvent(getTblValue("eventId", gameConfig))
+      let event = ::events.getEvent(::getTblValue("eventId", gameConfig))
       locParams = {
         gameMode = event ? ::events.getEventNameText(event) : ""
-        country = loc(getTblValue("country", gameConfig, ""))
+        country = ::loc(::getTblValue("country", gameConfig, ""))
       }
     }
     return presence.getText(locParams)
@@ -139,7 +132,7 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   function canOpenXBoxFriendsWindow(groupName)
   {
-    return isPlayerFromXboxOne(name) && groupName != EPL_BLOCKLIST
+    return isPlayerFromXboxOne(name) && groupName != ::EPL_BLOCKLIST
   }
 
   function openXBoxFriendsEdit()
@@ -174,7 +167,7 @@ subscribe("playerProfileDialogClosed", function(r) {
   }
 
   function openPSNContactEdit(groupName) {
-    if (groupName == EPL_BLOCKLIST)
+    if (groupName == ::EPL_BLOCKLIST)
       openPSNBlockUser()
     else
       openPSNReqFriend()
@@ -258,7 +251,7 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   function getInteractionStatus(needShowSystemMessage = false)
   {
-    if (!is_platform_xbox || isMe())
+    if (!::is_platform_xbox || isMe())
       return XBOX_COMMUNICATIONS_ALLOWED
 
     if (xboxId == "")
@@ -326,7 +319,7 @@ subscribe("playerProfileDialogClosed", function(r) {
     return (::contacts?[groupName] ?? []).findvalue(@(p) p.uid == userId ) != null
   }
 
-  isInFriendGroup = @() isInGroup(EPL_FRIENDLIST)
+  isInFriendGroup = @() isInGroup(::EPL_FRIENDLIST)
   isInPSNFriends = @() isInGroup(::EPLX_PS4_FRIENDS)
-  isInBlockGroup = @() isInGroup(EPL_BLOCKLIST)
+  isInBlockGroup = @() isInGroup(::EPL_BLOCKLIST)
 }

@@ -1,15 +1,7 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { Watched } = require("frp")
 let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let target_platform = ::get_platform()
-let is_platform_windows = ["win32", "win64"].contains(target_platform)
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
-let defaults = Watched({  //def value when feature not found in game_settings.blk
+let defaults = ::Watched({  //def value when feature not found in game_settings.blk
              // not in this list are false
   SpendGold = true
   SpendFreeRP = true
@@ -35,9 +27,10 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   QueueCustomEventRoom = false
   Invites = true
   Credits = true
-  EmbeddedBrowser = is_platform_windows
+  EmbeddedBrowser = ::is_platform_windows
   EmbeddedBrowserOnlineShop = false
 
+  Chat = true
   ChatThreadLang = false
   ChatThreadCategories = false
   ChatThreadCreate = true
@@ -114,6 +107,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   WorldWarReplay = false
   WorldWarSquadInfo = false
   WorldWarSquadInvite = false
+  WorldWarGlobalBattles = false
   WorldWarLeaderboards = false
   WorldWarCountryLeaderboard = false
 
@@ -281,6 +275,9 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   enableFollowBulletCamera = ::disable_network()
   ProtectionMap = false
   OrderAutoActivate = false
+  BattleChatModeAll = true
+  BattleChatModeTeam = true
+  BattleChatModeSquad = true
   WeaponryCustomPresets = false
   BattleAutoStart = false
 
@@ -290,12 +287,13 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   MachineGunsAmmoIndicator = false
 })
 
-let override = Watched({})
+let override = ::Watched({})
 let cache = {}
 
-defaults.subscribe(@(...) cache.clear())
+defaults.subscribe(@(v) cache.clear())
 
-let function hasFeatureBasic(name) {
+let function hasFeatureBasic(name)
+{
   local res = override.value?[name] ?? cache?[name]
   if (res != null)
     return res
@@ -308,7 +306,8 @@ let function hasFeatureBasic(name) {
   return res
 }
 
-let function getFeaturePack(name) {
+let function getFeaturePack(name)
+{
   let sBlk = ::get_game_settings_blk()
   let featureBlk = sBlk?.features[name]
   if (!isDataBlock(featureBlk))
@@ -316,13 +315,15 @@ let function getFeaturePack(name) {
   return featureBlk?.reqPack
 }
 
-let function hasFeature(name) {
+let function hasFeature(name)
+{
   if (name in cache)
     return cache[name]
 
   local confirmingResult = true
   local baseName = name
-  if (name.len() > 1 && name.slice(0,1) == "!") {
+  if (name.len() > 1 && name.slice(0,1) == "!")
+  {
     confirmingResult = false
     baseName = name.slice(1, name.len())
   }
@@ -331,7 +332,8 @@ let function hasFeature(name) {
   return res
 }
 
-let function hasAllFeatures(arr) {
+let function hasAllFeatures(arr)
+{
   if (arr == null || arr.len() <= 0)
     return true
 
@@ -342,28 +344,31 @@ let function hasAllFeatures(arr) {
   return true
 }
 
-let function hasAnyFeature(arr) {
+let function hasAnyFeature(arr)
+{
   if (arr == null || arr.len() <= 0)
     return true
 
   foreach (name in arr)
-    if (name && hasFeature(name))
+    if (name && ::has_feature(name))
       return true
 
   return false
 }
 
 addListenersWithoutEnv({
-  ProfileUpdated = @(_) cache.clear()
-}, g_listener_priority.CONFIG_VALIDATION)
+  ProfileUpdated = @(p) cache.clear()
+}, ::g_listener_priority.CONFIG_VALIDATION)
+
+::cross_call_api.hasFeature <- hasFeature
 
 return {
-  defaults
-  override
+  defaults = defaults
+  override = override
 
-  hasFeatureBasic
-  getFeaturePack
-  hasFeature
-  hasAllFeatures
-  hasAnyFeature
+  hasFeatureBasic = hasFeatureBasic
+  getFeaturePack = getFeaturePack
+  hasFeature = hasFeature
+  hasAllFeatures = hasAllFeatures
+  hasAnyFeature = hasAnyFeature
 }

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { createBgData } = require("%scripts/loading/loadingBgData.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")

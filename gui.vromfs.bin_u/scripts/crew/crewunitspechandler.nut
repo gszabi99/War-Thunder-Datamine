@@ -1,15 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   crew = null
@@ -60,11 +53,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     // Here 'scene' is table object with id "specs_table".
     if (!checkObj(obj) || obj?.id != "buttonRowApply")
     {
-      if (!checkObj(scene))
+      if (!::checkObj(scene))
         return
       let idx = scene.getValue()
       let rowObj = scene.getChild(idx)
-      if (!checkObj(rowObj))
+      if (!::checkObj(rowObj))
         return
       obj = rowObj.findObject("buttonRowApply")
     }
@@ -73,7 +66,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    let rowUnit = getTblValue(rowIndex, units)
+    let rowUnit = ::getTblValue(rowIndex, units)
     if (rowUnit == null)
       return
 
@@ -95,7 +88,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function increaseSpec(nextSpecType, obj = null)
   {
     let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    let rowUnit = getTblValue(rowIndex, units)
+    let rowUnit = ::getTblValue(rowIndex, units)
     if (rowUnit)
       ::g_crew.upgradeUnitSpec(crew, rowUnit, null, nextSpecType)
   }
@@ -152,9 +145,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       buttonRowText = hasNextType
         ? enableForBuy
           ? specType.getButtonLabel()
-          : loc("crew/qualifyRequirement", { reqLevel = reqLevel })
-        : canCrewTrainUnit ? loc("mainmenu/btnTrainCrew")
-        : isRecrutedCrew && !isUsableUnit ? loc("weaponry/unit_not_bought")
+          : ::loc("crew/qualifyRequirement", { reqLevel = reqLevel })
+        : canCrewTrainUnit ? ::loc("mainmenu/btnTrainCrew")
+        : isRecrutedCrew && !isUsableUnit ? ::loc("weaponry/unit_not_bought")
         : ""
       progressBarDisplay = isProgressBarVisible ? "show" : "hide"
       progressBarValue = progressBarValue
@@ -182,7 +175,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach(idx, unit in units)
     {
       let rowObj = scene.findObject(getRowName(idx))
-      if (!checkObj(rowObj))
+      if (!::checkObj(rowObj))
         return
 
       let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)

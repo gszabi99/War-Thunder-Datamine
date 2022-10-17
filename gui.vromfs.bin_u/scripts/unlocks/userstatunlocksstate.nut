@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { userstatUnlocks, userstatDescList, userstatStats, receiveUnlockRewards
 } = require("%scripts/userstat/userstat.nut")
 let { showRewardWnd, canGetRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
@@ -22,7 +15,7 @@ let emptyProgress = {
   isFinished = false //isCompleted && !hasReward
 }
 
-let unlockTables = Computed(function() {
+let unlockTables = ::Computed(function() {
   let stats = userstatStats.value
   let res = {}
   foreach(name, value in stats?.stats ?? {})
@@ -56,9 +49,9 @@ let function calcUnlockProgress(progressData, unlockDesc) {
   return res
 }
 
-let personalUnlocksData = Computed(@() userstatUnlocks.value?.personalUnlocks ?? {})
+let personalUnlocksData = ::Computed(@() userstatUnlocks.value?.personalUnlocks ?? {})
 
-let allUnlocks = Computed(@() (userstatDescList.value?.unlocks ?? {})
+let allUnlocks = ::Computed(@() (userstatDescList.value?.unlocks ?? {})
   .map(function(u,name) {
     let upd = {}
     let progress = calcUnlockProgress((userstatUnlocks.value?.unlocks ?? {})?[name], u)
@@ -69,7 +62,7 @@ let allUnlocks = Computed(@() (userstatDescList.value?.unlocks ?? {})
     return u.__merge(upd, progress)
   }))
 
-let activeUnlocks = Computed(@() allUnlocks.value.filter(function(ud) {
+let activeUnlocks = ::Computed(@() allUnlocks.value.filter(function(ud) {
   if (!(unlockTables.value?[ud?.table] ?? false))
     return false
   if ("personalData" in ud)
@@ -77,14 +70,14 @@ let activeUnlocks = Computed(@() allUnlocks.value.filter(function(ud) {
   return true
 }))
 
-let unlockProgress = Computed(function() {
+let unlockProgress = ::Computed(function() {
   let progressList = userstatUnlocks.value?.unlocks ?? {}
   let unlockDataList = allUnlocks.value
   let allKeys = progressList.__merge(unlockDataList) //use only keys from it
   return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
 })
 
-let servUnlockProgress = Computed(@() userstatUnlocks.value?.unlocks ?? {})
+let servUnlockProgress = ::Computed(@() userstatUnlocks.value?.unlocks ?? {})
 
 let function clampStage(unlockDesc, stage) {
   let lastStage = unlockDesc?.stages.len() ?? 0
@@ -107,7 +100,7 @@ let function sendReceiveRewardRequest(params)
 {
   let { stage, rewards, unlockName, taskOptions, needShowRewardWnd } = params
   let receiveRewardsCallback = function(res) {
-    log($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
+    ::dagor.debug($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
     rewardsInProgress.mutate(@(val) delete val[unlockName])
   }
   rewardsInProgress.mutate(@(val) val[unlockName] <- stage)
@@ -145,7 +138,7 @@ let function getRewards(unlockDesc) {
   return res
 }
 
-let unlocksByReward = keepref(Computed(
+let unlocksByReward = keepref(::Computed(
   function() {
     let res = {}
     foreach(unlockDesc in activeUnlocks.value) {
@@ -182,7 +175,7 @@ let function getUnlockReward(userstatUnlock) {
   }
 
   rewardMarkUp.rewardText = "\n".join((stage?.updStats ?? [])
-    .map(@(stat) loc($"updStats/{stat.name}", { amount = ::to_integer_safe(stat.value, 0) }, ""))
+    .map(@(stat) ::loc($"updStats/{stat.name}", { amount = ::to_integer_safe(stat.value, 0) }, ""))
     .filter(@(rewardText) rewardText != ""))
 
   return rewardMarkUp
@@ -193,8 +186,8 @@ let function getUnlockRewardMarkUp(userstatUnlock) {
   if (rewardMarkUp.rewardText == "" && rewardMarkUp.itemMarkUp == "")
     return {}
 
-  let rewardLoc = (userstatUnlock?.isCompleted ?? false) ? loc("rewardReceived") : loc("reward")
-  rewardMarkUp.rewardText <- $"{rewardLoc}{loc("ui/colon")}{rewardMarkUp.rewardText}"
+  let rewardLoc = (userstatUnlock?.isCompleted ?? false) ? ::loc("rewardReceived") : ::loc("reward")
+  rewardMarkUp.rewardText <- $"{rewardLoc}{::loc("ui/colon")}{rewardMarkUp.rewardText}"
   return rewardMarkUp
 }
 

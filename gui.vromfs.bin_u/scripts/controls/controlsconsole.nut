@@ -1,15 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_start_controls_console <- function gui_start_controls_console() {
-  if (!hasFeature("ControlsAdvancedSettings"))
+::gui_start_controls_console <- function gui_start_controls_console()
+{
+  if (!::has_feature("ControlsAdvancedSettings"))
     return
 
   ::gui_start_modal_wnd(::gui_handlers.ControlsConsole)
@@ -30,7 +23,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     setBreadcrumbGoBackParams(this)
     options = [
       [::USEROPT_INVERTY, "spinner"],
-      [::USEROPT_INVERTY_TANK, "spinner", hasFeature("Tanks")],
+      [::USEROPT_INVERTY_TANK, "spinner", ::has_feature("Tanks")],
       [::USEROPT_INVERTCAMERAY, "spinner"],
       [::USEROPT_MOUSE_AIM_SENSE, "slider"],
       [::USEROPT_ZOOM_SENSE,"slider"],
@@ -42,7 +35,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ]
 
     let guiScene = ::get_gui_scene()
-    let container = ::create_options_container("controls", options, true)
+    let container = create_options_container("controls", options, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     optionsContainers = [container.descr]
 
@@ -80,7 +73,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     let show = ::ps4_headtrack_is_attached() && ::ps4_headtrack_get_enable()
     foreach(o in [::USEROPT_HEADTRACK_SCALE_X, ::USEROPT_HEADTRACK_SCALE_Y])
-      showOptionRow(::get_option(o), show)
+      showOptionRow(get_option(o), show)
     this.showSceneBtn("btn_calibrate", show)
   }
 
@@ -95,10 +88,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateButtons()
   {
     this.showSceneBtn("btn_switchMode", true)
-    this.showSceneBtn("btn_controlsWizard", hasFeature("ControlsPresets") && ::get_game_mode() != GM_TRAINING && !is_platform_xbox)
-    this.showSceneBtn("btn_controlsHelp", hasFeature("ControlsHelp"))
+    this.showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets") && ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
+    this.showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
     let btnObj = scene.findObject("btn_calibrate")
-    if (checkObj(btnObj))
+    if (::checkObj(btnObj))
       btnObj.inactiveColor = ::ps4_headtrack_is_active()? "no" : "yes"
   }
 
@@ -118,11 +111,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     if (!::ps4_headtrack_is_active())
     {
-      this.msgBox("not_available", loc("options/headtrack_camera_not_work"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      this.msgBox("not_available", ::loc("options/headtrack_camera_not_work"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
       return
     }
 
-    this.msgBox("calibrate", loc("msg/headtrack_calibrate"),
+    this.msgBox("calibrate", ::loc("msg/headtrack_calibrate"),
       [["ok", function() { ::ps4_headtrack_calibrate() } ]],
       "ok", { cancel_fn = function() {}})
   }

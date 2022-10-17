@@ -25,11 +25,8 @@
       "mass": 0.042,
       "caliber": 0.0132,
       "speed": 900.0,
-      "maxDistance": 3000.0,
-      "explosiveType": "tnt",
       "explosiveMass": 0.0035,
-      "modelName": "tank_bullet_ball",
-      "recoilMultiplier": 0.35,
+      "maxDistance": 7000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -38,29 +35,27 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "he_frag_t_ball",
       "slopeEffectPreset": "ap",
-      "onHitChanceMultFire": 2.0,
+      "modelName": "tank_bullet_ball",
+      "recoilMultiplier": 0.35,
+      "hitPowerMult": 1.5,
       "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
         3000.0
       ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
-      "hitPowerMult": 3.0,
-      "explodeTreshold": 0.25,
-      "explodeHitPower": 7.5,
-      "explodeArmorPower": 2.5,
+      "explodeTreshold": 0.1,
+      "explodeHitPower": 13.0,
+      "explodeArmorPower": 3.0,
       "explodeRadius": [
-        0.03,
-        0.1
+        0.042,
+        0.42
       ],
+      "fuseDelayDist": 0.1,
       "shutterDamage": true,
-      "shutterDamageRadius": 0.2,
-      "shutterAmount": 8,
-      "shutterArmorPower": 3.0,
-      "shutterHit": 2.5,
+      "shutterDamageRadius": 1.3,
+      "shutterAmount": 15,
+      "shutterArmorPower": 6.0,
+      "shutterHit": 3.0,
       "groundCollisionEffect": "hit_12_18mm_dirt_he",
       "ricochetEffect": "hit_12_18mm_metal_ap",
       "waterCollisionEffect": "hit_12_18mm_water",
@@ -108,32 +103,6 @@
         "HitPower3000m": [
           0.1,
           3000.0
-        ]
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          3.5,
-          5.0
-        ],
-        "ArmorPower100m": [
-          3.3,
-          100.0
-        ],
-        "ArmorPower500m": [
-          3.2,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          3.0,
-          1000.0
-        ],
-        "ArmorPower1450m": [
-          0.1,
-          1450.0
-        ],
-        "ArmorPower1500m": [
-          0.0,
-          1500.0
         ]
       },
       "visual": {
@@ -230,8 +199,7 @@
       "mass": 0.051,
       "caliber": 0.0132,
       "speed": 810.0,
-      "maxDistance": 3000.0,
-      "modelName": "tank_bullet_ball",
+      "maxDistance": 7000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -240,10 +208,15 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_ball",
       "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
         3000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -399,11 +372,8 @@
         "mass": 0.042,
         "caliber": 0.0132,
         "speed": 900.0,
-        "maxDistance": 3000.0,
-        "explosiveType": "tnt",
         "explosiveMass": 0.0035,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -412,29 +382,27 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "he_frag_t_ball",
         "slopeEffectPreset": "ap",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.5,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
         ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "hitPowerMult": 3.0,
-        "explodeTreshold": 0.25,
-        "explodeHitPower": 7.5,
-        "explodeArmorPower": 2.5,
+        "explodeTreshold": 0.1,
+        "explodeHitPower": 13.0,
+        "explodeArmorPower": 3.0,
         "explodeRadius": [
-          0.03,
-          0.1
+          0.042,
+          0.42
         ],
+        "fuseDelayDist": 0.1,
         "shutterDamage": true,
-        "shutterDamageRadius": 0.2,
-        "shutterAmount": 8,
-        "shutterArmorPower": 3.0,
-        "shutterHit": 2.5,
+        "shutterDamageRadius": 1.3,
+        "shutterAmount": 15,
+        "shutterArmorPower": 6.0,
+        "shutterHit": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -482,32 +450,6 @@
           "HitPower3000m": [
             0.1,
             3000.0
-          ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
-          ],
-          "ArmorPower500m": [
-            3.2,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            3.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.1,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
           ]
         },
         "visual": {
@@ -604,8 +546,7 @@
         "mass": 0.051,
         "caliber": 0.0132,
         "speed": 810.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -614,10 +555,15 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -770,8 +716,7 @@
         "mass": 0.051,
         "caliber": 0.0132,
         "speed": 810.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -780,10 +725,15 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -936,8 +886,7 @@
         "mass": 0.051,
         "caliber": 0.0132,
         "speed": 810.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -946,10 +895,15 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1106,11 +1060,8 @@
         "mass": 0.042,
         "caliber": 0.0132,
         "speed": 900.0,
-        "maxDistance": 3000.0,
-        "explosiveType": "tnt",
         "explosiveMass": 0.0035,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -1119,29 +1070,27 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "he_frag_t_ball",
         "slopeEffectPreset": "ap",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.5,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
         ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "hitPowerMult": 3.0,
-        "explodeTreshold": 0.25,
-        "explodeHitPower": 7.5,
-        "explodeArmorPower": 2.5,
+        "explodeTreshold": 0.1,
+        "explodeHitPower": 13.0,
+        "explodeArmorPower": 3.0,
         "explodeRadius": [
-          0.03,
-          0.1
+          0.042,
+          0.42
         ],
+        "fuseDelayDist": 0.1,
         "shutterDamage": true,
-        "shutterDamageRadius": 0.2,
-        "shutterAmount": 8,
-        "shutterArmorPower": 3.0,
-        "shutterHit": 2.5,
+        "shutterDamageRadius": 1.3,
+        "shutterAmount": 15,
+        "shutterArmorPower": 6.0,
+        "shutterHit": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -1189,32 +1138,6 @@
           "HitPower3000m": [
             0.1,
             3000.0
-          ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
-          ],
-          "ArmorPower500m": [
-            3.2,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            3.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.1,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
           ]
         },
         "visual": {
@@ -1311,11 +1234,8 @@
         "mass": 0.042,
         "caliber": 0.0132,
         "speed": 900.0,
-        "maxDistance": 3000.0,
-        "explosiveType": "tnt",
         "explosiveMass": 0.0035,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -1324,29 +1244,27 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "he_frag_t_ball",
         "slopeEffectPreset": "ap",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.5,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
         ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "hitPowerMult": 3.0,
-        "explodeTreshold": 0.25,
-        "explodeHitPower": 7.5,
-        "explodeArmorPower": 2.5,
+        "explodeTreshold": 0.1,
+        "explodeHitPower": 13.0,
+        "explodeArmorPower": 3.0,
         "explodeRadius": [
-          0.03,
-          0.1
+          0.042,
+          0.42
         ],
+        "fuseDelayDist": 0.1,
         "shutterDamage": true,
-        "shutterDamageRadius": 0.2,
-        "shutterAmount": 8,
-        "shutterArmorPower": 3.0,
-        "shutterHit": 2.5,
+        "shutterDamageRadius": 1.3,
+        "shutterAmount": 15,
+        "shutterArmorPower": 6.0,
+        "shutterHit": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -1394,32 +1312,6 @@
           "HitPower3000m": [
             0.1,
             3000.0
-          ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
-          ],
-          "ArmorPower500m": [
-            3.2,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            3.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.1,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
           ]
         },
         "visual": {
@@ -1516,8 +1408,7 @@
         "mass": 0.051,
         "caliber": 0.0132,
         "speed": 810.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -1526,10 +1417,15 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1682,11 +1578,8 @@
         "mass": 0.042,
         "caliber": 0.0132,
         "speed": 900.0,
-        "maxDistance": 3000.0,
-        "explosiveType": "tnt",
         "explosiveMass": 0.0035,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 7000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -1695,29 +1588,27 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "he_frag_t_ball",
         "slopeEffectPreset": "ap",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.5,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
         ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "hitPowerMult": 3.0,
-        "explodeTreshold": 0.25,
-        "explodeHitPower": 7.5,
-        "explodeArmorPower": 2.5,
+        "explodeTreshold": 0.1,
+        "explodeHitPower": 13.0,
+        "explodeArmorPower": 3.0,
         "explodeRadius": [
-          0.03,
-          0.1
+          0.042,
+          0.42
         ],
+        "fuseDelayDist": 0.1,
         "shutterDamage": true,
-        "shutterDamageRadius": 0.2,
-        "shutterAmount": 8,
-        "shutterArmorPower": 3.0,
-        "shutterHit": 2.5,
+        "shutterDamageRadius": 1.3,
+        "shutterAmount": 15,
+        "shutterArmorPower": 6.0,
+        "shutterHit": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -1765,32 +1656,6 @@
           "HitPower3000m": [
             0.1,
             3000.0
-          ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
-          ],
-          "ArmorPower500m": [
-            3.2,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            3.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.1,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
           ]
         },
         "visual": {

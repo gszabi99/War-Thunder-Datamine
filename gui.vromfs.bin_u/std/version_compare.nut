@@ -1,10 +1,10 @@
 let { logerr } = require("dagor.debug")
-let {startsWith, toIntegerSafe} = require("string.nut")
+let string = require("string.nut")
 
 let maskAny = { x = true, X = true, ["*"] = true }
 
 let arrToInt = @(list) list.reduce(@(res, val)
-  (res << 16) + toIntegerSafe(val), 0)
+  (res << 16) + string.toIntegerSafe(val), 0)
 
 let typeMap = {
   undefined = @(a, b) b == a,
@@ -56,7 +56,7 @@ let function check_version(vermask, game_version) {
   let maskVer = stripVerCondition(vermask).split(".")
   let checkVer = stripVerCondition(game_version).split(".")
   let cmpFn = typeMap.reduce(@(res, val, key)
-    startsWith(vermask, key) ? val : res, typeMap.undefined)
+    string.startsWith(vermask, key) ? val : res, typeMap.undefined)
   return checkVersion(maskVer, checkVer, cmpFn)
 }
 

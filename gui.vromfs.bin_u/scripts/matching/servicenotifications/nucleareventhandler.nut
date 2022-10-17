@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let {
   get_base_game_version = @() ::get_base_game_version() //compatibility with 2.15.1.X
 } = require("app")

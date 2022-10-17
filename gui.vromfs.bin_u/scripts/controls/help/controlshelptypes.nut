@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -15,7 +8,7 @@ let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
   EII_MEDICALKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET, EII_SMOKE_GRENADE,
-  EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT } = require_native("hudActionBarConst")
+  EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT } = ::require_native("hudActionBarConst")
 
 let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
@@ -61,11 +54,11 @@ enums.addTypes(result, {
 
     showByUnit = function(unit, unitTag) {
       let difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
-      let isAdvanced = difficulty == DIFFICULTY_HARDCORE
+      let isAdvanced = difficulty == ::DIFFICULTY_HARDCORE
       return !::is_me_newbie() && unitTag == null && !isAdvanced
     }
 
-    specificCheck = @() (::get_game_type_by_mode(::get_game_mode()) & GT_VERSUS)
+    specificCheck = @() (::get_game_type_by_mode(::get_game_mode()) & ::GT_VERSUS)
       ? ::g_mission_type.getHelpPathForCurrentMission() != null
       : false
 
@@ -389,7 +382,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.IMAGE
 
-    checkFeature = @() unitTypes.SHIP.isAvailable() && hasFeature("SpecialShips")
+    checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
 
@@ -479,14 +472,14 @@ enums.addTypes(result, {
       let sdBlk = wBlk?.sonic_wave.bullet.sonicDamage ?? wBlk?.bullet.sonicDamage
       let soundwaveDescTextObj = obj.findObject("soundwave_txt")
       if (soundwaveDescTextObj?.isValid())
-        soundwaveDescTextObj.setValue(loc("controls/help/arachis/soundwave", {
-        unitName = colorize("userlogColoredText", loc("acoustic_heavy_tank_a_shop"))
-        angles = colorize("activeTextColor",
-          "".concat("±", ::abs(::round(sdBlk?.horAngles.y ?? 3.0)), loc("measureUnits/deg")))
-        speed = colorize("activeTextColor",
-          " ".concat(::round(sdBlk?.speed ?? 300.0), loc("measureUnits/metersPerSecond_climbSpeed")))
-        distance = colorize("activeTextColor",
-          " ".concat(::round(sdBlk?.distance ?? 1000.0), loc("measureUnits/meters_alt")))
+        soundwaveDescTextObj.setValue(::loc("controls/help/arachis/soundwave", {
+        unitName = ::colorize("userlogColoredText", ::loc("acoustic_heavy_tank_a_shop"))
+        angles = ::colorize("activeTextColor",
+          "".concat("±", ::abs(::round(sdBlk?.horAngles.y ?? 3.0)), ::loc("measureUnits/deg")))
+        speed = ::colorize("activeTextColor",
+          " ".concat(::round(sdBlk?.speed ?? 300.0), ::loc("measureUnits/metersPerSecond_climbSpeed")))
+        distance = ::colorize("activeTextColor",
+          " ".concat(::round(sdBlk?.distance ?? 1000.0), ::loc("measureUnits/meters_alt")))
       }))
     }
   }
@@ -548,7 +541,7 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
     specificCheck = @() ::show_console_buttons
-    checkFeature = @() unitTypes.SHIP.isAvailable() && hasFeature("SpecialShips")
+    checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
 
@@ -613,7 +606,7 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
     specificCheck = @() isPlatformSony || isKeyboardOrMouseConnected()
-    checkFeature = @() unitTypes.SHIP.isAvailable() && hasFeature("SpecialShips")
+    checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
 

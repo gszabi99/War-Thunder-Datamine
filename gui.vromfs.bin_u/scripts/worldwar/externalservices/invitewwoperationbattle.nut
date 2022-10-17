@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
@@ -63,8 +56,8 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
   function getInviteText()
   {
     let operation = getOperation()
-    return loc("worldwar/inviteSquadsText", {
-      operation = colorize(inviteActiveColor, operation ? operation.getNameText() : operationId)
+    return ::loc("worldwar/inviteSquadsText", {
+      operation = ::colorize(inviteActiveColor, operation ? operation.getNameText() : operationId)
     })
   }
 
@@ -86,16 +79,16 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
   function getRestrictionText()
   {
     if (haveRestrictions())
-      return loc("invite/session/cant_apply_in_flight")
+      return ::loc("invite/session/cant_apply_in_flight")
     return ""
   }
 
   function accept()
   {
     ::queues.checkAndStart(
-      Callback(function() {
+      ::Callback(function() {
         ::g_world_war.joinOperationById(operationId, null, false,
-          Callback(function() {
+          ::Callback(function() {
             let wwBattle = ::g_world_war.getBattleById(battleId)
             ::gui_handlers.WwBattleDescription.open(wwBattle)
           }, this))

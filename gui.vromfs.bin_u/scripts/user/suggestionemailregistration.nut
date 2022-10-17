@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
@@ -13,16 +6,16 @@ let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { register_command } = require("console")
 
 let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
-  : isPlatformXboxOne ? @() havePlayerTag("livelogin") && hasFeature("AllowXboxAccountLinking")
-  : ::steam_is_running() ? @() havePlayerTag("steamlogin") && hasFeature("AllowSteamAccountLinking")
+  : isPlatformXboxOne ? @() havePlayerTag("livelogin") && ::has_feature("AllowXboxAccountLinking")
+  : ::steam_is_running() ? @() havePlayerTag("steamlogin") && ::has_feature("AllowSteamAccountLinking")
   : @() false
 
 let function launchSteamEmailRegistration() {
   let token = ::get_steam_link_token()
   if (token == "")
-    return log("Steam Email Registration: empty token")
+    return ::dagor.debug("Steam Email Registration: empty token")
 
-  openUrl(loc("url/steam_bind_url",
+  openUrl(::loc("url/steam_bind_url",
     {
       token = token,
       langAbbreviation = ::g_language.getShortName()
@@ -42,8 +35,8 @@ let function checkAutoShowSteamEmailRegistration() {
   }
 
   ::showUnlockWnd({
-    name = loc("mainmenu/SteamEmailRegistration")
-    desc = loc("mainmenu/SteamEmailRegistration/desc")
+    name = ::loc("mainmenu/SteamEmailRegistration")
+    desc = ::loc("mainmenu/SteamEmailRegistration/desc")
     popupImage = "ui/images/invite_big.jpg?P1"
     onOkFunc = launchSteamEmailRegistration
     okBtnText = "msgbox/btn_bind"
@@ -51,7 +44,7 @@ let function checkAutoShowSteamEmailRegistration() {
 }
 
 let launchPS4EmailRegistration = @()
-  ::ps4_open_url_logged_in(loc("url/ps4_bind_url"), loc("url/ps4_bind_redirect"))
+  ::ps4_open_url_logged_in(::loc("url/ps4_bind_url"), ::loc("url/ps4_bind_redirect"))
 
 let function checkAutoShowPS4EmailRegistration() {
   if (!canEmailRegistration())
@@ -63,8 +56,8 @@ let function checkAutoShowPS4EmailRegistration() {
   ::saveLocalByAccount("PS4EmailRegistrationShowed", true)
 
   ::showUnlockWnd({
-    name = loc("mainmenu/PS4EmailRegistration")
-    desc = loc("mainmenu/PS4EmailRegistration/desc")
+    name = ::loc("mainmenu/PS4EmailRegistration")
+    desc = ::loc("mainmenu/PS4EmailRegistration/desc")
     popupImage = "ui/images/invite_big.jpg?P1"
     onOkFunc = launchPS4EmailRegistration
     okBtnText = "msgbox/btn_bind"
@@ -72,23 +65,23 @@ let function checkAutoShowPS4EmailRegistration() {
 }
 
 let sendXboxEmailBind = @(val) ::xbox_link_email(val, function(status) {
-  ::g_popups.add("", colorize(
-    status == YU2_OK ? "activeTextColor" : "warningTextColor",
-    loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
+  ::g_popups.add("", ::colorize(
+    status == ::YU2_OK ? "activeTextColor" : "warningTextColor",
+    ::loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
   ))
 })
 
 let function launchXboxEmailRegistration(override = {}) {
   ::gui_modal_editbox_wnd({
     leftAlignedLabel = true
-    title = loc("mainmenu/XboxOneEmailRegistration")
-    label = loc("mainmenu/XboxOneEmailRegistration/desc")
+    title = ::loc("mainmenu/XboxOneEmailRegistration")
+    label = ::loc("mainmenu/XboxOneEmailRegistration/desc")
     checkWarningFunc = ::g_string.validateEmail
     allowEmpty = false
     needOpenIMEonInit = false
     editBoxEnableFunc = canEmailRegistration
-    editBoxTextOnDisable = loc("mainmenu/alreadyBinded")
-    editboxWarningTooltip = loc("tooltip/invalidEmail/possibly")
+    editBoxTextOnDisable = ::loc("mainmenu/alreadyBinded")
+    editboxWarningTooltip = ::loc("tooltip/invalidEmail/possibly")
     okFunc = @(val) sendXboxEmailBind(val)
   }.__update(override))
 }
@@ -96,8 +89,8 @@ let function launchXboxEmailRegistration(override = {}) {
 let forceLauncheXboxSuggestionEmailRegistration = @()
   launchXboxEmailRegistration({
     leftAlignedLabel = false
-    label = loc("mainmenu/recommendEmailRegistration")
-    okBtnText = loc("msgbox/bind_and_recieve")
+    label = ::loc("mainmenu/recommendEmailRegistration")
+    okBtnText = ::loc("msgbox/bind_and_recieve")
     okFunc = sendXboxEmailBind
   })
 
@@ -134,7 +127,7 @@ let promoButtonId = "email_registration_mainmenu_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "imageButton"
-  getText = @() loc("promo/btnXBOXAccount_linked")
+  getText = @() ::loc("promo/btnXBOXAccount_linked")
   image = isPlatformSony ? "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo.jpg?P1"
     : isPlatformXboxOne ? "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo.jpg?P1"
     : ::steam_is_running() ? "https://static.warthunder.ru/upload/image/Promo/2022_03_steam_promo.jpg?P1"

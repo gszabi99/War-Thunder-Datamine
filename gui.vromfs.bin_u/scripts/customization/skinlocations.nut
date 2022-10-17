@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")
@@ -40,7 +35,7 @@ let function getLocationsLoc(mask)
     return list
   foreach(name in camoTypesVisibleList)
     if (mask & getLocationTypeId(name))
-      list.append(loc("camoType/" + name))
+      list.append(::loc("camoType/" + name))
   return list
 }
 

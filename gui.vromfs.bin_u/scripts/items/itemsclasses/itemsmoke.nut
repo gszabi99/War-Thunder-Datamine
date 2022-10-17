@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -60,7 +53,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   }
 
   getName = @(colored = true)// Used with type name in buy dialog message only
-    $"{loc("itemTypes/aerobatic_smoke")} {base.getName(colored)}"
+    $"{::loc("itemTypes/aerobatic_smoke")} {base.getName(colored)}"
 
   getDescriptionTitle = @() base.getName()
 
@@ -70,7 +63,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   getBigIcon = @() ::LayersIcon.getIconData($"{usingStyle}_big", defaultIcon, 1.0, defaultIconStyle)
 
   getMainActionData = @(isShort = false, params = {}) isActive() ? null : {
-      btnName = isUnlocked() ? loc("item/consume") : getBuyText(false, isShort)
+      btnName = isUnlocked() ? ::loc("item/consume") : getBuyText(false, isShort)
     }
 
   getDescription = @() getTagsDesc()
@@ -95,9 +88,9 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     }
 
     let item = this
-    ::scene_msg_box("offer_unit_change", null, loc("decoratorPreview/autoselectedUnit", {
-        previewUnit = colorize("activeTextColor", ::getUnitName(unit))
-        hangarUnit = colorize("activeTextColor", ::getUnitName(currUnit))
+    ::scene_msg_box("offer_unit_change", null, ::loc("decoratorPreview/autoselectedUnit", {
+        previewUnit = ::colorize("activeTextColor", ::getUnitName(unit))
+        hangarUnit = ::colorize("activeTextColor", ::getUnitName(currUnit))
       }),
       [
         ["yes", @() item.openTestFlight(unit)],
@@ -193,7 +186,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function _buy(cb, params = null)
   {
-    ::g_unlocks.buyUnlock(id, Callback(@() cb(true), this))
+    ::g_unlocks.buyUnlock(id, ::Callback(@() cb(true), this))
   }
 
   function getTagsDesc()
@@ -201,7 +194,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (tags.len() == 0)
       return ""
 
-    let tagsLoc = tags.map(@(t) colorize("activeTextColor", loc($"content/tag/{t}")))
-    return $"{loc("ugm/tags")}{loc("ui/colon")}{loc("ui/comma").join(tagsLoc)}"
+    let tagsLoc = tags.map(@(t) ::colorize("activeTextColor", ::loc($"content/tag/{t}")))
+    return $"{::loc("ugm/tags")}{::loc("ui/colon")}{::loc("ui/comma").join(tagsLoc)}"
   }
 }

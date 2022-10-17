@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let regexp2 = require("regexp2")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -24,7 +17,7 @@ let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
   helpBlkPath = ""
   filterGroup = MISSION_GROUP.OTHER
   getObjectives = function(misInfoBlk) {
-    return getTblValue("isWorldWar", misInfoBlk) ? objectivesWw : objectives
+    return ::getTblValue("isWorldWar", misInfoBlk) ? objectivesWw : objectives
   }
 }
 
@@ -223,7 +216,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 }, null, "_typeName")
 
-::g_mission_type.getTypeByMissionName <- function getTypeByMissionName(misName)
+g_mission_type.getTypeByMissionName <- function getTypeByMissionName(misName)
 {
   if (!misName)
     return UNKNOWN
@@ -237,24 +230,24 @@ enums.addTypesByGlobalName("g_mission_type", {
       res = val
       break
     }
-  if (res == UNKNOWN && ::is_mission_for_unittype(::get_mission_meta_info(misName), ES_UNIT_TYPE_TANK))
+  if (res == UNKNOWN && ::is_mission_for_unittype(::get_mission_meta_info(misName), ::ES_UNIT_TYPE_TANK))
     res = G_DOM
 
   _cacheByMissionName[misName] <- res
   return res
 }
 
-::g_mission_type.getCurrent <- function getCurrent()
+g_mission_type.getCurrent <- function getCurrent()
 {
   return getTypeByMissionName(::get_current_mission_name())
 }
 
-::g_mission_type.getCurrentObjectives <- function getCurrentObjectives()
+g_mission_type.getCurrentObjectives <- function getCurrentObjectives()
 {
   return getCurrent().getObjectives(::get_current_mission_info_cached())
 }
 
-::g_mission_type.getHelpPathForCurrentMission <- function getHelpPathForCurrentMission()
+g_mission_type.getHelpPathForCurrentMission <- function getHelpPathForCurrentMission()
 {
   let path = getCurrent().helpBlkPath
   if (path != "" && !::u.isEmpty(blkOptFromPath(path)))

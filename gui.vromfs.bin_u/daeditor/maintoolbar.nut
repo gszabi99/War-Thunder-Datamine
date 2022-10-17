@@ -125,7 +125,7 @@ let function mainToolbar() {
     hotkeys = [
       ["L.Alt H", toggleEntitySelect],
       ["Tab", toggleEntitySelect],
-      ["!L.Ctrl !L.Alt T", toggleCreateEntityMode],
+      ["T", toggleCreateEntityMode],
       ["F1", toggleHelp],
       ["P", togglePropPanel],
       ["L.Ctrl !L.Alt T", toggleTime],

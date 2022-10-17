@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 /**[DEPRECATED] this notification callbacks call by mathing forced**/
-let function on_online_info_updated(params)
+::on_online_info_updated <- function on_online_info_updated(params)
 {
   if ("utc_time" in params)
   {
@@ -22,7 +15,7 @@ let function on_online_info_updated(params)
   {
     if(::dagor.getCurTime() - ::last_show_update_popup_time > 120000)
     {
-      ::g_popups.add(loc("mainmenu/update_avail_popup_title"), loc("mainmenu/update_avail_popup_text"))
+      ::g_popups.add(::loc("mainmenu/update_avail_popup_title"), ::loc("mainmenu/update_avail_popup_text"))
       ::last_show_update_popup_time = ::dagor.getCurTime()
     }
     update_avail = true

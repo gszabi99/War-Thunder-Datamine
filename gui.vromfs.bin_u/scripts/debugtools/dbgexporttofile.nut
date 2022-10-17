@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 // warning disable: -file:forbidden-function
 
 /**
@@ -26,7 +21,7 @@ let EXPORT_PARAMS = { //const
 
 let function export_impl(params, resBlk, idx)
 {
-  let exportImplFunc = callee()
+  let exportImplFunc = ::callee()
   for(local i = idx; i != params.list.len(); i++)
   {
     if (i != idx && !(i % params.itemsPerFrame)) //avoid freeze

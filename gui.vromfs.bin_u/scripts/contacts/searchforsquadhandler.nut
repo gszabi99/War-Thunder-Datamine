@@ -1,15 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { canInteractCrossConsole,
         isXBoxPlayerName,
         isPlatformSony } = require("%scripts/clientState/platform.nut")
-        let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
@@ -19,7 +10,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 {
   if (!::g_squad_manager.canInviteMember())
   {
-    ::showInfoMsgBox(loc("squad/not_a_leader"), "squad_not_available")
+    ::showInfoMsgBox(::loc("squad/not_a_leader"), "squad_not_available")
     return
   }
 
@@ -32,7 +23,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/contacts/contacts.blk"
 
-  curGroup = EPL_FRIENDLIST
+  curGroup = ::EPL_FRIENDLIST
   searchGroup = ::EPLX_SEARCH
   clanGroup = ::EPLX_CLAN
   searchShowDefaultOnReset = true
@@ -51,7 +42,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     if (::contacts_sizes)
       fObj.size = ::contacts_sizes.size[0] + ", " + ::contacts_sizes.size[1]
     scene.findObject("contacts_backShade").show(true)
-    scene.findObject("title").setValue(loc("mainmenu/btnInvite"))
+    scene.findObject("title").setValue(::loc("mainmenu/btnInvite"))
     updateSearchContactsGroups()
 
     guiScene.setUpdatesEnabled(true, true)
@@ -91,7 +82,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     let canInvite = curPlayer? curPlayer.canInvite() : true
 
     let showSquadInvite = !::show_console_buttons
-      && hasFeature("SquadInviteIngame")
+      && ::has_feature("SquadInviteIngame")
       && !isBlock
       && canInteractCrossConsole(contactName)
       && canInteractCrossPlatform
@@ -129,7 +120,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   }
 
   function updateSearchContactsGroups() {
-    sg_groups = [::EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD]
+    sg_groups = [::EPLX_SEARCH, ::EPL_FRIENDLIST, ::EPL_RECENT_SQUAD]
     if(::is_in_clan()) {
       sg_groups.append(clanGroup)
       ::g_clans.updateClanContacts()
@@ -156,7 +147,7 @@ addPromoButtonConfig({
     let id = promoButtonId
     let show = !::is_me_newbie() && ::g_promo.getVisibilityById(id)
     let buttonObj = ::showBtn(id, show, scene)
-    if (!show || !checkObj(buttonObj))
+    if (!show || !::checkObj(buttonObj))
       return
 
     buttonObj.inactiveColor = ::checkIsInQueue() ? "yes" : "no"

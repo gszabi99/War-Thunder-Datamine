@@ -70,40 +70,46 @@
             "id": "content_block_1_holder",
             "size": "pw, fh",
             "flow": "vertical",
-            "background-color": "@frameDarkBackgroundColor",
             "tdiv": [
               {
                 "id": "operation_info",
                 "width": "pw",
                 "flow": "vertical",
-                "textAreaCentered": {
-                  "id": "operation_name",
-                  "width": "pw",
-                  "position": "relative",
-                  "padding-top": "1@frameHeaderPad",
-                  "mediumFont": "yes",
-                  "hideEmptyText": "yes",
-                  "overlayTextColor": "active",
-                  "text": ""
-                },
-                "tdiv": {
-                  "size": "pw, 1@fontBigBoldHeight",
-                  "operationResultText": [
-                    {
-                      "id": "operation_status_hidden_copy",
+                "tdiv": [
+                  {
+                    "size": "pw, 0.5sh",
+                    "text-halign": "center",
+                    "position": "relative",
+                    "background-color": "@frameDarkBackgroundColor",
+                    "textAreaCentered": {
+                      "id": "operation_name",
                       "width": "pw",
-                      "text": "",
-                      "hideText": "yes"
-                    },
-                    {
-                      "id": "operation_status",
-                      "width": "pw",
-                      "position": "absolute",
-                      "text": "",
-                      "needAnim": "no"
+                      "padding-top": "1@frameHeaderPad",
+                      "mediumFont": "yes",
+                      "hideEmptyText": "yes",
+                      "overlayTextColor": "active",
+                      "text": ""
                     }
-                  ]
-                }
+                  },
+                  {
+                    "size": "pw, 1@fontBigBoldHeight",
+                    "operationResultText": [
+                      {
+                        "id": "operation_status_hidden_copy",
+                        "width": "pw",
+                        "text": "",
+                        "hideText": "yes"
+                      },
+                      {
+                        "id": "operation_status",
+                        "width": "pw",
+                        "position": "absolute",
+                        "text": "",
+                        "needAnim": "no"
+                      }
+                    ]
+                  }
+                ]
               },
               {
                 "id": "content_block_1",

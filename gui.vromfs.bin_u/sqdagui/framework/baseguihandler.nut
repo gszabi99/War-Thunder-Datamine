@@ -1,9 +1,3 @@
-#explicit-this
-#no-root-fallback
-
-let {handlerType} = require("handlerType.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
-
 ::BaseGuiHandler <- class
 {
   wndType = handlerType.BASE
@@ -52,7 +46,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
   function initCustomHandlerScene()
   {
-    if (!check_obj(this.scene))
+    if (!::check_obj(this.scene))
       return false
 
     this.guiScene = this.scene.getScene()
@@ -93,7 +87,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
   function isValid()
   {
-    return check_obj(this.scene)
+    return ::check_obj(this.scene)
   }
 
   function isInCurrentScene()
@@ -107,7 +101,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
     if(!markup && !this.sceneNavBlkName)
       return
     let obj = this.scene.findObject("nav-help")
-    if (!check_obj(obj))
+    if (!::check_obj(obj))
       return
 
     if (markup)
@@ -120,7 +114,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
   function isSceneActive()
   {
-    return check_obj(this.scene) && this.scene.isEnabled()
+    return ::check_obj(this.scene) && this.scene.isEnabled()
   }
 
   function isSceneActiveNoModals()
@@ -154,7 +148,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
   function getObj(name)
   {
-    if (!check_obj(this.scene))
+    if (!::check_obj(this.scene))
       return null
     return this.scene.findObject(name)
   }
@@ -275,7 +269,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
       if (typeof(func) == "function")
         func()
       else
-        assert(false, "doWhenActive recieved " + func + ", instead of function")
+        ::dagor.assertf(false, "doWhenActive recieved " + func + ", instead of function")
     }
     else
       this.delayedActions.append(func)
@@ -283,7 +277,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
   function doWhenActiveOnce(funcName)
   {
-    assert(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
+    ::dagor.assertf(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
 
     let prevIdx = this.delayedActions.indexof(funcName)
     if (prevIdx != null)
@@ -329,9 +323,4 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
     this.subHandlers.append(handler.weakref())
   }
-
-  _tostring = @() $"BaseGuiHandler(sceneBlkName = {this.sceneBlkName})"
-}
-return {
-  BaseGuiHandler = ::BaseGuiHandler
 }

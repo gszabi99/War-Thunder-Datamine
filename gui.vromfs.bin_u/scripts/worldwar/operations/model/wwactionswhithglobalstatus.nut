@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let getNearestMap = function(mapsList) {
   local nearestMap = null
   foreach(map in mapsList)

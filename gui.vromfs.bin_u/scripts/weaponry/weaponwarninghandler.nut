@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//-file:undefined-const
-//-file:undefined-variable
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 
 ::gui_handlers.WeaponWarningHandler <- class extends ::gui_handlers.SkipableMsgBox
@@ -17,7 +10,7 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
     base.initScreen()
 
     let bltCheckBoxObj = scene.findObject("slots-autoweapon")
-    if (!checkObj(bltCheckBoxObj))
+    if (!::check_obj(bltCheckBoxObj))
       return
 
     bltCheckBoxObj.show(showCheckBoxBullets)

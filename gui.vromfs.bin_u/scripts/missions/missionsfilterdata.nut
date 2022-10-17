@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let MISSION_GROUP = {
   TOURNAMENT       = 0x00001
   DOMINATION       = 0x00002
@@ -74,7 +69,7 @@ let missionGroupToLocKey =
 }
 
 let getMissionGroupByChapter = @(missionChapter) chapterToGroup?[missionChapter] ?? MISSION_GROUP.OTHER
-let getMissionGroupName = @(missionGroup) loc($"chapters/{missionGroupToLocKey[missionGroup]}")
+let getMissionGroupName = @(missionGroup) ::loc($"chapters/{missionGroupToLocKey[missionGroup]}")
 
 let function getMissionGroup(mission) {
   let group = getMissionGroupByChapter(mission.chapter)
